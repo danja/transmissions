@@ -9,3 +9,27 @@ npx webpack init
 npm install --save-dev chai
 
 npm install --save-dev jasmine
+
+npm install --save-dev jasmine-browser-runner jasmine-core
+
+npx jasmine-browser-runner init
+
+---
+
+## Libs
+
+lots of RDF-Ext
+
+https://github.com/rdf-ext/rdf-store-sparql
+
+### Client
+
+PWA
+
+https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/How_to/Share_data_between_apps
+
+send & receive
+
+### Server
+
+https://tinyhttp.v1rtl.site/
