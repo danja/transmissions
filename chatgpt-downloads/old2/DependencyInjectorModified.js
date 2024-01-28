@@ -1,5 +1,5 @@
 
-import { ServiceContainer } from './ServiceContainer.js';
+import { ServiceContainer } from './ServiceContainerModified.js';
 
 export class DependencyInjector {
   constructor(pipelineConfig) {

@@ -1,10 +1,8 @@
-
 import { ServiceContainer } from './ServiceContainer.js';
 
 export class DependencyInjector {
-  constructor(pipelineConfig) {
-    // Pass the pipeline configuration to the ServiceContainer
-    this.container = new ServiceContainer(pipelineConfig)
+  constructor() {
+    this.container = new ServiceContainer()
   }
 
   // Injects the dependencies into an uninstantiated class
@@ -12,3 +10,5 @@ export class DependencyInjector {
     return Class.__inject(this.container)
   }
 }
+
+
