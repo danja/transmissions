@@ -9,7 +9,7 @@ const App = di.make(Piper)
 const app = new App() // Has access to the service
 
 // Example file paths (these can be changed as needed)
-const inputFilePath = '/path/to/input.txt';
-const outputFilePath = '/path/to/output.txt';
+const inputFilePath = './input.txt';
+const outputFilePath = './output.txt';
 
 app.run(inputFilePath, outputFilePath);
