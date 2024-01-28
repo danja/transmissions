@@ -28,9 +28,8 @@ export class Piper extends Injectable {
     // Execute the pipeline
     let input = this.source.read(inputFilePath)
     let result = this.connector.executePipeline(this.source, input);
-    console.log('Pipeline result:', result)
+console.log('Pipeline result:', result)
 
     // Assuming the sink service handles the writing to output file
-
+  
   }
-}

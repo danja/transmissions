@@ -1,4 +1,3 @@
-import { Sink } from './Sink.js';
 
 import { Injectable } from '../di/Injectable.js';
 

@@ -1,26 +1,7 @@
 
 // Create the dependency injector instance for the application
 import { DependencyInjector } from './di/DependencyInjector.js'
-
-const simplepipe = {
-    "name": "SimplePipe",
-    "pipe": [
-        {
-            "node": "StringSource",
-            "type": "source"
-        },
-        {
-            "node": "AppendProcess",
-            "type": "process"
-        },
-        {
-            "node": "StringSink",
-            "type": "sink"
-        },
-    ]
-}
-
-const di = new DependencyInjector(simplepipe)
+const di = new DependencyInjector()
 
 import { Piper } from './di/Piper.js'
 // Now, create the instance of our application using the DI to inject services

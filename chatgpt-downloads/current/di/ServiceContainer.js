@@ -1,17 +1,17 @@
-import { StringSource } from '../services/StringSource.js'
+import { Source } from '../services/Source.js'
 import { Connector } from '../services/Connector.js'
-import { StringSink } from '../services/StringSink.js'
-import { AppendProcess } from '../services/AppendProcess.js'
+import { Sink } from '../services/Sink.js'
+import { Process } from '../services/Process.js'
 
 export class ServiceContainer {
-  constructor(pipeline) {
+  constructor() {
     // We define the service classes here, but we won't
     // instantiate them until they're needed.
     this.definitions = {
-      source: StringSource,
+      source: Source,
       connector: Connector,
-      sink: StringSink,
-      process: AppendProcess,
+      sink: Sink,
+      process: Process,
     }
 
     // This is where the container will store service instances

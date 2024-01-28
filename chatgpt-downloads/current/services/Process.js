@@ -1,11 +1,12 @@
 import { Injectable } from '../di/Injectable.js';
 
-export class Sink extends Injectable {
+export class Process extends Injectable {
     //  constructor(sourceID) {
     //  this.sourceID = sourceID;
     // }
 
-    write(sinkID, data) {
-        console.log("Sink interface called, oops.")
+    process(input) {
+        let output = "hello " + input
+        return output
     }
 }
