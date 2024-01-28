@@ -14,7 +14,23 @@ npm install --save-dev jasmine-browser-runner jasmine-core
 
 npx jasmine-browser-runner init
 
+HTTP server mocking and expectations library for Node.js
+
+https://github.com/nock/nock
+UI - LIt - check bergi's
+
+look at composer.js
+
+CI/CD
+https://github.com/kamleshchandnani/rabbit-hole-github-actions
+
+https://kamleshchandnani.com/articles/jumping-down-the-rabbit-hole-of-github-actions
+
 ---
+
+https://linkedsoftwaredependencies.org/vocabularies/object-oriented#.
+https://linkedsoftwaredependencies.org/vocabularies/object-mapping#.
+http://usefulinc.com/ns/doap#.
 
 ## Libs
 
