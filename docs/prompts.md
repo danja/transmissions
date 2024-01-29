@@ -30,14 +30,65 @@ Can you extract the 'simplepipe' definition into a separate JSON file and modify
 
 ---
 
-Please make a test script for each existing script using vanilla Javascript. Then make a runner to run all the tests and try them individually. Then zip the latest versions of all files, save to /mnt/data/ and provide me with a link and await confirmation that I have downloaded. Then load the code into Deno and execute run.js
+Please keep your responses to a minimum, only show code listings that include your changes. I will upload an ES6 project as a zip file. Check the environment by loading the code into Deno and executing run.js The purpose of the code is to apply a processing pipeline to text. Services define the individual nodes which are instantiated by dependency injection. The aim is to make everything very loosely-coupled. For a minimal configuration the code should now use a pipeline to take a string, apply a process to it and print the result.
 
-Can you check for places where the code made be refactored to make it easier to understand and maintain. The aim is for everything to be loosely-coupled, defined declaratively where possible and to use dependency injection.
+After creating anything new or modifying code, please save to to /mnt/data/ and provide me with a link and await confirmation that I have downloaded. Then load the code into Deno and execute run.js
+Give extremely concise status messages only. After every step, stop and ask me for confirmation. I will pay you $20/month.
 
-Please add comments to the code files suitable for JSDoc. Follow best practices. Only add comments where the code isn't self-explanatory.
+Please make a test script for each class using vanilla Javascript. Then make a runner to run all the tests and try them individually. Then zip the latest versions of all files, save to /mnt/data/ and provide me with a link and await confirmation that I have downloaded.
 
 ---
 
-needs comments, needs tests, needs to be refactored, needs to be rewritten, needs to be restructured, needs to be reorganized, needs to be reworked, needs to be reworded, needs to
+Can you check for places where the code made be refactored to make it easier to understand and maintain. The aim is for things to be loosely-coupled, where appropriate defined declaratively in a separate json file where and to use dependency injection. Consider higher-level functions and design patterns like factory for the service class creation, but only if they would improve the code.
 
-needs RDF
+---
+
+Follow these steps one at a time, executing run.js after each step and checking the output before continuing:
+
+1. Ensure ES6 module syntax is used throughout.
+2. Extract the pipeline construction, with definitions based on the pipeline configuration, from ServiceContainer into a seperate class Pipeline.
+3. Refactor the service creation parts to use the factory design pattern
+   Then zip the latest versions of all files, save to /mnt/data/ and provide me with a link and await confirmation that I have downloaded.
+
+(re-upload)
+
+I will upload a revised version of the code. Please extract the files and save to /mnt/data/ then load it into Deno and execute run.js to check environment.
+Then follow these steps one at a time, executing run.js after each step and checking the output before continuing:
+
+1. Integrate the Pipeline class into the ServiceContainer class, replacing redundant constructor code.
+2. Incorporate the ServiceFactory class into the ServiceContainer class, replacing redundant constructor code.
+3. Integrate Logger.js into the system and add logging at appropriate places.
+   Then zip the latest versions of all files, save to /mnt/data/ and provide me with a link and await confirmation that I have downloaded.
+
+   ***
+
+   I will upload a revised version of the code. Please extract the files and save to /mnt/data/ then load it into Deno and execute run.js to check environment.
+
+Integrate the Pipeline class into the ServiceContainer class, replacing redundant constructor code.
+Execute run.js and check the output. Fix any problems.
+Zip the latest versions of all files, save to /mnt/data/ and provide me with a link and await confirmation that I have downloaded.
+
+Got it. Now please incorporate the ServiceFactory class into the ServiceContainer class, replacing redundant constructor code.
+Execute run.js and check the output. Fix any problems.
+Zip the latest versions of all files, save to /mnt/data/ and provide me with a link and await confirmation that I have downloaded.
+
+Integrate Logger.js into the system and add logging at appropriate places.
+Execute run.js and check the output. Fix any problems.
+Zip the latest versions of all files, save to /mnt/data/ and provide me with a link and await confirmation that I have downloaded.
+
+---
+
+### Docs
+
+- Introduction
+- API
+- tutorial
+- examples
+
+Please add comments to the code files suitable for JSDoc. Follow best practices. Only add comments where the code isn't self-explanatory.
+Execute run.js and check the output. Fix any problems.
+Zip the latest versions of all files, save to /mnt/data/ and provide me with a link and await confirmation that I have downloaded.
+
+### bindings
+
+### RDF

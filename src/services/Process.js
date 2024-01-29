@@ -1,6 +1,6 @@
-import { Injectable } from '../di/Injectable.js';
+import { ServiceBase } from './ServiceBase.js'
 
-export class Process extends Injectable {
+export class Process extends ServiceBase {
 
     process(input) {
         return input

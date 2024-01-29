@@ -1,6 +1,6 @@
-import { Injectable } from '../di/Injectable.js';
+import { ServiceBase } from './ServiceBase.js'
 
-export class Sink extends Injectable {
+export class Sink extends ServiceBase {
     //  constructor(sourceID) {
     //  this.sourceID = sourceID;
     // }

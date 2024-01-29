@@ -1,7 +1,8 @@
 
-import { Injectable } from './Injectable.js';
+import { Injectable } from '../di/Injectable.js';
+import { Pipeline } from '../di/Pipeline.js';
 
-export class Piper extends Injectable {
+export class SimplePipe extends Injectable {
   static __inject(container) {
     return new this(
       container.getService('source'),
