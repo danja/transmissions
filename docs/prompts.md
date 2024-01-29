@@ -62,17 +62,104 @@ Then follow these steps one at a time, executing run.js after each step and chec
 
    ***
 
-   I will upload a revised version of the code. Please extract the files and save to /mnt/data/ then load it into Deno and execute run.js to check environment.
+restart
 
-Integrate the Pipeline class into the ServiceContainer class, replacing redundant constructor code.
+Please keep your responses to a minimum, only show code listings that include your changes. I will upload an ES6 project as a zip file. Check the environment by loading the code into Deno and executing run.js The purpose of the code is to apply a processing pipeline to text. Services define the individual nodes which are instantiated by dependency injection. The aim is to make everything very loosely-coupled. For a minimal configuration the code should now use a pipeline to take a string, apply a process to it and print the result.
+
+Only give me extremely concise status messages. Implement the createService(type, config) factory method in di/ServiceFactory.js to support the Connector class in di/Connector.js. Check the syntax as you go along. After code changes, zip the latest versions of all files, save to /mnt/data/ and provide me with a link and await confirmation that I have downloaded.
+
+---
+
+Now make a list of each of the classes found in the services directory. Examine each and look for commonalities. Then implement support for each in di/ServiceFactory.js
+
+Use synchronous methods. Check the syntax as you go along.
+After code changes, zip the latest versions of all files, save to /mnt/data/ and provide me with a link and await confirmation that I have downloaded.
+
+---
+
+RENAMED
+
+The program flow should be as follows:
+
+1. run.js will create an instance of the Transmission class, giving it the name of the configuration file, eg. simplepipe.json
+2. the Transmission class will load the configuration from file
+3.
+
+DependencyInjector class, Injectable interface, ServiceContainer class, ServiceFactory class
+
+The goal now is to incorporate the ServiceFactory class from di/ServiceFactory.js into the ServiceContainer class from di/ServiceContainer.js, replacing redundant constructor code. Review the relevant code and form a plan of several steps. Divide the code integration plan itself into small steps. Use synchronous methods. Then proceed to carry out the steps. Check the syntax as you go along. After code changes, zip the latest versions of all files, save to /mnt/data/ and provide me with a link and await confirmation that I have downloaded.
+
+RESTART
+
+Please keep your responses to a minimum, only show code listings that include your changes. I will upload an ES6 project as a zip file. Check the environment by loading the code into Deno and executing run.js The purpose of the code is to apply a processing pipeline to text. Services define the individual nodes which are instantiated by dependency injection. The aim is to make everything very loosely-coupled. For a minimal configuration the code should now use a pipeline to take a string, apply a process to it and print the result.
+
+I would like you to modify getService(serviceName) in di/ServiceContainer.js to delegate to the ServiceFactory class in di/ServiceFactory.js to create the services. Check the syntax as you go along. After code changes, zip the latest versions of all files, save to /mnt/data/ and provide me with a link and await confirmation that I have downloaded.
+
+---
+
+Please keep your responses to a minimum, only show code listings that include your changes. I will upload an ES6 project as a zip file. Check the environment by loading the code into Deno and executing run.js
+
+The following task should be approached by first making a list of small, incremental steps.
+In the code, getService(serviceName) in di/ServiceContainer.js should delegate to the ServiceFactory class in di/ServiceFactory.js to create the services. Currently getService method in ServiceContainer.js is using the service name to create an instance via the ServiceFactory, but it's not passing any configuration data to the createService method of ServiceFactory. Please modify the getService method to pass the appropriate configuration to the ServiceFactory.
+
+Check the syntax as you go along. After code changes, zip the latest versions of all files, save to /mnt/data/ and provide me with a link and await confirmation that I have downloaded. Don't try running it yet.
+
+Now execute run.js and check the output is 'hello world!'. Fix any problems. After code changes, zip the latest versions of all files, save to /mnt/data/ and provide me with a link and await confirmation that I have downloaded.
+
+STOPPPPPPP need to redo that ^^^^
+
+be silent apart from short status messages
+
+---
+
+aside
+
+Please be silent apart from short status messages. I will upload an ES6 project as a zip file. The purpose of the code is to apply a processing pipeline to text. Services define the individual nodes which are instantiated by dependency injection.
+Load the code into Deno and execute run.js
+First carefully identify the cause of the errors through analysis. simplepipe.json is correct, so the problem must be in the code. When done, zip the latest versions of all files, save to /mnt/data/ and provide me with a link and await confirmation that I have downloaded. Be silent apart from short status messages.
+
+and take note of the errors. Add logging messages to help identify the cause of the errors. Check the syntax as you go along. After making these changes, zip the latest versions of all files, save to /mnt/data/ and provide me with a link and await confirmation that I have downloaded. Don't try running it again yet. Be silent apart from short status messages.
+
+...
+Downloaded, thanks.
+I would you to carry out a refactoring that will need a plan of small, incremental steps. It involves the Transmission class in di/Transmission.js, ServiceContainer class in di/ServiceContainer.js and SimplePipe in transmissions/SimplePipe.js The aim is to decouple the components and have the system constructed at run time based on a configuration file such as simplepipe.json
+This will involve reimplementing the functionality of SimplePipe in a generic way that will be created at runtime.
+The Transmission class will construct an abstract model of the topology derived from a json file such as simplepipe.json.
+The ServiceContainer class will be responsible for creating the concrete services, creating the flow described in the Transmission and executing it.
+Now create a list of small, incremental steps to carry out this refactoring.
+
+Now work through the steps, be silent apart from short status messages. After code changes, zip the latest versions of all files, save to /mnt/data/ and provide me with a link and await confirmation that I have downloaded.
+
+---
+
+replace SimplePipe with a dynamically created Transmission instance determined by
+
+. , class in di/ServiceContainer.js
+
+creating the services, ServiceContainer class in
+The Transmission class in di/Transmission.js will takes responsibility for containing an abstract model of the topology derived from a json file such as simplepipe.json. The ServiceContainer class will also be responsible for creating the services, class in di/ServiceContainer.js
+
+creating the services, ServiceContainer class in
+
+. Check the syntax as you go along. After code changes, zip the latest versions of all files, save to /mnt/data/ and provide me with a link and await confirmation that I have downloaded.
+
+Now execute run.js and check the output is 'hello world!'. Fix any problems.
+After code changes, zip the latest versions of all files, save to /mnt/data/ and provide me with a link and await confirmation that I have downloaded.
+
+---
+
+## Proceeding with these adjustments now.
+
+Don't tell me anything until you have completed the following steps.
+Integrate the Pipeline class into the ServiceContainer class. Check the syntax as you go along.
 Execute run.js and check the output. Fix any problems.
 Zip the latest versions of all files, save to /mnt/data/ and provide me with a link and await confirmation that I have downloaded.
 
-Got it. Now please incorporate the ServiceFactory class into the ServiceContainer class, replacing redundant constructor code.
-Execute run.js and check the output. Fix any problems.
-Zip the latest versions of all files, save to /mnt/data/ and provide me with a link and await confirmation that I have downloaded.
+Don't tell me anything until you have completed the following steps.
+Examine SimplePipe and suggest ways to use the external simplepipe.json file to define the pipeline declaratively and remove the hardcoded names.
 
-Integrate Logger.js into the system and add logging at appropriate places.
+Don't tell me anything until you have completed the following steps.
+Integrate Logger.js into the system and add logging at appropriate places. Check the syntax as you go along.
 Execute run.js and check the output. Fix any problems.
 Zip the latest versions of all files, save to /mnt/data/ and provide me with a link and await confirmation that I have downloaded.
 

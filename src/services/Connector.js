@@ -1,3 +1,4 @@
+import logger from '../utils/Logger.js'
 import { Sink } from './Sink.js';
 
 import { Injectable } from '../di/Injectable.js';
@@ -9,6 +10,7 @@ export class Connector extends Injectable {
     }
 
     connect(fromService, toService) {
+        // logger.log("Connector.connect : " + fromService.constructor.name + " to " + toService.constructor.name)
         if (!this.connections[fromService.constructor.name]) {
             this.connections[fromService.constructor.name] = [];
         }
@@ -19,7 +21,7 @@ export class Connector extends Injectable {
         return this.connections[service.constructor.name] || [];
     }
 
-    executePipeline(service, input) {
+    executeTransmission(service, input) {
         let output = input;
         const nextServices = this.getNextServices(service);
 
@@ -28,7 +30,7 @@ export class Connector extends Injectable {
             if (nextService instanceof Sink) {
                 nextService.write(output);
             } else {
-                output = this.executePipeline(nextService, output);
+                output = this.executeTransmission(nextService, output);
             }
         });
 
