@@ -1,5 +1,6 @@
 # Treadmill
 
+![Treadmill](
 A micro-framework to simplify construction of small applications in JavaScript.
 
 ### Status
