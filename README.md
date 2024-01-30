@@ -1,7 +1,8 @@
 # Treadmill
 
-![Treadmill](
 A micro-framework to simplify construction of small applications in JavaScript.
+
+![Treadmill](https://github.com/danja/treadmill/blob/main/docs/images/treadmill.jpg)
 
 ### Status
 
