@@ -1,3 +1,4 @@
+import logger from '../utils/Logger.js'
 // import fs from "node:fs"
 import { Sink } from './Sink.js';
 
@@ -7,7 +8,7 @@ export class StringSink extends Sink {
     // }
 
     write(sinkID, data) {
-        console.log(data)
+        logger.log("StringSink.write : " + sinkID + " : " + data)
     }
 
     /*   

@@ -1,18 +1,25 @@
 import logger from './utils/Logger.js'
+import { Reveal } from './utils/Reveal.js'
+
+import { NodeInjector } from './di/NodeInjector.js'
+import { SimplePipe } from './transmissions/SimplePipe.js'
+
+import simplepipe from './simplepipe.json' assert { type: 'json' };
 
 logger.setLogLevel("debug")
 logger.log("Hello, logger!")
 
-import { NodeInjector } from './di/NodeInjector.js'
-import simplepipe from './simplepipe.json' assert { type: 'json' };
+const inputFilePath = './input.txt';
+const outputFilePath = './output.txt';
 
 const di = new NodeInjector(simplepipe.pipe)
 
-import { SimplePipe } from './transmissions/SimplePipe.js'
+logger.log("di : " + Reveal.asMarkdown(di))
+
 const app = di.make(SimplePipe)
 
-const inputFilePath = './input.txt';
-const outputFilePath = './output.txt';
+logger.log("app : " + Reveal.asMarkdown(app))
+
 
 app.run(inputFilePath, outputFilePath);
 /*

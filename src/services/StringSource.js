@@ -1,5 +1,5 @@
-// import * as fs from 'fs'
 
+import logger from '../utils/Logger.js'
 import { Source } from './Source.js';
 
 export class StringSource extends Source {
@@ -8,6 +8,7 @@ export class StringSource extends Source {
     // }
 
     read(sourceID) {
+        logger.log("StringSource.read : " + sourceID)
         return "hello"
     }
     /*

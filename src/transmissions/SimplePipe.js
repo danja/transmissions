@@ -10,7 +10,6 @@ export class SimplePipe extends Injectable {
     //     container.getService('Connector'),
     return new this(
       container.getService('StringSource'),
-
       container.getService('AppendProcess'),
       container.getService('StringSink')
     );
