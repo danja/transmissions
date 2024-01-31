@@ -12,11 +12,11 @@ logger.log("Hello, logger!")
 const inputFilePath = './input.txt';
 const outputFilePath = './output.txt';
 
-const di = new NodeInjector(simplepipe.pipe)
+const injector = new NodeInjector(simplepipe.pipe)
 
-logger.log("di : " + Reveal.asMarkdown(di))
+logger.log("injector : " + Reveal.asMarkdown(injector))
 
-const app = di.make(SimplePipe)
+const app = injector.make(SimplePipe)
 
 logger.log("app : " + Reveal.asMarkdown(app))
 

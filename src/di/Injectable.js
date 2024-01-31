@@ -1,7 +1,6 @@
 
 export class Injectable {
 
-
   static services = []
 
   static __inject(container) {

@@ -1,4 +1,4 @@
-
+import { Reveal } from '../utils/Reveal.js'
 import logger from '../utils/Logger.js'
 import { Injectable } from '../di/Injectable.js';
 import { Transmission } from '../di/Transmission.js';
@@ -31,8 +31,11 @@ export class SimplePipe extends Injectable {
     this.connector.connect(this.source, this.process)
     this.connector.connect(this.process, this.sink)
 
+
     // Execute the transmission
     let input = this.source.read(inputFilePath)
+
+    // *********************************************
     let result = this.connector.executeTransmission(this.source, input);
     console.log('Transmission result:', result)
 

@@ -1,4 +1,5 @@
 import logger from '../utils/Logger.js'
+import { Reveal } from '../utils/Reveal.js'
 import { ServiceFactory } from "./ServiceFactory.js";
 import { ServiceContainer } from "./ServiceContainer.js";
 
@@ -10,11 +11,10 @@ export class Transmission {
 
     constructTransmission() {
         logger.log("Transmission.constructTransmission")
-        // Updated transmission construction logic using ServiceFactory
-
 
         // Example transmission construction logic using the factory
         this.services = this.config.map(serviceConfig => ServiceFactory.createService(serviceConfig.type, serviceConfig));
+        logger.log("##############this.services : " + Reveal.asMarkdown(this.services))
 
     }
 }

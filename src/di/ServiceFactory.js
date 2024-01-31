@@ -35,8 +35,6 @@ export class ServiceFactory {
         if (type === 'ServiceBase') {
             return new ServiceBase(config);
         }
-
-        return null;
-
+        throw new Error("Unknown service type: " + type);
     }
 }
