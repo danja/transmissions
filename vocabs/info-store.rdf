@@ -1,0 +1,55 @@
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#">
+
+    <owl:Ontology rdf:about="http://rdflib.net/2002/InformationStore">
+        <rdfs:label>InformationStore</rdfs:label>
+        <rdfs:comment>A document defining a vocabulary used by an InformationStore, a TripleStore
+            with support for multiple contexts.</rdfs:comment>
+        <rdfs:isDefinedBy rdf:resource="http://rdflib.net/2002/InformationStore" />
+    </owl:Ontology>
+
+    <rdfs:Class rdf:about="http://rdflib.net/2002/InformationStore#Context">
+        <rdfs:label>Context</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource" />
+        <rdfs:isDefinedBy rdf:resource="http://rdflib.net/2002/InformationStore" />
+    </rdfs:Class>
+
+    <rdfs:Class rdf:about="http://rdflib.net/2002/InformationStore#UpdateEvent">
+        <rdfs:label>An Event for updating a Context</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource" />
+        <rdfs:isDefinedBy rdf:resource="http://rdflib.net/2002/InformationStore" />
+    </rdfs:Class>
+
+    <rdf:Property rdf:about="http://rdflib.net/2002/InformationStore#source">
+        <rdfs:label>source</rdfs:label>
+        <rdfs:domain rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource" />
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource" />
+        <rdfs:isDefinedBy rdf:resource="http://rdflib.net/2002/InformationStore" />
+    </rdf:Property>
+
+    <rdf:Property rdf:about="http://rdflib.net/2002/InformationStore#updateEvent">
+        <rdfs:label>update event</rdfs:label>
+        <rdfs:domain rdf:resource="http://www.w3.org/2000/01/rdf-schema#Context" />
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#UpdateEvent" />
+        <rdfs:isDefinedBy rdf:resource="http://rdflib.net/2002/InformationStore" />
+    </rdf:Property>
+
+    <rdf:Property rdf:about="http://rdflib.net/2002/InformationStore#error">
+        <rdfs:label>Error</rdfs:label>
+        <rdfs:comment>This property is used to capture information about errors that occured while
+            updating the context.</rdfs:comment>
+        <rdfs:domain rdf:resource="http://www.w3.org/2000/01/rdf-schema#UpdateEvent" />
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal" />
+        <rdfs:isDefinedBy rdf:resource="http://rdflib.net/2002/InformationStore" />
+    </rdf:Property>
+
+    <rdf:Property rdf:about="http://rdflib.net/2002/InformationStore#http_status">
+        <rdfs:label>http status</rdfs:label>
+        <rdfs:comment>This property is used for the http status that was returned when updating the
+            context.</rdfs:comment>
+        <rdfs:domain rdf:resource="http://www.w3.org/2000/01/rdf-schema#UpdateEvent" />
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal" />
+        <rdfs:isDefinedBy rdf:resource="http://rdflib.net/2002/InformationStore" />
+    </rdf:Property>
+
+</rdf:RDF>

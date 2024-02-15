@@ -1,27 +1,36 @@
+
+
 import logger from './utils/Logger.js'
 import { Reveal } from './utils/Reveal.js'
 
-import { NodeInjector } from './di/NodeInjector.js'
-import { SimplePipe } from './transmissions/SimplePipe.js'
+import { Injector } from './mill/Injector.js'
 
-import simplepipe from './simplepipe.json' assert { type: 'json' };
 
+// import simplepipe from './simplepipe.json' assert { type: 'json' };
+import { Transmission } from './mill/Transmission.js';
+import { TransmissionBuilder } from './mill/TransmissionBuilder.js'
+// import { Executor } from './mill/Executor.js';
 logger.setLogLevel("debug")
 logger.log("Hello, logger!")
 
-const inputFilePath = './input.txt';
-const outputFilePath = './output.txt';
+const transmissionFile = 'transmissions/string-pipe.ttl'
 
-const injector = new NodeInjector(simplepipe.pipe)
+// const inputFilePath = './input.txt';
+// const outputFilePath = './output.txt';
 
-logger.log("injector : " + Reveal.asMarkdown(injector))
+const stringPipe = TransmissionBuilder.build(transmissionFile)
 
-const app = injector.make(SimplePipe)
+// logger.log("AAA simplePipe : " + Reveal.asMarkdown(simplePipe))
 
-logger.log("app : " + Reveal.asMarkdown(app))
+//const app = injector.inject(SimplePipe)simplePipe.build()
+
+// logger.log("BBB simplePipe : " + Reveal.asMarkdown(simplePipe))
+
+// stringPipe.execute(simplePipe)
 
 
-app.run(inputFilePath, outputFilePath);
+
+// app.run(inputFilePath, outputFilePath);
 /*
 (async () => {
     const result = await app.runTransmission();

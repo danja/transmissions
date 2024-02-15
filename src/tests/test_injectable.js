@@ -1,5 +1,5 @@
 
-import { Injectable } from '../'../di/Injectable';
+import { Injectable } from '../'../mill/Injectable';
 
 // Test for Injectable
 console.log('Testing Injectable...';

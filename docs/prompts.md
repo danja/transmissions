@@ -179,3 +179,13 @@ Zip the latest versions of all files, save to /mnt/data/ and provide me with a l
 ### bindings
 
 ### RDF
+
+Here is a Javascript file, t2j.js. Save it to /mnt/data/
+The job is to implement the method convert(), which will take a string in Turtle RDF syntax and convert it to JSON-LD. The code will in ES6 format. This will be achieved by following these steps:
+
+1. initiate Deno with the following libraries: readable-stream, @rdfjs/data-model, @rdfjs/serializer-turtle, @rdfjs/serializer-jsonld
+2. run the current t2j.js to check the environment. If there are any errors, make the necessary adjustments to the environment so that it is working without errors.
+3. Implement the convert() method in t2j.js
+4. Save the latest version of t2j.js to /mnt/data/ and provide me with a link and await confirmation that I have downloaded.
+
+and execute it with Deno. Then check the output. Fix any problems. After code changes, zip the latest versions of all files, save to /mnt/data/ and provide me with a link and await confirmation that I have downloaded.

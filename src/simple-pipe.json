@@ -1,0 +1,13 @@
+{
+    "@context": {
+        "t": "http://purl.org/stuff/transmission/"
+    },
+    "@id": "https://hyperdata.it/treadmill/simplepipe.json",
+    "t:net": {
+        "@list": [
+            "StringSource",
+            "AppendProcess",
+            "StringSink"
+        ]
+    }
+}

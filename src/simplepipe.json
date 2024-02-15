@@ -1,15 +1,9 @@
-
 {
     "name": "SimplePipe",
     "pipe": [
-        {
-            "node": "StringSource"
-        },
-        {
-            "node": "AppendProcess"
-        },
-        {
-            "node": "StringSink"
-        }
+        "StringSource",
+        "AppendProcess",
+        "AppendProcess",
+        "StringSink"
     ]
 }

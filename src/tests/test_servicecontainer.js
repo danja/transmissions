@@ -1,5 +1,5 @@
 
-import { ServiceContainer } from '../'../di/ServiceContainer';
+import { ServiceContainer } from '../'../mill/ServiceContainer';
 
 // Test for ServiceContainer
 console.log('Testing ServiceContainer...';

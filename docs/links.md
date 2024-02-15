@@ -15,3 +15,9 @@ https://code.garrettmills.dev/Flitter
 https://examples.rdf-ext.org/rdf-elements/
 
 https://docear.org/software/history-changelog/
+
+http://www.ldodds.com/projects/slug/config.html
+
+http://rdfweb.org/topic/ScutterVocab
+
+file:///home/danny/HKMS/hyperdata-static/xmlns/scutter/index.html

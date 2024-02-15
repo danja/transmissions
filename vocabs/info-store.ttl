@@ -1,0 +1,55 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+<http://rdflib.net/2002/InformationStore>
+    a owl:Ontology ;
+    rdfs:comment """A document defining a vocabulary used by an InformationStore, a TripleStore
+            with support for multiple contexts.""" ;
+    rdfs:isDefinedBy <http://rdflib.net/2002/InformationStore> ;
+    rdfs:label "InformationStore" .
+
+<http://rdflib.net/2002/InformationStore#Context>
+    a rdfs:Class ;
+    rdfs:isDefinedBy <http://rdflib.net/2002/InformationStore> ;
+    rdfs:label "Context" ;
+    rdfs:subClassOf rdfs:Resource .
+
+<http://rdflib.net/2002/InformationStore#UpdateEvent>
+    a rdfs:Class ;
+    rdfs:isDefinedBy <http://rdflib.net/2002/InformationStore> ;
+    rdfs:label "An Event for updating a Context" ;
+    rdfs:subClassOf rdfs:Resource .
+
+<http://rdflib.net/2002/InformationStore#error>
+    a rdf:Property ;
+    rdfs:comment """This property is used to capture information about errors that occured while
+            updating the context.""" ;
+    rdfs:domain rdfs:UpdateEvent ;
+    rdfs:isDefinedBy <http://rdflib.net/2002/InformationStore> ;
+    rdfs:label "Error" ;
+    rdfs:range rdfs:Literal .
+
+<http://rdflib.net/2002/InformationStore#http_status>
+    a rdf:Property ;
+    rdfs:comment """This property is used for the http status that was returned when updating the
+            context.""" ;
+    rdfs:domain rdfs:UpdateEvent ;
+    rdfs:isDefinedBy <http://rdflib.net/2002/InformationStore> ;
+    rdfs:label "http status" ;
+    rdfs:range rdfs:Literal .
+
+<http://rdflib.net/2002/InformationStore#source>
+    a rdf:Property ;
+    rdfs:domain rdfs:Resource ;
+    rdfs:isDefinedBy <http://rdflib.net/2002/InformationStore> ;
+    rdfs:label "source" ;
+    rdfs:range rdfs:Resource .
+
+<http://rdflib.net/2002/InformationStore#updateEvent>
+    a rdf:Property ;
+    rdfs:domain rdfs:Context ;
+    rdfs:isDefinedBy <http://rdflib.net/2002/InformationStore> ;
+    rdfs:label "update event" ;
+    rdfs:range rdfs:UpdateEvent .
+

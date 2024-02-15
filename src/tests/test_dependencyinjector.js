@@ -1,5 +1,5 @@
 
-import { NodeInjector } from '../'../di/NodeInjector';
+import { NodeInjector } from '../'../mill/Injector';
 
 // Test for NodeInjector
 console.log('Testing NodeInjector...';

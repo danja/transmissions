@@ -30,5 +30,14 @@
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1",
     "workbox-webpack-plugin": "^7.0.0"
+  },
+  "dependencies": {
+    "@rdfjs/data-model": "^2.0.1",
+    "@rdfjs/parser-n3": "^2.0.1",
+    "@rdfjs/serializer-jsonld": "^2.0.0",
+    "@rdfjs/serializer-turtle": "^1.1.2",
+    "@rdfjs/sink": "^2.0.1",
+    "rdf-utils-fs": "^3.0.0",
+    "readable-stream": "^4.5.2"
   }
 }
