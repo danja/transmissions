@@ -17,8 +17,9 @@ export class Reveal {
     }
 
     static asMarkdown(instance) {
-        const serialized = this.serialize(instance)
-        return `# ${instance.constructor.name}\n\n\`\`\`\n${serialized}\n\`\`\``
+        const serialized = Reveal.serialize(instance)
+        // console.log(JSON.stringify(serialized));
+        return `\n# ${instance.constructor.name}\n\n\`\`\`\n${serialized}\n\`\`\``
         return JSON.stringify(serialized);
         //  return instance.constructor.name; ClassName
     }

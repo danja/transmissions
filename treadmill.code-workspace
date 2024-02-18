@@ -1,14 +1,14 @@
 {
   "folders": [
     {
-      "path": ".",
+      "path": "."
     },
     {
-      "path": "../hyperdata-static/postcraft-raw-hyperdata",
+      "path": "../hyperdata-static/postcraft-raw-hyperdata"
     },
     {
-      "path": "../training-data",
-    },
+      "path": "../../rdf-ext/grapoi"
+    }
   ],
   "settings": {},
 }

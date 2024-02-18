@@ -34,13 +34,31 @@ logger.timestampISO = function () {
 
 // Custom JSON Logger
 logger.log = function (msg, level = "log") {
-    console.log(msg)
+    // console.log(msg)
+    console[level](msg)
+
     /*
       console[level](JSON.stringify({
         ts: logger.timestampISO(),
         msg: msg,
     }, null, 0))
     */
-};
+}
+
+logger.debug = function (msg) {
+    logger.log(msg, "debug");
+}
+
+logger.info = function (msg) {
+    logger.log(msg, "info");
+}
+
+logger.warn = function (msg) {
+    logger.log(msg, "warn");
+}
+
+logger.error = function (msg) {
+    logger.log(msg, "error");
+}
 
 export default logger;

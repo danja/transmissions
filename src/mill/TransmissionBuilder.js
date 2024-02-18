@@ -1,27 +1,59 @@
 import rdf from 'rdf-ext'
 import { fromFile, toFile } from 'rdf-utils-fs'
+import grapoi from 'grapoi'
 
 import logger from '../utils/Logger.js'
 import { Reveal } from '../utils/Reveal.js'
+
 import { ServiceFactory } from "./ServiceFactory.js";
 import { Transmission } from './Transmission.js'
+import ns from '../utils/ns.js'
 
-export class TransmissionBuilder {
+
+
+class TransmissionBuilder {
+
+  // static knownTransmissions = [ns.trm.Pipeline.value, ns.trm.Other.value]
 
   static async build(transmissionConfig) {
-    const transmission = new Transmission()
-    logger.log("TransmissionBuilder reading RDF")
+    logger.debug("TransmissionBuilder reading RDF")
     const dataset = await TransmissionBuilder.readDataset(transmissionConfig)
-    logger.log("TransmissionBuilder building transmission")
-    logger.log("TransmissionBuilder dataset = " + Reveal.asMarkdown(dataset))
 
     // relative to run.js
-    TransmissionBuilder.writeDataset(dataset, "./transmissions/output.ttl")
+    // TransmissionBuilder.writeDataset(dataset, "./transmissions/output.ttl")
+
+    // const pipe = grapoi({ dataset, term: ns.trm('pipe/') })
+    const poi = grapoi({ dataset })
+
+    // for (const quad of pipe.out(ns.schema.hasPart).quads()) {
+    //  console.log()
+    //  logger.log(`\t${quad.object.value}`)
+    // }
+
+    for (const q of poi.out(ns.rdf.type).quads()) {
+      if (q.object.equals(ns.trm.Pipeline)) { // 
+        const poi = rdf.grapoi({ dataset, term: q.subject })
+        return TransmissionBuilder.buildPipeline(poi)
+      }
+    }
+    // throw error
+  }
+
+  static buildPipeline(poi) {
+    // logger.log(`Building pipeline: ${transmissionID.value}`)
+    logger.log('Building pipeline ******')
+    const transmission = new Transmission()
+    const nodes = poi.out(ns.trm.pipe).quads
+    //  const nodes = poi.out(transmissionID).quads()
+    for (const term in nodes) {
+      logger.log(term)
+    }
+
+    return transmission
   }
 
   static async readDataset(filename) {
     const stream = fromFile(filename)
-    //    const stream = fromFile(new URL('support/example.ttl', import.meta.url).pathname, { baseIRI: 'http://example.org/' })
     const dataset = await rdf.dataset().import(stream)
     return dataset
   }
@@ -29,6 +61,6 @@ export class TransmissionBuilder {
   static async writeDataset(dataset, filename) {
     await toFile(dataset.toStream(), filename)
   }
-
-
 }
+
+export default TransmissionBuilder 
