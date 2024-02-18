@@ -8,6 +8,9 @@
     },
     {
       "path": "../../rdf-ext/grapoi"
+    },
+    {
+      "path": "../../rdf-ext/grapoi-inspector"
     }
   ],
   "settings": {},

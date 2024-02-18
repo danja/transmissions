@@ -43,11 +43,21 @@ class TransmissionBuilder {
     // logger.log(`Building pipeline: ${transmissionID.value}`)
     logger.log('Building pipeline ******')
     const transmission = new Transmission()
-    const nodes = poi.out(ns.trm.pipe).quads
-    //  const nodes = poi.out(transmissionID).quads()
+    // const nodes = poi.out(ns.trm.pipe).quads
+    const node1 = poi.out(ns.trm.pipe).term
+    logger.log("NODES = " + nodes.value)
+
+
+    //  const nodes = poi.out(ns.trm.pipe).terms
+    //  logger.log("NODES = " + nodes[0].value)
+
+
+
     for (const term in nodes) {
       logger.log(term)
     }
+
+
 
     return transmission
   }
