@@ -25,41 +25,75 @@ class TransmissionBuilder {
     // const pipe = grapoi({ dataset, term: ns.trm('pipe/') })
     const poi = grapoi({ dataset })
 
-    // for (const quad of pipe.out(ns.schema.hasPart).quads()) {
-    //  console.log()
-    //  logger.log(`\t${quad.object.value}`)
-    // }
 
     for (const q of poi.out(ns.rdf.type).quads()) {
       if (q.object.equals(ns.trm.Pipeline)) { // 
-        const poi = rdf.grapoi({ dataset, term: q.subject })
-        return TransmissionBuilder.buildPipeline(poi)
+
+        return TransmissionBuilder.buildPipeline(dataset, q.subject)
       }
     }
     // throw error
   }
 
-  static buildPipeline(poi) {
+  static buildPipeline(dataset, pipelineID) {
+
+    const poi = rdf.grapoi({ dataset, term: pipelineID })
+
     // logger.log(`Building pipeline: ${transmissionID.value}`)
     logger.log('Building pipeline ******')
     const transmission = new Transmission()
     // const nodes = poi.out(ns.trm.pipe).quads
-    const node1 = poi.out(ns.trm.pipe).term
-    logger.log("NODES = " + nodes.value)
+    const first = poi.out(ns.trm.pipe).term
 
+    const pipenodes = TransmissionBuilder.listToArray(dataset, first)
 
-    //  const nodes = poi.out(ns.trm.pipe).terms
-    //  logger.log("NODES = " + nodes[0].value)
-
-
-
-    for (const term in nodes) {
-      logger.log(term)
+    for (const node of pipenodes) {
+      logger.log("node = " + node.value)
     }
 
+    const poi2 = rdf.grapoi({ dataset, term: pipelineID })
 
+    const serviceNames = poi.out(ns.rdf.type, pipenodes).terms
+
+    for (const serviceName of serviceNames) {
+      logger.log("serviceName = " + serviceName.value)
+    }
 
     return transmission
+  }
+
+  // follows chain in rdf:List
+  static listToArray(dataset, first) {
+    let p = rdf.grapoi({ dataset, term: first })
+    let object = p.out(ns.rdf.first).term
+    const result = [object]
+
+    while (true) {
+      let restHead = p.out(ns.rdf.rest).term
+      let p2 = rdf.grapoi({ dataset, term: restHead })
+      let object = p2.out(ns.rdf.first).term
+
+      if (restHead.equals(ns.rdf.nil)) break
+      result.push(object)
+      p = rdf.grapoi({ dataset, term: restHead })
+    }
+    return result
+  }
+
+  // follows chain in rdf:List
+
+
+  // [subjects] predicate ->  [objects]
+  static listObjects(dataset, subjectList, predicate) {
+    const objects = []
+    for (const subject of subjectList) {
+      logger.log("subject = " + subject.value)
+      let p = rdf.grapoi({ dataset, term: subject })
+      let object = p.out(predicate).term
+      logger.log("object = " + object.value)
+      objects.push(object)
+    }
+    return objects
   }
 
   static async readDataset(filename) {

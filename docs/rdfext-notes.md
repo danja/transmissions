@@ -15,3 +15,7 @@ q.object.equals(ns.trm.Pipeline)
 from https://rdf.js.org/dataset-spec/#quad-matching
 
 (some tricks in https://stackoverflow.com/questions/1068834/object-comparison-in-javascript)
+
+reading rdf:List
+
+ref. https://ontola.io/blog/ordered-data-in-rdf
