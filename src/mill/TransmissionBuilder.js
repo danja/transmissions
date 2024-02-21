@@ -5,15 +5,11 @@ import grapoi from 'grapoi'
 import logger from '../utils/Logger.js'
 import { Reveal } from '../utils/Reveal.js'
 
-import { ServiceFactory } from "./ServiceFactory.js";
-import { Transmission } from './Transmission.js'
+import ServiceFactory from "./ServiceFactory.js";
+import Transmission from './Transmission.js'
 import ns from '../utils/ns.js'
 
-
-
 class TransmissionBuilder {
-
-  // static knownTransmissions = [ns.trm.Pipeline.value, ns.trm.Other.value]
 
   static async build(transmissionConfig) {
     logger.debug("TransmissionBuilder reading RDF")
@@ -22,13 +18,10 @@ class TransmissionBuilder {
     // relative to run.js
     // TransmissionBuilder.writeDataset(dataset, "./transmissions/output.ttl")
 
-    // const pipe = grapoi({ dataset, term: ns.trm('pipe/') })
     const poi = grapoi({ dataset })
-
 
     for (const q of poi.out(ns.rdf.type).quads()) {
       if (q.object.equals(ns.trm.Pipeline)) { // 
-
         return TransmissionBuilder.buildPipeline(dataset, q.subject)
       }
     }
@@ -41,22 +34,26 @@ class TransmissionBuilder {
 
     // logger.log(`Building pipeline: ${transmissionID.value}`)
     logger.log('Building pipeline ******')
-    const transmission = new Transmission()
-    // const nodes = poi.out(ns.trm.pipe).quads
+
     const first = poi.out(ns.trm.pipe).term
 
+    // grapoi probably has a built-in for this
     const pipenodes = TransmissionBuilder.listToArray(dataset, first)
 
     for (const node of pipenodes) {
       logger.log("node = " + node.value)
     }
 
-    const poi2 = rdf.grapoi({ dataset, term: pipelineID })
-
-    const serviceNames = poi.out(ns.rdf.type, pipenodes).terms
-
-    for (const serviceName of serviceNames) {
-      logger.log("serviceName = " + serviceName.value)
+    const transmission = new Transmission()
+    // grapoi probably has a built-in for this
+    for (const node of pipenodes) {
+      let serviceName = node.value
+      let np = rdf.grapoi({ dataset, term: node })
+      let serviceType = np.out(ns.rdf.type).term
+      // let serviceType = s.split('/').slice(-1)
+      logger.log("serviceType = " + serviceType.value)
+      let config = {}
+      transmission.prototype[serviceName] = ServiceFactory.createService(serviceType, config)
     }
 
     return transmission

@@ -1,7 +1,7 @@
 import logger from '../utils/Logger.js'
 
 
-import { Transmission } from './Transmission.js';
+import Transmission from './Transmission.js';
 
 export class Injector {
   constructor(transmissionConfig) {
