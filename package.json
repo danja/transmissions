@@ -1,8 +1,8 @@
 {
   "type": "module",
   "version": "1.0.0",
-  "description": "My webpack project",
-  "name": "my-webpack-project",
+  "description": "Treadmill",
+  "name": "treadmill",
   "scripts": {
     "build": "webpack --mode=production --node-env=production",
     "build:dev": "webpack --mode=development",
@@ -32,14 +32,6 @@
     "workbox-webpack-plugin": "^7.0.0"
   },
   "dependencies": {
-    "@rdfjs/data-model": "^2.0.1",
-    "@rdfjs/parser-n3": "^2.0.1",
-    "@rdfjs/serializer-jsonld": "^2.0.0",
-    "@rdfjs/serializer-turtle": "^1.1.2",
-    "@rdfjs/sink": "^2.0.1",
-    "@rdfjs/term-set": "^2.0.2",
-    "grapoi": "^1.1.2",
-    "rdf-utils-fs": "^3.0.0",
-    "readable-stream": "^4.5.2"
+    "rdf-utils-fs": "^3.0.0"
   }
 }

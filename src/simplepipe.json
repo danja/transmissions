@@ -1,9 +1,0 @@
-{
-    "name": "SimplePipe",
-    "pipe": [
-        "StringSource",
-        "AppendProcess",
-        "AppendProcess",
-        "StringSink"
-    ]
-}

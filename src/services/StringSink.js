@@ -1,23 +1,11 @@
 import logger from '../utils/Logger.js'
-// import fs from "node:fs"
-import { Sink } from './Sink.js';
+import Sink from '../mill/SinkService.js';
 
-export class StringSink extends Sink {
-    //  constructor(sourceID) {
-    //  this.sourceID = sourceID;
-    // }
+class StringSink extends Sink {
 
     write(sinkID, data) {
         logger.log("StringSink.write : " + sinkID + " : " + data)
     }
-
-    /*   
-    write(sinkID, data) {
-        return this.writeFile(sinkID, data)
-    }
-
-    writeFile(filename, text) {
-        fs.writeFileSync(filename, text)
-    }
-    */
 }
+
+export default StringSink 

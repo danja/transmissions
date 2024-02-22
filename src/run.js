@@ -1,9 +1,7 @@
-
+import { promisify } from 'util'
 
 import logger from './utils/Logger.js'
 import { Reveal } from './utils/Reveal.js'
-
-import { Injector } from './mill/Injector.js'
 
 
 // import simplepipe from './simplepipe.json' assert { type: 'json' };
@@ -22,20 +20,13 @@ const transmissionFile = 'transmissions/string-pipe.ttl'
 
 const stringPipe = TransmissionBuilder.build(transmissionFile)
 
-// logger.log("AAA simplePipe : " + Reveal.asMarkdown(simplePipe))
+stringPipe.execute = promisify(stringPipe.execute)
 
-//const app = injector.inject(SimplePipe)simplePipe.build()
-
-// logger.log("BBB simplePipe : " + Reveal.asMarkdown(simplePipe))
-
-// stringPipe.execute(simplePipe)
-
-
-
-// app.run(inputFilePath, outputFilePath);
-/*
-(async () => {
-    const result = await app.runTransmission();
-    console.log('Transmission result:', result);
-})();
-*/
+    (async () => {
+        try {
+            const result = await stringPipe.execute(simplePipe);
+            console.log('Pipeline result:', result);
+        } catch (error) {
+            console.error('Error executing pipeline:', error);
+        }
+    })()

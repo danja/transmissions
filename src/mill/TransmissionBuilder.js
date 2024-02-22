@@ -45,6 +45,7 @@ class TransmissionBuilder {
     }
 
     const transmission = new Transmission()
+
     // grapoi probably has a built-in for this
     for (const node of pipenodes) {
       let serviceName = node.value
@@ -53,9 +54,9 @@ class TransmissionBuilder {
       // let serviceType = s.split('/').slice(-1)
       logger.log("serviceType = " + serviceType.value)
       let config = {}
-      transmission.prototype[serviceName] = ServiceFactory.createService(serviceType, config)
+      let service = ServiceFactory.createService(serviceType, config)
+      transmission.register(serviceName, service)
     }
-
     return transmission
   }
 
@@ -77,9 +78,7 @@ class TransmissionBuilder {
     return result
   }
 
-  // follows chain in rdf:List
-
-
+  // unused
   // [subjects] predicate ->  [objects]
   static listObjects(dataset, subjectList, predicate) {
     const objects = []

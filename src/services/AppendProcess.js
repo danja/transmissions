@@ -1,14 +1,16 @@
 import logger from '../utils/Logger.js'
-import { Process } from './Process.js';
+import Process from '../mill/ProcessService.js';
 
-export class AppendProcess extends Process {
-    //  constructor(sourceID) {
-    //  this.sourceID = sourceID;
-    // }
+class AppendProcess extends Process {
 
-    process(input) {
-        logger.log("AppendProcess.process : " + input)
-        let output = input + " world"
-        return output
+    async execute(data, config) {
+        return process(data)
+
+        process(input) {
+            logger.log("AppendProcess.process : " + input)
+            let output = input + " world"
+            return output
+        }
     }
-}
+
+export default AppendProcess

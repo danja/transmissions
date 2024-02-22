@@ -1,13 +1,9 @@
 import logger from '../utils/Logger.js'
 import ns from '../utils/ns.js'
-import { Connector } from './Connector.js';
-import { Source } from '../services/Source.js';
-import { Sink } from '../services/Sink.js';
-import { Process } from '../services/Process.js';
-import { StringSource } from '../services/StringSource.js';
-import { StringSink } from '../services/StringSink.js';
-import { AppendProcess } from '../services/AppendProcess.js';
-import { ServiceBase } from '../services/ServiceBase.js';
+
+import StringSource from '../services/StringSource.js';
+import StringSink from '../services/StringSink.js';
+import AppendProcess from '../services/AppendProcess.js';
 
 class ServiceFactory {
     static createService(type, config) {
