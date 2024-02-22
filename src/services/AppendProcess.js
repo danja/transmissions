@@ -12,5 +12,6 @@ class AppendProcess extends Process {
             return output
         }
     }
+}
 
 export default AppendProcess
