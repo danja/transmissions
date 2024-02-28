@@ -1,53 +1,41 @@
 import logger from '../utils/Logger.js'
 import { Reveal } from '../utils/Reveal.js'
-
+import Connector from './Connector.js'
 
 class Transmission {
   constructor() {
     this.services = {}
-    this.connectors = {}
+    this.connectors = []
     logger.log("Transmission constructor")
   }
 
   register(serviceName, instance) {
     this.services[serviceName] = instance
+    logger.log("Registering : " + serviceName)
   }
 
   get(serviceName) {
     return this.services[serviceName]
   }
 
-  connect(fromService, toService) {
-    logger.log("****** Connector.connect : \n***" + Reveal.asJSON(fromService) + "\n to \n" + Reveal.asJSON(toService))
-    if (!this.connectors[fromService.constructor.name]) {
-      this.connectors[fromService.constructor.name] = []
-    }
-    this.connectors[fromService.constructor.name].push(toService)
+  connect(fromServiceName, toServiceName) {
+    logger.log("Connecting : [" + fromServiceName + "]->[" + toServiceName + "]")
+    this.connectors.push(new Connector(fromServiceName, toServiceName))
   }
 
-  async execute() {
-    // Start with the source services
-    for (let serviceName in this.services) {
-      let service = this.services[serviceName];
-      if (service.type === 'source') {
-        await service.execute();
-      }
-    }
+  execute(config) {
+    let previousService = null
+    const firstServiceName = this.connectors[0].fromName
+    let firstService = this.get(firstServiceName)
+    let previousData = firstService.execute(config)
+    // this.connectors[0].data = firstService.execute(config)
 
-    // Then execute the process services
-    for (let serviceName in this.services) {
-      let service = this.services[serviceName];
-      if (service.type === 'process') {
-        await service.execute();
-      }
-    }
-
-    // Finally, execute the sink services
-    for (let serviceName in this.services) {
-      let service = this.services[serviceName];
-      if (service.type === 'sink') {
-        await service.execute();
-      }
+    for (let i = 0; i < this.connectors.length; i++) {
+      logger.log("Current node : " + i)
+      let connector = this.connectors[i]
+      logger.log(connector.fromName + " => " + connector.toName)
+      let currentService = this.get(this.connector.toName)
+      previousData = firstService.execute(previousData, config)
     }
   }
 }

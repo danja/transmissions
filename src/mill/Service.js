@@ -7,3 +7,5 @@ class Service {
         throw new Error('execute method not implemented');
     }
 }
+
+export default Service 

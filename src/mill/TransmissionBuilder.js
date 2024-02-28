@@ -46,16 +46,25 @@ class TransmissionBuilder {
 
     const transmission = new Transmission()
 
+    let previousName = "nothing"
     // grapoi probably has a built-in for this
-    for (const node of pipenodes) {
+    //  for (const node of pipenodes) {
+    for (let i = 0; i < pipenodes.length; i++) {
+      let node = pipenodes[i]
       let serviceName = node.value
       let np = rdf.grapoi({ dataset, term: node })
       let serviceType = np.out(ns.rdf.type).term
-      // let serviceType = s.split('/').slice(-1)
-      logger.log("serviceType = " + serviceType.value)
+
+      logger.log("\nserviceType = " + serviceType.value)
       let config = {}
       let service = ServiceFactory.createService(serviceType, config)
       transmission.register(serviceName, service)
+
+      if (i != 0) {
+        logger.log("\nConnection #" + i + " [" + previousName + "]->[" + serviceName + "]")
+        transmission.connect(previousName, serviceName)
+      }
+      previousName = serviceName
     }
     return transmission
   }
@@ -78,6 +87,18 @@ class TransmissionBuilder {
     return result
   }
 
+
+  // file utils
+  static async readDataset(filename) {
+    const stream = fromFile(filename)
+    const dataset = await rdf.dataset().import(stream)
+    return dataset
+  }
+
+  static async writeDataset(dataset, filename) {
+    await toFile(dataset.toStream(), filename)
+  }
+
   // unused
   // [subjects] predicate ->  [objects]
   static listObjects(dataset, subjectList, predicate) {
@@ -90,16 +111,6 @@ class TransmissionBuilder {
       objects.push(object)
     }
     return objects
-  }
-
-  static async readDataset(filename) {
-    const stream = fromFile(filename)
-    const dataset = await rdf.dataset().import(stream)
-    return dataset
-  }
-
-  static async writeDataset(dataset, filename) {
-    await toFile(dataset.toStream(), filename)
   }
 }
 

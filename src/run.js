@@ -11,15 +11,24 @@ import TransmissionBuilder from './mill/TransmissionBuilder.js'
 logger.setLogLevel("info")
 logger.log("Hello, logger!")
 logger.log("process.cwd() = " + process.cwd())
-const transmissionFile = 'transmissions/string-pipe.ttl'
+const transDefn = 'transmissions/string-pipe.ttl'
 
-// const transmissionFile = 'src/transmissions/string-pipe.ttl'
-// 
-// const inputFilePath = './input.txt';
-// const outputFilePath = './output.txt';
 
-const stringPipe = TransmissionBuilder.build(transmissionFile)
+const config = {
+    "inputString": "Hello"
+}
 
+const transmission = await TransmissionBuilder.build(transDefn)
+
+transmission.execute(config)
+
+/*
+const config = {
+    "inputFilePath": "./input.txt",
+    "outputFilePath": "./output.txt"
+}
+*/
+/*
 stringPipe.execute = promisify(stringPipe.execute)
 
     (async () => {
@@ -30,3 +39,4 @@ stringPipe.execute = promisify(stringPipe.execute)
             console.error('Error executing pipeline:', error);
         }
     })()
+    */

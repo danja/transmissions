@@ -5,12 +5,12 @@ class AppendProcess extends Process {
 
     async execute(data, config) {
         return process(data)
+    }
 
-        process(input) {
-            logger.log("AppendProcess.process : " + input)
-            let output = input + " world"
-            return output
-        }
+    process(input) {
+        logger.log("AppendProcess.process : " + input)
+        let output = input + " world"
+        return output
     }
 }
 

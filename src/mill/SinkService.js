@@ -1,3 +1,5 @@
+import Service from './Service.js'
+
 class SinkService extends Service {
     constructor() {
         super('sink')

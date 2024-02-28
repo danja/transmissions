@@ -1,3 +1,5 @@
+import Service from './Service.js'
+
 class SourceService extends Service {
     constructor() {
         super('source');
