@@ -1,16 +1,23 @@
+import rdf from 'rdf-ext'
+import ns from '../utils/ns.js'
 
 import logger from '../utils/Logger.js'
-import Source from './Source.js';
+import SourceService from '../mill/SourceService.js';
 
-class FileSource extends Source {
+class FileSource extends SourceService {
 
-    read(sourceID) {
-        return this.readFile(sourceID)
-    }
+    execute(config) {
+        //  const subject = rdf.namedNode(':inputPath');
+        // const predicate = rdf.namedNode('fs:relativePath');
 
-    readFile(filename) {
-        let text = fs.readFileSync(filename, 'utf8')
-        return text;
+        // Call `match` with subject and predicate, leaving object and graph as null to match any.
+        // const matches = dataset.match(subject, predicate, null, null);
+
+        const matches = config.match(ns.t.inputPath, ns.fs.relativePath, null, null)
+
+
+        logger.log(matches)
+
     }
 }
 

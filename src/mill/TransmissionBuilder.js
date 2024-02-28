@@ -50,6 +50,8 @@ class TransmissionBuilder {
     for (let i = 0; i < pipenodes.length; i++) {
       let node = pipenodes[i]
       let serviceName = node.value
+      logger.log("\nserviceName = " + serviceName)
+
       let np = rdf.grapoi({ dataset, term: node })
       let serviceType = np.out(ns.rdf.type).term
 

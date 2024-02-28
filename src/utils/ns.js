@@ -6,6 +6,7 @@ const ns = {
     xsd: rdf.namespace('http://www.w3.org/2001/XMLSchema#'),
     trm: rdf.namespace('http://purl.org/stuff/transmission/'),
     t: rdf.namespace('https://hyperdata.it/treadmill/'),
+    fs: rdf.namespace('http://purl.org/stuff/filesystem/')
 }
 
 export default ns

@@ -2,7 +2,7 @@ import Service from './Service.js'
 
 class SinkService extends Service {
     constructor() {
-        super('sink')
+        super('SinkService')
     }
 
     async execute(data, config) {

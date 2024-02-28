@@ -1,7 +1,7 @@
 import logger from '../utils/Logger.js'
-import Sink from '../mill/SinkService.js';
+import SinkService from '../mill/SinkService.js';
 
-class StringSink extends Sink {
+class StringSink extends SinkService {
 
     execute(data, config) {
         logger.log("\n\nStringSink says : \"" + data + "\"\n\n")

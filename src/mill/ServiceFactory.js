@@ -4,6 +4,8 @@ import ns from '../utils/ns.js'
 import StringSource from '../services/StringSource.js';
 import StringSink from '../services/StringSink.js';
 import AppendProcess from '../services/AppendProcess.js';
+import FileSource from '../services/FileSource.js';
+import FileSink from '../services/FileSink.js';
 
 class ServiceFactory {
     static createService(type, config) {
@@ -17,6 +19,12 @@ class ServiceFactory {
         }
         if (type.equals(ns.t.AppendProcess)) {
             return new AppendProcess(config);
+        }
+        if (type.equals(ns.t.FileSource)) {
+            return new FileSource(config);
+        }
+        if (type.equals(ns.t.FileSink)) {
+            return new FileSink(config);
         }
         throw new Error("Unknown service type: " + type.value);
     }
