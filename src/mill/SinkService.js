@@ -8,10 +8,6 @@ class SinkService extends Service {
     async execute(data, config) {
         // Consume data
     }
-
-    write(sinkID, data) {
-        console.log("Sink interface called, oops.")
-    }
 }
 
 export default SinkService 
