@@ -11,7 +11,7 @@ class Transmission {
 
   register(serviceName, instance) {
     this.services[serviceName] = instance
-    logger.log("Registering : " + serviceName)
+    logger.debug("Registering : " + serviceName)
   }
 
   get(serviceName) {
@@ -19,25 +19,30 @@ class Transmission {
   }
 
   connect(fromServiceName, toServiceName) {
-    logger.log("Connecting : [" + fromServiceName + "]->[" + toServiceName + "]")
     this.connectors.push(new Connector(fromServiceName, toServiceName))
   }
 
-  execute(config) {
+  async execute(config) {
+    logger.log("\n*** Execution ***")
     let previousService = null
     const firstServiceName = this.connectors[0].fromName
     let firstService = this.get(firstServiceName)
-    let previousData = firstService.execute(config)
+    logger.log("Running service : " + firstServiceName)
+    let previousData = await firstService.execute(config)
     // this.connectors[0].data = firstService.execute(config)
 
     for (let i = 0; i < this.connectors.length; i++) {
-      logger.log("Current node : " + i)
+      logger.debug("Current node : " + i)
+      logger.debug("Previous data : " + previousData)
       let connector = this.connectors[i]
-      logger.log(connector.fromName + " => " + connector.toName)
-      let currentService = this.get(this.connector.toName)
-      previousData = firstService.execute(previousData, config)
+      logger.debug(connector.fromName + " => " + connector.toName)
+      let currentService = this.get(connector.toName)
+      logger.log("Running service : " + connector.toName)
+      previousData = await currentService.execute(previousData, config)
     }
   }
+
+
 }
 
 export default Transmission

@@ -7,7 +7,7 @@ import AppendProcess from '../services/AppendProcess.js';
 
 class ServiceFactory {
     static createService(type, config) {
-        logger.log("ServiceFactory.createService : " + type.value)
+        logger.debug("ServiceFactory.createService : " + type.value)
 
         if (type.equals(ns.t.StringSource)) {
             return new StringSource(config);

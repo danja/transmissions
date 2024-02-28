@@ -9,8 +9,8 @@ import Transmission from './mill/Transmission.js';
 import TransmissionBuilder from './mill/TransmissionBuilder.js'
 // import { Executor } from './mill/Executor.js';
 logger.setLogLevel("info")
-logger.log("Hello, logger!")
-logger.log("process.cwd() = " + process.cwd())
+logger.debug("Hello, logger!")
+logger.debug("process.cwd() = " + process.cwd())
 const transDefn = 'transmissions/string-pipe.ttl'
 
 

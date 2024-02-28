@@ -32,36 +32,36 @@ class TransmissionBuilder {
 
     const poi = rdf.grapoi({ dataset, term: pipelineID })
 
-    // logger.log(`Building pipeline: ${transmissionID.value}`)
-    logger.log('Building pipeline ******')
+    logger.log('\n*** Building ***')
 
     const first = poi.out(ns.trm.pipe).term
 
     // grapoi probably has a built-in for this
     const pipenodes = TransmissionBuilder.listToArray(dataset, first)
 
-    for (const node of pipenodes) {
-      logger.log("node = " + node.value)
-    }
+    // for (const node of pipenodes) {
+    //  logger.log("node = " + node.value)
+    // }
 
     const transmission = new Transmission()
 
     let previousName = "nothing"
     // grapoi probably has a built-in for this
-    //  for (const node of pipenodes) {
     for (let i = 0; i < pipenodes.length; i++) {
       let node = pipenodes[i]
       let serviceName = node.value
       let np = rdf.grapoi({ dataset, term: node })
       let serviceType = np.out(ns.rdf.type).term
 
-      logger.log("\nserviceType = " + serviceType.value)
+      logger.debug("\nserviceType = " + serviceType.value)
       let config = {}
+
+      logger.log("Create/register service <" + serviceName + "> of type <" + serviceType.value + ">")
       let service = ServiceFactory.createService(serviceType, config)
       transmission.register(serviceName, service)
 
       if (i != 0) {
-        logger.log("\nConnection #" + i + " [" + previousName + "]->[" + serviceName + "]")
+        logger.log("Connecting #" + i + " [" + previousName + "] => [" + serviceName + "]")
         transmission.connect(previousName, serviceName)
       }
       previousName = serviceName

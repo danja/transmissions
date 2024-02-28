@@ -4,11 +4,11 @@ import Process from '../mill/ProcessService.js';
 class AppendProcess extends Process {
 
     async execute(data, config) {
-        return process(data)
+        return this.process(data)
     }
 
     process(input) {
-        logger.log("AppendProcess.process : " + input)
+        logger.debug("AppendProcess.process : " + input)
         let output = input + " world"
         return output
     }

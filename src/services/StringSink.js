@@ -3,8 +3,8 @@ import Sink from '../mill/SinkService.js';
 
 class StringSink extends Sink {
 
-    write(sinkID, data) {
-        logger.log("StringSink.write : " + sinkID + " : " + data)
+    execute(data, config) {
+        logger.log("\n\nStringSink says : \"" + data + "\"\n\n")
     }
 }
 
