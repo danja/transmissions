@@ -1,5 +1,3 @@
-
-
 import logger from './utils/Logger.js'
 import { Reveal } from './utils/Reveal.js'
 
@@ -10,11 +8,9 @@ logger.setLogLevel("info")
 logger.debug("Hello, logger!")
 logger.debug("process.cwd() = " + process.cwd())
 
-const transDefn = 'transmissions/file-pipeline.ttl'
-const transmission = await TransmissionBuilder.build(transDefn) // accept filename or dataset..?
+const transmissionConfigFile = 'transmissions/file-pipeline-transmission.ttl'
+const servicesConfigFile = 'transmissions/file-pipeline-services.ttl'
 
-const configFile = 'transmissions/file-pipeline-config.ttl'
-const config = await TransmissionBuilder.readDataset(configFile)
+const transmission = await TransmissionBuilder.build(transmissionConfigFile, servicesConfigFile)
 
-
-transmission.execute(config)
+transmission.execute()

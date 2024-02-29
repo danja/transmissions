@@ -1,11 +1,11 @@
 import Service from './Service.js'
 
 class SourceService extends Service {
-    constructor() {
-        super('source');
+    constructor(config) {
+        super(config);
     }
 
-    async execute(data, config) {
+    async execute(data) {
         // Generate or fetch data
     }
 }

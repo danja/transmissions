@@ -11,37 +11,38 @@ import ns from '../utils/ns.js'
 
 class TransmissionBuilder {
 
-  static async build(transmissionConfig) {
+  static async build(transmissionConfigFile, servicesConfigFile) {
     logger.debug("TransmissionBuilder reading RDF")
-    const dataset = await TransmissionBuilder.readDataset(transmissionConfig)
-
+    const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile)
+    const servicesConfig = await TransmissionBuilder.readDataset(servicesConfigFile)
     // relative to run.js
     // TransmissionBuilder.writeDataset(dataset, "./transmissions/output.ttl")
 
-    const poi = grapoi({ dataset })
+    const poi = grapoi({ dataset: transmissionConfig })
 
     for (const q of poi.out(ns.rdf.type).quads()) {
       if (q.object.equals(ns.trm.Pipeline)) { // 
-        return TransmissionBuilder.buildPipeline(dataset, q.subject)
+        logger.log("Building pipeline ##########")
+        return TransmissionBuilder.buildPipeline(transmissionConfig, q.subject, servicesConfig)
       }
     }
     // throw error
   }
 
-  static buildPipeline(dataset, pipelineID) {
+  static buildPipeline(transmissionConfig, pipelineID, servicesConfig) {
 
-    const poi = rdf.grapoi({ dataset, term: pipelineID })
+    const poi = rdf.grapoi({ dataset: transmissionConfig, term: pipelineID })
 
     logger.log('\n*** Building ***')
 
     const first = poi.out(ns.trm.pipe).term
 
     // grapoi probably has a built-in for this
-    const pipenodes = TransmissionBuilder.listToArray(dataset, first)
+    const pipenodes = TransmissionBuilder.listToArray(transmissionConfig, first)
 
-    // for (const node of pipenodes) {
-    //  logger.log("node = " + node.value)
-    // }
+    for (const node of pipenodes) {
+      logger.log("node = " + node.value)
+    }
 
     const transmission = new Transmission()
 
@@ -52,14 +53,13 @@ class TransmissionBuilder {
       let serviceName = node.value
       logger.log("\nserviceName = " + serviceName)
 
-      let np = rdf.grapoi({ dataset, term: node })
+      let np = rdf.grapoi({ dataset: transmissionConfig, term: node })
       let serviceType = np.out(ns.rdf.type).term
 
       logger.debug("\nserviceType = " + serviceType.value)
-      let config = {}
 
       logger.log("Create/register service <" + serviceName + "> of type <" + serviceType.value + ">")
-      let service = ServiceFactory.createService(serviceType, config)
+      let service = ServiceFactory.createService(serviceType, servicesConfig)
       transmission.register(serviceName, service)
 
       if (i != 0) {

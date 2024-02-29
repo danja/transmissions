@@ -1,9 +1,10 @@
 class Service {
-    constructor(type) {
-        this.type = type;
+    constructor(config) {
+        //   this.type = type;
+        this.config = config
     }
 
-    async execute(data, config) {
+    async execute(data) {
         throw new Error('execute method not implemented');
     }
 }

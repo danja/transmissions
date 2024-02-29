@@ -1,11 +1,11 @@
 import Service from './Service.js'
 
 class SinkService extends Service {
-    constructor() {
-        super('SinkService')
+    constructor(config) {
+        super(config)
     }
 
-    async execute(data, config) {
+    async execute(data) {
         // Consume data
     }
 }

@@ -9,22 +9,10 @@ class FileSink extends SinkService {
         //  logger.log('FileSink')
     }
 
-    execute(data, config) {
+    execute(data) {
+        const filename = "erwerwer"
+        fs.writeFileSync(filename, data)
     }
-
-    write(sinkID, data) {
-        logger.log("StringSink.write : " + sinkID + " : " + data)
-    }
-
-
-    write(sinkID, data) {
-        return this.writeFile(sinkID, data)
-    }
-
-    writeFile(filename, text) {
-        fs.writeFileSync(filename, text)
-    }
-
 }
 
 export default FileSink

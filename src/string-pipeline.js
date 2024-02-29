@@ -10,15 +10,12 @@ logger.setLogLevel("info")
 logger.debug("Hello, logger!")
 logger.debug("process.cwd() = " + process.cwd())
 
-const transDefn = 'transmissions/string-pipeline.ttl'
+const transmissionConfigFile = 'transmissions/string-pipeline-transmission.ttl'
+const servicesConfigFile = 'transmissions/string-pipeline-services.ttl'
 
-const config = {
-    "inputString": "Hello"
-}
+const transmission = await TransmissionBuilder.build(transmissionConfigFile, servicesConfigFile)
 
-const transmission = await TransmissionBuilder.build(transDefn)
-
-transmission.execute(config)
+transmission.execute()
 
 /*
 const config = {
