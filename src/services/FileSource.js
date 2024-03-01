@@ -13,14 +13,14 @@ class FileSource extends SourceService {
 
         const dataset = this.config
 
-        logger.log("FS config = " + Reveal.asMarkdown(dataset) + "\n\n" + dataset)
+        // logger.log("FS config = " + Reveal.asMarkdown(dataset) + "\n\n" + dataset)
 
         const poi = grapoi({ dataset })
 
         for (const q of poi.out(ns.rdf.type).quads()) {
             if (q.object.equals(ns.fs.Mapping)) { // 
                 const mappingPoi = rdf.grapoi({ dataset, term: q.subject })
-                logger.log("mappingPoi = " + mappingPoi)
+                //    logger.log("mappingPoi = " + mappingPoi)
                 this.extractPaths(mappingPoi)
                 break
             }
@@ -30,8 +30,16 @@ class FileSource extends SourceService {
 
     extractPaths(mappingPoi) {
         for (const term of mappingPoi.out(ns.fs.hasPath).terms) {
-            logger.log(term.value)
-
+            logger.log("**** term.value = " + term.value)
+            switch (term) {
+                case ns.fs.input:
+                    //   this.inputPath = term.value
+                    logger.log("ns.fs.input = ")
+                    break
+                case "output":
+                    this.outputPath = term.value
+                    break
+            }
         }
     }
 }
