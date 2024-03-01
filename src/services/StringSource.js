@@ -6,7 +6,9 @@ import SourceService from '../mill/SourceService.js';
 
 class StringSource extends SourceService {
 
-    execute() {
+    async execute(data) {
+
+        /*
         logger.log("SS config = " + Reveal.asMarkdown(this.config) + "\n\n" + this.config)
 
         const dataset = this.config
@@ -22,6 +24,8 @@ class StringSource extends SourceService {
             logger.log("s = " + s)
         }
         return s
+        */
+        return data
     }
 }
 

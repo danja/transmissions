@@ -6,7 +6,7 @@ class SourceService extends Service {
     }
 
     async execute(data) {
-        // Generate or fetch data
+        return data
     }
 }
 

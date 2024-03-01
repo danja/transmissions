@@ -1,4 +1,4 @@
-// import rdf from 'rdf-ext'
+import rdf from 'rdf-ext'
 import { Reveal } from '../utils/Reveal.js'
 import grapoi from 'grapoi'
 import ns from '../utils/ns.js'
@@ -8,18 +8,24 @@ import SourceService from '../mill/SourceService.js';
 
 class FileSource extends SourceService {
 
-    execute(config) {
-        logger.log("FS config = " + Reveal.asMarkdown(config) + "\n\n" + config)
+    async execute(data) {
+        // ignoring data 
 
-        const poi = grapoi({ config })
+        const dataset = this.config
+
+        logger.log("FS config = " + Reveal.asMarkdown(dataset) + "\n\n" + dataset)
+
+        const poi = grapoi({ dataset })
 
         for (const q of poi.out(ns.rdf.type).quads()) {
             if (q.object.equals(ns.fs.Mapping)) { // 
                 const mappingPoi = rdf.grapoi({ dataset, term: q.subject })
+                logger.log("mappingPoi = " + mappingPoi)
                 this.extractPaths(mappingPoi)
                 break
             }
         }
+
     }
 
     extractPaths(mappingPoi) {

@@ -5,17 +5,17 @@ import { Reveal } from './utils/Reveal.js'
 
 import Transmission from './mill/Transmission.js';
 import TransmissionBuilder from './mill/TransmissionBuilder.js'
-// import { Executor } from './mill/Executor.js';
+
 logger.setLogLevel("info")
 logger.debug("Hello, logger!")
 logger.debug("process.cwd() = " + process.cwd())
 
 const transmissionConfigFile = 'transmissions/string-pipeline-transmission.ttl'
-const servicesConfigFile = 'transmissions/string-pipeline-services.ttl'
+const servicesConfigFile = 'transmissions/string-pipeline-services.ttl' // not used
 
 const transmission = await TransmissionBuilder.build(transmissionConfigFile, servicesConfigFile)
 
-transmission.execute()
+transmission.execute("Hello")
 
 /*
 const config = {

@@ -18,6 +18,9 @@ class TransmissionBuilder {
     // relative to run.js
     // TransmissionBuilder.writeDataset(dataset, "./transmissions/output.ttl")
 
+    logger.log("HERE" + transmissionConfig)
+    logger.log("HERE")
+
     const poi = grapoi({ dataset: transmissionConfig })
 
     for (const q of poi.out(ns.rdf.type).quads()) {
