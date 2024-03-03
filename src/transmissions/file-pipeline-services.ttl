@@ -5,7 +5,7 @@
 
 :FilePipelineMapping a fs:Mapping ;
     fs:hasPath :inputPath ;
-    fs:hasPath :outputPath .
+    fs:hasPath :outputPath . 
 
 :inputPath fs:relativePath "data/input.txt" .
 :outputPath  fs:relativePath "data/output.txt" .

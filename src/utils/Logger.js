@@ -45,6 +45,20 @@ logger.log = function (msg, level = "log") {
     */
 }
 
+logger.reveal = function (instance) {
+    const serialized = {};
+    for (const key in instance) {
+        if (instance.hasOwnProperty(key)) {
+            serialized[key] = instance[key];
+        }
+    }
+
+    const props = JSON.stringify(serialized, null, 2)
+
+    logger.log(`\n# ${instance.constructor.name}\n\n\`\`\`\n${props}\n\`\`\``)
+}
+
+
 logger.debug = function (msg) {
     logger.log(msg, "debug");
 }

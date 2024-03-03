@@ -4,6 +4,7 @@
   "description": "Treadmill",
   "name": "treadmill",
   "scripts": {
+    "docs": "jsdoc -c jsdoc.json",
     "build": "webpack --mode=production --node-env=production",
     "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production --node-env=production",
@@ -21,6 +22,7 @@
     "jasmine": "^5.1.0",
     "jasmine-browser-runner": "^2.3.0",
     "jasmine-core": "^5.1.1",
+    "jsdoc": "^4.0.2",
     "mini-css-extract-plugin": "^2.7.7",
     "postcss": "^8.4.33",
     "postcss-loader": "^8.0.0",

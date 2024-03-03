@@ -1,3 +1,14 @@
+## Treadmill TODO
+
+docs for grapoi
+
+[ ] - get file-pipeline.js running
+
+[ ] - move Reveal to logger
+[ ] - make treadmill.d.ts
+[ ] - make tests
+[ ] - add JSDoc comments
+
 ### figure out how to include in other github projects
 
 ### use package.json to publish to npm

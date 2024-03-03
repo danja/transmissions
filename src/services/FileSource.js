@@ -17,13 +17,35 @@ class FileSource extends SourceService {
 
         const poi = grapoi({ dataset })
 
-        for (const q of poi.out(ns.rdf.type).quads()) {
+        for (const q of poi.out(ns.rdf.type, ns.fs.Mapping).quads()) {
+            logger.log("AAAA")
+            logger.log("q.subject " + q.subject.value)
+            const mappingTerm = q.subject
+            const mappingPoi = grapoi({ dataset, mappingTerm })
+            //    logger.reveal(q)
+            for (const p of mappingPoi.out(ns.fs.hasPath)) {
+                logger.log("BBBB")
+                // logger.log("P " + p.value)
+                // logger.reveal(p)
+                //  logger.log("p.out(ns.t.inputPath) " + p.out(ns.t.inputPath))
+                const iq = mappingPoi.out(ns.t.inputPath)
+                //   logger.log("mappingPoi.out(ns.t.inputPath) " + mappingPoi.out(ns.t.inputPath).quads())
+                logger.log("iq.subject.value " + iq.subject.value + "  iq.object.value  " + iq.object.value)
+                if (p.value === ns.t.inputPath.value) {
+
+                    logger.log("pin " + p.value)
+                }
+
+            }
+            /*
             if (q.object.equals(ns.fs.Mapping)) { // 
                 const mappingPoi = rdf.grapoi({ dataset, term: q.subject })
-                //    logger.log("mappingPoi = " + mappingPoi)
+                logger.log("mappingPoi = " + mappingPoi)
                 this.extractPaths(mappingPoi)
                 break
             }
+            */
+
         }
 
     }
