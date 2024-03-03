@@ -29,10 +29,18 @@ class FileSource extends SourceService {
     }
 
     extractPaths(mappingPoi) {
-        for (const term of mappingPoi.out(ns.fs.hasPath).terms) {
-            logger.log("**** term.value = " + term.value)
-            switch (term) {
-                case ns.fs.input:
+        logger.log("\n*** Extracting Paths ***")
+        const i = mappingPoi.out(ns.fs.hasPath).out(ns.fs.input)
+        for (const q of i) {
+            logger.log("**** term.value = " + q)
+        }
+
+        /*
+            for(const q of mappingPoi.out(ns.fs.hasPath).quads()) {
+            logger.log("**** term.value = " + q.object.value)
+            logger.log("**** ns.t.inputPath = " + ns.t.inputPath.value)
+            switch (q.object.value) {
+                case ns.t.inputPath.value:
                     //   this.inputPath = term.value
                     logger.log("ns.fs.input = ")
                     break
@@ -41,6 +49,7 @@ class FileSource extends SourceService {
                     break
             }
         }
+        */
     }
 }
 

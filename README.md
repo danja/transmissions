@@ -6,7 +6,11 @@ A micro-framework to simplify construction of small data processing applications
 
 ### Status
 
-2024-01-30 : roughed out, not yet working
+2024-03-03 : making progress
+
+note to self - while I'm doing some docs in grapoi, I'm using a path in jsconfig.json "/home/danny/HKMS/grapoi-danny/\*" as well as a symlink in /home/danny/node_modules to that dir
+
+**Docs below need updating**
 
 ## What it is
 

@@ -1,3 +1,9 @@
+## Cursor
+
+Please create a new jsconfig.json file for this project. Include everything relevant you find in this codebase. The project is in ES6 format. I wish to use intellisense in VSCode. Please add appropriate references to the libraries in use, including the typescript interface definitions in @types/grapoi.d.ts
+
+I wish to make intellisense aware of
+
 ## Gemini
 
 The code here successfully extracts a sequence of terms from a turtle rdf file. I would like it to also the class of each term. Here is the code :
