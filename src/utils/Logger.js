@@ -52,9 +52,7 @@ logger.reveal = function (instance) {
             serialized[key] = instance[key];
         }
     }
-
     const props = JSON.stringify(serialized, null, 2)
-
     logger.log(`\n# ${instance.constructor.name}\n\n\`\`\`\n${props}\n\`\`\``)
 }
 
