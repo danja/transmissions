@@ -37,6 +37,19 @@ class FileSource extends SourceService {
                 }
 
             }
+
+            /*
+            const nationalities = house
+                .out(ns.schema.knows)
+                .out(ns.schema.nationality)
+                .distinct()
+
+            console.log('nationalities of all known people:')
+
+            for (const value of nationalities.values) {
+                console.log(`\t${value}`)
+            }
+*/
             /*
             if (q.object.equals(ns.fs.Mapping)) { // 
                 const mappingPoi = rdf.grapoi({ dataset, term: q.subject })
