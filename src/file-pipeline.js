@@ -4,7 +4,7 @@ import { Reveal } from './utils/Reveal.js'
 import Transmission from './mill/Transmission.js';
 import TransmissionBuilder from './mill/TransmissionBuilder.js'
 // import { Executor } from './mill/Executor.js';
-logger.setLogLevel("debug")
+logger.setLogLevel("info")
 logger.debug("Hello, logger!")
 logger.debug("process.cwd() = " + process.cwd())
 

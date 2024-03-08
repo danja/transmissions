@@ -1,12 +1,8 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix trm: <http://purl.org/stuff/transmission/> .
-@prefix fs: <http://purl.org/stuff/filesystem/> .
-@prefix : <http://hyperdata.it/treadmill/> . # for custom terms & instances
+# @prefix fs: <http://purl.org/stuff/filesystem/> .
+@prefix t: <http://hyperdata.it/treadmill/> . # for custom terms & instances
 
-:FilePipelineMapping a fs:Mapping ;
-    fs:hasPath :inputPath ;
-    fs:hasPath :outputPath . 
-
-:inputPath fs:relativePath "data/input.txt" .
-:outputPath  fs:relativePath "data/output.txt" .
-
+t:FilePipelineMap a trm:DataMap ;
+    trm:sourceFile "data/input.txt" ;
+    trm:destinationFile "data/output.txt" .

@@ -28,8 +28,9 @@ class Transmission {
     //  logger.debug("E config = " + config)
     const firstServiceName = this.connectors[0].fromName
     let firstService = this.get(firstServiceName)
-    logger.log("Running service : " + firstServiceName)
+    logger.log("\nTransmission running service : " + firstServiceName)
     let previousData = await firstService.execute(data)
+    logger.debug("Previous data : " + previousData)
     // this.connectors[0].data = firstService.execute(config)
 
     for (let i = 0; i < this.connectors.length; i++) {
@@ -38,7 +39,8 @@ class Transmission {
       let connector = this.connectors[i]
       logger.debug(connector.fromName + " => " + connector.toName)
       let currentService = this.get(connector.toName)
-      logger.log("Running service : " + connector.toName)
+
+      logger.log("\nTransmission running service : " + connector.toName)
       previousData = await currentService.execute(previousData)
     }
   }

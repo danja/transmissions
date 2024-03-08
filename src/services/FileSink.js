@@ -1,17 +1,28 @@
+import { writeFile } from 'node:fs/promises';
+import { Buffer } from 'node:buffer';
+
+import grapoi from 'grapoi'
+import ns from '../utils/ns.js'
 import logger from '../utils/Logger.js'
 import fs from "node:fs"
 import SinkService from '../mill/SinkService.js';
 
 class FileSink extends SinkService {
 
-    constructor() {
-        super('FileSink')
-        //  logger.log('FileSink')
+    constructor(config) {
+        super(config)
+        const dataset = this.config
+        const poi = grapoi({ dataset })
+        // const map = poi.out(ns.rdf.type, ns.trm.DataMap).term
+        const cwd = process.cwd() + '/../' // move!
+        this.destinationFile = cwd + poi.out(ns.trm.destinationFile).value
     }
 
-    execute(data) {
-        const filename = "erwerwer"
-        fs.writeFileSync(filename, data)
+    async execute(data) {
+        // const filename = "erwerwer"
+        // fs.writeFileSync(filename, data)
+        logger.debug("sink destinationFile = " + this.destinationFile)
+        await writeFile(this.destinationFile, data);
     }
 }
 

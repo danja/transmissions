@@ -1,3 +1,9 @@
+import fs from 'node:fs'
+import { readFile } from 'node:fs/promises'
+import { resolve } from 'node:path'
+//const { readFile } = require('node:fs/promises');
+//const { resolve } = require('node:path');
+
 import rdf from 'rdf-ext'
 import { Reveal } from '../utils/Reveal.js'
 import grapoi from 'grapoi'
@@ -8,83 +14,37 @@ import SourceService from '../mill/SourceService.js';
 
 class FileSource extends SourceService {
 
-    async execute(data) {
-        // ignoring data 
+    //  t:FilePipelineMap a trm:DataMap ;
+    //  trm:sourceFile "data/input.txt" ;
+    //  trm:destinationFile "data/output.txt" .
 
+    constructor(config) {
+        super(config)
         const dataset = this.config
-
-        // logger.log("FS config = " + Reveal.asMarkdown(dataset) + "\n\n" + dataset)
-
         const poi = grapoi({ dataset })
-
-        for (const q of poi.out(ns.rdf.type, ns.fs.Mapping).quads()) {
-            logger.log("AAAA")
-            logger.log("q.subject " + q.subject.value)
-            const mappingTerm = q.subject
-            const mappingPoi = grapoi({ dataset, mappingTerm })
-            //    logger.reveal(q)
-            for (const p of mappingPoi.out(ns.fs.hasPath)) {
-                logger.log("BBBB")
-                // logger.log("P " + p.value)
-                // logger.reveal(p)
-                //  logger.log("p.out(ns.t.inputPath) " + p.out(ns.t.inputPath))
-                const iq = mappingPoi.out(ns.t.inputPath)
-                //   logger.log("mappingPoi.out(ns.t.inputPath) " + mappingPoi.out(ns.t.inputPath).quads())
-                logger.log("iq.subject.value " + iq.subject.value + "  iq.object.value  " + iq.object.value)
-                if (p.value === ns.t.inputPath.value) {
-
-                    logger.log("pin " + p.value)
-                }
-
-            }
-
-            /*
-            const nationalities = house
-                .out(ns.schema.knows)
-                .out(ns.schema.nationality)
-                .distinct()
-
-            console.log('nationalities of all known people:')
-
-            for (const value of nationalities.values) {
-                console.log(`\t${value}`)
-            }
-*/
-            /*
-            if (q.object.equals(ns.fs.Mapping)) { // 
-                const mappingPoi = rdf.grapoi({ dataset, term: q.subject })
-                logger.log("mappingPoi = " + mappingPoi)
-                this.extractPaths(mappingPoi)
-                break
-            }
-            */
-
-        }
-
+        // const map = poi.out(ns.rdf.type, ns.trm.DataMap).term
+        const cwd = process.cwd() + '/../' // move!
+        this.sourceFile = cwd + poi.out(ns.trm.sourceFile).value
     }
 
-    extractPaths(mappingPoi) {
-        logger.log("\n*** Extracting Paths ***")
-        const i = mappingPoi.out(ns.fs.hasPath).out(ns.fs.input)
-        for (const q of i) {
-            logger.log("**** term.value = " + q)
+    async execute(data) {
+        logger.debug("sourceFile = " + this.sourceFile)
+        //  logger.debug("FileSource process.cwd() = " + process.cwd())
+        try {
+            const filePath = resolve(this.sourceFile)
+            //  const contents = await readFile(filePath, { encoding: 'utf8' })
+            const contents = await readFile(this.sourceFile, { encoding: 'utf8' })
+            logger.debug(contents)
+            return contents
+        } catch (err) {
+            console.error(err.message);
         }
-
         /*
-            for(const q of mappingPoi.out(ns.fs.hasPath).quads()) {
-            logger.log("**** term.value = " + q.object.value)
-            logger.log("**** ns.t.inputPath = " + ns.t.inputPath.value)
-            switch (q.object.value) {
-                case ns.t.inputPath.value:
-                    //   this.inputPath = term.value
-                    logger.log("ns.fs.input = ")
-                    break
-                case "output":
-                    this.outputPath = term.value
-                    break
-            }
-        }
-        */
+      fs.readFileSync(this.sourceFile, 'utf8', (err, data) => {
+          logger.log("read =    " + data)
+          return data
+      })
+      */
     }
 }
 

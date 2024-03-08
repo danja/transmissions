@@ -18,14 +18,11 @@ class TransmissionBuilder {
     // relative to run.js
     // TransmissionBuilder.writeDataset(dataset, "./transmissions/output.ttl")
 
-    logger.log("HERE" + transmissionConfig)
-    logger.log("HERE")
-
     const poi = grapoi({ dataset: transmissionConfig })
 
     for (const q of poi.out(ns.rdf.type).quads()) {
       if (q.object.equals(ns.trm.Pipeline)) { // 
-        logger.log("Building pipeline ##########")
+        logger.debug("about to build pipeline")
         return TransmissionBuilder.buildPipeline(transmissionConfig, q.subject, servicesConfig)
       }
     }
@@ -44,7 +41,7 @@ class TransmissionBuilder {
     const pipenodes = TransmissionBuilder.listToArray(transmissionConfig, first)
 
     for (const node of pipenodes) {
-      logger.log("node = " + node.value)
+      logger.debug("node = " + node.value)
     }
 
     const transmission = new Transmission()
@@ -54,7 +51,7 @@ class TransmissionBuilder {
     for (let i = 0; i < pipenodes.length; i++) {
       let node = pipenodes[i]
       let serviceName = node.value
-      logger.log("\nserviceName = " + serviceName)
+      logger.debug("\nserviceName = " + serviceName)
 
       let np = rdf.grapoi({ dataset: transmissionConfig, term: node })
       let serviceType = np.out(ns.rdf.type).term
