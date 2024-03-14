@@ -6,7 +6,8 @@ class AppendProcess extends ProcessService {
     async execute(input) {
         logger.debug("AppendProcess.process : " + input)
         let output = input + " world"
-        return output
+        //  return output
+        this.emit('data', output)
     }
 }
 

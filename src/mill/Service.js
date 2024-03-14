@@ -1,6 +1,9 @@
-class Service {
+import { EventEmitter } from 'events'
+
+class Service extends EventEmitter {
+
     constructor(config) {
-        //   this.type = type;
+        super() // Call EventEmitter constructor
         this.config = config
     }
 

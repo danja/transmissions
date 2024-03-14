@@ -35,7 +35,8 @@ class FileSource extends SourceService {
             //  const contents = await readFile(filePath, { encoding: 'utf8' })
             const contents = await readFile(this.sourceFile, { encoding: 'utf8' })
             logger.debug(contents)
-            return contents
+            this.emit('data', contents)
+            //  return contents
         } catch (err) {
             console.error(err.message);
         }
