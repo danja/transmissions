@@ -1,0 +1,262 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+ <HEAD>
+   <TITLE> sniffschema tool - overview of foaf vocab
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:foaf-dev%40lists.usefulinc.com?Subject=sniffschema%20tool%20-%20overview%20of%20foaf%20vocab&In-Reply-To=">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000186.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>sniffschema tool - overview of foaf vocab</H1>
+    <B>Dan Brickley</B> 
+    <A HREF="mailto:foaf-dev%40lists.usefulinc.com?Subject=sniffschema%20tool%20-%20overview%20of%20foaf%20vocab&In-Reply-To="
+       TITLE="sniffschema tool - overview of foaf vocab">danbri at w...
+       </A><BR>
+    <I>Mon Jul  1 10:00:45 UTC 2002</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000186.html">getting the rdf from the FOAF schema
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#185">[ date ]</a>
+              <a href="thread.html#185">[ thread ]</a>
+              <a href="subject.html#185">[ subject ]</a>
+              <a href="author.html#185">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+&lt;DanC&gt; danbri, sniffSchema seems to work pretty well on those data: python cwm.py --rdf <A HREF="http://rdfweb.org/people/danbri/rdfweb/danbri-foaf.rdf">http://rdfweb.org/people/danbri/rdfweb/danbri-foaf.rdf</A> --filter=util/sniffSchema.n3
+[...]
+* danbri gets sniffSchema working
+&lt;danbri&gt; logger, pointer
+&lt;logger&gt; See <A HREF="http://ilrt.org/discovery/chatlogs/rdfig/2002-07-01#T09-58-01">http://ilrt.org/discovery/chatlogs/rdfig/2002-07-01#T09-58-01</A>
+
+This is handy: given a chunk of RDF, it describes what it can figure out
+of the schema... Below is what I gets from feeding it my FOAF file.
+
+Dan
+
+
+---------- Forwarded message ----------
+Date: Mon, 1 Jul 2002 10:15:12 GMT
+From: <A HREF="http://lists.usefulinc.com/cgi-bin/mailman/listinfo/foaf-dev">danbri at f...</A>
+To: <A HREF="http://lists.usefulinc.com/cgi-bin/mailman/listinfo/foaf-dev">danbri at w...</A>
+
+
+&lt;!-- Processed by Id: cwm.py,v 1.96 2002/06/07 20:07:17 timbl Exp --&gt;
+&lt;!-- using base <A HREF="http://rdfweb.org/people/danbri/rdfweb/danbri-foaf.rdf--">http://rdfweb.org/people/danbri/rdfweb/danbri-foaf.rdf--</A>&gt;
+
+
+&lt;web:RDF xmlns=&quot;file:/mnt/big/home/danbri/public_html/remote-cvs/w3.org/WWW/2000/10/swap/util/sniffSchema#&quot;
+xmlns:air=&quot;<A HREF="http://www.megginson.com/exp/ns/airports#&quot;">http://www.megginson.com/exp/ns/airports#&quot;</A>
+xmlns:contact=&quot;<A HREF="http://www.w3.org/2000/10/swap/pim/contact#&quot;">http://www.w3.org/2000/10/swap/pim/contact#&quot;</A>
+xmlns:dc=&quot;<A HREF="http://purl.org/dc/elements/1.1/&quot;">http://purl.org/dc/elements/1.1/&quot;</A>
+xmlns:foaf=&quot;<A HREF="http://xmlns.com/foaf/0.1/&quot;">http://xmlns.com/foaf/0.1/&quot;</A>
+xmlns:log=&quot;<A HREF="http://www.w3.org/2000/10/swap/log#&quot;">http://www.w3.org/2000/10/swap/log#&quot;</A>
+xmlns:rdfs=&quot;<A HREF="http://www.w3.org/2000/01/rdf-schema#&quot;">http://www.w3.org/2000/01/rdf-schema#&quot;</A>
+xmlns:rss=&quot;<A HREF="http://purl.org/rss/1.0/&quot;">http://purl.org/rss/1.0/&quot;</A>
+xmlns:ss=&quot;file:/mnt/big/home/danbri/public_html/remote-cvs/w3.org/WWW/2000/10/swap/util/sniffSchema#&quot;
+xmlns:str=&quot;<A HREF="http://www.w3.org/2000/10/swap/string#&quot;">http://www.w3.org/2000/10/swap/string#&quot;</A>
+xmlns:web=&quot;<A HREF="http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;">http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;</A>
+xmlns:wn=&quot;<A HREF="http://xmlns.com/wordnet/1.6/&quot;">http://xmlns.com/wordnet/1.6/&quot;</A>&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://www.w3.org/1999/02/22-rdf-syntax-ns#type&quot;">http://www.w3.org/1999/02/22-rdf-syntax-ns#type&quot;</A>&gt;
+&lt;domainIntersects web:resource=&quot;<A HREF="http://purl.org/rss/1.0/channel&quot;/">http://purl.org/rss/1.0/channel&quot;/</A>&gt;
+&lt;domainIntersects web:resource=&quot;<A HREF="http://xmlns.com/foaf/0.1/Person&quot;/">http://xmlns.com/foaf/0.1/Person&quot;/</A>&gt;
+&lt;domainIntersects web:resource=&quot;<A HREF="http://xmlns.com/wordnet/1.6/Airport&quot;/">http://xmlns.com/wordnet/1.6/Airport&quot;/</A>&gt;
+&lt;domainIntersects web:resource=&quot;<A HREF="http://xmlns.com/wordnet/1.6/Document&quot;/">http://xmlns.com/wordnet/1.6/Document&quot;/</A>&gt;
+&lt;domainIntersects web:resource=&quot;<A HREF="http://xmlns.com/wordnet/1.6/Person&quot;/">http://xmlns.com/wordnet/1.6/Person&quot;/</A>&gt;
+&lt;label&gt;type&lt;/label&gt;
+&lt;/web:Property&gt;
+
+&lt;web:Description web:about=&quot;file:/mnt/big/home/danbri/public_html/remote-cvs/w3.org/WWW/2000/10/swap/util/sniffSchema#intersectsDomainOf&quot;&gt;
+&lt;rdfs:subPropertyOf web:resource=&quot;<A HREF="http://www.w3.org/2000/01/rdf-schema#seeAlso&quot;/">http://www.w3.org/2000/01/rdf-schema#seeAlso&quot;/</A>&gt;
+&lt;/web:Description&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://purl.org/dc/elements/1.1/contributor&quot;">http://purl.org/dc/elements/1.1/contributor&quot;</A>&gt;
+&lt;domainIntersects web:resource=&quot;<A HREF="http://xmlns.com/wordnet/1.6/Document&quot;/">http://xmlns.com/wordnet/1.6/Document&quot;/</A>&gt;
+&lt;rangeIntersects web:resource=&quot;<A HREF="http://xmlns.com/wordnet/1.6/Person&quot;/">http://xmlns.com/wordnet/1.6/Person&quot;/</A>&gt;
+&lt;/web:Property&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://purl.org/dc/elements/1.1/creator&quot;">http://purl.org/dc/elements/1.1/creator&quot;</A>&gt;
+&lt;domainIntersects web:resource=&quot;<A HREF="http://xmlns.com/wordnet/1.6/Document&quot;/">http://xmlns.com/wordnet/1.6/Document&quot;/</A>&gt;
+&lt;rangeIntersects web:resource=&quot;<A HREF="http://xmlns.com/wordnet/1.6/Person&quot;/">http://xmlns.com/wordnet/1.6/Person&quot;/</A>&gt;
+&lt;/web:Property&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://purl.org/dc/elements/1.1/description&quot;">http://purl.org/dc/elements/1.1/description&quot;</A>&gt;
+&lt;domainIntersects web:resource=&quot;<A HREF="http://xmlns.com/wordnet/1.6/Document&quot;/">http://xmlns.com/wordnet/1.6/Document&quot;/</A>&gt;
+&lt;rangeIntersects web:resource=&quot;<A HREF="http://www.w3.org/2000/01/rdf-schema#Literal&quot;/">http://www.w3.org/2000/01/rdf-schema#Literal&quot;/</A>&gt;
+&lt;/web:Property&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://purl.org/dc/elements/1.1/format&quot;">http://purl.org/dc/elements/1.1/format&quot;</A>&gt;
+&lt;domainIntersects web:resource=&quot;<A HREF="http://xmlns.com/wordnet/1.6/Document&quot;/">http://xmlns.com/wordnet/1.6/Document&quot;/</A>&gt;
+&lt;rangeIntersects web:resource=&quot;<A HREF="http://www.w3.org/2000/01/rdf-schema#Literal&quot;/">http://www.w3.org/2000/01/rdf-schema#Literal&quot;/</A>&gt;
+&lt;/web:Property&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://purl.org/dc/elements/1.1/subject&quot;">http://purl.org/dc/elements/1.1/subject&quot;</A>&gt;
+&lt;domainIntersects web:resource=&quot;<A HREF="http://xmlns.com/wordnet/1.6/Document&quot;/">http://xmlns.com/wordnet/1.6/Document&quot;/</A>&gt;
+&lt;rangeIntersects web:resource=&quot;<A HREF="http://www.w3.org/2000/01/rdf-schema#Literal&quot;/">http://www.w3.org/2000/01/rdf-schema#Literal&quot;/</A>&gt;
+&lt;/web:Property&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://purl.org/dc/elements/1.1/thumbnail&quot;">http://purl.org/dc/elements/1.1/thumbnail&quot;</A>&gt;
+&lt;/web:Property&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://purl.org/dc/elements/1.1/title&quot;">http://purl.org/dc/elements/1.1/title&quot;</A>&gt;
+&lt;domainIntersects web:resource=&quot;<A HREF="http://xmlns.com/wordnet/1.6/Document&quot;/">http://xmlns.com/wordnet/1.6/Document&quot;/</A>&gt;
+&lt;rangeIntersects web:resource=&quot;<A HREF="http://www.w3.org/2000/01/rdf-schema#Literal&quot;/">http://www.w3.org/2000/01/rdf-schema#Literal&quot;/</A>&gt;
+&lt;/web:Property&gt;
+
+&lt;rdfs:Class web:about=&quot;<A HREF="http://purl.org/rss/1.0/channel&quot;">http://purl.org/rss/1.0/channel&quot;</A>&gt;
+&lt;intersectsDomainOf web:resource=&quot;<A HREF="http://www.w3.org/1999/02/22-rdf-syntax-ns#type&quot;/">http://www.w3.org/1999/02/22-rdf-syntax-ns#type&quot;/</A>&gt;
+&lt;intersectsDomainOf web:resource=&quot;<A HREF="http://purl.org/rss/1.0/title&quot;/">http://purl.org/rss/1.0/title&quot;/</A>&gt;
+&lt;intersectsDomainOf web:resource=&quot;<A HREF="http://www.w3.org/2000/01/rdf-schema#seeAlso&quot;/">http://www.w3.org/2000/01/rdf-schema#seeAlso&quot;/</A>&gt;
+&lt;/rdfs:Class&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://purl.org/rss/1.0/title&quot;">http://purl.org/rss/1.0/title&quot;</A>&gt;
+&lt;domainIntersects web:resource=&quot;<A HREF="http://purl.org/rss/1.0/channel&quot;/">http://purl.org/rss/1.0/channel&quot;/</A>&gt;
+&lt;rangeIntersects web:resource=&quot;<A HREF="http://www.w3.org/2000/01/rdf-schema#Literal&quot;/">http://www.w3.org/2000/01/rdf-schema#Literal&quot;/</A>&gt;
+&lt;/web:Property&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://www.megginson.com/exp/ns/airports#iata&quot;">http://www.megginson.com/exp/ns/airports#iata&quot;</A>&gt;
+&lt;domainIntersects web:resource=&quot;<A HREF="http://xmlns.com/wordnet/1.6/Airport&quot;/">http://xmlns.com/wordnet/1.6/Airport&quot;/</A>&gt;
+&lt;label&gt;iata&lt;/label&gt;
+&lt;rangeIntersects web:resource=&quot;<A HREF="http://www.w3.org/2000/01/rdf-schema#Literal&quot;/">http://www.w3.org/2000/01/rdf-schema#Literal&quot;/</A>&gt;
+&lt;/web:Property&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://www.megginson.com/exp/ns/airports#icao&quot;">http://www.megginson.com/exp/ns/airports#icao&quot;</A>&gt;
+&lt;domainIntersects web:resource=&quot;<A HREF="http://xmlns.com/wordnet/1.6/Airport&quot;/">http://xmlns.com/wordnet/1.6/Airport&quot;/</A>&gt;
+&lt;label&gt;icao&lt;/label&gt;
+&lt;rangeIntersects web:resource=&quot;<A HREF="http://www.w3.org/2000/01/rdf-schema#Literal&quot;/">http://www.w3.org/2000/01/rdf-schema#Literal&quot;/</A>&gt;
+&lt;/web:Property&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://www.w3.org/2000/01/rdf-schema#seeAlso&quot;">http://www.w3.org/2000/01/rdf-schema#seeAlso&quot;</A>&gt;
+&lt;domainIntersects web:resource=&quot;<A HREF="http://purl.org/rss/1.0/channel&quot;/">http://purl.org/rss/1.0/channel&quot;/</A>&gt;
+&lt;domainIntersects web:resource=&quot;<A HREF="http://xmlns.com/foaf/0.1/Person&quot;/">http://xmlns.com/foaf/0.1/Person&quot;/</A>&gt;
+&lt;label&gt;seeAlso&lt;/label&gt;
+&lt;rangeIntersects web:resource=&quot;<A HREF="http://purl.org/rss/1.0/channel&quot;/">http://purl.org/rss/1.0/channel&quot;/</A>&gt;
+&lt;/web:Property&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://www.w3.org/2000/10/swap/log#forSome&quot;">http://www.w3.org/2000/10/swap/log#forSome&quot;</A>&gt;
+&lt;label&gt;forSome&lt;/label&gt;
+&lt;rangeIntersects web:resource=&quot;<A HREF="http://xmlns.com/foaf/0.1/Person&quot;/">http://xmlns.com/foaf/0.1/Person&quot;/</A>&gt;
+&lt;rangeIntersects web:resource=&quot;<A HREF="http://xmlns.com/wordnet/1.6/Airport&quot;/">http://xmlns.com/wordnet/1.6/Airport&quot;/</A>&gt;
+&lt;rangeIntersects web:resource=&quot;<A HREF="http://xmlns.com/wordnet/1.6/Person&quot;/">http://xmlns.com/wordnet/1.6/Person&quot;/</A>&gt;
+&lt;/web:Property&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://www.w3.org/2000/10/swap/pim/contact#nearestAirport&quot;">http://www.w3.org/2000/10/swap/pim/contact#nearestAirport&quot;</A>&gt;
+&lt;label&gt;nearestAirport&lt;/label&gt;
+&lt;rangeIntersects web:resource=&quot;<A HREF="http://xmlns.com/wordnet/1.6/Airport&quot;/">http://xmlns.com/wordnet/1.6/Airport&quot;/</A>&gt;
+&lt;/web:Property&gt;
+
+&lt;rdfs:Class web:about=&quot;<A HREF="http://xmlns.com/foaf/0.1/Person&quot;">http://xmlns.com/foaf/0.1/Person&quot;</A>&gt;
+&lt;intersectsDomainOf web:resource=&quot;<A HREF="http://www.w3.org/1999/02/22-rdf-syntax-ns#type&quot;/">http://www.w3.org/1999/02/22-rdf-syntax-ns#type&quot;/</A>&gt;
+&lt;intersectsDomainOf web:resource=&quot;<A HREF="http://www.w3.org/2000/01/rdf-schema#seeAlso&quot;/">http://www.w3.org/2000/01/rdf-schema#seeAlso&quot;/</A>&gt;
+&lt;intersectsDomainOf web:resource=&quot;<A HREF="http://xmlns.com/foaf/0.1/knows&quot;/">http://xmlns.com/foaf/0.1/knows&quot;/</A>&gt;
+&lt;intersectsDomainOf web:resource=&quot;<A HREF="http://xmlns.com/foaf/0.1/made&quot;/">http://xmlns.com/foaf/0.1/made&quot;/</A>&gt;
+&lt;intersectsDomainOf web:resource=&quot;<A HREF="http://xmlns.com/foaf/0.1/mbox&quot;/">http://xmlns.com/foaf/0.1/mbox&quot;/</A>&gt;
+&lt;intersectsDomainOf web:resource=&quot;<A HREF="http://xmlns.com/foaf/0.1/name&quot;/">http://xmlns.com/foaf/0.1/name&quot;/</A>&gt;
+&lt;intersectsDomainOf web:resource=&quot;<A HREF="http://xmlns.com/foaf/0.1/nick&quot;/">http://xmlns.com/foaf/0.1/nick&quot;/</A>&gt;
+&lt;/rdfs:Class&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://xmlns.com/foaf/0.1/depiction&quot;">http://xmlns.com/foaf/0.1/depiction&quot;</A>&gt;
+&lt;domainIntersects web:resource=&quot;<A HREF="http://xmlns.com/wordnet/1.6/Person&quot;/">http://xmlns.com/wordnet/1.6/Person&quot;/</A>&gt;
+&lt;/web:Property&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://xmlns.com/foaf/0.1/homepage&quot;">http://xmlns.com/foaf/0.1/homepage&quot;</A>&gt;
+&lt;/web:Property&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://xmlns.com/foaf/0.1/img&quot;">http://xmlns.com/foaf/0.1/img&quot;</A>&gt;
+&lt;/web:Property&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://xmlns.com/foaf/0.1/knows&quot;">http://xmlns.com/foaf/0.1/knows&quot;</A>&gt;
+&lt;domainIntersects web:resource=&quot;<A HREF="http://xmlns.com/foaf/0.1/Person&quot;/">http://xmlns.com/foaf/0.1/Person&quot;/</A>&gt;
+&lt;rangeIntersects web:resource=&quot;<A HREF="http://xmlns.com/foaf/0.1/Person&quot;/">http://xmlns.com/foaf/0.1/Person&quot;/</A>&gt;
+&lt;/web:Property&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://xmlns.com/foaf/0.1/made&quot;">http://xmlns.com/foaf/0.1/made&quot;</A>&gt;
+&lt;domainIntersects web:resource=&quot;<A HREF="http://xmlns.com/foaf/0.1/Person&quot;/">http://xmlns.com/foaf/0.1/Person&quot;/</A>&gt;
+&lt;rangeIntersects web:resource=&quot;<A HREF="http://purl.org/rss/1.0/channel&quot;/">http://purl.org/rss/1.0/channel&quot;/</A>&gt;
+&lt;/web:Property&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://xmlns.com/foaf/0.1/mbox&quot;">http://xmlns.com/foaf/0.1/mbox&quot;</A>&gt;
+&lt;domainIntersects web:resource=&quot;<A HREF="http://xmlns.com/foaf/0.1/Person&quot;/">http://xmlns.com/foaf/0.1/Person&quot;/</A>&gt;
+&lt;domainIntersects web:resource=&quot;<A HREF="http://xmlns.com/wordnet/1.6/Person&quot;/">http://xmlns.com/wordnet/1.6/Person&quot;/</A>&gt;
+&lt;/web:Property&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://xmlns.com/foaf/0.1/name&quot;">http://xmlns.com/foaf/0.1/name&quot;</A>&gt;
+&lt;domainIntersects web:resource=&quot;<A HREF="http://xmlns.com/foaf/0.1/Person&quot;/">http://xmlns.com/foaf/0.1/Person&quot;/</A>&gt;
+&lt;domainIntersects web:resource=&quot;<A HREF="http://xmlns.com/wordnet/1.6/Person&quot;/">http://xmlns.com/wordnet/1.6/Person&quot;/</A>&gt;
+&lt;rangeIntersects web:resource=&quot;<A HREF="http://www.w3.org/2000/01/rdf-schema#Literal&quot;/">http://www.w3.org/2000/01/rdf-schema#Literal&quot;/</A>&gt;
+&lt;/web:Property&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://xmlns.com/foaf/0.1/nick&quot;">http://xmlns.com/foaf/0.1/nick&quot;</A>&gt;
+&lt;domainIntersects web:resource=&quot;<A HREF="http://xmlns.com/foaf/0.1/Person&quot;/">http://xmlns.com/foaf/0.1/Person&quot;/</A>&gt;
+&lt;domainIntersects web:resource=&quot;<A HREF="http://xmlns.com/wordnet/1.6/Person&quot;/">http://xmlns.com/wordnet/1.6/Person&quot;/</A>&gt;
+&lt;rangeIntersects web:resource=&quot;<A HREF="http://www.w3.org/2000/01/rdf-schema#Literal&quot;/">http://www.w3.org/2000/01/rdf-schema#Literal&quot;/</A>&gt;
+&lt;/web:Property&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://xmlns.com/foaf/0.1/schoolHomepage&quot;">http://xmlns.com/foaf/0.1/schoolHomepage&quot;</A>&gt;
+&lt;/web:Property&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://xmlns.com/foaf/0.1/thumbnail&quot;">http://xmlns.com/foaf/0.1/thumbnail&quot;</A>&gt;
+&lt;/web:Property&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://xmlns.com/foaf/0.1/wife&quot;">http://xmlns.com/foaf/0.1/wife&quot;</A>&gt;
+&lt;/web:Property&gt;
+
+&lt;web:Property web:about=&quot;<A HREF="http://xmlns.com/foaf/0.1/workplaceHomepage&quot;">http://xmlns.com/foaf/0.1/workplaceHomepage&quot;</A>&gt;
+&lt;/web:Property&gt;
+
+&lt;rdfs:Class web:about=&quot;<A HREF="http://xmlns.com/wordnet/1.6/Airport&quot;">http://xmlns.com/wordnet/1.6/Airport&quot;</A>&gt;
+&lt;intersectsDomainOf web:resource=&quot;<A HREF="http://www.w3.org/1999/02/22-rdf-syntax-ns#type&quot;/">http://www.w3.org/1999/02/22-rdf-syntax-ns#type&quot;/</A>&gt;
+&lt;intersectsDomainOf web:resource=&quot;<A HREF="http://www.megginson.com/exp/ns/airports#iata&quot;/">http://www.megginson.com/exp/ns/airports#iata&quot;/</A>&gt;
+&lt;intersectsDomainOf web:resource=&quot;<A HREF="http://www.megginson.com/exp/ns/airports#icao&quot;/">http://www.megginson.com/exp/ns/airports#icao&quot;/</A>&gt;
+&lt;/rdfs:Class&gt;
+
+&lt;rdfs:Class web:about=&quot;<A HREF="http://xmlns.com/wordnet/1.6/Document&quot;">http://xmlns.com/wordnet/1.6/Document&quot;</A>&gt;
+&lt;intersectsDomainOf web:resource=&quot;<A HREF="http://www.w3.org/1999/02/22-rdf-syntax-ns#type&quot;/">http://www.w3.org/1999/02/22-rdf-syntax-ns#type&quot;/</A>&gt;
+&lt;intersectsDomainOf web:resource=&quot;<A HREF="http://purl.org/dc/elements/1.1/contributor&quot;/">http://purl.org/dc/elements/1.1/contributor&quot;/</A>&gt;
+&lt;intersectsDomainOf web:resource=&quot;<A HREF="http://purl.org/dc/elements/1.1/creator&quot;/">http://purl.org/dc/elements/1.1/creator&quot;/</A>&gt;
+&lt;intersectsDomainOf web:resource=&quot;<A HREF="http://purl.org/dc/elements/1.1/description&quot;/">http://purl.org/dc/elements/1.1/description&quot;/</A>&gt;
+&lt;intersectsDomainOf web:resource=&quot;<A HREF="http://purl.org/dc/elements/1.1/format&quot;/">http://purl.org/dc/elements/1.1/format&quot;/</A>&gt;
+&lt;intersectsDomainOf web:resource=&quot;<A HREF="http://purl.org/dc/elements/1.1/subject&quot;/">http://purl.org/dc/elements/1.1/subject&quot;/</A>&gt;
+&lt;intersectsDomainOf web:resource=&quot;<A HREF="http://purl.org/dc/elements/1.1/title&quot;/">http://purl.org/dc/elements/1.1/title&quot;/</A>&gt;
+&lt;/rdfs:Class&gt;
+
+&lt;rdfs:Class web:about=&quot;<A HREF="http://xmlns.com/wordnet/1.6/Person&quot;">http://xmlns.com/wordnet/1.6/Person&quot;</A>&gt;
+&lt;intersectsDomainOf web:resource=&quot;<A HREF="http://www.w3.org/1999/02/22-rdf-syntax-ns#type&quot;/">http://www.w3.org/1999/02/22-rdf-syntax-ns#type&quot;/</A>&gt;
+&lt;intersectsDomainOf web:resource=&quot;<A HREF="http://xmlns.com/foaf/0.1/depiction&quot;/">http://xmlns.com/foaf/0.1/depiction&quot;/</A>&gt;
+&lt;intersectsDomainOf web:resource=&quot;<A HREF="http://xmlns.com/foaf/0.1/mbox&quot;/">http://xmlns.com/foaf/0.1/mbox&quot;/</A>&gt;
+&lt;intersectsDomainOf web:resource=&quot;<A HREF="http://xmlns.com/foaf/0.1/name&quot;/">http://xmlns.com/foaf/0.1/name&quot;/</A>&gt;
+&lt;intersectsDomainOf web:resource=&quot;<A HREF="http://xmlns.com/foaf/0.1/nick&quot;/">http://xmlns.com/foaf/0.1/nick&quot;/</A>&gt;
+&lt;/rdfs:Class&gt;
+&lt;/web:RDF&gt;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000186.html">getting the rdf from the FOAF schema
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#185">[ date ]</a>
+              <a href="thread.html#185">[ thread ]</a>
+              <a href="subject.html#185">[ subject ]</a>
+              <a href="author.html#185">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://lists.usefulinc.com/cgi-bin/mailman/listinfo/foaf-dev">More information about the foaf-dev
+mailing list</a><br>
+</body></html>

@@ -3,14 +3,13 @@ import { Reveal } from './utils/Reveal.js'
 
 import Transmission from './mill/Transmission.js';
 import TransmissionBuilder from './mill/TransmissionBuilder.js'
-// import { Executor } from './mill/Executor.js';
 logger.setLogLevel("debug")
 logger.debug("Hello, logger!")
 logger.debug("process.cwd() = " + process.cwd())
 
-const transmissionConfigFile = 'transmissions/file-pipeline_transmission.ttl'
-const servicesConfigFile = 'transmissions/file-pipeline_services.ttl'
+const transmissionConfigFile = 'transmissions/dirwalker-test_transmission.ttl'
+const servicesConfigFile = 'transmissions/file-pipeline_services.ttl' // not used
 
 const transmission = await TransmissionBuilder.build(transmissionConfigFile, servicesConfigFile)
 
-transmission.execute('no data')
+transmission.execute('../data/mail-archive-sample')

@@ -5,12 +5,12 @@ import { resolve } from 'node:path'
 //const { resolve } = require('node:path');
 
 import rdf from 'rdf-ext'
-import { Reveal } from '../utils/Reveal.js'
+import { Reveal } from '../../utils/Reveal.js'
 import grapoi from 'grapoi'
-import ns from '../utils/ns.js'
+import ns from '../../utils/ns.js'
 
-import logger from '../utils/Logger.js'
-import SourceService from '../mill/SourceService.js';
+import logger from '../../utils/Logger.js'
+import SourceService from '../../mill/SourceService.js'
 
 class FileSource extends SourceService {
 
@@ -31,14 +31,14 @@ class FileSource extends SourceService {
         logger.debug("sourceFile = " + this.sourceFile)
         //  logger.debug("FileSource process.cwd() = " + process.cwd())
         try {
-            const filePath = resolve(this.sourceFile)
+            const filePath = resolve(this.sourceFile) // needed?
             //  const contents = await readFile(filePath, { encoding: 'utf8' })
             const contents = await readFile(this.sourceFile, { encoding: 'utf8' })
             logger.debug(contents)
             this.emit('data', contents)
             //  return contents
         } catch (err) {
-            console.error(err.message);
+            logger.error("FileSource.execute error : " + err.message)
         }
         /*
       fs.readFileSync(this.sourceFile, 'utf8', (err, data) => {

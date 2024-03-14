@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [rdfweb-dev] foaf &amp; genealogy
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:foaf-dev%40lists.usefulinc.com?Subject=%5Brdfweb-dev%5D%20foaf%20%26%20genealogy&In-Reply-To=EBEPLGMHCDOJJJPCFHEFOEMGIKAA.danny666%40v...">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000420.html">
+   <LINK REL="Next"  HREF="000423.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[rdfweb-dev] foaf &amp; genealogy</H1>
+    <B>Dan Brickley</B> 
+    <A HREF="mailto:foaf-dev%40lists.usefulinc.com?Subject=%5Brdfweb-dev%5D%20foaf%20%26%20genealogy&In-Reply-To=EBEPLGMHCDOJJJPCFHEFOEMGIKAA.danny666%40v..."
+       TITLE="[rdfweb-dev] foaf &amp; genealogy">danbri at w...
+       </A><BR>
+    <I>Sun Dec  1 14:14:13 UTC 2002</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000420.html">foaf &amp; genealogy
+</A></li>
+        <LI>Next message: <A HREF="000423.html">[rdfweb-dev] foaf &amp; genealogy
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#421">[ date ]</a>
+              <a href="thread.html#421">[ thread ]</a>
+              <a href="subject.html#421">[ subject ]</a>
+              <a href="author.html#421">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>* Danny Ayers &lt;<A HREF="http://lists.usefulinc.com/cgi-bin/mailman/listinfo/foaf-dev">danny666 at v...</A>&gt; [2002-12-01 12:06+0100]
+&gt;<i> I just spotted a post on the <A HREF="http://lists.usefulinc.com/cgi-bin/mailman/listinfo/foaf-dev">GenealogyXML at yahoogroups.com</A> list suggesting
+</I>&gt;<i> Topic Maps for genealogy data. RDF *should* be really good for this, with
+</I>
++1
+
+&gt;<i> the one possible difficulty being how to manage the &quot;the gravestone says he
+</I>&gt;<i> died in 2003&quot; kind of data given the state of contexts &amp; reification.
+</I>
+I reckon we can work around that, simply by adopting a document-centric 
+approach to 'who said what' (just like the rest of FOAF/RDFWeb stuff does).
+
+gravestone_transcription.rdf
+...would hold an account of the world according to some gravestone, as 
+transcribed by someone. Depending on how precise you want to be, you could 
+have arbitrary levels of hairiness when representing the who/where/what etc of
+the transcription. There is a sub-tribe of the metadata world who 
+work with 'Record Keeping Metadata' and concern themselves with accuracy about 
+such things. We could probably learn a lot from them, while starting simple.
+Instead of trying to put everything in one super-sophisticated RDF file, we 
+put 'claims from some perspective' in each file.
+
+&gt;<i> I reckon the bits needed for simple genealogy should sit very nicely
+</I>&gt;<i> alongside FOAF, and it would allow the foafnaut to do families too.
+</I>
+That'd be good. There are some lists of candidate properties for foaf scattered 
+around too, but nothing comprehensive yet.
+
+dan
+
+&gt;<i> A quick Google doesn't find much - there is an old DAML vocab at
+</I>&gt;<i> <A HREF="http://orlando.drc.com/daml/Ontology/Genealogy/current/">http://orlando.drc.com/daml/Ontology/Genealogy/current/</A>
+</I>&gt;<i> 
+</I>&gt;<i> also rdf2ge12.zip RDF to GEDCOM ...
+</I>&gt;<i> <A HREF="http://ftp.cac.psu.edu/genealogy/paf/INDEX.html">http://ftp.cac.psu.edu/genealogy/paf/INDEX.html</A>
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> (fyi, I know close to nothing about gen. - I just thought family trees would
+</I>&gt;<i> make a good example use of SVG for 'Unleashed', but it started getting too
+</I>&gt;<i> big to fit in the space)
+</I>&gt;<i> 
+</I>&gt;<i> Cheers,
+</I>&gt;<i> Danny.
+</I>&gt;<i> 
+</I>&gt;<i> -----------
+</I>&gt;<i> Danny Ayers
+</I>&gt;<i> 
+</I>&gt;<i> Semantic Web Log :
+</I>&gt;<i> <A HREF="http://www.citnames.com/blog">http://www.citnames.com/blog</A>
+</I>&gt;<i> 
+</I>&gt;<i> &quot;The lyf so short, the craft so long to lerne.&quot; - Chaucer
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> To unsubscribe from this group, send an email to:
+</I>&gt;<i> <A HREF="http://lists.usefulinc.com/cgi-bin/mailman/listinfo/foaf-dev">rdfweb-dev-unsubscribe at egroups.com</A>
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Your use of Yahoo! Groups is subject to <A HREF="http://docs.yahoo.com/info/terms/">http://docs.yahoo.com/info/terms/</A> 
+</I>&gt;<i> 
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000420.html">foaf &amp; genealogy
+</A></li>
+	<LI>Next message: <A HREF="000423.html">[rdfweb-dev] foaf &amp; genealogy
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#421">[ date ]</a>
+              <a href="thread.html#421">[ thread ]</a>
+              <a href="subject.html#421">[ subject ]</a>
+              <a href="author.html#421">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://lists.usefulinc.com/cgi-bin/mailman/listinfo/foaf-dev">More information about the foaf-dev
+mailing list</a><br>
+</body></html>

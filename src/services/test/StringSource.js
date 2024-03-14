@@ -1,4 +1,4 @@
-import SourceService from '../mill/SourceService.js';
+import SourceService from '../../mill/SourceService.js';
 
 class StringSource extends SourceService {
 

@@ -1,5 +1,5 @@
-import logger from '../utils/Logger.js'
-import SinkService from '../mill/SinkService.js';
+import logger from '../../utils/Logger.js'
+import SinkService from '../../mill/SinkService.js';
 
 class StringSink extends SinkService {
 

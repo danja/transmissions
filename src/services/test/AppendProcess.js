@@ -1,5 +1,5 @@
-import logger from '../utils/Logger.js'
-import ProcessService from '../mill/ProcessService.js';
+import logger from '../../utils/Logger.js'
+import ProcessService from '../../mill/ProcessService.js';
 
 class AppendProcess extends ProcessService {
 
