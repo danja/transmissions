@@ -8,11 +8,12 @@ import FileSource from '../services/test/FileSource.js'
 import FileSink from '../services/test/FileSink.js'
 //
 import DirWalker from '../services/fs/DirWalker.js'
+import FileReader from '../services/fs/FileReader.js'
+import MetadataExtractor from '../services/markup/MetadataExtractor.js'
 
 class ServiceFactory {
     static createService(type, config) {
         logger.debug("ServiceFactory.createService : " + type.value)
-
         // for e2e tests
         if (type.equals(ns.t.StringSource)) {
             return new StringSource(config)
@@ -32,6 +33,12 @@ class ServiceFactory {
         // 
         if (type.equals(ns.t.DirWalker)) {
             return new DirWalker(config)
+        }
+        if (type.equals(ns.t.FileReader)) {
+            return new FileReader(config)
+        }
+        if (type.equals(ns.t.MetadataExtractor)) {
+            return new MetadataExtractor(config)
         }
         throw new Error("Unknown service type: " + type.value)
     }

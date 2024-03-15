@@ -1,0 +1,11 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix trm: <http://purl.org/stuff/transmission/> .
+@prefix : <http://hyperdata.it/treadmill/> . # for custom terms & instances
+
+:mailarchivemeta a trm:Pipeline ;
+    trm:pipe (:s1 :s2 :s3 :s4) .
+
+:s1 a :DirWalker .
+:s2 a :FileReader .
+:s3 a :MetadataExtractor .
+:s4 a :StringSink .
