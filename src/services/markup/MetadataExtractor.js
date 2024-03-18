@@ -12,7 +12,9 @@ class MetadataExtractor extends ProcessService {
 
         const $ = cheerio.load(contents);
 
-        const output = $('h1').text();
+        let output = $('h1').text()
+        output = output + " " + $('b').text()
+        // logger.reveal($('b').text())
         //  return output
         this.emit('data', output)
     }
