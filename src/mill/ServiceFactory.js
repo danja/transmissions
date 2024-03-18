@@ -9,6 +9,7 @@ import FileSink from '../services/test/FileSink.js'
 //
 import DirWalker from '../services/fs/DirWalker.js'
 import FileReader from '../services/fs/FileReader.js'
+import FileWriter from '../services/fs/FileWriter.js'
 import MetadataExtractor from '../services/markup/MetadataExtractor.js'
 
 class ServiceFactory {
@@ -39,6 +40,9 @@ class ServiceFactory {
         }
         if (type.equals(ns.t.MetadataExtractor)) {
             return new MetadataExtractor(config)
+        }
+        if (type.equals(ns.t.FileWriter)) {
+            return new FileWriter(config)
         }
         throw new Error("Unknown service type: " + type.value)
     }

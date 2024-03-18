@@ -8,4 +8,4 @@
 :s1 a :DirWalker .
 :s2 a :FileReader .
 :s3 a :MetadataExtractor .
-:s4 a :StringSink .
+:s4 a :FileWriter .
