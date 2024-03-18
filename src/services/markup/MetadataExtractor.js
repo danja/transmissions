@@ -81,7 +81,7 @@ class MetadataExtractor extends ProcessService {
         //   const inputString = "keep before\n>remove this\nkeep after";
         //   const cleanedString = inputString.replace(regex2, '\n');
         //   console.log(cleanedString);
-        content = content.replace(regex2, '\n').trim()
+        content = content.replace(regex2, '\n')
         //  content = (content + '\n').replace(regex2, '\n').trim();
         return content
     }
