@@ -76,11 +76,13 @@ class MetadataExtractor extends ProcessService {
         const regex1 = /(^|\n).*?:\n>/s
         content = content.replace(regex1, '$1')
 
-        const regex2 = /\n>.*+\n/s;
+        const regex2 = /\n>.*?\n/g;
+
         //   const inputString = "keep before\n>remove this\nkeep after";
         //   const cleanedString = inputString.replace(regex2, '\n');
         //   console.log(cleanedString);
-        content = content.replace(regex2, '\n')
+        content = content.replace(regex2, '\n').trim()
+        //  content = (content + '\n').replace(regex2, '\n').trim();
         return content
     }
 }
