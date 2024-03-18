@@ -1,0 +1,240 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [foaf-dev] Fwd: [StatusNet-dev] User Karma
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:foaf-dev%40lists.foaf-project.org?Subject=%5Bfoaf-dev%5D%20Fwd%3A%20%5BStatusNet-dev%5D%20User%20Karma&In-Reply-To=94081B6A-7C71-4039-A671-1C4C10B64C56%40danbri.org">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="009848.html">
+   <LINK REL="Next"  HREF="009850.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[foaf-dev] Fwd: [StatusNet-dev] User Karma</H1>
+    <B>Melvin Carvalho</B> 
+    <A HREF="mailto:foaf-dev%40lists.foaf-project.org?Subject=%5Bfoaf-dev%5D%20Fwd%3A%20%5BStatusNet-dev%5D%20User%20Karma&In-Reply-To=94081B6A-7C71-4039-A671-1C4C10B64C56%40danbri.org"
+       TITLE="[foaf-dev] Fwd: [StatusNet-dev] User Karma">melvincarvalho at gmail.com
+       </A><BR>
+    <I>Fri Nov 27 09:35:28 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="009848.html">[foaf-dev] Fwd: [StatusNet-dev] User Karma
+</A></li>
+        <LI>Next message: <A HREF="009850.html">[foaf-dev] Fwd: [StatusNet-dev] User Karma
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#9849">[ date ]</a>
+              <a href="thread.html#9849">[ thread ]</a>
+              <a href="subject.html#9849">[ subject ]</a>
+              <a href="author.html#9849">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, Nov 27, 2009 at 8:10 AM, Dan Brickley &lt;<A HREF="http://lists.foaf-project.org/mailman/listinfo/foaf-dev">danbri at danbri.org</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> Interesting discussion of karma (well not the religious kind) over on the
+</I>&gt;<i> statusnet / identi.ca list...
+</I>
+Nice post.  Not sure about their algorithm but site specific karma /
+points / thanks system is generally a good thing (I have experienced
+this in various bulletin board systems, and find it quite positive).
+Reminds me also of your post on egobanks.
+
+Obviously as identi.ca have FOAFs already, it would be ideal for users
+to have their karma as part of their FOAF, and therefore linked data
+profile, and consequently online reputation (non-spammer).
+
+Do you think we can model this and put it out as part of the next FOAF spec?
+
+&gt;<i> Dan
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Begin forwarded message:
+</I>&gt;<i>
+</I>&gt;<i> From: Jon Phillips &lt;<A HREF="http://lists.foaf-project.org/mailman/listinfo/foaf-dev">jon at status.net</A>&gt;
+</I>&gt;<i> Date: 27 November 2009 06:35:33 CET
+</I>&gt;<i> To: Christopher Vollick &lt;<A HREF="http://lists.foaf-project.org/mailman/listinfo/foaf-dev">chris at controlyourself.ca</A>&gt;
+</I>&gt;<i> Cc: statusnet-dev &lt;<A HREF="http://lists.foaf-project.org/mailman/listinfo/foaf-dev">statusnet-dev at lists.status.net</A>&gt;
+</I>&gt;<i> Subject: Re: [StatusNet-dev] User Karma
+</I>&gt;<i>
+</I>&gt;<i> &lt;toppost /&gt;
+</I>&gt;<i>
+</I>&gt;<i> This is super cool!
+</I>&gt;<i>
+</I>&gt;<i> I wrote-up a high level spec of what I'd like to see with karma in allowing
+</I>&gt;<i> people to track different types of karma, similar to some bots:
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://rejon.org/wiki/IDEA_20090906_Identica_Karma">http://rejon.org/wiki/IDEA_20090906_Identica_Karma</A>
+</I>&gt;<i>
+</I>&gt;<i> I like that your system is to be used for spam control, etc, but hey, we
+</I>&gt;<i> should just start the global karma from 0, and allow for users to give karma
+</I>&gt;<i> themselves.
+</I>&gt;<i>
+</I>&gt;<i> Also, hey, gaming the system, might allow for some cool results, depending
+</I>&gt;<i> upon how its gamed. Of course, a scenario where the spammers can game a
+</I>&gt;<i> system like I describe, might put us right back in the same boat, but still
+</I>&gt;<i> interesting.
+</I>&gt;<i>
+</I>&gt;<i> Curious your thoughts on what I propose and how your system might be adapted
+</I>&gt;<i> for this usage.
+</I>&gt;<i>
+</I>&gt;<i> My real intent is to use karma as a type of point system or game/task
+</I>&gt;<i> system, a way to drive traffic and interest.
+</I>&gt;<i>
+</I>&gt;<i> Jon
+</I>&gt;<i>
+</I>&gt;<i> On Thu, Nov 26, 2009 at 7:39 AM, Christopher Vollick
+</I>&gt;<i> &lt;<A HREF="http://lists.foaf-project.org/mailman/listinfo/foaf-dev">chris at controlyourself.ca</A>&gt; wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ** This email gets kind of long, rambley, and a little bit technical. Read
+</I>&gt;&gt;<i> as much of it as you like, and feel free to ignore the rest **
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So, today I woke up and felt like writing a User Karma thing.
+</I>&gt;&gt;<i> So, I did:
+</I>&gt;&gt;<i> <A HREF="http://gitorious.org/~cvollick/statusnet/cvollicks-clone/commits/karma">http://gitorious.org/~cvollick/statusnet/cvollicks-clone/commits/karma</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> It's intended to be for Spam Things.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The way it currently works is this:
+</I>&gt;&gt;<i> When User A subscribes to User B, User B's Karma increases by 1/10th of
+</I>&gt;&gt;<i> User A's (Assuming it's positive), by default.
+</I>&gt;&gt;<i> When they unsubscribe again those points are by default removed.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The same when one of their notices gets faved.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> When a user gets blocked their Karma goes down by 1/10th of User A's.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> When a user gets blocked by a group it's 1/50th the blocking user's karma.
+</I>&gt;&gt;<i> I did this because I figured that people are more likely to be blocked by
+</I>&gt;&gt;<i> a group for legitimate reasons that to be blocked by people.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> This required adding some more Events.
+</I>&gt;&gt;<i> Having added 4 or so of then in occasionally questionable ways, I feel
+</I>&gt;&gt;<i> like there might be a better way.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've capped Karma at -1000 and 1000.
+</I>&gt;&gt;<i> This was so that popular people like Evan and BUGabundo don't end up with,
+</I>&gt;&gt;<i> like, 1 500 000 000 karma.
+</I>&gt;&gt;<i> Then, with a single fave one of you Titans would descend from Heaven and
+</I>&gt;&gt;<i> give but a taste of your power to mortals who amuse you.
+</I>&gt;&gt;<i> Or, I feel bad for the person who one of the Titans decides to block, and
+</I>&gt;&gt;<i> completely destroys their account.
+</I>&gt;&gt;<i> Anyway....
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So, the &quot;Karma&quot; plugin is just infrastructure, it only maintains Karma,
+</I>&gt;&gt;<i> but doesn't do anything with it.
+</I>&gt;&gt;<i> So, I wrote &quot;KarmaModerator&quot; to demonstrate my vision for Karma.
+</I>&gt;&gt;<i> KarmaModerator is a second plugin that emulates sandboxing a user when
+</I>&gt;&gt;<i> their karma drops below 0 and emulates silencing a user when their karma
+</I>&gt;&gt;<i> drops below -500.
+</I>&gt;&gt;<i> At no point does it autodelete their account, but it would put them out of
+</I>&gt;&gt;<i> commission until they can be dealt with.
+</I>&gt;&gt;<i> I could have used normal silence and sandbox, but I didn't want to
+</I>&gt;&gt;<i> interfere with the other methods of sandboxing and silencing.
+</I>&gt;&gt;<i> That could have been the wrong thing to do, time (And Evan) will tell.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I tried to make a system that was not gameable.
+</I>&gt;&gt;<i> As a result, there isn't really any boot strapping.
+</I>&gt;&gt;<i> There is nothing that you should be able to do that generates Karma out of
+</I>&gt;&gt;<i> nowhere. It's all currently dependent on existing karma.
+</I>&gt;&gt;<i> This was so that newly created accounts aren't capable of wrecking things.
+</I>&gt;&gt;<i> In this system, I'll admit, if a spammer were ever able to get a
+</I>&gt;&gt;<i> significant amount of power somehow, he could do some damage to the lesser
+</I>&gt;&gt;<i> mortals.
+</I>&gt;&gt;<i> It would take a concerted effort of might to bring down one of the Titans,
+</I>&gt;&gt;<i> though.
+</I>&gt;&gt;<i> With the 1000 cap, it would take 10 people all with 1000 points blocking
+</I>&gt;&gt;<i> someone with 1000 points to even get them blacklisted.
+</I>&gt;&gt;<i> Currently nothing costs.
+</I>&gt;&gt;<i> It's possible that something like blocking requires spending Karma.
+</I>&gt;&gt;<i> I decided against that for now.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Back to bootstrapping:
+</I>&gt;&gt;<i> So, I'm planning on writing a script that takes the existing system and
+</I>&gt;&gt;<i> generates a rough Karma for existing accounts based on a few initial values.
+</I>&gt;&gt;<i> For example, it's probably be like &quot;Take the top 10 most popular accounts
+</I>&gt;&gt;<i> and give them each max karma. Now, pretend that they all just started
+</I>&gt;&gt;<i> following all the people they're following. Then pretend that they all just
+</I>&gt;&gt;<i> started blocking everyone they've blocked. Pretend they've all just faved
+</I>&gt;&gt;<i> all the things they've faved.&quot;
+</I>&gt;&gt;<i> That'd probably generate some fairly fair scores off the bat, and the
+</I>&gt;&gt;<i> system can take over from there with everyone else.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Also, there are currently ways to game the system kind.
+</I>&gt;&gt;<i> Of course, two people could fave all of each other's notices in turn
+</I>&gt;&gt;<i> gaining popularity slowly. (This is only possible once they have over 10
+</I>&gt;&gt;<i> karma)
+</I>&gt;&gt;<i> A lot of the gaming I've considered involves a chain of following and
+</I>&gt;&gt;<i> unfollowing.
+</I>&gt;&gt;<i> I considered writing another Plugin that would implement a history for
+</I>&gt;&gt;<i> this, so once I follow someone my Karma will be snapshot and any time I
+</I>&gt;&gt;<i> follow or unfollow them it will be that value.
+</I>&gt;&gt;<i> This is to fix an issue I considered where I start an account and follow
+</I>&gt;&gt;<i> someone, giving them 0/10, or 0 points.
+</I>&gt;&gt;<i> Then I become popular, and then when I decide to unfollow them, perhaps
+</I>&gt;&gt;<i> with no ill intentions, it reduces their karma by 1000/10, or 100.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Currently it's my feeling that only Moderators should be able to even see
+</I>&gt;&gt;<i> Karma.
+</I>&gt;&gt;<i> Other than that it's just a hidden value that most people don't even
+</I>&gt;&gt;<i> really know about.
+</I>&gt;&gt;<i> This makes it harder to game, because you can't see your progress.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Anyway, this is just the first iteration.
+</I>&gt;&gt;<i> I mostly just wanted to write it, so I did.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> There are probably far better ways of doing most of the things I did, but
+</I>&gt;&gt;<i> it's always easier to augment then to create.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> So, what do you think?
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> StatusNet-dev mailing list
+</I>&gt;&gt;<i> <A HREF="http://lists.foaf-project.org/mailman/listinfo/foaf-dev">StatusNet-dev at lists.status.net</A>
+</I>&gt;&gt;<i> <A HREF="http://lists.status.net/mailman/listinfo/statusnet-dev">http://lists.status.net/mailman/listinfo/statusnet-dev</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Jon Phillips
+</I>&gt;<i> <A HREF="http://rejon.org/">http://rejon.org/</A>
+</I>&gt;<i> +1.415.830.3884 (sf/global)
+</I>&gt;<i> +86.134.3957.2035 (china)
+</I>&gt;<i> Sent from Ho Chi Minh City, Vietnam
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> StatusNet-dev mailing list
+</I>&gt;<i> <A HREF="http://lists.foaf-project.org/mailman/listinfo/foaf-dev">StatusNet-dev at lists.status.net</A>
+</I>&gt;<i> <A HREF="http://lists.status.net/mailman/listinfo/statusnet-dev">http://lists.status.net/mailman/listinfo/statusnet-dev</A>
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> foaf-dev mailing list
+</I>&gt;<i> <A HREF="http://lists.foaf-project.org/mailman/listinfo/foaf-dev">foaf-dev at lists.foaf-project.org</A>
+</I>&gt;<i> <A HREF="http://lists.foaf-project.org/mailman/listinfo/foaf-dev">http://lists.foaf-project.org/mailman/listinfo/foaf-dev</A>
+</I>&gt;<i>
+</I></PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="009848.html">[foaf-dev] Fwd: [StatusNet-dev] User Karma
+</A></li>
+	<LI>Next message: <A HREF="009850.html">[foaf-dev] Fwd: [StatusNet-dev] User Karma
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#9849">[ date ]</a>
+              <a href="thread.html#9849">[ thread ]</a>
+              <a href="subject.html#9849">[ subject ]</a>
+              <a href="author.html#9849">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://lists.foaf-project.org/mailman/listinfo/foaf-dev">More information about the foaf-dev
+mailing list</a><br>
+</body></html>
