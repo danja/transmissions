@@ -1,5 +1,22 @@
 ## Treadmill TODO
 
+# Next Steps
+
+- [ ] abstractfactory registry
+- [ ] multi-thread
+
+- [ ] add command line tool, can list what's available
+- [ ]
+
+## command line tool : `treadmill`
+
+- [ ] `treadmill list` - list available pipelines
+- [ ] `treadmill run <pipeline>` - run a pipeline
+
+https://tldp.org/LDP/abs/html/standard-options.html
+
+---
+
 docs for grapoi
 
 [ ] - get file-pipeline.js running
