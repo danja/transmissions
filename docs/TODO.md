@@ -2,15 +2,35 @@
 
 # Next Steps
 
-- [ ] abstractfactory registry
-- [ ] multi-thread
+## New services/pipelines
 
-- [ ] self-describing pipeline
+### make link list
+
+- [ ] read list of URLs from file
+- [ ] fetch URL
+- [ ] save content + headers
+- [ ] load file
+- [ ] extract headers/links in order
+- [ ] save as markdown
+
+### self-describing pipeline
+
+- [ ]
+
+## Features
+
+- [ ] add `treadmill` command line tool
+- [ ] multi-thread
+- [ ] generalise pipeline shapes
+
+## Admin
+
 - [ ] JSDoc
 - [ ] unit tests
+- [ ] make treadmill.d.ts
+- [ ] add GitHub CI
 
 - [ ] add command line tool, can list what's available
-- [ ] add GitHub CI
 
 ## command line tool : `treadmill`
 
@@ -26,9 +46,6 @@ docs for grapoi
 [ ] - get file-pipeline.js running
 
 [x] - move Reveal to logger
-[ ] - make treadmill.d.ts
-[ ] - make tests
-[ ] - add JSDoc comments
 
 ### figure out how to include in other github projects
 
