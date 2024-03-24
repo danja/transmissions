@@ -4,7 +4,7 @@ import SinkService from '../../mill/SinkService.js';
 class StringSink extends SinkService {
 
     execute(data, config) {
-        logger.log("\n\nStringSink says : \"" + data + "\"\n\n")
+        logger.log("\n\nStringSink outputs : \"" + data + "\"\n\n")
     }
 }
 

@@ -1,3 +1,6 @@
+import path from 'path'
+import { fileURLToPath } from 'url'
+
 import fs from 'node:fs'
 import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
@@ -23,17 +26,24 @@ class FileSource extends SourceService {
         const dataset = this.config
         const poi = grapoi({ dataset })
         // const map = poi.out(ns.rdf.type, ns.trm.DataMap).term
-        const cwd = process.cwd() + '/../' // move!
-        this.sourceFile = cwd + poi.out(ns.trm.sourceFile).value
+        // const cwd = process.cwd() + '/../../' // move!
+        this.sourceFile = poi.out(ns.trm.sourceFile).value
     }
 
     async execute(data) {
         logger.debug("sourceFile = " + this.sourceFile)
         //  logger.debug("FileSource process.cwd() = " + process.cwd())
         try {
-            const filePath = resolve(this.sourceFile) // needed?
-            //  const contents = await readFile(filePath, { encoding: 'utf8' })
-            const contents = await readFile(this.sourceFile, { encoding: 'utf8' })
+            const __filename = fileURLToPath(import.meta.url);
+            logger.debug("__filename = " + __filename)
+            const __dirname = path.dirname(__filename)
+            logger.debug("__dirname = " + __dirname)
+            const rootDir = path.resolve(__dirname, '../../../') //
+            logger.debug("rootDir = " + rootDir)
+            const filePath = path.join(rootDir, this.sourceFile);
+            logger.debug("filePath = " + filePath)
+            const contents = await readFile(filePath, { encoding: 'utf8' })
+            //     const contents = await readFile(this.sourceFile, { encoding: 'utf8' })
             logger.debug(contents)
             this.emit('data', contents)
             //  return contents

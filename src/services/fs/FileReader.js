@@ -1,3 +1,5 @@
+import path from 'path'
+import { fileURLToPath } from 'url'
 import fs from 'node:fs'
 import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'

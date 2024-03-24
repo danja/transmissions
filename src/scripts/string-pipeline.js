@@ -1,17 +1,20 @@
-// import { promisify } from 'util'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-import logger from './utils/Logger.js'
-import { Reveal } from './utils/Reveal.js'
+import logger from '../utils/Logger.js'
 
-import Transmission from './mill/Transmission.js';
-import TransmissionBuilder from './mill/TransmissionBuilder.js'
+import TransmissionBuilder from '../mill/TransmissionBuilder.js'
 
-logger.setLogLevel("info")
+logger.setLogLevel("debug")
 logger.debug("Hello, logger!")
 logger.debug("process.cwd() = " + process.cwd())
 
-const transmissionConfigFile = 'transmissions/string-pipeline_transmission.ttl'
-const servicesConfigFile = 'transmissions/string-pipeline_services.ttl' // not used
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename)
+const rootDir = path.resolve(__dirname, '../')
+
+const transmissionConfigFile = path.join(rootDir, 'transmissions/string-pipeline_transmission.ttl');
+const servicesConfigFile = path.join(rootDir, 'transmissions/string-pipeline_services.ttl');
 
 const transmission = await TransmissionBuilder.build(transmissionConfigFile, servicesConfigFile)
 

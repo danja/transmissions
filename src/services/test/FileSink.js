@@ -1,3 +1,6 @@
+import path from 'path'
+import { fileURLToPath } from 'url'
+
 import { writeFile } from 'node:fs/promises';
 import { Buffer } from 'node:buffer';
 
@@ -14,15 +17,18 @@ class FileSink extends SinkService {
         const dataset = this.config
         const poi = grapoi({ dataset })
         // const map = poi.out(ns.rdf.type, ns.trm.DataMap).term
-        const cwd = process.cwd() + '/../' // move!
-        this.destinationFile = cwd + poi.out(ns.trm.destinationFile).value
+        //  const cwd = process.cwd() + '/../../' // move!
+        this.destinationFile = poi.out(ns.trm.destinationFile).value
     }
 
     async execute(data) {
         // const filename = "erwerwer"
-        // fs.writeFileSync(filename, data)
-        logger.debug("sink destinationFile = " + this.destinationFile)
-        await writeFile(this.destinationFile, data);
+        const __filename = fileURLToPath(import.meta.url);
+        const __dirname = path.dirname(__filename)
+        const rootDir = path.resolve(__dirname, '../../../')
+        const filePath = path.join(rootDir, this.destinationFile)
+        logger.debug("sink filePath = " + filePath)
+        await writeFile(filePath, data);
     }
 }
 
