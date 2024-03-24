@@ -5,8 +5,12 @@
 - [ ] abstractfactory registry
 - [ ] multi-thread
 
+- [ ] self-describing pipeline
+- [ ] JSDoc
+- [ ] unit tests
+
 - [ ] add command line tool, can list what's available
-- [ ]
+- [ ] add GitHub CI
 
 ## command line tool : `treadmill`
 
@@ -21,7 +25,7 @@ docs for grapoi
 
 [ ] - get file-pipeline.js running
 
-[ ] - move Reveal to logger
+[x] - move Reveal to logger
 [ ] - make treadmill.d.ts
 [ ] - make tests
 [ ] - add JSDoc comments

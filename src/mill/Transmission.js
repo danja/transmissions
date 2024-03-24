@@ -1,5 +1,4 @@
 import logger from '../utils/Logger.js'
-import { Reveal } from '../utils/Reveal.js'
 import Connector from './Connector.js'
 
 class Transmission {

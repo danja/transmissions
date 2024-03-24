@@ -2,13 +2,12 @@ import { readdir } from 'fs/promises'
 import { join, extname } from 'path'
 
 import rdf from 'rdf-ext'
-import { Reveal } from '../../utils/Reveal.js'
 import grapoi from 'grapoi'
 import ns from '../../utils/ns.js'
 import logger from '../../utils/Logger.js'
 // import { EventEmitter } from 'events'
 
-import SourceService from '../../mill/SourceService.js'
+import SourceService from '../base/SourceService.js'
 
 class DirWalker extends SourceService {
 

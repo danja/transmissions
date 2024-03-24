@@ -1,4 +1,4 @@
-import logger from '../utils/Logger.js'
+import logger from '../../utils/Logger.js'
 import Service from './Service.js'
 
 class ProcessService extends Service {

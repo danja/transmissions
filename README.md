@@ -10,7 +10,7 @@ The code is in active development, ie. **not stable**, subject to arbitrary chan
 
 Documentation will be lagging behind code, be incomplete and out of date.
 
-**2024-03-14** : making progress - the code is now in a state where it can be used to build simple data processing pipelines.
+**2024-03-24** : a couple of simple data processing pipelines working and wired up as Jasmine e2e tests in place; started to develop actually useful pipelines for [foaf-archive](https://github.com/danja/foaf-archive) project
 
 ## Motivation
 

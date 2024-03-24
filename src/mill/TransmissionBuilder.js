@@ -3,9 +3,8 @@ import { fromFile, toFile } from 'rdf-utils-fs'
 import grapoi from 'grapoi'
 
 import logger from '../utils/Logger.js'
-import { Reveal } from '../utils/Reveal.js'
 
-import ServiceFactory from "./ServiceFactory.js";
+import AbstractServiceFactory from "./AbstractServiceFactory.js";
 import Transmission from './Transmission.js'
 import ns from '../utils/ns.js'
 
@@ -59,7 +58,8 @@ class TransmissionBuilder {
       logger.debug("\nserviceType = " + serviceType.value)
 
       logger.log("Create/register service <" + serviceName + "> of type <" + serviceType.value + ">")
-      let service = ServiceFactory.createService(serviceType, servicesConfig)
+
+      let service = AbstractServiceFactory.createService(serviceType, servicesConfig)
       transmission.register(serviceName, service)
 
       if (i != 0) {

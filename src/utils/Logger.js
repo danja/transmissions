@@ -1,7 +1,7 @@
 // VanillaJS Logger
 // 
 // NOTE: You probably shouldn't use this in production... you've been warned.
-let logger = {};
+let logger = {}
 
 // Log levels
 // debug=0, info=1, log=2, warn=3, error=4

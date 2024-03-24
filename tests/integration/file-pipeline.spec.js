@@ -9,7 +9,7 @@ describe('file-pipeline', function () {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename)
     const rootDir = path.resolve(__dirname, '../../')
-    console.log('in f spec rootDir = ' + rootDir)
+    // console.log('in f spec rootDir = ' + rootDir)
     it('produces correct output', function (done) {
         // Delete the output file if it exists
         if (fs.existsSync(rootDir + '/data/output.txt')) {

@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio'
 
 import logger from '../../utils/Logger.js'
-import ProcessService from '../../mill/ProcessService.js';
+import ProcessService from '../base/ProcessService.js'
 
 class MetadataExtractor extends ProcessService {
 

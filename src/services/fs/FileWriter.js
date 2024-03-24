@@ -5,7 +5,7 @@ import grapoi from 'grapoi'
 import ns from '../../utils/ns.js'
 import logger from '../../utils/Logger.js'
 import fs from "node:fs"
-import SinkService from '../../mill/SinkService.js';
+import SinkService from '../base/SinkService.js';
 
 class FileWriter extends SinkService {
 
