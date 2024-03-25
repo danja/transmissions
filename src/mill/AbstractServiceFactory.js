@@ -7,6 +7,7 @@ import FsServicesFactory from '../services/fs/FsServicesFactory.js'
 import MarkupServicesFactory from '../services/markup/MarkupServicesFactory.js'
 import UtilServicesFactory from '../services/util/UtilServicesFactory.js'
 import TextServicesFactory from '../services/text/TextServicesFactory.js'
+import ProtocolsServicesFactory from '../services/protocols/ProtocolsServicesFactory.js'
 
 class AbstractServiceFactory {
 
@@ -17,23 +18,21 @@ class AbstractServiceFactory {
         logger.debug("ServiceFactory.createService : " + type.value)
 
         var service = TestServicesFactory.createService(type, config)
-
         if (service) return service
 
         var service = UtilServicesFactory.createService(type, config)
-
         if (service) return service
 
         service = FsServicesFactory.createService(type, config)
-
         if (service) return service
 
         service = MarkupServicesFactory.createService(type, config)
-
         if (service) return service
 
         service = TextServicesFactory.createService(type, config)
+        if (service) return service
 
+        service = ProtocolsServicesFactory.createService(type, config)
         if (service) return service
 
         throw new Error("Unknown service type: " + type.value)

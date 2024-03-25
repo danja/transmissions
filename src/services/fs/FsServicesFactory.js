@@ -19,9 +19,10 @@ class FsServicesFactory {
         if (type.equals(ns.t.FileWriter)) {
             return new FileWriter(config)
 
-            return false
+
             //  throw new Error("Unknown service type: " + type.value)
         }
+        return false
     }
 }
 

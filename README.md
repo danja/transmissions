@@ -2,6 +2,8 @@
 
 A micro-framework to simplify construction of small data processing applications in JavaScript.
 
+A bit like `make` or a `package.json` builder
+
 ![Treadmill](https://github.com/danja/treadmill/blob/main/docs/images/treadmill.jpg)
 
 ### Status

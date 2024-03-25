@@ -7,13 +7,13 @@ class MetadataExtractor extends ProcessService {
 
     async execute(data) {
         const filename = data.filename
-        const contents = data.contents
+        const content = data.content
 
         logger.debug("MetadataExtractor input file : " + filename)
         const targetFilename = this.relocate(filename)
         logger.debug("MetadataExtractor outputfile : " + targetFilename)
 
-        const jsonData = this.convertEmailToJSON(contents)
+        const jsonData = this.convertEmailToJSON(content)
 
         const jsonString = JSON.stringify(jsonData)
 

@@ -3,8 +3,11 @@
 @prefix : <http://hyperdata.it/treadmill/> . # for custom terms & instances
 
 :linklister a trm:Pipeline ;
-    trm:pipe (:s1 :s2 :s3) .
+    trm:pipe (:s1 :s2 :s3 :s4 :s5 :s6) .
 
 :s1 a :FileReader .
 :s2 a :LineReader .
-:s3 a :ShowDataService .
+:s3 a :HttpGet .
+:s4 a :FileWriter .
+:s5 a :LinkFinder .
+:s6 a :FileWriter .

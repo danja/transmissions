@@ -13,7 +13,7 @@ let footpath = {}
 
 footpath.resolve = function footpath(here, relative, start) {
 
-    const loggy = true
+    const loggy = false
     if (loggy) {
         logger.debug("\n*** start footpath.resolve ***")
         logger.debug("process.cwd() = " + process.cwd())
