@@ -22,13 +22,15 @@ class FileSink extends SinkService {
     }
 
     async execute(data) {
-        // const filename = "erwerwer"
+        const sf = footpath.resolve(import.meta.url, '../../../', this.destinationFile)
+        /*
         const __filename = fileURLToPath(import.meta.url);
         const __dirname = path.dirname(__filename)
         const rootDir = path.resolve(__dirname, '../../../')
         const filePath = path.join(rootDir, this.destinationFile)
-        logger.debug("sink filePath = " + filePath)
-        await writeFile(filePath, data);
+        */
+        logger.debug("FileSink to = " + sf)
+        await writeFile(sf, data);
     }
 }
 

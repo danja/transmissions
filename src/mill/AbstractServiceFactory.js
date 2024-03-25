@@ -5,6 +5,8 @@ import ns from '../utils/ns.js'
 import TestServicesFactory from '../services/test/TestServicesFactory.js'
 import FsServicesFactory from '../services/fs/FsServicesFactory.js'
 import MarkupServicesFactory from '../services/markup/MarkupServicesFactory.js'
+import UtilServicesFactory from '../services/util/UtilServicesFactory.js'
+import TextServicesFactory from '../services/text/TextServicesFactory.js'
 
 class AbstractServiceFactory {
 
@@ -18,11 +20,19 @@ class AbstractServiceFactory {
 
         if (service) return service
 
+        var service = UtilServicesFactory.createService(type, config)
+
+        if (service) return service
+
         service = FsServicesFactory.createService(type, config)
 
         if (service) return service
 
         service = MarkupServicesFactory.createService(type, config)
+
+        if (service) return service
+
+        service = TextServicesFactory.createService(type, config)
 
         if (service) return service
 

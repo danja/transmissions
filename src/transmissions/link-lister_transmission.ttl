@@ -1,0 +1,10 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix trm: <http://purl.org/stuff/transmission/> .
+@prefix : <http://hyperdata.it/treadmill/> . # for custom terms & instances
+
+:linklister a trm:Pipeline ;
+    trm:pipe (:s1 :s2 :s3) .
+
+:s1 a :FileReader .
+:s2 a :LineReader .
+:s3 a :ShowDataService .
