@@ -13,15 +13,19 @@
 - [ ] extract headers/links in order
 - [ ] save as markdown
 
+### filter my bookmarks for FOAF
+
 ### self-describing pipeline
 
 ### JSDoc RDFDoc template!!
+
+https://jsdoc.app/about-configuring-default-template
 
 - [ ]
 
 ## Features
 
-- [ ] add `treadmill` command line tool
+- [ ] add `treadmill` command line tool https://tldp.org/LDP/abs/html/standard-options.html
 - [ ] multi-thread
 - [ ] generalise pipeline shapes
 
