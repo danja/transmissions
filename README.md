@@ -34,6 +34,10 @@ _... which is a little over the top, but it's a fair list of things that might b
 
 **Docs below need updating**
 
+for later :
+
+The [Community Solid Server](https://github.com/CommunitySolidServer/CommunitySolidServer) uses [Components.js](https://componentsjs.readthedocs.io/en/latest/) to specify how modules and components need to be wired together at runtime. Components.js is a dependency injection framework for JavaScript applications.
+
 ## What it is
 
 A low-level system for data processing pipelines/networks. Wherever convenient functionality will be defined declaratively with JSON-LD configuration files.

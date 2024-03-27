@@ -6,7 +6,7 @@ import LinkFinder from './LinkFinder.js'
 
 class MarkupServicesFactory {
     static createService(type, config) {
-        logger.debug("ServiceFactory.createService : " + type.value)
+        logger.debug("MarkupServicesFactory.createService : " + type.value)
 
         if (type.equals(ns.t.MetadataExtractor)) {
             return new MetadataExtractor(config)
@@ -16,7 +16,6 @@ class MarkupServicesFactory {
         }
 
         return false
-        //  throw new Error("Unknown service type: " + type.value)
     }
 }
 

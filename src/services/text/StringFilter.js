@@ -1,9 +1,9 @@
 import logger from '../../utils/Logger.js'
-import Service from './Service.js'
+import ProcessService from './Service.js'
 
-class ProcessService extends Service {
+class StringFilter extends ProcessService {
     constructor(config) {
-        super(config)
+        super(config);
     }
 
     async execute(data) {
@@ -11,4 +11,4 @@ class ProcessService extends Service {
     }
 }
 
-export default ProcessService
+export default StringFilter

@@ -2,12 +2,10 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import { writeFile } from 'node:fs/promises';
-import { Buffer } from 'node:buffer';
-
+import footpath from '../../utils/footpath.js'
 import grapoi from 'grapoi'
 import ns from '../../utils/ns.js'
 import logger from '../../utils/Logger.js'
-import fs from "node:fs"
 import SinkService from '../base/SinkService.js'
 
 class FileSink extends SinkService {

@@ -8,7 +8,7 @@ import FileWriter from './FileWriter.js'
 
 class FsServicesFactory {
     static createService(type, config) {
-        logger.debug("ServiceFactory.createService : " + type.value)
+        logger.debug("FsServicesFactory.createService : " + type.value)
 
         if (type.equals(ns.t.DirWalker)) {
             return new DirWalker(config)
@@ -18,9 +18,6 @@ class FsServicesFactory {
         }
         if (type.equals(ns.t.FileWriter)) {
             return new FileWriter(config)
-
-
-            //  throw new Error("Unknown service type: " + type.value)
         }
         return false
     }

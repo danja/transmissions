@@ -11,7 +11,7 @@ import FileSink from './FileSink.js'
 
 class TestServicesFactory {
     static createService(type, config) {
-        logger.debug("ServiceFactory.createService : " + type.value)
+        logger.debug("TestServicesFactory.createService : " + type.value)
 
         // for e2e tests
         // String
@@ -34,7 +34,6 @@ class TestServicesFactory {
         }
 
         return false
-        //  throw new Error("Unknown service type: " + type.value)
     }
 }
 

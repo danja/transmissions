@@ -20,6 +20,7 @@ class FileSource extends SourceService {
 
     constructor(config) {
         super(config)
+        console.log("COFIG = " + config)
         const dataset = this.config
         const poi = grapoi({ dataset })
         // const map = poi.out(ns.rdf.type, ns.trm.DataMap).term
