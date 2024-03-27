@@ -52,3 +52,5 @@ maybe make fork & join explicit?
 
 :s2 :join :s4 .
 :s3 :join :s4 .
+
+also explicit start & end?
