@@ -5,7 +5,7 @@ class SinkService extends Service {
         super(config)
     }
 
-    async execute(data) {
+    async execute(data, context) {
         // Consume data
     }
 }

@@ -3,7 +3,7 @@ import SinkService from '../base/SinkService.js'
 
 class StringSink extends SinkService {
 
-    execute(data, config) {
+    execute(data, context) {
         logger.log("\n\nStringSink outputs : \"" + data + "\"\n\n")
     }
 }

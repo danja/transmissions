@@ -18,14 +18,14 @@ class HttpGet extends ProcessService {
         */
     }
 
-    async execute(url) {
+    async execute(url, context) {
         try {
             const response = await axios.get(url);
             //  console.log(response);
             const filename = 'data/got.txt'
             const content = response.data
             const data = { filename: filename, content: content }
-            this.emit('data', data)
+            this.emit('data', data, context)
         } catch (error) {
             // console.error(error);
         }

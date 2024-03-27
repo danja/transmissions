@@ -15,8 +15,8 @@ class Connector extends EventEmitter {
 
         console.log('Connecting from:', this.fromName, 'to:', this.toName)
 
-        fromService.on('data', (data) => {
-            toService.execute(data);
+        fromService.on('data', (data, context = {}) => {
+            toService.execute(data, context);
         })
     }
 

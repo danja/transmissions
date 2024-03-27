@@ -13,13 +13,13 @@ class LineReader extends ProcessService {
         super(config)
     }
 
-    async execute(data) {
+    async execute(data, context) {
         const text = data.content.toString();
 
         text.split('\n').forEach(line => {
             if (line.trim() && !line.startsWith('#')) {
                 //  console.log(line);
-                this.emit('data', line)
+                this.emit('data', line, context)
             }
         })
     }

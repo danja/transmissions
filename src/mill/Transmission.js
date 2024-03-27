@@ -25,7 +25,7 @@ class Transmission {
     connector.connect(this.services)
   }
 
-  async execute(data) {
+  async execute(data, context) {
     logger.log("\n*** Execution ***")
     const serviceName = this.connectors[0].fromName
 
@@ -33,7 +33,7 @@ class Transmission {
     logger.log("\nTransmission running service : " + serviceName)
 
     // Start the first service
-    service.execute(data)
+    service.execute(data, context)
   }
 }
 

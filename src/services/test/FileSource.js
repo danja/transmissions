@@ -28,7 +28,7 @@ class FileSource extends SourceService {
         this.sourceFile = poi.out(ns.trm.sourceFile).value
     }
 
-    async execute(data) {
+    async execute(data, context) {
         logger.debug("sourceFile = " + this.sourceFile)
         //  logger.debug("FileSource process.cwd() = " + process.cwd())
         try {
@@ -36,7 +36,7 @@ class FileSource extends SourceService {
 
             const contents = await readFile(sf, { encoding: 'utf8' })
             logger.debug(contents)
-            this.emit('data', contents)
+            this.emit('data', contents, context)
         } catch (err) {
             logger.error("FileSource.execute error : " + err.message)
         }

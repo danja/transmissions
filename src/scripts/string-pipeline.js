@@ -18,23 +18,4 @@ const scf = footpath.resolve(import.meta.url, '../', servicesConfigFile)
 
 const transmission = await TransmissionBuilder.build(tcf, scf)
 
-transmission.execute("Hello")
-
-/*
-const config = {
-    "inputFilePath": "./input.txt",
-    "outputFilePath": "./output.txt"
-}
-*/
-/*
-stringPipe.execute = promisify(stringPipe.execute)
-
-    (async () => {
-        try {
-            const result = await stringPipe.execute(simplePipe);
-            console.log('Pipeline result:', result);
-        } catch (error) {
-            console.error('Error executing pipeline:', error);
-        }
-    })()
-    */
+transmission.execute('Hello')

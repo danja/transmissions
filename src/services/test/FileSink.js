@@ -19,7 +19,7 @@ class FileSink extends SinkService {
         this.destinationFile = poi.out(ns.trm.destinationFile).value
     }
 
-    async execute(data) {
+    async execute(data, context) {
         const sf = footpath.resolve(import.meta.url, '../../../', this.destinationFile)
         /*
         const __filename = fileURLToPath(import.meta.url);

@@ -18,14 +18,14 @@ class FileWriter extends SinkService {
         this.destinationFile = cwd + poi.out(ns.trm.destinationFile).value
     }
 
-    async execute(data) {
+    async execute(data, context) {
         //   logger.reveal(data)
         //   logger.debug('data.filename = ' + data.filename)
         //   logger.debug('data.content = ' + data.content)
         await writeFile(data.filename, data.content)
         //  logger.debug("sink destinationFile = " + this.destinationFile)
         // await writeFile(this.destinationFile, data);
-        this.emit('data', data)
+        this.emit('data', data, context)
     }
 }
 

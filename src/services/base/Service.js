@@ -7,7 +7,7 @@ class Service extends EventEmitter {
         this.config = config
     }
 
-    async execute(data) {
+    async execute(data, context) {
         throw new Error('execute method not implemented')
     }
 }

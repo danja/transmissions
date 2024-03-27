@@ -2,8 +2,10 @@ import SourceService from '../base/SourceService.js'
 
 class StringSource extends SourceService {
 
-    async execute(data) {
-        this.emit('data', data)
+    async execute(data, context) {
+        console.log("context = " + context)
+        console.log("data = " + data)
+        this.emit('data', data, context)
     }
 }
 

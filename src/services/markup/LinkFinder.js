@@ -5,7 +5,7 @@ import ProcessService from '../base/ProcessService.js'
 
 class LinkFinder extends ProcessService {
 
-    async execute(data) {
+    async execute(data, context) {
         this.baseUrl = 'http://example.org'
         const filename = data.filename
         const content = data.content
@@ -17,7 +17,7 @@ class LinkFinder extends ProcessService {
         const markdown = this.extractLinks(content)
         const output = { filename: targetFilename, content: markdown }
 
-        this.emit('data', output)
+        this.emit('data', output, context)
     }
 
     relocate(filename, extension) {
