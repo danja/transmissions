@@ -17,7 +17,7 @@ class LinkFinder extends ProcessService {
         const markdown = this.extractLinks(content)
         const output = { filename: targetFilename, content: markdown }
 
-        this.emit('data', output, context)
+        this.emit('message', output, context)
     }
 
     relocate(filename, extension) {

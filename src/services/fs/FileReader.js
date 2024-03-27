@@ -27,7 +27,7 @@ class FileReader extends SourceService {
             const content = await readFile(f)
             //    logger.debug(content.toString())
             const data = { filename: filename, content: content }
-            this.emit('data', data, context)
+            this.emit('message', data, context)
         } catch (err) {
             logger.error("FileReader.execute error : " + err.message)
         }

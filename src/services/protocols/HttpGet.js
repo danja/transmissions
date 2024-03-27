@@ -25,7 +25,7 @@ class HttpGet extends ProcessService {
             const filename = 'data/got.txt'
             const content = response.data
             const data = { filename: filename, content: content }
-            this.emit('data', data, context)
+            this.emit('message', data, context)
         } catch (error) {
             // console.error(error);
         }

@@ -1,838 +1,2623 @@
-[Jump to content](http://example.org/#bodyContent)
+# FOAF Vocabulary Specification 0.99
 
-[Main page](http://example.org/wiki/Main_Page)
+## Namespace Document 14 January 2014 - Paddington Edition
 
-[Contents](http://example.org/wiki/Wikipedia:Contents)
+[http://xmlns.com/foaf/spec/20140114.html](http://xmlns.com/foaf/spec/20140114.html)
 
-[Current events](http://example.org/wiki/Portal:Current_events)
+[rdf](http://example.org/20140114.rdf)
 
-[Random article](http://example.org/wiki/Special:Random)
+[http://xmlns.com/foaf/spec/](http://xmlns.com/foaf/spec/)
 
-[About Wikipedia](http://example.org/wiki/Wikipedia:About)
+[rdf](http://example.org/index.rdf)
 
-[Contact us](http://en.wikipedia.org/wiki/Wikipedia:Contact_us)
+[http://xmlns.com/foaf/spec/20100809.html](http://xmlns.com/foaf/spec/20100809.html)
 
-[Donate](https://donate.wikimedia.org/wiki/Special:FundraiserRedirector?utm_source=donate&utm_medium=sidebar&utm_campaign=C13_en.wikipedia.org&uselang=en)
+[rdf](http://example.org/20100809.rdf)
 
-[Help](http://example.org/wiki/Help:Contents)
+[Dan Brickley](mailto:danbri@danbri.org)
 
-[Learn to edit](http://example.org/wiki/Help:Introduction)
+[Libby Miller](mailto:libby@nicecupoftea.org)
 
-[Community portal](http://example.org/wiki/Wikipedia:Community_portal)
+[foaf-dev@lists.foaf-project.org](http://lists.foaf-project.org/)
 
-[Recent changes](http://example.org/wiki/Special:RecentChanges)
+[RDF
+    and Semantic Web developer community](http://www.w3.org/2001/sw/interest/)
 
-[Upload file](http://example.org/wiki/Wikipedia:File_upload_wizard)
+[acknowledgements](http://example.org/#sec-ack)
 
-[
-	
-	
-		
-		
-	
-](http://example.org/wiki/Main_Page)
+[](http://creativecommons.org/licenses/by/1.0/)
 
-[
+[Creative Commons Attribution License](http://creativecommons.org/licenses/by/1.0/)
 
-Search
-	](http://example.org/wiki/Special:Search)
+[RDF](http://www.w3.org/RDF/)
 
-[Create account](http://example.org/w/index.php?title=Special:CreateAccount&returnto=FOAF)
+## Abstract
 
-[Log in](http://example.org/w/index.php?title=Special:UserLogin&returnto=FOAF)
+## Status of This Document
 
-[ Create account](http://example.org/w/index.php?title=Special:CreateAccount&returnto=FOAF)
+[change](http://example.org/#sec-evolution)
 
-[ Log in](http://example.org/w/index.php?title=Special:UserLogin&returnto=FOAF)
+[FOAF project](http://www.foaf-project.org/)
 
-[learn more](http://example.org/wiki/Help:Introduction)
+[RDFS/OWL](http://example.org/index.rdf)
 
-[Contributions](http://example.org/wiki/Special:MyContributions)
+[per-term](http://example.org/doc/)
 
-[Talk](http://example.org/wiki/Special:MyTalk)
+[multilingual translations](http://svn.foaf-project.org/foaftown/foaf18n/)
 
-## Contents
+[direct link](http://example.org/index.rdf)
 
-[
-				(Top)
-			](http://example.org/#)
+[content negotiation](http://en.wikipedia.org/wiki/Content_negotiation)
 
-[
-			
-			1WebID
-		](http://example.org/#WebID)
+[namespace URI](http://xmlns.com/foaf/0.1/)
 
-[
-			
-			2Deployment
-		](http://example.org/#Deployment)
+[foaf-dev@lists.foaf-project.org](mailto:foaf-dev@lists.foaf-project.org)
 
-[
-			
-			3Example
-		](http://example.org/#Example)
+[public archives](http://lists.foaf-project.org)
 
-[
-			
-			4History
-		](http://example.org/#History)
+[FOAF mailing list](mailto:foaf-dev@lists.foaf-project.org)
 
-[
-				
-				4.1Versions
-			](http://example.org/#Versions)
+[FOAF website](http://www.foaf-project.org/)
 
-[
-			
-			5See also
-		](http://example.org/#See_also)
+### Changes in version 0.99
 
-[
-			
-			6References
-		](http://example.org/#References)
+[changes](http://example.org/#sec-changes)
 
-[
-			
-			7External links
-		](http://example.org/#External_links)
+## Table of Contents
 
-# FOAF
+[FOAF at a glance](http://example.org/#sec-glance)
 
-[Català](https://ca.wikipedia.org/wiki/FOAF)
+[Introduction](http://example.org/#sec-intro)
 
-[Deutsch](https://de.wikipedia.org/wiki/FOAF)
+[The Semantic Web](http://example.org/#sec-sw)
 
-[Español](https://es.wikipedia.org/wiki/FOAF)
+[FOAF and the Semantic Web](http://example.org/#sec-foafsw)
 
-[فارسی](https://fa.wikipedia.org/wiki/%D8%A7%D9%81%E2%80%8C%D8%A7%D9%88%D8%A7%DB%8C%E2%80%8C%D8%A7%D9%81_(%D9%87%D8%B3%D8%AA%DB%8C%E2%80%8C%D8%B4%D9%86%D8%A7%D8%B3%DB%8C))
+[What's FOAF for?](http://example.org/#sec-for)
 
-[Français](https://fr.wikipedia.org/wiki/FOAF)
+[Background](http://example.org/#sec-bg)
 
-[Italiano](https://it.wikipedia.org/wiki/FOAF)
+[FOAF and Standards](http://example.org/#sec-standards)
 
-[Latviešu](https://lv.wikipedia.org/wiki/FOAF)
+[Evolution and Extension of FOAF](http://example.org/#sec-evolution)
 
-[Nederlands](https://nl.wikipedia.org/wiki/FOAF)
+[FOAF Auto-Discovery: Publishing and Linking FOAF files](http://example.org/#sec-autodesc)
 
-[日本語](https://ja.wikipedia.org/wiki/Friend_of_a_Friend)
+[FOAF cross-reference: Listing FOAF Classes and Properties](http://example.org/#sec-crossref)
 
-[Norsk bokmål](https://no.wikipedia.org/wiki/FOAF)
+[External Vocabulary References](http://example.org/#sec-extrefs)
 
-[Polski](https://pl.wikipedia.org/wiki/FOAF_(format))
+[Acknowledgments](http://example.org/#sec-ack)
 
-[Português](https://pt.wikipedia.org/wiki/FOAF)
+[Recent Changes](http://example.org/#sec-changes)
 
-[Русский](https://ru.wikipedia.org/wiki/FOAF)
+[](undefined)
 
-[Українська](https://uk.wikipedia.org/wiki/FOAF)
+## FOAF at a glance
 
-[Edit links](https://www.wikidata.org/wiki/Special:EntityPage/Q1389366#sitelinks-wikipedia)
+[Dublin Core](http://www.dublincore.org/)
 
-[Article](http://example.org/wiki/FOAF)
+[SKOS](http://www.w3.org/2004/02/skos/)
 
-[Talk](http://example.org/wiki/Talk:FOAF)
+[DOAP](http://trac.usefulinc.com/doap)
 
-[Read](http://example.org/wiki/FOAF)
+[SIOC](http://sioc-project.org/)
 
-[Edit](http://example.org/w/index.php?title=FOAF&action=edit)
+[Org vocabulary](http://www.epimorphics.com/public/vocabulary/org.html)
 
-[View history](http://example.org/w/index.php?title=FOAF&action=history)
+[Bio vocabulary](http://vocab.org/bio/0.1/.html)
 
-[Read](http://example.org/wiki/FOAF)
+[Portable Contacts](http://portablecontacts.net/)
 
-[Edit](http://example.org/w/index.php?title=FOAF&action=edit)
+[W3C Social Web group](http://www.w3.org/2005/Incubator/socialweb/)
 
-[View history](http://example.org/w/index.php?title=FOAF&action=history)
+[geekcode](http://example.org/#term_geekcode)
 
-[What links here](http://example.org/wiki/Special:WhatLinksHere/FOAF)
+[focus](http://example.org/#term_focus)
 
-[Related changes](http://example.org/wiki/Special:RecentChangesLinked/FOAF)
+[LabelProperty](http://example.org/#term_LabelProperty)
 
-[Upload file](http://example.org/wiki/Wikipedia:File_Upload_Wizard)
+### FOAF Core
 
-[Special pages](http://example.org/wiki/Special:SpecialPages)
+[Agent](http://example.org/#term_Agent)
 
-[Permanent link](http://example.org/w/index.php?title=FOAF&oldid=1165941964)
+[Person](http://example.org/#term_Person)
 
-[Page information](http://example.org/w/index.php?title=FOAF&action=info)
+[name](http://example.org/#term_name)
 
-[Cite this page](http://example.org/w/index.php?title=Special:CiteThisPage&page=FOAF&id=1165941964&wpFormIdentifier=titleform)
+[title](http://example.org/#term_title)
 
-[Get shortened URL](http://example.org/w/index.php?title=Special:UrlShortener&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FFOAF)
+[img](http://example.org/#term_img)
 
-[Download QR code](http://example.org/w/index.php?title=Special:QrCode&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FFOAF)
+[depiction](http://example.org/#term_depiction)
 
-[Wikidata item](https://www.wikidata.org/wiki/Special:EntityPage/Q1389366)
+[depicts](http://example.org/#term_depicts)
 
-[Download as PDF](http://example.org/w/index.php?title=Special:DownloadAsPdf&page=FOAF&action=show-download-screen)
+[familyName](http://example.org/#term_familyName)
 
-[Printable version](http://example.org/w/index.php?title=FOAF&printable=yes)
+[givenName](http://example.org/#term_givenName)
 
-[Wikimedia Commons](https://commons.wikimedia.org/wiki/Category:FOAF)
+[knows](http://example.org/#term_knows)
 
-[friend of a friend](http://example.org/wiki/Friend_of_a_friend)
+[based_near](http://example.org/#term_based_near)
 
-[Friend of a Friend (disambiguation)](http://example.org/wiki/Friend_of_a_Friend_(disambiguation))
+[age](http://example.org/#term_age)
 
-[](http://example.org/wiki/File:FoafLogo.svg)
+[made](http://example.org/#term_made)
 
-[RDF](http://example.org/wiki/Resource_Description_Framework)
+[maker](http://example.org/#term_maker)
 
-[OWL](http://example.org/wiki/Web_Ontology_Language)
+[primaryTopic](http://example.org/#term_primaryTopic)
 
-[Semantic Web](http://example.org/wiki/Semantic_Web)
+[primaryTopicOf](http://example.org/#term_isPrimaryTopicOf)
 
-[CC BY 1.0](http://example.org/wiki/Creative_Commons_license)
+[Project](http://example.org/#term_Project)
 
-[xmlns.com/foaf/spec/](http://xmlns.com/foaf/spec/)
+[Organization](http://example.org/#term_Organization)
 
-[friend of a friend](http://example.org/wiki/Friend_of_a_friend)
+[Group](http://example.org/#term_Group)
 
-[machine-readable](http://example.org/wiki/Machine-readable_data)
+[member](http://example.org/#term_member)
 
-[ontology](http://example.org/wiki/Ontology_(information_science))
+[Document](http://example.org/#term_Document)
 
-[persons](http://example.org/wiki/Person)
+[Image](http://example.org/#term_Image)
 
-[social networks](http://example.org/wiki/Social_networks)
+### Social Web
 
-[Resource Description Framework](http://example.org/wiki/Resource_Description_Framework)
+[nick](http://example.org/#term_nick)
 
-[Web Ontology Language](http://example.org/wiki/Web_Ontology_Language)
+[mbox](http://example.org/#term_mbox)
 
-[[1]](http://example.org/#cite_note-1)
+[homepage](http://example.org/#term_homepage)
 
-[[2]](http://example.org/#cite_note-2)
+[weblog](http://example.org/#term_weblog)
 
-[e-mail addresses](http://example.org/wiki/E-mail_address)
+[openid](http://example.org/#term_openid)
 
-[telephone number](http://example.org/wiki/Telephone_number)
+[jabberID](http://example.org/#term_jabberID)
 
-[Facebook](http://example.org/wiki/Facebook)
+[mbox_sha1sum](http://example.org/#term_mbox_sha1sum)
 
-[Jabber ID](http://example.org/wiki/Extensible_Messaging_and_Presence_Protocol)
+[interest](http://example.org/#term_interest)
 
-[URI](http://example.org/wiki/Uniform_Resource_Identifier)
+[topic_interest](http://example.org/#term_topic_interest)
 
-[Social Semantic Web](http://example.org/wiki/Social_Semantic_Web)
+[topic](http://example.org/#term_topic)
 
-[citation needed](http://example.org/wiki/Wikipedia:Citation_needed)
+[page](http://example.org/#term_page)
 
-[RDF](http://example.org/wiki/Resource_Description_Framework)
+[workplaceHomepage](http://example.org/#term_workplaceHomepage)
 
-[social web](http://example.org/wiki/Social_web)
+[workInfoHomepage](http://example.org/#term_workInfoHomepage)
 
-[clarification needed](http://example.org/wiki/Wikipedia:Please_clarify)
+[schoolHomepage](http://example.org/#term_schoolHomepage)
 
-[Tim Berners-Lee](http://example.org/wiki/Tim_Berners-Lee)
+[publications](http://example.org/#term_publications)
 
-[[3]](http://example.org/#cite_note-3)
+[currentProject](http://example.org/#term_currentProject)
 
-[semantic web](http://example.org/wiki/Semantic_web)
+[pastProject](http://example.org/#term_pastProject)
 
-[Giant Global Graph](http://example.org/wiki/Giant_Global_Graph)
+[account](http://example.org/#term_account)
 
-[Internet](http://example.org/wiki/Internet)
+[OnlineAccount](http://example.org/#term_OnlineAccount)
 
-[World Wide Web](http://example.org/wiki/World_Wide_Web)
+[accountName](http://example.org/#term_accountName)
 
-## WebID[edit]
+[accountServiceHomepage](http://example.org/#term_accountServiceHomepage)
 
-[edit](http://example.org/w/index.php?title=FOAF&action=edit&section=1)
+[PersonalProfileDocument](http://example.org/#term_PersonalProfileDocument)
 
-[WebID](http://example.org/wiki/WebID)
+[tipjar](http://example.org/#term_tipjar)
 
-## Deployment[edit]
+[sha1](http://example.org/#term_sha1)
 
-[edit](http://example.org/w/index.php?title=FOAF&action=edit&section=2)
+[thumbnail](http://example.org/#term_thumbnail)
 
-[Live Journal](http://example.org/wiki/Live_Journal)
+[logo](http://example.org/#term_logo)
 
-[DeadJournal](http://example.org/wiki/DeadJournal)
+### A-Z of FOAF terms (current and archaic)
 
-[[4]](http://example.org/#cite_note-4)
+[Agent](http://example.org/#term_Agent)
 
-[My Opera](http://example.org/wiki/My_Opera)
+[Document](http://example.org/#term_Document)
 
-[Identi.ca](http://example.org/wiki/Identi.ca)
+[Group](http://example.org/#term_Group)
 
-[FriendFeed](http://example.org/wiki/FriendFeed)
+[Image](http://example.org/#term_Image)
 
-[WordPress](http://example.org/wiki/WordPress)
+[LabelProperty](http://example.org/#term_LabelProperty)
 
-[TypePad](http://example.org/wiki/TypePad)
+[OnlineAccount](http://example.org/#term_OnlineAccount)
 
-[[5]](http://example.org/#cite_note-5)
+[OnlineChatAccount](http://example.org/#term_OnlineChatAccount)
 
-[Yandex](http://example.org/wiki/Yandex)
+[OnlineEcommerceAccount](http://example.org/#term_OnlineEcommerceAccount)
 
-[[6]](http://example.org/#cite_note-6)
+[OnlineGamingAccount](http://example.org/#term_OnlineGamingAccount)
 
-[Safari](http://example.org/wiki/Safari_(web_browser))
+[Organization](http://example.org/#term_Organization)
 
-[[7]](http://example.org/#cite_note-7)
+[Person](http://example.org/#term_Person)
 
-[[8]](http://example.org/#cite_note-8)
+[PersonalProfileDocument](http://example.org/#term_PersonalProfileDocument)
 
-[Firefox](http://example.org/wiki/Firefox_(web_browser))
+[Project](http://example.org/#term_Project)
 
-[Semantic MediaWiki](http://example.org/wiki/Semantic_MediaWiki)
+[account](http://example.org/#term_account)
 
-[semantic annotation](http://example.org/wiki/Semantic_annotation)
+[accountName](http://example.org/#term_accountName)
 
-[linked data](http://example.org/wiki/Linked_data)
+[accountServiceHomepage](http://example.org/#term_accountServiceHomepage)
 
-[MediaWiki](http://example.org/wiki/MediaWiki)
+[age](http://example.org/#term_age)
 
-[[9]](http://example.org/#cite_note-9)
+[aimChatID](http://example.org/#term_aimChatID)
 
-[[10]](http://example.org/#cite_note-10)
+[based_near](http://example.org/#term_based_near)
 
-[content management systems](http://example.org/wiki/Content_management_systems)
+[birthday](http://example.org/#term_birthday)
 
-[[11]](http://example.org/#cite_note-11)
+[currentProject](http://example.org/#term_currentProject)
 
-## Example[edit]
+[depiction](http://example.org/#term_depiction)
 
-[edit](http://example.org/w/index.php?title=FOAF&action=edit&section=3)
+[depicts](http://example.org/#term_depicts)
 
-[Turtle](http://example.org/wiki/Turtle_(syntax))
+[dnaChecksum](http://example.org/#term_dnaChecksum)
 
-[web resources](http://example.org/wiki/Web_resource)
+[familyName](http://example.org/#term_familyName)
 
-## History[edit]
+[family_name](http://example.org/#term_family_name)
 
-[edit](http://example.org/w/index.php?title=FOAF&action=edit&section=4)
+[firstName](http://example.org/#term_firstName)
 
-### Versions[edit]
+[focus](http://example.org/#term_focus)
 
-[edit](http://example.org/w/index.php?title=FOAF&action=edit&section=5)
+[fundedBy](http://example.org/#term_fundedBy)
 
-[http://xmlns.com/foaf/0.1/](http://xmlns.com/foaf/0.1/)
+[geekcode](http://example.org/#term_geekcode)
 
-[[12]](http://example.org/#cite_note-12)
+[gender](http://example.org/#term_gender)
 
-[http://xmlns.com/foaf/0.1/](http://xmlns.com/foaf/0.1/)
+[givenName](http://example.org/#term_givenName)
 
-## See also[edit]
+[givenname](http://example.org/#term_givenname)
 
-[edit](http://example.org/w/index.php?title=FOAF&action=edit&section=6)
+[holdsAccount](http://example.org/#term_holdsAccount)
 
-[Resource Description Framework](http://example.org/wiki/Resource_Description_Framework)
+[homepage](http://example.org/#term_homepage)
 
-[Web Ontology Language](http://example.org/wiki/Web_Ontology_Language)
+[icqChatID](http://example.org/#term_icqChatID)
 
-[Social web](http://example.org/wiki/Social_web)
+[img](http://example.org/#term_img)
 
-[Semantic Web](http://example.org/wiki/Semantic_Web)
+[interest](http://example.org/#term_interest)
 
-[Description of a Career](https://en.wiktionary.org/wiki/DOAC)
+[isPrimaryTopicOf](http://example.org/#term_isPrimaryTopicOf)
 
-[Description of a Project](http://example.org/wiki/DOAP)
+[jabberID](http://example.org/#term_jabberID)
 
-[Semantically-Interlinked Online Communities](http://example.org/wiki/Semantically-Interlinked_Online_Communities)
+[knows](http://example.org/#term_knows)
 
-[hCard](http://example.org/wiki/HCard)
+[lastName](http://example.org/#term_lastName)
 
-[vCard](http://example.org/wiki/VCard)
+[logo](http://example.org/#term_logo)
 
-[XHTML Friends Network](http://example.org/wiki/XHTML_Friends_Network)
+[made](http://example.org/#term_made)
 
-## References[edit]
+[maker](http://example.org/#term_maker)
 
-[edit](http://example.org/w/index.php?title=FOAF&action=edit&section=7)
+[mbox](http://example.org/#term_mbox)
 
-[^](http://example.org/#cite_ref-1)
+[mbox_sha1sum](http://example.org/#term_mbox_sha1sum)
 
-[XML Watch: Finding friends with XML and RDF](https://web.archive.org/web/20091223003446/http://www.ibm.com/developerworks/xml/library/x-foaf.html)
+[member](http://example.org/#term_member)
 
-[IBM DeveloperWorks](http://example.org/wiki/IBM_DeveloperWorks)
+[membershipClass](http://example.org/#term_membershipClass)
 
-[^](http://example.org/#cite_ref-2)
+[msnChatID](http://example.org/#term_msnChatID)
 
-[XML Watch: Support online communities with FOAF](https://web.archive.org/web/20100307223814/http://www.ibm.com/developerworks/xml/library/x-foaf2.html)
+[myersBriggs](http://example.org/#term_myersBriggs)
 
-[IBM DeveloperWorks](http://example.org/wiki/IBM_DeveloperWorks)
+[name](http://example.org/#term_name)
 
-[^](http://example.org/#cite_ref-3)
+[nick](http://example.org/#term_nick)
 
-["Giant Global Graph"](https://web.archive.org/web/20160713021037/http://dig.csail.mit.edu/breadcrumbs/node/215)
+[openid](http://example.org/#term_openid)
 
-[the original](http://dig.csail.mit.edu/breadcrumbs/node/215)
+[page](http://example.org/#term_page)
 
-[^](http://example.org/#cite_ref-4)
+[pastProject](http://example.org/#term_pastProject)
 
-["LiveJournal FOAF"](https://web.archive.org/web/20100118151037/http://community.livejournal.com/ljfoaf)
+[phone](http://example.org/#term_phone)
 
-[the original](http://community.livejournal.com/ljfoaf)
+[plan](http://example.org/#term_plan)
 
-[^](http://example.org/#cite_ref-5)
+[primaryTopic](http://example.org/#term_primaryTopic)
 
-["Known FOAF data providers"](https://web.archive.org/web/20100226072731/http://wiki.foaf-project.org/w/DataSources)
+[publications](http://example.org/#term_publications)
 
-[the original](http://wiki.foaf-project.org/w/DataSources)
+[schoolHomepage](http://example.org/#term_schoolHomepage)
 
-[^](http://example.org/#cite_ref-6)
+[sha1](http://example.org/#term_sha1)
 
-["press release on the social networking support"](http://company.yandex.com/press_center/press_releases/2008/2008-08-15.xml)
+[skypeID](http://example.org/#term_skypeID)
 
-[^](http://example.org/#cite_ref-7)
+[status](http://example.org/#term_status)
 
-["FOAF Support in Safari RSS"](http://ejohn.org/blog/foaf-support-in-safari-rss/)
+[surname](http://example.org/#term_surname)
 
-[^](http://example.org/#cite_ref-8)
+[theme](http://example.org/#term_theme)
 
-["Semantic Radar plugin for the Firefox browser"](https://web.archive.org/web/20140108014347/https://addons.mozilla.org/en-US/firefox/addon/semantic-radar/)
+[thumbnail](http://example.org/#term_thumbnail)
 
-[the original](https://addons.mozilla.org/en-US/firefox/addon/semantic-radar/)
+[tipjar](http://example.org/#term_tipjar)
 
-[^](http://example.org/#cite_ref-9)
+[title](http://example.org/#term_title)
 
-["FOAF support module for Perl"](https://metacpan.org/pod/XML::FOAF)
+[topic](http://example.org/#term_topic)
 
-[^](http://example.org/#cite_ref-10)
+[topic_interest](http://example.org/#term_topic_interest)
 
-["FOAF+SSL authentication support for Perl"](https://metacpan.org/pod/Web::ID)
+[weblog](http://example.org/#term_weblog)
 
-[^](http://example.org/#cite_ref-11)
+[workInfoHomepage](http://example.org/#term_workInfoHomepage)
 
-[http://drupal.org/project/foaf](https://drupal.org/project/foaf)
+[workplaceHomepage](http://example.org/#term_workplaceHomepage)
 
-[Drupal](http://example.org/wiki/Drupal)
+[yahooChatID](http://example.org/#term_yahooChatID)
 
-[^](http://example.org/#cite_ref-12)
+## Example
 
-["FOAF Vocabulary Specification 0.99"](http://xmlns.com/foaf/spec/20140114.html)
+[foaf:Person](http://example.org/#term_Person)
 
-[Archived](https://web.archive.org/web/20220303180551/http://xmlns.com/foaf/spec/20140114.html)
+[foaf:name](http://example.org/#term_name)
 
-## External links[edit]
+[foaf:homepage](http://example.org/#term_homepage)
 
-[edit](http://example.org/w/index.php?title=FOAF&action=edit&section=8)
+[foaf:openid](http://example.org/#term_openid)
 
-[Official website](http://www.foaf-project.org)
+[foaf:img](http://example.org/#term_img)
 
-[Archived](https://web.archive.org/web/20211023122305/http://www.foaf-project.org/)
+## 1 Introduction: FOAF Basics
 
-[Wayback Machine](http://example.org/wiki/Wayback_Machine)
+### The Semantic Web
 
-[FOAF dataset](http://ebiquity.umbc.edu/resource/html/id/82/)
+[W3 future directions](http://www.w3.org/Talks/WWW94Tim/)
 
-[FOAF-search - a search engine for FOAF data](https://web.archive.org/web/20181130195340/https://www.foaf-search.net/)
+[Giant Global Graph](http://dig.csail.mit.edu/breadcrumbs/node/215)
 
-[Wayback Machine](http://example.org/wiki/Wayback_Machine)
+[foaf](http://www.w3.org/People/Berners-Lee/card)
 
-[v](http://example.org/wiki/Template:Semantic_Web)
+### FOAF and the Semantic Web
 
-[t](http://example.org/wiki/Template_talk:Semantic_Web)
+[Semantic Web](http://www.w3.org/2001/sw/)
 
-[e](http://example.org/wiki/Special:EditPage/Template:Semantic_Web)
+[SPARQL](http://www.w3.org/TR/rdf-sparql-query/)
 
-[Semantic Web](http://example.org/wiki/Semantic_Web)
+[SKOS](http://www.w3.org/2004/02/skos/)
 
-[Databases](http://example.org/wiki/Database)
+[GRDDL](http://www.w3.org/2001/sw/grddl-wg/)
 
-[Hypertext](http://example.org/wiki/Hypertext)
+[RDFa](http://www.w3.org/TR/xhtml-rdfa-primer/)
 
-[Internet](http://example.org/wiki/Internet)
+[Linked 
+  Data](http://www.w3.org/DesignIssues/LinkedData.html)
 
-[Ontologies](http://example.org/wiki/Ontology_(computer_science))
+### The Basic Idea
 
-[Semantics](http://example.org/wiki/Semantics_(computer_science))
+[FOAF namespace
+  document](http://xmlns.com/foaf/0.1/)
 
-[Semantic networks](http://example.org/wiki/Semantic_network)
+## What's FOAF for?
 
-[World Wide Web](http://example.org/wiki/World_Wide_Web)
+[XML
+  Watch: Finding friends with XML and RDF](http://www-106.ibm.com/developerworks/xml/library/x-foaf.html)
 
-[Dataspaces](http://example.org/wiki/Dataspaces)
+[with image metadata](http://rdfweb.org/2002/01/photo/)
 
-[Hyperdata](http://example.org/wiki/Hyperdata)
+[co-depiction](http://rdfweb.org/2002/01/photo/)
 
-[Linked data](http://example.org/wiki/Linked_data)
+[FOAF-a-matic](http://www.ldodds.com/foaf/foaf-a-matic.html)
 
-[Rule-based systems](http://example.org/wiki/Rule-based_system)
+[FOAF project home page](http://www.foaf-project.org)
 
-[Semantic analytics](http://example.org/wiki/Semantic_analytics)
+## Background
 
-[Semantic broker](http://example.org/wiki/Semantic_broker)
+[alt.folklore.urban archive](http://www.urbanlegends.com/)
 
-[Semantic computing](http://example.org/wiki/Semantic_computing)
+[snopes.com](http://www.snopes.com/)
 
-[Semantic mapper](http://example.org/wiki/Semantic_mapper)
+## FOAF and Standards
 
-[Semantic matching](http://example.org/wiki/Semantic_matching)
+[ISO
+  Standardisation](http://www.iso.ch/iso/en/ISOOnline.openerpage)
 
-[Semantic publishing](http://example.org/wiki/Semantic_publishing)
+[W3C](http://www.w3.org/)
 
-[Semantic reasoner](http://example.org/wiki/Semantic_reasoner)
+[Process](http://www.w3.org/Consortium/Process/)
 
-[Semantic search](http://example.org/wiki/Semantic_search)
+[Open Source](http://www.opensource.org/)
 
-[Semantic service-oriented architecture](http://example.org/wiki/Semantic_service-oriented_architecture)
+[Free Software](http://www.gnu.org/philosophy/free-sw.html)
 
-[Semantic wiki](http://example.org/wiki/Semantic_wiki)
+[Jabber
+  JEPs](http://www.jabber.org/jeps/jep-0001.html)
 
-[Solid](http://example.org/wiki/Solid_(web_decentralization_project))
+[Resource Description Framework](http://www.w3.org/RDF/)
 
-[Collective intelligence](http://example.org/wiki/Collective_intelligence)
+## The FOAF Vocabulary Description
 
-[Description logic](http://example.org/wiki/Description_logic)
+[RDF](http://www.w3.org/RDF/)
 
-[Folksonomy](http://example.org/wiki/Folksonomy)
+[Semantic Web](http://www.w3.org/2001/sw/)
 
-[Geotagging](http://example.org/wiki/Geotagging)
+[Semantic Web](http://www.w3.org/2001/sw/)
 
-[Information architecture](http://example.org/wiki/Information_architecture)
+### Evolution and Extension of FOAF
 
-[Knowledge extraction](http://example.org/wiki/Knowledge_extraction)
+[Dublin Core](http://dublincore.org/)
 
-[Knowledge management](http://example.org/wiki/Knowledge_management)
+## FOAF Auto-Discovery: Publishing and Linking FOAF files
 
-[Knowledge representation and reasoning](http://example.org/wiki/Knowledge_representation_and_reasoning)
+[foaf-a-matic](http://www.ldodds.com/foaf/foaf-a-matic.html)
 
-[Library 2.0](http://example.org/wiki/Library_2.0)
+[FOAF
+  autodiscovery](http://web.archive.org/web/20040416181630/rdfweb.org/mt/foaflog/archives/000041.html)
 
-[Digital library](http://example.org/wiki/Digital_library)
+## FOAF cross-reference: Listing FOAF Classes and
+  Properties
 
-[Digital humanities](http://example.org/wiki/Digital_humanities)
+[RDF/XML](http://example.org/index.rdf)
 
-[Metadata](http://example.org/wiki/Metadata)
+[Agent](http://example.org/#term_Agent)
 
-[References](http://example.org/wiki/Reference_(computer_science))
+[Document](http://example.org/#term_Document)
 
-[Topic map](http://example.org/wiki/Topic_map)
+[Group](http://example.org/#term_Group)
 
-[Web 2.0](http://example.org/wiki/Web_2.0)
+[Image](http://example.org/#term_Image)
 
-[Web engineering](http://example.org/wiki/Web_engineering)
+[LabelProperty](http://example.org/#term_LabelProperty)
 
-[Web Science Trust](http://example.org/wiki/Web_Science_Trust)
+[OnlineAccount](http://example.org/#term_OnlineAccount)
 
-[HTTP](http://example.org/wiki/HTTP)
+[OnlineChatAccount](http://example.org/#term_OnlineChatAccount)
 
-[IRI](http://example.org/wiki/Internationalized_Resource_Identifier)
+[OnlineEcommerceAccount](http://example.org/#term_OnlineEcommerceAccount)
 
-[URI](http://example.org/wiki/Uniform_Resource_Identifier)
+[OnlineGamingAccount](http://example.org/#term_OnlineGamingAccount)
 
-[RDF](http://example.org/wiki/Resource_Description_Framework)
+[Organization](http://example.org/#term_Organization)
 
-[triples](http://example.org/wiki/Semantic_triple)
+[Person](http://example.org/#term_Person)
 
-[RDF/XML](http://example.org/wiki/RDF/XML)
+[PersonalProfileDocument](http://example.org/#term_PersonalProfileDocument)
 
-[JSON-LD](http://example.org/wiki/JSON-LD)
+[Project](http://example.org/#term_Project)
 
-[Turtle](http://example.org/wiki/Turtle_(syntax))
+[account](http://example.org/#term_account)
 
-[TriG](http://example.org/wiki/TriG_(syntax))
+[accountName](http://example.org/#term_accountName)
 
-[Notation3](http://example.org/wiki/Notation3)
+[accountServiceHomepage](http://example.org/#term_accountServiceHomepage)
 
-[N-Triples](http://example.org/wiki/N-Triples)
+[age](http://example.org/#term_age)
 
-[TriX](http://example.org/wiki/TriX_(serialization_format))
+[aimChatID](http://example.org/#term_aimChatID)
 
-[RRID](http://example.org/wiki/Research_Resource_Identifier)
+[based_near](http://example.org/#term_based_near)
 
-[SPARQL](http://example.org/wiki/SPARQL)
+[birthday](http://example.org/#term_birthday)
 
-[XML](http://example.org/wiki/XML)
+[currentProject](http://example.org/#term_currentProject)
 
-[Semantic HTML](http://example.org/wiki/Semantic_HTML)
+[depiction](http://example.org/#term_depiction)
 
-[Common Logic](http://example.org/wiki/Common_Logic)
+[depicts](http://example.org/#term_depicts)
 
-[OWL](http://example.org/wiki/Web_Ontology_Language)
+[dnaChecksum](http://example.org/#term_dnaChecksum)
 
-[RDFS](http://example.org/wiki/RDF_Schema)
+[familyName](http://example.org/#term_familyName)
 
-[Rule Interchange Format](http://example.org/wiki/Rule_Interchange_Format)
+[family_name](http://example.org/#term_family_name)
 
-[Semantic Web Rule Language](http://example.org/wiki/Semantic_Web_Rule_Language)
+[firstName](http://example.org/#term_firstName)
 
-[ALPS](http://example.org/w/index.php?title=Application-Level_Profile_Semantics_(ALPS)&action=edit&redlink=1)
+[focus](http://example.org/#term_focus)
 
-[SHACL](http://example.org/wiki/SHACL)
+[fundedBy](http://example.org/#term_fundedBy)
 
-[eRDF](http://example.org/wiki/Embedded_RDF)
+[geekcode](http://example.org/#term_geekcode)
 
-[GRDDL](http://example.org/wiki/GRDDL)
+[gender](http://example.org/#term_gender)
 
-[Microdata](http://example.org/wiki/Microdata_(HTML))
+[givenName](http://example.org/#term_givenName)
 
-[Microformats](http://example.org/wiki/Microformat)
+[givenname](http://example.org/#term_givenname)
 
-[RDFa](http://example.org/wiki/RDFa)
+[holdsAccount](http://example.org/#term_holdsAccount)
 
-[SAWSDL](http://example.org/wiki/SAWSDL)
+[homepage](http://example.org/#term_homepage)
 
-[Facebook Platform](http://example.org/wiki/Facebook_Platform)
+[icqChatID](http://example.org/#term_icqChatID)
 
-[DOAP](http://example.org/wiki/DOAP)
+[img](http://example.org/#term_img)
 
-[Dublin Core](http://example.org/wiki/Dublin_Core)
+[interest](http://example.org/#term_interest)
 
-[FOAF](undefined)
+[isPrimaryTopicOf](http://example.org/#term_isPrimaryTopicOf)
 
-[Schema.org](http://example.org/wiki/Schema.org)
+[jabberID](http://example.org/#term_jabberID)
 
-[SIOC](http://example.org/wiki/Semantically_Interlinked_Online_Communities)
+[knows](http://example.org/#term_knows)
 
-[SKOS](http://example.org/wiki/Simple_Knowledge_Organization_System)
+[lastName](http://example.org/#term_lastName)
 
-[hAtom](http://example.org/wiki/HAtom)
+[logo](http://example.org/#term_logo)
 
-[hCalendar](http://example.org/wiki/HCalendar)
+[made](http://example.org/#term_made)
 
-[hCard](http://example.org/wiki/HCard)
+[maker](http://example.org/#term_maker)
 
-[hProduct](http://example.org/wiki/HProduct)
+[mbox](http://example.org/#term_mbox)
 
-[hRecipe](http://example.org/wiki/HRecipe)
+[mbox_sha1sum](http://example.org/#term_mbox_sha1sum)
 
-[hReview](http://example.org/wiki/HReview)
+[member](http://example.org/#term_member)
 
-[v](http://example.org/wiki/Template:Social_networking)
+[membershipClass](http://example.org/#term_membershipClass)
 
-[t](http://example.org/wiki/Template_talk:Social_networking)
+[msnChatID](http://example.org/#term_msnChatID)
 
-[e](http://example.org/wiki/Special:EditPage/Template:Social_networking)
+[myersBriggs](http://example.org/#term_myersBriggs)
 
-[Social networks](http://example.org/wiki/Social_network)
+[name](http://example.org/#term_name)
 
-[social media](http://example.org/wiki/Social_media)
+[nick](http://example.org/#term_nick)
 
-[Personal](http://example.org/wiki/Personal_network)
+[openid](http://example.org/#term_openid)
 
-[Professional](http://example.org/wiki/Professional_network_service)
+[page](http://example.org/#term_page)
 
-[Sexual](http://example.org/wiki/Sexual_network)
+[pastProject](http://example.org/#term_pastProject)
 
-[Value](http://example.org/wiki/Value_network)
+[phone](http://example.org/#term_phone)
 
-[Clique](http://example.org/wiki/Clique)
+[plan](http://example.org/#term_plan)
 
-[Adolescent](http://example.org/wiki/Adolescent_cliques)
+[primaryTopic](http://example.org/#term_primaryTopic)
 
-[Corporate social media](http://example.org/wiki/Corporate_social_media)
+[publications](http://example.org/#term_publications)
 
-[Distributed social network](http://example.org/wiki/Distributed_social_network)
+[schoolHomepage](http://example.org/#term_schoolHomepage)
 
-[list](http://example.org/wiki/Comparison_of_software_and_protocols_for_distributed_social_networking)
+[sha1](http://example.org/#term_sha1)
 
-[Enterprise social networking](http://example.org/wiki/Enterprise_social_networking)
+[skypeID](http://example.org/#term_skypeID)
 
-[Enterprise social software](http://example.org/wiki/Enterprise_social_software)
+[status](http://example.org/#term_status)
 
-[Mobile social network](http://example.org/wiki/Mobile_social_network)
+[surname](http://example.org/#term_surname)
 
-[Personal knowledge networking](http://example.org/wiki/Personal_knowledge_networking)
+[theme](http://example.org/#term_theme)
 
-[Services](http://example.org/wiki/Social_networking_service)
+[thumbnail](http://example.org/#term_thumbnail)
 
-[List of social networking services](http://example.org/wiki/List_of_social_networking_services)
+[tipjar](http://example.org/#term_tipjar)
 
-[List of virtual communities with more than 1 million users](http://example.org/wiki/List_of_virtual_communities_with_more_than_1_million_users)
+[title](http://example.org/#term_title)
 
-[Ambient awareness](http://example.org/wiki/Ambient_awareness)
+[topic](http://example.org/#term_topic)
 
-[Assortative mixing](http://example.org/wiki/Assortative_mixing)
+[topic_interest](http://example.org/#term_topic_interest)
 
-[Attention inequality](http://example.org/wiki/Attention_inequality)
+[weblog](http://example.org/#term_weblog)
 
-[Interpersonal bridge](http://example.org/wiki/Bridge_(interpersonal))
+[workInfoHomepage](http://example.org/#term_workInfoHomepage)
 
-[Organizational network analysis](http://example.org/wiki/Organizational_network_analysis)
+[workplaceHomepage](http://example.org/#term_workplaceHomepage)
 
-[Small-world experiment](http://example.org/wiki/Small-world_experiment)
+[yahooChatID](http://example.org/#term_yahooChatID)
 
-[Social aspects of television](http://example.org/wiki/Social_aspects_of_television)
+### Classes and Properties (full detail)
 
-[Social capital](http://example.org/wiki/Social_capital)
+## Classes
 
-[Social data revolution](http://example.org/wiki/Social_data_revolution)
+### Class: foaf:Agent
 
-[Social exchange theory](http://example.org/wiki/Social_exchange_theory)
+[gender](http://example.org/#term_gender)
 
-[Social identity theory](http://example.org/wiki/Social_identity_theory)
+[yahooChatID](http://example.org/#term_yahooChatID)
 
-[Social media and psychology](http://example.org/wiki/Social_media_and_psychology)
+[account](http://example.org/#term_account)
 
-[Social media intelligence](http://example.org/wiki/Social_media_intelligence)
+[birthday](http://example.org/#term_birthday)
 
-[Social media mining](http://example.org/wiki/Social_media_mining)
+[icqChatID](http://example.org/#term_icqChatID)
 
-[Social media optimization](http://example.org/wiki/Social_media_optimization)
+[aimChatID](http://example.org/#term_aimChatID)
 
-[Social network analysis](http://example.org/wiki/Social_network_analysis)
+[jabberID](http://example.org/#term_jabberID)
 
-[Social web](http://example.org/wiki/Social_web)
+[made](http://example.org/#term_made)
 
-[Structural endogamy](http://example.org/wiki/Structural_endogamy)
+[mbox](http://example.org/#term_mbox)
 
-[Virtual collective consciousness](http://example.org/wiki/Virtual_collective_consciousness)
+[interest](http://example.org/#term_interest)
 
-[Account verification](http://example.org/wiki/Account_verification)
+[tipjar](http://example.org/#term_tipjar)
 
-[Aggregation](http://example.org/wiki/Social_network_aggregation)
+[skypeID](http://example.org/#term_skypeID)
 
-[Change detection](http://example.org/wiki/Social_network_change_detection)
+[topic_interest](http://example.org/#term_topic_interest)
 
-[Blockmodeling](http://example.org/wiki/Blockmodeling)
+[age](http://example.org/#term_age)
 
-[Collaboration graph](http://example.org/wiki/Collaboration_graph)
+[mbox_sha1sum](http://example.org/#term_mbox_sha1sum)
 
-[Collaborative consumption](http://example.org/wiki/Collaborative_consumption)
+[status](http://example.org/#term_status)
 
-[Giant Global Graph](http://example.org/wiki/Giant_Global_Graph)
+[msnChatID](http://example.org/#term_msnChatID)
 
-[Lateral communication](http://example.org/wiki/Lateral_communication)
+[openid](http://example.org/#term_openid)
 
-[Reputation system](http://example.org/wiki/Reputation_system)
+[holdsAccount](http://example.org/#term_holdsAccount)
 
-[Social bot](http://example.org/wiki/Social_bot)
+[weblog](http://example.org/#term_weblog)
 
-[Social graph](http://example.org/wiki/Social_graph)
+[maker](http://example.org/#term_maker)
 
-[Social media analytics](http://example.org/wiki/Social_media_analytics)
+[member](http://example.org/#term_member)
 
-[Social network analysis software](http://example.org/wiki/Social_network_analysis_software)
+[Group](http://example.org/#term_Group)
 
-[Social networking potential](http://example.org/wiki/Social_networking_potential)
+[Person](http://example.org/#term_Person)
 
-[Social television](http://example.org/wiki/Social_television)
+[Organization](http://example.org/#term_Organization)
 
-[Structural cohesion](http://example.org/wiki/Structural_cohesion)
+[Agent](http://example.org/#term_Agent)
 
-[Affinity fraud](http://example.org/wiki/Affinity_fraud)
+[Person](http://example.org/#term_Person)
 
-[Attention economy](http://example.org/wiki/Attention_economy)
+[Organization](http://example.org/#term_Organization)
 
-[Collaborative finance](http://example.org/wiki/Collaborative_finance)
+[Group](http://example.org/#term_Group)
 
-[Creator economy](http://example.org/wiki/Creator_economy)
+[Agent](http://example.org/#term_Agent)
 
-[Influencer marketing](http://example.org/wiki/Influencer_marketing)
+[Person](http://example.org/#term_Person)
 
-[Narrowcasting](http://example.org/wiki/Narrowcasting)
+[#](http://example.org/#term_Agent)
 
-[Sharing economy](http://example.org/wiki/Sharing_economy)
+[back to top](http://example.org/#glance)
 
-[Social commerce](http://example.org/wiki/Social_commerce)
+### Class: foaf:Document
 
-[Social sorting](http://example.org/wiki/Social_sorting)
+[topic](http://example.org/#term_topic)
 
-[Viral marketing](http://example.org/wiki/Viral_marketing)
+[primaryTopic](http://example.org/#term_primaryTopic)
 
-[Algorithmic radicalization](http://example.org/wiki/Algorithmic_radicalization)
+[sha1](http://example.org/#term_sha1)
 
-[Community recognition](http://example.org/wiki/Community_recognition)
+[workInfoHomepage](http://example.org/#term_workInfoHomepage)
 
-[Complex contagion](http://example.org/wiki/Complex_contagion)
+[workplaceHomepage](http://example.org/#term_workplaceHomepage)
 
-[Computer addiction](http://example.org/wiki/Computer_addiction)
+[page](http://example.org/#term_page)
 
-[Consequential strangers](http://example.org/wiki/Consequential_strangers)
+[accountServiceHomepage](http://example.org/#term_accountServiceHomepage)
 
-[Friend of a friend](http://example.org/wiki/Friend_of_a_friend)
+[openid](http://example.org/#term_openid)
 
-[Friending and following](http://example.org/wiki/Friending_and_following)
+[tipjar](http://example.org/#term_tipjar)
 
-[Friendship paradox](http://example.org/wiki/Friendship_paradox)
+[schoolHomepage](http://example.org/#term_schoolHomepage)
 
-[Influence-for-hire](http://example.org/wiki/Influence-for-hire)
+[publications](http://example.org/#term_publications)
 
-[Internet addiction](http://example.org/wiki/Internet_addiction)
+[isPrimaryTopicOf](http://example.org/#term_isPrimaryTopicOf)
 
-[Information overload](http://example.org/wiki/Information_overload)
+[interest](http://example.org/#term_interest)
 
-[Overchoice](http://example.org/wiki/Overchoice)
+[homepage](http://example.org/#term_homepage)
 
-[Six degrees of separation](http://example.org/wiki/Six_degrees_of_separation)
+[weblog](http://example.org/#term_weblog)
 
-[Social media addiction](http://example.org/wiki/Social_media_addiction)
+[Image](http://example.org/#term_Image)
 
-[Social media and suicide](http://example.org/wiki/Social_media_and_suicide)
+[PersonalProfileDocument](http://example.org/#term_PersonalProfileDocument)
 
-[Social invisibility](http://example.org/wiki/Social_invisibility)
+[Project](http://example.org/#term_Project)
 
-[Social network game](http://example.org/wiki/Social_network_game)
+[Organization](http://example.org/#term_Organization)
 
-[Suicide and the Internet](http://example.org/wiki/Suicide_and_the_Internet)
+[Document](http://example.org/#term_Document)
 
-[Tribe](http://example.org/wiki/Tribe_(internet))
+[Image](http://example.org/#term_Image)
 
-[Viral phenomenon](http://example.org/wiki/Viral_phenomenon)
+[Document](http://example.org/#term_Document)
 
-[Friendship recession](http://example.org/wiki/Friendship_recession)
+[sha1](http://example.org/#term_sha1)
 
-[Peer pressure](http://example.org/wiki/Peer_pressure)
+[#](http://example.org/#term_Document)
 
-[Researchers](http://example.org/wiki/List_of_social_network_researchers)
+[back to top](http://example.org/#glance)
 
-[User profile](http://example.org/wiki/User_profile)
+### Class: foaf:Group
 
-[Online identity](http://example.org/wiki/Online_identity)
+[member](http://example.org/#term_member)
 
-[Persona](http://example.org/wiki/Persona_(user_experience))
+[Agent](http://example.org/#term_Agent)
 
-[Social profiling](http://example.org/wiki/Social_profiling)
+[Group](http://example.org/#term_Group)
 
-[Viral messages](http://example.org/wiki/Viral_messages)
+[Agent](http://example.org/#term_Agent)
 
-[Virtual community](http://example.org/wiki/Virtual_community)
+[homepage](http://example.org/#term_homepage)
 
-[https://en.wikipedia.org/w/index.php?title=FOAF&oldid=1165941964](https://en.wikipedia.org/w/index.php?title=FOAF&oldid=1165941964)
+[name](http://example.org/#term_name)
 
-[Categories](http://example.org/wiki/Help:Category)
+[Group](http://example.org/#term_Group)
 
-[Ontology (information science)](http://example.org/wiki/Category:Ontology_(information_science))
+[Agent](http://example.org/#term_Agent)
 
-[Semantic Web](http://example.org/wiki/Category:Semantic_Web)
+[Agent](http://example.org/#term_Agent)
 
-[2000 software](http://example.org/wiki/Category:2000_software)
+[Group](http://example.org/#term_Group)
 
-[Articles with short description](http://example.org/wiki/Category:Articles_with_short_description)
+[membershipClass](http://example.org/#term_membershipClass)
 
-[Short description matches Wikidata](http://example.org/wiki/Category:Short_description_matches_Wikidata)
+[Group](http://example.org/#term_Group)
 
-[All articles with unsourced statements](http://example.org/wiki/Category:All_articles_with_unsourced_statements)
+[Agent](http://example.org/#term_Agent)
 
-[Articles with unsourced statements from April 2017](http://example.org/wiki/Category:Articles_with_unsourced_statements_from_April_2017)
+[Group](http://example.org/#term_Group)
 
-[Wikipedia articles needing clarification from April 2017](http://example.org/wiki/Category:Wikipedia_articles_needing_clarification_from_April_2017)
+[Group](http://example.org/#term_Group)
 
-[Webarchive template wayback links](http://example.org/wiki/Category:Webarchive_template_wayback_links)
+[Group](http://example.org/#term_Group)
 
-[Creative Commons Attribution-ShareAlike License 4.0](http://en.wikipedia.org/wiki/Wikipedia:Text_of_the_Creative_Commons_Attribution-ShareAlike_4.0_International_License)
+[member](http://example.org/#term_member)
 
-[](http://en.wikipedia.org/wiki/Wikipedia:Text_of_the_Creative_Commons_Attribution-ShareAlike_4.0_International_License)
+[Group](http://example.org/#term_Group)
 
-[Terms of Use](http://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Terms_of_Use)
+[Group](http://example.org/#term_Group)
 
-[Privacy Policy](http://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Privacy_policy)
+[membershipClass](http://example.org/#term_membershipClass)
 
-[Wikimedia Foundation, Inc.](http://www.wikimediafoundation.org/)
+[Person](http://example.org/#term_Person)
 
-[Privacy policy](https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Privacy_policy)
+[workplaceHomepage](http://example.org/#term_workplaceHomepage)
 
-[About Wikipedia](http://example.org/wiki/Wikipedia:About)
+[Agent](http://example.org/#term_Agent)
 
-[Disclaimers](http://example.org/wiki/Wikipedia:General_disclaimer)
+[Person](http://example.org/#term_Person)
 
-[Contact Wikipedia](http://en.wikipedia.org/wiki/Wikipedia:Contact_us)
+[Person](http://example.org/#term_Person)
 
-[Code of Conduct](https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Universal_Code_of_Conduct)
+[workplaceHomepage](http://example.org/#term_workplaceHomepage)
 
-[Developers](https://developer.wikimedia.org)
+[member](http://example.org/#term_member)
 
-[Statistics](https://stats.wikimedia.org/#/en.wikipedia.org)
+[name](http://example.org/#term_name)
 
-[Cookie statement](https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Cookie_statement)
+[Group](http://example.org/#term_Group)
 
-[Mobile view](http://en.m.wikipedia.org/w/index.php?title=FOAF&mobileaction=toggle_view_mobile)
+[issue tracker](http://wiki.foaf-project.org/w/IssueTracker)
 
-[](https://wikimediafoundation.org/)
+[OWL](http://www.w3.org/2001/sw/WebOnt)
 
-[](https://www.mediawiki.org/)
+[#](http://example.org/#term_Group)
+
+[back to top](http://example.org/#glance)
+
+### Class: foaf:Image
+
+[depicts](http://example.org/#term_depicts)
+
+[thumbnail](http://example.org/#term_thumbnail)
+
+[img](http://example.org/#term_img)
+
+[thumbnail](http://example.org/#term_thumbnail)
+
+[depiction](http://example.org/#term_depiction)
+
+[Document](http://example.org/#term_Document)
+
+[Image](http://example.org/#term_Image)
+
+[Document](http://example.org/#term_Document)
+
+[Image](http://example.org/#term_Image)
+
+[#](http://example.org/#term_Image)
+
+[back to top](http://example.org/#glance)
+
+### Class: foaf:Organization
+
+[Agent](http://example.org/#term_Agent)
+
+[Document](http://example.org/#term_Document)
+
+[Person](http://example.org/#term_Person)
+
+[Organization](http://example.org/#term_Organization)
+
+[Agent](http://example.org/#term_Agent)
+
+[Group](http://example.org/#term_Group)
+
+[#](http://example.org/#term_Organization)
+
+[back to top](http://example.org/#glance)
+
+### Class: foaf:Person
+
+[plan](http://example.org/#term_plan)
+
+[surname](http://example.org/#term_surname)
+
+[geekcode](http://example.org/#term_geekcode)
+
+[pastProject](http://example.org/#term_pastProject)
+
+[lastName](http://example.org/#term_lastName)
+
+[family_name](http://example.org/#term_family_name)
+
+[publications](http://example.org/#term_publications)
+
+[currentProject](http://example.org/#term_currentProject)
+
+[familyName](http://example.org/#term_familyName)
+
+[firstName](http://example.org/#term_firstName)
+
+[workInfoHomepage](http://example.org/#term_workInfoHomepage)
+
+[myersBriggs](http://example.org/#term_myersBriggs)
+
+[schoolHomepage](http://example.org/#term_schoolHomepage)
+
+[img](http://example.org/#term_img)
+
+[workplaceHomepage](http://example.org/#term_workplaceHomepage)
+
+[knows](http://example.org/#term_knows)
+
+[knows](http://example.org/#term_knows)
+
+[Agent](http://example.org/#term_Agent)
+
+[Spatial Thing](http://example.org/#term_SpatialThing)
+
+[Project](http://example.org/#term_Project)
+
+[Organization](http://example.org/#term_Organization)
+
+[Person](http://example.org/#term_Person)
+
+[Person](http://example.org/#term_Person)
+
+[Person](http://example.org/#term_Person)
+
+[Agent](http://example.org/#term_Agent)
+
+[#](http://example.org/#term_Person)
+
+[back to top](http://example.org/#glance)
+
+### Class: foaf:OnlineAccount
+
+[accountName](http://example.org/#term_accountName)
+
+[accountServiceHomepage](http://example.org/#term_accountServiceHomepage)
+
+[account](http://example.org/#term_account)
+
+[holdsAccount](http://example.org/#term_holdsAccount)
+
+[Thing](http://example.org/#term_Thing)
+
+[Online E-commerce Account](http://example.org/#term_OnlineEcommerceAccount)
+
+[Online Gaming Account](http://example.org/#term_OnlineGamingAccount)
+
+[Online Chat Account](http://example.org/#term_OnlineChatAccount)
+
+[OnlineAccount](http://example.org/#term_OnlineAccount)
+
+[accountServiceHomepage](http://example.org/#term_accountServiceHomepage)
+
+[Agent](http://example.org/#term_Agent)
+
+[account](http://example.org/#term_account)
+
+[OnlineChatAccount](http://example.org/#term_OnlineChatAccount)
+
+[OnlineEcommerceAccount](http://example.org/#term_OnlineEcommerceAccount)
+
+[OnlineGamingAccount](http://example.org/#term_OnlineGamingAccount)
+
+[#](http://example.org/#term_OnlineAccount)
+
+[back to top](http://example.org/#glance)
+
+### Class: foaf:PersonalProfileDocument
+
+[Document](http://example.org/#term_Document)
+
+[PersonalProfileDocument](http://example.org/#term_PersonalProfileDocument)
+
+[Document](http://example.org/#term_Document)
+
+[maker](http://example.org/#term_maker)
+
+[Person](http://example.org/#term_Person)
+
+[made](http://example.org/#term_made)
+
+[primaryTopic](http://example.org/#term_primaryTopic)
+
+[PersonalProfileDocument](http://example.org/#term_PersonalProfileDocument)
+
+[PersonalProfileDocument](http://example.org/#term_PersonalProfileDocument)
+
+[PersonalProfileDocument](http://example.org/#term_PersonalProfileDocument)
+
+[Person](http://example.org/#term_Person)
+
+[maker](http://example.org/#term_maker)
+
+[Person](http://example.org/#term_Person)
+
+[maker](http://example.org/#term_maker)
+
+[PersonalProfileDocument](http://example.org/#term_PersonalProfileDocument)
+
+[primaryTopic](http://example.org/#term_primaryTopic)
+
+[Document](http://example.org/#term_Document)
+
+[PersonalProfileDocument](http://example.org/#term_PersonalProfileDocument)
+
+[PersonalProfileDocument](http://example.org/#term_PersonalProfileDocument)
+
+[GRDDL](http://www.w3.org/2004/01/rdxh/spec)
+
+[#](http://example.org/#term_PersonalProfileDocument)
+
+[back to top](http://example.org/#glance)
+
+### Class: foaf:Project
+
+[Document](http://example.org/#term_Document)
+
+[Person](http://example.org/#term_Person)
+
+[Project](http://example.org/#term_Project)
+
+[homepage](http://example.org/#term_homepage)
+
+[Project](http://example.org/#term_Project)
+
+[currentProject](http://example.org/#term_currentProject)
+
+[pastProject](http://example.org/#term_pastProject)
+
+[#](http://example.org/#term_Project)
+
+[back to top](http://example.org/#glance)
+
+### Class: foaf:LabelProperty
+
+[LabelProperty](http://example.org/#term_LabelProperty)
+
+[LabelProperty](http://example.org/#term_LabelProperty)
+
+[#](http://example.org/#term_LabelProperty)
+
+[back to top](http://example.org/#glance)
+
+### Class: foaf:OnlineChatAccount
+
+[Online Account](http://example.org/#term_OnlineAccount)
+
+[OnlineChatAccount](http://example.org/#term_OnlineChatAccount)
+
+[OnlineAccount](http://example.org/#term_OnlineAccount)
+
+[OnlineAccount](http://example.org/#term_OnlineAccount)
+
+[jabberID](http://example.org/#term_jabberID)
+
+[aimChatID](http://example.org/#term_aimChatID)
+
+[skypeID](http://example.org/#term_skypeID)
+
+[msnChatID](http://example.org/#term_msnChatID)
+
+[icqChatID](http://example.org/#term_icqChatID)
+
+[yahooChatID](http://example.org/#term_yahooChatID)
+
+[OnlineAccount](http://example.org/#term_OnlineAccount)
+
+[mbox](http://example.org/#term_mbox)
+
+[mbox_sha1sum](http://example.org/#term_mbox_sha1sum)
+
+[OnlineAccount](http://example.org/#term_OnlineAccount)
+
+[OnlineChatAccount](http://example.org/#term_OnlineChatAccount)
+
+[jabberID](http://example.org/#term_jabberID)
+
+[aimChatID](http://example.org/#term_aimChatID)
+
+[icqChatID](http://example.org/#term_icqChatID)
+
+[msnChatID](http://example.org/#term_msnChatID)
+
+[yahooChatID](http://example.org/#term_yahooChatID)
+
+[skypeID](http://example.org/#term_skypeID)
+
+[Jabber](http://www.jabber.org/)
+
+[AIM](http://www.aim.com/)
+
+[MSN](http://chat.msn.com/)
+
+[ICQ](http://web.icq.com/icqchat/)
+
+[Yahoo!](http://chat.yahoo.com/)
+
+[MSN](http://chat.msn.com/)
+
+[skypeID](http://example.org/#term_skypeID)
+
+[accountServiceHomepage](http://example.org/#term_accountServiceHomepage)
+
+[OnlineAccount](http://example.org/#term_OnlineAccount)
+
+[OnlineAccount](http://example.org/#term_OnlineAccount)
+
+[Freenode](http://www.freenode.net/)
+
+[#](http://example.org/#term_OnlineChatAccount)
+
+[back to top](http://example.org/#glance)
+
+### Class: foaf:OnlineEcommerceAccount
+
+[Online Account](http://example.org/#term_OnlineAccount)
+
+[OnlineEcommerceAccount](http://example.org/#term_OnlineEcommerceAccount)
+
+[OnlineAccount](http://example.org/#term_OnlineAccount)
+
+[Amazon](http://www.amazon.com/)
+
+[eBay](http://www.ebay.com/)
+
+[PayPal](http://www.paypal.com/)
+
+[thinkgeek](http://www.thinkgeek.com/)
+
+[#](http://example.org/#term_OnlineEcommerceAccount)
+
+[back to top](http://example.org/#glance)
+
+### Class: foaf:OnlineGamingAccount
+
+[Online Account](http://example.org/#term_OnlineAccount)
+
+[OnlineGamingAccount](http://example.org/#term_OnlineGamingAccount)
+
+[OnlineAccount](http://example.org/#term_OnlineAccount)
+
+[EverQuest](http://everquest.station.sony.com/)
+
+[Xbox live](http://www.xbox.com/live/)
+
+[Neverwinter Nights](http://nwn.bioware.com/)
+
+[#](http://example.org/#term_OnlineGamingAccount)
+
+[back to top](http://example.org/#glance)
+
+## Properties
+
+### Property: foaf:homepage
+
+[Thing](http://example.org/#term_Thing)
+
+[Document](http://example.org/#term_Document)
+
+[homepage](http://example.org/#term_homepage)
+
+[homepage](http://example.org/#term_homepage)
+
+[topic](http://example.org/#term_topic)
+
+[homepage](http://example.org/#term_homepage)
+
+[page](http://example.org/#term_page)
+
+[topic](http://example.org/#term_topic)
+
+[page](http://example.org/#term_page)
+
+[#](http://example.org/#term_homepage)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:isPrimaryTopicOf
+
+[Thing](http://example.org/#term_Thing)
+
+[Document](http://example.org/#term_Document)
+
+[isPrimaryTopicOf](http://example.org/#term_isPrimaryTopicOf)
+
+[isPrimaryTopicOf](http://example.org/#term_isPrimaryTopicOf)
+
+[primaryTopic](http://example.org/#term_primaryTopic)
+
+[page](http://example.org/#term_page)
+
+[isPrimaryTopicOf](http://example.org/#term_isPrimaryTopicOf)
+
+[page](http://example.org/#term_page)
+
+[homepage](http://example.org/#term_homepage)
+
+[page](http://example.org/#term_page)
+
+[isPrimaryTopicOf](http://example.org/#term_isPrimaryTopicOf)
+
+[isPrimaryTopicOf](http://example.org/#term_isPrimaryTopicOf)
+
+[#](http://example.org/#term_isPrimaryTopicOf)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:knows
+
+[Person](http://example.org/#term_Person)
+
+[Person](http://example.org/#term_Person)
+
+[knows](http://example.org/#term_knows)
+
+[Person](http://example.org/#term_Person)
+
+[Person](http://example.org/#term_Person)
+
+[knows](http://example.org/#term_knows)
+
+[knows](http://example.org/#term_knows)
+
+[knows](http://example.org/#term_knows)
+
+[weblog](http://example.org/#term_weblog)
+
+[made](http://example.org/#term_made)
+
+[knows](http://example.org/#term_knows)
+
+[knows](http://example.org/#term_knows)
+
+[Relationship module](http://www.perceive.net/schemas/20021119/relationship/)
+
+[workplaceHomepage](http://example.org/#term_workplaceHomepage)
+
+[Document](http://example.org/#term_Document)
+
+[maker](http://example.org/#term_maker)
+
+[knows](http://example.org/#term_knows)
+
+[knows](http://example.org/#term_knows)
+
+[scutters](http://wiki.foaf-project.org/w/ScutterSpec)
+
+[#](http://example.org/#term_knows)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:made
+
+[Agent](http://example.org/#term_Agent)
+
+[Thing](http://example.org/#term_Thing)
+
+[made](http://example.org/#term_made)
+
+[Agent](http://example.org/#term_Agent)
+
+[made](http://example.org/#term_made)
+
+[maker](http://example.org/#term_maker)
+
+[made](http://example.org/#term_made)
+
+[#](http://example.org/#term_made)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:maker
+
+[Thing](http://example.org/#term_Thing)
+
+[Agent](http://example.org/#term_Agent)
+
+[maker](http://example.org/#term_maker)
+
+[Agent](http://example.org/#term_Agent)
+
+[made](http://example.org/#term_made)
+
+[made](http://example.org/#term_made)
+
+[name](http://example.org/#term_name)
+
+[maker](http://example.org/#term_maker)
+
+[maker](http://example.org/#term_maker)
+
+[Person](http://example.org/#term_Person)
+
+[name](http://example.org/#term_name)
+
+[maker](http://example.org/#term_maker)
+
+[UsingDublinCoreCreator](http://wiki.foaf-project.org/w/UsingDublinCoreCreator)
+
+[#](http://example.org/#term_maker)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:mbox
+
+[Agent](http://example.org/#term_Agent)
+
+[Thing](http://example.org/#term_Thing)
+
+[mbox](http://example.org/#term_mbox)
+
+[RFC 2368](http://ftp.ics.uci.edu/pub/ietf/uri/rfc2368.txt)
+
+[mbox](http://example.org/#term_mbox)
+
+[mbox](http://example.org/#term_mbox)
+
+[mbox](http://example.org/#term_mbox)
+
+[mbox_sha1sum](http://example.org/#term_mbox_sha1sum)
+
+[#](http://example.org/#term_mbox)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:member
+
+[Group](http://example.org/#term_Group)
+
+[Agent](http://example.org/#term_Agent)
+
+[member](http://example.org/#term_member)
+
+[Group](http://example.org/#term_Group)
+
+[Agent](http://example.org/#term_Agent)
+
+[Group](http://example.org/#term_Group)
+
+[#](http://example.org/#term_member)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:page
+
+[Thing](http://example.org/#term_Thing)
+
+[Document](http://example.org/#term_Document)
+
+[page](http://example.org/#term_page)
+
+[topic](http://example.org/#term_topic)
+
+[#](http://example.org/#term_page)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:primaryTopic
+
+[Document](http://example.org/#term_Document)
+
+[Thing](http://example.org/#term_Thing)
+
+[primaryTopic](http://example.org/#term_primaryTopic)
+
+[primaryTopic](http://example.org/#term_primaryTopic)
+
+[isPrimaryTopicOf](http://example.org/#term_isPrimaryTopicOf)
+
+[primaryTopic](http://example.org/#term_primaryTopic)
+
+[isPrimaryTopicOf](http://example.org/#term_isPrimaryTopicOf)
+
+[Wikipedia](http://www.wikipedia.org/)
+
+[NNDB](http://www.nndb.com/)
+
+[#](http://example.org/#term_primaryTopic)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:weblog
+
+[Agent](http://example.org/#term_Agent)
+
+[Document](http://example.org/#term_Document)
+
+[weblog](http://example.org/#term_weblog)
+
+[Agent](http://example.org/#term_Agent)
+
+[#](http://example.org/#term_weblog)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:account
+
+[Agent](http://example.org/#term_Agent)
+
+[Online Account](http://example.org/#term_OnlineAccount)
+
+[account](http://example.org/#term_account)
+
+[Agent](http://example.org/#term_Agent)
+
+[OnlineAccount](http://example.org/#term_OnlineAccount)
+
+[OnlineAccount](http://example.org/#term_OnlineAccount)
+
+[#](http://example.org/#term_account)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:accountName
+
+[Online Account](http://example.org/#term_OnlineAccount)
+
+[accountName](http://example.org/#term_accountName)
+
+[OnlineAccount](http://example.org/#term_OnlineAccount)
+
+[#](http://example.org/#term_accountName)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:accountServiceHomepage
+
+[Online Account](http://example.org/#term_OnlineAccount)
+
+[Document](http://example.org/#term_Document)
+
+[accountServiceHomepage](http://example.org/#term_accountServiceHomepage)
+
+[OnlineAccount](http://example.org/#term_OnlineAccount)
+
+[#](http://example.org/#term_accountServiceHomepage)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:aimChatID
+
+[Agent](http://example.org/#term_Agent)
+
+[aimChatID](http://example.org/#term_aimChatID)
+
+[Agent](http://example.org/#term_Agent)
+
+[AIM](http://www.aim.com/)
+
+[iChat](http://www.apple.com/macosx/what-is-macosx/ichat.html)
+
+[Apple](http://www.apple.com/)
+
+[OnlineChatAccount](http://example.org/#term_OnlineChatAccount)
+
+[OnlineAccount](http://example.org/#term_OnlineAccount)
+
+[#](http://example.org/#term_aimChatID)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:based_near
+
+[Spatial Thing](http://example.org/#term_SpatialThing)
+
+[Spatial Thing](http://example.org/#term_SpatialThing)
+
+[based_near](http://example.org/#term_based_near)
+
+[geo-positioning vocabulary](http://www.w3.org/2003/01/geo/wgs84_pos#)
+
+[GeoInfo](http://esw.w3.org/topic/GeoInfo)
+
+[GeoOnion vocab](http://esw.w3.org/topic/GeoOnion)
+
+[UsingContactNearestAirport](http://wiki.foaf-project.org/w/UsingContactNearestAirport)
+
+[#](http://example.org/#term_based_near)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:currentProject
+
+[Person](http://example.org/#term_Person)
+
+[Thing](http://example.org/#term_Thing)
+
+[currentProject](http://example.org/#term_currentProject)
+
+[Person](http://example.org/#term_Person)
+
+[Document](http://example.org/#term_Document)
+
+[Person](http://example.org/#term_Person)
+
+[Person](http://example.org/#term_Person)
+
+[pastProject](http://example.org/#term_pastProject)
+
+[Person](http://example.org/#term_Person)
+
+[pastProject](http://example.org/#term_pastProject)
+
+[currentProject](http://example.org/#term_currentProject)
+
+[pastProject](http://example.org/#term_pastProject)
+
+[Document](http://example.org/#term_Document)
+
+[Project](http://example.org/#term_Project)
+
+[homepage](http://example.org/#term_homepage)
+
+[interest](http://example.org/#term_interest)
+
+[#](http://example.org/#term_currentProject)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:depiction
+
+[Thing](http://example.org/#term_Thing)
+
+[Image](http://example.org/#term_Image)
+
+[depiction](http://example.org/#term_depiction)
+
+[Image](http://example.org/#term_Image)
+
+[depicts](http://example.org/#term_depicts)
+
+[depiction](http://example.org/#term_depiction)
+
+[depicts](http://example.org/#term_depicts)
+
+[Co-Depiction](http://rdfweb.org/2002/01/photo/)
+
+['Annotating Images With SVG'](http://www.jibbering.com/svg/AnnotateImage.html)
+
+[depiction](http://example.org/#term_depiction)
+
+[img](http://example.org/#term_img)
+
+[depiction](http://example.org/#term_depiction)
+
+[Image](http://example.org/#term_Image)
+
+[img](http://example.org/#term_img)
+
+[#](http://example.org/#term_depiction)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:depicts
+
+[Image](http://example.org/#term_Image)
+
+[Thing](http://example.org/#term_Thing)
+
+[depicts](http://example.org/#term_depicts)
+
+[Image](http://example.org/#term_Image)
+
+[depiction](http://example.org/#term_depiction)
+
+[depiction](http://example.org/#term_depiction)
+
+[#](http://example.org/#term_depicts)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:familyName
+
+[Person](http://example.org/#term_Person)
+
+[familyName](http://example.org/#term_familyName)
+
+[givenName](http://example.org/#term_givenName)
+
+[name](http://example.org/#term_name)
+
+[firstName](http://example.org/#term_firstName)
+
+[lastName](http://example.org/#term_lastName)
+
+[issue tracker](http://wiki.foaf-project.org/w/NameVocabIssue)
+
+[#](http://example.org/#term_familyName)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:firstName
+
+[Person](http://example.org/#term_Person)
+
+[firstName](http://example.org/#term_firstName)
+
+[lastName](http://example.org/#term_lastName)
+
+[familyName](http://example.org/#term_familyName)
+
+[givenName](http://example.org/#term_givenName)
+
+[issue tracker](http://wiki.foaf-project.org/w/NameVocabIssue)
+
+[name](http://example.org/#term_name)
+
+[#](http://example.org/#term_firstName)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:focus
+
+[Concept](http://example.org/#term_Concept)
+
+[Thing](http://example.org/#term_Thing)
+
+[focus](http://example.org/#term_focus)
+
+[SKOS](http://www.w3.org/2004/02/skos/)
+
+[In SKOS](http://www.w3.org/TR/2005/WD-swbp-skos-core-guide-20050510/#secmodellingrdf)
+
+[2005 discussion](http://www.w3.org/TR/2005/WD-swbp-skos-core-guide-20051102/#secopen)
+
+[topic](http://example.org/#term_topic)
+
+[primaryTopic](http://example.org/#term_primaryTopic)
+
+[primaryTopic](http://example.org/#term_primaryTopic)
+
+[TDB URI scheme](http://larry.masinter.net/duri.html)
+
+[original goals](http://www.foaf-project.org/original-intro)
+
+[#](http://example.org/#term_focus)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:gender
+
+[Agent](http://example.org/#term_Agent)
+
+[gender](http://example.org/#term_gender)
+
+[Agent](http://example.org/#term_Agent)
+
+[Person](http://example.org/#term_Person)
+
+[gender](http://example.org/#term_gender)
+
+[gender](http://example.org/#term_gender)
+
+[gender](http://example.org/#term_gender)
+
+[Agent](http://example.org/#term_Agent)
+
+[Agent](http://example.org/#term_Agent)
+
+[Group](http://example.org/#term_Group)
+
+[Agent](http://example.org/#term_Agent)
+
+[gender](http://example.org/#term_gender)
+
+[gender](http://example.org/#term_gender)
+
+[Agent](http://example.org/#term_Agent)
+
+[gender](http://example.org/#term_gender)
+
+[foaf-dev](http://lists.foaf-project.org/mailman/listinfo/foaf-dev)
+
+[gender](http://example.org/#term_gender)
+
+[gender](http://example.org/#term_gender)
+
+[#](http://example.org/#term_gender)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:givenName
+
+[givenName](http://example.org/#term_givenName)
+
+[familyName](http://example.org/#term_familyName)
+
+[name](http://example.org/#term_name)
+
+[firstName](http://example.org/#term_firstName)
+
+[lastName](http://example.org/#term_lastName)
+
+[issue tracker](http://wiki.foaf-project.org/w/NameVocabIssue)
+
+[#](http://example.org/#term_givenName)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:icqChatID
+
+[Agent](http://example.org/#term_Agent)
+
+[icqChatID](http://example.org/#term_icqChatID)
+
+[Agent](http://example.org/#term_Agent)
+
+[icq chat](http://web.icq.com/icqchat/)
+
+[What is ICQ?](http://www.icq.com/products/whatisicq.html)
+
+[About Us](http://company.icq.com/info/)
+
+[aimChatID](http://example.org/#term_aimChatID)
+
+[OnlineChatAccount](http://example.org/#term_OnlineChatAccount)
+
+[OnlineAccount](http://example.org/#term_OnlineAccount)
+
+[#](http://example.org/#term_icqChatID)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:img
+
+[Person](http://example.org/#term_Person)
+
+[Image](http://example.org/#term_Image)
+
+[img](http://example.org/#term_img)
+
+[Person](http://example.org/#term_Person)
+
+[Image](http://example.org/#term_Image)
+
+[depiction](http://example.org/#term_depiction)
+
+[img](http://example.org/#term_img)
+
+[depiction](http://example.org/#term_depiction)
+
+[depicts](http://example.org/#term_depicts)
+
+[img](http://example.org/#term_img)
+
+[Person](http://example.org/#term_Person)
+
+[depiction](http://example.org/#term_depiction)
+
+[img](http://example.org/#term_img)
+
+[depiction](http://example.org/#term_depiction)
+
+[img](http://example.org/#term_img)
+
+[Image](http://example.org/#term_Image)
+
+[img](http://example.org/#term_img)
+
+[img](http://example.org/#term_img)
+
+[#](http://example.org/#term_img)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:interest
+
+[Agent](http://example.org/#term_Agent)
+
+[Document](http://example.org/#term_Document)
+
+[interest](http://example.org/#term_interest)
+
+[Agent](http://example.org/#term_Agent)
+
+[Document](http://example.org/#term_Document)
+
+[topic](http://example.org/#term_topic)
+
+[interest](http://example.org/#term_interest)
+
+[RDF](http://www.w3.org/RDF/)
+
+[interest](http://example.org/#term_interest)
+
+[CPAN](http://www.cpan.org/)
+
+[interest](http://example.org/#term_interest)
+
+[interest](http://example.org/#term_interest)
+
+[#](http://example.org/#term_interest)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:jabberID
+
+[Agent](http://example.org/#term_Agent)
+
+[jabberID](http://example.org/#term_jabberID)
+
+[Agent](http://example.org/#term_Agent)
+
+[Jabber](http://www.jabber.org/)
+
+[Jabber](http://www.jabber.org/)
+
+[Agent](http://example.org/#term_Agent)
+
+[jabberID](http://example.org/#term_jabberID)
+
+[OnlineChatAccount](http://example.org/#term_OnlineChatAccount)
+
+[OnlineAccount](http://example.org/#term_OnlineAccount)
+
+[#](http://example.org/#term_jabberID)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:lastName
+
+[Person](http://example.org/#term_Person)
+
+[lastName](http://example.org/#term_lastName)
+
+[firstName](http://example.org/#term_firstName)
+
+[familyName](http://example.org/#term_familyName)
+
+[givenName](http://example.org/#term_givenName)
+
+[issue tracker](http://wiki.foaf-project.org/w/NameVocabIssue)
+
+[name](http://example.org/#term_name)
+
+[#](http://example.org/#term_lastName)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:logo
+
+[Thing](http://example.org/#term_Thing)
+
+[Thing](http://example.org/#term_Thing)
+
+[logo](http://example.org/#term_logo)
+
+[#](http://example.org/#term_logo)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:mbox_sha1sum
+
+[Agent](http://example.org/#term_Agent)
+
+[mbox_sha1sum](http://example.org/#term_mbox_sha1sum)
+
+[Person](http://example.org/#term_Person)
+
+[mbox](http://example.org/#term_mbox)
+
+[mbox](http://example.org/#term_mbox)
+
+[mbox_sha1sum](http://example.org/#term_mbox_sha1sum)
+
+[mbox](http://example.org/#term_mbox)
+
+[mbox_sha1sum](http://example.org/#term_mbox_sha1sum)
+
+[Person](http://example.org/#term_Person)
+
+[mbox_sha1sum](http://example.org/#term_mbox_sha1sum)
+
+[Edd Dumbill's 
+documentation](http://usefulinc.com/foaf/)
+
+[FOAF-based whitelists](http://www.w3.org/2001/12/rubyrdf/util/foafwhite/intro.html)
+
+[in Sam Ruby's 
+weblog entry](http://www.intertwingly.net/blog/1545.html)
+
+[mbox_sha1sum](http://example.org/#term_mbox_sha1sum)
+
+[#](http://example.org/#term_mbox_sha1sum)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:msnChatID
+
+[Agent](http://example.org/#term_Agent)
+
+[msnChatID](http://example.org/#term_msnChatID)
+
+[Agent](http://example.org/#term_Agent)
+
+[Windows Live Messenger](http://en.wikipedia.org/wiki/Windows_Live_Messenger)
+
+[Microsoft mesenger](http://download.live.com/messenger)
+
+[Windows Live ID](http://en.wikipedia.org/wiki/Windows_Live_ID)
+
+[OnlineChatAccount](http://example.org/#term_OnlineChatAccount)
+
+[OnlineAccount](http://example.org/#term_OnlineAccount)
+
+[#](http://example.org/#term_msnChatID)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:myersBriggs
+
+[Person](http://example.org/#term_Person)
+
+[myersBriggs](http://example.org/#term_myersBriggs)
+
+[myersBriggs](http://example.org/#term_myersBriggs)
+
+[Person](http://example.org/#term_Person)
+
+[myersBriggs](http://example.org/#term_myersBriggs)
+
+[weblog](http://example.org/#term_weblog)
+
+[myersBriggs](http://example.org/#term_myersBriggs)
+
+[this article](http://www.teamtechnology.co.uk/tt/t-articl/mb-simpl.htm)
+
+[Cory Caplinger's summary table](http://webspace.webring.com/people/cl/lifexplore/mbintro.htm)
+
+[FOAF Myers Briggs addition](http://web.archive.org/web/20080802184922/http://rdfweb.org/mt/foaflog/archives/000004.html)
+
+[#](http://example.org/#term_myersBriggs)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:name
+
+[Thing](http://example.org/#term_Thing)
+
+[name](http://example.org/#term_name)
+
+[issue tracker](http://wiki.foaf-project.org/w/IssueTracker)
+
+[name](http://example.org/#term_name)
+
+[name](http://example.org/#term_name)
+
+[#](http://example.org/#term_name)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:nick
+
+[nick](http://example.org/#term_nick)
+
+[Person](http://example.org/#term_Person)
+
+[jabberID](http://example.org/#term_jabberID)
+
+[aimChatID](http://example.org/#term_aimChatID)
+
+[msnChatID](http://example.org/#term_msnChatID)
+
+[icqChatID](http://example.org/#term_icqChatID)
+
+[OnlineAccount](http://example.org/#term_OnlineAccount)
+
+[#](http://example.org/#term_nick)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:openid
+
+[Agent](http://example.org/#term_Agent)
+
+[Document](http://example.org/#term_Document)
+
+[openid](http://example.org/#term_openid)
+
+[Agent](http://example.org/#term_Agent)
+
+[indirect identifier](http://www.w3.org/TR/webarch/#indirect-identification)
+
+[OpenID](http://openid.net/specs/openid-authentication-1_1.html)
+
+[openid](http://example.org/#term_openid)
+
+[openid](http://example.org/#term_openid)
+
+[Organization](http://example.org/#term_Organization)
+
+[Group](http://example.org/#term_Group)
+
+[Agent](http://example.org/#term_Agent)
+
+[openid](http://example.org/#term_openid)
+
+[delegation model](http://openid.net/specs/openid-authentication-1_1.html#delegating_authentication)
+
+[technique](http://xmlns.com/foaf/spec/#sec-autodesc)
+
+[#](http://example.org/#term_openid)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:pastProject
+
+[Person](http://example.org/#term_Person)
+
+[Thing](http://example.org/#term_Thing)
+
+[Person](http://example.org/#term_Person)
+
+[currentProject](http://example.org/#term_currentProject)
+
+[pastProject](http://example.org/#term_pastProject)
+
+[Person](http://example.org/#term_Person)
+
+[Person](http://example.org/#term_Person)
+
+[pastProject](http://example.org/#term_pastProject)
+
+[currentProject](http://example.org/#term_currentProject)
+
+[pastProject](http://example.org/#term_pastProject)
+
+[#](http://example.org/#term_pastProject)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:phone
+
+[phone](http://example.org/#term_phone)
+
+[#](http://example.org/#term_phone)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:plan
+
+[Person](http://example.org/#term_Person)
+
+[plan](http://example.org/#term_plan)
+
+[Person](http://example.org/#term_Person)
+
+[History of the 
+Finger Protocol](http://www.rajivshah.com/Case_Studies/Finger/Finger.htm)
+
+[geekcode](http://example.org/#term_geekcode)
+
+[#](http://example.org/#term_plan)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:publications
+
+[Person](http://example.org/#term_Person)
+
+[Document](http://example.org/#term_Document)
+
+[publications](http://example.org/#term_publications)
+
+[Document](http://example.org/#term_Document)
+
+[Person](http://example.org/#term_Person)
+
+[homepage](http://example.org/#term_homepage)
+
+[#](http://example.org/#term_publications)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:schoolHomepage
+
+[Person](http://example.org/#term_Person)
+
+[Document](http://example.org/#term_Document)
+
+[Person](http://example.org/#term_Person)
+
+[Document](http://example.org/#term_Document)
+
+[homepage](http://example.org/#term_homepage)
+
+[Organization](http://example.org/#term_Organization)
+
+[schoolHomepage](http://example.org/#term_schoolHomepage)
+
+[schoolHomepage](http://example.org/#term_schoolHomepage)
+
+[#](http://example.org/#term_schoolHomepage)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:skypeID
+
+[Agent](http://example.org/#term_Agent)
+
+[skype](http://example.org/#term_skype)
+
+[Agent](http://example.org/#term_Agent)
+
+[OnlineChatAccount](http://example.org/#term_OnlineChatAccount)
+
+[OnlineAccount](http://example.org/#term_OnlineAccount)
+
+[#](http://example.org/#term_skypeID)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:thumbnail
+
+[Image](http://example.org/#term_Image)
+
+[Image](http://example.org/#term_Image)
+
+[thumbnail](http://example.org/#term_thumbnail)
+
+[Image](http://example.org/#term_Image)
+
+[Image](http://example.org/#term_Image)
+
+[img](http://example.org/#term_img)
+
+[depiction](http://example.org/#term_depiction)
+
+[thumbnail](http://example.org/#term_thumbnail)
+
+[depicts](http://example.org/#term_depicts)
+
+[thumbnail](http://example.org/#term_thumbnail)
+
+[#](http://example.org/#term_thumbnail)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:tipjar
+
+[Agent](http://example.org/#term_Agent)
+
+[Document](http://example.org/#term_Document)
+
+[tipjar](http://example.org/#term_tipjar)
+
+[Agent](http://example.org/#term_Agent)
+
+[Document](http://example.org/#term_Document)
+
+[tipjar](http://example.org/#term_tipjar)
+
+[discussions](http://rdfweb.org/mt/foaflog/archives/2004/02/12/20.07.32/)
+
+[tipjar](http://example.org/#term_tipjar)
+
+[PayPal](http://www.paypal.com/)
+
+[tipjar](http://example.org/#term_tipjar)
+
+[OnlineAccount](http://example.org/#term_OnlineAccount)
+
+[#](http://example.org/#term_tipjar)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:title
+
+[FOAF Issue Tracker](http://wiki.foaf-project.org/w/IssueTracker)
+
+[title](http://example.org/#term_title)
+
+[#](http://example.org/#term_title)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:topic
+
+[Document](http://example.org/#term_Document)
+
+[Thing](http://example.org/#term_Thing)
+
+[topic](http://example.org/#term_topic)
+
+[page](http://example.org/#term_page)
+
+[#](http://example.org/#term_topic)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:topic_interest
+
+[Agent](http://example.org/#term_Agent)
+
+[Thing](http://example.org/#term_Thing)
+
+[topic_interest](http://example.org/#term_topic_interest)
+
+[Agent](http://example.org/#term_Agent)
+
+[topic](http://example.org/#term_topic)
+
+[#](http://example.org/#term_topic_interest)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:workInfoHomepage
+
+[Person](http://example.org/#term_Person)
+
+[Document](http://example.org/#term_Document)
+
+[workInfoHomepage](http://example.org/#term_workInfoHomepage)
+
+[Person](http://example.org/#term_Person)
+
+[Document](http://example.org/#term_Document)
+
+[homepage](http://example.org/#term_homepage)
+
+[workplaceHomepage](http://example.org/#term_workplaceHomepage)
+
+[#](http://example.org/#term_workInfoHomepage)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:workplaceHomepage
+
+[Person](http://example.org/#term_Person)
+
+[Document](http://example.org/#term_Document)
+
+[workplaceHomepage](http://example.org/#term_workplaceHomepage)
+
+[Person](http://example.org/#term_Person)
+
+[Document](http://example.org/#term_Document)
+
+[homepage](http://example.org/#term_homepage)
+
+[Organization](http://example.org/#term_Organization)
+
+[Person](http://example.org/#term_Person)
+
+[homepage](http://example.org/#term_homepage)
+
+[Organization](http://example.org/#term_Organization)
+
+[homepage](http://example.org/#term_homepage)
+
+[workplaceHomepage](http://example.org/#term_workplaceHomepage)
+
+[schoolHomepage](http://example.org/#term_schoolHomepage)
+
+[Person](http://example.org/#term_Person)
+
+[Organization](http://example.org/#term_Organization)
+
+[#](http://example.org/#term_workplaceHomepage)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:yahooChatID
+
+[Agent](http://example.org/#term_Agent)
+
+[yahooChatID](http://example.org/#term_yahooChatID)
+
+[Agent](http://example.org/#term_Agent)
+
+[Yahoo! Chat](http://chat.yahoo.com/)
+
+[Yahoo! Groups](http://www.yahoogroups.com/)
+
+[OnlineChatAccount](http://example.org/#term_OnlineChatAccount)
+
+[OnlineAccount](http://example.org/#term_OnlineAccount)
+
+[#](http://example.org/#term_yahooChatID)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:age
+
+[Agent](http://example.org/#term_Agent)
+
+[age](http://example.org/#term_age)
+
+[Agent](http://example.org/#term_Agent)
+
+[birthday](http://example.org/#term_birthday)
+
+[#](http://example.org/#term_age)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:birthday
+
+[Agent](http://example.org/#term_Agent)
+
+[birthday](http://example.org/#term_birthday)
+
+[Agent](http://example.org/#term_Agent)
+
+[BirthdayIssue](http://wiki.foaf-project.org/w/BirthdayIssue)
+
+[age](http://example.org/#term_age)
+
+[#](http://example.org/#term_birthday)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:membershipClass
+
+[membershipClass](http://example.org/#term_membershipClass)
+
+[Group](http://example.org/#term_Group)
+
+[Agent](http://example.org/#term_Agent)
+
+[member](http://example.org/#term_member)
+
+[Group](http://example.org/#term_Group)
+
+[Group](http://example.org/#term_Group)
+
+[#](http://example.org/#term_membershipClass)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:sha1
+
+[Document](http://example.org/#term_Document)
+
+[sha1](http://example.org/#term_sha1)
+
+[Document](http://example.org/#term_Document)
+
+[Document](http://example.org/#term_Document)
+
+[sha1](http://example.org/#term_sha1)
+
+[#](http://example.org/#term_sha1)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:status
+
+[Agent](http://example.org/#term_Agent)
+
+[status](http://example.org/#term_status)
+
+[#](http://example.org/#term_status)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:dnaChecksum
+
+[dnaChecksum](http://example.org/#term_dnaChecksum)
+
+[#](http://example.org/#term_dnaChecksum)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:family_name
+
+[Person](http://example.org/#term_Person)
+
+[familyName](http://example.org/#term_familyName)
+
+[#](http://example.org/#term_family_name)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:fundedBy
+
+[Thing](http://example.org/#term_Thing)
+
+[Thing](http://example.org/#term_Thing)
+
+[fundedBy](http://example.org/#term_fundedBy)
+
+[#](http://example.org/#term_fundedBy)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:geekcode
+
+[Person](http://example.org/#term_Person)
+
+[geekcode](http://example.org/#term_geekcode)
+
+[Person](http://example.org/#term_Person)
+
+[Wikipedia entry](http://en.wikipedia.org/wiki/Geek_Code)
+
+[geekcode](http://example.org/#term_geekcode)
+
+[#](http://example.org/#term_geekcode)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:givenname
+
+[givenName](http://example.org/#term_givenName)
+
+[familyName](http://example.org/#term_familyName)
+
+[name](http://example.org/#term_name)
+
+[firstName](http://example.org/#term_firstName)
+
+[lastName](http://example.org/#term_lastName)
+
+[issue tracker](http://wiki.foaf-project.org/w/NameVocabIssue)
+
+[#](http://example.org/#term_givenname)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:holdsAccount
+
+[Agent](http://example.org/#term_Agent)
+
+[Online Account](http://example.org/#term_OnlineAccount)
+
+[account](http://example.org/#term_account)
+
+[holdsAccount](http://example.org/#term_holdsAccount)
+
+[Agent](http://example.org/#term_Agent)
+
+[OnlineAccount](http://example.org/#term_OnlineAccount)
+
+[OnlineAccount](http://example.org/#term_OnlineAccount)
+
+[account](http://example.org/#term_account)
+
+[#](http://example.org/#term_holdsAccount)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:surname
+
+[Person](http://example.org/#term_Person)
+
+[firstName](http://example.org/#term_firstName)
+
+[givenName](http://example.org/#term_givenName)
+
+[surname](http://example.org/#term_surname)
+
+[issue 
+tracker](http://wiki.foaf-project.org/w/IssueTracker)
+
+[name](http://example.org/#term_name)
+
+[#](http://example.org/#term_surname)
+
+[back to top](http://example.org/#glance)
+
+### Property: foaf:theme
+
+[Thing](http://example.org/#term_Thing)
+
+[Thing](http://example.org/#term_Thing)
+
+[theme](http://example.org/#term_theme)
+
+[#](http://example.org/#term_theme)
+
+[back to top](http://example.org/#glance)
+
+## External Vocabulary References
+
+### Status Vocabulary
+
+[SemWeb Vocab Status Ontology](http://www.w3.org/2003/06/sw-vocab-status/note)
+
+### W3C Basic Geo (WGS84 lat/long) Vocabulary
+
+[W3CBasic Geo Vocabulary](http://www.w3.org/2003/01/geo/)
+
+[foaf:based_near](http://example.org/#term_based_near)
+
+### RDF Vocabulary Description - core concepts
+
+[W3C's site](http://www.w3.org/2001/sw/)
+
+[more background on URIs](http://www.w3.org/TR/webarch/#identification)
+
+[foaf:depicts](http://example.org/#term_depicts)
+
+[linked data](http://www.w3.org/DesignIssues/LinkedData)
+
+[SKOS](http://www.w3.org/2004/02/skos/)
+
+[foaf:focus](http://example.org/#term_focus)
+
+### Dublin Core terms
+
+[Dublin Core terms](http://dublincore.org/documents/dcmi-terms/)
+
+[dct:Agent](http://dublincore.org/documents/dcmi-terms/#classes-Agent)
+
+[dct:creator](http://dublincore.org/documents/dcmi-terms/#terms-creator)
+
+### Wordnet terms
+
+[recent](http://www.w3.org/TR/wordnet-rdf/)
+
+### SIOC terms
+
+[SIOC](http://rdfs.org/sioc/ns#)
+
+[SIOC](http://www.sioc-project.org/)
+
+### Acknowledgments
+
+[rdfweb-dev](http://rdfweb.org/pipermail/rdfweb-dev/)
+
+[#foaf](http://rdfweb.org/irc/)
+
+[FoafExplorer](http://xml.mfd-consult.dk/foaf/explorer/)
+
+[Web View](http://eikeon.com/foaf/)
+
+[foaf-a-matic](http://www.ldodds.com/foaf/foaf-a-matic.html)
+
+[Ecademy](http://www.ecademy.com/)
+
+[TypePad](http://www.typepad.com/)
+
+[many](http://conferences.oreillynet.com/cs/et2003/view/e_sess/3633)
+
+[explaining](http://hackdiary.com/)
+
+[in Japanese](http://kanzaki.com/docs/sw/foaf.html)
+
+[Spanish](http://f14web.com.ar/inkel/2003/01/27/foaf.html)
+
+[Chris Schmidt](http://crschmidt.net/)
+
+[spec generation](http://example.org/0.1/specgen.py)
+
+[cool hacks](http://crschmidt.net/semweb/)
+
+[FOAF Logo](http://iandavis.com/2006/foaf-icons/)
+
+[years ago](http://www.w3.org/History/1989/proposal.html)
+
+## Recent Changes
+
+### Changes in version 0.99 (2014-01-14)
+
+[schema.org](http://schema.org/)
+
+[Person](http://schema.org/Person)
+
+[ImageObject](http://schema.org/ImageObject)
+
+[CreativeWork](http://schema.org/CreativeWork)
+
+### 2010-08-09
+
+[foaf:focus](http://example.org/#term_focus)
+
+[Bio vocabulary](http://vocab.org/bio/0.1/.html)
+
+[topic_interest](http://example.org/#term_topic_interest)
+
+[Project](http://example.org/#term_Project)
+
+[OnlineAccount](http://example.org/#term_OnlineAccount)
+
+[based_near](http://example.org/#term_based_near)
+
+[title](http://example.org/#term_title)
+
+[skypeID](http://example.org/#term_skypeID)
+
+[lastName](http://example.org/#term_lastName)
+
+[openid](http://example.org/#term_openid)
+
+[account](http://example.org/#term_account)
+
+[accountServiceHomepage](http://example.org/#term_accountServiceHomepage)
+
+[accountName](http://example.org/#term_accountName)
+
+[dna_checksum](http://example.org/#term_dna_checksum)
+
+[surname](http://example.org/#term_surname)
+
+[primaryTopic](http://example.org/#term_primaryTopic)
+
+[knows](http://example.org/#term_knows)
+
+[Image](http://example.org/#term_Image)
+
+[Document](http://example.org/#term_Document)
+
+[foaf:topic_interest](http://example.org/#term_topic_interest)
+
+[foaf:interest](http://example.org/#term_interest)
+
+[foaf:logo](http://example.org/#term_logo)
+
+### Changes from version 0.97 and 0.96
+
+[0.97](http://xmlns.com/foaf/spec/20100101.html)
+
+[0.96](http://xmlns.com/foaf/spec/20091215.html)
+
+[foaf:givenName](http://example.org/#term_givenName)
+
+[foaf:familyName](http://example.org/#term_familyName)
+
+[foaf:givenname](http://example.org/#term_givenname)
+
+[foaf:family_name](http://example.org/#term_family_name)
+
+[Portable Contacts](http://portablecontacts.net/)
+
+[foaf:fundedBy](http://example.org/#term_fundedBy)
+
+[foaf:theme](http://example.org/#term_theme)
+
+[foaf:holdsAccount](http://example.org/#term_holdsAccount)
+
+[foaf:account](http://example.org/#term_account)
+
+### 2009-12-15
+
+### 2007-11-02
+
+[foaf:openid](http://example.org/#term_openid)
+
+### 2007-05-24

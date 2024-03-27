@@ -7,7 +7,7 @@ class AppendProcess extends ProcessService {
         logger.debug("AppendProcess.process : " + input)
         let output = input + " world"
         //  return output
-        this.emit('data', output, context)
+        this.emit('message', output, context)
     }
 }
 

@@ -7,7 +7,7 @@ class StringFilter extends ProcessService {
     }
 
     async execute(data, context) {
-        this.emit('data', data, context)
+        this.emit('message', data, context)
     }
 }
 

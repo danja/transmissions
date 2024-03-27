@@ -25,7 +25,7 @@ class FileWriter extends SinkService {
         await writeFile(data.filename, data.content)
         //  logger.debug("sink destinationFile = " + this.destinationFile)
         // await writeFile(this.destinationFile, data);
-        this.emit('data', data, context)
+        this.emit('message', data, context)
     }
 }
 

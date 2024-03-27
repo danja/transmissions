@@ -19,7 +19,7 @@ class LineReader extends ProcessService {
         text.split('\n').forEach(line => {
             if (line.trim() && !line.startsWith('#')) {
                 //  console.log(line);
-                this.emit('data', line, context)
+                this.emit('message', line, context)
             }
         })
     }

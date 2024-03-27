@@ -36,7 +36,7 @@ class FileSource extends SourceService {
 
             const contents = await readFile(sf, { encoding: 'utf8' })
             logger.debug(contents)
-            this.emit('data', contents, context)
+            this.emit('message', contents, context)
         } catch (err) {
             logger.error("FileSource.execute error : " + err.message)
         }

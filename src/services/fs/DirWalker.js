@@ -35,7 +35,7 @@ class DirWalker extends SourceService {
                     // Check if the file extension is in the list of desired extensions
                     if (this.desiredExtensions.includes(extname(entry.name))) {
                         logger.log("in DirWalker fullPath : " + fullPath)
-                        this.emit('data', fullPath, context)
+                        this.emit('message', fullPath, context)
                     }
                 }
             }

@@ -19,7 +19,7 @@ class MetadataExtractor extends ProcessService {
 
         const output = { filename: targetFilename, content: jsonString }
 
-        this.emit('data', output, context)
+        this.emit('message', output, context)
     }
 
     relocate(filename) {
