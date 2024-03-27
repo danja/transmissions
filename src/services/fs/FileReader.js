@@ -17,7 +17,8 @@ class FileReader extends SourceService {
         this.sourceFile = poi.out(ns.trm.sourceFile).value
     }
 
-    async execute(filename, context) {
+    async execute(data, context) {
+        const filename = context.filename
         logger.debug("FileReader sourceFile = " + filename)
         if (filename === 'internal') {
             filename = this.sourceFile
@@ -26,8 +27,8 @@ class FileReader extends SourceService {
         try {
             const content = await readFile(f)
             //    logger.debug(content.toString())
-            const data = { filename: filename, content: content }
-            this.emit('message', data, context)
+            //  const context = { filename: filename }
+            this.emit('message', content, context)
         } catch (err) {
             logger.error("FileReader.execute error : " + err.message)
         }

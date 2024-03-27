@@ -7,17 +7,18 @@ class LinkFinder extends ProcessService {
 
     async execute(data, context) {
         this.baseUrl = 'http://example.org'
-        const filename = data.filename
-        const content = data.content
+        const filename = context.filename
+        const content = data
 
         logger.debug("LinkFinder input file : " + filename)
         const targetFilename = this.relocate(filename, '.md')
         logger.debug("LinkFinder outputfile : " + targetFilename)
 
         const markdown = this.extractLinks(content)
-        const output = { filename: targetFilename, content: markdown }
 
-        this.emit('message', output, context)
+        context.filename = targetFilename
+
+        this.emit('message', markdown, context)
     }
 
     relocate(filename, extension) {
@@ -38,11 +39,12 @@ class LinkFinder extends ProcessService {
             } else if (tagName === 'a') {
                 const linkText = $(element).text();
                 let href = $(element).attr('href');
+
                 // Create an absolute URL if the href is relative
                 if (href && !href.includes('://')) {
                     href = new URL(href, this.baseUrl).toString();
                 }
-                markdownResult += `[${linkText}](${href})\n\n`;
+                markdownResult += `[${linkText}](${href})\n`;
             }
         });
 

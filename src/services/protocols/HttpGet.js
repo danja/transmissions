@@ -22,10 +22,11 @@ class HttpGet extends ProcessService {
         try {
             const response = await axios.get(url);
             //  console.log(response);
-            const filename = 'data/got.txt'
+
             const content = response.data
-            const data = { filename: filename, content: content }
-            this.emit('message', data, context)
+            context.filename = 'data/got.txt'
+            //   const data = { filename: filename, content: content }
+            this.emit('message', content, context)
         } catch (error) {
             // console.error(error);
         }

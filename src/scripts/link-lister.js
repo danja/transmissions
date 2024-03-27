@@ -18,4 +18,5 @@ const transmission = await TransmissionBuilder.build(tcf, scf)
 const linkFile = 'data/starter-links.md'
 // const lf = footpath.resolve(import.meta.url, '../../', linkFile)
 
-transmission.execute(linkFile)
+const context = { filename: linkFile }
+transmission.execute('', context)
