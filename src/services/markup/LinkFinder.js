@@ -14,11 +14,9 @@ class LinkFinder extends ProcessService {
         const targetFilename = this.relocate(filename, '.md')
         logger.debug("LinkFinder outputfile : " + targetFilename)
 
-        const markdown = this.extractLinks(content)
-
         context.filename = targetFilename
-
-        this.emit('message', markdown, context)
+        // const markdown = 
+        this.extractLinks(content, context)
     }
 
     relocate(filename, extension) {
@@ -26,9 +24,9 @@ class LinkFinder extends ProcessService {
         return split.join('.') + extension
     }
 
-    extractLinks(htmlContent) {
+    extractLinks(htmlContent, context) {
         const $ = cheerio.load(htmlContent);
-        let markdownResult = '';
+        // let markdownResult = '';
 
         $('a, h1, h2, h3, h4, h5, h6').each((_, element) => {
             const tagName = element.tagName.toLowerCase();
@@ -44,11 +42,13 @@ class LinkFinder extends ProcessService {
                 if (href && !href.includes('://')) {
                     href = new URL(href, this.baseUrl).toString();
                 }
-                markdownResult += `[${linkText}](${href})\n`;
+                const linkMd = `[${linkText}](${href})`
+                this.emit('message', linkMd, context)
             }
-        });
+        })
+        this.emit('message', '~done~', context)
 
-        return markdownResult.trim();
+        //  return markdownResult.trim();
     }
 }
 

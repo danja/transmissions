@@ -1,8 +1,10 @@
 # Treadmill
 
-A micro-framework to simplify construction of small data processing applications in JavaScript.
+After _No Code_ and _Lo Code_ comes _Marginally Less Code_
 
-A bit like `make` or a `package.json` builder
+**Treadmill** is a micro-framework which will simplify construction of small data processing applications in JavaScript (assuming you are already familiar with JavaScript and RDF).
+
+A bit like `make` or a `package.json` builder.
 
 ![Treadmill](https://github.com/danja/treadmill/blob/main/docs/images/treadmill.jpg)
 

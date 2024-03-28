@@ -25,7 +25,7 @@ class Transmission {
     connector.connect(this.services)
   }
 
-  async execute(data, context) {
+  async execute(data = false, context = {}) {
     logger.log("\n*** Execution ***")
     const serviceName = this.connectors[0].fromName
 

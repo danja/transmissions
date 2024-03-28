@@ -18,11 +18,12 @@ class FileReader extends SourceService {
     }
 
     async execute(data, context) {
-        const filename = context.filename
-        logger.debug("FileReader sourceFile = " + filename)
+        const filename = context.sourceFile
+
         if (filename === 'internal') {
             filename = this.sourceFile
         }
+        logger.debug("FileReader sourceFile = " + filename)
         const f = footpath.resolve(import.meta.url, '../../../', filename)
         try {
             const content = await readFile(f)
