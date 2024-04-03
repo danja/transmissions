@@ -73,4 +73,19 @@ logger.error = function (msg) {
     logger.log(msg, "error");
 }
 
+logger.poi = function exploreGrapoi(grapoi, predicates, objects, subjects) {
+    // Print the properties of the Grapoi object
+    console.log('Properties of the Grapoi object:');
+    for (const prop in grapoi) {
+        console.log(`\t${prop}: ${grapoi[prop]}`);
+    }
+
+    // Define the path and print the quads
+    console.log('\nPath:');
+    const path = grapoi.out(predicates, objects).in(predicates, subjects);
+    for (const quad of path.quads()) {
+        console.log(`\t${quad.predicate.value}: ${quad.object.value}`);
+    }
+}
+
 export default logger;

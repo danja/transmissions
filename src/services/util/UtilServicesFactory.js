@@ -2,7 +2,7 @@ import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
 
 import ShowMessage from './ShowMessage.js'
-
+import Halt from './Halt.js'
 
 
 class UtilServicesFactory {

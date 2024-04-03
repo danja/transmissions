@@ -11,16 +11,37 @@ class FileReader extends SourceService {
 
     constructor(config) {
         super(config)
+    }
+
+    resolveConfig() {
+
         const dataset = this.config
-        const poi = grapoi({ dataset })
-        // const cwd = process.cwd() + '/../' // move!
-        this.sourceFile = poi.out(ns.trm.sourceFile).value
+        const poi = grapoi({ dataset, term: this.configKey }).in()
+
+        //        logger.log("ALL POI = ")
+        //        logger.poi(poi)
+        //   const house = grapoi({ dataset, factory: rdf, term: this.configKey }).in().trim()
+
+        this.sourceFile = poi.out(ns.trm.value).value
+        logger.log("FileReader.sourceFile = " + this.sourceFile)
+
+        /*
+        const s = poi.node(ns.t('llSourceMap'))
+            .out(ns.trm('value'))
+            .value
+
+        console.log(s);
+*/
+
     }
 
     async execute(data, context) {
-        const filename = context.sourceFile
+        this.resolveConfig()
+        process.exit()
+        logger.log("MK KEY " + this.configKey)
+        var filename = context.sourceFile
 
-        if (filename === 'internal') {
+        if (!filename || filename === 'internal') {
             filename = this.sourceFile
         }
         logger.debug("FileReader sourceFile = " + filename)

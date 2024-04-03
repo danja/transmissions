@@ -3,19 +3,18 @@
 # @prefix fs: <http://purl.org/stuff/filesystem/> .
 @prefix t: <http://hyperdata.it/treadmill/> . # for custom terms & instances
 
-# t:llMap a trm:DataMap ;
-  #  trm:subMap t:llSourceMap ;
-  #  trm:subMap t:llGotMap;
-  #  trm:subMap t:llLinkMap .
+t:linklister trm:hasDataMap t:llSourceMap .
+t:linklister trm:hasDataMap t:llGotMap .
+t:linklister trm:hasDataMap t:llLinkMap .
 
 t:llSourceMap a trm:DataMap ;
-    trm:key "sourceFile" ;
+    trm:key t:sourceFile ;
     trm:value "data/starter-links.md" .
 
-t:llGotMap a trm:DataMap
-    trm:key "gotFile" ;
-    trm:filename "data/got.html" .
+t:llGotMap a trm:DataMap ;
+    trm:key t:gotFile ;
+    trm:value "data/got.html" .
 
-t:llLinkMap a trm:DataMap
-    trm:match "linkFile" ;
-    trm:filename "data/links.md" .
+t:llLinkMap a trm:DataMap ;
+    trm:key t:linkFile ;
+    trm:value "data/links.md" .

@@ -1,20 +1,21 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix trm: <http://purl.org/stuff/transmission/> .
 @prefix : <http://hyperdata.it/treadmill/> . # for custom terms & instances
 
 :linklister a trm:Pipeline ;
-    trm:pipe (:s0 :s1 :s2 :s3 :s4) .
+    trm:pipe (:s1 :s2 :s3 :s4 :s6 :s7 :s8) .
 
-:s0 a :Halt .
+# :s0 a :Halt .
 :s1 a :FileReader ;
-    rdfs:label "sourceFile" .
+    trm:configKey :sourceFile .
 :s2 a :ShowData .
 :s3 a :Halt .
 
 :s4 a :LineReader .
 :s5 a :HttpGet .
 :s6 a :FileWriter ;
-    rdfs:label "gotFile" .
+     trm:configKey :gotFile .
 :s7 a :Halt .
 :s8 a :LinkFinder .
 
