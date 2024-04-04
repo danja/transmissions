@@ -18,8 +18,6 @@ class Transmission {
   }
 
   connect(fromServiceName, toServiceName) {
-    console.log('Connecting:', fromServiceName, 'to:', toServiceName); // Add this line
-
     let connector = new Connector(fromServiceName, toServiceName)
     this.connectors.push(connector)
     connector.connect(this.services)

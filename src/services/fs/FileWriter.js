@@ -3,6 +3,7 @@ import { Buffer } from 'node:buffer';
 
 import grapoi from 'grapoi'
 import ns from '../../utils/ns.js'
+import footpath from '../../utils/footpath.js'
 import logger from '../../utils/Logger.js'
 import fs from "node:fs"
 import SinkService from '../base/SinkService.js';
@@ -11,21 +12,29 @@ class FileWriter extends SinkService {
 
     constructor(config) {
         super(config)
-        const dataset = this.config
-        const poi = grapoi({ dataset })
-        // const map = poi.out(ns.rdf.type, ns.trm.DataMap).term
-        const cwd = process.cwd() + '/../' // move!
-        this.destinationFile = cwd + poi.out(ns.trm.destinationFile).value
     }
 
     async execute(data, context) {
-        //   logger.reveal(data)
-        //   logger.debug('data.filename = ' + data.filename)
-        //   logger.debug('data.content = ' + data.content)
-        logger.debug('writeFile  = ' + context.filename)
-        await writeFile(data, context.filename)
-        //  logger.debug("sink destinationFile = " + this.destinationFile)
-        // await writeFile(this.destinationFile, data);
+        var filename = context.targetFile
+
+        if (!filename) {
+            filename = this.locateConfig().value
+        }
+        logger.debug("Filewriter.targetFile = " + filename)
+
+
+        const f = footpath.resolve(import.meta.url, '../../../', filename)
+        try {
+            //  logger.log("Filewriter writing " + f)
+            await writeFile(f, data)
+            //    logger.debug(content.toString())
+            //  const context = { filename: filename }
+            //   this.emit('message', data, context)
+            // process.exit()
+        } catch (err) {
+            logger.error("FileWriter.execute error : " + err.message)
+        }
+
         this.emit('message', data, context)
     }
 }

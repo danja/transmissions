@@ -10,41 +10,17 @@ class HttpGet extends ProcessService {
 
     constructor(config) {
         super(config)
-        /*
-        const dataset = this.config
-        const poi = grapoi({ dataset })
-        // const cwd = process.cwd() + '/../' // move!
-        this.sourceFile = poi.out(ns.trm.sourceFile).value
-        */
     }
 
     async execute(url, context) {
         try {
-            const response = await axios.get(url);
-            //  console.log(response);
-
-            const content = response.data
-            //  context.filename = 'data/got.txt'
-            //   const data = { filename: filename, content: content }
+            const response = await axios.get(url)
+            //  const content = response.data
+            const content = "DUMMY"
             this.emit('message', content, context)
         } catch (error) {
-            // console.error(error);
+            logger.error("HttpGet.execute error\n" + error)
         }
-        /*
-        logger.debug("FileReader sourceFile = " + filename)
-        if (filename === 'internal') {
-            filename = this.sourceFile
-        }
-        const f = footpath.resolve(import.meta.url, '../../../', filename)
-        try {
-            const content = await readFile(f)
-            //    logger.debug(content.toString())
-            const data = { filename: filename, content: content }
-            this.emit('data', data)
-        } catch (err) {
-            logger.error("FileReader.execute error : " + err.message)
-        }
-        */
     }
 }
 

@@ -47,12 +47,13 @@ class TransmissionBuilder {
     for (let i = 0; i < pipenodes.length; i++) {
       let node = pipenodes[i]
       let serviceName = node.value
-      // logger.debug("\nserviceName = " + serviceName)
+      logger.debug("\nserviceName = " + serviceName)
 
       let np = rdf.grapoi({ dataset: transmissionConfig, term: node })
-      logger.poi(np)
+      //   logger.poi(np)
+      // process.exit()
       let serviceType = np.out(ns.rdf.type).term
-      // logger.debug("\nserviceType = " + serviceType.value)
+      logger.debug("\nserviceType = " + serviceType.value)
 
       let serviceConfig = np.out(ns.trm.configKey).term
 

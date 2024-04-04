@@ -12,7 +12,7 @@ class UtilServicesFactory {
         if (type.equals(ns.t.Halt)) {
             return new Halt(config)
         }
-        if (type.equals(ns.t.ShowData)) {
+        if (type.equals(ns.t.ShowMessage)) {
             return new ShowMessage(config)
         }
         return false
