@@ -15,6 +15,7 @@ const scf = footpath.resolve(import.meta.url, '../', servicesConfigFile)
 
 const transmission = await TransmissionBuilder.build(tcf, scf)
 
+logger.debug(transmission.describe())
 // const sourceFile = 'data/starter-links.md'
 // const sourceFile = 'data/starter-links.md'
 // const lf = footpath.resolve(import.meta.url, '../../', linkFile)

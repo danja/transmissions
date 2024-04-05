@@ -10,6 +10,7 @@ class ShowMessage extends SinkService {
 
         logger.log("\n***  ShowMessageService ***")
         logger.log("filename : " + context.filename)
+        console.trace()
 
     }
 }

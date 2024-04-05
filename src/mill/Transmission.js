@@ -33,6 +33,28 @@ class Transmission {
     // Start the first service
     service.execute(data, context)
   }
+
+  /**
+ * Describes the structure of the Transmission instance,
+ * listing all registered services and connectors.
+ */
+  describe() {
+    let description = 'Transmission Structure:\n';
+
+    // Describe services
+    description += 'Services:\n';
+    Object.keys(this.services).forEach(serviceName => {
+      description += `  - ${serviceName}\n`;
+    });
+
+    // Describe connectors
+    description += 'Connectors:\n';
+    this.connectors.forEach((connector, index) => {
+      description += `  - Connector ${index + 1}: ${connector.fromName} -> ${connector.toName}\n`;
+    })
+
+    return description
+  }
 }
 
 export default Transmission
