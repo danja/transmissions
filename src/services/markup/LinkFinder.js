@@ -6,6 +6,7 @@ import ProcessService from '../base/ProcessService.js'
 class LinkFinder extends ProcessService {
 
     async execute(data, context) {
+        /*
         this.baseUrl = 'http://example.org'
         const filename = context.filename
         const content = data
@@ -15,8 +16,9 @@ class LinkFinder extends ProcessService {
         logger.debug("LinkFinder outputfile : " + targetFilename)
 
         context.filename = targetFilename
+        */
         // const markdown = 
-        this.extractLinks(content, context)
+        this.extractLinks(data, context)
     }
 
     relocate(filename, extension) {
@@ -24,23 +26,29 @@ class LinkFinder extends ProcessService {
         return split.join('.') + extension
     }
 
-    extractLinks(htmlContent, context) {
-        const $ = cheerio.load(htmlContent);
-        // let markdownResult = '';
+    async extractLinks(htmlContent, context) {
+
+        const $ = cheerio.load(htmlContent)
+        let markdownResult = ''
 
         $('a, h1, h2, h3, h4, h5, h6').each((_, element) => {
-            const tagName = element.tagName.toLowerCase();
+            const tagName = element.tagName.toLowerCase()
             if (tagName.startsWith('h')) {
-                const level = tagName.substring(1);
-                const headerText = $(element).text();
+                const level = tagName.substring(1)
+                const headerText = $(element).text()
                 markdownResult += `${'#'.repeat(parseInt(level))} ${headerText}\n\n`;
             } else if (tagName === 'a') {
-                const linkText = $(element).text();
-                let href = $(element).attr('href');
-
+                const linkText = $(element).text()
+                //  logger.debug('linkText = ' + linkText)
+                let href = $(element).attr('href')
+                // logger.debug('href = ' + href)
+                if (!href || href.startsWith('#')) return
                 // Create an absolute URL if the href is relative
                 if (href && !href.includes('://')) {
-                    href = new URL(href, this.baseUrl).toString();
+                    //  logger.debug('context.sourceURL = ' + context.sourceURL)
+                    const baseURL = context.sourceURL
+                    //  logger.debug('this.baseUrl = ' + baseURL)
+                    href = new URL(href, baseURL).toString();
                 }
                 const linkMd = `[${linkText}](${href})`
                 this.emit('message', linkMd, context)

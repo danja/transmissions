@@ -15,6 +15,6 @@ const scf = footpath.resolve(import.meta.url, './', servicesConfigFile)
 
 const transmission = await TransmissionBuilder.build(tcf, scf)
 
-logger.debug(transmission.describe())
+// logger.debug(transmission.describe())
 
 transmission.execute()

@@ -3,15 +3,20 @@ import SinkService from '../base/SinkService.js'
 
 class ShowMessage extends SinkService {
 
-    execute(data, context) {
+    async execute(data, context) {
 
-        logger.log(data.toString())
+
         //    logger.log("\n\nStringSink outputs : \"" + data + "\"\n\n")
 
         logger.log("\n***  ShowMessageService ***")
-        logger.log("filename : " + context.filename)
+        logger.reveal(data)
         console.trace()
 
+        logger.log(data.toString())
+
+        //       logger.log("filename : " + context.filename)
+
+        this.emit('message', data, context)
     }
 }
 

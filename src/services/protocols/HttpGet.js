@@ -15,8 +15,9 @@ class HttpGet extends ProcessService {
     async execute(url, context) {
         try {
             const response = await axios.get(url)
-            //  const content = response.data
-            const content = "DUMMY"
+            const content = response.data
+            // const content = "DUMMY"
+            context.sourceURL = url
             this.emit('message', content, context)
         } catch (error) {
             logger.error("HttpGet.execute error\n" + error)
