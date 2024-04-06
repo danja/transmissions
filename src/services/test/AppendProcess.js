@@ -4,7 +4,7 @@ import ProcessService from '../base/ProcessService.js'
 class AppendProcess extends ProcessService {
 
     async execute(input, context) {
-        logger.debug("AppendProcess.process : " + input)
+        logger.debug("AppendProcess data : " + input)
         let output = input + " world"
         //  return output
         this.emit('message', output, context)

@@ -23,19 +23,15 @@ class FileSource extends SourceService {
         console.log("COFIG = " + config)
         const dataset = this.config
         const poi = grapoi({ dataset })
-        // const map = poi.out(ns.rdf.type, ns.trm.DataMap).term
-        // const cwd = process.cwd() + '/../../' // move!
         this.sourceFile = poi.out(ns.trm.sourceFile).value
     }
 
     async execute(data, context) {
-        logger.debug("sourceFile = " + this.sourceFile)
-        //  logger.debug("FileSource process.cwd() = " + process.cwd())
         try {
-            const sf = footpath.resolve(import.meta.url, '../../../', this.sourceFile)
-
+            const sf = footpath.resolve(import.meta.url, context.dataDir, this.sourceFile)
+            logger.debug("sourceFile = " + sf)
             const contents = await readFile(sf, { encoding: 'utf8' })
-            logger.debug(contents)
+            logger.debug('FileSource data : ' + contents)
             this.emit('message', contents, context)
         } catch (err) {
             logger.error("FileSource.execute error : " + err.message)

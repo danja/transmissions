@@ -18,11 +18,10 @@ class LineReader extends ProcessService {
 
         text.split('\n').forEach(line => {
             if (line.trim() && !line.startsWith('#')) {
-                //  logger.debug('Line = ' + line)
+                logger.debug('Line = [[[' + line + ']]]')
                 this.emit('message', line, context)
             }
         })
-        // this.emit('message', '~done~', context)
     }
 }
 

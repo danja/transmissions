@@ -1,3 +1,5 @@
+import footpath from '../../src/utils/footpath.js'
+
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { expect } from 'chai'
@@ -9,21 +11,23 @@ describe('file-pipeline', function () {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename)
     const rootDir = path.resolve(__dirname, '../../')
-    // console.log('in f spec rootDir = ' + rootDir)
+
+    const dataFile = footpath.resolve(import.meta.url, '../../src/transmissions/file-pipeline/data/', 'output.txt')
+    console.log('in f spec dataFile = ' + dataFile)
     it('produces correct output', function (done) {
         // Delete the output file if it exists
-        if (fs.existsSync(rootDir + '/data/output.txt')) {
-            fs.unlinkSync(rootDir + '/data/output.txt');
+        if (fs.existsSync(dataFile)) {
+            fs.unlinkSync(dataFile);
         }
 
-        exec('node src/scripts/file-pipeline.js', (error, stdout, stderr) => {
+        exec('node src/transmissions/file-pipeline/run.js', (error, stdout, stderr) => {
             if (error) {
                 console.error(`exec error: ${error}`);
                 return;
             }
 
             // Read the output file
-            fs.readFile(rootDir + '/data/output.txt', 'utf8', (err, data) => {
+            fs.readFile(dataFile, 'utf8', (err, data) => {
                 if (err) {
                     console.error(`readFile error: ${err}`);
                     return;
