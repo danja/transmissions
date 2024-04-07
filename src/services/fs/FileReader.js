@@ -14,16 +14,20 @@ class FileReader extends SourceService {
     }
 
     async execute(data, context) {
-
+        //  const dataDir = context.runScript
+        logger.debug("dataDir = " + context.dataDir)
         var filename = context.sourceFile
 
         if (!filename) {
             filename = this.locateConfig().value
         }
         logger.debug("FileReader sourceFile = " + filename)
-        //  process.exit()
 
-        const f = footpath.resolve(import.meta.url, '../../../', filename)
+        const f = footpath.resolve(context.runScript, './data/', filename)
+
+
+
+        logger.debug("f = " + f)
         try {
             const content = await readFile(f)
             //    logger.debug(content.toString())

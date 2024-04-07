@@ -9,12 +9,16 @@ t:linklister trm:hasDataMap t:llLinkMap .
 
 t:llSourceMap a trm:DataMap ;
     trm:key t:sourceFile ;
-    trm:value "data/starter-links.md" .
+    trm:value "starter-links.md" .
 
 t:llGotMap a trm:DataMap ;
     trm:key t:gotFile ;
-    trm:value "data/got.html" .
+    trm:value "got.html" .
 
 t:llLinkMap a trm:DataMap ;
     trm:key t:linkFile ;
-    trm:value "data/links.md" .
+    trm:value "links.md" .
+
+t:htmlMap a trm:DataMap ;
+    trm:key t:htmlFile ;
+    trm:value "links.html" .

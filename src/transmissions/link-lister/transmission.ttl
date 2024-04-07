@@ -13,17 +13,22 @@
 # :s3 a :ShowData .
 
 :s3 a :HttpGet .
-:s4 a :NOP .
+# :s4 a :NOP .
 # :s4 a :FileWriter ;
 #     trm:configKey :gotFile .
 
 # :s5 a :NOP .
 
-:s5 a :LinkFinder .
+:s4 a :LinkFinder .
 # :s6 a :NOP .
-:s6 a :StringMerger .
-:s7 a :FileWriter ;
+:s5 a :StringMerger .
+:s6 a :FileWriter ;
     trm:configKey :linkFile .
+
+:s7 a :MarkdownToHTML .
+
+:s8 a :FileWriter ;
+    trm:configKey :htmlFile .
 
 #:s8 a :StringFilter .
 #:s9 a :StringMerger .

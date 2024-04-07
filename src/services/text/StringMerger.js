@@ -8,12 +8,13 @@ class StringMerger extends ProcessService {
     }
 
     async execute(data, context) {
+        this.merged = this.merged + data
         if (data != '~done~') {
-            this.merged = this.merged + data
+            this.emit('message', this.merged, context)
             return
         }
 
-        this.emit('message', data, context)
+
     }
 
 }
