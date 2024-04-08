@@ -4,27 +4,20 @@
 @prefix : <http://hyperdata.it/treadmill/> . # for custom terms & instances
 
 :linklister a trm:Pipeline ;
-    trm:pipe (:s1 :s2 :s3 :s4 :s5 :s6 :s7) .
+    trm:pipe (:s1 :s2 :s3 :s4 :s5 :s6 :s7 :s8) .
 
-# :s0 a :Halt .
 :s1 a :FileReader ;
     trm:configKey :sourceFile .
 :s2 a :LineReader .
-# :s3 a :ShowData .
-
 :s3 a :HttpGet .
-# :s4 a :NOP .
-# :s4 a :FileWriter ;
-#     trm:configKey :gotFile .
-
-# :s5 a :NOP .
 
 :s4 a :LinkFinder .
-# :s6 a :NOP .
+
 :s5 a :StringMerger .
+
 :s6 a :FileWriter ;
     trm:configKey :linkFile .
-
+# :s6 a :NOP .
 :s7 a :MarkdownToHTML .
 
 :s8 a :FileWriter ;
@@ -34,3 +27,8 @@
 #:s9 a :StringMerger .
 #:s10 a :FileWriter 
 #        trm:configKey :linkFile .
+# :s4 a :NOP .
+# :s4 a :FileWriter ;
+#     trm:configKey :gotFile .
+
+# :s5 a :NOP .

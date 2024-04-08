@@ -8,15 +8,16 @@ class StringMerger extends ProcessService {
     }
 
     async execute(data, context) {
-        this.merged = this.merged + data
-        if (data != '~done~') {
+        logger.log('SMDATA*********************************\n' + data)
+
+        if (data === '~~done~~') {
+            logger.log('SM  DONE**********************************\n' + this.merged)
             this.emit('message', this.merged, context)
             return
         }
-
+        this.merged = this.merged + data
 
     }
-
 }
 
 export default StringMerger

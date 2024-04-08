@@ -22,15 +22,10 @@ class FileWriter extends SinkService {
         }
         logger.debug("Filewriter.targetFile = " + filename)
 
-
-        const f = footpath.resolve(import.meta.url, '../../../', filename)
+        const f = footpath.resolve(context.runScript, './data/', filename)
         try {
-            //  logger.log("Filewriter writing " + f)
             await writeFile(f, data)
-            //    logger.debug(content.toString())
-            //  const context = { filename: filename }
-            //   this.emit('message', data, context)
-            // process.exit()
+
         } catch (err) {
             logger.error("FileWriter.execute error : " + err.message)
         }

@@ -6,18 +6,12 @@ import ProcessService from '../base/ProcessService.js'
 class LinkFinder extends ProcessService {
 
     async execute(data, context) {
-        /*
-        this.baseUrl = 'http://example.org'
-        const filename = context.filename
-        const content = data
-
-        logger.debug("LinkFinder input file : " + filename)
-        const targetFilename = this.relocate(filename, '.md')
-        logger.debug("LinkFinder outputfile : " + targetFilename)
-
-        context.filename = targetFilename
-        */
-        // const markdown = 
+        if (data === '~~done~~') {
+            //   logger.log('LF**********************************\n' + data)
+            logger.log('LF DONE*****************')
+            this.emit('message', '~~done~~', context)
+            return
+        }
         this.extractLinks(data, context)
     }
 
@@ -29,14 +23,14 @@ class LinkFinder extends ProcessService {
     async extractLinks(htmlContent, context) {
 
         const $ = cheerio.load(htmlContent)
-        let markdownResult = ''
+        let message = ''
 
         $('a, h1, h2, h3, h4, h5, h6').each((_, element) => {
             const tagName = element.tagName.toLowerCase()
             if (tagName.startsWith('h')) {
                 const level = tagName.substring(1)
                 const headerText = $(element).text()
-                markdownResult += `${'#'.repeat(parseInt(level))} ${headerText}\n\n`;
+                message = `\n\n${'#'.repeat(parseInt(level))} ${headerText}\n`;
             } else if (tagName === 'a') {
                 const linkText = $(element).text()
                 //  logger.debug('linkText = ' + linkText)
@@ -50,16 +44,12 @@ class LinkFinder extends ProcessService {
                     //  logger.debug('this.baseUrl = ' + baseURL)
                     href = new URL(href, baseURL).toString();
                 }
-                const linkMd = `[${linkText}](${href})`
-                this.emit('message', linkMd, context)
-            }
-        })
-        this.emit('message', '~done~', context)
+                message = `\n[${linkText}](${href})`
 
-        //  return markdownResult.trim();
+            }
+            this.emit('message', message, context)
+        })
     }
 }
-
-
 
 export default LinkFinder

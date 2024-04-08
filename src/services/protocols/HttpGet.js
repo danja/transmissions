@@ -13,6 +13,11 @@ class HttpGet extends ProcessService {
     }
 
     async execute(url, context) {
+        if (url === '~~done~~') {
+            logger.log('HG DONE*****************')
+            this.emit('message', url, context)
+            return
+        }
         try {
             const response = await axios.get(url)
             const content = response.data
