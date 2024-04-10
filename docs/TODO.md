@@ -21,6 +21,8 @@
 
 https://jsdoc.app/about-configuring-default-template
 
+worker threads : https://chat.openai.com/share/febba974-98a1-4a98-b8c2-1a20e22cf4bb
+
 - [ ]
 
 ## Features

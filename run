@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# run
+# use 'chmod +x run' to make this executable
+
+
+# Execute the Node.js script with Node
+node src/transmissions/run.js "$@"

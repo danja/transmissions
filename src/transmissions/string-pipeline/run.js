@@ -8,7 +8,7 @@ logger.debug("Hello, logger!")
 logger.debug("process.cwd() = " + process.cwd())
 
 const transmissionConfigFile = 'transmission.ttl'
-const servicesConfigFile = 'services.ttl' // not used
+const servicesConfigFile = 'services.ttl'
 
 const tcf = footpath.resolve(import.meta.url, './', transmissionConfigFile)
 const scf = footpath.resolve(import.meta.url, './', servicesConfigFile)
