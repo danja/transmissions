@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events'
+import logger from '../utils/Logger.js'
 
 class Connector extends EventEmitter {
 
@@ -13,10 +14,11 @@ class Connector extends EventEmitter {
         let fromService = services[this.fromName]
         let toService = services[this.toName]
 
-        //   console.log('Connecting from:', this.fromName, 'to:', this.toName)
-
         fromService.on('message', (data, context = {}) => {
-            toService.execute(data, context);
+            logger.log("\nPipe running service : " + this.toName)
+            // QQQ
+            //   toService.execute(data, context)
+            toService.receive(data, context)
         })
     }
 

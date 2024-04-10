@@ -7,6 +7,8 @@ class Service extends EventEmitter {
     constructor(config) {
         super()
         this.config = config
+        this.messageQueue = []
+        this.processing = false
     }
 
     locateConfig() {
@@ -14,6 +16,26 @@ class Service extends EventEmitter {
         const poi = grapoi({ dataset, term: this.configKey }).in()
         const configNode = poi.out(ns.trm.value)
         return configNode
+    }
+
+    async receive(data, context) {
+        await this.enqueue(data, context)
+    }
+
+    async enqueue(data, context) {
+        this.messageQueue.push({ data, context })
+        if (!this.processing) {
+            this.executeQueue()
+        }
+    }
+
+    async executeQueue() {
+        this.processing = true
+        while (this.messageQueue.length > 0) {
+            const { data, context } = this.messageQueue.shift()
+            await this.execute(data, context)
+        }
+        this.processing = false
     }
 
     async execute(data, context) {

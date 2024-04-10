@@ -1,7 +1,6 @@
-import logger from '../utils/Logger.js'
-import footpath from '../utils/footpath.js'
+import logger from '../../utils/Logger.js'
+import TransmissionBuilder from '../../mill/TransmissionBuilder.js'
 
-import TransmissionBuilder from '../mill/TransmissionBuilder.js'
 logger.setLogLevel("debug")
 logger.debug("Hello, logger!")
 logger.debug("process.cwd() = " + process.cwd())

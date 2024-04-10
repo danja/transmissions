@@ -6,6 +6,7 @@ class ProcessService extends Service {
         super(config)
     }
 
+
     async execute(data, context) {
         this.emit('message', data, context)
     }
