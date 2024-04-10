@@ -19,9 +19,10 @@ class HttpGet extends ProcessService {
             return
         }
         try {
+            logger.log('HG GETTING*****************')
             const response = await axios.get(url)
             const content = response.data
-            // const content = "DUMMY"
+
             context.sourceURL = url
             this.emit('message', content, context)
         } catch (error) {

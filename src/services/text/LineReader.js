@@ -14,14 +14,24 @@ class LineReader extends ProcessService {
 
     async execute(data, context) {
 
-        const text = data.toString();
+        const text = data.toString()
 
+        /*
         text.split('\n').forEach(line => {
             if (line.trim() && !line.startsWith('#')) {
                 logger.debug('Line = [[[' + line + ']]]')
                 this.emit('message', line, context)
             }
         })
+*/
+        const lines = text.split('\n')
+        for await (let line of lines) {
+            if (line.trim() && !line.startsWith('#')) {
+                logger.debug('Line = [[[' + line + ']]]')
+                this.emit('message', line, context)
+            }
+        }
+
         this.emit('message', '~~done~~', context)
     }
 }

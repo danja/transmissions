@@ -6,13 +6,19 @@ import ProcessService from '../base/ProcessService.js'
 class LinkFinder extends ProcessService {
 
     async execute(data, context) {
+
+        await this.extractLinks(data, context)
+
         if (data === '~~done~~') {
-            //   logger.log('LF**********************************\n' + data)
             logger.log('LF DONE*****************')
-            this.emit('message', '~~done~~', context)
+            this.emitLocal('message', '~~done~~', context)
             return
         }
-        this.extractLinks(data, context)
+    }
+
+    emitLocal(label, data, context) {
+        logger.log('emitLocal === ' + data)
+        this.emit(label, data, context)
     }
 
     relocate(filename, extension) {
@@ -47,7 +53,7 @@ class LinkFinder extends ProcessService {
                 message = `\n[${linkText}](${href})`
 
             }
-            this.emit('message', message, context)
+            this.emitLocal('message', message, context)
         })
     }
 }
