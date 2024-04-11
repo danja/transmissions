@@ -18,11 +18,15 @@ class FileSink extends SinkService {
     }
 
     async execute(data, context) {
-        // const sf = footpath.resolve(import.meta.url, context.dataDir, this.sourceFile)
-        const df = footpath.resolve(import.meta.url, context.dataDir, this.destinationFile)
+        const toRootDir = '../../../'
+        const dataDir = path.join(toRootDir, context.dataDir)
+
+        const df = footpath.resolve(import.meta.url, dataDir, this.destinationFile)
 
         logger.debug("FileSink to = " + df)
+
         await writeFile(df, data)
+
         this.emit('message', data, context)
     }
 }

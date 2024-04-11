@@ -1,13 +1,12 @@
-// run.js (ES6 Module style)
+// run.js - ES module style
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { promises as fs } from 'fs';
 import path from 'path';
 
-import logger from '../utils/Logger.js'
-import footpath from '../utils/footpath.js'
+import logger from './src/utils/Logger.js'
 
-import TransmissionBuilder from '../mill/TransmissionBuilder.js'
+import TransmissionBuilder from './src/mill/TransmissionBuilder.js'
 
 const transmissionsDir = './src/transmissions'
 
@@ -23,6 +22,26 @@ class CommandUtils {
         const transmission = await TransmissionBuilder.build(transmissionConfigFile, servicesConfigFile)
 
         transmission.execute(data, context)
+    }
+
+    static async parseOrLoadContext(contextArg) {
+        let context = ''
+        try {
+            // First, try to parse it directly as JSON
+            //   logger.log('contextArg = ' + contextArg)
+            context = JSON.parse(contextArg)
+            //   logger.log('context from string = ' + context)
+
+        } catch (err) {
+            logger.log(err)
+            // If it fails, assume it's a filename and try to load the file
+            const filePath = path.resolve(contextArg); // Ensure the path is absolute
+            const fileContent = await fs.readFile(filePath, 'utf8');
+            context = JSON.parse(fileContent)
+            logger.log('context from file = ' + context)
+        }
+        return context
+
     }
 
     static async listSubdirectories(currentDirectory) {
@@ -45,6 +64,7 @@ class CommandUtils {
     }
 }
 
+let context = {}
 
 if (process.argv.length <= 2) {
     // No arguments were provided, list subdirectories and exit
@@ -53,6 +73,11 @@ if (process.argv.length <= 2) {
 } else {
     await yargs(hideBin(process.argv))
         .usage('Usage: $0 <command> [options]')
+        .option('context', {
+            alias: 'c',
+            describe: 'Context as a JSON string or a path to a JSON file',
+            type: 'string',
+        })
         .command('$0 <dirName> [input]', 'Runs the specified transmission with optional input value', (yargs) => {
             return yargs.positional('dirName', {
                 describe: 'The transmission to run',
@@ -64,11 +89,20 @@ if (process.argv.length <= 2) {
                     default: '' // Default value if the second argument is not provided
                 })
         }, async (argv) => {
-            // commandExecuted = true
-            const { dirName, input } = argv
-            // Assuming the directories are within a specific path, adjust as necessary
-            const dirPath = path.join(transmissionsDir, dirName);
-            await CommandUtils.run(dirPath, input, {}) // Pass additional data and context as needed
+            const { dirName, input, context: contextArg } = argv
+
+            const transmissionPath = path.join(transmissionsDir, dirName)
+            const defaultDataDir = path.join(transmissionPath, '/data')
+
+            context = { "dataDir": defaultDataDir }
+
+            // If a context argument was provided, parse or load it
+            if (contextArg) {
+                context = await CommandUtils.parseOrLoadContext(contextArg);
+            }
+
+
+            await CommandUtils.run(transmissionPath, input, context) // Pass additional data and context as needed
         })
         .help('h')
         .alias('h', 'help')

@@ -13,14 +13,14 @@ describe('file-pipeline', function () {
     const rootDir = path.resolve(__dirname, '../../')
 
     const dataFile = footpath.resolve(import.meta.url, '../../src/transmissions/file-pipeline/data/', 'output.txt')
-    console.log('in f spec dataFile = ' + dataFile)
+    console.log('in file-pipeline.spec.js dataFile = ' + dataFile)
     it('produces correct output', function (done) {
         // Delete the output file if it exists
         if (fs.existsSync(dataFile)) {
             fs.unlinkSync(dataFile);
         }
 
-        exec('node src/transmissions/file-pipeline/run.js', (error, stdout, stderr) => {
+        exec('node run.js file-pipeline', (error, stdout, stderr) => {
             if (error) {
                 console.error(`exec error: ${error}`);
                 return;

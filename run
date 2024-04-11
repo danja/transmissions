@@ -5,4 +5,4 @@
 
 
 # Execute the Node.js script with Node
-node src/transmissions/run.js "$@"
+node run.js "$@"

@@ -8,7 +8,7 @@ import { exec } from 'child_process'
 
 describe('string-pipeline', function () {
     it('produces correct output', function (done) {
-        exec('node src/transmissions/string-pipeline/run.js', (error, stdout, stderr) => {
+        exec('node run.js string-pipeline Hello', (error, stdout, stderr) => {
             if (error) {
                 console.error(`exec error: ${error}`);
                 return;

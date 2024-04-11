@@ -1,7 +1,11 @@
 // VanillaJS Logger
+
+import fs from 'fs'
 // 
 // NOTE: You probably shouldn't use this in production... you've been warned.
 let logger = {}
+
+logger.logfile = 'latest.log'
 
 // Log levels
 // debug=0, info=1, log=2, warn=3, error=4
@@ -14,35 +18,33 @@ const LOG_LEVELS = [
 ];
 const logComponent = "api.logger";
 
-// Set log level
+logger.appendLogToFile = function (message) {
+    if (logger.logfile) {
+        fs.appendFileSync(logger.logfile, message + '\n', 'utf8');
+    }
+}
+
 logger.setLogLevel = function (logLevel = "warn") {
     console[logLevel]("[%s] log level: %s", logComponent, logLevel);
     let limit = LOG_LEVELS.indexOf(logLevel);
     LOG_LEVELS.filter(function (level, index) {
         if (index < limit) {
             console[logLevel]("[%s] disabling console.%s()", logComponent, level);
-            console[level] = function () { };
+            console[level] = function () { }  // Disable lower log levels
         }
     });
 };
 
-// Timestamp generator
 logger.timestampISO = function () {
     let now = new Date();
     return now.toISOString();
 };
 
-// Custom JSON Logger
 logger.log = function (msg, level = "log") {
     // console.log(msg)
     console[level](msg)
-
-    /*
-      console[level](JSON.stringify({
-        ts: logger.timestampISO(),
-        msg: msg,
-    }, null, 0))
-    */
+    const logMessage = `[${logger.timestampISO()}] [${level.toUpperCase()}] - ${msg}`
+    logger.appendLogToFile(logMessage)
 }
 
 logger.reveal = function (instance) {
@@ -87,5 +89,21 @@ logger.poi = function exploreGrapoi(grapoi, predicates, objects, subjects) {
         console.log(`\t${quad.predicate.value}: ${quad.object.value}`);
     }
 }
+
+function handleExit(options, exitCode) {
+    if (options.cleanup) {
+        // Perform cleanup
+    }
+    if (exitCode || exitCode === 0) console.log(exitCode);
+    if (options.exit) process.exit();
+}
+
+// Cleanup listener for the process
+process.on('exit', handleExit.bind(null, { cleanup: true }));
+process.on('SIGINT', handleExit.bind(null, { exit: true })); // Catches ctrl+c event
+process.on('SIGUSR1', handleExit.bind(null, { exit: true })); // Catches "kill pid" (for example: nodemon restart)
+process.on('SIGUSR2', handleExit.bind(null, { exit: true })); // Catches "kill pid" (for example: nodemon restart)
+process.on('uncaughtException', handleExit.bind(null, { exit: true }));
+
 
 export default logger;

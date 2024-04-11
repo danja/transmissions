@@ -4,5 +4,5 @@
 @prefix t: <http://hyperdata.it/treadmill/> . # for custom terms & instances
 
 t:FilePipelineMap a trm:DataMap ;
-    trm:sourceFile "data/input.txt" ;
-    trm:destinationFile "data/output.txt" .
+    trm:sourceFile "input.txt" ;
+    trm:destinationFile "output.txt" .

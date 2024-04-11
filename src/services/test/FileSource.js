@@ -14,13 +14,8 @@ import SourceService from '../base/SourceService.js'
 
 class FileSource extends SourceService {
 
-    //  t:FilePipelineMap a trm:DataMap ;
-    //  trm:sourceFile "data/input.txt" ;
-    //  trm:destinationFile "data/output.txt" .
-
     constructor(config) {
         super(config)
-        console.log("COFIG = " + config)
         const dataset = this.config
         const poi = grapoi({ dataset })
         this.sourceFile = poi.out(ns.trm.sourceFile).value
@@ -28,8 +23,14 @@ class FileSource extends SourceService {
 
     async execute(data, context) {
         try {
-            const sf = footpath.resolve(import.meta.url, context.dataDir, this.sourceFile)
-            logger.debug("sourceFile = " + sf)
+            const toRootDir = '../../../'
+            const dataDir = toRootDir + context.dataDir
+            const sf = footpath.resolve(import.meta.url, dataDir, this.sourceFile)
+
+            // const sf = path.join(__dirname, toRootDir, context.dataDir, filePath);
+
+            logger.debug('FileSource file : ' + sf)
+
             const contents = await readFile(sf, { encoding: 'utf8' })
             logger.debug('FileSource data : ' + contents)
             this.emit('message', contents, context)
