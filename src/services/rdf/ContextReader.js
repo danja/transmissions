@@ -25,11 +25,11 @@ class ContextReader extends SourceService {
         const stream = fromFile(source)
 
         // should append to incoming?
-        context = await rdf.dataset().import(stream)
+        //   const config = await rdf.dataset().import(stream)
+        logger.log("§§§§§§§§§ContextReader 1 context : " + Object.keys(context))
 
-        console.log(`read ${context.size} triples from ${source}`)
-
-        // logger.log('############### context = ' + context.toString())
+        context.dataset = await rdf.dataset().import(stream)
+        logger.log("ContextReader 2 context : " + Object.keys(context))
 
         this.emit('message', source, context)
         //  } catch (err) {

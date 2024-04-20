@@ -13,12 +13,13 @@ class PostcraftDispatcher extends ProcessService {
   }
 
   async execute(data, context) {
-    const poi = grapoi({ dataset: context })
+    const postcraftConfig = context.dataset
+    const poi = grapoi({ dataset: postcraftConfig })
 
     for (const q of poi.out(ns.rdf.type).quads()) {
       if (q.object.equals(ns.pc.ContentGroup)) { // 
         logger.debug("about to build pipeline")
-        this.processContentGroup(context, q.subject)
+        this.processContentGroup(postcraftConfig, q.subject)
       }
     }
 
