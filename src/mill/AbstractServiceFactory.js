@@ -9,7 +9,7 @@ import UtilServicesFactory from '../services/util/UtilServicesFactory.js'
 import TextServicesFactory from '../services/text/TextServicesFactory.js'
 import ProtocolsServicesFactory from '../services/protocols/ProtocolsServicesFactory.js'
 import RDFServicesFactory from '../services/rdf/RDFServicesFactory.js'
-import PostcraftServicesFactory from '../services/rdf/PostcraftServicesFactory.js'
+import PostcraftServicesFactory from '../services/postcraft/PostcraftServicesFactory.js'
 
 class AbstractServiceFactory {
 
