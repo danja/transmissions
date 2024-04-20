@@ -2,6 +2,10 @@
 
 # Next Steps
 
+running a single Halt fails - connect
+
+add self-description to services
+
 ## New services/pipelines
 
 ### make link list

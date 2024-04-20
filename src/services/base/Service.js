@@ -1,6 +1,8 @@
 import { EventEmitter } from 'events'
+
 import grapoi from 'grapoi'
 import ns from '../../utils/ns.js'
+import logger from '../../utils/Logger.js'
 
 class Service extends EventEmitter {
 
@@ -19,10 +21,12 @@ class Service extends EventEmitter {
     }
 
     async receive(data, context) {
+        logger.log('Service.RECEIVE data = ' + data)
         await this.enqueue(data, context)
     }
 
     async enqueue(data, context) {
+        logger.log('Service.enqueue data = ' + data)
         this.messageQueue.push({ data, context })
         if (!this.processing) {
             this.executeQueue()
@@ -30,9 +34,11 @@ class Service extends EventEmitter {
     }
 
     async executeQueue() {
+        logger.log('Service.executeQueue')
         this.processing = true
         while (this.messageQueue.length > 0) {
             const { data, context } = this.messageQueue.shift()
+            logger.log('Service.executeQueue data = ' + data)
             await this.execute(data, context)
         }
         this.processing = false

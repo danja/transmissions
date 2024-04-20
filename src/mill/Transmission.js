@@ -23,13 +23,14 @@ class Transmission {
     connector.connect(this.services)
   }
 
-  async execute(data = false, context = {}) {
+  async execute(data, context) {
     logger.log("\n*** Execution ***")
+    logger.log("\nDATA = " + data)
     const serviceName = this.connectors[0].fromName
 
     let service = this.get(serviceName)
     logger.log("\nTransmission running first service : " + serviceName)
-
+    logger.log("\nTransmission running service : " + service)
     // Start the first service
     // QQQ
     //  service.execute(data, context)

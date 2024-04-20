@@ -5,9 +5,12 @@ class SourceService extends Service {
         super(config);
     }
 
+    /*
     async execute(data, context) {
+        logger.log('in SourceService, data = ' + data)
         return data
     }
+    */
 }
 
 export default SourceService
