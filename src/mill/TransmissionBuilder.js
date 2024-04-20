@@ -1,6 +1,6 @@
 import rdf from 'rdf-ext'
-import { fromFile, toFile } from 'rdf-utils-fs'
 import grapoi from 'grapoi'
+import { fromFile, toFile } from 'rdf-utils-fs'
 
 import logger from '../utils/Logger.js'
 

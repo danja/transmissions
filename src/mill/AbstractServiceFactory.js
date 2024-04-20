@@ -9,6 +9,7 @@ import UtilServicesFactory from '../services/util/UtilServicesFactory.js'
 import TextServicesFactory from '../services/text/TextServicesFactory.js'
 import ProtocolsServicesFactory from '../services/protocols/ProtocolsServicesFactory.js'
 import RDFServicesFactory from '../services/rdf/RDFServicesFactory.js'
+import PostcraftServicesFactory from '../services/rdf/PostcraftServicesFactory.js'
 
 class AbstractServiceFactory {
 
@@ -37,6 +38,9 @@ class AbstractServiceFactory {
         if (service) return service
 
         service = RDFServicesFactory.createService(type, config)
+        if (service) return service
+
+        service = PostcraftServicesFactory.createService(type, config)
         if (service) return service
 
         throw new Error("Unknown service type: " + type.value)

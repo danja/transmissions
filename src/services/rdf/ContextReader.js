@@ -1,4 +1,6 @@
-
+import formatsPretty from '@rdfjs/formats/pretty.js'
+import rdf from 'rdf-ext'
+import { fromFile, toFile } from 'rdf-utils-fs'
 import { readFile } from 'node:fs/promises'
 import grapoi from 'grapoi'
 import ns from '../../utils/ns.js'
@@ -13,28 +15,26 @@ class ContextReader extends SourceService {
         super(config)
     }
 
-    async execute(data, context) {
-        logger.debug("context file = " + data.toString())
+    //    const fileUrl = new URL('../../node_modules/housemd/dist/housemd.nt', import.meta.url)
+    // const fileRelativeUrl = './node_modules/housemd/dist/housemd.nt'
+    // const httpUrl = 'https://housemd.rdf-ext.org/person/gregory-house'
 
-        /*
-       var filename = context.sourceFile
+    async execute(source, context) {
+        logger.debug("context file = " + source.toString())
 
-       if (!filename) {
-           filename = this.locateConfig().value
-       }
-       // logger.debug("FileReader sourceFile = " + filename)
+        const stream = fromFile(source)
 
-       const f = footpath.resolve(context.runScript, './data/', filename)
+        // should append to incoming?
+        context = await rdf.dataset().import(stream)
 
-       logger.debug("f = " + f)
-       */
-        try {
-            const content = await readFile(data)
-            logger.log('in ContextReader, content = ' + content)
-            this.emit('message', content, context)
-        } catch (err) {
-            logger.error("FileReader.execute error : " + err.message)
-        }
+        console.log(`read ${context.size} triples from ${source}`)
+
+        // logger.log('############### context = ' + context.toString())
+
+        this.emit('message', source, context)
+        //  } catch (err) {
+        //    logger.error("ContextReader.execute error : " + err.message)
+        //}
     }
 }
 
