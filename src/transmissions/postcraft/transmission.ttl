@@ -3,11 +3,11 @@
 @prefix : <http://hyperdata.it/treadmill/> . # for custom terms & instances
 
 :postcraft a trm:Pipeline ;
-    trm:pipe (:s1 :s2) .
+    trm:pipe (:s1 :s2 :s3) .
 
 
 :s1 a :ContextReader .
 :s2 a :PostcraftDispatcher .
-# :s2 a :ShowMessage .
+:s3 a :DirWalker .
 # :s3 a :NOP .
 # :s4 a :Halt .

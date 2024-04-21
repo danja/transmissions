@@ -8,11 +8,23 @@ class ShowMessage extends SinkService {
 
         //    logger.log("\n\nStringSink outputs : \"" + data + "\"\n\n")
 
-        logger.log("\n***  ShowMessageService ***")
-        logger.reveal(data)
-        console.trace()
+        logger.log("\n***  Message ***")
 
-        logger.log(data.toString())
+        logger.log("***  Data")
+        if (typeof data === 'string') {
+            logger.log('"' + data + '"')
+        } else {
+            logger.reveal(data)
+        }
+        logger.log("***************************")
+        logger.log("***  Context")
+        logger.reveal(context)
+        logger.log("***************************")
+        logger.log("***  Trace")
+        console.trace()
+        logger.log("***************************")
+
+        //  logger.log(data.toString())
 
         //       logger.log("filename : " + context.filename)
 

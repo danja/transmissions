@@ -11,6 +11,7 @@ class Service extends EventEmitter {
         this.config = config
         this.messageQueue = []
         this.processing = false
+        this.doneMessage = '~[DONE]~'
     }
 
     locateConfig() {
@@ -21,12 +22,12 @@ class Service extends EventEmitter {
     }
 
     async receive(data, context) {
-        logger.log('Service.RECEIVE data = ' + data)
+        //  logger.log('Service.RECEIVE data = ' + data)
         await this.enqueue(data, context)
     }
 
     async enqueue(data, context) {
-        logger.log('Service.enqueue data = ' + data)
+        // logger.log('Service.enqueue data = ' + data)
         this.messageQueue.push({ data, context })
         if (!this.processing) {
             this.executeQueue()
@@ -34,11 +35,11 @@ class Service extends EventEmitter {
     }
 
     async executeQueue() {
-        logger.log('Service.executeQueue')
+        // logger.log('Service.executeQueue')
         this.processing = true
         while (this.messageQueue.length > 0) {
             const { data, context } = this.messageQueue.shift()
-            logger.log('Service.executeQueue data = ' + data)
+            //   logger.log('Service.executeQueue data = ' + data)
             await this.execute(data, context)
         }
         this.processing = false

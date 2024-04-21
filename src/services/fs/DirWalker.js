@@ -16,14 +16,19 @@ class DirWalker extends SourceService {
         const dataset = this.config
         const poi = grapoi({ dataset })
         /////////////////////////
-        this.desiredExtensions = ['.html']
+        this.desiredExtensions = ['.md']
         /* 
         const cwd = process.cwd() + '/../' // move!
         this.sourceFile = cwd + poi.out(ns.trm.sourceFile).value
         */
     }
 
-    async execute(dirPath, context) {
+    async execute(relativePath, context) {
+        if (relativePath === this.doneMessage) {
+            this.emit('message', this.doneMessage, context)
+            return
+        }
+        const dirPath = context.rootDir + '/' + relativePath
         logger.log("Start path = " + dirPath)
         try {
             const entries = await readdir(dirPath, { withFileTypes: true })

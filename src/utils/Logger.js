@@ -50,8 +50,12 @@ logger.log = function (msg, level = "log") {
 logger.reveal = function (instance) {
     const serialized = {};
     for (const key in instance) {
-        if (instance.hasOwnProperty(key)) {
-            serialized[key] = instance[key];
+        if (key === 'dataset') { // special case, RDF
+            serialized[key] = instance[key].toString()
+        } else {
+            if (instance.hasOwnProperty(key)) {
+                serialized[key] = instance[key]
+            }
         }
     }
     const props = JSON.stringify(serialized, null, 2)

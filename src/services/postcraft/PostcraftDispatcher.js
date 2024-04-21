@@ -19,17 +19,16 @@ class PostcraftDispatcher extends ProcessService {
     for (const q of poi.out(ns.rdf.type).quads()) {
       if (q.object.equals(ns.pc.ContentGroup)) { // 
         logger.debug("about to build pipeline")
-        this.processContentGroup(postcraftConfig, q.subject)
+        await this.processContentGroup(context, q.subject)
       }
     }
 
-    this.emit('message', data, context)
-
+    this.emit('message', this.doneMessage, context)
   }
 
-  processContentGroup(context, contentGroupID) {
-
-    const groupPoi = rdf.grapoi({ dataset: context, term: contentGroupID })
+  async processContentGroup(context, contentGroupID) {
+    const postcraftConfig = context.dataset
+    const groupPoi = rdf.grapoi({ dataset: postcraftConfig, term: contentGroupID })
     const sourceDir = groupPoi.out(ns.fs.sourceDirectory).term.value
     const targetDir = groupPoi.out(ns.fs.targetDirectory).term.value
     const template = groupPoi.out(ns.pc.template).term.value
@@ -38,6 +37,12 @@ class PostcraftDispatcher extends ProcessService {
     logger.log('targetDir = ' + targetDir)
     logger.log('template  = ' + template)
 
+    //  const renderJob = { sourceDir: sourceDir, targetDir: targetDir, template: template }
+    context.sourceDir = sourceDir
+    context.targetDir = targetDir
+    context.template = template
+
+    this.emit('message', sourceDir, context)
   }
 }
 
