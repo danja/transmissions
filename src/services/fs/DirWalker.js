@@ -24,10 +24,12 @@ class DirWalker extends SourceService {
     }
 
     async execute(relativePath, context) {
+        /*
         if (relativePath === this.doneMessage) {
             this.emit('message', this.doneMessage, context)
             return
         }
+        */
         const dirPath = context.rootDir + '/' + relativePath
         //     logger.log("Start path = " + dirPath)
 
@@ -41,7 +43,13 @@ class DirWalker extends SourceService {
                     // Check if the file extension is in the list of desired extensions
                     if (this.desiredExtensions.includes(extname(entry.name))) {
                         // logger.log("in DirWalker fullPath : " + fullPath)
-                        this.emit('message', fullPath, context)
+                        const contextClone = structuredClone(context)
+                        contextClone.sourceFile = entry.name
+                        //  this.setContext(context, entry.name)
+                        logger.log('\n\nDIR entry.name = ' + entry.name)
+                        logger.log('DIR  context.sourceFile = ' + contextClone.sourceFile)
+                        this.emit('message', fullPath, contextClone)
+                        //    this.doEmit('message', fullPath, context)
                     }
                 }
             }
@@ -49,6 +57,11 @@ class DirWalker extends SourceService {
             logger.error("DirWalker.execute error : " + err.message)
         }
     }
+
+    //   async setContext(context, sourceFile) {
+    //     context.sourceFile = sourceFile
+    //   logger.log('\nDIR2  context.sourceFile = ' + context.sourceFile)
+    // }
 }
 
 export default DirWalker

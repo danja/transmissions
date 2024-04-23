@@ -1,5 +1,5 @@
 import logger from '../../utils/Logger.js'
-import ProcessService from '../base/Service.js'
+import ProcessService from '../base/ProcessService.js'
 
 class StringMerger extends ProcessService {
     constructor(config) {

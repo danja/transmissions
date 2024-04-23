@@ -13,30 +13,42 @@ class PostcraftPrep extends ProcessService {
   }
 
   async execute(data, context) {
-    logger.log('PostcraftPrep received data : ' + data)
-    const targetFilename = this.extractTargetFilename(data, context)
-    const title = this.extractTitle(data, context)
-    /*
-    const postcraftConfig = context.dataset
-    const poi = grapoi({ dataset: postcraftConfig })
- 
-    for (const q of poi.out(ns.rdf.type).quads()) {
-      if (q.object.equals(ns.pc.ContentGroup)) { // 
-        logger.debug("about to build pipeline")
-        await this.processContentGroup(context, q.subject)
-      }
-    }
-*/
-    this.emit('message', this.doneMessage, context)
+    // logger.log('PostcraftPrep received data : ' + data)
+
+    // both place values in the context, save for later
+    this.shredFilename(data, context)
+    this.extractTitle(data, context)
+
+    this.emit('message', data, context)
   }
 
-  extractTargetFilename(data, context) {
-
+  //  eg. 2024-04-19_hello-postcraft.md
+  shredFilename(data, context) {
+    const nonExt = context.sourceFile.split('.').slice(0, -1).join()
+    //  logger.log('nonExt = ' + nonExt)
+    const shreds = nonExt.split('_')
+    context.updated = (new Date()).toISOString().split('T')[0]
+    context.created = context.updated // fallback
+    if (Date.parse(shreds[0])) { // filename version is not NaN
+      context.created = shreds[0]
+    }
+    context.title = shreds[1] // fallback
+    context.targetFilename = context.title + '.md'
   }
 
   // first heading in the markdown else use filename
   extractTitle(data, context) {
+    let match = data.match(/^#(.*)$/m)
+    let maybeTitle = match ? match[1].trim() : null
+    if (maybeTitle) {
+      context.title = maybeTitle
+      return
+    }
 
+    // handle how I typically name files
+    context.title = context.title.split('-') // split the string into words
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // capitalize the first letter of each word
+      .join(' '); // join the words back together with spaces
   }
 }
 

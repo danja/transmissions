@@ -14,7 +14,9 @@ class FileReader extends SourceService {
     }
 
     async execute(filename, context) {
-        logger.log('FileReader reading : ' + filename)
+        logger.log('\nFileReader reading : ' + filename)
+        logger.log('* * * FileReader context.sourceFile : ' + context.sourceFile)
+        // context.sourceFile = filename
         // if (filename === this.doneMessage) {
         //   this.emit('message', this.doneMessage, context)
         //   return
@@ -32,8 +34,10 @@ class FileReader extends SourceService {
         const f = filename
         //  logger.debug("f = " + f)
         try {
+            logger.log('####in Filereader ' + context.sourceFile)
             const content = await readFile(f)
-            await this.doEmit('message', content, context)
+            this.emit('message', content, context)
+            // await this.doEmit('message', content, context)
         } catch (err) {
             logger.error("FileReader.execute error : " + err.message)
         }

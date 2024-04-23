@@ -18,7 +18,6 @@ class PostcraftDispatcher extends ProcessService {
 
     for (const q of poi.out(ns.rdf.type).quads()) {
       if (q.object.equals(ns.pc.ContentGroup)) { // 
-        logger.debug("about to build pipeline")
         await this.processContentGroup(context, q.subject)
       }
     }
