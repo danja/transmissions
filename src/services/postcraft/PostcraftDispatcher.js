@@ -23,7 +23,7 @@ class PostcraftDispatcher extends ProcessService {
       }
     }
 
-    this.emit('message', this.doneMessage, context)
+    //    this.emit('message', this.doneMessage, context)
   }
 
   async processContentGroup(context, contentGroupID) {

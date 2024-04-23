@@ -8,10 +8,12 @@ import PostcraftPrep from './PostcraftPrep.js'
 
 class PostcraftServicesFactory {
     static createService(type, config) {
-        logger.debug("PostcraftServicesFactory.createService : " + type.value)
-
         if (type.equals(ns.t.PostcraftDispatcher)) {
             return new PostcraftDispatcher(config)
+        }
+
+        if (type.equals(ns.t.PostcraftPrep)) {
+            return new PostcraftPrep(config)
         }
 
         return false

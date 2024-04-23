@@ -17,7 +17,7 @@ class AbstractServiceFactory {
     // good enough for now 
 
     static createService(type, config) {
-        logger.debug("ServiceFactory.createService : " + type.value)
+        //   logger.debug("ServiceFactory.createService : " + type.value)
 
         var service = TestServicesFactory.createService(type, config)
         if (service) return service

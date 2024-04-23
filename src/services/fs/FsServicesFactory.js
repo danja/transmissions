@@ -8,8 +8,6 @@ import FileWriter from './FileWriter.js'
 
 class FsServicesFactory {
     static createService(type, config) {
-        logger.debug("FsServicesFactory.createService : " + type.value)
-
         if (type.equals(ns.t.DirWalker)) {
             return new DirWalker(config)
         }

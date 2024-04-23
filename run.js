@@ -10,6 +10,8 @@ import TransmissionBuilder from './src/mill/TransmissionBuilder.js'
 
 const transmissionsDir = './src/transmissions'
 
+// logger.log('DESCRIBE ' + await transmission.describe())
+
 class CommandUtils {
     static async run(dir, data, context) {
         logger.setLogLevel("debug")

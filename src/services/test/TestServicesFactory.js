@@ -11,7 +11,6 @@ import FileSink from './FileSink.js'
 
 class TestServicesFactory {
     static createService(type, config) {
-        logger.debug("TestServicesFactory.createService : " + type.value)
 
         // for e2e tests
         // String

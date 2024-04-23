@@ -5,12 +5,12 @@ class Transmission {
   constructor() {
     this.services = {}
     this.connectors = []
-    logger.log("Transmission constructor")
+    //  logger.log("Transmission constructor")
   }
 
   register(serviceName, instance) {
     this.services[serviceName] = instance
-    console.log('Registered service:', serviceName); // Add this line
+    // console.log('Registered service:', serviceName)
   }
 
   get(serviceName) {
@@ -29,8 +29,9 @@ class Transmission {
     const serviceName = this.connectors[0].fromName
 
     let service = this.get(serviceName)
-    logger.log("\nTransmission running first service : " + serviceName)
-    logger.log("\nTransmission running service : " + service)
+    logger.log("Transmission running service : " + serviceName + " a " + service.constructor.name)
+    // logger.log("\nTransmission running first service : " + serviceName)
+    // logger.log("\nTransmission running service : " + service)
     // Start the first service
     // QQQ
     //  service.execute(data, context)

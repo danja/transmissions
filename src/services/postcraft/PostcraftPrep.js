@@ -13,6 +13,7 @@ class PostcraftPrep extends ProcessService {
   }
 
   async execute(data, context) {
+    logger.log('PostcraftPrep received data : ' + data)
     const targetFilename = this.extractTargetFilename(data, context)
     const title = this.extractTitle(data, context)
     /*

@@ -8,8 +8,6 @@ import HttpGet from './HttpGet.js'
 
 class ProtocolsServicesFactory {
     static createService(type, config) {
-        logger.debug("ProtocolsServicesFactory.createService : " + type.value)
-
         if (type.equals(ns.t.HttpGet)) {
             return new HttpGet(config)
         }

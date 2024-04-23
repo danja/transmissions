@@ -8,7 +8,6 @@ import Halt from './Halt.js'
 
 class UtilServicesFactory {
     static createService(type, config) {
-        logger.debug("ServiceFactory.createService : " + type.value)
         if (type.equals(ns.t.NOP)) {
             return new NOP(config)
         }

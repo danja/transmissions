@@ -7,8 +7,6 @@ import StringMerger from './StringMerger.js'
 
 class TextServicesFactory {
     static createService(type, config) {
-        logger.debug("TextServicesFactory.createService : " + type.value)
-
         if (type.equals(ns.t.LineReader)) {
             return new LineReader(config)
         }

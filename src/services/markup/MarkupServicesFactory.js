@@ -7,8 +7,6 @@ import MarkdownToHTML from './MarkdownToHTML.js'
 
 class MarkupServicesFactory {
     static createService(type, config) {
-        logger.debug("MarkupServicesFactory.createService : " + type.value)
-
         if (type.equals(ns.t.MetadataExtractor)) {
             return new MetadataExtractor(config)
         }
@@ -18,7 +16,6 @@ class MarkupServicesFactory {
         if (type.equals(ns.t.LinkFinder)) {
             return new LinkFinder(config)
         }
-
         return false
     }
 }

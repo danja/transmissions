@@ -21,7 +21,7 @@ class TransmissionBuilder {
 
     for (const q of poi.out(ns.rdf.type).quads()) {
       if (q.object.equals(ns.trm.Pipeline)) { // 
-        logger.debug("about to build pipeline")
+        logger.debug("WHY IN EXECUTE? about to build pipeline")
         return TransmissionBuilder.buildPipeline(transmissionConfig, q.subject, servicesConfig)
       }
     }
@@ -32,7 +32,7 @@ class TransmissionBuilder {
 
     const poi = rdf.grapoi({ dataset: transmissionConfig, term: pipelineID })
 
-    logger.log('\n*** Building ***')
+    logger.log('\n*** Construction ***')
 
     const first = poi.out(ns.trm.pipe).term
 
@@ -47,13 +47,13 @@ class TransmissionBuilder {
     for (let i = 0; i < pipenodes.length; i++) {
       let node = pipenodes[i]
       let serviceName = node.value
-      logger.debug("\nserviceName = " + serviceName)
+      //   logger.debug("\nserviceName = " + serviceName)
 
       let np = rdf.grapoi({ dataset: transmissionConfig, term: node })
       //   logger.poi(np)
       // process.exit()
       let serviceType = np.out(ns.rdf.type).term
-      logger.debug("\nserviceType = " + serviceType.value)
+      // logger.debug("\nserviceType = " + serviceType.value)
 
       let serviceConfig = np.out(ns.trm.configKey).term
 
@@ -67,7 +67,7 @@ class TransmissionBuilder {
       transmission.register(serviceName, service)
 
       if (i != 0) {
-        logger.log("Connecting #" + i + " [" + previousName + "] => [" + serviceName + "]")
+        logger.log("*** Connecting #" + i + " [" + previousName + "] => [" + serviceName + "]")
         transmission.connect(previousName, serviceName)
       }
       previousName = serviceName
