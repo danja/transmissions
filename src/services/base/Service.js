@@ -49,6 +49,7 @@ class Service extends EventEmitter {
         throw new Error('execute method not implemented')
     }
 
+    // to quasi-synchronise :(
     async doEmit(message, data, context) {
         this.emit(message, data, context)
     }
