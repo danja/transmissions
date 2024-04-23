@@ -33,11 +33,13 @@ class FileReader extends SourceService {
         //  logger.debug("f = " + f)
         try {
             const content = await readFile(f)
-            this.emit('message', content, context)
+            await this.doEmit('message', content, context)
         } catch (err) {
             logger.error("FileReader.execute error : " + err.message)
         }
     }
+
+
 }
 
 export default FileReader

@@ -48,6 +48,10 @@ class Service extends EventEmitter {
     async execute(data, context) {
         throw new Error('execute method not implemented')
     }
+
+    async doEmit(message, data, context) {
+        this.emit(message, data, context)
+    }
 }
 
 export default Service 
