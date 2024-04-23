@@ -1,4 +1,4 @@
-
+import { join, extname } from 'path'
 import { readFile } from 'node:fs/promises'
 import grapoi from 'grapoi'
 import ns from '../../utils/ns.js'
@@ -13,17 +13,22 @@ class FileReader extends SourceService {
         super(config)
     }
 
-    async execute(data, context) {
+    async execute(filename, context) {
+        if (filename === this.doneMessage) {
+            this.emit('message', this.doneMessage, context)
+            return
+        }
         // logger.debug("dataDir = " + context.dataDir)
-        var filename = context.sourceFile
+        // var filename = context.sourceFile
 
         if (!filename) {
-            filename = this.locateConfig().value
+            filename = this.locateConfig().value //?????????????
         }
         // logger.debug("FileReader sourceFile = " + filename)
 
-        const f = footpath.resolve(context.runScript, './data/', filename)
-
+        //   const f = footpath.resolve(context.runScript, './data/', filename)
+        //    const f = join(context.rootDir, filename)
+        const f = filename
         logger.debug("f = " + f)
         try {
             const content = await readFile(f)

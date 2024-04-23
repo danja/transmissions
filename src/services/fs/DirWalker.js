@@ -29,17 +29,18 @@ class DirWalker extends SourceService {
             return
         }
         const dirPath = context.rootDir + '/' + relativePath
-        logger.log("Start path = " + dirPath)
+        //     logger.log("Start path = " + dirPath)
+
         try {
             const entries = await readdir(dirPath, { withFileTypes: true })
             for (const entry of entries) {
                 const fullPath = join(dirPath, entry.name)
                 if (entry.isDirectory()) {
-                    await this.execute(fullPath, context) // rearrange to make things easier to read?
+                    await this.execute(entry.name, context) // rearrange to make things easier to read?
                 } else {
                     // Check if the file extension is in the list of desired extensions
                     if (this.desiredExtensions.includes(extname(entry.name))) {
-                        logger.log("in DirWalker fullPath : " + fullPath)
+                        // logger.log("in DirWalker fullPath : " + fullPath)
                         this.emit('message', fullPath, context)
                     }
                 }

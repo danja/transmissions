@@ -1,0 +1,36 @@
+### manifest.ttl for danny.ayers.name ###
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# SIOC
+
+@prefix trm: <http://purl.org/stuff/transmission/> .
+@prefix fs: <http://purl.org/stuff/filesystem/> .
+@prefix pc: <http://purl.org/stuff/postcraft/> .
+@prefix t: <http://hyperdata.it/treadmill/> . # for custom terms & instances
+
+<https://danny.ayers.name> a pc:Site ;
+    rdfs:label "danny.ayers.name" ;
+    pc:contains <https://danny.ayers.name/blog> .
+
+<https://danny.ayers.name/blog> a pc:ContentGroup ;
+    fs:sourceDirectory "posts" ;
+    fs:targetDirectory "site" ;
+    pc:template "layouts/mediocre/mediocre.html" .
+    
+# this should maybe give the contentgroup a renderType, indirect with template etc
+<https://danny.ayers.name/blog> a pc:ContentGroup ;
+    fs:sourceDirectory "posts" ;
+    fs:targetDirectory "site" ;
+    pc:template "layouts/mediocre/mediocre.html" .
+
+# for index page & pinned, collapsed
+<https://danny.ayers.name/index> a pc:SpecialCase ;
+    fs:sourceDirectory "posts" ;
+    fs:targetDirectory "site" ;
+    pc:template "layouts/mediocre/mediocre.html" .
+
+ 
+
