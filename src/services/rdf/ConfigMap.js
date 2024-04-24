@@ -7,16 +7,17 @@ import logger from '../../utils/Logger.js'
 import ProcessService from '../base/ProcessService.js'
 
 /**
- * A class that represents the PostcraftDispatcher service.
+* Takes the context.dataset and guided by services.ttl maps its contents to direct key:value pairs in the context
+* 
 * #### __*Input*__
 * **data** : any
 * **context** : needs dataset
 * #### __*Output*__
-* **data** : templateFilename
-* **context** : adds sourceDir, targetDir, templateFilename
+* **data** : determined by mapping
+* **context** : determined by mapping 
 * @extends ProcessService
 */
-class PostcraftDispatcher extends ProcessService {
+class ConfigMap extends ProcessService {
 
   /**
    * Creates an instance of PostcraftDispatcher.
@@ -27,11 +28,12 @@ class PostcraftDispatcher extends ProcessService {
   }
 
   /**
-   * Executes the PostcraftDispatcher service.
+   * Executes the service.
    * @param {Object} data - The data object.
    * @param {Object} context - The context object.
    */
   async execute(data, context) {
+
     const postcraftConfig = context.dataset
     const poi = grapoi({ dataset: postcraftConfig })
 
@@ -40,6 +42,9 @@ class PostcraftDispatcher extends ProcessService {
         await this.processContentGroup(context, q.subject)
       }
     }
+
+    // logger.log('ConfigMap context.templateFilename  = ' + context.templateFilename)
+    // this.emit('message', context.templateFilename, context)
   }
 
   /**
@@ -47,6 +52,7 @@ class PostcraftDispatcher extends ProcessService {
    * @param {Object} context - The context object.
    * @param {string} contentGroupID - The ID of the content group.
    */
+
   async processContentGroup(context, contentGroupID) {
     const postcraftConfig = context.dataset
     const groupPoi = rdf.grapoi({ dataset: postcraftConfig, term: contentGroupID })
@@ -60,11 +66,11 @@ class PostcraftDispatcher extends ProcessService {
 
     context.sourceDir = sourceDir
     context.targetDir = targetDir
-    context.templateFilename = templateFilename
+    //  context.templateFilename = templateFilename
     context.loadContext = 'template'
-
-    this.emit('message', templateFilename, context)
+    const templatePath = context.rootDir + '/' + templateFilename
+    this.emit('message', templatePath, context)
   }
-}
 
-export default PostcraftDispatcher
+}
+export default ConfigMap

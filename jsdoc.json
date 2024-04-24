@@ -2,15 +2,19 @@
     "source": {
         "include": [
             "src"
-        ], // Array of paths to directories or files to include.
+        ],
         "exclude": [
             "node_modules"
-        ], // Array of paths to directories or files to exclude.
-        "includePattern": ".+\\.js(doc|x)?$", // Regex that matches files to include.
+        ],
+        "includePattern": ".+\\.js(doc|x)?$",
         "excludePattern": "(^|\\/|\\\\)_"
     },
     "opts": {
-        "recurse": true, // Whether to recursively search directories in the "include" array.
-        "destination": "./docs/jsdoc" // Path to the directory where documentation will be generated.
-    }
+        "verbose": true,
+        "recurse": true,
+        "destination": "./docs/jsdoc"
+    },
+    "plugins": [
+        "plugins/markdown"
+    ]
 }

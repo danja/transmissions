@@ -1,0 +1,13 @@
+#### __*Input*__
+ * **data** : filename
+ * **context** : sourceFile (if data is not provided)
+#### __*Output*__
+ * **data** : file content
+ * **context** : as Input
+
+ * #### __*Input*__
+ * **data** : any
+ * **context** : any
+ * #### __*Output*__
+ * **data** : as Input
+ * **context** : as Input

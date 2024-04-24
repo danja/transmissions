@@ -6,3 +6,5 @@
 t:FilePipelineMap a trm:DataMap ;
     trm:sourceFile "input.txt" ;
     trm:destinationFile "output.txt" .
+
+ 
