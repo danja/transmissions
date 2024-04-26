@@ -54,7 +54,12 @@ logger.reveal = function (instance) {
             serialized[key] = instance[key].toString()
         } else {
             if (instance.hasOwnProperty(key)) {
-                serialized[key] = instance[key]
+                let kiki = instance[key]
+
+                if (Buffer.isBuffer(kiki)) {
+                    kiki = kiki.toString()
+                }
+                serialized[key] = kiki
             }
         }
     }

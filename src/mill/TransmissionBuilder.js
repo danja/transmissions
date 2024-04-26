@@ -21,7 +21,6 @@ class TransmissionBuilder {
 
     for (const q of poi.out(ns.rdf.type).quads()) {
       if (q.object.equals(ns.trm.Pipeline)) { // 
-        logger.debug("WHY IN EXECUTE? about to build pipeline")
         return TransmissionBuilder.buildPipeline(transmissionConfig, q.subject, servicesConfig)
       }
     }

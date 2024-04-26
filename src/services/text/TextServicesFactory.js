@@ -4,9 +4,14 @@ import ns from '../../utils/ns.js'
 import LineReader from './LineReader.js'
 import StringFilter from './StringFilter.js'
 import StringMerger from './StringMerger.js'
+import Templater from './Templater.js'
 
 class TextServicesFactory {
     static createService(type, config) {
+
+        if (type.equals(ns.t.Templater)) {
+            return new Templater(config)
+        }
         if (type.equals(ns.t.LineReader)) {
             return new LineReader(config)
         }

@@ -1,5 +1,5 @@
-import logger from '../../utils/Logger.js'
 import ProcessService from '../base/ProcessService.js'
+import logger from '../../utils/Logger.js'
 
 class Templater extends ProcessService {
     constructor(config) {
@@ -8,8 +8,15 @@ class Templater extends ProcessService {
     }
 
     async execute(data, context) {
+        logger.log('DATA = ' + data)
 
-        this.emit('message', this.merged, context)
+        logger.log('^^^^^^^^^^^ìcontext.template = ' + context.template)
+        logger.reveal(context)
+        process.exit()
+        //  let output = new Function(`with(this) { return \`${context.template}\`; }`).call(data)
+        let output = new Function(`with(this) { return \`${context.template}\`; }`).call(data);
+
+        this.emit('message', output, context)
     }
 }
 

@@ -11,11 +11,13 @@ class ShowMessage extends SinkService {
         logger.log("\n***  Message ***")
 
         logger.log("***  Data")
-        if (typeof data === 'string') {
-            logger.log('"' + data + '"')
-        }
-        else if (Buffer.isBuffer(data)) {
+
+        if (Buffer.isBuffer(data)) {
             logger.log('"' + data.toString() + '"')
+        }
+        else if (typeof data === 'string') {
+            logger.log('"' + data + '"')
+
         } else {
             logger.reveal(data)
         }

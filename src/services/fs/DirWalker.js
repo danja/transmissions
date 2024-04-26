@@ -12,11 +12,11 @@ class DirWalker extends SourceService {
         super(config)
         const dataset = this.config
         const poi = grapoi({ dataset })
-
         this.desiredExtensions = ['.md']
     }
 
     async execute(relativePath, context) {
+        //  logger.log('DirWalkerDirWalkerDirWalkerDirWalker ' + context.template)
         const dirPath = context.rootDir + '/' + relativePath
         try {
             const entries = await readdir(dirPath, { withFileTypes: true })
@@ -40,5 +40,4 @@ class DirWalker extends SourceService {
         }
     }
 }
-
 export default DirWalker

@@ -13,7 +13,8 @@ class PostcraftPrep extends ProcessService {
   }
 
   async execute(data, context) {
-    // logger.log('PostcraftPrep received data : ' + data)
+    context.template = context.template.toString()
+    logger.log('PostcraftPrep received data : ' + data)
 
     // both place values in the context, save for later
     this.shredFilename(data, context)
@@ -38,7 +39,7 @@ class PostcraftPrep extends ProcessService {
 
   // first heading in the markdown else use filename
   extractTitle(data, context) {
-    let match = data.match(/^#(.*)$/m)
+    let match = data.toString().match(/^#(.*)$/m)
     let maybeTitle = match ? match[1].trim() : null
     if (maybeTitle) {
       context.title = maybeTitle

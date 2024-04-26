@@ -10,14 +10,16 @@ class FileWriter extends SinkService {
     }
 
     async execute(data, context) {
-        var filename = context.targetFile
+        var filename = context.targetFilename
 
         if (!filename) {
             filename = this.locateConfig().value
         }
         logger.debug("Filewriter.targetFile = " + filename)
 
-        const f = footpath.resolve(context.runScript, './data/', filename)
+        // const f = footpath.resolve(context.runScript, './data/', filename)
+        const f = filename
+        logger.log('!!!!!!!!!!!! data = ' + data)
         try {
             await writeFile(f, data)
 

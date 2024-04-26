@@ -3,8 +3,10 @@
 # @prefix fs: <http://purl.org/stuff/filesystem/> .
 @prefix t: <http://hyperdata.it/treadmill/> . # for custom terms & instances
 
-t:FilePipelineMap a trm:DataMap ;
+t:PostcraftMap a trm:DataMap ;
     trm:sourceFile "input.txt" ;
     trm:destinationFile "output.txt" .
 
- 
+t:htmlMap a trm:DataMap ;
+    trm:key t:contextKey ;
+    trm:value "template" .

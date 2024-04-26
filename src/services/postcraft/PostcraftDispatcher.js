@@ -33,6 +33,8 @@ class PostcraftDispatcher extends ProcessService {
    */
   async execute(data, context) {
     const postcraftConfig = context.dataset
+    context.template = data.toString()
+    logger.log('PostcraftDispatcherPostcraftDispatcherPostcraftDispatcher ' + data)
     const poi = grapoi({ dataset: postcraftConfig })
 
     for (const q of poi.out(ns.rdf.type).quads()) {
@@ -63,7 +65,7 @@ class PostcraftDispatcher extends ProcessService {
     context.templateFilename = templateFilename
     context.loadContext = 'template'
 
-    this.emit('message', templateFilename, context)
+    this.emit('message', sourceDir, context)
   }
 }
 

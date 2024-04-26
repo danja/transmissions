@@ -32,7 +32,7 @@ class FileReader extends SourceService {
     async execute(filename, context) {
         logger.log('\nFileReader reading : ' + filename)
         //   logger.log('* * * FileReader context.sourceFile : ' + context.sourceFile)
-
+        logger.log('FileReaderFileReader FileReader FileReader FileReader FileReader XXXX ' + context.template.toString())
         if (!filename) {
             filename = this.locateConfig().value
         }

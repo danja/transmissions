@@ -5,8 +5,9 @@ import { parse } from 'marked'
 class MarkdownToHTML extends ProcessService {
 
     async execute(input, context) {
-        const output = await parse(input.toString())
-        //   logger.log(output)
+        const html = await parse(input.toString())
+        const output = { articles: html }
+        logger.log("=UTPUT = " + output)
         this.emit('message', output, context)
     }
 }
