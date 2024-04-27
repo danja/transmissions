@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: ContextReader</title>
+    <title>JSDoc: Class: PostcraftDispatcher</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: ContextReader</h1>
+    <h1 class="page-title">Class: PostcraftDispatcher</h1>
 
     
 
@@ -28,15 +28,15 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>ContextReader<span class="signature">(config)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>PostcraftDispatcher<span class="signature">(config)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>Reads a Turtle file and adds it to the context as a dataset.</p>
+            <div class="class-description"><p>A class that represents the PostcraftDispatcher service.</p>
 <h4><strong><em>Input</em></strong></h4>
-<p><strong>data</strong> : root dir containing manifest.ttl
-<strong>context</strong> : any</p>
+<p><strong>data</strong> : any
+<strong>context</strong> : needs dataset</p>
 <h4><strong><em>Output</em></strong></h4>
-<p><strong>data</strong> : as Input
-<strong>context</strong> : adds rootDir, dataset (RDF)</p></div>
+<p><strong>data</strong> : templateFilename
+<strong>context</strong> : adds sourceDir, targetDir, templateFilename</p></div>
         
     
 </header>
@@ -51,7 +51,7 @@
     
 
     
-    <h4 class="name" id="ContextReader"><span class="type-signature"></span>new ContextReader<span class="signature">(config)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="PostcraftDispatcher"><span class="type-signature"></span>new PostcraftDispatcher<span class="signature">(config)</span><span class="type-signature"></span></h4>
     
 
     
@@ -59,7 +59,7 @@
 
 
 <div class="description">
-    <p>Create a ContextReader.</p>
+    <p>Creates an instance of PostcraftDispatcher.</p>
 </div>
 
 
@@ -152,7 +152,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_rdf_ContextReader.js.html">services/rdf/ContextReader.js</a>, <a href="services_rdf_ContextReader.js.html#line16">line 16</a>
+        <a href="services_postcraft_PostcraftDispatcher.js.html">services/postcraft/PostcraftDispatcher.js</a>, <a href="services_postcraft_PostcraftDispatcher.js.html#line19">line 19</a>
     </li></ul></dd>
     
 
@@ -192,7 +192,7 @@
 
 
     <ul>
-        <li>SourceService</li>
+        <li>ProcessService</li>
     </ul>
 
 
@@ -219,7 +219,7 @@
     
 
     
-    <h4 class="name" id="execute"><span class="type-signature">(async) </span>execute<span class="signature">(rootDir, context)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="execute"><span class="type-signature">(async) </span>execute<span class="signature">(data, context)</span><span class="type-signature"></span></h4>
     
 
     
@@ -227,7 +227,7 @@
 
 
 <div class="description">
-    <p>Execute the ContextReader service.</p>
+    <p>Executes the PostcraftDispatcher service.</p>
 </div>
 
 
@@ -263,13 +263,13 @@
 
         <tr>
             
-                <td class="name"><code>rootDir</code></td>
+                <td class="name"><code>data</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Object</span>
 
 
             
@@ -279,7 +279,7 @@
 
             
 
-            <td class="description last"><p>The root directory.</p></td>
+            <td class="description last"><p>The data object.</p></td>
         </tr>
 
     
@@ -343,7 +343,167 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_rdf_ContextReader.js.html">services/rdf/ContextReader.js</a>, <a href="services_rdf_ContextReader.js.html#line31">line 31</a>
+        <a href="services_postcraft_PostcraftDispatcher.js.html">services/postcraft/PostcraftDispatcher.js</a>, <a href="services_postcraft_PostcraftDispatcher.js.html#line34">line 34</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="processContentGroup"><span class="type-signature">(async) </span>processContentGroup<span class="signature">(context, contentGroupID)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Processes a content group.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>context</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The context object.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>contentGroupID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The ID of the content group.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="services_postcraft_PostcraftDispatcher.js.html">services/postcraft/PostcraftDispatcher.js</a>, <a href="services_postcraft_PostcraftDispatcher.js.html#line52">line 52</a>
     </li></ul></dd>
     
 

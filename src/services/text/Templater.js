@@ -10,11 +10,13 @@ class Templater extends ProcessService {
     async execute(data, context) {
         logger.log('DATA = ' + data)
 
-        logger.log('^^^^^^^^^^^ìcontext.template = ' + context.template)
-        logger.reveal(context)
-        process.exit()
+        // logger.log('^^^^^^^^^^^ìcontext.template = ' + context.template)
+        logger.log('----------------context.targetFilename = ' + context.targetFilename)
+        // logger.reveal(context)
+        // process.exit()
         //  let output = new Function(`with(this) { return \`${context.template}\`; }`).call(data)
-        let output = new Function(`with(this) { return \`${context.template}\`; }`).call(data);
+        let output = 'DUMMY'
+        // new Function(`with(this) { return \`${context.template}\`; }`).call(data);
 
         this.emit('message', output, context)
     }

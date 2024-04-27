@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: ContextReader</title>
+    <title>JSDoc: Class: Stash</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: ContextReader</h1>
+    <h1 class="page-title">Class: Stash</h1>
 
     
 
@@ -28,15 +28,15 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>ContextReader<span class="signature">(config)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Stash<span class="signature">(config)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>Reads a Turtle file and adds it to the context as a dataset.</p>
+            <div class="class-description"><p>Takes the input and stashes it in the context as told by services.ttl</p>
 <h4><strong><em>Input</em></strong></h4>
-<p><strong>data</strong> : root dir containing manifest.ttl
+<p><strong>data</strong> : any
 <strong>context</strong> : any</p>
 <h4><strong><em>Output</em></strong></h4>
 <p><strong>data</strong> : as Input
-<strong>context</strong> : adds rootDir, dataset (RDF)</p></div>
+<strong>context</strong> : adds key:value determined by services.ttl</p></div>
         
     
 </header>
@@ -51,7 +51,7 @@
     
 
     
-    <h4 class="name" id="ContextReader"><span class="type-signature"></span>new ContextReader<span class="signature">(config)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Stash"><span class="type-signature"></span>new Stash<span class="signature">(config)</span><span class="type-signature"></span></h4>
     
 
     
@@ -152,7 +152,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_rdf_ContextReader.js.html">services/rdf/ContextReader.js</a>, <a href="services_rdf_ContextReader.js.html#line16">line 16</a>
+        <a href="services_util_Stash.js.html">services/util/Stash.js</a>, <a href="services_util_Stash.js.html#line16">line 16</a>
     </li></ul></dd>
     
 
@@ -219,7 +219,7 @@
     
 
     
-    <h4 class="name" id="execute"><span class="type-signature">(async) </span>execute<span class="signature">(rootDir, context)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="execute"><span class="type-signature">(async) </span>execute<span class="signature">(data, context)</span><span class="type-signature"></span></h4>
     
 
     
@@ -263,7 +263,7 @@
 
         <tr>
             
-                <td class="name"><code>rootDir</code></td>
+                <td class="name"><code>data</code></td>
             
 
             <td class="type">
@@ -279,7 +279,7 @@
 
             
 
-            <td class="description last"><p>The root directory.</p></td>
+            <td class="description last"><p>.</p></td>
         </tr>
 
     
@@ -302,7 +302,7 @@
 
             
 
-            <td class="description last"><p>The context object.</p></td>
+            <td class="description last"><p>.</p></td>
         </tr>
 
     
@@ -343,7 +343,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_rdf_ContextReader.js.html">services/rdf/ContextReader.js</a>, <a href="services_rdf_ContextReader.js.html#line31">line 31</a>
+        <a href="services_util_Stash.js.html">services/util/Stash.js</a>, <a href="services_util_Stash.js.html#line31">line 31</a>
     </li></ul></dd>
     
 

@@ -10,7 +10,7 @@
 #:s3 a :ShowMessage .
 # :s2 a :NOP . 
 :s3 a :FileReader ; # the template
-trm:configKey :contextKey .
+    trm:configKey :contextKey .
 # :s4 a :Stash . LATERS
  :s4 a :NOP .
  #   :ShowMessage . 

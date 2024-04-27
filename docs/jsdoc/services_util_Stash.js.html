@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: services/rdf/ContextReader.js</title>
+    <title>JSDoc: Source: services/util/Stash.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: services/rdf/ContextReader.js</h1>
+    <h1 class="page-title">Source: services/util/Stash.js</h1>
 
     
 
@@ -31,17 +31,17 @@ import { fromFile, toFile } from 'rdf-utils-fs'
 import SourceService from '../base/SourceService.js'
 
 /**
- * Reads a Turtle file and adds it to the context as a dataset.
+ * Takes the input and stashes it in the context as told by services.ttl
  * 
  * #### __*Input*__
- * **data** : root dir containing manifest.ttl
+ * **data** : any
  * **context** : any
  * #### __*Output*__
  * **data** : as Input
- * **context** : adds rootDir, dataset (RDF) 
+ * **context** : adds key:value determined by services.ttl
  * @extends SourceService
  */
-class ContextReader extends SourceService {
+class Stash extends SourceService {
 
     /**
      * Create a ContextReader.
@@ -53,10 +53,10 @@ class ContextReader extends SourceService {
 
     /**
      * Execute the ContextReader service.
-     * @param {string} rootDir - The root directory.
-     * @param {Object} context - The context object.
+     * @param {string} data -.
+     * @param {Object} context - .
      */
-    async execute(rootDir, context) {
+    async execute(data, context) {
         const manifestFilename = rootDir + '/manifest.ttl'
         const stream = fromFile(manifestFilename)
 
@@ -66,7 +66,7 @@ class ContextReader extends SourceService {
         this.emit('message', false, context)
     }
 }
-export default ContextReader</code></pre>
+export default Stash</code></pre>
         </article>
     </section>
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: services/fs/FileReader.js</title>
+    <title>JSDoc: Source: services/fs/FileWriter.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: services/fs/FileReader.js</h1>
+    <h1 class="page-title">Source: services/fs/FileWriter.js</h1>
 
     
 
@@ -26,60 +26,62 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { readFile } from 'node:fs/promises'
+            <pre class="prettyprint source linenums"><code>import { writeFile } from 'node:fs/promises'
 import logger from '../../utils/Logger.js'
-import SourceService from '../base/SourceService.js'
-
+import SinkService from '../base/SinkService.js'
 /**
- * FileReader class that extends SourceService.
- * Reads the content of a file and emits a 'message' event with the content and context.
+ * FileWriter class that extends SinkService
+ * Write data to a file.
+ * 
+ * First checks `context.targetFilename` and if not set, uses the value from `services.ttl` using `configKey` for this service instance.
+ * 
  * #### __*Input*__
- * * **data** : filename
- * * **context** : sourceFile (if data is not provided)
+ * * **data** : string content to be written to the file 
+ * * **context** : may contain `targetFilename`
  * #### __*Output*__
- * * **data** : file content
+ * * **data** : as Input
  * * **context** : as Input
  * 
  * if context.loadContext is set, that is used as a name in the context for the file content
  */
-class FileReader extends SourceService {
+class FileWriter extends SinkService {
 
     /**
-     * Constructs a new FileReader instance.
-     * @param {Object} config - The configuration object.
+     * Constructs a new FileWriter object.
+     * @param {Object} config - The configuration object for the FileWriter.
      */
     constructor(config) {
         super(config)
     }
 
     /**
-     * Reads the content of a file and emits a 'message' event with the content and context.
-     * @param {string} filename - The name of the file to read.
-     * @param {Object} context - The context object.
+     * Executes the write operation.
+     * @param {string} data - The data to be written to the file.
+     * @param {Object} context - The execution context.
      */
-    async execute(filename, context) {
-        logger.log('\nFileReader reading : ' + filename)
-        //   logger.log('* * * FileReader context.sourceFile : ' + context.sourceFile)
-        logger.log('FileReaderFileReader FileReader FileReader FileReader FileReader XXXX ' + context.template.toString())
+    async execute(data, context) {
+        var filename = context.targetFilename
+
         if (!filename) {
             filename = this.locateConfig().value
         }
-        const f = filename
-        try {
-            //   logger.log('####in Filereader ' + context.sourceFile)
-            const content = await readFile(f)
+        logger.debug("Filewriter.targetFile = " + filename)
 
-            if (context.loadContext) {
-                context[context.loadContext] = content
-            }
-            this.emit('message', content, context)
+        const f = filename
+
+        try {
+            await writeFile(f, data)
+
         } catch (err) {
-            logger.error("FileReader.execute error : " + err.message)
+            logger.error("FileWriter.execute error : " + err.message)
         }
+
+        this.emit('message', data, context)
     }
 }
 
-export default FileReader</code></pre>
+export default FileWriter
+</code></pre>
         </article>
     </section>
 
