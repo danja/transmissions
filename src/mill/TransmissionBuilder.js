@@ -13,8 +13,10 @@ import Transmission from './Transmission.js'
 class TransmissionBuilder {
 
   static async build(transmissionConfigFile, servicesConfigFile) {
-    logger.debug("TransmissionBuilder reading RDF")
+    logger.info('\n****** TransmissionBuilder ******')
+    logger.info('* transmissionConfigFile : ' + transmissionConfigFile)
     const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile)
+    logger.info('* servicesConfigFile : ' + servicesConfigFile)
     const servicesConfig = await TransmissionBuilder.readDataset(servicesConfigFile)
     // relative to run.js
     // TransmissionBuilder.writeDataset(dataset, "./transmissions/output.ttl")
@@ -49,7 +51,7 @@ class TransmissionBuilder {
 
       let serviceConfig = np.out(ns.trm.configKey).term
 
-      logger.log("Create/register service <" + serviceName + "> of type <" + serviceType.value + ">")
+      logger.log("+ Create/register service <" + serviceName + "> of type <" + serviceType.value + ">")
 
       let service = AbstractServiceFactory.createService(serviceType, servicesConfig)
       if (serviceConfig) {
@@ -60,7 +62,7 @@ class TransmissionBuilder {
       transmission.register(serviceName, service)
 
       if (i != 0) {
-        logger.log("*** Connecting #" + i + " [" + previousName + "] => [" + serviceName + "]")
+        logger.log("  > Connect #" + i + " [" + previousName + "] => [" + serviceName + "]")
         transmission.connect(previousName, serviceName)
       }
       previousName = serviceName

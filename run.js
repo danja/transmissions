@@ -14,7 +14,7 @@ const transmissionsDir = './src/transmissions'
 
 class CommandUtils {
     static async run(dir, data, context) {
-        logger.setLogLevel("debug")
+        logger.setLogLevel("info")
         logger.debug("Hello, logger!")
         logger.debug("process.cwd() = " + process.cwd())
 
