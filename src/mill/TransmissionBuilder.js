@@ -2,11 +2,13 @@ import rdf from 'rdf-ext'
 import grapoi from 'grapoi'
 import { fromFile, toFile } from 'rdf-utils-fs'
 
+import ns from '../utils/ns.js'
+import GrapoiHelpers from '../utils/GrapoiHelpers.js'
 import logger from '../utils/Logger.js'
 
 import AbstractServiceFactory from "./AbstractServiceFactory.js";
 import Transmission from './Transmission.js'
-import ns from '../utils/ns.js'
+
 
 class TransmissionBuilder {
 
@@ -27,32 +29,23 @@ class TransmissionBuilder {
     // throw error
   }
 
+
   static buildPipeline(transmissionConfig, pipelineID, servicesConfig) {
-
-    const poi = rdf.grapoi({ dataset: transmissionConfig, term: pipelineID })
-
     logger.log('\n*** Construction ***')
-
-    const first = poi.out(ns.trm.pipe).term
-
-    // grapoi probably has a built-in for this
-    const pipenodes = TransmissionBuilder.listToArray(transmissionConfig, first)
-
     const transmission = new Transmission()
 
     let previousName = "nothing"
 
-    // grapoi probably has a built-in for this
+    // grapoi probably has a built-in for all this
+    const pipenodes = GrapoiHelpers.listToArray(transmissionConfig, pipelineID, ns.trm.pipe)
+
     for (let i = 0; i < pipenodes.length; i++) {
       let node = pipenodes[i]
       let serviceName = node.value
-      //   logger.debug("\nserviceName = " + serviceName)
 
       let np = rdf.grapoi({ dataset: transmissionConfig, term: node })
-      //   logger.poi(np)
-      // process.exit()
+
       let serviceType = np.out(ns.rdf.type).term
-      // logger.debug("\nserviceType = " + serviceType.value)
 
       let serviceConfig = np.out(ns.trm.configKey).term
 
@@ -60,8 +53,9 @@ class TransmissionBuilder {
 
       let service = AbstractServiceFactory.createService(serviceType, servicesConfig)
       if (serviceConfig) {
-        logger.debug("\n************* serviceConfig = " + serviceConfig.value)
+        //  logger.debug("\n*****SERVICE***** serviceConfig = " + serviceConfig.value)
         service.configKey = serviceConfig // .value
+
       }
       transmission.register(serviceName, service)
 
@@ -75,6 +69,7 @@ class TransmissionBuilder {
   }
 
   // follows chain in rdf:List
+  /*
   static listToArray(dataset, first) {
     let p = rdf.grapoi({ dataset, term: first })
     let object = p.out(ns.rdf.first).term
@@ -91,6 +86,7 @@ class TransmissionBuilder {
     }
     return result
   }
+  */
 
 
   // file utils
@@ -104,19 +100,7 @@ class TransmissionBuilder {
     await toFile(dataset.toStream(), filename)
   }
 
-  // unused
-  // [subjects] predicate ->  [objects]
-  static listObjects(dataset, subjectList, predicate) {
-    const objects = []
-    for (const subject of subjectList) {
-      logger.log("subject = " + subject.value)
-      let p = rdf.grapoi({ dataset, term: subject })
-      let object = p.out(predicate).term
-      logger.log("object = " + object.value)
-      objects.push(object)
-    }
-    return objects
-  }
+
 }
 
 export default TransmissionBuilder 

@@ -3,29 +3,23 @@
 @prefix : <http://hyperdata.it/treadmill/> . # for custom terms & instances
 
 :postcraft a trm:Pipeline ;
-    trm:pipe (:s1 :s2 :s3 :s4 :s5 :s6 :s7 :s8 :s9 :s10 :s11) . #  :s5 :s6 :s7 :s8 :s9 :s10
+    trm:pipe (:s1 :s2 :s3 :s4 :s5 :s6 :s7 :s8 :s9 :s10) . #  :s5 :s6 :s7 :s8 :s9 :s10
 
 :s1 a :ContextReader . # the manifest
 :s2 a :ConfigMap . ### use services.ttl?
-#:s3 a :ShowMessage .
-# :s2 a :NOP . 
-:s3 a :FileReader ; # the template
-    trm:configKey :contextKey .
-# :s4 a :Stash . LATERS
- :s4 a :NOP .
- #   :ShowMessage . 
-:s5 a :PostcraftDispatcher . # dispatch each content group
-:s6 a :DirWalker .
+
+:s3 a :FileReader . # the template
+:s4 a :RemapContext ;
+    trm:configKey :dirMap .
+
+:s5 a :DirWalker .
 
 # process forks here
 
-:s7 a :FileReader . # the markdown content
-:s8 a :PostcraftPrep . 
-:s9 a :MarkdownToHTML .
-#:s9 a :ShowMessage .
-#:s10 a :Halt .
-:s10 a :Templater .
-:s11 a :FileWriter .
+:s6 a :FileReader . # the markdown content
 
-# :s3 a :NOP . 
-# :s4 a :Halt .
+:s7 a :PostcraftPrep . 
+:s8 a :MarkdownToHTML .
+:s9 a :Templater .
+:s10 a :FileWriter .
+

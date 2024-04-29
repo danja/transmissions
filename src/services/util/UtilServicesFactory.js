@@ -4,6 +4,7 @@ import ns from '../../utils/ns.js'
 import NOP from './NOP.js'
 import ShowMessage from './ShowMessage.js'
 import Halt from './Halt.js'
+import RemapContext from './RemapContext.js'
 
 
 class UtilServicesFactory {
@@ -16,6 +17,9 @@ class UtilServicesFactory {
         }
         if (type.equals(ns.t.Halt)) {
             return new Halt(config)
+        }
+        if (type.equals(ns.t.RemapContext)) {
+            return new RemapContext(config)
         }
 
         return false

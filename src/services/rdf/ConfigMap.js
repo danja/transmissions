@@ -47,6 +47,10 @@ class ConfigMap extends ProcessService {
     // this.emit('message', context.templateFilename, context)
   }
 
+  emitClone(label, data, context) {
+    const contextClone = structuredClone(context)
+    this.emit(label, data, contextClone)
+  }
   /**
    * Processes a content group.
    * @param {Object} context - The context object.
@@ -66,11 +70,10 @@ class ConfigMap extends ProcessService {
 
     context.sourceDir = sourceDir
     context.targetDir = targetDir
-    //  context.templateFilename = templateFilename
     context.loadContext = 'template'
     const templatePath = context.rootDir + '/' + templateFilename
     context.template = '§§§ placeholer for debugging §§§'
-    this.emit('message', templatePath, context)
+    this.emitClone('message', templatePath, context)
   }
 
 }

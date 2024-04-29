@@ -7,6 +7,16 @@ t:PostcraftMap a trm:DataMap ;
     trm:sourceFile "input.txt" ;
     trm:destinationFile "output.txt" .
 
-t:htmlMap a trm:DataMap ;
-    trm:key t:contextKey ;
-    trm:value "template" .
+# t:htmlMap a trm:DataMap ;
+  #  trm:key t:contextKey ;
+   # trm:value "template" .
+
+t:dirMap a trm:ReMap ;
+   # trm:key t:contextKey ;
+   # trm:value "template" .
+    trm:rename (t:rn1 t:rn2) . 
+    t:rn1 trm:pre "data" ;
+        trm:post "template" .
+
+    t:rn2 trm:pre "before" ;
+        trm:post "after" .
