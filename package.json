@@ -1,8 +1,8 @@
 {
   "type": "module",
   "version": "1.0.0",
-  "description": "Treadmill",
-  "name": "treadmill",
+  "description": "Transmissions",
+  "name": "transmissions",
   "scripts": {
     "test": "jasmine --config=jasmine.json",
     "docs": "jsdoc -c jsdoc.json",

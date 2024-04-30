@@ -1,4 +1,4 @@
-## Treadmill TODO
+## transmissions TODO
 
 # Next Steps
 
@@ -31,7 +31,7 @@ worker threads : https://chat.openai.com/share/febba974-98a1-4a98-b8c2-1a20e22cf
 
 ## Features
 
-- [ ] add `treadmill` command line tool https://tldp.org/LDP/abs/html/standard-options.html
+- [ ] add `transmissions` command line tool https://tldp.org/LDP/abs/html/standard-options.html
 - [ ] multi-thread
 - [ ] generalise pipeline shapes
 
@@ -39,15 +39,15 @@ worker threads : https://chat.openai.com/share/febba974-98a1-4a98-b8c2-1a20e22cf
 
 - [ ] JSDoc
 - [ ] unit tests
-- [ ] make treadmill.d.ts
+- [ ] make transmissions.d.ts
 - [ ] add GitHub CI
 
 - [ ] add command line tool, can list what's available
 
-## command line tool : `treadmill`
+## command line tool : `transmissions`
 
-- [ ] `treadmill list` - list available pipelines
-- [ ] `treadmill run <pipeline>` - run a pipeline
+- [ ] `transmissions list` - list available pipelines
+- [ ] `transmissions run <pipeline>` - run a pipeline
 
 https://tldp.org/LDP/abs/html/standard-options.html
 

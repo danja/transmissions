@@ -13,7 +13,7 @@ import { toFile } from 'rdf-utils-fs'
 const testTurtle = `
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix trm: <http://purl.org/stuff/transmission/> .
-@prefix : <https://hyperdata.it/treadmill/> . # for custom terms & instances
+@prefix : <https://hyperdata.it/transmissions/> . # for custom terms & instances
 
 :simplepipe a trm:PipelineTransmission ;
     trm:pipe (:s1 :s2 :s3) .

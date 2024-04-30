@@ -1,12 +1,10 @@
-# Treadmill
+# transmissions
 
 After _No Code_ and _Lo Code_ comes _Marginally Less Code_
 
-**Treadmill** is a micro-framework which will simplify construction of small data processing applications in JavaScript (assuming you are already familiar with JavaScript and RDF).
+**Transmissions** is a micro-framework which will simplify construction of small data processing applications in JavaScript (assuming you are already familiar with JavaScript and RDF).
 
 A bit like `make` or a `package.json` builder.
-
-![Treadmill](https://github.com/danja/treadmill/blob/main/docs/images/treadmill.jpg)
 
 ### Status
 
@@ -52,7 +50,7 @@ There are several sophisticated frameworks for building interfaces between softw
 
 See also [David Booth](https://github.com/dbooth-boston)'s [RDF Pipeline Framework](https://github.com/rdf-pipeline)
 
-_I do eventually want to use this with NodeRed or whatever, but the entities created by Treadmill will be at the level of nodes in such networks, not the network itself._
+_I do eventually want to use this with NodeRed or whatever, but the entities created by transmissions will be at the level of nodes in such networks, not the network itself._
 
 ## Motivation
 

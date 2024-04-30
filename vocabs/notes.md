@@ -8,7 +8,7 @@ cd /home/danny/HKMS/specgen-ng
 
 mkdir spec/email
 
-danny@danny-desktop:~/HKMS/treadmill/src$ cd /home/danny/foaf-archive/vocabs/
+danny@danny-desktop:~/HKMS/transmissions/src$ cd /home/danny/foaf-archive/vocabs/
 danny@danny-desktop:~/foaf-archive/vocabs$ mkdir email
 
 python src/specgenng.py \

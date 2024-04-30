@@ -1,6 +1,6 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix trm: <http://purl.org/stuff/transmission/> .
-@prefix : <http://hyperdata.it/treadmill/> . # for custom terms & instances
+@prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances
 
 :filepipe a trm:Pipeline ;
     trm:pipe (:s1 :s2 :s3 :s4) .

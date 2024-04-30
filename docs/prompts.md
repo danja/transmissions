@@ -7,9 +7,9 @@ I wish to make intellisense aware of
 ## Gemini
 
 The code here successfully extracts a sequence of terms from a turtle rdf file. I would like it to also the class of each term. Here is the code :
-https://github.com/danja/treadmill/blob/main/src/mill/TransmissionBuilder.js
+https://github.com/danja/transmissions/blob/main/src/mill/TransmissionBuilder.js
 here is the RDF :
-https://github.com/danja/treadmill/blob/main/src/transmissions/string-pipe.ttl
+https://github.com/danja/transmissions/blob/main/src/transmissions/string-pipe.ttl
 
 ---
 

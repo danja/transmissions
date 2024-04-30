@@ -6,7 +6,7 @@ const ns = {
     schema: rdf.namespace('http://schema.org/'),
     xsd: rdf.namespace('http://www.w3.org/2001/XMLSchema#'),
     trm: rdf.namespace('http://purl.org/stuff/transmission/'),
-    t: rdf.namespace('http://hyperdata.it/treadmill/'),
+    t: rdf.namespace('http://hyperdata.it/transmissions/'),
     fs: rdf.namespace('http://purl.org/stuff/filesystem/'),
     pc: rdf.namespace('http://purl.org/stuff/postcraft/')
 }
