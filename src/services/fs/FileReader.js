@@ -29,16 +29,17 @@ class FileReader extends SourceService {
      */
     async execute(data, context) {
 
-        const filename = context.filename
+        var filename = context.filename
 
         if (!filename) {
             filename = this.locateConfig().value // services.ttl
         }
         logger.log('\nFileReader reading : ' + filename)
-        const f = filename
+        const f = context.rootDir + '/' + filename
+        logger.log('####in Filereader f = ' + f)
         try {
             //   logger.log('####in Filereader ' + context.sourceFile)
-            const context.content = await readFile(f)
+            context.content = await readFile(f)
 
             /*
             if (context.loadContext) { // get rid?

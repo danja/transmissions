@@ -3,7 +3,7 @@
 @prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances
 
 :postcraft a trm:Pipeline ;
-    trm:pipe (:s1 :s2 :s3 :s4 :s5 :s6) . #  :s5 :s6 :s7 :s8 :s9 :s10
+    trm:pipe (:s1 :s2 :s3 :s4 :s5 :s6 :s7 :s8 :s9 :s10) . #  :s5 :s6 :s7 :s8 :s9 :s10
 
 :s1 a :ContextReader . # the manifest
 :s2 a :ConfigMap . ### use services.ttl?

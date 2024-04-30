@@ -25,7 +25,9 @@ class PostcraftPrep extends ProcessService {
 
   //  eg. 2024-04-19_hello-postcraft.md
   shredFilename(context) {
-    const nonExt = context.sourceFile.split('.').slice(0, -1).join()
+    const nonExt = context.filename.split('.').slice(0, -1).join()
+    //  const nonExt = context.sourceFile.split('.').slice(0, -1).join()
+
     //  logger.log('nonExt = ' + nonExt)
     const shreds = nonExt.split('_')
     context.updated = (new Date()).toISOString().split('T')[0]

@@ -69,9 +69,10 @@ class ConfigMap extends ProcessService {
     context.sourceDir = sourceDir
     context.targetDir = targetDir
     context.loadContext = 'template'
-    const templatePath = context.rootDir + '/' + templateFilename
+    //    const templatePath = context.rootDir + '/' + templateFilename
+    context.filename = templateFilename
     context.template = '§§§ placeholer for debugging §§§'
-    this.emitClone('message', templatePath, context)
+    this.emitClone('message', false, context)
   }
 
 }
