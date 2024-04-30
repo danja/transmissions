@@ -19,7 +19,7 @@ class TransmissionBuilder {
     logger.info('* servicesConfigFile : ' + servicesConfigFile)
     const servicesConfig = await TransmissionBuilder.readDataset(servicesConfigFile)
     // relative to run.js
-    // TransmissionBuilder.writeDataset(dataset, "./transmissions/output.ttl")
+    // TransmissionBuilder.writeDataset(dataset, "./applications/output.ttl")
 
     const poi = grapoi({ dataset: transmissionConfig })
 

@@ -12,7 +12,7 @@ describe('file-pipeline', function () {
     const __dirname = path.dirname(__filename)
     const rootDir = path.resolve(__dirname, '../../')
 
-    const dataFile = footpath.resolve(import.meta.url, '../../src/transmissions/file-pipeline/data/', 'output.txt')
+    const dataFile = footpath.resolve(import.meta.url, '../../src/applications/file-pipeline/data/', 'output.txt')
     console.log('in file-pipeline.spec.js dataFile = ' + dataFile)
     it('produces correct output', function (done) {
         // Delete the output file if it exists

@@ -6,9 +6,9 @@ services, clients, interfaces and injectors
 
 Entry point.
 
-## /transmissions
+## /applications
 
-Contains transmission configuration files.
+Contains application configuration files.
 
 - simplepipe.json
 

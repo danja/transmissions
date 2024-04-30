@@ -8,7 +8,7 @@ import logger from './src/utils/Logger.js'
 
 import TransmissionBuilder from './src/mill/TransmissionBuilder.js'
 
-const transmissionsDir = './src/transmissions'
+const applicationsDir = './src/applications'
 
 // logger.log('DESCRIBE ' + await transmission.describe())
 
@@ -70,8 +70,8 @@ let context = {}
 
 if (process.argv.length <= 2) {
     // No arguments were provided, list subdirectories and exit
-    console.log('Available transmissions :');
-    CommandUtils.listSubdirectories(transmissionsDir)
+    console.log('Available applications :');
+    CommandUtils.listSubdirectories(applicationsDir)
 } else {
     await yargs(hideBin(process.argv))
         .usage('Usage: $0 <command> [options]')
@@ -93,7 +93,7 @@ if (process.argv.length <= 2) {
         }, async (argv) => {
             const { dirName, input, context: contextArg } = argv
 
-            const transmissionPath = path.join(transmissionsDir, dirName)
+            const transmissionPath = path.join(applicationsDir, dirName)
             const defaultDataDir = path.join(transmissionPath, '/data')
 
             context = { "dataDir": defaultDataDir }
