@@ -8,7 +8,7 @@ class Templater extends ProcessService {
     }
 
     async execute(data, context) {
-        logger.log('DATA = ' + data)
+        // logger.log('DATA = ' + data)
 
         // logger.log('^^^^^^^^^^^ìcontext.template = ' + context.template)
         logger.log('----------------context.targetFilename = ' + context.targetFilename)

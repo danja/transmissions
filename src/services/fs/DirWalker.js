@@ -15,9 +15,10 @@ class DirWalker extends SourceService {
         this.desiredExtensions = ['.md']
     }
 
-    async execute(relativePath, context) {
+
+    async execute(data, context) {
         //  logger.log('DirWalkerDirWalkerDirWalkerDirWalker ' + context.template)
-        const dirPath = context.rootDir + '/' + relativePath
+        const dirPath = context.rootDir + '/' + context.sourceDir
         try {
             const entries = await readdir(dirPath, { withFileTypes: true })
             for (const entry of entries) {
@@ -28,10 +29,10 @@ class DirWalker extends SourceService {
                     // Check if the file extension is in the list of desired extensions
                     if (this.desiredExtensions.includes(extname(entry.name))) {
                         const contextClone = structuredClone(context)
-                        contextClone.sourceFile = entry.name
+                        contextClone.filename = entry.name
                         logger.log('\n\nDIR entry.name = ' + entry.name)
-                        logger.log('DIR  context.sourceFile = ' + contextClone.sourceFile)
-                        this.emit('message', fullPath, contextClone)
+                        logger.log('DIR  context.sourceFile = ' + contextClone.filename)
+                        this.emit('message', false, contextClone)
                     }
                 }
             }

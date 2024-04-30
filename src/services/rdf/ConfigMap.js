@@ -10,10 +10,8 @@ import ProcessService from '../base/ProcessService.js'
 * Takes the context.dataset and guided by services.ttl maps its contents to direct key:value pairs in the context
 * 
 * #### __*Input*__
-* **data** : any
 * **context** : needs dataset
 * #### __*Output*__
-* **data** : determined by mapping
 * **context** : determined by mapping 
 * @extends ProcessService
 */

@@ -8,7 +8,7 @@ class ShowMessage extends SinkService {
 
         //    logger.log("\n\nStringSink outputs : \"" + data + "\"\n\n")
 
-        logger.log("\n***  Message ***")
+        logger.log("\n***  Show Message ***")
 
         logger.log("***  Data")
 

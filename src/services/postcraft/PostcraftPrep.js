@@ -13,18 +13,18 @@ class PostcraftPrep extends ProcessService {
   }
 
   async execute(data, context) {
-    context.template = context.template.toString()
-    logger.log('PostcraftPrep received data : ' + data)
+    // context.template = context.template.toString()
+
 
     // both place values in the context, save for later
-    this.shredFilename(data, context)
-    this.extractTitle(data, context)
+    this.shredFilename(context)
+    this.extractTitle(context)
 
-    this.emit('message', data, context)
+    this.emit('message', false, context)
   }
 
   //  eg. 2024-04-19_hello-postcraft.md
-  shredFilename(data, context) {
+  shredFilename(context) {
     const nonExt = context.sourceFile.split('.').slice(0, -1).join()
     //  logger.log('nonExt = ' + nonExt)
     const shreds = nonExt.split('_')
@@ -38,7 +38,8 @@ class PostcraftPrep extends ProcessService {
   }
 
   // first heading in the markdown else use filename
-  extractTitle(data, context) {
+  extractTitle(context) {
+    const data = context.content
     let match = data.toString().match(/^#(.*)$/m)
     let maybeTitle = match ? match[1].trim() : null
     if (maybeTitle) {

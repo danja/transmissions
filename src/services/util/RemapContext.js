@@ -21,9 +21,14 @@ class RemapContext extends Service {
 
             let pre = poi.out(ns.trm.pre).value
             let post = poi.out(ns.trm.post).value
-            logger.log('Rename : ' + pre + ' to ' + post)
+
+            if (context[pre]) {
+                context[post] = context[pre]
+            } else {
+                context[post] = false
+            }
+            //     logger.log('Rename : ' + pre + ' to ' + post)
         }
-        process.exit();
         this.emit('message', data, context)
     }
 }
