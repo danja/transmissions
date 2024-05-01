@@ -8,8 +8,8 @@ import SinkService from '../base/SinkService.js'
  * First checks `context.targetFilename` and if not set, uses the value from `services.ttl` using `configKey` for this service instance.
  * 
  * #### __*Input*__
- * * **data** : string content to be written to the file 
- * * **context** : may contain `targetFilename`
+ * * context.filename 
+ * * context.content
  * #### __*Output*__
  * * **data** : as Input
  * * **context** : as Input
@@ -28,11 +28,11 @@ class FileWriter extends SinkService {
 
     /**
      * Executes the write operation.
-     * @param {string} data - The data to be written to the file.
      * @param {Object} context - The execution context.
      */
     async execute(data, context) {
-        var filename = context.targetFilename
+        var filename = context.filename
+        const content = context.content
 
         if (!filename) {
             filename = this.locateConfig().value
@@ -42,7 +42,7 @@ class FileWriter extends SinkService {
         const f = filename
 
         try {
-            await writeFile(f, data)
+            await writeFile(f, content)
 
         } catch (err) {
             logger.error("FileWriter.execute error : " + err.message)

@@ -72,6 +72,7 @@ logger.debug = function (msg) {
     logger.log(msg, "debug");
 }
 
+
 logger.info = function (msg) {
     logger.log(msg, "info");
 }

@@ -30,8 +30,8 @@ class DirWalker extends SourceService {
                     if (this.desiredExtensions.includes(extname(entry.name))) {
                         const contextClone = structuredClone(context)
                         contextClone.filename = context.sourceDir + '/' + entry.name
-                        logger.log('\n\nDIR entry.name = ' + entry.name)
-                        logger.log('DIR  context.sourceFile = ' + contextClone.filename)
+                        // logger.log('\n\nDIR entry.name = ' + entry.name)
+                        // logger.log('DIR  context.sourceFile = ' + contextClone.filename)
                         this.emit('message', false, contextClone)
                     }
                 }

@@ -25,13 +25,9 @@ class ShowMessage extends SinkService {
         logger.log("***  Context")
         logger.reveal(context)
         logger.log("***************************")
-        logger.log("***  Trace")
-        console.trace()
-        logger.log("***************************")
-
-        //  logger.log(data.toString())
-
-        //       logger.log("filename : " + context.filename)
+        //     logger.log("***  Trace")
+        //   console.trace() // move to Logger, only when debugging
+        // logger.log("***************************")
 
         this.emit('message', data, context)
     }

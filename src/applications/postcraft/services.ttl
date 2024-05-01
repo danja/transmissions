@@ -8,10 +8,14 @@ t:PostcraftMap a trm:DataMap ;
     trm:sourceFile "input.txt" ;
     trm:destinationFile "output.txt" .
 
-t:dirMap a trm:ReMap ;
+t:templateDirMap a trm:ReMap ;
     trm:rename (t:rn1 t:rn2) . 
     t:rn1   trm:pre     "data" ;
             trm:post    "template" .
 
+t:fileSaver a trm:ReMap ;
+    trm:rename (t:rn1 t:rn2) . 
+    t:rn1   trm:pre     "targetFilename" ;
+            trm:post    "filename" .
  #   t:rn2 trm:pre "before" ;
  #       trm:post "after" .

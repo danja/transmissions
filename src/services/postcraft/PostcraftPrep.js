@@ -36,7 +36,7 @@ class PostcraftPrep extends ProcessService {
       context.created = shreds[0]
     }
     context.title = shreds[1] // fallback
-    context.targetFilename = context.title + '.html'
+    context.targetFilename = context.rootDir + '/' + context.targetDir + '/' + context.title + '.html'
   }
 
   // first heading in the markdown else use filename

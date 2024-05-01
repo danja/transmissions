@@ -11,7 +11,7 @@ class Templater extends ProcessService {
         // logger.log('DATA = ' + data)
 
         // logger.log('^^^^^^^^^^^ìcontext.template = ' + context.template)
-        logger.log('----------------context.targetFilename = ' + context.targetFilename)
+        // logger.log('----------------context.targetFilename = ' + context.targetFilename)
         const content = context.content
         // content = 'eqweqwe'
         /*
@@ -34,10 +34,10 @@ class Templater extends ProcessService {
         // const keys = Object.keys(driversCounter);
 
 
-        logger.log('RESULT = \n' + context.content)
+        //   logger.log('RESULT = \n' + context.content)
         // new Function(`with(this) { return \`${context.template}\`; }`).call(data);
 
-        //  this.emit('message', false, context)
+        this.emit('message', false, context)
     }
 }
 
