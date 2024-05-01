@@ -10,8 +10,8 @@ import Service from '../base/Service.js'
 class RemapContext extends Service {
 
     async execute(data, context) {
-        // logger.log('SERVICE this.configKey = ' + this.configKey.value)
-        //   logger.log(this.config.toString())
+        logger.log('SERVICE this.configKey = ' + this.configKey.value)
+        // logger.log(this.config.toString())
         const renames = GrapoiHelpers.listToArray(this.config, this.configKey, ns.trm.rename)
         const dataset = this.config
         // for (const rename in renames) {
@@ -27,7 +27,7 @@ class RemapContext extends Service {
             } else {
                 context[post] = false
             }
-            //     logger.log('Rename : ' + pre + ' to ' + post)
+            logger.log('Rename : ' + pre + ' to ' + post)
         }
         this.emit('message', data, context)
     }

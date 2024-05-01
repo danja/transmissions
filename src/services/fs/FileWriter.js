@@ -1,4 +1,6 @@
 import { writeFile } from 'node:fs/promises'
+import { dirname, join } from 'node:path'
+import { mkdir, mkdirSync } from 'node:fs'
 import logger from '../../utils/Logger.js'
 import SinkService from '../base/SinkService.js'
 /**
@@ -11,8 +13,7 @@ import SinkService from '../base/SinkService.js'
  * * context.filename 
  * * context.content
  * #### __*Output*__
- * * **data** : as Input
- * * **context** : as Input
+ * * as Input
  * 
  * if context.loadContext is set, that is used as a name in the context for the file content
  */
@@ -32,6 +33,8 @@ class FileWriter extends SinkService {
      */
     async execute(data, context) {
         var filename = context.filename
+
+
         const content = context.content
 
         if (!filename) {
@@ -39,16 +42,25 @@ class FileWriter extends SinkService {
         }
         logger.debug("Filewriter.targetFile = " + filename)
 
-        const f = filename
-
+        const dirName = dirname(filename)
         try {
-            await writeFile(f, content)
+            await this.mkdirs(dirName)
+            await writeFile(filename, content)
 
         } catch (err) {
             logger.error("FileWriter.execute error : " + err.message)
         }
 
         this.emit('message', data, context)
+    }
+
+    async mkdirs(dir) {
+        if (!dir) return;
+        try {
+            mkdir(dir, { recursive: true }, (error) => { })
+        } catch (error) {
+            console.error(error);
+        }
     }
 }
 
