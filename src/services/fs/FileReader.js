@@ -32,7 +32,7 @@ class FileReader extends SourceService {
         var filename = context.filename
 
         if (!filename) {
-            filename = this.locateConfig().value // services.ttl
+            filename = this.getMyConfig().value // services.ttl
         }
         logger.log('\nFileReader reading : ' + filename)
         const f = context.rootDir + '/' + filename

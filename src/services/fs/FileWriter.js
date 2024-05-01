@@ -38,7 +38,7 @@ class FileWriter extends SinkService {
         const content = context.content
 
         if (!filename) {
-            filename = this.locateConfig().value
+            filename = this.getMyConfig().value
         }
         logger.debug("Filewriter.targetFile = " + filename)
 

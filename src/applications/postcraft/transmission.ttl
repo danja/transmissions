@@ -34,6 +34,7 @@
 
 :s11 a :FileWriter .
 
-:s12 a :Unfork .
+:s12 a :Unfork ;
+    trm:configKey :combinePosts .
 
 :s13 a :ShowMessage .

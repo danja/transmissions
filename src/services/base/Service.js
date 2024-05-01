@@ -25,10 +25,23 @@ class Service extends EventEmitter {
      * Locates the configuration node in services.ttl for the service.
      * @returns {Object} - The configuration node.
      */
-    locateConfig() {
+    // is this duplicating? getMyConfig() 
+    getMyConfig() {
         const dataset = this.config
         const poi = grapoi({ dataset, term: this.configKey }).in()
         const configNode = poi.out(ns.trm.value)
+        return configNode
+    }
+
+    /** SHOULD REPLACE THE ABOVE AND USE THE BLOCK NAME FOR ID
+ * Locates the configuration node in services.ttl for the service.
+ * @returns {Object} - The configuration node.
+ */
+    // is this duplicating? 
+    getMyConfigNode() {
+        const dataset = this.config
+        const configNode = grapoi({ dataset, term: this.configKey }).in()
+        //  const configNode = poi.out(ns.trm.value)
         return configNode
     }
 

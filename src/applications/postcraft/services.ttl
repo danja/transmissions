@@ -19,3 +19,12 @@ t:fileSaver a trm:ReMap ;
             trm:post    "filename" .
  #   t:rn2 trm:pre "before" ;
  #       trm:post "after" .
+
+ # t:combinePostsHere a trm:Flag ;
+   # trm:key t:combinePosts ;
+    # trm:value "false" .
+
+t:unforkToCombinePosts a trm:ServiceConfig ;
+    trm:key t:combinePosts ;
+    trm:flag "false" ;
+  trm:flag "true" .
