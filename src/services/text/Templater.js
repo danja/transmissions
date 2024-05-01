@@ -26,7 +26,7 @@ class Templater extends ProcessService {
             content: content,
             footer: 'FOOTER'
         }
-        const template = 'one\n ${header} \n two ${content} \n three ${footer} \n four'
+        const template = context.template
         context.content = template
             .replace(/\${header}/g, blocks.header)
             .replace(/\${content}/g, blocks.content)

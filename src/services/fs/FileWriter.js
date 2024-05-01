@@ -44,7 +44,7 @@ class FileWriter extends SinkService {
 
         const dirName = dirname(filename)
         try {
-            await this.mkdirs(dirName)
+            await this.mkdirs(dirName) // is this OK when the dirs ???
             await writeFile(filename, content)
 
         } catch (err) {

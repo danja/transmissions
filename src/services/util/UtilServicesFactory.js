@@ -5,7 +5,7 @@ import NOP from './NOP.js'
 import ShowMessage from './ShowMessage.js'
 import Halt from './Halt.js'
 import RemapContext from './RemapContext.js'
-
+import Unfork from './Unfork.js'
 
 class UtilServicesFactory {
     static createService(type, config) {
@@ -20,6 +20,9 @@ class UtilServicesFactory {
         }
         if (type.equals(ns.t.RemapContext)) {
             return new RemapContext(config)
+        }
+        if (type.equals(ns.t.Unfork)) {
+            return new Unfork(config)
         }
 
         return false

@@ -4,12 +4,12 @@
 @prefix t: <http://hyperdata.it/transmissions/> . # for custom terms & instances
 
 # for testing
-t:PostcraftMap a trm:DataMap ;
-    trm:sourceFile "input.txt" ;
-    trm:destinationFile "output.txt" .
+# t:PostcraftMap a trm:DataMap ;
+#    trm:sourceFile "input.txt" ;
+#    trm:destinationFile "output.txt" .
 
-t:templateDirMap a trm:ReMap ;
-    trm:rename (t:rn1) .
+t:mainTemplateDirMap a trm:ReMap ;
+    trm:rename (t:rn1) . # consider using blank nodes
      t:rn1    trm:pre     "data" ;
             trm:post    "template"  .
 
