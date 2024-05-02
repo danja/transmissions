@@ -26,5 +26,4 @@ t:fileSaver a trm:ReMap ;
 
 t:unforkToCombinePosts a trm:ServiceConfig ;
     trm:key t:combinePosts ;
-    trm:flag "false" ;
-  trm:flag "true" .
+    trm:flag "false" .

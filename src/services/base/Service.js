@@ -1,5 +1,6 @@
-
+import logger from '../../utils/Logger.js'
 import { EventEmitter } from 'events'
+import rdf from 'rdf-ext'
 import grapoi from 'grapoi'
 import ns from '../../utils/ns.js'
 
@@ -22,17 +23,20 @@ class Service extends EventEmitter {
     }
 
     /**
+     * TODO refactor
+     * 
      * Locates the configuration node in services.ttl for the service.
      * @returns {Object} - The configuration node.
      */
     // is this duplicating? getMyConfig() 
-    getMyConfig() {
-        const dataset = this.config
-        const poi = grapoi({ dataset, term: this.configKey }).in()
-        const configNode = poi.out(ns.trm.value)
-        return configNode
-    }
-
+    /*
+        getMyConfig() {
+            const dataset = this.config
+            const poi = grapoi({ dataset, term: this.configKey }).in()
+            const configNode = poi.out(ns.trm.value)
+            return configNode
+        }
+    */
     /** SHOULD REPLACE THE ABOVE AND USE THE BLOCK NAME FOR ID
  * Locates the configuration node in services.ttl for the service.
  * @returns {Object} - The configuration node.
@@ -40,9 +44,35 @@ class Service extends EventEmitter {
     // is this duplicating? 
     getMyConfigNode() {
         const dataset = this.config
-        const configNode = grapoi({ dataset, term: this.configKey }).in()
+        const configNode = grapoi({ dataset, term: this.configKey }).in().trim()
         //  const configNode = poi.out(ns.trm.value)
-        return configNode
+        // rdf.namedNode(this.getMyConfigNode())
+        return configNode.term
+    }
+
+    getMyPoi() {
+        const dataset = this.config
+        const myConfigNode = this.getMyConfigNode()
+        const poi = grapoi({ dataset: dataset, term: myConfigNode })
+        return poi
+    }
+
+    async addPropertyToMyConfig(predicate, value) {
+        const myConfigNode = this.getMyConfigNode()
+        const s = myConfigNode.value
+        logger.log('ADDING TO' + s)
+        const dataset = this.config
+        dataset.add(myConfigNode, predicate, value)
+        this.config = dataset
+    }
+
+    async deletePropertyFromMyConfig(predicate, value) {
+        const myConfigNode = this.getMyConfigNode()
+        const s = myConfigNode.value
+        logger.log('DELETING FROM ' + s)
+        const dataset = this.config
+        dataset.delete(myConfigNode, predicate, value)
+        this.config = dataset
     }
 
     /**

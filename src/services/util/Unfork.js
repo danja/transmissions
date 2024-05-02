@@ -9,6 +9,11 @@ only accept the first call
 
 class Unfork extends Service {
 
+    constructor(config) {
+        super(config)
+        this.called = false
+    }
+
     async execute(data, context) {
         logger.log('SERVICE this.configKey = ' + this.configKey.value) /// DUPLICATING???
         // logger.log(this.config.toString())
@@ -16,38 +21,49 @@ class Unfork extends Service {
 
         //        const dataset = this.config
         //      const configNode = grapoi({ dataset, term: this.configKey }).in()
-        const configDataset = this.config
-        const myConfigNode = this.getMyConfigNode()
-        logger.log('this.getMyConfigNode() = ' + this.getMyConfigNode().value)
+        // const configDataset = this.config
+        // const myConfigNode = this.getMyConfigNode()
+        // logger.log('\n\nthis.getMyConfigNode() = ' + this.getMyConfigNode().term.value)
 
+        const poi = this.getMyPoi()
 
-        //   const configNode = grapoi({ dataset: myConfig, term: this.configKey }).in()
-        const calledFlag = grapoi({ dataset: configDataset, term: myConfigNode }).out(ns.trm.flag)
-        logger.poi(calledFlag)
-        logger.log('calledFlag.out(ns.trm.flag).value) = ' + calledFlag.out(ns.trm.flag).value)
+        const flags = poi.out(ns.trm.flag)
 
-        logger.log('CALLED = ' + calledFlag.value)
-        if (!calledFlag == 'false') {
-            logger.log('CALLING')
-            //  configDataset.addOut(ns.trm.flag, 'true')
-            //    await this.setCalled(myConfig)
-            myConfig.value = 'true'
-            this.emit('message', data, context)
-        } else {
-            logger.log('SKIPPING')
+        var flag
+        for (flag of flags) {
+
+            if (flag.value === 'true') {
+                called = true
+                // break
+                logger.log('SKIPPING')
+                return
+            }
         }
+        //  console.dir(flag)
+
+        // poi.deleteOut(ns.trm.flag)
+        // poi.addOut(ns.trm.flag, 'true')
+        await this.showFlags()
+        await this.deletePropertyFromMyConfig(rdf.namedNode(ns.trm.flag), rdf.literal('false'))
+        await this.showFlags()
+        await this.addPropertyToMyConfig(rdf.namedNode(ns.trm.flag), rdf.literal('true'))
+        await this.showFlags()
+        logger.log(this.config.toString())
+        //   logger.poi(poi)
+        //logger.log('flag = ' + flag.value)
+        logger.log('CALLING')
+        //     this.emit('message', data, context)
+
+
     }
 
-    // async alreadyCalled() {
-    //  if(calledNode )
-    // }
-
-    async setCalled() {
-
-    }
-
-    locateServiceNode() {
-
+    async showFlags() { // for debugging
+        logger.log('--- FLAGS ---')
+        const poi = this.getMyPoi()
+        const flags = poi.out(ns.trm.flag)
+        for (const flag of flags) {
+            logger.log('FLAG : ' + flag.value)
+        }
     }
 }
 
