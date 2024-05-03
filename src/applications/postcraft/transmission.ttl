@@ -18,7 +18,8 @@
     trm:configKey :postTemplateMap .
 # context.content -> context.template ## Remaps should go here????
 #
-:s5 a :DirWalker .
+:s5 a :DirWalker ;
+trm:configKey :files .
 
 # :s6 a :ShowMessage .
 

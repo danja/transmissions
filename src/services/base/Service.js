@@ -44,10 +44,12 @@ class Service extends EventEmitter {
     // is this duplicating? 
     getMyConfigNode() {
         const dataset = this.config
-        const configNode = grapoi({ dataset, term: this.configKey }).in().trim()
+        const configNode = grapoi({ dataset, term: this.configKey }).in()
+        // .trim()
         //  const configNode = poi.out(ns.trm.value)
         // rdf.namedNode(this.getMyConfigNode())
         return configNode.term
+        // return configNode
     }
 
     getMyPoi() {
@@ -58,9 +60,11 @@ class Service extends EventEmitter {
     }
 
     async addPropertyToMyConfig(predicate, value) {
+        logger.log('addPropertyToMyConfig predicate = ' + predicate)
+        logger.log('addPropertyToMyConfig value = ' + value)
         const myConfigNode = this.getMyConfigNode()
         const s = myConfigNode.value
-        logger.log('ADDING TO' + s)
+        logger.log('addPropertyToMyConfig  myConfigNode.value' + myConfigNode.value)
         const dataset = this.config
         dataset.add(myConfigNode, predicate, value)
         this.config = dataset

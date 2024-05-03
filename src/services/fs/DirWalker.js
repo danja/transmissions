@@ -1,3 +1,5 @@
+import rdf from 'rdf-ext'
+import ns from '../../utils/ns.js'
 import { readdir } from 'fs/promises'
 import { join, extname } from 'path'
 import grapoi from 'grapoi'
@@ -37,6 +39,7 @@ class DirWalker extends SourceService {
      * @returns {Promise<void>} A promise that resolves when the directory walking process is complete.
      */
     async execute(data, context) {
+        context.filepaths = []
         const dirPath = context.rootDir + '/' + context.sourceDir
         try {
             const entries = await readdir(dirPath, { withFileTypes: true })
@@ -49,6 +52,12 @@ class DirWalker extends SourceService {
                     if (this.desiredExtensions.includes(extname(entry.name))) {
                         const contextClone = structuredClone(context)
                         contextClone.filename = context.sourceDir + '/' + entry.name
+
+                        // globalish
+                        await this.addPropertyToMyConfig(ns.trm.postPath, rdf.literal(contextClone.filename))
+                        logger.log('CONFIG : ' + this.config)
+                        process.exit()
+
                         this.emit('message', false, contextClone)
                     }
                 }
