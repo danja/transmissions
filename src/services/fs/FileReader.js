@@ -40,7 +40,7 @@ class FileReader extends SourceService {
         try {
             //   logger.log('####in Filereader ' + context.sourceFile)
             context.content = await readFile(f)
-
+            logger.log('####in Filereader context.content = ' + context.content)
             /*
             if (context.loadContext) { // get rid?
                 context[context.loadContext] = content

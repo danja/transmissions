@@ -23,7 +23,7 @@ class RemapContext extends Service {
             let post = poi.out(ns.trm.post).value
 
             if (context[pre]) {
-                context[post] = context[pre]
+                context[post] = context[pre].toString() // otherwise passes a Buffer
             } else {
                 context[post] = false
             }

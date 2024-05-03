@@ -1,9 +1,9 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix trm: <http://purl.org/stuff/transmission/> .
-@prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances
+@prefix trm: <http://purl.org/stuff/transmission/> . # TODO make plural
+@prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances - TODO make one @services s: 
 
 :postcraft a trm:Pipeline ;
-    trm:pipe (:s1 :s2 :s3 :s4 :s5 :s6 :s7 :s8 :s9 :s10 :s11 :s12 :s13) . #  :s5 :s6 :s7 :s8 :s9 :s10
+    trm:pipe (:s1 :s2 :s3 :s4 :s5 :s6 :s7 :s8 :s9 :s10 :s11) . #  :s6  :s10 :s11 :s12 :s13
 
 :s1 a :ContextReader . # the manifest
 :s2 a :ConfigMap . ### use services.ttl? - defer to RemapContext as possible
@@ -13,12 +13,14 @@
 #    trm:configKey :mainTemplateDirMap .
 
 :s3 a :FileReader . # the template for posts
+
 :s4 a :RemapContext ;
-    trm:configKey :postTemplateDirMap .
-
-# needs a fork somewhere here, individual posts vs. combined
-
+    trm:configKey :postTemplateMap .
+# context.content -> context.template ## Remaps should go here????
+#
 :s5 a :DirWalker .
+
+# :s6 a :ShowMessage .
 
 # process forks here 
 
@@ -30,11 +32,13 @@
 :s9 a :Templater .
 
 :s10 a :RemapContext ;
-   trm:configKey :fileSaver .
+   trm:configKey :postSaver .
 
+# :s11 a :NOP .
 :s11 a :FileWriter .
 
-:s12 a :Unfork ;
-    trm:configKey :combinePosts .
+:s12 a :NOP .
+#:s12 a :Unfork ;
+ #   trm:configKey :combinePosts .
 
 :s13 a :ShowMessage .

@@ -62,9 +62,10 @@ class ConfigMap extends ProcessService {
     const targetDir = groupPoi.out(ns.fs.targetDirectory).term.value
     const templateFilename = groupPoi.out(ns.pc.template).term.value
 
-    // logger.log('sourceDir = ' + sourceDir)
-    // logger.log('targetDir = ' + targetDir)
-    // logger.log('templateFilename  = ' + templateFilename)
+    logger.log('--- ConfigMap ---')
+    logger.log('sourceDir = ' + sourceDir)
+    logger.log('targetDir = ' + targetDir)
+    logger.log('templateFilename  = ' + templateFilename)
 
     context.sourceDir = sourceDir
     context.targetDir = targetDir
