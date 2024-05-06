@@ -13,28 +13,31 @@ import Transmission from './Transmission.js'
 class TransmissionBuilder {
 
   static async build(transmissionConfigFile, servicesConfigFile) {
-    logger.info('\n****** TransmissionBuilder ******')
-    logger.info('* transmissionConfigFile : ' + transmissionConfigFile)
+    logger.info('\n+ ***** Load Config ******')
+    logger.info('[Transmission : ' + transmissionConfigFile + ']')
     const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile)
-    logger.info('* servicesConfigFile : ' + servicesConfigFile)
+    logger.info('[Config : ' + servicesConfigFile + ']')
     const servicesConfig = await TransmissionBuilder.readDataset(servicesConfigFile)
     // relative to run.js
     // TransmissionBuilder.writeDataset(dataset, "./applications/output.ttl")
 
     const poi = grapoi({ dataset: transmissionConfig })
 
-    for (const q of poi.out(ns.rdf.type).quads()) {
+    const transmission = new Transmission()
+
+    for (const q of poi.out(ns.rdf.type).quads()) { /// NEEDS MULTIPLE TODO
       if (q.object.equals(ns.trm.Pipeline)) { // 
-        return TransmissionBuilder.buildPipeline(transmissionConfig, q.subject, servicesConfig)
+        TransmissionBuilder.addPipeline(transmission, transmissionConfig, q.subject, servicesConfig)
       }
     }
     // throw error
+    return transmission
   }
 
+  // TODO refactor
+  static addPipeline(transmission, transmissionConfig, pipelineID, servicesConfig) {
+    logger.log('\n+ ***** Construct *****')
 
-  static buildPipeline(transmissionConfig, pipelineID, servicesConfig) {
-    logger.log('\n*** Construction ***')
-    const transmission = new Transmission()
 
     let previousName = "nothing"
 
@@ -51,7 +54,7 @@ class TransmissionBuilder {
 
       let serviceConfig = np.out(ns.trm.configKey).term
 
-      logger.log("+ Create/register service <" + serviceName + "> of type <" + serviceType.value + ">")
+      logger.log("| Create service <" + serviceName + "> of type <" + serviceType.value + ">")
 
       let service = AbstractServiceFactory.createService(serviceType, servicesConfig)
 
@@ -61,7 +64,6 @@ class TransmissionBuilder {
       if (serviceConfig) {
         //  logger.debug("\n*****SERVICE***** serviceConfig = " + serviceConfig.value)
         service.configKey = serviceConfig // .value
-
       }
       transmission.register(serviceName, service)
 

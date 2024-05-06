@@ -34,13 +34,13 @@ class FileReader extends SourceService {
         if (!filename) {
             filename = this.getMyConfig().value // services.ttl
         }
-        logger.log('\nFileReader reading : ' + filename)
+        logger.log(' - FileReader reading : ' + filename)
         const f = context.rootDir + '/' + filename
-        logger.log('####in Filereader f = ' + f)
+        //logger.log('####in Filereader f = ' + f)
         try {
             //   logger.log('####in Filereader ' + context.sourceFile)
-            context.content = await readFile(f)
-            logger.log('####in Filereader context.content = ' + context.content)
+            context.content = (await readFile(f)).toString()
+            //  logger.log('####in Filereader context.content = ' + context.content)
             /*
             if (context.loadContext) { // get rid?
                 context[context.loadContext] = content

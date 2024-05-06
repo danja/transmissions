@@ -15,11 +15,9 @@ class Connector extends EventEmitter {
         let toService = services[this.toName]
 
         fromService.on('message', (data, context = {}) => {
-            //logger.log(`\n# ${instance.constructor.name}\n\n\`\`\`\n${props}\n\`\`\``)
-            logger.log("Transmission running service : " + this.toName + " a " + toService.constructor.name)
 
-            // QQQ
-            //   toService.execute(data, context)
+            logger.log("| Running : " + this.toName + " a " + toService.constructor.name)
+
             toService.receive(data, context)
         })
     }

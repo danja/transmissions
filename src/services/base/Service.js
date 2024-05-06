@@ -64,12 +64,17 @@ class Service extends EventEmitter {
         logger.log('addPropertyToMyConfig value = ' + value)
         const myConfigNode = this.getMyConfigNode()
         const s = myConfigNode.value
-        logger.log('addPropertyToMyConfig  myConfigNode.value' + myConfigNode.value)
+        logger.log('addPropertyToMyConfig  myConfigNode.value = ' + myConfigNode.value)
         const dataset = this.config
         dataset.add(myConfigNode, predicate, value)
         this.config = dataset
     }
 
+    showMyConfig() {
+        const poi = this.getMyPoi()
+        logger.log('POI = ')
+        logger.poi(poi)
+    }
     async deletePropertyFromMyConfig(predicate, value) {
         const myConfigNode = this.getMyConfigNode()
         const s = myConfigNode.value

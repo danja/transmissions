@@ -54,14 +54,15 @@ class DirWalker extends SourceService {
                         contextClone.filename = context.sourceDir + '/' + entry.name
 
                         // globalish
-                        await this.addPropertyToMyConfig(ns.trm.postPath, rdf.literal(contextClone.filename))
-                        logger.log('CONFIG : ' + this.config)
-                        process.exit()
-
+                        this.addPropertyToMyConfig(ns.trm.postPath, rdf.literal(contextClone.filename))
+                        //  logger.log('CONFIG : ' + this.config)
+                        // process.exit()
+                        //   this.showMyConfig()
                         this.emit('message', false, contextClone)
                     }
                 }
             }
+
         } catch (err) {
             logger.error("DirWalker.execute error : " + err.message)
         }

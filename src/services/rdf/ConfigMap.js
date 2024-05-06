@@ -56,16 +56,21 @@ class ConfigMap extends ProcessService {
    */
 
   async processContentGroup(context, contentGroupID) {
+    logger.log('--- ConfigMap --- contentGroupID = ' + contentGroupID.value)
     const postcraftConfig = context.dataset
+
     const groupPoi = rdf.grapoi({ dataset: postcraftConfig, term: contentGroupID })
+    logger.log('---')
+    logger.poi(groupPoi)
+    logger.log('---')
     const sourceDir = groupPoi.out(ns.fs.sourceDirectory).term.value
     const targetDir = groupPoi.out(ns.fs.targetDirectory).term.value
     const templateFilename = groupPoi.out(ns.pc.template).term.value
 
-    logger.log('--- ConfigMap ---')
-    logger.log('sourceDir = ' + sourceDir)
-    logger.log('targetDir = ' + targetDir)
-    logger.log('templateFilename  = ' + templateFilename)
+    //  logger.log('--- ConfigMap ---')
+    //  logger.log('sourceDir = ' + sourceDir)
+    //  logger.log('targetDir = ' + targetDir)
+    //  logger.log('templateFilename  = ' + templateFilename)
 
     context.sourceDir = sourceDir
     context.targetDir = targetDir

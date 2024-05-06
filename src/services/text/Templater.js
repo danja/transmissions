@@ -28,7 +28,7 @@ class Templater extends ProcessService {
             content: content,
             footer: 'FOOTER'
         }
-        logger.log(' context.template = ' + context.template)
+        //    logger.log(' context.template = ' + context.template)
 
 
         nunjucks.configure({ autoescape: false });
