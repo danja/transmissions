@@ -38,4 +38,4 @@ class ContextReader extends SourceService {
         this.emit('message', false, context)
     }
 }
-export default ContextReader
+export default ContextReader 

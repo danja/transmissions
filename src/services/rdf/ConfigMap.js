@@ -33,7 +33,10 @@ class ConfigMap extends ProcessService {
   async execute(data, context) {
 
     const postcraftConfig = context.dataset
+    logger.log('postcraftConfig  = ' + postcraftConfig)
+
     const poi = grapoi({ dataset: postcraftConfig })
+    logger.poi(poi)
 
     for (const q of poi.out(ns.rdf.type).quads()) {
       if (q.object.equals(ns.pc.ContentGroup)) {
