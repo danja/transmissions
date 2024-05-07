@@ -43,7 +43,7 @@ class Transmission {
  * Describes the structure of the Transmission instance,
  * listing all registered services and connectors.
  */
-  describe() {
+  toString() {
     let description = 'Transmission Structure:\n';
 
     // Describe services

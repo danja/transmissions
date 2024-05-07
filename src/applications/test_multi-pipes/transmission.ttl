@@ -24,4 +24,4 @@ trm:pipe (:s3 :s204 :s205) .
 :s105 a :NOP .
 
 :s204 a :NOP .
-:s205 a :NOP .
+:s205 a :ShowTransmission .

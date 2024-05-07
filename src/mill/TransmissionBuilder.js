@@ -86,6 +86,7 @@ class TransmissionBuilder {
         let service = AbstractServiceFactory.createService(serviceType, servicesConfig)
         service.id = serviceName
         service.type = serviceType
+        service.transmission = transmission
 
         if (serviceConfig) {
           //  logger.debug("\n*****SERVICE***** serviceConfig = " + serviceConfig.value)

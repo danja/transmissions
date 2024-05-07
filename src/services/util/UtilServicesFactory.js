@@ -6,7 +6,7 @@ import ShowMessage from './ShowMessage.js'
 import Halt from './Halt.js'
 import RemapContext from './RemapContext.js'
 import Unfork from './Unfork.js'
-import TagChain from './TagChain.js'
+import ShowTransmission from './ShowTransmission.js'
 
 
 class UtilServicesFactory {
@@ -26,8 +26,8 @@ class UtilServicesFactory {
         if (type.equals(ns.t.Unfork)) {
             return new Unfork(config)
         }
-        if (type.equals(ns.t.TagChain)) {
-            return new TagChain(config)
+        if (type.equals(ns.t.ShowTransmission)) {
+            return new ShowTransmission(config)
         }
 
         return false

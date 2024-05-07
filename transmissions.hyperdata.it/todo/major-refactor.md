@@ -2,9 +2,13 @@
 
 MAKE TESTS FIRST
 
-- name change - Duct Ape?
-
 - (data, context) -> (stuff)
 - data -> stuff.default
 
-# :s4 a :Stash . LATERS
+##### :Stash . :UnFork Unsafe LATERS
+
+in Service.js, async executeQueue() {
+
+      context = structuredClone(context) // TODO make optional
+
+it's also in DirWalker?

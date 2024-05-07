@@ -3,6 +3,7 @@ import { EventEmitter } from 'events'
 import rdf from 'rdf-ext'
 import grapoi from 'grapoi'
 import ns from '../../utils/ns.js'
+import footpath from '../../utils/footpath.js'
 
 /**
  * Base class for services.
@@ -111,14 +112,29 @@ class Service extends EventEmitter {
     async executeQueue() {
         this.processing = true
         while (this.messageQueue.length > 0) {
-            const { data, context } = this.messageQueue.shift()
-
-            logger.log('TAG ' + this.id)
-
+            let { data, context } = this.messageQueue.shift()
+            context = structuredClone(context) // TODO make optional
+            this.addTag(context)
             await this.execute(data, context)
         }
         this.processing = false
     }
+
+    addTag(context) {
+        const tag = this.getTag()
+        if (!context.tags) {
+            context.tags = tag
+            return
+        }
+        context.tags = context.tags + '.' + tag
+        logger.log('context.tags = ' + context.tags)
+    }
+
+    getTag() {
+
+        return footpath.urlLastPart(this.id)
+    }
+
 
     /**
      * Executes the processing logic for the service.
