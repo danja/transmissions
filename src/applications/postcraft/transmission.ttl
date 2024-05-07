@@ -3,7 +3,10 @@
 @prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances - TODO make one @services s: 
 
 :postcraft a trm:Pipeline ;
-    trm:pipe (:s1 :s2 :s3 :s4 :s5 :s6 :s7 :s8 :s9 :s10 :s11) . 
+    trm:pipe (:s1 :s2 :s3 :s4 ) . 
+
+ :postcraft2 a trm:Pipeline ;
+  trm:pipe (:s4 :s5 :s6 :s7 :s8 :s9 :s10 :s11) . 
 
 :s1 a :ContextReader . # the manifest
 :s2 a :ConfigMap . ### use services.ttl? - defer to RemapContext as possible

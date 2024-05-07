@@ -1,0 +1,112 @@
+[api.logger] log level: info
+[api.logger] disabling console.debug()
+
++ ***** Load Config ******
+[Transmission : src/applications/postcraft/transmission.ttl]
+[Config : src/applications/postcraft/services.ttl]
+
++ ***** Construct *****
+| Create service <http://hyperdata.it/transmissions/s1> of type <http://hyperdata.it/transmissions/ContextReader>
+| Create service <http://hyperdata.it/transmissions/s2> of type <http://hyperdata.it/transmissions/ConfigMap>
+  > Connect #1 [http://hyperdata.it/transmissions/s1] => [http://hyperdata.it/transmissions/s2]
+| Create service <http://hyperdata.it/transmissions/s3> of type <http://hyperdata.it/transmissions/FileReader>
+  > Connect #2 [http://hyperdata.it/transmissions/s2] => [http://hyperdata.it/transmissions/s3]
+| Create service <http://hyperdata.it/transmissions/s4> of type <http://hyperdata.it/transmissions/RemapContext>
+  > Connect #3 [http://hyperdata.it/transmissions/s3] => [http://hyperdata.it/transmissions/s4]
+| Create service <http://hyperdata.it/transmissions/s5> of type <http://hyperdata.it/transmissions/DirWalker>
+  > Connect #4 [http://hyperdata.it/transmissions/s4] => [http://hyperdata.it/transmissions/s5]
+| Create service <http://hyperdata.it/transmissions/s6> of type <http://hyperdata.it/transmissions/FileReader>
+  > Connect #5 [http://hyperdata.it/transmissions/s5] => [http://hyperdata.it/transmissions/s6]
+| Create service <http://hyperdata.it/transmissions/s7> of type <http://hyperdata.it/transmissions/PostcraftPrep>
+  > Connect #6 [http://hyperdata.it/transmissions/s6] => [http://hyperdata.it/transmissions/s7]
+| Create service <http://hyperdata.it/transmissions/s8> of type <http://hyperdata.it/transmissions/MarkdownToHTML>
+  > Connect #7 [http://hyperdata.it/transmissions/s7] => [http://hyperdata.it/transmissions/s8]
+| Create service <http://hyperdata.it/transmissions/s9> of type <http://hyperdata.it/transmissions/Templater>
+  > Connect #8 [http://hyperdata.it/transmissions/s8] => [http://hyperdata.it/transmissions/s9]
+| Create service <http://hyperdata.it/transmissions/s10> of type <http://hyperdata.it/transmissions/RemapContext>
+  > Connect #9 [http://hyperdata.it/transmissions/s9] => [http://hyperdata.it/transmissions/s10]
+| Create service <http://hyperdata.it/transmissions/s11> of type <http://hyperdata.it/transmissions/FileWriter>
+  > Connect #10 [http://hyperdata.it/transmissions/s10] => [http://hyperdata.it/transmissions/s11]
+
++ ***** Execute *****
+| Running : http://hyperdata.it/transmissions/s1 a ContextReader
+| Running : http://hyperdata.it/transmissions/s2 a ConfigMap
+--- ConfigMap --- contentGroupID = http://hyperdata.it/transmissions/PostContent
+---
+Properties of the Grapoi object:
+	factory: [object Object]
+	ptrs: [object Object]
+
+Path:
+	http://www.w3.org/1999/02/22-rdf-syntax-ns#type: http://purl.org/stuff/postcraft/ContentGroup
+	http://www.w3.org/1999/02/22-rdf-syntax-ns#type: http://purl.org/stuff/postcraft/ContentGroup
+	http://www.w3.org/1999/02/22-rdf-syntax-ns#type: http://purl.org/stuff/postcraft/ContentGroup
+	http://www.w3.org/1999/02/22-rdf-syntax-ns#type: http://purl.org/stuff/postcraft/ContentGroup
+	http://www.w3.org/1999/02/22-rdf-syntax-ns#type: http://purl.org/stuff/postcraft/Partial
+	http://www.w3.org/1999/02/22-rdf-syntax-ns#type: http://purl.org/stuff/postcraft/Partial
+	http://purl.org/stuff/filesystem/sourceDirectory: test
+	http://purl.org/stuff/filesystem/sourceDirectory: test
+	http://purl.org/stuff/filesystem/targetDirectory: site/post-content-cache
+	http://purl.org/stuff/filesystem/targetDirectory: site/post-content-cache
+	http://purl.org/stuff/filesystem/targetDirectory: site/post-content-cache
+	http://purl.org/stuff/filesystem/sourceDirectory: site/post-content-cache
+	http://purl.org/stuff/filesystem/targetDirectory: site/post-content-cache
+	http://purl.org/stuff/filesystem/sourceDirectory: site/post-content-cache
+	http://purl.org/stuff/postcraft/template: layouts/mediocre/post-content_template.njk
+	http://purl.org/stuff/postcraft/template: layouts/mediocre/post-content_template.njk
+---
+| Running : http://hyperdata.it/transmissions/s3 a FileReader
+ - FileReader reading : layouts/mediocre/post-content_template.njk
+--- ConfigMap --- contentGroupID = http://hyperdata.it/transmissions/PostPages
+---
+Properties of the Grapoi object:
+	factory: [object Object]
+	ptrs: [object Object]
+
+Path:
+	http://www.w3.org/1999/02/22-rdf-syntax-ns#type: http://purl.org/stuff/postcraft/ContentGroup
+	http://www.w3.org/1999/02/22-rdf-syntax-ns#type: http://purl.org/stuff/postcraft/ContentGroup
+	http://www.w3.org/1999/02/22-rdf-syntax-ns#type: http://purl.org/stuff/postcraft/ContentGroup
+	http://www.w3.org/1999/02/22-rdf-syntax-ns#type: http://purl.org/stuff/postcraft/ContentGroup
+	http://purl.org/stuff/filesystem/sourceDirectory: site/post-content-cache
+	http://purl.org/stuff/filesystem/targetDirectory: site/post-content-cache
+	http://purl.org/stuff/filesystem/sourceDirectory: site/post-content-cache
+	http://purl.org/stuff/filesystem/sourceDirectory: site/post-content-cache
+	http://purl.org/stuff/filesystem/sourceDirectory: site/post-content-cache
+	http://purl.org/stuff/filesystem/sourceDirectory: site/post-content-cache
+	http://purl.org/stuff/filesystem/targetDirectory: site/blog
+	http://purl.org/stuff/filesystem/targetDirectory: site/blog
+	http://purl.org/stuff/postcraft/template: layouts/mediocre/post-page_template.njk
+	http://purl.org/stuff/postcraft/template: layouts/mediocre/post-page_template.njk
+---
+| Running : http://hyperdata.it/transmissions/s3 a FileReader
+| Running : http://hyperdata.it/transmissions/s4 a RemapContext
+ - Rename : content to template
+| Running : http://hyperdata.it/transmissions/s5 a DirWalker
+ - FileReader reading : layouts/mediocre/post-page_template.njk
+addPropertyToMyConfig predicate = http://purl.org/stuff/transmission/postPath
+addPropertyToMyConfig value = test/2024-05-03_one.md
+addPropertyToMyConfig  myConfigNode.value = http://hyperdata.it/transmissions/dirWalkerPosts
+| Running : http://hyperdata.it/transmissions/s6 a FileReader
+ - FileReader reading : test/2024-05-03_one.md
+addPropertyToMyConfig predicate = http://purl.org/stuff/transmission/postPath
+addPropertyToMyConfig value = test/2024-05-03_two.md
+addPropertyToMyConfig  myConfigNode.value = http://hyperdata.it/transmissions/dirWalkerPosts
+| Running : http://hyperdata.it/transmissions/s6 a FileReader
+| Running : http://hyperdata.it/transmissions/s4 a RemapContext
+ - Rename : content to template
+| Running : http://hyperdata.it/transmissions/s5 a DirWalker
+| Running : http://hyperdata.it/transmissions/s7 a PostcraftPrep
+| Running : http://hyperdata.it/transmissions/s8 a MarkdownToHTML
+| Running : http://hyperdata.it/transmissions/s9 a Templater
+| Running : http://hyperdata.it/transmissions/s10 a RemapContext
+ - Rename : targetFilename to filename
+| Running : http://hyperdata.it/transmissions/s11 a FileWriter
+ - FileReader reading : test/2024-05-03_two.md
+| Running : http://hyperdata.it/transmissions/s7 a PostcraftPrep
+| Running : http://hyperdata.it/transmissions/s8 a MarkdownToHTML
+| Running : http://hyperdata.it/transmissions/s9 a Templater
+| Running : http://hyperdata.it/transmissions/s10 a RemapContext
+ - Rename : targetFilename to filename
+| Running : http://hyperdata.it/transmissions/s11 a FileWriter
+0

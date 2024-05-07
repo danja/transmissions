@@ -112,6 +112,9 @@ class Service extends EventEmitter {
         this.processing = true
         while (this.messageQueue.length > 0) {
             const { data, context } = this.messageQueue.shift()
+
+            logger.log('TAG ' + this.id)
+
             await this.execute(data, context)
         }
         this.processing = false
