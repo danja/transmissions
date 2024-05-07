@@ -10,7 +10,7 @@ t:postTemplateMap a trm:ReMap ;
    trm:rename (t:rn1) . # consider using blank nodes
      t:rn1    trm:pre     "content" ;
             trm:post    "template"  .
-
+ 
 t:postSaver a trm:ReMap ;
     trm:rename (t:rn2) . 
     t:rn2   trm:pre     "targetFilename" ;

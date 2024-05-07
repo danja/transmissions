@@ -23,16 +23,12 @@ class Templater extends ProcessService {
    console.log(key, value);
 });
 */
-        const blocks = {
-            header: 'HEADER',
-            content: content,
-            footer: 'FOOTER'
-        }
+
         //    logger.log(' context.template = ' + context.template)
 
 
         nunjucks.configure({ autoescape: false });
-        context.content = nunjucks.renderString(template, blocks); //// IT CAN READ TEMPLATE FILES
+        context.content = nunjucks.renderString(template, context.contentBlocks); //// IT CAN READ TEMPLATE FILES
 
         //   logger.log('RESULT = \n' + context.content)
         // new Function(`with(this) { return \`${context.template}\`; }`).call(data);

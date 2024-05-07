@@ -15,11 +15,18 @@ class PostcraftPrep extends ProcessService {
   async execute(data, context) {
     // context.template = context.template.toString()
 
+    context.contentBlocks = {}
+    context.contentBlocks.content = context.content
 
     // both place values in the context, save for later
     this.shredFilename(context)
+    logger.log('1 TITLE context.contentBlocks.title ' + context.contentBlocks.title)
     this.extractTitle(context)
+    logger.log('2 TITLE context.contentBlocks.title ' + context.contentBlocks.title)
 
+    //  logger.log('FILENAME ' + context.filename)
+    logger.log('TARGET FILENAME ' + context.targetFilename)
+    // logger.log('TARGET FILENAME context.contentBlocks.title ' + context.targetFilename)
     this.emit('message', false, context)
   }
 
@@ -30,29 +37,41 @@ class PostcraftPrep extends ProcessService {
 
     //  logger.log('nonExt = ' + nonExt)
     const shreds = nonExt.split('_')
-    context.updated = (new Date()).toISOString().split('T')[0]
-    context.created = context.updated // fallback
+
+    const updated = (new Date()).toISOString().split('T')[0]
+    const created = context.updated // fallback
     if (Date.parse(shreds[0])) { // filename version is not NaN
       context.created = shreds[0]
     }
-    context.title = shreds[1] // fallback
-    context.targetFilename = context.rootDir + '/' + context.targetDir + '/' + context.title + '.html'
+
+    // context.contentBlocks.
+    context.contentBlocks.title = shreds[1] // fallback
+
+    const link = context.targetDir + '/' + context.contentBlocks.title + '.html' // TODO needs final dir
+
+    context.targetFilename = context.rootDir + '/' + context.targetDir + '/' + context.contentBlocks.title + '.html'
+    logger.log('sdfsdf TARGET FILENAME ' + context.targetFilename)
+    context.contentBlocks.updated = updated
+    context.contentBlocks.created = created
+
+    // context.contentBlocks.title = shreds[1] // fallback
+
+    context.contentBlocks.link = link
   }
 
   // first heading in the markdown else use filename
   extractTitle(context) {
-    const data = context.content
-    let match = data.toString().match(/^#(.*)$/m)
-    let maybeTitle = match ? match[1].trim() : null
-    if (maybeTitle) {
-      context.title = maybeTitle
-      return
-    }
+    //   const data = context.content
+    let match = context.content.toString().match(/^#(.*)$/m)
+    let title = match ? match[1].trim() : null
 
-    // handle how I typically name files
-    context.title = context.title.split('-') // split the string into words
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // capitalize the first letter of each word
-      .join(' '); // join the words back together with spaces
+    if (!title) {  // use how I typically name files
+      context.contentBlocks.title = context.title.split('-') // split the string into words
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // capitalize the first letter of each word
+        .join(' '); // join the words back together with spaces
+    }
+    title = title.replaceAll('#', '') // TODO make nicer
+    context.contentBlocks.title = title
   }
 }
 
