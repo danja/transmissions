@@ -32,14 +32,17 @@ class FileWriter extends SinkService {
      * @param {Object} context - The execution context.
      */
     async execute(data, context) {
+        if (context.done) {
+            return
+        }
         var filename = context.filename
 
 
         const content = context.content
 
-        if (!filename) {
-            filename = this.getMyConfig().value
-        }
+        //  if (!filename) {
+        //    filename = this.getMyConfig().value
+        // }
         logger.debug("Filewriter.targetFile = " + filename)
 
         const dirName = dirname(filename)

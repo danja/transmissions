@@ -1,7 +1,10 @@
 {
-    "spec_dir": "tests/integration",
+    "spec_dir": "tests",
     "spec_files": [
         "**/*[sS]pec.js"
+    ],
+    "helpers": [
+        "helpers/reporter.js"
     ],
     "stopSpecOnExpectationFailure": true,
     "random": false

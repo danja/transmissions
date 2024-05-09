@@ -3,7 +3,7 @@
 @prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances - TODO make one @services s: 
 
 :postTemplating a trm:Pipeline ;
-    trm:pipe (:s1 :s2 :s3 :s4 :s5 :s6 :s7 :s8 :s9 :s10 :s11) . 
+    trm:pipe (:s1 :s2 :s3 :s4 :s5 :s6 :s7 :s8 :s9 :s10 :s11 :s12) . 
 
  #:postRenderer a trm:Pipeline ;
   # trm:pipe (:s5 :s106 :s107 :s108 :s109 :s110 :s111) . 
@@ -30,3 +30,17 @@
    trm:configKey :postSaver .
 
 :s11 a :FileWriter .
+
+# now do the render posts proper
+ 
+ #now make index page
+
+:s12 a :Unfork .
+
+:s13 a :ShowMessage .
+#:s12 a :RemapContext ;
+ #   trm:configKey :frontMaker .
+
+
+
+

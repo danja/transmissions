@@ -13,65 +13,67 @@ class PostcraftPrep extends ProcessService {
   }
 
   async execute(data, context) {
+    if (context.done) {
+      this.emit('message', false, context)
+      return
+    }
+
     // context.template = context.template.toString()
 
     context.contentBlocks = {}
     context.contentBlocks.content = context.content
 
-    // both place values in the context, save for later
-    this.shredFilename(context)
-    logger.log('1 TITLE context.contentBlocks.title ' + context.contentBlocks.title)
-    this.extractTitle(context)
-    logger.log('2 TITLE context.contentBlocks.title ' + context.contentBlocks.title)
+    // const link = context.targetDir + '/' + context.contentBlocks.title + '.html' // TODO needs final dir
+    //context.targetFilename = context.rootDir + '/' + context.targetDir + '/' + context.contentBlocks.title + '.html'
+    //context.contentBlocks.link = link
 
-    //  logger.log('FILENAME ' + context.filename)
-    logger.log('TARGET FILENAME ' + context.targetFilename)
-    // logger.log('TARGET FILENAME context.contentBlocks.title ' + context.targetFilename)
+    const { created, updated } = this.extractDates(context)
+    const title = this.extractTitle(context)
+    context.contentBlocks.title = title
+    context.contentBlocks.created = created
+    context.contentBlocks.updated = updated
     this.emit('message', false, context)
   }
 
-  //  eg. 2024-04-19_hello-postcraft.md
-  shredFilename(context) {
+  extractDates(context) {
+    const today = (new Date()).toISOString().split('T')[0]
+    const dates = { created: today, updated: today }
+
+    //  eg. 2024-04-19_hello-postcraft.md
     const nonExt = context.filename.split('.').slice(0, -1).join()
-    //  const nonExt = context.sourceFile.split('.').slice(0, -1).join()
-
-    //  logger.log('nonExt = ' + nonExt)
     const shreds = nonExt.split('_')
-
-    const updated = (new Date()).toISOString().split('T')[0]
-    const created = context.updated // fallback
     if (Date.parse(shreds[0])) { // filename version is not NaN
-      context.created = shreds[0]
+      dates.created = shreds[0]
     }
-
-    // context.contentBlocks.
-    context.contentBlocks.title = shreds[1] // fallback
-
-    const link = context.targetDir + '/' + context.contentBlocks.title + '.html' // TODO needs final dir
-
-    context.targetFilename = context.rootDir + '/' + context.targetDir + '/' + context.contentBlocks.title + '.html'
-    logger.log('sdfsdf TARGET FILENAME ' + context.targetFilename)
-    context.contentBlocks.updated = updated
-    context.contentBlocks.created = created
-
-    // context.contentBlocks.title = shreds[1] // fallback
-
-    context.contentBlocks.link = link
+    return dates
   }
 
-  // first heading in the markdown else use filename
+  // first heading in the markdown 
+  // or formatted from filename
+  // or raw filename
   extractTitle(context) {
-    //   const data = context.content
+    let title = 'Title'
     let match = context.content.toString().match(/^#(.*)$/m)
-    let title = match ? match[1].trim() : null
+    let contentTitle = match ? match[1].trim() : null
+    if (contentTitle) {
+      title = contentTitle.replaceAll('#', '') // TODO make nicer
+      return title
+    }
 
-    if (!title) {  // use how I typically name files
-      context.contentBlocks.title = context.title.split('-') // split the string into words
+    // derive from filename
+    // eg. 2024-04-19_hello-postcraft.md
+    try {
+      const nonExt = context.filename.split('.').slice(0, -1).join()
+      const shreds = nonExt.split('_')
+
+      // let title = shreds[1] // fallback, get it from filename
+      title = shreds[1].split('-') // split the string into words
         .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // capitalize the first letter of each word
         .join(' '); // join the words back together with spaces
+    } catch (err) {
+      title = context.filename
     }
-    title = title.replaceAll('#', '') // TODO make nicer
-    context.contentBlocks.title = title
+    return title
   }
 }
 

@@ -20,7 +20,7 @@ class Service extends EventEmitter {
         this.config = config
         this.messageQueue = []
         this.processing = false
-        this.doneMessage = '~[DONE]~'
+        this.done = false
     }
 
     /**
@@ -132,11 +132,10 @@ class Service extends EventEmitter {
             return
         }
         context.tags = context.tags + '.' + tag
-        logger.log('context.tags = ' + context.tags)
+        logger.log(' = ' + context.tags)
     }
 
     getTag() {
-
         return footpath.urlLastPart(this.id)
     }
 

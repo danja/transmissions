@@ -39,6 +39,7 @@ class DirWalker extends SourceService {
      * @returns {Promise<void>} A promise that resolves when the directory walking process is complete.
      */
     async execute(data, context) {
+        const contextClone = structuredClone(context) // move?
         context.filepaths = []
         const dirPath = context.rootDir + '/' + context.sourceDir
         try {
@@ -50,7 +51,7 @@ class DirWalker extends SourceService {
                 } else {
                     // Check if the file extension is in the list of desired extensions
                     if (this.desiredExtensions.includes(extname(entry.name))) {
-                        const contextClone = structuredClone(context)
+
                         contextClone.filename = context.sourceDir + '/' + entry.name
 
                         // globalish
@@ -66,6 +67,9 @@ class DirWalker extends SourceService {
         } catch (err) {
             logger.error("DirWalker.execute error : " + err.message)
         }
+        this.done = true
+        contextClone.done = this.done
+        this.emit('message', false, contextClone)
     }
 }
 export default DirWalker
