@@ -17,8 +17,8 @@ class PostcraftPrep extends ProcessService {
       this.emit('message', false, context)
       return
     }
-    logger.log('----------BEFORE------------')
-    logger.reveal(context)
+    // logger.log('----------BEFORE------------')
+    // logger.reveal(context)
 
 
     context.targetFilename = this.extractTargetFilename(context)
@@ -33,8 +33,8 @@ class PostcraftPrep extends ProcessService {
     context.contentBlocks.created = created
     context.contentBlocks.updated = updated
 
-    logger.log('----------AFTER------------')
-    logger.reveal(context)
+    // logger.log('----------AFTER------------')
+    // logger.reveal(context)
     //process.exit(0)
     this.emit('message', false, context)
   }

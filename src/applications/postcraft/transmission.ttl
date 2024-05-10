@@ -3,13 +3,17 @@
 @prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances - TODO make one @services s: 
 
 :postTemplating a trm:Pipeline ;
-    trm:pipe (:s1 :s2 :s3 :s4 :s5 :s6 :s7 :s8 :s9 :s10 :s11 :s12) . 
+    trm:pipe (:s1 :s2 ) . 
+# :s3 :s4 :s5 :s6 :s7 :s8 :s9 :s10 :s11 :s12
+
 
  #:postRenderer a trm:Pipeline ;
   # trm:pipe (:s5 :s106 :s107 :s108 :s109 :s110 :s111) . 
 
 :s1 a :ContextReader . # the manifest
-:s2 a :ConfigMap . ### use services.ttl? - defer to RemapContext as possible
+
+:s2 a :ConfigMap ; ### use services.ttl? - defer to RemapContext as possible
+    trm:configKey :markdownToRawPosts .
 
 :s3 a :FileReader . # the template for posts
 
@@ -32,7 +36,7 @@
 :s8 a :MarkdownToHTML . 
 
 :s9 a :RemapContext ;
-   trm:configKey :postRawPrep .
+   trm:configKey :entryRawPrep .
 
 #:s10 a :Halt .
  :s10 a :Templater .
@@ -40,10 +44,10 @@
 # :s11 a :Halt .
 :s11 a :FileWriter .
 
-:s4 a :RemapContext ;
-    trm:configKey :postPagePrep .
+:s12 a :RemapContext ;
+    trm:configKey :entryPagePrep .
 
-:s12 a :Halt .
+:s13 a :Halt .
 # :s12 a :Unfork .
 
 #:s13 a :ShowMessage .

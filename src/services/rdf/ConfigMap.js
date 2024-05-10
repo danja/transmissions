@@ -59,9 +59,20 @@ class ConfigMap extends ProcessService {
    */
 
   async processContentGroup(context, contentGroupID) {
-    //  logger.log('--- ConfigMap --- contentGroupID = ' + contentGroupID.value)
+    //this.config, this.configKey, ns.trm.rename)
+    // .listToArray(this.config, this.configKey, ns.trm.rename)
+    // from services.ttl
+    const servicePoi = rdf.grapoi({ dataset: this.config, term: this.configKey })
+    logger.log("this.configKey " + this.configKey.value) // = t:markdownToRawPosts
+    logger.log(this.config.toString())
+    const marker = servicePoi.out(ns.trm.marker).term
+    logger.log("MARKER " + marker)
+
+
+    logger.log('--- ConfigMap --- contentGroupID = ' + contentGroupID.value)
     const postcraftConfig = context.dataset
 
+    // from manifest.ttl
     const groupPoi = rdf.grapoi({ dataset: postcraftConfig, term: contentGroupID })
     // logger.log('---')
     //  logger.poi(groupPoi)
@@ -73,7 +84,7 @@ class ConfigMap extends ProcessService {
     //  logger.log('--- ConfigMap ---')
     //  logger.log('sourceDir = ' + sourceDir)
     //  logger.log('targetDir = ' + targetDir)
-    //  logger.log('templateFilename  = ' + templateFilename)
+    logger.log('templateFilename  = ' + templateFilename)
 
     context.sourceDir = sourceDir
     context.targetDir = targetDir
@@ -83,6 +94,5 @@ class ConfigMap extends ProcessService {
     context.template = '§§§ placeholer for debugging §§§'
     this.emitClone('message', false, context)
   }
-
 }
 export default ConfigMap
