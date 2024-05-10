@@ -1,5 +1,7 @@
 ## transmissions TODO
 
+Unfork alternative : can services be launched as singletons somehow, flagged in services.ttl?
+
 # Next Steps
 
 running a single Halt fails - connect

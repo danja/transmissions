@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events'
 import logger from '../utils/Logger.js'
+import footpath from '../utils/footpath.js'
 
 class Connector extends EventEmitter {
 
@@ -15,8 +16,12 @@ class Connector extends EventEmitter {
         let toService = services[this.toName]
 
         fromService.on('message', (data, context = {}) => {
-
-            logger.log("| Running : " + this.toName + " a " + toService.constructor.name)
+            var tags = ''
+            if (toService.context) {
+                tags = ' (' + toService.context.tags + ') '
+            }
+            const thisTag = footpath.urlLastPart(this.toName)
+            logger.log("| Running : " + tags + thisTag + " a " + toService.constructor.name)
 
             toService.receive(data, context)
         })

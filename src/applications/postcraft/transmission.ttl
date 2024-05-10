@@ -3,7 +3,7 @@
 @prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances - TODO make one @services s: 
 
 :postTemplating a trm:Pipeline ;
-    trm:pipe (:s1 :s2 :s3 :s4 :s5 :s6 :s7 :s8 :s9 :s10 :s11) . 
+    trm:pipe (:s1 :s2 :s3 :s4 :s5 :s6 :s7 :s8 :s9 :s10 :s11 :s12) . 
 
  #:postRenderer a trm:Pipeline ;
   # trm:pipe (:s5 :s106 :s107 :s108 :s109 :s110 :s111) . 
@@ -21,7 +21,7 @@
 :s5 a :DirWalker .
 #    trm:configKey :files . # unused?
 
-# :s6 a :Halt .
+ #:s6 a :Halt .
 
 # it automatical forks here
 :s6 a :FileReader . # the markdown content
@@ -30,19 +30,21 @@
 :s7 a :PostcraftPrep . # set up title, filenames etc
 
 :s8 a :MarkdownToHTML . 
-:s9 a :Templater .
 
-:s10 a :RemapContext ;
-   trm:configKey :rawPostSaver .
+:s9 a :RemapContext ;
+   trm:configKey :postRawPrep .
+
+#:s10 a :Halt .
+ :s10 a :Templater .
 
 # :s11 a :Halt .
 :s11 a :FileWriter .
 
-# now do the render posts proper
- 
- #now make index page
+:s4 a :RemapContext ;
+    trm:configKey :postPagePrep .
 
-#:s12 a :Unfork .
+:s12 a :Halt .
+# :s12 a :Unfork .
 
 #:s13 a :ShowMessage .
 #:s12 a :RemapContext ;

@@ -9,16 +9,25 @@ t:dirWalkerPosts a trm:ServiceConfig ; # unused?
 # IS COPY, not rename!!
 
 t:pathPrep a trm:ReMap ;
-    trm:rename (t:pp1 t:pp2) . # consider using blank nodes
+    trm:rename (t:pp1) . # consider using blank nodes
     t:pp1   trm:pre     "content" ;
             trm:post    "template"  .
   #  t:pp2   trm:pre     "filename" ;
    #         trm:post    "filename"  .
  
-t:rawPostSaver a trm:ReMap ;
-    trm:rename (t:rn2) . 
-    t:rn2   trm:pre     "targetFilename" ;
+t:postRawPrep a trm:ReMap ;
+    trm:rename (t:rps1 t:rps2) . 
+    t:rps1   trm:pre     "targetFilename" ;
             trm:post    "filepath" .
+    t:rps2   trm:pre     "content" ;
+            trm:post    "contentBlocks.content" .
+
+t:postPagePrep a trm:ReMap ;
+    trm:rename (t:ppp1 t:ppp2) . 
+    t:rps1   trm:pre     "targetFilename" ;
+            trm:post    "filepath" .
+    t:rps2   trm:pre     "content" ;
+            trm:post    "contentBlocks.content" .
   
  
 

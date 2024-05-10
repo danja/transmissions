@@ -113,6 +113,7 @@ class Service extends EventEmitter {
         this.processing = true
         while (this.messageQueue.length > 0) {
             let { data, context } = this.messageQueue.shift()
+            this.context = context // IS OK?
             var dataset = context.dataset
             //   dataset = structuredClone(context.dataset)
             context = structuredClone(context) // TODO make optional
@@ -120,6 +121,7 @@ class Service extends EventEmitter {
             // no idea why this ^^ was necessary, without it the dataset wasn't usable
             // structuredClone(context, {transfer:[dataset]}) failed too 
             this.addTag(context)
+
             await this.execute(data, context)
         }
         this.processing = false
@@ -132,7 +134,7 @@ class Service extends EventEmitter {
             return
         }
         context.tags = context.tags + '.' + tag
-        logger.log('in Service, tags = ' + context.tags)
+        //   logger.log('in Service, tags = ' + context.tags)
     }
 
     getTag() {

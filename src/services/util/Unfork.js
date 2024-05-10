@@ -14,7 +14,9 @@ class Unfork extends Service {
     }
 
     async execute(data, context) {
+        logger.log('*** In Unfork, pipeline : ' + context.tags)
         if (!this.done) {
+            logger.log('EMITTING')
             this.emit('message', false, context)
         } else {
             logger.log('DONE')

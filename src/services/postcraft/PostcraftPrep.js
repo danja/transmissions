@@ -17,14 +17,14 @@ class PostcraftPrep extends ProcessService {
       this.emit('message', false, context)
       return
     }
-    // logger.log('----------BEFORE------------')
-    // logger.reveal(context)
+    logger.log('----------BEFORE------------')
+    logger.reveal(context)
 
 
     context.targetFilename = this.extractTargetFilename(context)
 
     context.contentBlocks = {}
-    context.contentBlocks.content = context.content
+    // context.contentBlocks.content = context.content
 
     context.contentBlocks.link = this.extractLink(context)
     context.contentBlocks.title = this.extractTitle(context)
@@ -33,14 +33,14 @@ class PostcraftPrep extends ProcessService {
     context.contentBlocks.created = created
     context.contentBlocks.updated = updated
 
-    //  logger.log('----------AFTER------------')
-    //logger.reveal(context)
+    logger.log('----------AFTER------------')
+    logger.reveal(context)
     //process.exit(0)
     this.emit('message', false, context)
   }
 
   // TODO lots of tidying up
-  extractName(context) { // without path
+  extractName(context) {
     var name = context.filename
     if (name.endsWith('.md')) {
       name = name.substr(0, name.lastIndexOf(".")) + ".html"

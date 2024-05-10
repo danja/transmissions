@@ -51,13 +51,16 @@ logger.reveal = function (instance) {
     const serialized = {};
     for (const key in instance) {
         if (key === 'dataset') { // special case, RDF
-            serialized[key] = instance[key].toString()
+            serialized[key] = instance[key].toString() // TODO make useful
         } else {
             if (instance.hasOwnProperty(key)) {
                 let kiki = instance[key]
 
                 if (Buffer.isBuffer(kiki)) {
                     kiki = kiki.toString()
+                }
+                if (kiki.length > 100) {
+                    kiki = kiki.substring(0, 100) + '...'
                 }
                 serialized[key] = kiki
             }

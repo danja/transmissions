@@ -28,7 +28,10 @@ class FileReader extends SourceService {
      * @param {Object} context - The context object.
      */
     async execute(data, context) {
-
+        if (context.done) {
+            return
+        }
+        //    logger.reveal(context)
         var filepath = context.filepath
 
         if (!filepath) {

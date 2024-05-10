@@ -24,11 +24,16 @@ class RemapContext extends Service {
 
             let pre = poi.out(ns.trm.pre).value
             let post = poi.out(ns.trm.post).value
+            const stringValue = context[pre].toString()  // otherwise passes a Buffer
 
-            if (context[pre]) {
-                context[post] = context[pre].toString() // otherwise passes a Buffer
+            // TODO unhackify
+            // for copying value of eg. context.content to context.contentBlocks.content 
+            if (post.includes('.')) {
+                const s = post.split('.')
+                //logger.log('sss ' + s)
+                context[s[0]][s[1]] = stringValue
             } else {
-                context[post] = false
+                context[post] = stringValue
             }
             logger.log(' - Rename : ' + pre + ' to ' + post)
         }

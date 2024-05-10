@@ -36,7 +36,6 @@ class FileWriter extends SinkService {
         //    return
         // }
         var filepath = context.filepath
-        logger.log(' - 1FileWriter writing filepath : ' + filepath)
 
         const content = context.content
 

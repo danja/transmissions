@@ -40,7 +40,7 @@ class DirWalker extends SourceService {
      */
     async execute(data, context) {
         const contextClone = structuredClone(context) // move?
-        context.filepaths = []
+        contextClone.filepaths = []
         const dirPath = context.rootDir + '/' + context.sourceDir
         try {
             const entries = await readdir(dirPath, { withFileTypes: true })
@@ -54,7 +54,7 @@ class DirWalker extends SourceService {
 
                         contextClone.filename = entry.name
                         contextClone.filepath = context.sourceDir + '/' + entry.name
-
+                        contextClone.filepaths.push(contextClone.filepath)
                         // globalish
                         //    this.addPropertyToMyConfig(ns.trm.postPath, rdf.literal(contextClone.filename))
                         //  logger.log('CONFIG : ' + this.config)
@@ -68,8 +68,8 @@ class DirWalker extends SourceService {
         } catch (err) {
             logger.error("DirWalker.execute error : " + err.message)
         }
-        this.done = true
-        contextClone.done = this.done
+        //this.done = true
+        contextClone.done = false
         this.emit('message', false, contextClone)
     }
 }
