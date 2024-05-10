@@ -132,7 +132,7 @@ class Service extends EventEmitter {
             return
         }
         context.tags = context.tags + '.' + tag
-        logger.log(' = ' + context.tags)
+        logger.log('in Service, tags = ' + context.tags)
     }
 
     getTag() {

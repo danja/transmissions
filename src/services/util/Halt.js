@@ -9,6 +9,9 @@ class Halt extends Service {
         logger.log('*** <<                   ~~~ ALL IS GOOD ~~~                      >> ***')
         logger.log('*** <<                     Have a nice day!                       >> ***')
         logger.log('************************************************************************\n')
+        logger.log('*** Pipeline was : ' + context.tags)
+        logger.log('*** Context now : ')
+        logger.reveal(context)
         process.exit() // all good
     }
 }

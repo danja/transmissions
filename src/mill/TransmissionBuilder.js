@@ -82,7 +82,11 @@ class TransmissionBuilder {
         let np = rdf.grapoi({ dataset: transmissionConfig, term: node })
         let serviceType = np.out(ns.rdf.type).term
         let serviceConfig = np.out(ns.trm.configKey).term
-        logger.log("| Create service <" + serviceName + "> of type <" + serviceType.value + ">")
+        try {
+          logger.log("| Create service <" + serviceName + "> of type <" + serviceType.value + ">")
+        } catch (err) {
+          logger.error('-> Can\'t resolve ' + serviceName + ' check transmission.ttl\n')
+        }
         let service = AbstractServiceFactory.createService(serviceType, servicesConfig)
         service.id = serviceName
         service.type = serviceType

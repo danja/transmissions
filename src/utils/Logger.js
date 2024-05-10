@@ -64,7 +64,7 @@ logger.reveal = function (instance) {
         }
     }
     const props = JSON.stringify(serialized, null, 2)
-    logger.log(`\n# ${instance.constructor.name}\n\n\`\`\`\n${props}\n\`\`\``)
+    logger.log(`Instance of ${instance.constructor.name} with properties - \n${props}`)
 }
 
 

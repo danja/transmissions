@@ -3,18 +3,22 @@
 # @prefix fs: <http://purl.org/stuff/filesystem/> .
 @prefix t: <http://hyperdata.it/transmissions/> . # for custom terms & instances
 
-t:dirWalkerPosts a trm:ServiceConfig ;
+t:dirWalkerPosts a trm:ServiceConfig ; # unused?
     trm:key t:files .
 
-t:postTemplateMap a trm:ReMap ;
-   trm:rename (t:rn1) . # consider using blank nodes
-     t:rn1    trm:pre     "content" ;
+# IS COPY, not rename!!
+
+t:pathPrep a trm:ReMap ;
+    trm:rename (t:pp1 t:pp2) . # consider using blank nodes
+    t:pp1   trm:pre     "content" ;
             trm:post    "template"  .
+  #  t:pp2   trm:pre     "filename" ;
+   #         trm:post    "filename"  .
  
-t:postSaver a trm:ReMap ;
+t:rawPostSaver a trm:ReMap ;
     trm:rename (t:rn2) . 
     t:rn2   trm:pre     "targetFilename" ;
-            trm:post    "filename" .
- 
+            trm:post    "filepath" .
+  
  
 

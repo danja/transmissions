@@ -6,7 +6,7 @@ import SourceService from '../base/SourceService.js'
  * FileReader class that extends SourceService.
  * Reads the content of a file and emits a 'message' event with the content and context.
  * #### __*Input*__
- * **context.filename** 
+ * **context.filepath** 
  * #### __*Output*__
  * **context.content**
  * 
@@ -24,18 +24,18 @@ class FileReader extends SourceService {
 
     /**
      * Reads the content of a file and emits a 'message' event with the content and context.
-     * @param {string} filename - The name of the file to read.
+     * @param {string} filepath - The name of the file to read.
      * @param {Object} context - The context object.
      */
     async execute(data, context) {
 
-        var filename = context.filename
+        var filepath = context.filepath
 
-        if (!filename) {
-            filename = this.getMyConfig().value // services.ttl
+        if (!filepath) {
+            filepath = this.getMyConfig().value // services.ttl
         }
-        logger.log(' - FileReader reading : ' + filename)
-        const f = context.rootDir + '/' + filename
+        logger.log(' - FileReader reading filepath : ' + filepath)
+        const f = context.rootDir + '/' + filepath
         //logger.log('####in Filereader f = ' + f)
         try {
             //   logger.log('####in Filereader ' + context.sourceFile)

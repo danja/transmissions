@@ -52,10 +52,11 @@ class DirWalker extends SourceService {
                     // Check if the file extension is in the list of desired extensions
                     if (this.desiredExtensions.includes(extname(entry.name))) {
 
-                        contextClone.filename = context.sourceDir + '/' + entry.name
+                        contextClone.filename = entry.name
+                        contextClone.filepath = context.sourceDir + '/' + entry.name
 
                         // globalish
-                        this.addPropertyToMyConfig(ns.trm.postPath, rdf.literal(contextClone.filename))
+                        //    this.addPropertyToMyConfig(ns.trm.postPath, rdf.literal(contextClone.filename))
                         //  logger.log('CONFIG : ' + this.config)
                         // process.exit()
                         //   this.showMyConfig()

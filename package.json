@@ -4,7 +4,7 @@
   "description": "Transmissions",
   "name": "transmissions",
   "scripts": {
-    "test": "jasmine --config=jasmine.json",
+    "test": "jasmine --config=jasmine.json --reporter=tests/helpers/reporter.js",
     "docs": "jsdoc -c jsdoc.json",
     "build": "webpack --mode=production --node-env=production",
     "build:dev": "webpack --mode=development",

@@ -33,10 +33,10 @@ class ConfigMap extends ProcessService {
   async execute(data, context) {
 
     const postcraftConfig = context.dataset
-    logger.log('postcraftConfig  = ' + postcraftConfig)
+    // logger.log('postcraftConfig  = ' + postcraftConfig)
 
     const poi = grapoi({ dataset: postcraftConfig })
-    logger.poi(poi)
+    //    logger.poi(poi)
 
     for (const q of poi.out(ns.rdf.type).quads()) {
       if (q.object.equals(ns.pc.ContentGroup)) {
@@ -59,13 +59,13 @@ class ConfigMap extends ProcessService {
    */
 
   async processContentGroup(context, contentGroupID) {
-    logger.log('--- ConfigMap --- contentGroupID = ' + contentGroupID.value)
+    //  logger.log('--- ConfigMap --- contentGroupID = ' + contentGroupID.value)
     const postcraftConfig = context.dataset
 
     const groupPoi = rdf.grapoi({ dataset: postcraftConfig, term: contentGroupID })
-    logger.log('---')
-    logger.poi(groupPoi)
-    logger.log('---')
+    // logger.log('---')
+    //  logger.poi(groupPoi)
+    // logger.log('---')
     const sourceDir = groupPoi.out(ns.fs.sourceDirectory).term.value
     const targetDir = groupPoi.out(ns.fs.targetDirectory).term.value
     const templateFilename = groupPoi.out(ns.pc.template).term.value
@@ -79,7 +79,7 @@ class ConfigMap extends ProcessService {
     context.targetDir = targetDir
     context.loadContext = 'template'
     //    const templatePath = context.rootDir + '/' + templateFilename
-    context.filename = templateFilename
+    context.filepath = templateFilename
     context.template = '§§§ placeholer for debugging §§§'
     this.emitClone('message', false, context)
   }

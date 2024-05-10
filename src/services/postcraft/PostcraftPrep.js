@@ -17,22 +17,43 @@ class PostcraftPrep extends ProcessService {
       this.emit('message', false, context)
       return
     }
+    // logger.log('----------BEFORE------------')
+    // logger.reveal(context)
 
-    // context.template = context.template.toString()
+
+    context.targetFilename = this.extractTargetFilename(context)
 
     context.contentBlocks = {}
     context.contentBlocks.content = context.content
 
-    // const link = context.targetDir + '/' + context.contentBlocks.title + '.html' // TODO needs final dir
-    //context.targetFilename = context.rootDir + '/' + context.targetDir + '/' + context.contentBlocks.title + '.html'
-    //context.contentBlocks.link = link
+    context.contentBlocks.link = this.extractLink(context)
+    context.contentBlocks.title = this.extractTitle(context)
 
     const { created, updated } = this.extractDates(context)
-    const title = this.extractTitle(context)
-    context.contentBlocks.title = title
     context.contentBlocks.created = created
     context.contentBlocks.updated = updated
+
+    //  logger.log('----------AFTER------------')
+    //logger.reveal(context)
+    //process.exit(0)
     this.emit('message', false, context)
+  }
+
+  // TODO lots of tidying up
+  extractName(context) { // without path
+    var name = context.filename
+    if (name.endsWith('.md')) {
+      name = name.substr(0, name.lastIndexOf(".")) + ".html"
+    }
+    return name
+  }
+
+  extractTargetFilename(context) {
+    return context.rootDir + '/' + context.targetDir + '/' + this.extractName(context)
+  }
+
+  extractLink(context) {
+    return context.targetDir + '/' + this.extractName(context)
   }
 
   extractDates(context) {
