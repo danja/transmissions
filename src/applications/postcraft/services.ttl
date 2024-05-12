@@ -7,8 +7,8 @@ t:phaseOne a trm:ServiceConfig ;
     trm:key t:markdownToRawPosts ;
     trm:marker "Phase One" .
 
-t:dirWalkerPosts a trm:ServiceConfig ; # unused?
-    trm:key t:files .
+#t:dirWalkerPosts a trm:ServiceConfig ; # unused?
+ #   trm:key t:files .
 
 # TODO IS COPY, not rename!!
 
@@ -30,6 +30,9 @@ t:entryPagePrep a trm:ReMap ;
     trm:rename (t:ppp1) . 
     t:ppp1   trm:pre     "content" ;
             trm:post    "contentBlocks.content" .
+
+              
+    
   
  
 
