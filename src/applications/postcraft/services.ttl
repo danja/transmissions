@@ -10,7 +10,7 @@ t:phaseOne a trm:ServiceConfig ;
 t:dirWalkerPosts a trm:ServiceConfig ; # unused?
     trm:key t:files .
 
-# IS COPY, not rename!!
+# TODO IS COPY, not rename!!
 
 t:pathPrep a trm:ReMap ;
     trm:rename (t:pp1) . # consider using blank nodes
@@ -27,10 +27,8 @@ t:entryRawPrep a trm:ReMap ;
             trm:post    "contentBlocks.content" .
 
 t:entryPagePrep a trm:ReMap ;
-    trm:rename (t:ppp1 t:ppp2) . 
-    t:ppp1   trm:pre     "targetFilename" ;
-            trm:post    "filepath" .
-    t:ppp2   trm:pre     "content" ;
+    trm:rename (t:ppp1) . 
+    t:ppp1   trm:pre     "content" ;
             trm:post    "contentBlocks.content" .
   
  

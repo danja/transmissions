@@ -44,14 +44,11 @@ class ConfigMap extends ProcessService {
       }
     }
 
+    this.emit('message', false, context)
     // logger.log('ConfigMap context.templateFilename  = ' + context.templateFilename)
     // this.emit('message', context.templateFilename, context)
   }
 
-  emitClone(label, data, context) {
-    const contextClone = structuredClone(context)
-    this.emit(label, data, contextClone)
-  }
   /**
    * Processes a content group.
    * @param {Object} context - The context object.
@@ -59,14 +56,25 @@ class ConfigMap extends ProcessService {
    */
 
   async processContentGroup(context, contentGroupID) {
-    //this.config, this.configKey, ns.trm.rename)
-    // .listToArray(this.config, this.configKey, ns.trm.rename)
+
+    logger.log("§§§§§§§§§§ contentGroupID " + contentGroupID.value)
+
+    switch (contentGroupID.value) { // TODO refactor
+      case 'http://hyperdata.it/transmissions/PostContent':
+        await this.markdownToPostContent(context, contentGroupID)
+      case 'http://hyperdata.it/transmissions/PostPages':
+        await this.postContentToPostPage(context, contentGroupID)
+    }
+  }
+
+  async markdownToPostContent(context, contentGroupID) {
     // from services.ttl
+    logger.log('############ ' + this.config.toString())
     const servicePoi = rdf.grapoi({ dataset: this.config, term: this.configKey })
-    logger.log("this.configKey " + this.configKey.value) // = t:markdownToRawPosts
-    logger.log(this.config.toString())
+    // logger.log("this.configKey " + this.configKey.value) // = t:markdownToRawPosts
+    // logger.log(this.config.toString())
     const marker = servicePoi.out(ns.trm.marker).term
-    logger.log("MARKER " + marker)
+    //  logger.log("MARKER " + marker)
 
 
     logger.log('--- ConfigMap --- contentGroupID = ' + contentGroupID.value)
@@ -82,7 +90,7 @@ class ConfigMap extends ProcessService {
     const templateFilename = groupPoi.out(ns.pc.template).term.value
 
     //  logger.log('--- ConfigMap ---')
-    //  logger.log('sourceDir = ' + sourceDir)
+    logger.log('*****************+ sourceDir = ' + sourceDir)
     //  logger.log('targetDir = ' + targetDir)
     logger.log('templateFilename  = ' + templateFilename)
 
@@ -92,7 +100,42 @@ class ConfigMap extends ProcessService {
     //    const templatePath = context.rootDir + '/' + templateFilename
     context.filepath = templateFilename
     context.template = '§§§ placeholer for debugging §§§'
-    this.emitClone('message', false, context)
+  }
+
+  async postContentToPostPage(context, contentGroupID) {
+    logger.log('--- ConfigMap --- contentGroupID = ' + contentGroupID.value)
+
+    // from services.ttl
+    logger.log('############ ' + this.config.toString())
+    const servicePoi = rdf.grapoi({ dataset: this.config, term: this.configKey })
+    const postcraftConfig = context.dataset
+
+    // from manifest.ttl
+    const groupPoi = rdf.grapoi({ dataset: postcraftConfig, term: contentGroupID })
+    // logger.log('---')
+    //  logger.poi(groupPoi)
+    // logger.log('---')
+    const sourceDir = groupPoi.out(ns.fs.sourceDirectory).term.value
+    const targetDir = groupPoi.out(ns.fs.targetDirectory).term.value
+    const templateFilename = groupPoi.out(ns.pc.template).term.value
+
+    context.entryContentToPage = {
+      sourceDir: sourceDir,
+      targetDir: targetDir,
+      templateFilename: templateFilename
+    }
+
+    /*
+        logger.log('*****************+ sourceDir = ' + sourceDir)
+        logger.log('templateFilename  = ' + templateFilename)
+    
+        context.sourceDir = sourceDir
+        context.targetDir = targetDir
+        context.loadContext = 'template'
+        //    const templatePath = context.rootDir + '/' + templateFilename
+        context.filepath = templateFilename
+        context.template = '§§§ placeholer for debugging §§§'
+        */
   }
 }
 export default ConfigMap

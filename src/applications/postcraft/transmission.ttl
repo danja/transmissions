@@ -3,31 +3,20 @@
 @prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances - TODO make one @services s: 
 
 :postTemplating a trm:Pipeline ;
-    trm:pipe (:s1 :s2 ) . 
-# :s3 :s4 :s5 :s6 :s7 :s8 :s9 :s10 :s11 :s12
+    trm:pipe (:s1 :s2 :s3 :s4 :s5 :s6 :s7 :s8 :s9 :s10 :s11 :s12 :s13 :s14 :s15) . 
 
-
- #:postRenderer a trm:Pipeline ;
-  # trm:pipe (:s5 :s106 :s107 :s108 :s109 :s110 :s111) . 
-
-:s1 a :ContextReader . # the manifest
+:s1 a :ContextReader . # read the manifest
 
 :s2 a :ConfigMap ; ### use services.ttl? - defer to RemapContext as possible
     trm:configKey :markdownToRawPosts .
 
-:s3 a :FileReader . # the template for posts
+:s3 a :FileReader . # the template for raw entry content
 
-# :s4 a :Halt .
 :s4 a :RemapContext ;
     trm:configKey :pathPrep .
 
-# :s5 a :Halt .
-:s5 a :DirWalker .
-#    trm:configKey :files . # unused?
+:s5 a :DirWalker . # automatically forks
 
- #:s6 a :Halt .
-
-# it automatical forks here
 :s6 a :FileReader . # the markdown content
 
 # :s7 a :Halt .
@@ -44,10 +33,21 @@
 # :s11 a :Halt .
 :s11 a :FileWriter .
 
-:s12 a :RemapContext ;
-    trm:configKey :entryPagePrep .
+############### entryContentToEntryPage
 
-:s13 a :Halt .
+:s12 a :FileReader .
+
+:s13 a :RemapContext ;
+   trm:configKey :entryPagePrep .
+
+:s14 a :Templater .
+
+:s15 a :FileWriter .
+
+#:s12 a :RemapContext ;
+ #   trm:configKey :entryPagePrep .
+
+# :s13 a :Halt .
 # :s12 a :Unfork .
 
 #:s13 a :ShowMessage .
