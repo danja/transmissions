@@ -9,6 +9,16 @@
 
 ### Terminology
 
-#### Services
+Postcraft : use Atom terms
 
-in docs as `s:ServiceName`
+other refs?
+
+Use pseudo-namespaces to reflect the aspect of #Transmissions in which an artifact appears:
+
+- `t:transmission` - typically `transmission.ttl`
+- `t:service
+- `t:manifest` - typically `manifest.ttl` in the application root
+
+- in docs as `s:ServiceName`
+
+#### Services

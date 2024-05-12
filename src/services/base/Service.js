@@ -106,6 +106,15 @@ class Service extends EventEmitter {
         }
     }
 
+    cloneContext(baseContext) {
+        const context = structuredClone(baseContext)
+        if (baseContext.dataset) {
+            //   var dataset = baseContext.dataset
+            //            context.dataset = dataset
+            context.dataset = baseContext.dataset
+        }
+        return context
+    }
     /**
      * Executes the message queue.
      */
@@ -113,11 +122,11 @@ class Service extends EventEmitter {
         this.processing = true
         while (this.messageQueue.length > 0) {
             let { data, context } = this.messageQueue.shift()
-            this.context = context // IS OK?
-            var dataset = context.dataset
-            //   dataset = structuredClone(context.dataset)
-            context = structuredClone(context) // TODO make optional
-            context.dataset = dataset
+
+            context = this.cloneContext(context)// TODO make optional
+            this.context = context // IS OK? needed where?
+            // context = structuredClone(context) // TODO make optional
+            // context.dataset = dataset
             // no idea why this ^^ was necessary, without it the dataset wasn't usable
             // structuredClone(context, {transfer:[dataset]}) failed too 
             this.addTag(context)

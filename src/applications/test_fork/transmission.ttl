@@ -1,0 +1,19 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix trm: <http://purl.org/stuff/transmission/> . # TODO make plural
+@prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances - TODO make one @services s: 
+
+# ./run test_fork | grep s1.s2.s10.s11.s12.s13
+
+:test_fork a :Transmission ;
+   trm:contains :pipeA .
+
+:pipeA a trm:Pipeline ;
+trm:pipe (:s1 :s2 :s10 :s11 :s12 :s13) .
+
+:s1 a :Fork .
+:s2 a :NOP .
+:s10 a :Unfork .
+:s11 a :NOP .
+:s12 a :NOP .
+:s13 a :NOP .
+# :s12 a :ShowMessage .

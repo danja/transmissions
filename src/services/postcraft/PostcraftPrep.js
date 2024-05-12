@@ -50,10 +50,16 @@ class PostcraftPrep extends ProcessService {
 
   extractTargetFilename(context) {
     return context.rootDir + '/' + context.targetDir + '/' + this.extractName(context)
+    /*
+        AssertionError: expected '/root//target/2024-05-10_hello-postcr…' to equal '/root/target/2024-05-10_hello-postcra…'
+     */
   }
 
   extractLink(context) {
     return context.targetDir + '/' + this.extractName(context)
+    /*
+    AssertionError: expected 'target/2024-05-10_hello-postcraft.html' to equal '/target/2024-05-10_hello-postcraft.ht…'
+    */
   }
 
   extractDates(context) {

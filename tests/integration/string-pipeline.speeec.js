@@ -14,10 +14,10 @@ describe('string-pipeline', function () {
                 return;
             }
             // Extract the quoted part from stdout
-            const match = stdout.match(/"([^"]+)"/);
-            const output = match ? match[1] : '';
+            const match = stdout.match(/"([^"]+)"/)
+            const output = match ? match[1] : ''
 
-            expect(output).to.equal('Hello world world');
+            expect(output).to.equal('Hello world world')
             //  expect(stdout.trim()).to.equal('Hello world world');
             done();
         });
