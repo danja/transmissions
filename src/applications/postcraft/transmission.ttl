@@ -34,13 +34,14 @@
 :s11 a :FileWriter .
 
 ############### entryContentToEntryPage
+:s12 a :EntryContentToPagePrep .
+#:s12 a :RemapContext ;
+ #  trm:configKey :entryPagePrep .
 
-:s12 a :FileReader .
+:s13 a :Templater .
 
-:s13 a :RemapContext ;
-   trm:configKey :entryPagePrep .
+:s14  a :ShowMessage .
 
-:s14 a :Templater .
 
 :s15 a :FileWriter .
 

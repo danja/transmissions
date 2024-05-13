@@ -20,13 +20,15 @@ class PostcraftPrep extends ProcessService {
     // logger.log('----------BEFORE------------')
     // logger.reveal(context)
 
-
-    context.targetFilename = this.extractTargetFilename(context)
+    context.slug = this.extractSlug(context)
+    context.targetFilename = this.extractTargetFilename(context) + '.html'
 
     context.contentBlocks = {}
     // context.contentBlocks.content = context.content
 
-    context.contentBlocks.link = this.extractLink(context)
+    // context.subdir = this.extractSubdir(context)
+    context.contentBlocks.relURL = this.extractRelURL(context)
+    context.contentBlocks.link = context.siteURL + '/' + context.contentBlocks.relURL
     context.contentBlocks.title = this.extractTitle(context)
 
     const { created, updated } = this.extractDates(context)
@@ -40,23 +42,23 @@ class PostcraftPrep extends ProcessService {
   }
 
   // TODO lots of tidying up
-  extractName(context) {
-    var name = context.filename
-    if (name.endsWith('.md')) {
-      name = name.substr(0, name.lastIndexOf(".")) + ".html"
+  extractSlug(context) {
+    var slug = context.filename
+    if (slug.includes('.')) {
+      slug = slug.substr(0, slug.lastIndexOf("."))
     }
-    return name
+    return slug
   }
 
   extractTargetFilename(context) {
-    return context.rootDir + '/' + context.targetDir + '/' + this.extractName(context)
+    return context.rootDir + '/' + context.targetDir + '/' + this.extractSlug(context)
     /*
         AssertionError: expected '/root//target/2024-05-10_hello-postcr…' to equal '/root/target/2024-05-10_hello-postcra…'
      */
   }
 
-  extractLink(context) {
-    return context.targetDir + '/' + this.extractName(context)
+  extractRelURL(context) {
+    return context.subdir + '/' + this.extractSlug(context) + '.html'
     /*
     AssertionError: expected 'target/2024-05-10_hello-postcraft.html' to equal '/target/2024-05-10_hello-postcraft.ht…'
     */

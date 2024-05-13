@@ -29,7 +29,8 @@ class ConfigMap extends ProcessService {
    * Executes the service.
    * @param {Object} data - The data object.
    * @param {Object} context - The context object.
-   */
+   * TODO this desperately needs refactoring, generalising a bit 
+  */
   async execute(data, context) {
 
     const postcraftConfig = context.dataset
@@ -63,25 +64,33 @@ class ConfigMap extends ProcessService {
       case 'http://hyperdata.it/transmissions/PostContent':
         await this.markdownToPostContent(context, contentGroupID)
       case 'http://hyperdata.it/transmissions/PostPages':
-        await this.postContentToPostPage(context, contentGroupID)
+        await this.entryContentToPostPage(context, contentGroupID)
+      default: return
     }
   }
 
   async markdownToPostContent(context, contentGroupID) {
     // from services.ttl
-    logger.log('############ ' + this.config.toString())
+    //  logger.log('############ ' + this.config.toString())
     const servicePoi = rdf.grapoi({ dataset: this.config, term: this.configKey })
     // logger.log("this.configKey " + this.configKey.value) // = t:markdownToRawPosts
     // logger.log(this.config.toString())
-    const marker = servicePoi.out(ns.trm.marker).term
+    // const marker = servicePoi.out(ns.trm.marker).term
     //  logger.log("MARKER " + marker)
 
 
-    logger.log('--- ConfigMap --- contentGroupID = ' + contentGroupID.value)
+    // logger.log('--- ConfigMap --- contentGroupID = ' + contentGroupID.value)
     const postcraftConfig = context.dataset
 
     // from manifest.ttl
     const groupPoi = rdf.grapoi({ dataset: postcraftConfig, term: contentGroupID })
+
+    // move
+    const siteURL = groupPoi.out(ns.pc.site).term.value
+    context.siteURL = siteURL
+    const subdir = groupPoi.out(ns.pc.subdir).term.value
+    context.subdir = subdir
+
     // logger.log('---')
     //  logger.poi(groupPoi)
     // logger.log('---')
@@ -102,25 +111,22 @@ class ConfigMap extends ProcessService {
     context.template = '§§§ placeholer for debugging §§§'
   }
 
-  async postContentToPostPage(context, contentGroupID) {
-    logger.log('--- ConfigMap --- contentGroupID = ' + contentGroupID.value)
+  async entryContentToPostPage(context, contentGroupID) {
+    // logger.log('--- ConfigMap --- contentGroupID = ' + contentGroupID.value)
 
     // from services.ttl
-    logger.log('############ ' + this.config.toString())
+    //  logger.log('############ ' + this.config.toString())
     const servicePoi = rdf.grapoi({ dataset: this.config, term: this.configKey })
     const postcraftConfig = context.dataset
 
     // from manifest.ttl
     const groupPoi = rdf.grapoi({ dataset: postcraftConfig, term: contentGroupID })
-    // logger.log('---')
-    //  logger.poi(groupPoi)
-    // logger.log('---')
-    const sourceDir = groupPoi.out(ns.fs.sourceDirectory).term.value
+    //   const sourceDir = groupPoi.out(ns.fs.sourceDirectory).term.value
     const targetDir = groupPoi.out(ns.fs.targetDirectory).term.value
     const templateFilename = groupPoi.out(ns.pc.template).term.value
 
     context.entryContentToPage = {
-      sourceDir: sourceDir,
+      // sourceDir: sourceDir,
       targetDir: targetDir,
       templateFilename: templateFilename
     }
