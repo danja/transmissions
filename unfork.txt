@@ -1,0 +1,99 @@
+[api.logger] log level: info
+[api.logger] disabling console.debug()
+
++ ***** Load Config ******
+[Transmission : src/applications/postcraft/transmission.ttl]
+[Config : src/applications/postcraft/services.ttl]
+
++ ***** Construct *****
+| Create service <http://hyperdata.it/transmissions/s1> of type <http://hyperdata.it/transmissions/ContextReader>
+| Create service <http://hyperdata.it/transmissions/s2> of type <http://hyperdata.it/transmissions/ConfigMap>
+| Create service <http://hyperdata.it/transmissions/s3> of type <http://hyperdata.it/transmissions/FileReader>
+| Create service <http://hyperdata.it/transmissions/s4> of type <http://hyperdata.it/transmissions/RemapContext>
+| Create service <http://hyperdata.it/transmissions/s5> of type <http://hyperdata.it/transmissions/DirWalker>
+| Create service <http://hyperdata.it/transmissions/s6> of type <http://hyperdata.it/transmissions/FileReader>
+| Create service <http://hyperdata.it/transmissions/s7> of type <http://hyperdata.it/transmissions/PostcraftPrep>
+| Create service <http://hyperdata.it/transmissions/s8> of type <http://hyperdata.it/transmissions/MarkdownToHTML>
+| Create service <http://hyperdata.it/transmissions/s9> of type <http://hyperdata.it/transmissions/RemapContext>
+| Create service <http://hyperdata.it/transmissions/s10> of type <http://hyperdata.it/transmissions/Templater>
+| Create service <http://hyperdata.it/transmissions/s11> of type <http://hyperdata.it/transmissions/FileWriter>
+| Create service <http://hyperdata.it/transmissions/s12> of type <http://hyperdata.it/transmissions/EntryContentToPagePrep>
+| Create service <http://hyperdata.it/transmissions/s13> of type <http://hyperdata.it/transmissions/Templater>
+| Create service <http://hyperdata.it/transmissions/s14> of type <http://hyperdata.it/transmissions/FileWriter>
+| Create service <http://hyperdata.it/transmissions/s15> of type <http://hyperdata.it/transmissions/Unfork>
+| Create service <http://hyperdata.it/transmissions/s16> of type <http://hyperdata.it/transmissions/FrontPagePrep>
+  > Connect #0 [http://hyperdata.it/transmissions/s1] => [http://hyperdata.it/transmissions/s2]
+  > Connect #1 [http://hyperdata.it/transmissions/s2] => [http://hyperdata.it/transmissions/s3]
+  > Connect #2 [http://hyperdata.it/transmissions/s3] => [http://hyperdata.it/transmissions/s4]
+  > Connect #3 [http://hyperdata.it/transmissions/s4] => [http://hyperdata.it/transmissions/s5]
+  > Connect #4 [http://hyperdata.it/transmissions/s5] => [http://hyperdata.it/transmissions/s6]
+  > Connect #5 [http://hyperdata.it/transmissions/s6] => [http://hyperdata.it/transmissions/s7]
+  > Connect #6 [http://hyperdata.it/transmissions/s7] => [http://hyperdata.it/transmissions/s8]
+  > Connect #7 [http://hyperdata.it/transmissions/s8] => [http://hyperdata.it/transmissions/s9]
+  > Connect #8 [http://hyperdata.it/transmissions/s9] => [http://hyperdata.it/transmissions/s10]
+  > Connect #9 [http://hyperdata.it/transmissions/s10] => [http://hyperdata.it/transmissions/s11]
+  > Connect #10 [http://hyperdata.it/transmissions/s11] => [http://hyperdata.it/transmissions/s12]
+  > Connect #11 [http://hyperdata.it/transmissions/s12] => [http://hyperdata.it/transmissions/s13]
+  > Connect #12 [http://hyperdata.it/transmissions/s13] => [http://hyperdata.it/transmissions/s14]
+  > Connect #13 [http://hyperdata.it/transmissions/s14] => [http://hyperdata.it/transmissions/s15]
+  > Connect #14 [http://hyperdata.it/transmissions/s15] => [http://hyperdata.it/transmissions/s16]
+
++ ***** Execute *****
+| Running : http://hyperdata.it/transmissions/s1 a ContextReader
+| Running :  (s1) s2 a ConfigMap
+§§§§§§§§§§ contentGroupID http://hyperdata.it/transmissions/PostContent
+*****************+ sourceDir = test
+templateFilename  = layouts/mediocre/templates/entry-content_template.njk
+§§§§§§§§§§ contentGroupID http://hyperdata.it/transmissions/PostPages
+| Running :  (s1.s2) s3 a FileReader
+ - FileReader reading filepath : layouts/mediocre/templates/entry-content_template.njk
+| Running :  (s1.s2.s3) s4 a RemapContext
+ - Rename : content to template
+| Running :  (s1.s2.s3.s4) s5 a DirWalker
+| Running :  (s1.s2.s3.s4.s5) s6 a FileReader
+ - FileReader reading filepath : test/2024-05-03_one.md
+| Running :  (s1.s2.s3.s4.s5) s6 a FileReader
+| Running :  (s1.s2.s3.s4.s5) s6 a FileReader
+| Running :  (s1.s2.s3.s4.s5.s6) s7 a PostcraftPrep
+| Running :  (s1.s2.s3.s4.s5.s6.s7) s8 a MarkdownToHTML
+| Running :  (s1.s2.s3.s4.s5.s6.s7.s8) s9 a RemapContext
+ - Rename : targetFilename to filepath
+ - Rename : content to contentBlocks.content
+| Running :  (s1.s2.s3.s4.s5.s6.s7.s8.s9) s10 a Templater
+| Running :  (s1.s2.s3.s4.s5.s6.s7.s8.s9.s10) s11 a FileWriter
+ - FileReader reading filepath : test/2024-05-03_two.md
+ - FileWriter writing : /home/danny/HKMS/postcraft/danny.ayers.name/public/entry-content-cache/2024-05-03_one.html
+| Running :  (s1.s2.s3.s4.s5.s6) s7 a PostcraftPrep
+| Running :  (s1.s2.s3.s4.s5.s6.s7) s8 a MarkdownToHTML
+| Running :  (s1.s2.s3.s4.s5.s6.s7.s8) s9 a RemapContext
+| Running :  (s1.s2.s3.s4.s5.s6.s7.s8.s9) s10 a Templater
+| Running :  (s1.s2.s3.s4.s5.s6.s7.s8.s9.s10) s11 a FileWriter
+ - FileReader reading filepath : test/2024-05-03_two.md
+| Running :  (s1.s2.s3.s4.s5.s6.s7.s8.s9.s10.s11) s12 a EntryContentToPagePrep
+| Running :  (s1.s2.s3.s4.s5.s6.s7.s8.s9.s10.s11.s12) s13 a Templater
+| Running :  (s1.s2.s3.s4.s5.s6.s7.s8.s9.s10.s11.s12.s13) s14 a FileWriter
+ - FileWriter writing : /home/danny/HKMS/postcraft/danny.ayers.name/public/blog/2024-05-03_one.html
+ - FileWriter writing : test/2024-05-03_two.md
+| Running :  (s1.s2.s3.s4.s5.s6) s7 a PostcraftPrep
+| Running :  (s1.s2.s3.s4.s5.s6.s7) s8 a MarkdownToHTML
+| Running :  (s1.s2.s3.s4.s5.s6.s7.s8) s9 a RemapContext
+| Running :  (s1.s2.s3.s4.s5.s6.s7.s8.s9) s10 a Templater
+| Running :  (s1.s2.s3.s4.s5.s6.s7.s8.s9.s10) s11 a FileWriter
+| Running :  (s1.s2.s3.s4.s5.s6.s7.s8.s9.s10.s11.s12.s13.s14) s15 a Unfork
+ - Unfork terminating pipe
+| Running :  (s1.s2.s3.s4.s5.s6.s7.s8.s9.s10.s11) s12 a EntryContentToPagePrep
+| Running :  (s1.s2.s3.s4.s5.s6.s7.s8.s9.s10.s11.s12) s13 a Templater
+| Running :  (s1.s2.s3.s4.s5.s6.s7.s8.s9.s10.s11.s12.s13) s14 a FileWriter
+ - FileWriter writing : test/2024-05-03_two.md
+ - FileWriter writing : test/2024-05-03_two.md
+| Running :  (s1.s2.s3.s4.s5.s6.s7.s8.s9.s10.s11.s12.s13.s14) s15 a Unfork
+ - Unfork passing message
+| Running :  (s1.s2.s3.s4.s5.s6.s7.s8.s9.s10.s11.s12.s13.s14.s15) s16 a FrontPagePrep
+| Running :  (s1.s2.s3.s4.s5.s6.s7.s8.s9.s10.s11) s12 a EntryContentToPagePrep
+| Running :  (s1.s2.s3.s4.s5.s6.s7.s8.s9.s10.s11.s12) s13 a Templater
+| Running :  (s1.s2.s3.s4.s5.s6.s7.s8.s9.s10.s11.s12.s13) s14 a FileWriter
+ - FileWriter writing : test/2024-05-03_two.md
+| Running :  (s1.s2.s3.s4.s5.s6.s7.s8.s9.s10.s11.s12.s13.s14) s15 a Unfork
+ - Unfork passing message
+| Running :  (s1.s2.s3.s4.s5.s6.s7.s8.s9.s10.s11.s12.s13.s14.s15) s16 a FrontPagePrep
+0

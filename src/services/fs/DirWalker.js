@@ -65,7 +65,7 @@ class DirWalker extends SourceService {
 
                         contextClone.filename = entry.name
                         contextClone.filepath = contextClone.sourceDir + '/' + entry.name
-                        contextClone.filepaths.push(contextClone.filepath)
+                        contextClone.filepaths.push(contextClone.filename)
                         // globalish
                         //    this.addPropertyToMyConfig(ns.trm.postPath, rdf.literal(contextClone.filename))
                         //  logger.log('CONFIG : ' + this.config)

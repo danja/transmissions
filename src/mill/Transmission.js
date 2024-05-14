@@ -29,7 +29,7 @@ class Transmission {
     const serviceName = this.connectors[0].fromName
 
     let service = this.get(serviceName)
-    logger.log("| Running : " + serviceName + " a " + service.constructor.name)
+    logger.log("| Running : " + serviceName + " a " + service.constructor.name) // first service
     // logger.log("\nTransmission running first service : " + serviceName)
     // logger.log("\nTransmission running service : " + service)
     // Start the first service
