@@ -13,10 +13,7 @@ class PostcraftPrep extends ProcessService {
   }
 
   async execute(data, context) {
-    if (context.done) {
-      this.emit('message', false, context)
-      return
-    }
+    // this.preProcess(context)
     // logger.log('----------BEFORE------------')
     // logger.reveal(context)
 

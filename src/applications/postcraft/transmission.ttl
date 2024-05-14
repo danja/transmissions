@@ -3,7 +3,7 @@
 @prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances - TODO make one @services s: 
 
 :postTemplating a trm:Pipeline ;
-    trm:pipe (:s1 :s2 :s3 :s4 :s5 :s6 :s7 :s8 :s9 :s10 :s11 :s12 :s13 :s14 :s15) . 
+    trm:pipe (:s1 :s2 :s3 :s4 :s5 :s6 :s7 :s8 :s9 :s10 :s11 :s12 :s13 :s14 :s15 :s16) . #  :s7 :s8 :s9 :s10 :s11 :s12 :s13 :s14 :s15 :s16
 
 :s1 a :ContextReader . # read the manifest
 
@@ -18,6 +18,14 @@
 :s5 a :DirWalker . # automatically forks
 
 :s6 a :FileReader . # the markdown content
+
+# :s7 a :Unfork .
+
+# :s8 a :ShowMessage .
+# :log1 a :ShowMessage .
+
+
+
 
 # :s7 a :Halt .
 :s7 a :PostcraftPrep . # set up title, filenames etc
@@ -40,10 +48,12 @@
 
 :s13 a :Templater .
 
-:s14  a :ShowMessage .
 
+:s14 a :FileWriter .
 
-:s15 a :FileWriter .
+:s15  a :Unfork .
+
+:s16  a :ShowMessage .
 
 #:s12 a :RemapContext ;
  #   trm:configKey :entryPagePrep .

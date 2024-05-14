@@ -91,11 +91,13 @@ if (process.argv.length <= 2) {
                     default: '' // Default value if the second argument is not provided
                 })
         }, async (argv) => {
-            const { dirName, input, context: contextArg } = argv
+            const { dirName, input, context: contextArg } = argv // TODO what's that arg for context?
 
             const transmissionPath = path.join(applicationsDir, dirName)
             const defaultDataDir = path.join(transmissionPath, '/data')
 
+
+            // TODO revisit base context, add constructor.name?
             context = { "dataDir": defaultDataDir }
 
             // If a context argument was provided, parse or load it

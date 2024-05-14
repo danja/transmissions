@@ -18,6 +18,7 @@ only for testing for now
 
         for (let i = 0; i < 5; i++) {
             var context = this.cloneContext(baseContext)
+            context.done = false
             logger.log('--- emit --- ' + i)
             this.emit('message', false, context)
         }

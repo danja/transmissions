@@ -30,30 +30,30 @@ class Templater extends ProcessService {
     async execute(data, context) {
 
         if (context.templateFilename) { // if there's a filename, use it
-            logger.log('*************************************************************')
-            logger.log('context.templateFilename = ' + context.templateFilename)
-            logger.log('context.contentBlocks = ')
-            logger.reveal(context.contentBlocks)
-            logger.log('*************************************************************')
+            //    logger.log('*************************************************************')
+            //    logger.log('context.templateFilename = ' + context.templateFilename)
+            //    logger.log('context.contentBlocks = ')
+            //    logger.reveal(context.contentBlocks)
+            //    logger.log('*************************************************************')
 
             /* workaround for nunjucks odd/buggy/ugly handling of '' path 
               at createTemplate (/home/danny/HKMS/transmissions/node_modules/nunjucks/src/environment.js:234:15)
 
                    if (!info && !err && !ignoreMissing) {
 
-                    TODO read about nunjucks.configure ignoreMissing
+                    TODO read about nunjucks.configure, especially ignoreMissing
             */
             const path = context.templateFilename.substr(0, context.templateFilename.lastIndexOf("/"))
             const filename = context.templateFilename.substr(context.templateFilename.lastIndexOf("/") + 1)
 
-            logger.log('path  = ' + path)
-            logger.log(' filename = ' + filename)
+            //    logger.log('path  = ' + path)
+            //  logger.log(' filename = ' + filename)
             nunjucks.configure(path, { autoescape: false })
 
             context.content = nunjucks.render(filename, context.contentBlocks)
-            logger.log('*************************************************************')
-            logger.log('context.content = ' + context.content)
-            logger.log('*************************************************************')
+            //    logger.log('*************************************************************')
+            //    logger.log('context.content = ' + context.content)
+            //    logger.log('*************************************************************')
         } else {
             nunjucks.configure({ autoescape: false }); // otherwise use a string
             context.content = nunjucks.renderString(context.template, context.contentBlocks)

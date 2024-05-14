@@ -13,6 +13,10 @@ class RemapContext extends Service {
     }
 
     async execute(data, context) {
+        if (this.preProcess(context)) {
+            return
+        }
+
         //    logger.log('SERVICE this.configKey = ' + this.configKey.value)
         // logger.log(this.config.toString())
         const renames = GrapoiHelpers.listToArray(this.config, this.configKey, ns.trm.rename)

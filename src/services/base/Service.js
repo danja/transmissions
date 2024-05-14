@@ -115,6 +115,14 @@ class Service extends EventEmitter {
         }
         return context
     }
+
+    preProcess(context) { // NOPE
+        if (context.done) {
+            this.emit('message', false, context)
+            return true
+        }
+        return false
+    }
     /**
      * Executes the message queue.
      */

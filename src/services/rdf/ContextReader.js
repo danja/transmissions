@@ -29,6 +29,7 @@ class ContextReader extends SourceService {
      * @param {Object} context - The context object.
      */
     async execute(rootDir, context) {
+
         const manifestFilename = rootDir + '/manifest.ttl'
         const stream = fromFile(manifestFilename)
 

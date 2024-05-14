@@ -40,37 +40,46 @@ class DirWalker extends SourceService {
      */
     async execute(data, context) {
         const contextClone = structuredClone(context) // move?
+        await this.emitThem(contextClone)
+
+
+        // logger.error("§§§ DirWalker emit true : " + contextClone.done)
+        contextClone.done = true
+        //  logger.error("§§§ DirWalker emit B : " + contextClone.done)
+        this.emit('message', false, contextClone)
+    }
+
+    async emitThem(contextClone) {
         contextClone.filepaths = []
-        const dirPath = context.rootDir + '/' + context.sourceDir
+        contextClone.done = false // maybe insert earlier
+        const dirPath = contextClone.rootDir + '/' + contextClone.sourceDir
         try {
             const entries = await readdir(dirPath, { withFileTypes: true })
             for (const entry of entries) {
                 const fullPath = join(dirPath, entry.name)
                 if (entry.isDirectory()) {
-                    await this.execute(entry.name, context) // rearrange to make things easier to read?
+                    await this.execute(entry.name, contextClone) // rearrange to make things easier to read?
                 } else {
                     // Check if the file extension is in the list of desired extensions
                     if (this.desiredExtensions.includes(extname(entry.name))) {
 
                         contextClone.filename = entry.name
-                        contextClone.filepath = context.sourceDir + '/' + entry.name
+                        contextClone.filepath = contextClone.sourceDir + '/' + entry.name
                         contextClone.filepaths.push(contextClone.filepath)
                         // globalish
                         //    this.addPropertyToMyConfig(ns.trm.postPath, rdf.literal(contextClone.filename))
                         //  logger.log('CONFIG : ' + this.config)
                         // process.exit()
                         //   this.showMyConfig()
+                        contextClone.done = false
                         this.emit('message', false, contextClone)
                     }
                 }
             }
-
         } catch (err) {
             logger.error("DirWalker.execute error : " + err.message)
         }
-        //this.done = true
-        contextClone.done = false
-        this.emit('message', false, contextClone)
     }
+
 }
 export default DirWalker
