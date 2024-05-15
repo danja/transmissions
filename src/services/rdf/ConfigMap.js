@@ -77,26 +77,28 @@ class ConfigMap extends ProcessService {
     switch (contentGroupID.value) { // .value TODO refactor
       // case 'http://hyperdata.it/transmissions/PostContent':
       case ns.t.PostContent.value:
-        logger.log('MATCHED PostContent')
-        await this.markdownToPostContent(context, contentGroupID)
+        //   logger.log('MATCHED PostContent')
+        await this.markdownToEntryContent(context, contentGroupID)
         return
       case ns.t.PostPages.value:
         // case 'http://hyperdata.it/transmissions/PostPages':
-        logger.log('MATCHED PostPages')
+        // logger.log('MATCHED PostPages')
         await this.entryContentToPostPage(context, contentGroupID)
         return
       case ns.t.IndexPage.value:
         //  case 'http://hyperdata.it/transmissions/IndexPage':
-        logger.log('MATCHED IndexPage')
+        //logger.log('MATCHED IndexPage')
         await this.indexPage(context, contentGroupID)
         return
       default:
-        logger.log('Group not found')
+        logger.log('Group not found in dataset :' + contentGroupID.value)
         return
     }
   }
 
-  async markdownToPostContent(context, contentGroupID) {
+  async markdownToEntryContent(context, contentGroupID) {
+
+
     logger.log('--- markdownToPostContent --- contentGroupID = ' + contentGroupID.value)
 
     // from services.ttl
@@ -110,17 +112,22 @@ class ConfigMap extends ProcessService {
     const siteURL = groupPoi.out(ns.pc.site).term.value
     context.siteURL = siteURL
     const subdir = groupPoi.out(ns.pc.subdir).term.value
-    context.subdir = subdir
+    context.subdir = subdir // which?
 
     const sourceDir = groupPoi.out(ns.fs.sourceDirectory).term.value
     const targetDir = groupPoi.out(ns.fs.targetDirectory).term.value
     const templateFilename = groupPoi.out(ns.pc.template).term.value
 
-    context.sourceDir = sourceDir
-    context.targetDir = targetDir
-    context.loadContext = 'template'
+    // context.sourceDir = sourceDir
+    // context.targetDir = targetDir
+    // context.loadContext = 'template' 
     context.filepath = templateFilename
     context.template = '§§§ placeholer for debugging §§§'
+
+    context.entryContentMeta = {
+      sourceDir: sourceDir,
+      targetDir: targetDir
+    }
   }
 
   async entryContentToPostPage(context, contentGroupID) {
@@ -157,7 +164,7 @@ class ConfigMap extends ProcessService {
 
     const quads = await groupPoi.out().quads()
     for (const q of quads) {
-      console.log(`QQ ${q.subject.value} : ${q.predicate.value}: ${q.object.value} `)
+      //   console.log(`QQ ${q.subject.value} : ${q.predicate.value}: ${q.object.value} `)
     }
     //   const sourceDir = groupPoi.out(ns.fs.sourceDirectory).term.value
     const filepath = groupPoi.out(ns.fs.filepath).term.value

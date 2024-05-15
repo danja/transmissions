@@ -18,29 +18,42 @@ class RemapContext extends Service {
         }
 
         //    logger.log('SERVICE this.configKey = ' + this.configKey.value)
-        // logger.log(this.config.toString())
+
         const renames = GrapoiHelpers.listToArray(this.config, this.configKey, ns.trm.rename)
         const dataset = this.config
+        //  logger.log('renames  = ' + renames)
         // for (const rename in renames) {
         for (let i = 0; i < renames.length; i++) {
             let rename = renames[i]
+
             let poi = rdf.grapoi({ dataset: dataset, term: rename })
 
             let pre = poi.out(ns.trm.pre).value
             let post = poi.out(ns.trm.post).value
-            const stringValue = context[pre].toString()  // otherwise passes a Buffer
+            var value
 
             // TODO unhackify
+            // for copying value of eg. x.y.z to context.b
+            if (pre.includes('.')) {
+                const spre = pre.split('.')
+                logger.log('spre ' + spre)
+                value = context[spre[0]][spre[1]]
+            } else {
+                value = context[pre]
+            }
+            // not properly tested, I didn't end up needing it
+            value = value.toString()  // otherwise passes a Buffer
             // for copying value of eg. context.content to context.contentBlocks.content 
             if (post.includes('.')) {
                 const s = post.split('.')
                 //logger.log('sss ' + s)
-                context[s[0]][s[1]] = stringValue
+                context[s[0]][s[1]] = value
             } else {
-                context[post] = stringValue
+                context[post] = value
             }
             logger.log(' - Rename : ' + pre + ' to ' + post)
         }
+        // process.exit()
         this.emit('message', data, context)
     }
 }

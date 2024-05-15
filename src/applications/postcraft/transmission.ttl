@@ -2,8 +2,17 @@
 @prefix trm: <http://purl.org/stuff/transmission/> . # TODO make plural
 @prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances - TODO make one @services s: 
 
+#############################################################
+# insert into pipe for debugging
+:DE a :DeadEnd . # ends the current pipe quietly
+:H  a :Halt . # kills everything 
+:SM a :ShowMessage . # verbose report, continues pipe
+:N  a :NOP . # no operation (except for showing stage in pipe)
+:UF a :Unfork . # collapses all pipes but one 
+#############################################################
+
 :postTemplating a trm:Pipeline ;
-    trm:pipe (:s1 :s2 :s3 :s4 :s5 :s6 :s7 :s8 :s9 :s10 :s11 :s12 :s13 :s14 :s15 :s16 :s17) . #  :s7 :s8 :s9 :s10 :s11 :s12 :s13 :s14 :s15 :s16
+    trm:pipe (:s1 :s2 :s3 :s4 :s5 :s6 :s7 :s8 :s9 :s10 :s11 :s12 :s13 :s14 :s15 :s16 :s17 :s18) .
 
 :s1 a :ContextReader . # read the manifest
 
@@ -13,7 +22,7 @@
 :s3 a :FileReader . # the template for raw entry content
 
 :s4 a :RemapContext ;
-    trm:configKey :pathPrep .
+    trm:configKey :walkPrep .
 
 :s5 a :DirWalker . # automatically forks
 
@@ -44,18 +53,12 @@
 :s15  a :Unfork .
 
 :s16 a :FrontPagePrep . 
-# :log1 a :ShowMessage .
-:s17  a :ShowMessage .
 
-#:s12 a :RemapContext ;
- #   trm:configKey :entryPagePrep .
+:s17 a :Templater .
 
-# :s13 a :Halt .
-# :s12 a :Unfork .
+:s18 a :FileWriter .
 
-#:s13 a :ShowMessage .
-#:s12 a :RemapContext ;
- #   trm:configKey :frontMaker .
+
 
 
 

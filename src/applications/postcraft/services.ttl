@@ -12,18 +12,20 @@ t:phaseOne a trm:ServiceConfig ;
 
 # TODO IS COPY, not rename!!
 
-t:pathPrep a trm:ReMap ;
-    trm:rename (t:pp1) . # consider using blank nodes
+t:walkPrep a trm:ReMap ;
+    trm:rename (t:pp1 t:pp2) . # consider using blank nodes
     t:pp1   trm:pre     "content" ;
             trm:post    "template"  .
+    t:pp2   trm:pre     "entryContentMeta.sourceDir" ;
+            trm:post    "sourceDir" .
   #  t:pp2   trm:pre     "filename" ;
    #         trm:post    "filename"  .
  
 t:entryRawPrep a trm:ReMap ;
-    trm:rename (t:rps1 t:rps2) . 
-    t:rps1   trm:pre     "targetFilename" ;
-            trm:post    "filepath" .
-    t:rps2   trm:pre     "content" ;
+    trm:rename (t:er3) . 
+ #   t:er1   trm:pre     "entryContentMeta.targetFilename" ;
+  #          trm:post    "filepath" . 
+    t:er3   trm:pre     "content" ;
             trm:post    "contentBlocks.content" .
 
 t:entryPagePrep a trm:ReMap ;

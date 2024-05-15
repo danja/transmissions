@@ -70,7 +70,7 @@ class DirWalker extends SourceService {
                         // globalish
                         //    this.addPropertyToMyConfig(ns.trm.postPath, rdf.literal(contextClone.filename))
                         //  logger.log('CONFIG : ' + this.config)
-                        // process.exit()
+
                         //   this.showMyConfig()
                         contextClone.done = false
                         this.emit('message', false, contextClone)
