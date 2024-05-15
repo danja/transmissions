@@ -39,7 +39,7 @@ class PostcraftPrep extends ProcessService {
   }
 
   // TODO lots of tidying up
-  extractSlug(context) {
+  extractSlug(context) { // TODO move this into a utils file - is also in DirWalker
     var slug = context.filename
     if (slug.includes('.')) {
       slug = slug.substr(0, slug.lastIndexOf("."))

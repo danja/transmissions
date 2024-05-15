@@ -1,6 +1,7 @@
 import rdf from 'rdf-ext'
 import { fromFile, toFile } from 'rdf-utils-fs'
 import SourceService from '../base/SourceService.js'
+import logger from '../../utils/Logger.js'
 
 /**
  * Reads a Turtle file and adds it to the context as a dataset.
@@ -36,6 +37,7 @@ class ContextReader extends SourceService {
         // should append RDF to incoming
         context.rootDir = rootDir
         context.dataset = await rdf.dataset().import(stream)
+        //  logger.log('DATASET = \n' + context.dataset)
         this.emit('message', false, context)
     }
 }

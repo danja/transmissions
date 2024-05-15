@@ -33,22 +33,28 @@ class ConfigMap extends ProcessService {
   */
   async execute(data, context) {
 
-    const postcraftConfig = context.dataset
-    // logger.log('postcraftConfig  = ' + postcraftConfig)
+    //const postcraftConfig = context.dataset
+    //logger.log(' = \n' + context.dataset)
 
-    const poi = grapoi({ dataset: postcraftConfig })
-    //    logger.poi(poi)
+    const dataset = context.dataset
+    // logger.log('dataset   = ' + dataset)
+    const poi = grapoi({ dataset, factory: rdf })
+    //  logger.poi(poi)
+    // logger.log(postcraftConfig)
+    // const quads = poi.out(ns.rdf.type).quads()
     const quads = await poi.out(ns.rdf.type).quads()
 
-    for (const q of quads) { ///////// WRONG ITERATOR????????????
-      logger.log('\nq.object.value = ' + q.object.value)
-      logger.log('q.subject.value = ' + q.subject.value)
-      if (q.object.equals(ns.pc.ContentGroup)) {
+    for (const q of quads) {
+      // console.log(`QUAD ${q.subject.value} : ${q.predicate.value}: ${q.object.value} `)
+      const type = q.object
+      logger.log('type ' + type.value)
 
+      if (type.equals(ns.pc.ContentGroup)) {
+        logger.log('Q ' + q.subject.value)
         await this.processContentGroup(context, q.subject)
       }
     }
-
+    //  process.exit()
     this.emit('message', false, context)
     // logger.log('ConfigMap context.templateFilename  = ' + context.templateFilename)
     // this.emit('message', context.templateFilename, context)
@@ -62,7 +68,7 @@ class ConfigMap extends ProcessService {
 
   async processContentGroup(context, contentGroupID) {
 
-    // logger.log("Switching on contentGroupID " + contentGroupID.value)
+    logger.log("Switching on contentGroupID " + contentGroupID.value)
     // logger.log('ns.trm.PostPages = ' + ns.t.PostPages.value)
     // logger.log('ns.trm.PostContent.toString() = ' + ns.trm.PostContent.toString())
     // if (contentGroupID.value === ns.t.PostPages.value) {
@@ -73,20 +79,19 @@ class ConfigMap extends ProcessService {
       case ns.t.PostContent.value:
         logger.log('MATCHED PostContent')
         await this.markdownToPostContent(context, contentGroupID)
-
+        return
       case ns.t.PostPages.value:
         // case 'http://hyperdata.it/transmissions/PostPages':
         logger.log('MATCHED PostPages')
         await this.entryContentToPostPage(context, contentGroupID)
-
+        return
       case ns.t.IndexPage.value:
         //  case 'http://hyperdata.it/transmissions/IndexPage':
         logger.log('MATCHED IndexPage')
-
         await this.indexPage(context, contentGroupID)
-
+        return
       default:
-        logger.log('group not found')
+        logger.log('Group not found')
         return
     }
   }
@@ -95,7 +100,7 @@ class ConfigMap extends ProcessService {
     logger.log('--- markdownToPostContent --- contentGroupID = ' + contentGroupID.value)
 
     // from services.ttl
-    const servicePoi = rdf.grapoi({ dataset: this.config, term: this.configKey })
+    // const servicePoi = rdf.grapoi({ dataset: this.config, term: this.configKey })
     const postcraftConfig = context.dataset
 
     // from manifest.ttl
@@ -123,7 +128,7 @@ class ConfigMap extends ProcessService {
 
     // from services.ttl
     //  logger.log('############ ' + this.config.toString())
-    const servicePoi = rdf.grapoi({ dataset: this.config, term: this.configKey })
+    //const servicePoi = rdf.grapoi({ dataset: this.config, term: this.configKey })
     const postcraftConfig = context.dataset
 
     // from manifest.ttl
@@ -140,15 +145,20 @@ class ConfigMap extends ProcessService {
   }
 
   async indexPage(context, contentGroupID) {
-    logger.log('--- Indexpage --- contentGroupID = ' + contentGroupID.value)
+    logger.log('Indexpage --- contentGroupID = ' + contentGroupID.value)
 
     // from services.ttl
     //  logger.log('############ ' + this.config.toString())
-    const servicePoi = rdf.grapoi({ dataset: this.config, term: this.configKey })
+    // const servicePoi = rdf.grapoi({ dataset: this.config, term: this.configKey })
     const postcraftConfig = context.dataset
 
     // from manifest.ttl
     const groupPoi = rdf.grapoi({ dataset: postcraftConfig, term: contentGroupID })
+
+    const quads = await groupPoi.out().quads()
+    for (const q of quads) {
+      console.log(`QQ ${q.subject.value} : ${q.predicate.value}: ${q.object.value} `)
+    }
     //   const sourceDir = groupPoi.out(ns.fs.sourceDirectory).term.value
     const filepath = groupPoi.out(ns.fs.filepath).term.value
     const templateFilename = groupPoi.out(ns.pc.template).term.value

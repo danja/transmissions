@@ -50,7 +50,7 @@ class DirWalker extends SourceService {
     }
 
     async emitThem(contextClone) {
-        contextClone.filepaths = []
+        contextClone.slugs = []
         contextClone.done = false // maybe insert earlier
         const dirPath = contextClone.rootDir + '/' + contextClone.sourceDir
         try {
@@ -65,7 +65,8 @@ class DirWalker extends SourceService {
 
                         contextClone.filename = entry.name
                         contextClone.filepath = contextClone.sourceDir + '/' + entry.name
-                        contextClone.filepaths.push(contextClone.filename)
+                        const slug = this.extractSlug(contextClone.filename)
+                        contextClone.slugs.push(slug)
                         // globalish
                         //    this.addPropertyToMyConfig(ns.trm.postPath, rdf.literal(contextClone.filename))
                         //  logger.log('CONFIG : ' + this.config)
@@ -81,5 +82,12 @@ class DirWalker extends SourceService {
         }
     }
 
+    extractSlug(filepath) { // TODO move this into a utils file - similar in PostcraftPrep
+        var slug = filepath
+        if (slug.includes('.')) {
+            slug = slug.substr(0, slug.lastIndexOf("."))
+        }
+        return slug
+    }
 }
 export default DirWalker
