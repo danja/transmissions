@@ -43,31 +43,7 @@ class TransmissionBuilder {
     // grapoi probably has a built-in for all this
     const pipenodes = GrapoiHelpers.listToArray(transmissionConfig, pipelineID, ns.trm.pipe)
 
-    /*
-    for (let i = 0; i < pipenodes.length; i++) {
-      let node = pipenodes[i]
-      let serviceName = node.value
-      let np = rdf.grapoi({ dataset: transmissionConfig, term: node })
-      let serviceType = np.out(ns.rdf.type).term
-      let serviceConfig = np.out(ns.trm.configKey).term
-      logger.log("| Create service <" + serviceName + "> of type <" + serviceType.value + ">")
-      let service = AbstractServiceFactory.createService(serviceType, servicesConfig)
-      service.id = serviceName
-      service.type = serviceType
 
-      if (serviceConfig) {
-        //  logger.debug("\n*****SERVICE***** serviceConfig = " + serviceConfig.value)
-        service.configKey = serviceConfig // .value
-      }
-      transmission.register(serviceName, service)
-
-      if (i != 0) {
-        logger.log("  > Connect #" + i + " [" + previousName + "] => [" + serviceName + "]")
-        transmission.connect(previousName, serviceName)
-      }
-      previousName = serviceName
-    }
-    */
     this.createNodes(transmission, pipenodes, transmissionConfig, servicesConfig)
     this.connectNodes(transmission, pipenodes)
     return transmission

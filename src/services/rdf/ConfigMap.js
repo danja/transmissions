@@ -32,7 +32,7 @@ class ConfigMap extends ProcessService {
    * TODO this desperately needs refactoring, generalising a bit 
   */
   async execute(data, context) {
-
+    this.preProcess(context)
     //const postcraftConfig = context.dataset
     //logger.log(' = \n' + context.dataset)
 
@@ -47,10 +47,10 @@ class ConfigMap extends ProcessService {
     for (const q of quads) {
       // console.log(`QUAD ${q.subject.value} : ${q.predicate.value}: ${q.object.value} `)
       const type = q.object
-      logger.log('type ' + type.value)
+      //     logger.log('type ' + type.value)
 
       if (type.equals(ns.pc.ContentGroup)) {
-        logger.log('Q ' + q.subject.value)
+        //     logger.log('Q ' + q.subject.value)
         await this.processContentGroup(context, q.subject)
       }
     }
@@ -68,7 +68,7 @@ class ConfigMap extends ProcessService {
 
   async processContentGroup(context, contentGroupID) {
 
-    logger.log("Switching on contentGroupID " + contentGroupID.value)
+    // logger.log("Switching on contentGroupID " + contentGroupID.value)
     // logger.log('ns.trm.PostPages = ' + ns.t.PostPages.value)
     // logger.log('ns.trm.PostContent.toString() = ' + ns.trm.PostContent.toString())
     // if (contentGroupID.value === ns.t.PostPages.value) {
@@ -99,7 +99,7 @@ class ConfigMap extends ProcessService {
   async markdownToEntryContent(context, contentGroupID) {
 
 
-    logger.log('--- markdownToPostContent --- contentGroupID = ' + contentGroupID.value)
+    //  logger.log('--- markdownToPostContent --- contentGroupID = ' + contentGroupID.value)
 
     // from services.ttl
     // const servicePoi = rdf.grapoi({ dataset: this.config, term: this.configKey })
@@ -131,7 +131,7 @@ class ConfigMap extends ProcessService {
   }
 
   async entryContentToPostPage(context, contentGroupID) {
-    logger.log('--- entryContentToPostPage--- contentGroupID = ' + contentGroupID.value)
+    //logger.log('--- entryContentToPostPage--- contentGroupID = ' + contentGroupID.value)
 
     // from services.ttl
     //  logger.log('############ ' + this.config.toString())
@@ -152,7 +152,7 @@ class ConfigMap extends ProcessService {
   }
 
   async indexPage(context, contentGroupID) {
-    logger.log('Indexpage --- contentGroupID = ' + contentGroupID.value)
+    // logger.log('Indexpage --- contentGroupID = ' + contentGroupID.value)
 
     // from services.ttl
     //  logger.log('############ ' + this.config.toString())

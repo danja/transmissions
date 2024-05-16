@@ -27,14 +27,15 @@ class FileWriter extends SinkService {
         super(config)
     }
 
+    getInputKeys() { // TODO move out of here
+        return ['filepath, content']
+    }
     /**
      * Executes the write operation.
      * @param {Object} context - The execution context.
      */
     async execute(data, context) {
-        //  if (context.done) {
-        //    return
-        // }
+        this.preProcess()
         var filepath = context.filepath
 
         const content = context.content

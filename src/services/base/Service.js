@@ -23,6 +23,32 @@ class Service extends EventEmitter {
         this.done = false
     }
 
+    preProcess(context) {
+        /* NOPE
+        if (context.done) {
+            this.emit('message', false, context)
+            return true
+        }
+        return false
+        */
+        const servicePoi = rdf.grapoi({ dataset: this.config, term: this.configKey })
+        logger.log('this.configKey = ' + this.configKey.value)
+        logger.poi(servicePoi)
+        // process.exit()
+
+    }
+
+    describe() {
+        const inputs = this.getInputKeys()
+        const outputs = this.getOutputKeys()
+        for (var input of inputs) {
+            logger.log(input + ' = ' + this.context[input])
+        }
+        for (var output of outputs) {
+            logger.log(input + ' = ' + this.context[input])
+        }
+    }
+
     /**
      * TODO refactor
      * 
@@ -46,11 +72,7 @@ class Service extends EventEmitter {
     getMyConfigNode() {
         const dataset = this.config
         const configNode = grapoi({ dataset, term: this.configKey }).in()
-        // .trim()
-        //  const configNode = poi.out(ns.trm.value)
-        // rdf.namedNode(this.getMyConfigNode())
         return configNode.term
-        // return configNode
     }
 
     getMyPoi() {
@@ -116,13 +138,7 @@ class Service extends EventEmitter {
         return context
     }
 
-    preProcess(context) { // NOPE
-        if (context.done) {
-            this.emit('message', false, context)
-            return true
-        }
-        return false
-    }
+
     /**
      * Executes the message queue.
      */
