@@ -34,18 +34,27 @@ class Service extends EventEmitter {
         const servicePoi = rdf.grapoi({ dataset: this.config, term: this.configKey })
         logger.log('this.configKey = ' + this.configKey.value)
         logger.poi(servicePoi)
+
+        logger.log('describe motherfucker')
+        if (this.configKey.value === ns.trm.describe.value) {
+            this.describe()
+        }
+        // nowe get the bits
         // process.exit()
 
     }
 
     describe() {
+        logger.log('describe motherfucker')
         const inputs = this.getInputKeys()
         const outputs = this.getOutputKeys()
         for (var input of inputs) {
-            logger.log(input + ' = ' + this.context[input])
+            logger.log('input = ' + input)
+            logger.log(this.context[input] + ' = ' + this.context[input])
         }
         for (var output of outputs) {
-            logger.log(input + ' = ' + this.context[input])
+            logger.log('output = ' + output)
+            logger.log(this.context[output] + ' = ' + this.context[output])
         }
     }
 

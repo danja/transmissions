@@ -24,13 +24,22 @@ class ContextReader extends SourceService {
         super(config)
     }
 
+    getInputKeys() { // TODO this should all be declarative
+        return ['fuckall']
+    }
+
+    getOutputKeys() {
+        return ['dataset']
+    }
+
+
     /**
      * Execute the ContextReader service.
      * @param {string} rootDir - The root directory.
      * @param {Object} context - The context object.
      */
     async execute(rootDir, context) {
-
+        this.preProcess(context)
         const manifestFilename = rootDir + '/manifest.ttl'
         const stream = fromFile(manifestFilename)
 

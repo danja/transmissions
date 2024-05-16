@@ -3,12 +3,12 @@
 # @prefix fs: <http://purl.org/stuff/filesystem/> .
 @prefix t: <http://hyperdata.it/transmissions/> . # for custom terms & instances
 
+trm:Describe  a trm:ServiceConfig ; 
+ trm:key trm:describe .
+
 t:phaseOne a trm:ServiceConfig ; 
     trm:key t:markdownToRawPosts ;
     trm:marker "Phase One" .
-
-#t:dirWalkerPosts a trm:ServiceConfig ; # unused?
- #   trm:key t:files .
 
 # TODO IS COPY, not rename!!
 
