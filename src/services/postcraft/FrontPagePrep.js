@@ -22,8 +22,13 @@ class FrontPagePrep extends ProcessService {
       const rawEntryPaths = this.resolveRawEntryPaths(context)
       context.content = ''
       // TODO move this out to template and/or separate services
-      for (var f of rawEntryPaths) {
-        context.content += (await readFile(f)).toString()
+      //   for (var f of rawEntryPaths) {
+      //   const n = rawEntryPaths.length
+      const entryCount = 5
+      //    for (var i = entryCount - 1; i >= 0; i--) {
+      for (var i = 0; i < entryCount; i++) {
+        const rawEntryPath = rawEntryPaths.pop()
+        context.content += (await readFile(rawEntryPath)).toString()
       }
 
       // needed?
@@ -41,10 +46,12 @@ class FrontPagePrep extends ProcessService {
     }
   }
 
-  resolveRawEntryPaths(context) {
+  resolveRawEntryPaths(context) { // TODO tidy up
     var paths = []
-    const entryCount = 5
+    //   const entryCount = 5
+
     const slugs = context.slugs
+    const entryCount = slugs.length
     var path
     for (let i = 0; i < entryCount; i++) {
       var path = slugs[i]
