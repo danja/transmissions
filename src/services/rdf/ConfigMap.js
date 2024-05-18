@@ -126,7 +126,8 @@ class ConfigMap extends ProcessService {
 
     context.entryContentMeta = {
       sourceDir: sourceDir,
-      targetDir: targetDir
+      targetDir: targetDir,
+      templateFilename: templateFilename
     }
   }
 

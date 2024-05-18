@@ -26,10 +26,12 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>
+            <pre class="prettyprint source linenums"><code>import logger from '../../utils/Logger.js'
 import { EventEmitter } from 'events'
+import rdf from 'rdf-ext'
 import grapoi from 'grapoi'
 import ns from '../../utils/ns.js'
+import footpath from '../../utils/footpath.js'
 
 /**
  * Base class for services.
@@ -46,18 +48,100 @@ class Service extends EventEmitter {
         this.config = config
         this.messageQueue = []
         this.processing = false
-        this.doneMessage = '~[DONE]~'
+        this.done = false
+    }
+
+    preProcess(context) {
+        /* NOPE
+        if (context.done) {
+            this.emit('message', false, context)
+            return true
+        }
+        return false
+        */
+        const servicePoi = rdf.grapoi({ dataset: this.config, term: this.configKey })
+        logger.log('this.configKey = ' + this.configKey.value)
+        logger.poi(servicePoi)
+
+        logger.log('describe Desc')
+        if (this.configKey.value === ns.trm.describe.value) {
+            this.describe()
+        }
+        // nowe get the bits
+        // process.exit()
+
+    }
+
+    describe() {
+        logger.log('describe')
+        const inputs = this.getInputKeys()
+        const outputs = this.getOutputKeys()
+        for (var input of inputs) {
+            logger.log('input = ' + input)
+            logger.log(this.context[input] + ' = ' + this.context[input])
+        }
+        for (var output of outputs) {
+            logger.log('output = ' + output)
+            logger.log(this.context[output] + ' = ' + this.context[output])
+        }
     }
 
     /**
+     * TODO refactor
+     * 
      * Locates the configuration node in services.ttl for the service.
      * @returns {Object} - The configuration node.
      */
-    locateConfig() {
+    // is this duplicating? getMyConfig() 
+    /*
+        getMyConfig() {
+            const dataset = this.config
+            const poi = grapoi({ dataset, term: this.configKey }).in()
+            const configNode = poi.out(ns.trm.value)
+            return configNode
+        }
+    */
+    /** SHOULD REPLACE THE ABOVE AND USE THE BLOCK NAME FOR ID
+ * Locates the configuration node in services.ttl for the service.
+ * @returns {Object} - The configuration node.
+ */
+    // is this duplicating? 
+    getMyConfigNode() {
         const dataset = this.config
-        const poi = grapoi({ dataset, term: this.configKey }).in()
-        const configNode = poi.out(ns.trm.value)
-        return configNode
+        const configNode = grapoi({ dataset, term: this.configKey }).in()
+        return configNode.term
+    }
+
+    getMyPoi() {
+        const dataset = this.config
+        const myConfigNode = this.getMyConfigNode()
+        const poi = grapoi({ dataset: dataset, term: myConfigNode })
+        return poi
+    }
+
+    async addPropertyToMyConfig(predicate, value) {
+        logger.log('addPropertyToMyConfig predicate = ' + predicate)
+        logger.log('addPropertyToMyConfig value = ' + value)
+        const myConfigNode = this.getMyConfigNode()
+        const s = myConfigNode.value
+        logger.log('addPropertyToMyConfig  myConfigNode.value = ' + myConfigNode.value)
+        const dataset = this.config
+        dataset.add(myConfigNode, predicate, value)
+        this.config = dataset
+    }
+
+    showMyConfig() {
+        const poi = this.getMyPoi()
+        logger.log('POI = ')
+        logger.poi(poi)
+    }
+    async deletePropertyFromMyConfig(predicate, value) {
+        const myConfigNode = this.getMyConfigNode()
+        const s = myConfigNode.value
+        logger.log('DELETING FROM ' + s)
+        const dataset = this.config
+        dataset.delete(myConfigNode, predicate, value)
+        this.config = dataset
     }
 
     /**
@@ -81,17 +165,52 @@ class Service extends EventEmitter {
         }
     }
 
+    cloneContext(baseContext) {
+        const context = structuredClone(baseContext)
+        if (baseContext.dataset) {
+            //   var dataset = baseContext.dataset
+            //            context.dataset = dataset
+            context.dataset = baseContext.dataset
+        }
+        return context
+    }
+
+
     /**
      * Executes the message queue.
      */
     async executeQueue() {
         this.processing = true
         while (this.messageQueue.length > 0) {
-            const { data, context } = this.messageQueue.shift()
+            let { data, context } = this.messageQueue.shift()
+
+            context = this.cloneContext(context)// TODO make optional
+            this.context = context // IS OK? needed where?
+            // context = structuredClone(context) // TODO make optional
+            // context.dataset = dataset
+            // no idea why this ^^ was necessary, without it the dataset wasn't usable
+            // structuredClone(context, {transfer:[dataset]}) failed too 
+            this.addTag(context)
+
             await this.execute(data, context)
         }
         this.processing = false
     }
+
+    addTag(context) {
+        const tag = this.getTag()
+        if (!context.tags) {
+            context.tags = tag
+            return
+        }
+        context.tags = context.tags + '.' + tag
+        //   logger.log('in Service, tags = ' + context.tags)
+    }
+
+    getTag() {
+        return footpath.urlLastPart(this.id)
+    }
+
 
     /**
      * Executes the processing logic for the service.
@@ -124,13 +243,13 @@ export default Service
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="ContextReader.html">ContextReader</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="Service.html">Service</a></li><li><a href="Stash.html">Stash</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="ContextReader.html">ContextReader</a></li><li><a href="DirWalker.html">DirWalker</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="Service.html">Service</a></li><li><a href="Stash.html">Stash</a></li><li><a href="Templater.html">Templater</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat Apr 27 2024 14:06:06 GMT+0200 (Central European Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat May 18 2024 12:35:26 GMT+0200 (Central European Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>

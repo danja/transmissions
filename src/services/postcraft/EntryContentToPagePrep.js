@@ -33,6 +33,7 @@ class EntryContentToPagePrep extends ProcessService {
 
     context.filepath = context.rootDir + '/' + context.entryContentToPage.targetDir + '/' + context.slug + '.html'
 
+    //   logger.log('\ncontext.filepath  = ' + context.filepath)
     // /home/danny/HKMS/postcraft/danny.ayers.name/layouts/mediocre
     this.emit('message', false, context)
   }

@@ -7,11 +7,10 @@ import logger from '../../utils/Logger.js'
  * Reads a Turtle file and adds it to the context as a dataset.
  * 
  * #### __*Input*__
- * **data** : root dir containing manifest.ttl
+ * **data** : TODO move ... root dir containing manifest.ttl
  * **context** : any
  * #### __*Output*__
- * **data** : as Input
- * **context** : adds rootDir, dataset (RDF) 
+ * **context** : rootDir, dataset (RDF) 
  * @extends SourceService
  */
 class ContextReader extends SourceService {
@@ -25,11 +24,11 @@ class ContextReader extends SourceService {
     }
 
     getInputKeys() { // TODO this should all be declarative
-        return ['fuckall']
+        return ['sdfsdf']
     }
 
     getOutputKeys() {
-        return ['dataset']
+        return ['sdfsdfsdfdataset']
     }
 
 
@@ -38,7 +37,7 @@ class ContextReader extends SourceService {
      * @param {string} rootDir - The root directory.
      * @param {Object} context - The context object.
      */
-    async execute(rootDir, context) {
+    async execute(rootDir, context) { // TODO change to one argument 
         this.preProcess(context)
         const manifestFilename = rootDir + '/manifest.ttl'
         const stream = fromFile(manifestFilename)

@@ -14,26 +14,31 @@ class FrontPagePrep extends ProcessService {
   }
 
   async execute(data, context) {
-    // bits for templater
-    context.templateFilename = context.rootDir + '/' + context.indexPage.templateFilename
+    try {
+      // bits for templater
+      context.templateFilename = context.rootDir + '/' + context.indexPage.templateFilename
 
-    logger.log('TERMPLATE = ' + context.templateFilename)
-    const rawEntryPaths = this.resolveRawEntryPaths(context)
-    context.content = ''
-    // TODO move this out to template and/or separate services
-    for (var f of rawEntryPaths) {
-      context.content += (await readFile(f)).toString()
+      logger.log('TERMPLATE = ' + context.templateFilename)
+      const rawEntryPaths = this.resolveRawEntryPaths(context)
+      context.content = ''
+      // TODO move this out to template and/or separate services
+      for (var f of rawEntryPaths) {
+        context.content += (await readFile(f)).toString()
+      }
+
+      // needed?
+      context.contentBlocks.content = context.content
+      //  "indexPage": {
+      //  "filepath": "public/blog/index.html",
+      context.filepath = context.rootDir + '/' + context.indexPage.filepath
+      // context.rootDir + '/' + context.entryContentToPage.targetDir + '/' + context.slug + '.html'
+
+      // /home/danny/HKMS/postcraft/danny.ayers.name/layouts/mediocre
+      this.emit('message', false, context)
+    } catch (err) {
+      logger.error('Error in FrontPagePrep')
+      logger.error(err)
     }
-
-    // needed?
-    context.contentBlocks.content = context.content
-    //  "indexPage": {
-    //  "filepath": "public/blog/index.html",
-    context.filepath = context.rootDir + '/' + context.indexPage.filepath
-    // context.rootDir + '/' + context.entryContentToPage.targetDir + '/' + context.slug + '.html'
-
-    // /home/danny/HKMS/postcraft/danny.ayers.name/layouts/mediocre
-    this.emit('message', false, context)
   }
 
   resolveRawEntryPaths(context) {

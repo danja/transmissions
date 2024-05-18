@@ -39,40 +39,43 @@ class DirWalker extends SourceService {
      * @returns {Promise<void>} A promise that resolves when the directory walking process is complete.
      */
     async execute(data, context) {
-        const contextClone = structuredClone(context) // move?
-        await this.emitThem(contextClone)
+
+        await this.emitThem(context)
 
 
         // logger.error("§§§ DirWalker emit true : " + contextClone.done)
-        contextClone.done = true
+        context.done = true
         //  logger.error("§§§ DirWalker emit B : " + contextClone.done)
-        this.emit('message', false, contextClone)
+        this.emit('message', false, context)
     }
 
-    async emitThem(contextClone) {
-        contextClone.slugs = []
-        contextClone.done = false // maybe insert earlier
-        const dirPath = contextClone.rootDir + '/' + contextClone.sourceDir
+    async emitThem(context) {
+        context.counter = 0
+        context.slugs = []
+        context.done = false // maybe insert earlier
+        const dirPath = context.rootDir + '/' + context.sourceDir
         try {
             const entries = await readdir(dirPath, { withFileTypes: true })
             for (const entry of entries) {
                 const fullPath = join(dirPath, entry.name)
                 if (entry.isDirectory()) {
-                    await this.execute(entry.name, contextClone) // rearrange to make things easier to read?
+                    await this.execute(entry.name, context) // rearrange to make things easier to read?
                 } else {
                     // Check if the file extension is in the list of desired extensions
                     if (this.desiredExtensions.includes(extname(entry.name))) {
 
-                        contextClone.filename = entry.name
-                        contextClone.filepath = contextClone.sourceDir + '/' + entry.name
-                        const slug = this.extractSlug(contextClone.filename)
-                        contextClone.slugs.push(slug)
+                        context.filename = entry.name
+                        context.filepath = context.sourceDir + '/' + entry.name
+                        const slug = this.extractSlug(context.filename)
+                        context.slugs.push(slug)
                         // globalish
-                        //    this.addPropertyToMyConfig(ns.trm.postPath, rdf.literal(contextClone.filename))
+                        //    this.addPropertyToMyConfig(ns.trm.postPath, rdf.literal(context.filename))
                         //  logger.log('CONFIG : ' + this.config)
 
                         //   this.showMyConfig()
-                        contextClone.done = false
+                        context.done = false
+                        context.counter = context.counter + 1
+                        const contextClone = structuredClone(context) // move?
                         this.emit('message', false, contextClone)
                     }
                 }

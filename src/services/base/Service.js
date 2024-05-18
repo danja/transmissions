@@ -24,6 +24,7 @@ class Service extends EventEmitter {
     }
 
     preProcess(context) {
+        return
         /* NOPE
         if (context.done) {
             this.emit('message', false, context)
@@ -35,7 +36,7 @@ class Service extends EventEmitter {
         logger.log('this.configKey = ' + this.configKey.value)
         logger.poi(servicePoi)
 
-        logger.log('describe motherfucker')
+        logger.log('describe Desc')
         if (this.configKey.value === ns.trm.describe.value) {
             this.describe()
         }
@@ -45,7 +46,7 @@ class Service extends EventEmitter {
     }
 
     describe() {
-        logger.log('describe motherfucker')
+        logger.log('describe')
         const inputs = this.getInputKeys()
         const outputs = this.getOutputKeys()
         for (var input of inputs) {

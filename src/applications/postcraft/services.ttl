@@ -22,9 +22,9 @@ t:walkPrep a trm:ReMap ;
    #         trm:post    "filename"  .
  
 t:entryRawPrep a trm:ReMap ;
-    trm:rename (t:er3) . 
- #   t:er1   trm:pre     "entryContentMeta.targetFilename" ;
-  #          trm:post    "filepath" . 
+    trm:rename (t:er1 t:er3) . 
+   t:er1   trm:pre     "targetFilename" ;
+            trm:post    "filepath" . 
     t:er3   trm:pre     "content" ;
             trm:post    "contentBlocks.content" .
 

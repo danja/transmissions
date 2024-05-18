@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: FileReader</title>
+    <title>JSDoc: Class: DirWalker</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: FileReader</h1>
+    <h1 class="page-title">Class: DirWalker</h1>
 
     
 
@@ -28,15 +28,9 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>FileReader<span class="signature">(config)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>DirWalker<span class="signature">(config)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>FileReader class that extends SourceService.
-Reads the content of a file and emits a 'message' event with the content and context.</p>
-<h4><strong><em>Input</em></strong></h4>
-<p><strong>context.filepath</strong></p>
-<h4><strong><em>Output</em></strong></h4>
-<p><strong>context.content</strong></p>
-<p>if context.loadContext is set, that is used as a name in the context for the file content</p></div>
+            <div class="class-description"><p>Represents a directory walker service that traverses a directory and emits messages for files with desired extensions.</p></div>
         
     
 </header>
@@ -51,7 +45,7 @@ Reads the content of a file and emits a 'message' event with the content and con
     
 
     
-    <h4 class="name" id="FileReader"><span class="type-signature"></span>new FileReader<span class="signature">(config)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="DirWalker"><span class="type-signature"></span>new DirWalker<span class="signature">(config)</span><span class="type-signature"></span></h4>
     
 
     
@@ -59,7 +53,7 @@ Reads the content of a file and emits a 'message' event with the content and con
 
 
 <div class="description">
-    <p>Constructs a new FileReader instance.</p>
+    <p>Creates an instance of DirWalker.</p>
 </div>
 
 
@@ -111,7 +105,7 @@ Reads the content of a file and emits a 'message' event with the content and con
 
             
 
-            <td class="description last"><p>The configuration object.</p></td>
+            <td class="description last"><p>The configuration object for the DirWalker service.</p></td>
         </tr>
 
     
@@ -152,7 +146,7 @@ Reads the content of a file and emits a 'message' event with the content and con
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_fs_FileReader.js.html">services/fs/FileReader.js</a>, <a href="services_fs_FileReader.js.html#line15">line 15</a>
+        <a href="services_fs_DirWalker.js.html">services/fs/DirWalker.js</a>, <a href="services_fs_DirWalker.js.html#line22">line 22</a>
     </li></ul></dd>
     
 
@@ -186,6 +180,17 @@ Reads the content of a file and emits a 'message' event with the content and con
     </div>
 
     
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li>SourceService</li>
+    </ul>
+
+
+    
 
     
 
@@ -208,7 +213,7 @@ Reads the content of a file and emits a 'message' event with the content and con
     
 
     
-    <h4 class="name" id="execute"><span class="type-signature">(async) </span>execute<span class="signature">(filepath, context)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="execute"><span class="type-signature">(async) </span>execute<span class="signature">(data, context)</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span></h4>
     
 
     
@@ -216,7 +221,7 @@ Reads the content of a file and emits a 'message' event with the content and con
 
 
 <div class="description">
-    <p>Reads the content of a file and emits a 'message' event with the content and context.</p>
+    <p>Executes the directory walking process.</p>
 </div>
 
 
@@ -252,13 +257,13 @@ Reads the content of a file and emits a 'message' event with the content and con
 
         <tr>
             
-                <td class="name"><code>filepath</code></td>
+                <td class="name"><code>data</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">any</span>
 
 
             
@@ -268,7 +273,7 @@ Reads the content of a file and emits a 'message' event with the content and con
 
             
 
-            <td class="description last"><p>The name of the file to read.</p></td>
+            <td class="description last"><p>The data to be passed to the execute method.</p></td>
         </tr>
 
     
@@ -291,7 +296,7 @@ Reads the content of a file and emits a 'message' event with the content and con
 
             
 
-            <td class="description last"><p>The context object.</p></td>
+            <td class="description last"><p>The context object containing information about the directory and source file.</p></td>
         </tr>
 
     
@@ -332,7 +337,7 @@ Reads the content of a file and emits a 'message' event with the content and con
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_fs_FileReader.js.html">services/fs/FileReader.js</a>, <a href="services_fs_FileReader.js.html#line30">line 30</a>
+        <a href="services_fs_DirWalker.js.html">services/fs/DirWalker.js</a>, <a href="services_fs_DirWalker.js.html#line41">line 41</a>
     </li></ul></dd>
     
 
@@ -357,6 +362,28 @@ Reads the content of a file and emits a 'message' event with the content and con
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise that resolves when the directory walking process is complete.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;void></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
