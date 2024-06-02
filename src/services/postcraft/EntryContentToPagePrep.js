@@ -18,13 +18,6 @@ class EntryContentToPagePrep extends ProcessService {
       return
     }
 
-    /*
-      "entryContentToPage": {
-    "sourceDir": "public/post-content-cache",
-    "targetDir": "public/blog",
-    "templateFilename": "layouts/mediocre/post-page_template.njk"
-  },
-  */
     context.templateFilename = context.rootDir + '/' + context.entryContentToPage.templateFilename
 
     context.template = false
