@@ -8,7 +8,7 @@ class ShowMessage extends SinkService {
         this.verbose = false
     }
 
-    async execute(data, context) {
+    async execute(context) {
 
         //    logger.log("\n\nStringSink outputs : \"" + data + "\"\n\n")
 
@@ -33,7 +33,7 @@ class ShowMessage extends SinkService {
         //   console.trace() // move to Logger, only when debugging
         // logger.log("***************************")
 
-        this.emit('message', data, context)
+        this.emit('message', context)
     }
 }
 

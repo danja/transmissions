@@ -83,7 +83,7 @@ class ConfigMap extends ProcessService {
       }
     }
     //  process.exit()
-    this.emit('message', false, context)
+    this.emit('message', context)
     // logger.log('ConfigMap context.templateFilename  = ' + context.templateFilename)
     // this.emit('message', context.templateFilename, context)
   }

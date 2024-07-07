@@ -74,7 +74,7 @@ class DirWalker extends SourceService {
         // logger.error("§§§ DirWalker emit true : " + contextClone.done)
         contextClone.done = true
         //  logger.error("§§§ DirWalker emit B : " + contextClone.done)
-        this.emit('message', false, contextClone)
+        this.emit('message', contextClone)
     }
 
     async emitThem(contextClone) {
@@ -101,7 +101,7 @@ class DirWalker extends SourceService {
 
                         //   this.showMyConfig()
                         contextClone.done = false
-                        this.emit('message', false, contextClone)
+                        this.emit('message', contextClone)
                     }
                 }
             }

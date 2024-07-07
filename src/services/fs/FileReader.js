@@ -27,7 +27,7 @@ class FileReader extends SourceService {
      * @param {string} filepath - The name of the file to read.
      * @param {Object} context - The context object.
      */
-    async execute(data, context) {
+    async execute(context) {
         this.preProcess(context)
         //    logger.reveal(context)
         var filepath = context.filepath
@@ -47,7 +47,7 @@ class FileReader extends SourceService {
                 context[context.loadContext] = content
             }
             */
-            this.emit('message', false, context)
+            this.emit('message', context)
         } catch (err) {
             logger.error("FileReader.execute error : " + err.message)
         }

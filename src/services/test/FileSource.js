@@ -21,7 +21,7 @@ class FileSource extends SourceService {
         this.sourceFile = poi.out(ns.trm.sourceFile).value
     }
 
-    async execute(data, context) {
+    async execute(context) {
         try {
             const toRootDir = '../../../'
             const dataDir = toRootDir + context.dataDir

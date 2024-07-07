@@ -28,14 +28,14 @@ class Stash extends SourceService {
      * @param {string} data -.
      * @param {Object} context - .
      */
-    async execute(data, context) {
+    async execute(context) {
         const manifestFilename = rootDir + '/manifest.ttl'
         const stream = fromFile(manifestFilename)
 
         // should append RDF to incoming
         context.rootDir = rootDir
         context.dataset = await rdf.dataset().import(stream)
-        this.emit('message', false, context)
+        this.emit('message', context)
     }
 }
 export default Stash

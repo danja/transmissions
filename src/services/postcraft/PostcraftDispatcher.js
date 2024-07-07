@@ -33,7 +33,7 @@ class PostcraftDispatcher extends ProcessService {
    * @param {Object} data - The data object.
    * @param {Object} context - The context object.
    */
-  async execute(data, context) {
+  async execute(context) {
     const postcraftConfig = context.dataset
     context.template = data.toString()
     logger.log('PostcraftDispatcherPostcraftDispatcherPostcraftDispatcher ' + data)

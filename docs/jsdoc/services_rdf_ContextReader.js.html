@@ -74,7 +74,7 @@ class ContextReader extends SourceService {
         context.rootDir = rootDir
         context.dataset = await rdf.dataset().import(stream)
         //  logger.log('DATASET = \n' + context.dataset)
-        this.emit('message', false, context)
+        this.emit('message', context)
     }
 }
 export default ContextReader </code></pre>

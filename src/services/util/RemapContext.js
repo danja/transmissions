@@ -12,7 +12,7 @@ class RemapContext extends Service {
         super(config)
     }
 
-    async execute(data, context) {
+    async execute(context) {
         if (this.preProcess(context)) {
             return
         }
@@ -54,7 +54,7 @@ class RemapContext extends Service {
             logger.log(' - Rename : ' + pre + ' to ' + post)
         }
         // process.exit()
-        this.emit('message', data, context)
+        this.emit('message', context)
     }
 }
 // new name test

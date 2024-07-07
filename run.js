@@ -13,7 +13,9 @@ const applicationsDir = './src/applications'
 // logger.log('DESCRIBE ' + await transmission.describe())
 
 class CommandUtils {
-    static async run(dir, data, context) {
+    static async run(dir, data, context = {}) {
+        context.dataString = data // TODO tidy/remove
+        //    context.rootDir = dir
         logger.setLogLevel("info")
         logger.debug("Hello, logger!")
         logger.debug("process.cwd() = " + process.cwd())
@@ -23,7 +25,7 @@ class CommandUtils {
 
         const transmission = await TransmissionBuilder.build(transmissionConfigFile, servicesConfigFile)
 
-        transmission.execute(data, context)
+        transmission.execute(context)
     }
 
     static async parseOrLoadContext(contextArg) {
@@ -97,14 +99,19 @@ if (process.argv.length <= 2) {
             const defaultDataDir = path.join(transmissionPath, '/data')
 
 
+
             // TODO revisit base context, add constructor.name?
             context = { "dataDir": defaultDataDir }
+            context.rootDir = input
 
             // If a context argument was provided, parse or load it
             if (contextArg) {
                 context = await CommandUtils.parseOrLoadContext(contextArg);
             }
-
+            logger.log('transmissionPath = ' + transmissionPath)
+            logger.log('input = ' + input)
+            logger.log('context = ')
+            logger.reveal(context)
 
             await CommandUtils.run(transmissionPath, input, context) // Pass additional data and context as needed
         })

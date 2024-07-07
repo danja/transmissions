@@ -13,7 +13,7 @@ class FrontPagePrep extends ProcessService {
     super(config)
   }
 
-  async execute(data, context) {
+  async execute(context) {
     try {
       // bits for templater
       context.templateFilename = context.rootDir + '/' + context.indexPage.templateFilename
@@ -39,7 +39,7 @@ class FrontPagePrep extends ProcessService {
       // context.rootDir + '/' + context.entryContentToPage.targetDir + '/' + context.slug + '.html'
 
       // /home/danny/HKMS/postcraft/danny.ayers.name/layouts/mediocre
-      this.emit('message', false, context)
+      this.emit('message', context)
     } catch (err) {
       logger.error('Error in FrontPagePrep')
       logger.error(err)

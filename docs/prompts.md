@@ -1,3 +1,27 @@
+#### 2024-07-06
+
+Currently the code is set up around passing messages of the form execute(data, context) where data is a string and context is a dictionary.
+I wish to refactor the code under src such that the methods with a signature like this:
+
+```
+execute(data, context)
+enqueue(data, context)
+messageQueue.push({ data, context })
+```
+
+are changed to this:
+
+```
+execute(context)
+enqueue(context)
+messageQueue.push({ context })
+```
+
+to start I think it will be best to modify the code under src/applications to move the data argument into the context dictionary so: {data: data}
+Can you advise how best to proceed methodically, step-by-step?
+
+---
+
 ## Cursor
 
 Please create a new jsconfig.json file for this project. Include everything relevant you find in this codebase. The project is in ES6 format. I wish to use intellisense in VSCode. Please add appropriate references to the libraries in use, including the typescript interface definitions in @types/grapoi.d.ts

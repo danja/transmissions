@@ -12,7 +12,7 @@ class PostcraftPrep extends ProcessService {
     super(config)
   }
 
-  async execute(data, context) {
+  async execute(context) {
     // this.preProcess(context)
     // logger.log('----------BEFORE------------')
     // logger.reveal(context)
@@ -35,7 +35,7 @@ class PostcraftPrep extends ProcessService {
     // logger.log('----------AFTER------------')
     // logger.reveal(context)
     //process.exit(0)
-    this.emit('message', false, context)
+    this.emit('message', context)
   }
 
   // TODO lots of tidying up

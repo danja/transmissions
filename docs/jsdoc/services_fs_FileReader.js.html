@@ -75,7 +75,7 @@ class FileReader extends SourceService {
                 context[context.loadContext] = content
             }
             */
-            this.emit('message', false, context)
+            this.emit('message', context)
         } catch (err) {
             logger.error("FileReader.execute error : " + err.message)
         }

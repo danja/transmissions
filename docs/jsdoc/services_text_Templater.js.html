@@ -86,7 +86,7 @@ class Templater extends ProcessService {
             nunjucks.configure({ autoescape: false }); // otherwise use a string
             context.content = nunjucks.renderString(context.template, context.contentBlocks)
         }
-        this.emit('message', false, context)
+        this.emit('message', context)
     }
 }
 

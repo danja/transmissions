@@ -7,8 +7,8 @@ class ProcessService extends Service {
     }
 
 
-    async execute(data, context) {
-        this.emit('message', data, context)
+    async execute(context) {
+        this.emit('message', context)
     }
 }
 

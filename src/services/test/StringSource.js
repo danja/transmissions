@@ -6,10 +6,10 @@ class StringSource extends SourceService {
         super(config)
     }
 
-    async execute(data, context) {
+    async execute(context) {
         console.log("context = " + context)
         console.log("data = " + data)
-        this.emit('message', data, context)
+        this.emit('message', context)
     }
 }
 

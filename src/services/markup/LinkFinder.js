@@ -5,9 +5,9 @@ import ProcessService from '../base/ProcessService.js'
 
 class LinkFinder extends ProcessService {
 
-    async execute(data, context) {
+    async execute(context) {
 
-        await this.extractLinks(data, context)
+        await this.extractLinks(context)
 
         if (data === '~~done~~') {
             logger.log('LF DONE*****************')
@@ -16,9 +16,9 @@ class LinkFinder extends ProcessService {
         }
     }
 
-    emitLocal(label, data, context) {
+    emitLocal(label, context) {
         logger.log('emitLocal === ' + data)
-        this.emit(label, data, context)
+        this.emit(label, context)
     }
 
     relocate(filename, extension) {

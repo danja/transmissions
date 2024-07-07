@@ -34,19 +34,18 @@ class ContextReader extends SourceService {
 
     /**
      * Execute the ContextReader service.
-     * @param {string} rootDir - The root directory.
      * @param {Object} context - The context object.
      */
-    async execute(rootDir, context) { // TODO change to one argument 
+    async execute(context) { // TODO change to one argument 
         this.preProcess(context)
-        const manifestFilename = rootDir + '/manifest.ttl'
+        const manifestFilename = context.rootDir + '/manifest.ttl'
         const stream = fromFile(manifestFilename)
 
         // should append RDF to incoming
-        context.rootDir = rootDir
+        //   context.rootDir = rootDir
         context.dataset = await rdf.dataset().import(stream)
         //  logger.log('DATASET = \n' + context.dataset)
-        this.emit('message', false, context)
+        this.emit('message', context)
     }
 }
 export default ContextReader 

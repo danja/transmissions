@@ -5,7 +5,7 @@ import ProcessService from '../base/ProcessService.js'
 
 class MetadataExtractor extends ProcessService {
 
-    async execute(data, context) {
+    async execute(context) {
         const filename = data.filename
         const content = data.content
 

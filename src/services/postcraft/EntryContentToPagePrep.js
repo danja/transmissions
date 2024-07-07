@@ -12,9 +12,9 @@ class EntryContentToPagePrep extends ProcessService {
     super(config)
   }
 
-  async execute(data, context) {
+  async execute(context) {
     if (context.done) {
-      this.emit('message', false, context)
+      this.emit('message', context)
       return
     }
 
@@ -28,7 +28,7 @@ class EntryContentToPagePrep extends ProcessService {
 
     //   logger.log('\ncontext.filepath  = ' + context.filepath)
     // /home/danny/HKMS/postcraft/danny.ayers.name/layouts/mediocre
-    this.emit('message', false, context)
+    this.emit('message', context)
   }
 
 }

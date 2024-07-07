@@ -12,7 +12,7 @@ class LineReader extends ProcessService {
         super(config)
     }
 
-    async execute(data, context) {
+    async execute(context) {
 
         const text = data.toString()
 

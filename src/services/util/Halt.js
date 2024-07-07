@@ -3,7 +3,7 @@ import Service from '../base/Service.js'
 
 class Halt extends Service {
 
-    execute(data, context) {
+    execute(context) {
         logger.log('\n************************************************************************')
         logger.log('*** << Thou Hast Summoned HALT, the Mighty Stopper of All Things  >> ***')
         logger.log('*** <<                   ~~~ ALL IS GOOD ~~~                      >> ***')

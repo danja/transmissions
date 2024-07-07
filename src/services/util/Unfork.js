@@ -20,12 +20,12 @@ class Unfork extends Service {
 */
     }
 
-    async execute(data, context) {
+    async execute(context) {
 
         if (context.done) {
             logger.log(' - Unfork passing message')
             context.done = false // in case it's needed later
-            this.emit('message', false, context)
+            this.emit('message', context)
         } else {
             logger.log(' - Unfork terminating pipe')
         }

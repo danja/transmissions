@@ -6,7 +6,7 @@ class SourceService extends Service {
     }
 
     /*
-    async execute(data, context) {
+    async execute(context) {
         logger.log('in SourceService, data = ' + data)
         return data
     }

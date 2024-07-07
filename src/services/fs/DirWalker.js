@@ -38,7 +38,7 @@ class DirWalker extends SourceService {
      * @param {Object} context - The context object containing information about the directory and source file.
      * @returns {Promise<void>} A promise that resolves when the directory walking process is complete.
      */
-    async execute(data, context) {
+    async execute(context) {
 
         await this.emitThem(context)
 
@@ -46,7 +46,7 @@ class DirWalker extends SourceService {
         // logger.error("§§§ DirWalker emit true : " + contextClone.done)
         context.done = true
         //  logger.error("§§§ DirWalker emit B : " + contextClone.done)
-        this.emit('message', false, context)
+        this.emit('message', context)
     }
 
     async emitThem(context) {
@@ -76,7 +76,7 @@ class DirWalker extends SourceService {
                         context.done = false
                         context.counter = context.counter + 1
                         const contextClone = structuredClone(context) // move?
-                        this.emit('message', false, contextClone)
+                        this.emit('message', contextClone)
                     }
                 }
             }

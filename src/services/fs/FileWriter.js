@@ -34,7 +34,7 @@ class FileWriter extends SinkService {
      * Executes the write operation.
      * @param {Object} context - The execution context.
      */
-    async execute(data, context) {
+    async execute(context) {
         this.preProcess()
         var filepath = context.filepath
 
@@ -55,7 +55,7 @@ class FileWriter extends SinkService {
             logger.error("FileWriter.execute error : " + err.message)
         }
 
-        this.emit('message', data, context)
+        this.emit('message', context)
     }
 
     async mkdirs(dir) {

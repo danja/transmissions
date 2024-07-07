@@ -27,7 +27,7 @@ class Templater extends ProcessService {
      * @param {object} data - The data object to be used for templating.
      * @param {object} context - The context object containing template information.
      */
-    async execute(data, context) {
+    async execute(context) {
 
         if (context.templateFilename) { // if there's a filename, use it
             //    logger.log('*************************************************************')
@@ -58,7 +58,7 @@ class Templater extends ProcessService {
             nunjucks.configure({ autoescape: false }); // otherwise use a string
             context.content = nunjucks.renderString(context.template, context.contentBlocks)
         }
-        this.emit('message', false, context)
+        this.emit('message', context)
     }
 }
 

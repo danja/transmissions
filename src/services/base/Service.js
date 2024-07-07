@@ -27,7 +27,7 @@ class Service extends EventEmitter {
         return
         /* NOPE
         if (context.done) {
-            this.emit('message', false, context)
+            this.emit('message', context)
             return true
         }
         return false
@@ -122,8 +122,8 @@ class Service extends EventEmitter {
      * @param {*} data - The data to be processed.
      * @param {*} context - The context for processing.
      */
-    async receive(data, context) {
-        await this.enqueue(data, context)
+    async receive(context) {
+        await this.enqueue(context)
     }
 
     /**
@@ -131,8 +131,8 @@ class Service extends EventEmitter {
      * @param {*} data - The data to be processed.
      * @param {*} context - The context for processing.
      */
-    async enqueue(data, context) {
-        this.messageQueue.push({ data, context })
+    async enqueue(context) {
+        this.messageQueue.push({ context })
         if (!this.processing) {
             this.executeQueue()
         }
@@ -155,7 +155,7 @@ class Service extends EventEmitter {
     async executeQueue() {
         this.processing = true
         while (this.messageQueue.length > 0) {
-            let { data, context } = this.messageQueue.shift()
+            let { context } = this.messageQueue.shift()
 
             context = this.cloneContext(context)// TODO make optional
             this.context = context // IS OK? needed where?
@@ -165,7 +165,7 @@ class Service extends EventEmitter {
             // structuredClone(context, {transfer:[dataset]}) failed too 
             this.addTag(context)
 
-            await this.execute(data, context)
+            await this.execute(context)
         }
         this.processing = false
     }
@@ -190,7 +190,7 @@ class Service extends EventEmitter {
      * @param {*} data - The data to be processed.
      * @param {*} context - The context for processing.
      */
-    async execute(data, context) {
+    async execute(context) {
         throw new Error('execute method not implemented')
     }
 
@@ -200,8 +200,8 @@ class Service extends EventEmitter {
      * @param {*} data - The data to emit.
      * @param {*} context - The context for emitting.
      */
-    async doEmit(message, data, context) {
-        this.emit(message, data, context)
+    async doEmit(message, context) {
+        this.emit(message, context)
     }
 }
 

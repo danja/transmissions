@@ -1,8 +1,12 @@
 ## transmissions TODO
 
-transmissions topology - multiple lists, series/parallel
-
 # Next Steps
+
+- [ ] revise tests for
+
+---
+
+transmissions topology - multiple lists, series/parallel
 
 running a single Halt fails - connect
 

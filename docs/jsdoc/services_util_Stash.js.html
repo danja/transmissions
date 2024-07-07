@@ -63,7 +63,7 @@ class Stash extends SourceService {
         // should append RDF to incoming
         context.rootDir = rootDir
         context.dataset = await rdf.dataset().import(stream)
-        this.emit('message', false, context)
+        this.emit('message', context)
     }
 }
 export default Stash</code></pre>

@@ -20,12 +20,12 @@ only for testing for now
             var context = this.cloneContext(baseContext)
             context.done = false
             logger.log('--- emit --- ' + i)
-            this.emit('message', false, context)
+            this.emit('message', context)
         }
         var context = this.cloneContext(baseContext)
         context.done = true
 
-        this.emit('message', false, context)
+        this.emit('message', context)
 
     }
 

@@ -54,7 +54,7 @@ class Service extends EventEmitter {
     preProcess(context) {
         /* NOPE
         if (context.done) {
-            this.emit('message', false, context)
+            this.emit('message', context)
             return true
         }
         return false

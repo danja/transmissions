@@ -7,7 +7,7 @@ class StringMerger extends ProcessService {
         this.merged = ''
     }
 
-    async execute(data, context) {
+    async execute(context) {
         logger.log('SMDATA*********************************\n' + data)
 
         if (data === '~~done~~') {

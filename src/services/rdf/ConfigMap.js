@@ -31,7 +31,7 @@ class ConfigMap extends ProcessService {
    * @param {Object} context - The context object.
    * TODO this desperately needs refactoring, generalising a bit 
   */
-  async execute(data, context) {
+  async execute(context) {
     this.preProcess(context)
     //const postcraftConfig = context.dataset
     //logger.log(' = \n' + context.dataset)
@@ -55,7 +55,7 @@ class ConfigMap extends ProcessService {
       }
     }
     //  process.exit()
-    this.emit('message', false, context)
+    this.emit('message', context)
     // logger.log('ConfigMap context.templateFilename  = ' + context.templateFilename)
     // this.emit('message', context.templateFilename, context)
   }
