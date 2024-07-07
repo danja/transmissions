@@ -6,7 +6,7 @@ import path from 'path';
 
 import logger from './src/utils/Logger.js'
 
-import TransmissionBuilder from './src/mill/TransmissionBuilder.js'
+import TransmissionBuilder from './src/engine/TransmissionBuilder.js'
 
 const applicationsDir = './src/applications'
 
