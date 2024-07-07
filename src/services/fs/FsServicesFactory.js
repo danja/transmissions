@@ -4,7 +4,8 @@ import ns from '../../utils/ns.js'
 import DirWalker from './DirWalker.js'
 import FileReader from './FileReader.js'
 import FileWriter from './FileWriter.js'
-
+import FileCopy from './FileCopy.js'
+import FileRemove from './FileRemove.js'
 
 class FsServicesFactory {
     static createService(type, config) {
@@ -16,6 +17,12 @@ class FsServicesFactory {
         }
         if (type.equals(ns.t.FileWriter)) {
             return new FileWriter(config)
+        }
+        if (type.equals(ns.t.FileCopy)) {
+            return new FileCopy(config)
+        }
+        if (type.equals(ns.t.FileRemove)) {
+            return new FileRemove(config)
         }
         return false
     }
