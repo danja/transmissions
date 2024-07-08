@@ -237,7 +237,7 @@ Can imports go in eval() strings?
 ChatGPT
 Using `import` statements directly within `eval()` strings in JavaScript does not work in the same way as using them at the top level of modules or through dynamic `import()` expressions. The static `import` statement is part of the module syntax and expected to be statically analyzable at the top level of module files, not dynamically executed within function bodies, `eval()`, or similar constructs.
 
-However, dynamic imports using `import()` can be used within `eval()` because `import()` is a function that returns a promise. This allows for dynamically importing modules even in contexts where static import statements are not syntactically valid. Here's an example:
+However, dynamic imports using `import()` can be used within `eval()` because `import()` is a function that returns a promise. This allows for dynamically importing modules even in messages where static import statements are not syntactically valid. Here's an example:
 
 ```javascript
 eval('import("./module.js").then(module => { console.log(module); })');

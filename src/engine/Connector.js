@@ -15,16 +15,16 @@ class Connector extends EventEmitter {
         let fromService = services[this.fromName]
         let toService = services[this.toName]
 
-        fromService.on('message', (context) => { //  = {}
+        fromService.on('message', (message) => { //  = {}
             var tags = ''
-            //     if (toService.context) {
-            tags = ' (' + fromService.context.tags + ') '
+            //     if (toService.message) {
+            tags = ' (' + fromService.message.tags + ') '
             toService.tags = tags // TODO tidy
             //   }
             const thisTag = footpath.urlLastPart(this.toName)
             logger.log("| Running : " + tags + thisTag + " a " + toService.constructor.name)
 
-            toService.receive(context)
+            toService.receive(message)
         })
     }
 

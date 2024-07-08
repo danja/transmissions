@@ -7,15 +7,15 @@ import SinkService from '../base/SinkService.js'
  * FileWriter class that extends SinkService
  * Write data to a file.
  * 
- * First checks `context.targetFilepath` and if not set, uses the value from `services.ttl` using `configKey` for this service instance.
+ * First checks `message.targetFilepath` and if not set, uses the value from `services.ttl` using `configKey` for this service instance.
  * 
  * #### __*Input*__
- * * context.filepath 
- * * context.content
+ * * message.filepath 
+ * * message.content
  * #### __*Output*__
  * * as Input
  * 
- * if context.loadContext is set, that is used as a name in the context for the file content
+ * if message.loadContext is set, that is used as a name in the message for the file content
  */
 class FileWriter extends SinkService {
 
@@ -32,13 +32,13 @@ class FileWriter extends SinkService {
     }
     /**
      * Executes the write operation.
-     * @param {Object} context - The execution context.
+     * @param {Object} message - The execution message.
      */
-    async execute(context) {
+    async execute(message) {
         this.preProcess()
-        var filepath = context.filepath
+        var filepath = message.filepath
 
-        const content = context.content
+        const content = message.content
 
         //  if (!filepath) {
         //    filepath = this.getMyConfig().value
@@ -55,7 +55,7 @@ class FileWriter extends SinkService {
             logger.error("FileWriter.execute error : " + err.message)
         }
 
-        this.emit('message', context)
+        this.emit('message', message)
     }
 
     async mkdirs(dir) {

@@ -1,7 +1,7 @@
 import { unlink, readdir, stat, rm } from 'node:fs/promises'
 import { join } from 'node:path'
 import logger from '../../utils/Logger.js'
-import Service from '../../base/Service.js'
+import Service from '../base/Service.js'
 
 /**
  * FileRemove class that extends Service.
@@ -19,12 +19,12 @@ class FileRemove extends Service {
 
     /**
      * Removes the specified file or directory contents.
-     * @param {Object} context - The context object.
-     * @param {string} context.remove - The path to the file or directory to remove.
+     * @param {Object} message - The message object.
+     * @param {string} message.remove - The path to the file or directory to remove.
      */
-    async execute(context) {
+    async execute(message) {
         try {
-            const { remove } = context
+            const { remove } = message
             const removeStat = await stat(remove)
 
             if (removeStat.isFile()) {
@@ -33,7 +33,7 @@ class FileRemove extends Service {
                 await this.removeDirectoryContents(remove)
             }
 
-            this.emit('message', context)
+            this.emit('message', message)
         } catch (err) {
             logger.error("FileRemove.execute error: " + err.message)
         }

@@ -4,13 +4,13 @@ import SourceService from '../base/SourceService.js'
 import logger from '../../utils/Logger.js'
 
 /**
- * Reads a Turtle file and adds it to the context as a dataset.
+ * Reads a Turtle file and adds it to the message as a dataset.
  * 
  * #### __*Input*__
  * **data** : TODO move ... root dir containing manifest.ttl
- * **context** : any
+ * **message** : any
  * #### __*Output*__
- * **context** : rootDir, dataset (RDF) 
+ * **message** : rootDir, dataset (RDF) 
  * @extends SourceService
  */
 class ContextReader extends SourceService {
@@ -34,18 +34,18 @@ class ContextReader extends SourceService {
 
     /**
      * Execute the ContextReader service.
-     * @param {Object} context - The context object.
+     * @param {Object} message - The message object.
      */
-    async execute(context) { // TODO change to one argument 
-        this.preProcess(context)
-        const manifestFilename = context.rootDir + '/manifest.ttl'
+    async execute(message) { // TODO change to one argument 
+        this.preProcess(message)
+        const manifestFilename = message.rootDir + '/manifest.ttl'
         const stream = fromFile(manifestFilename)
 
         // should append RDF to incoming
-        //   context.rootDir = rootDir
-        context.dataset = await rdf.dataset().import(stream)
-        //  logger.log('DATASET = \n' + context.dataset)
-        this.emit('message', context)
+        //   message.rootDir = rootDir
+        message.dataset = await rdf.dataset().import(stream)
+        //  logger.log('DATASET = \n' + message.dataset)
+        this.emit('message', message)
     }
 }
 export default ContextReader 

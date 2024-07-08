@@ -3,11 +3,11 @@ import Service from '../base/Service.js'
 
 class NOP extends Service {
 
-    async execute(context) {
+    async execute(message) {
 
-        logger.log('NOP at (' + context.tags + ') ' + this.getTag())
+        logger.log('NOP at (' + message.tags + ') ' + this.getTag())
 
-        this.emit('message', context)
+        this.emit('message', message)
     }
 
     // testing

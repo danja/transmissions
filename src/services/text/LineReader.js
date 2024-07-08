@@ -12,7 +12,7 @@ class LineReader extends ProcessService {
         super(config)
     }
 
-    async execute(context) {
+    async execute(message) {
 
         const text = data.toString()
 
@@ -20,7 +20,7 @@ class LineReader extends ProcessService {
         text.split('\n').forEach(line => {
             if (line.trim() && !line.startsWith('#')) {
                 logger.debug('Line = [[[' + line + ']]]')
-                this.emit('message', line, context)
+                this.emit('message', line, message)
             }
         })
 */
@@ -28,11 +28,11 @@ class LineReader extends ProcessService {
         for await (let line of lines) {
             if (line.trim() && !line.startsWith('#')) {
                 logger.debug('Line = [[[' + line + ']]]')
-                this.emit('message', line, context)
+                this.emit('message', line, message)
             }
         }
 
-        this.emit('message', '~~done~~', context)
+        this.emit('message', '~~done~~', message)
     }
 }
 

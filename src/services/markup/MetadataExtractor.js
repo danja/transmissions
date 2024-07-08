@@ -5,7 +5,7 @@ import ProcessService from '../base/ProcessService.js'
 
 class MetadataExtractor extends ProcessService {
 
-    async execute(context) {
+    async execute(message) {
         const filename = data.filename
         const content = data.content
 
@@ -19,7 +19,7 @@ class MetadataExtractor extends ProcessService {
 
         const output = { filename: targetFilename, content: jsonString }
 
-        this.emit('message', output, context)
+        this.emit('message', output, message)
     }
 
     relocate(filename) {

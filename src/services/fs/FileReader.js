@@ -4,13 +4,13 @@ import SourceService from '../base/SourceService.js'
 
 /**
  * FileReader class that extends SourceService.
- * Reads the content of a file and emits a 'message' event with the content and context.
+ * Reads the content of a file and emits a 'message' event with the content and message.
  * #### __*Input*__
- * **context.filepath** 
+ * **message.filepath** 
  * #### __*Output*__
- * **context.content**
+ * **message.content**
  * 
- * if context.loadContext is set, that is used as a name in the context for the file content
+ * if message.loadContext is set, that is used as a name in the message for the file content
  */
 class FileReader extends SourceService {
 
@@ -23,31 +23,31 @@ class FileReader extends SourceService {
     }
 
     /**
-     * Reads the content of a file and emits a 'message' event with the content and context.
+     * Reads the content of a file and emits a 'message' event with the content and message.
      * @param {string} filepath - The name of the file to read.
-     * @param {Object} context - The context object.
+     * @param {Object} message - The message object.
      */
-    async execute(context) {
-        this.preProcess(context)
-        //    logger.reveal(context)
-        var filepath = context.filepath
+    async execute(message) {
+        this.preProcess(message)
+        //    logger.reveal(message)
+        var filepath = message.filepath
 
         if (!filepath) {
             filepath = this.getMyConfig().value // services.ttl
         }
         logger.log(' - FileReader reading filepath : ' + filepath)
-        const f = context.rootDir + '/' + filepath
+        const f = message.rootDir + '/' + filepath
         //logger.log('####in Filereader f = ' + f)
         try {
-            //   logger.log('####in Filereader ' + context.sourceFile)
-            context.content = (await readFile(f)).toString()
-            //  logger.log('####in Filereader context.content = ' + context.content)
+            //   logger.log('####in Filereader ' + message.sourceFile)
+            message.content = (await readFile(f)).toString()
+            //  logger.log('####in Filereader message.content = ' + message.content)
             /*
-            if (context.loadContext) { // get rid?
-                context[context.loadContext] = content
+            if (message.loadContext) { // get rid?
+                message[message.loadContext] = content
             }
             */
-            this.emit('message', context)
+            this.emit('message', message)
         } catch (err) {
             logger.error("FileReader.execute error : " + err.message)
         }

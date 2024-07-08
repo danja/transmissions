@@ -3,9 +3,9 @@ import Service from '../base/Service.js'
 
 class ShowTransmission extends Service {
 
-    async execute(context) {
+    async execute(message) {
         logger.log(this.transmission.toString())
-        this.emit('message', context)
+        this.emit('message', message)
     }
 }
 

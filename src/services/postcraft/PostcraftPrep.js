@@ -12,61 +12,61 @@ class PostcraftPrep extends ProcessService {
     super(config)
   }
 
-  async execute(context) {
-    // this.preProcess(context)
+  async execute(message) {
+    // this.preProcess(message)
     // logger.log('----------BEFORE------------')
-    // logger.reveal(context)
+    // logger.reveal(message)
 
-    context.slug = this.extractSlug(context)
-    context.targetFilename = this.extractTargetFilename(context) + '.html'
+    message.slug = this.extractSlug(message)
+    message.targetFilename = this.extractTargetFilename(message) + '.html'
 
-    context.contentBlocks = {}
-    // context.contentBlocks.content = context.content
+    message.contentBlocks = {}
+    // message.contentBlocks.content = message.content
 
-    // context.subdir = this.extractSubdir(context)
-    context.contentBlocks.relURL = this.extractRelURL(context)
-    context.contentBlocks.link = context.siteURL + '/' + context.contentBlocks.relURL
-    context.contentBlocks.title = this.extractTitle(context)
+    // message.subdir = this.extractSubdir(message)
+    message.contentBlocks.relURL = this.extractRelURL(message)
+    message.contentBlocks.link = message.siteURL + '/' + message.contentBlocks.relURL
+    message.contentBlocks.title = this.extractTitle(message)
 
-    const { created, updated } = this.extractDates(context)
-    context.contentBlocks.created = created
-    context.contentBlocks.updated = updated
+    const { created, updated } = this.extractDates(message)
+    message.contentBlocks.created = created
+    message.contentBlocks.updated = updated
 
     // logger.log('----------AFTER------------')
-    // logger.reveal(context)
+    // logger.reveal(message)
     //process.exit(0)
-    this.emit('message', context)
+    this.emit('message', message)
   }
 
   // TODO lots of tidying up
-  extractSlug(context) { // TODO move this into a utils file - is also in DirWalker
-    var slug = context.filename
+  extractSlug(message) { // TODO move this into a utils file - is also in DirWalker
+    var slug = message.filename
     if (slug.includes('.')) {
       slug = slug.substr(0, slug.lastIndexOf("."))
     }
     return slug
   }
 
-  extractTargetFilename(context) {
-    return context.rootDir + '/' + context.entryContentMeta.targetDir + '/' + this.extractSlug(context)
+  extractTargetFilename(message) {
+    return message.rootDir + '/' + message.entryContentMeta.targetDir + '/' + this.extractSlug(message)
     /*
         AssertionError: expected '/root//target/2024-05-10_hello-postcr…' to equal '/root/target/2024-05-10_hello-postcra…'
      */
   }
 
-  extractRelURL(context) {
-    return context.subdir + '/' + this.extractSlug(context) + '.html'
+  extractRelURL(message) {
+    return message.subdir + '/' + this.extractSlug(message) + '.html'
     /*
     AssertionError: expected 'target/2024-05-10_hello-postcraft.html' to equal '/target/2024-05-10_hello-postcraft.ht…'
     */
   }
 
-  extractDates(context) {
+  extractDates(message) {
     const today = (new Date()).toISOString().split('T')[0]
     const dates = { created: today, updated: today }
 
     //  eg. 2024-04-19_hello-postcraft.md
-    const nonExt = context.filename.split('.').slice(0, -1).join()
+    const nonExt = message.filename.split('.').slice(0, -1).join()
     const shreds = nonExt.split('_')
     if (Date.parse(shreds[0])) { // filename version is not NaN
       dates.created = shreds[0]
@@ -77,9 +77,9 @@ class PostcraftPrep extends ProcessService {
   // first heading in the markdown 
   // or formatted from filename
   // or raw filename
-  extractTitle(context) {
+  extractTitle(message) {
     let title = 'Title'
-    let match = context.content.toString().match(/^#(.*)$/m)
+    let match = message.content.toString().match(/^#(.*)$/m)
     let contentTitle = match ? match[1].trim() : null
     if (contentTitle) {
       title = contentTitle.replaceAll('#', '') // TODO make nicer
@@ -89,7 +89,7 @@ class PostcraftPrep extends ProcessService {
     // derive from filename
     // eg. 2024-04-19_hello-postcraft.md
     try {
-      const nonExt = context.filename.split('.').slice(0, -1).join()
+      const nonExt = message.filename.split('.').slice(0, -1).join()
       const shreds = nonExt.split('_')
 
       // let title = shreds[1] // fallback, get it from filename
@@ -97,7 +97,7 @@ class PostcraftPrep extends ProcessService {
         .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // capitalize the first letter of each word
         .join(' '); // join the words back together with spaces
     } catch (err) {
-      title = context.filename
+      title = message.filename
     }
     return title
   }

@@ -23,11 +23,11 @@ class Service extends EventEmitter {
         this.done = false
     }
 
-    preProcess(context) {
+    preProcess(message) {
         return
         /* NOPE
-        if (context.done) {
-            this.emit('message', context)
+        if (message.done) {
+            this.emit('message', message)
             return true
         }
         return false
@@ -51,11 +51,11 @@ class Service extends EventEmitter {
         const outputs = this.getOutputKeys()
         for (var input of inputs) {
             logger.log('input = ' + input)
-            logger.log(this.context[input] + ' = ' + this.context[input])
+            logger.log(this.message[input] + ' = ' + this.message[input])
         }
         for (var output of outputs) {
             logger.log('output = ' + output)
-            logger.log(this.context[output] + ' = ' + this.context[output])
+            logger.log(this.message[output] + ' = ' + this.message[output])
         }
     }
 
@@ -118,34 +118,34 @@ class Service extends EventEmitter {
     }
 
     /**
-     * Receives data and context for processing.
+     * Receives data and message for processing.
      * @param {*} data - The data to be processed.
-     * @param {*} context - The context for processing.
+     * @param {*} message - The message for processing.
      */
-    async receive(context) {
-        await this.enqueue(context)
+    async receive(message) {
+        await this.enqueue(message)
     }
 
     /**
-     * Enqueues data and context for processing.
+     * Enqueues data and message for processing.
      * @param {*} data - The data to be processed.
-     * @param {*} context - The context for processing.
+     * @param {*} message - The message for processing.
      */
-    async enqueue(context) {
-        this.messageQueue.push({ context })
+    async enqueue(message) {
+        this.messageQueue.push({ message })
         if (!this.processing) {
             this.executeQueue()
         }
     }
 
     cloneContext(baseContext) {
-        const context = structuredClone(baseContext)
+        const message = structuredClone(baseContext)
         if (baseContext.dataset) {
             //   var dataset = baseContext.dataset
-            //            context.dataset = dataset
-            context.dataset = baseContext.dataset
+            //            message.dataset = dataset
+            message.dataset = baseContext.dataset
         }
-        return context
+        return message
     }
 
 
@@ -155,29 +155,29 @@ class Service extends EventEmitter {
     async executeQueue() {
         this.processing = true
         while (this.messageQueue.length > 0) {
-            let { context } = this.messageQueue.shift()
+            let { message } = this.messageQueue.shift()
 
-            context = this.cloneContext(context)// TODO make optional
-            this.context = context // IS OK? needed where?
-            // context = structuredClone(context) // TODO make optional
-            // context.dataset = dataset
+            message = this.cloneContext(message)// TODO make optional
+            this.message = message // IS OK? needed where?
+            // message = structuredClone(message) // TODO make optional
+            // message.dataset = dataset
             // no idea why this ^^ was necessary, without it the dataset wasn't usable
-            // structuredClone(context, {transfer:[dataset]}) failed too 
-            this.addTag(context)
+            // structuredClone(message, {transfer:[dataset]}) failed too 
+            this.addTag(message)
 
-            await this.execute(context)
+            await this.execute(message)
         }
         this.processing = false
     }
 
-    addTag(context) {
+    addTag(message) {
         const tag = this.getTag()
-        if (!context.tags) {
-            context.tags = tag
+        if (!message.tags) {
+            message.tags = tag
             return
         }
-        context.tags = context.tags + '.' + tag
-        //   logger.log('in Service, tags = ' + context.tags)
+        message.tags = message.tags + '.' + tag
+        //   logger.log('in Service, tags = ' + message.tags)
     }
 
     getTag() {
@@ -188,20 +188,20 @@ class Service extends EventEmitter {
     /**
      * Executes the processing logic for the service.
      * @param {*} data - The data to be processed.
-     * @param {*} context - The context for processing.
+     * @param {*} message - The message for processing.
      */
-    async execute(context) {
+    async execute(message) {
         throw new Error('execute method not implemented')
     }
 
     /**
-     * Emits a message with data and context.
+     * Emits a message. TODO now redundant?
      * @param {string} message - The message to emit.
      * @param {*} data - The data to emit.
-     * @param {*} context - The context for emitting.
+     * @param {*} message - The message for emitting.
      */
-    async doEmit(message, context) {
-        this.emit(message, context)
+    async doEmit(message) {
+        this.emit(message)
     }
 }
 

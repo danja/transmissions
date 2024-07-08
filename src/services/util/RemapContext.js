@@ -6,12 +6,12 @@ import GrapoiHelpers from '../../utils/GrapoiHelpers.js'
 import Service from '../base/Service.js'
 
 /**
- * Changes the shape of the context object by renaming keys.
+ * Changes the shape of the message object by renaming keys.
  * 
  * #### __*Input*__
- * **context** : ?
+ * **message** : ?
  * #### __*Output*__
- * **context** : ?
+ * **message** : ?
  * 
  * @extends Service
  */
@@ -25,11 +25,11 @@ class RemapContext extends Service {
     }
 
     /**
-     * Executes the remapping of the context object.
-     * @param {Object} context - The context object to be remapped.
+     * Executes the remapping of the message object.
+     * @param {Object} message - The message object to be remapped.
      */
-    async execute(context) {
-        if (this.preProcess(context)) {
+    async execute(message) {
+        if (this.preProcess(message)) {
             return
         }
 
@@ -46,28 +46,28 @@ class RemapContext extends Service {
             var value
 
             // TODO unhackify
-            // for copying value of eg. x.y.z to context.b
+            // for copying value of eg. x.y.z to message.b
             if (pre.includes('.')) {
                 const spre = pre.split('.')
                 logger.debug('pre- split = ' + spre)
-                value = context[spre[0]][spre[1]]
+                value = message[spre[0]][spre[1]]
             } else {
-                value = context[pre]
+                value = message[pre]
             }
 
             // not properly tested, I didn't end up needing it
             value = value.toString()  // otherwise passes a Buffer
-            // for copying value of eg. context.content to context.contentBlocks.content 
+            // for copying value of eg. message.content to message.contentBlocks.content 
             if (post.includes('.')) {
                 const s = post.split('.')
                 logger.debug('post split = ' + s)
-                context[s[0]][s[1]] = value
+                message[s[0]][s[1]] = value
             } else {
-                context[post] = value
+                message[post] = value
             }
             logger.log(' - Rename : ' + pre + ' to ' + post)
         }
-        this.emit('message', context)
+        this.emit('message', message)
     }
 }
 

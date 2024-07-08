@@ -13,14 +13,14 @@ class FrontPagePrep extends ProcessService {
     super(config)
   }
 
-  async execute(context) {
+  async execute(message) {
     try {
       // bits for templater
-      context.templateFilename = context.rootDir + '/' + context.indexPage.templateFilename
+      message.templateFilename = message.rootDir + '/' + message.indexPage.templateFilename
 
-      logger.log('TERMPLATE = ' + context.templateFilename)
-      const rawEntryPaths = this.resolveRawEntryPaths(context)
-      context.content = ''
+      logger.log('TERMPLATE = ' + message.templateFilename)
+      const rawEntryPaths = this.resolveRawEntryPaths(message)
+      message.content = ''
       // TODO move this out to template and/or separate services
       //   for (var f of rawEntryPaths) {
       //   const n = rawEntryPaths.length
@@ -28,29 +28,29 @@ class FrontPagePrep extends ProcessService {
       //    for (var i = entryCount - 1; i >= 0; i--) {
       for (var i = 0; i < entryCount; i++) {
         const rawEntryPath = rawEntryPaths.pop()
-        context.content += (await readFile(rawEntryPath)).toString()
+        message.content += (await readFile(rawEntryPath)).toString()
       }
 
       // needed?
-      context.contentBlocks.content = context.content
+      message.contentBlocks.content = message.content
       //  "indexPage": {
       //  "filepath": "public/blog/index.html",
-      context.filepath = context.rootDir + '/' + context.indexPage.filepath
-      // context.rootDir + '/' + context.entryContentToPage.targetDir + '/' + context.slug + '.html'
+      message.filepath = message.rootDir + '/' + message.indexPage.filepath
+      // message.rootDir + '/' + message.entryContentToPage.targetDir + '/' + message.slug + '.html'
 
       // /home/danny/HKMS/postcraft/danny.ayers.name/layouts/mediocre
-      this.emit('message', context)
+      this.emit('message', message)
     } catch (err) {
       logger.error('Error in FrontPagePrep')
       logger.error(err)
     }
   }
 
-  resolveRawEntryPaths(context) { // TODO tidy up
+  resolveRawEntryPaths(message) { // TODO tidy up
     var paths = []
     //   const entryCount = 5
 
-    const slugs = context.slugs
+    const slugs = message.slugs
     const entryCount = slugs.length
     var path
     for (let i = 0; i < entryCount; i++) {
@@ -58,7 +58,7 @@ class FrontPagePrep extends ProcessService {
       //   logger.log('slug = ' + path)
       if (!path) break
 
-      path = context.rootDir + '/' + context.entryContentMeta.targetDir + '/' + path + '.html'
+      path = message.rootDir + '/' + message.entryContentMeta.targetDir + '/' + path + '.html'
       paths.push(path)
       //logger.log('PATH = ' + path)
     }

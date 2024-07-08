@@ -5,38 +5,34 @@ import ProcessService from '../base/ProcessService.js'
 
 class LinkFinder extends ProcessService {
 
-    async execute(context) {
+    async execute(message) {
 
-        await this.extractLinks(context)
+        await this.extractLinks(message)
 
         if (data === '~~done~~') {
             logger.log('LF DONE*****************')
-            this.emitLocal('message', '~~done~~', context)
+            this.emitLocal('message', '~~done~~', message)
             return
         }
     }
 
-    emitLocal(label, context) {
-        logger.log('emitLocal === ' + data)
-        this.emit(label, context)
-    }
 
     relocate(filename, extension) {
         const split = filename.split('.').slice(0, -1)
         return split.join('.') + extension
     }
 
-    async extractLinks(htmlContent, context) {
+    async extractLinks(htmlContent, message) {
 
         const $ = cheerio.load(htmlContent)
-        let message = ''
+        let label = ''
 
         $('a, h1, h2, h3, h4, h5, h6').each((_, element) => {
             const tagName = element.tagName.toLowerCase()
             if (tagName.startsWith('h')) {
                 const level = tagName.substring(1)
                 const headerText = $(element).text()
-                message = `\n\n${'#'.repeat(parseInt(level))} ${headerText}\n`;
+                label = `\n\n${'#'.repeat(parseInt(level))} ${headerText}\n`;
             } else if (tagName === 'a') {
                 const linkText = $(element).text()
                 //  logger.debug('linkText = ' + linkText)
@@ -45,15 +41,16 @@ class LinkFinder extends ProcessService {
                 if (!href || href.startsWith('#')) return
                 // Create an absolute URL if the href is relative
                 if (href && !href.includes('://')) {
-                    //  logger.debug('context.sourceURL = ' + context.sourceURL)
-                    const baseURL = context.sourceURL
+                    //  logger.debug('message.sourceURL = ' + message.sourceURL)
+                    const baseURL = message.sourceURL
                     //  logger.debug('this.baseUrl = ' + baseURL)
                     href = new URL(href, baseURL).toString();
                 }
-                message = `\n[${linkText}](${href})`
+                label = `\n[${linkText}](${href})`
 
             }
-            this.emitLocal('message', message, context)
+            message.label = label
+            this.emit('message', message)
         })
     }
 }

@@ -7,11 +7,11 @@ class StringFilter extends ProcessService {
         this.reject = ['mailto:', 'example.org', 'wikipedia', 'wikimedia']
     }
 
-    async execute(context) {
+    async execute(message) {
         logger.debug('StringFilter data = ' + data.toString())
         if (this.containsAny(data.toString(), this.reject)) return
 
-        this.emit('message', context)
+        this.emit('message', message)
     }
 
     containsAny(contentString, matchers) {

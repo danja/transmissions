@@ -6,11 +6,11 @@ import logger from '../../utils/Logger.js'
  * A class that provides templating functionality using Nunjucks.
  * @extends ProcessService
  * #### __*Input*__
- * * context.templateFilename or if not present,
- * * context.template
- * * context.contentBlocks - {title, body...} or whatever
+ * * message.templateFilename or if not present,
+ * * message.template
+ * * message.contentBlocks - {title, body...} or whatever
  * #### __*Output*__
- * * context.content - the templated content
+ * * message.content - the templated content
  * 
  */
 class Templater extends ProcessService {
@@ -25,15 +25,15 @@ class Templater extends ProcessService {
     /**
      * Executes the templating process.
      * @param {object} data - The data object to be used for templating.
-     * @param {object} context - The context object containing template information.
+     * @param {object} message - The message object containing template information.
      */
-    async execute(context) {
+    async execute(message) {
 
-        if (context.templateFilename) { // if there's a filename, use it
+        if (message.templateFilename) { // if there's a filename, use it
             //    logger.log('*************************************************************')
-            //    logger.log('context.templateFilename = ' + context.templateFilename)
-            //    logger.log('context.contentBlocks = ')
-            //    logger.reveal(context.contentBlocks)
+            //    logger.log('message.templateFilename = ' + message.templateFilename)
+            //    logger.log('message.contentBlocks = ')
+            //    logger.reveal(message.contentBlocks)
             //    logger.log('*************************************************************')
 
             /* workaround for nunjucks odd/buggy/ugly handling of '' path 
@@ -43,22 +43,22 @@ class Templater extends ProcessService {
 
                     TODO read about nunjucks.configure, especially ignoreMissing
             */
-            const path = context.templateFilename.substr(0, context.templateFilename.lastIndexOf("/"))
-            const filename = context.templateFilename.substr(context.templateFilename.lastIndexOf("/") + 1)
+            const path = message.templateFilename.substr(0, message.templateFilename.lastIndexOf("/"))
+            const filename = message.templateFilename.substr(message.templateFilename.lastIndexOf("/") + 1)
 
             //    logger.log('path  = ' + path)
             //  logger.log(' filename = ' + filename)
             nunjucks.configure(path, { autoescape: false })
 
-            context.content = nunjucks.render(filename, context.contentBlocks)
+            message.content = nunjucks.render(filename, message.contentBlocks)
             //    logger.log('*************************************************************')
-            //    logger.log('context.content = ' + context.content)
+            //    logger.log('message.content = ' + message.content)
             //    logger.log('*************************************************************')
         } else {
             nunjucks.configure({ autoescape: false }); // otherwise use a string
-            context.content = nunjucks.renderString(context.template, context.contentBlocks)
+            message.content = nunjucks.renderString(message.template, message.contentBlocks)
         }
-        this.emit('message', context)
+        this.emit('message', message)
     }
 }
 

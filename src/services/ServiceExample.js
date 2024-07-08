@@ -7,9 +7,9 @@ import Service from '../base/Service.js' // maybe more specific
  * FileReader class that extends xxxxxService.
  * DESCRIPTION
  * #### __*Input*__
- * **context.INPUT** 
+ * **message.INPUT** 
  * #### __*Output*__
- * **context.OUTPUT**
+ * **message.OUTPUT**
  */
 class ServiceExample extends Service {
 
@@ -22,12 +22,12 @@ class ServiceExample extends Service {
     }
 
     /**
-     * Does something with the context and emits a 'message' event with the processed context.
-     * @param {Object} context - The context object.
+     * Does something with the message and emits a 'message' event with the processed message.
+     * @param {Object} message - The message object.
      */
-    async execute(context) {
+    async execute(message) {
         // processing goes here
-        this.emit('message', context)
+        this.emit('message', message)
     } catch(err) {
         logger.error("ServiceExample.execute error : " + err.message)
     }

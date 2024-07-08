@@ -3,11 +3,11 @@ import Service from '../base/Service.js'
 
 class DeadEnd extends Service {
 
-    async execute(context) {
+    async execute(message) {
 
-        logger.log('DeadEnd  at (' + context.tags + ') ' + this.getTag())
+        logger.log('DeadEnd  at (' + message.tags + ') ' + this.getTag())
 
-        //    this.emit('message', context)
+        //    this.emit('message', message)
     }
 
 }

@@ -12,23 +12,23 @@ class EntryContentToPagePrep extends ProcessService {
     super(config)
   }
 
-  async execute(context) {
-    if (context.done) {
-      this.emit('message', context)
+  async execute(message) {
+    if (message.done) {
+      this.emit('message', message)
       return
     }
 
-    context.templateFilename = context.rootDir + '/' + context.entryContentToPage.templateFilename
+    message.templateFilename = message.rootDir + '/' + message.entryContentToPage.templateFilename
 
-    context.template = false
+    message.template = false
 
-    context.contentBlocks.content = context.content
+    message.contentBlocks.content = message.content
 
-    context.filepath = context.rootDir + '/' + context.entryContentToPage.targetDir + '/' + context.slug + '.html'
+    message.filepath = message.rootDir + '/' + message.entryContentToPage.targetDir + '/' + message.slug + '.html'
 
-    //   logger.log('\ncontext.filepath  = ' + context.filepath)
+    //   logger.log('\nmessage.filepath  = ' + message.filepath)
     // /home/danny/HKMS/postcraft/danny.ayers.name/layouts/mediocre
-    this.emit('message', context)
+    this.emit('message', message)
   }
 
 }

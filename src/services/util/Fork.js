@@ -17,15 +17,15 @@ only for testing for now
     async execute(data, baseContext) {
 
         for (let i = 0; i < 5; i++) {
-            var context = this.cloneContext(baseContext)
-            context.done = false
+            var message = this.cloneContext(baseContext)
+            message.done = false
             logger.log('--- emit --- ' + i)
-            this.emit('message', context)
+            this.emit('message', message)
         }
-        var context = this.cloneContext(baseContext)
-        context.done = true
+        var message = this.cloneContext(baseContext)
+        message.done = true
 
-        this.emit('message', context)
+        this.emit('message', message)
 
     }
 

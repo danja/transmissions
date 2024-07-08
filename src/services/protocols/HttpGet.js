@@ -12,10 +12,10 @@ class HttpGet extends ProcessService {
         super(config)
     }
 
-    async execute(url, context) {
+    async execute(url, message) {
         if (url === '~~done~~') {
             logger.log('HG DONE*****************')
-            this.emit('message', url, context)
+            this.emit('message', url, message)
             return
         }
         try {
@@ -23,8 +23,8 @@ class HttpGet extends ProcessService {
             const response = await axios.get(url)
             const content = response.data
 
-            context.sourceURL = url
-            this.emit('message', content, context)
+            message.sourceURL = url
+            this.emit('message', content, message)
         } catch (error) {
             logger.error("HttpGet.execute error\n" + error)
         }

@@ -1,7 +1,7 @@
 import { copyFile, mkdir, readdir, stat } from 'node:fs/promises'
 import { join } from 'node:path'
 import logger from '../../utils/Logger.js'
-import Service from '../../base/Service.js'
+import Service from '../base/Service.js'
 
 /**
  * FileCopy class that extends Service.
@@ -19,13 +19,13 @@ class FileCopy extends Service {
 
     /**
      * Copies the source to the destination.
-     * @param {Object} context - The context object.
-     * @param {string} context.source - The source path.
-     * @param {string} context.destination - The destination path.
+     * @param {Object} message - The message object.
+     * @param {string} message.source - The source path.
+     * @param {string} message.destination - The destination path.
      */
-    async execute(context) {
+    async execute(message) {
         try {
-            const { source, destination } = context
+            const { source, destination } = message
             const sourceStat = await stat(source)
 
             if (sourceStat.isFile()) {
@@ -34,7 +34,7 @@ class FileCopy extends Service {
                 await this.copyDirectory(source, destination)
             }
 
-            this.emit('message', context)
+            this.emit('message', message)
         } catch (err) {
             logger.error("FileCopy.execute error: " + err.message)
         }

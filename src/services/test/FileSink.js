@@ -17,9 +17,9 @@ class FileSink extends SinkService {
         this.destinationFile = poi.out(ns.trm.destinationFile).value
     }
 
-    async execute(context) {
+    async execute(message) {
         const toRootDir = '../../../'
-        const dataDir = path.join(toRootDir, context.dataDir)
+        const dataDir = path.join(toRootDir, message.dataDir)
 
         const df = footpath.resolve(import.meta.url, dataDir, this.destinationFile)
 
@@ -27,7 +27,7 @@ class FileSink extends SinkService {
 
         await writeFile(df, data)
 
-        this.emit('message', context)
+        this.emit('message', message)
     }
 }
 
