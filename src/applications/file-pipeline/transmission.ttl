@@ -2,7 +2,7 @@
 @prefix trm: <http://purl.org/stuff/transmission/> .
 @prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances
 
-:file_remove_test a trm:Pipeline ;
+:file_pipeline a trm:Pipeline ;
     trm:pipe (:s1 :s2 :s3 :s4) .
 
 :s1 a :FileSource .

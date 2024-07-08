@@ -2,10 +2,20 @@
 @prefix trm: <http://purl.org/stuff/transmission/> .
 @prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances
 
-:filepipe a trm:Pipeline ;
+- copy `start/one.txt` into `single-empty/`
+- copy `single-empty/one.txt` into `single-full/`
+- remove `single-empty/one.txt`
+
+- copy everything in `start/` into `several-empty/`
+- copy everything in `several-empty/` into `several-full/`
+- remove everything in `several-empty/`
+
+:file_remove_test a trm:Pipeline ;
     trm:pipe (:s1 :s2 :s3 :s4) .
 
-:s1 a :FileSource .
+:s1 a :ContextReader . # read the manifest
+
+:s2 a :FileSource .
 :s2 a :AppendProcess .
 :s3 a :AppendProcess .
 :s4 a :FileSink .
