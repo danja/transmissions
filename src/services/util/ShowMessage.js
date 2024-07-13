@@ -14,17 +14,7 @@ class ShowMessage extends SinkService {
 
         if (this.verbose) logger.log("\n***  Show Message ***")
 
-        if (this.verbose) logger.log("***  Data")
 
-        if (Buffer.isBuffer(data)) {
-            if (this.verbose) logger.log('"' + data.toString() + '"')
-        }
-        else if (typeof data === 'string') {
-            if (this.verbose) logger.log('"' + data + '"')
-
-        } else {
-            if (this.verbose) logger.reveal(data)
-        }
         logger.log("***************************")
         logger.log("***  Context")
         logger.reveal(message)

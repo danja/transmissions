@@ -3,6 +3,10 @@
 # @prefix fs: <http://purl.org/stuff/filesystem/> .
 @prefix t: <http://hyperdata.it/transmissions/> . # for custom terms & instances
 
-t:FilePipelineMap a trm:DataMap ;
-    trm:sourceFile "input.txt" ;
-    trm:destinationFile "output.txt" .
+
+
+t:copySingle1 a trm:FileCopy ;
+        trm:key t:copySingle1 ;
+        trm:source "data/start/one.txt" ;
+        trm:destination "data/single-empty/one.txt" .
+        

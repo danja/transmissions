@@ -33,7 +33,7 @@ class RemapContext extends Service {
             return
         }
 
-        logger.debug('RemapContext this.configKey = ' + this.configKey.value)
+        logger.log('RemapContext this.configKey = ' + this.configKey.value)
 
         const renames = GrapoiHelpers.listToArray(this.config, this.configKey, ns.trm.rename)
         const dataset = this.config
@@ -49,7 +49,7 @@ class RemapContext extends Service {
             // for copying value of eg. x.y.z to message.b
             if (pre.includes('.')) {
                 const spre = pre.split('.')
-                logger.debug('pre- split = ' + spre)
+                logger.log('pre- split = ' + spre)
                 value = message[spre[0]][spre[1]]
             } else {
                 value = message[pre]
@@ -60,7 +60,7 @@ class RemapContext extends Service {
             // for copying value of eg. message.content to message.contentBlocks.content 
             if (post.includes('.')) {
                 const s = post.split('.')
-                logger.debug('post split = ' + s)
+                logger.log('post split = ' + s)
                 message[s[0]][s[1]] = value
             } else {
                 message[post] = value
