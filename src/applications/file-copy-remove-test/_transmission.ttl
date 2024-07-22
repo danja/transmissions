@@ -1,0 +1,28 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix trm: <http://purl.org/stuff/transmission/> .
+@prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances
+
+#############################################################
+# insert into pipe for debugging
+:DE a :DeadEnd . # ends the current pipe quietly
+:H  a :Halt . # kills everything 
+:SM a :ShowMessage . # verbose report, continues pipe
+:N  a :NOP . # no operation (except for showing stage in pipe)
+:UF a :Unfork . # collapses all pipes but one 
+#############################################################
+
+# copy `start/one.txt` into `single-empty/`
+# copy `single-empty/one.txt` into `single-full/`
+# remove `single-empty/one.txt`
+
+# copy everything in `start/` into `several-empty/`
+# copy everything in `several-empty/` into `several-full/`
+# remove everything in `several-empty/`
+
+:file_remove_test a trm:Pipeline ;
+    trm:pipe (:SM :s1 :SM) .
+
+# :s1 a :ContextReader . # read the manifest
+
+:s1 a :RemapContext ;
+    trm:configKey :copyOneToSingleEmpty .
