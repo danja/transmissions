@@ -35,12 +35,12 @@ import logger from '../../utils/Logger.js'
 import ProcessService from '../base/ProcessService.js'
 
 /**
-* Takes the context.dataset and guided by services.ttl maps its contents to direct key:value pairs in the context
+* Takes the message.dataset and guided by services.ttl maps its contents to direct key:value pairs in the message
 * 
 * #### __*Input*__
-* **context** : needs dataset
+* **message** : needs dataset
 * #### __*Output*__
-* **context** : determined by mapping 
+* **message** : determined by mapping 
 * @extends ProcessService
 */
 class ConfigMap extends ProcessService {
@@ -56,15 +56,15 @@ class ConfigMap extends ProcessService {
   /**
    * Executes the service.
    * @param {Object} data - The data object.
-   * @param {Object} context - The context object.
+   * @param {Object} message - The message object.
    * TODO this desperately needs refactoring, generalising a bit 
   */
-  async execute(data, context) {
-    this.preProcess(context)
-    //const postcraftConfig = context.dataset
-    //logger.log(' = \n' + context.dataset)
+  async execute(message) {
+    this.preProcess(message)
+    //const postcraftConfig = message.dataset
+    //logger.log(' = \n' + message.dataset)
 
-    const dataset = context.dataset
+    const dataset = message.dataset
     // logger.log('dataset   = ' + dataset)
     const poi = grapoi({ dataset, factory: rdf })
     //  logger.poi(poi)
@@ -79,22 +79,22 @@ class ConfigMap extends ProcessService {
 
       if (type.equals(ns.pc.ContentGroup)) {
         //     logger.log('Q ' + q.subject.value)
-        await this.processContentGroup(context, q.subject)
+        await this.processContentGroup(message, q.subject)
       }
     }
     //  process.exit()
-    this.emit('message', context)
-    // logger.log('ConfigMap context.templateFilename  = ' + context.templateFilename)
-    // this.emit('message', context.templateFilename, context)
+    this.emit('message', message)
+    // logger.log('ConfigMap message.templateFilename  = ' + message.templateFilename)
+    // this.emit('message', message.templateFilename, message)
   }
 
   /**
    * Processes a content group.
-   * @param {Object} context - The context object.
+   * @param {Object} message - The message object.
    * @param {string} contentGroupID - The ID of the content group.
    */
 
-  async processContentGroup(context, contentGroupID) {
+  async processContentGroup(message, contentGroupID) {
 
     // logger.log("Switching on contentGroupID " + contentGroupID.value)
     // logger.log('ns.trm.PostPages = ' + ns.t.PostPages.value)
@@ -106,17 +106,17 @@ class ConfigMap extends ProcessService {
       // case 'http://hyperdata.it/transmissions/PostContent':
       case ns.t.PostContent.value:
         //   logger.log('MATCHED PostContent')
-        await this.markdownToEntryContent(context, contentGroupID)
+        await this.markdownToEntryContent(message, contentGroupID)
         return
       case ns.t.PostPages.value:
         // case 'http://hyperdata.it/transmissions/PostPages':
         // logger.log('MATCHED PostPages')
-        await this.entryContentToPostPage(context, contentGroupID)
+        await this.entryContentToPostPage(message, contentGroupID)
         return
       case ns.t.IndexPage.value:
         //  case 'http://hyperdata.it/transmissions/IndexPage':
         //logger.log('MATCHED IndexPage')
-        await this.indexPage(context, contentGroupID)
+        await this.indexPage(message, contentGroupID)
         return
       default:
         logger.log('Group not found in dataset :' + contentGroupID.value)
@@ -124,47 +124,48 @@ class ConfigMap extends ProcessService {
     }
   }
 
-  async markdownToEntryContent(context, contentGroupID) {
+  async markdownToEntryContent(message, contentGroupID) {
 
 
     //  logger.log('--- markdownToPostContent --- contentGroupID = ' + contentGroupID.value)
 
     // from services.ttl
     // const servicePoi = rdf.grapoi({ dataset: this.config, term: this.configKey })
-    const postcraftConfig = context.dataset
+    const postcraftConfig = message.dataset
 
     // from manifest.ttl
     const groupPoi = rdf.grapoi({ dataset: postcraftConfig, term: contentGroupID })
 
     // TODO move earlier?
     const siteURL = groupPoi.out(ns.pc.site).term.value
-    context.siteURL = siteURL
+    message.siteURL = siteURL
     const subdir = groupPoi.out(ns.pc.subdir).term.value
-    context.subdir = subdir // which?
+    message.subdir = subdir // which?
 
     const sourceDir = groupPoi.out(ns.fs.sourceDirectory).term.value
     const targetDir = groupPoi.out(ns.fs.targetDirectory).term.value
     const templateFilename = groupPoi.out(ns.pc.template).term.value
 
-    // context.sourceDir = sourceDir
-    // context.targetDir = targetDir
-    // context.loadContext = 'template' 
-    context.filepath = templateFilename
-    context.template = '§§§ placeholer for debugging §§§'
+    // message.sourceDir = sourceDir
+    // message.targetDir = targetDir
+    // message.loadContext = 'template' 
+    message.filepath = templateFilename
+    message.template = '§§§ placeholer for debugging §§§'
 
-    context.entryContentMeta = {
+    message.entryContentMeta = {
       sourceDir: sourceDir,
-      targetDir: targetDir
+      targetDir: targetDir,
+      templateFilename: templateFilename
     }
   }
 
-  async entryContentToPostPage(context, contentGroupID) {
+  async entryContentToPostPage(message, contentGroupID) {
     //logger.log('--- entryContentToPostPage--- contentGroupID = ' + contentGroupID.value)
 
     // from services.ttl
     //  logger.log('############ ' + this.config.toString())
     //const servicePoi = rdf.grapoi({ dataset: this.config, term: this.configKey })
-    const postcraftConfig = context.dataset
+    const postcraftConfig = message.dataset
 
     // from manifest.ttl
     const groupPoi = rdf.grapoi({ dataset: postcraftConfig, term: contentGroupID })
@@ -172,20 +173,20 @@ class ConfigMap extends ProcessService {
     const targetDir = groupPoi.out(ns.fs.targetDirectory).term.value
     const templateFilename = groupPoi.out(ns.pc.template).term.value
 
-    context.entryContentToPage = {
+    message.entryContentToPage = {
       // sourceDir: sourceDir,
       targetDir: targetDir,
       templateFilename: templateFilename
     }
   }
 
-  async indexPage(context, contentGroupID) {
+  async indexPage(message, contentGroupID) {
     // logger.log('Indexpage --- contentGroupID = ' + contentGroupID.value)
 
     // from services.ttl
     //  logger.log('############ ' + this.config.toString())
     // const servicePoi = rdf.grapoi({ dataset: this.config, term: this.configKey })
-    const postcraftConfig = context.dataset
+    const postcraftConfig = message.dataset
 
     // from manifest.ttl
     const groupPoi = rdf.grapoi({ dataset: postcraftConfig, term: contentGroupID })
@@ -198,7 +199,7 @@ class ConfigMap extends ProcessService {
     const filepath = groupPoi.out(ns.fs.filepath).term.value
     const templateFilename = groupPoi.out(ns.pc.template).term.value
 
-    context.indexPage = {
+    message.indexPage = {
       // sourceDir: sourceDir,
       filepath: filepath,
       templateFilename: templateFilename
@@ -215,13 +216,13 @@ export default ConfigMap</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="ContextReader.html">ContextReader</a></li><li><a href="DirWalker.html">DirWalker</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="Service.html">Service</a></li><li><a href="Stash.html">Stash</a></li><li><a href="Templater.html">Templater</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="ContextReader.html">ContextReader</a></li><li><a href="DirWalker.html">DirWalker</a></li><li><a href="FileCopy.html">FileCopy</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileRemove.html">FileRemove</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="RemapContext.html">RemapContext</a></li><li><a href="Service.html">Service</a></li><li><a href="ServiceExample.html">ServiceExample</a></li><li><a href="Stash.html">Stash</a></li><li><a href="Templater.html">Templater</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat May 18 2024 12:35:26 GMT+0200 (Central European Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Jul 23 2024 13:37:55 GMT+0200 (Central European Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>

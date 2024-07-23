@@ -41,10 +41,10 @@ import SourceService from '../base/SourceService.js'
  * @extends SourceService
  * 
  * #### __*Input*__
- * * context.rootDir 
- * * context.sourceDir
+ * * message.rootDir 
+ * * message.sourceDir
  * #### __*Output*__
- * * context.filename (multi)
+ * * message.filename (multi)
  * 
  */
 class DirWalker extends SourceService {
@@ -63,45 +63,48 @@ class DirWalker extends SourceService {
     /**
      * Executes the directory walking process.
      * @param {any} data - The data to be passed to the execute method.
-     * @param {Object} context - The context object containing information about the directory and source file.
+     * @param {Object} message - The message object containing information about the directory and source file.
      * @returns {Promise&lt;void>} A promise that resolves when the directory walking process is complete.
      */
-    async execute(data, context) {
-        const contextClone = structuredClone(context) // move?
-        await this.emitThem(contextClone)
+    async execute(message) {
+
+        await this.emitThem(message)
 
 
-        // logger.error("§§§ DirWalker emit true : " + contextClone.done)
-        contextClone.done = true
-        //  logger.error("§§§ DirWalker emit B : " + contextClone.done)
-        this.emit('message', contextClone)
+        // logger.error("§§§ DirWalker emit true : " + messageClone.done)
+        message.done = true
+        //  logger.error("§§§ DirWalker emit B : " + messageClone.done)
+        this.emit('message', message)
     }
 
-    async emitThem(contextClone) {
-        contextClone.slugs = []
-        contextClone.done = false // maybe insert earlier
-        const dirPath = contextClone.rootDir + '/' + contextClone.sourceDir
+    async emitThem(message) {
+        message.counter = 0
+        message.slugs = []
+        message.done = false // maybe insert earlier
+        const dirPath = message.rootDir + '/' + message.sourceDir
         try {
             const entries = await readdir(dirPath, { withFileTypes: true })
             for (const entry of entries) {
                 const fullPath = join(dirPath, entry.name)
                 if (entry.isDirectory()) {
-                    await this.execute(entry.name, contextClone) // rearrange to make things easier to read?
+                    await this.execute(entry.name, message) // rearrange to make things easier to read?
                 } else {
                     // Check if the file extension is in the list of desired extensions
                     if (this.desiredExtensions.includes(extname(entry.name))) {
 
-                        contextClone.filename = entry.name
-                        contextClone.filepath = contextClone.sourceDir + '/' + entry.name
-                        const slug = this.extractSlug(contextClone.filename)
-                        contextClone.slugs.push(slug)
+                        message.filename = entry.name
+                        message.filepath = message.sourceDir + '/' + entry.name
+                        const slug = this.extractSlug(message.filename)
+                        message.slugs.push(slug)
                         // globalish
-                        //    this.addPropertyToMyConfig(ns.trm.postPath, rdf.literal(contextClone.filename))
+                        //    this.addPropertyToMyConfig(ns.trm.postPath, rdf.literal(message.filename))
                         //  logger.log('CONFIG : ' + this.config)
 
                         //   this.showMyConfig()
-                        contextClone.done = false
-                        this.emit('message', contextClone)
+                        message.done = false
+                        message.counter = message.counter + 1
+                        const messageClone = structuredClone(message) // move?
+                        this.emit('message', messageClone)
                     }
                 }
             }
@@ -129,13 +132,13 @@ export default DirWalker
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="ContextReader.html">ContextReader</a></li><li><a href="DirWalker.html">DirWalker</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="Service.html">Service</a></li><li><a href="Stash.html">Stash</a></li><li><a href="Templater.html">Templater</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="ContextReader.html">ContextReader</a></li><li><a href="DirWalker.html">DirWalker</a></li><li><a href="FileCopy.html">FileCopy</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileRemove.html">FileRemove</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="RemapContext.html">RemapContext</a></li><li><a href="Service.html">Service</a></li><li><a href="ServiceExample.html">ServiceExample</a></li><li><a href="Stash.html">Stash</a></li><li><a href="Templater.html">Templater</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat May 18 2024 12:35:26 GMT+0200 (Central European Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Jul 23 2024 13:37:55 GMT+0200 (Central European Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: ConfigMap</title>
+    <title>JSDoc: Class: FileRemove</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: ConfigMap</h1>
+    <h1 class="page-title">Class: FileRemove</h1>
 
     
 
@@ -28,13 +28,10 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>ConfigMap<span class="signature">(config)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>FileRemove<span class="signature">(config)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>Takes the message.dataset and guided by services.ttl maps its contents to direct key:value pairs in the message</p>
-<h4><strong><em>Input</em></strong></h4>
-<p><strong>message</strong> : needs dataset</p>
-<h4><strong><em>Output</em></strong></h4>
-<p><strong>message</strong> : determined by mapping</p></div>
+            <div class="class-description"><p>FileRemove class that extends Service.
+Removes files or directory contents based on the provided path.</p></div>
         
     
 </header>
@@ -49,7 +46,7 @@
     
 
     
-    <h4 class="name" id="ConfigMap"><span class="type-signature"></span>new ConfigMap<span class="signature">(config)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="FileRemove"><span class="type-signature"></span>new FileRemove<span class="signature">(config)</span><span class="type-signature"></span></h4>
     
 
     
@@ -57,7 +54,7 @@
 
 
 <div class="description">
-    <p>Creates an instance of PostcraftDispatcher.</p>
+    <p>Constructs a new FileRemove instance.</p>
 </div>
 
 
@@ -150,7 +147,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_rdf_ConfigMap.js.html">services/rdf/ConfigMap.js</a>, <a href="services_rdf_ConfigMap.js.html#line18">line 18</a>
+        <a href="services_fs_FileRemove.js.html">services/fs/FileRemove.js</a>, <a href="services_fs_FileRemove.js.html#line10">line 10</a>
     </li></ul></dd>
     
 
@@ -184,17 +181,6 @@
     </div>
 
     
-        <h3 class="subsection-title">Extends</h3>
-
-        
-
-
-    <ul>
-        <li>ProcessService</li>
-    </ul>
-
-
-    
 
     
 
@@ -217,7 +203,7 @@
     
 
     
-    <h4 class="name" id="execute"><span class="type-signature">(async) </span>execute<span class="signature">(data, message)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="execute"><span class="type-signature">(async) </span>execute<span class="signature">(message)</span><span class="type-signature"></span></h4>
     
 
     
@@ -225,7 +211,7 @@
 
 
 <div class="description">
-    <p>Executes the service.</p>
+    <p>Removes the specified file or directory contents.</p>
 </div>
 
 
@@ -261,29 +247,6 @@
 
         <tr>
             
-                <td class="name"><code>data</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The data object.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
                 <td class="name"><code>message</code></td>
             
 
@@ -300,8 +263,56 @@
 
             
 
-            <td class="description last"><p>The message object.
-TODO this desperately needs refactoring, generalising a bit</p></td>
+            <td class="description last"><p>The message object.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>remove</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The path to the file or directory to remove.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -342,7 +353,7 @@ TODO this desperately needs refactoring, generalising a bit</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_rdf_ConfigMap.js.html">services/rdf/ConfigMap.js</a>, <a href="services_rdf_ConfigMap.js.html#line34">line 34</a>
+        <a href="services_fs_FileRemove.js.html">services/fs/FileRemove.js</a>, <a href="services_fs_FileRemove.js.html#line25">line 25</a>
     </li></ul></dd>
     
 
@@ -378,7 +389,7 @@ TODO this desperately needs refactoring, generalising a bit</p></td>
     
 
     
-    <h4 class="name" id="processContentGroup"><span class="type-signature">(async) </span>processContentGroup<span class="signature">(message, contentGroupID)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="removeDirectoryContents"><span class="type-signature">(async) </span>removeDirectoryContents<span class="signature">(dirPath)</span><span class="type-signature"></span></h4>
     
 
     
@@ -386,7 +397,7 @@ TODO this desperately needs refactoring, generalising a bit</p></td>
 
 
 <div class="description">
-    <p>Processes a content group.</p>
+    <p>Removes the contents of a directory recursively.</p>
 </div>
 
 
@@ -422,30 +433,7 @@ TODO this desperately needs refactoring, generalising a bit</p></td>
 
         <tr>
             
-                <td class="name"><code>message</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The message object.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>contentGroupID</code></td>
+                <td class="name"><code>dirPath</code></td>
             
 
             <td class="type">
@@ -461,7 +449,7 @@ TODO this desperately needs refactoring, generalising a bit</p></td>
 
             
 
-            <td class="description last"><p>The ID of the content group.</p></td>
+            <td class="description last"><p>The path to the directory.</p></td>
         </tr>
 
     
@@ -502,7 +490,144 @@ TODO this desperately needs refactoring, generalising a bit</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_rdf_ConfigMap.js.html">services/rdf/ConfigMap.js</a>, <a href="services_rdf_ConfigMap.js.html#line69">line 69</a>
+        <a href="services_fs_FileRemove.js.html">services/fs/FileRemove.js</a>, <a href="services_fs_FileRemove.js.html#line58">line 58</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="removeFile"><span class="type-signature">(async) </span>removeFile<span class="signature">(filePath)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Removes a file.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>filePath</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The path to the file to remove.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="services_fs_FileRemove.js.html">services/fs/FileRemove.js</a>, <a href="services_fs_FileRemove.js.html#line46">line 46</a>
     </li></ul></dd>
     
 

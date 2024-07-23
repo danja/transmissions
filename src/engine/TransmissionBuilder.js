@@ -1,3 +1,6 @@
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 import rdf from 'rdf-ext'
 import grapoi from 'grapoi'
 import { fromFile, toFile } from 'rdf-utils-fs'
@@ -13,6 +16,11 @@ import Transmission from './Transmission.js'
 class TransmissionBuilder {
 
   static async build(transmissionConfigFile, servicesConfigFile) {
+    // const __filename = fileURLToPath(import.meta.url);
+    //const __dirname = path.dirname(__filename);
+    // const applicationRootDir = path.resolve(__dirname, '..', 'applications');
+    // logger.log('Application root dir : ' + applicationRootDir)
+
     logger.info('\n+ ***** Load Config ******')
     logger.info('[Transmission : ' + transmissionConfigFile + ']')
     const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile)

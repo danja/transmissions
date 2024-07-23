@@ -2,7 +2,9 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { promises as fs } from 'fs';
-import path from 'path';
+import path from 'path'
+
+import { fileURLToPath } from 'url';
 
 import logger from './src/utils/Logger.js'
 
@@ -13,9 +15,9 @@ const applicationsDir = './src/applications'
 // logger.log('DESCRIBE ' + await transmission.describe())
 
 class CommandUtils {
-    static async run(dir, data, context = {}) {
-        context.dataString = data // TODO tidy/remove
-        //    context.rootDir = dir
+    static async run(dir, data, message = {}) {
+        message.dataString = data // TODO tidy/remove
+        //    message.rootDir = dir
         logger.setLogLevel("info")
         logger.debug("Hello, logger!")
         logger.debug("process.cwd() = " + process.cwd())
@@ -25,26 +27,26 @@ class CommandUtils {
 
         const transmission = await TransmissionBuilder.build(transmissionConfigFile, servicesConfigFile)
 
-        transmission.execute(context)
+        transmission.execute(message)
     }
 
     static async parseOrLoadContext(contextArg) {
-        let context = ''
+        let message = ''
         try {
             // First, try to parse it directly as JSON
             //   logger.log('contextArg = ' + contextArg)
-            context = JSON.parse(contextArg)
-            //   logger.log('context from string = ' + context)
+            message = JSON.parse(contextArg)
+            //   logger.log('message from string = ' + message)
 
         } catch (err) {
             logger.log(err)
             // If it fails, assume it's a filename and try to load the file
             const filePath = path.resolve(contextArg); // Ensure the path is absolute
             const fileContent = await fs.readFile(filePath, 'utf8');
-            context = JSON.parse(fileContent)
-            logger.log('context from file = ' + context)
+            message = JSON.parse(fileContent)
+            logger.log('message from file = ' + message)
         }
-        return context
+        return message
 
     }
 
@@ -68,7 +70,7 @@ class CommandUtils {
     }
 }
 
-let context = {}
+let message = {}
 
 if (process.argv.length <= 2) {
     // No arguments were provided, list subdirectories and exit
@@ -77,9 +79,9 @@ if (process.argv.length <= 2) {
 } else {
     await yargs(hideBin(process.argv))
         .usage('Usage: $0 <command> [options]')
-        .option('context', {
+        .option('message', {
             alias: 'c',
-            describe: 'Context as a JSON string or a path to a JSON file',
+            describe: 'Message as a JSON string or a path to a JSON file',
             type: 'string',
         })
         .command('$0 <dirName> [input]', 'Runs the specified transmission with optional input value', (yargs) => {
@@ -93,27 +95,22 @@ if (process.argv.length <= 2) {
                     default: '' // Default value if the second argument is not provided
                 })
         }, async (argv) => {
-            const { dirName, input, context: contextArg } = argv // TODO what's that arg for context?
+            const { dirName, input, message: contextArg } = argv // TODO what's that arg for message?
 
             const transmissionPath = path.join(applicationsDir, dirName)
             const defaultDataDir = path.join(transmissionPath, '/data')
 
+            // TODO revisit base message, add constructor.name?
+            message = { "dataDir": defaultDataDir }
+            message.rootDir = input
 
-
-            // TODO revisit base context, add constructor.name?
-            context = { "dataDir": defaultDataDir }
-            context.rootDir = input
-
-            // If a context argument was provided, parse or load it
+            // If a message argument was provided, parse or load it
             if (contextArg) {
-                context = await CommandUtils.parseOrLoadContext(contextArg);
+                message = await CommandUtils.parseOrLoadContext(contextArg);
             }
-            logger.log('transmissionPath = ' + transmissionPath)
-            logger.log('input = ' + input)
-            logger.log('context = ')
-            logger.reveal(context)
 
-            await CommandUtils.run(transmissionPath, input, context) // Pass additional data and context as needed
+            message.applicationRootDir = path.join(fileURLToPath(import.meta.url), '../', transmissionPath)
+            await CommandUtils.run(transmissionPath, input, message) // Pass additional data and message as needed
         })
         .help('h')
         .alias('h', 'help')

@@ -108,6 +108,13 @@ class Service extends EventEmitter {
         logger.log('POI = ')
         logger.poi(poi)
     }
+
+    getPropertyFromMyConfig(property) {
+        const poi = this.getMyPoi()
+        return poi.out(property).term.value
+    }
+
+
     async deletePropertyFromMyConfig(predicate, value) {
         const myConfigNode = this.getMyConfigNode()
         const s = myConfigNode.value

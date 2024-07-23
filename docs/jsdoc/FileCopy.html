@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: ConfigMap</title>
+    <title>JSDoc: Class: FileCopy</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: ConfigMap</h1>
+    <h1 class="page-title">Class: FileCopy</h1>
 
     
 
@@ -28,13 +28,10 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>ConfigMap<span class="signature">(config)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>FileCopy<span class="signature">(config)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>Takes the message.dataset and guided by services.ttl maps its contents to direct key:value pairs in the message</p>
-<h4><strong><em>Input</em></strong></h4>
-<p><strong>message</strong> : needs dataset</p>
-<h4><strong><em>Output</em></strong></h4>
-<p><strong>message</strong> : determined by mapping</p></div>
+            <div class="class-description"><p>FileCopy class that extends Service.
+Copies files or directories to a specified destination.</p></div>
         
     
 </header>
@@ -49,7 +46,7 @@
     
 
     
-    <h4 class="name" id="ConfigMap"><span class="type-signature"></span>new ConfigMap<span class="signature">(config)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="FileCopy"><span class="type-signature"></span>new FileCopy<span class="signature">(config)</span><span class="type-signature"></span></h4>
     
 
     
@@ -57,7 +54,7 @@
 
 
 <div class="description">
-    <p>Creates an instance of PostcraftDispatcher.</p>
+    <p>Constructs a new FileCopy instance.</p>
 </div>
 
 
@@ -150,7 +147,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_rdf_ConfigMap.js.html">services/rdf/ConfigMap.js</a>, <a href="services_rdf_ConfigMap.js.html#line18">line 18</a>
+        <a href="services_fs_FileCopy.js.html">services/fs/FileCopy.js</a>, <a href="services_fs_FileCopy.js.html#line10">line 10</a>
     </li></ul></dd>
     
 
@@ -184,17 +181,6 @@
     </div>
 
     
-        <h3 class="subsection-title">Extends</h3>
-
-        
-
-
-    <ul>
-        <li>ProcessService</li>
-    </ul>
-
-
-    
 
     
 
@@ -217,7 +203,7 @@
     
 
     
-    <h4 class="name" id="execute"><span class="type-signature">(async) </span>execute<span class="signature">(data, message)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="copyDirectory"><span class="type-signature">(async) </span>copyDirectory<span class="signature">(source, destination)</span><span class="type-signature"></span></h4>
     
 
     
@@ -225,7 +211,7 @@
 
 
 <div class="description">
-    <p>Executes the service.</p>
+    <p>Recursively copies a directory and its contents to the destination directory.</p>
 </div>
 
 
@@ -261,13 +247,13 @@
 
         <tr>
             
-                <td class="name"><code>data</code></td>
+                <td class="name"><code>source</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">string</span>
 
 
             
@@ -277,20 +263,20 @@
 
             
 
-            <td class="description last"><p>The data object.</p></td>
+            <td class="description last"><p>The source directory path.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>message</code></td>
+                <td class="name"><code>destination</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">string</span>
 
 
             
@@ -300,8 +286,7 @@
 
             
 
-            <td class="description last"><p>The message object.
-TODO this desperately needs refactoring, generalising a bit</p></td>
+            <td class="description last"><p>The destination directory path.</p></td>
         </tr>
 
     
@@ -342,7 +327,7 @@ TODO this desperately needs refactoring, generalising a bit</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_rdf_ConfigMap.js.html">services/rdf/ConfigMap.js</a>, <a href="services_rdf_ConfigMap.js.html#line34">line 34</a>
+        <a href="services_fs_FileCopy.js.html">services/fs/FileCopy.js</a>, <a href="services_fs_FileCopy.js.html#line72">line 72</a>
     </li></ul></dd>
     
 
@@ -378,7 +363,7 @@ TODO this desperately needs refactoring, generalising a bit</p></td>
     
 
     
-    <h4 class="name" id="processContentGroup"><span class="type-signature">(async) </span>processContentGroup<span class="signature">(message, contentGroupID)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="copyFile"><span class="type-signature">(async) </span>copyFile<span class="signature">(source, destination)</span><span class="type-signature"></span></h4>
     
 
     
@@ -386,7 +371,167 @@ TODO this desperately needs refactoring, generalising a bit</p></td>
 
 
 <div class="description">
-    <p>Processes a content group.</p>
+    <p>Copies a file to the destination directory.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>source</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The source file path.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>destination</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The destination directory path.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="services_fs_FileCopy.js.html">services/fs/FileCopy.js</a>, <a href="services_fs_FileCopy.js.html#line56">line 56</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="execute"><span class="type-signature">(async) </span>execute<span class="signature">(message)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Copies the source to the destination.</p>
 </div>
 
 
@@ -438,14 +583,33 @@ TODO this desperately needs refactoring, generalising a bit</p></td>
 
             
 
-            <td class="description last"><p>The message object.</p></td>
-        </tr>
+            <td class="description last"><p>The message object.</p>
+                <h6>Properties</h6>
+                
 
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
     
 
         <tr>
             
-                <td class="name"><code>contentGroupID</code></td>
+                <td class="name"><code>source</code></td>
             
 
             <td class="type">
@@ -461,7 +625,37 @@ TODO this desperately needs refactoring, generalising a bit</p></td>
 
             
 
-            <td class="description last"><p>The ID of the content group.</p></td>
+            <td class="description last"><p>The source path (ignored if there's a configKey from transmission)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>destination</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The destination path  (ignored if there's a configKey from transmission)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -502,7 +696,7 @@ TODO this desperately needs refactoring, generalising a bit</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_rdf_ConfigMap.js.html">services/rdf/ConfigMap.js</a>, <a href="services_rdf_ConfigMap.js.html#line69">line 69</a>
+        <a href="services_fs_FileCopy.js.html">services/fs/FileCopy.js</a>, <a href="services_fs_FileCopy.js.html#line26">line 26</a>
     </li></ul></dd>
     
 

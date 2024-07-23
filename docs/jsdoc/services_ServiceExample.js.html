@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: services/ServiceExample.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,53 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: services/ServiceExample.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { readFile } from 'node:fs/promises' // whatever else
 
+import logger from '../utils/Logger.js' // path will likely change
+import Service from '../base/Service.js' // maybe more specific
 
-    <h3> </h3>
+/**
+ * FileReader class that extends xxxxxService.
+ * DESCRIPTION
+ * #### __*Input*__
+ * **message.INPUT** 
+ * #### __*Output*__
+ * **message.OUTPUT**
+ */
+class ServiceExample extends Service {
 
+    /**
+     * Constructs a new ServiceExample instance.
+     * @param {Object} config - The configuration object.
+     */
+    constructor(config) {
+        super(config)
+    }
 
+    /**
+     * Does something with the message and emits a 'message' event with the processed message.
+     * @param {Object} message - The message object.
+     */
+    async execute(message) {
+        // processing goes here
+        this.emit('message', message)
+    } catch(err) {
+        logger.error("ServiceExample.execute error : " + err.message)
+    }
+}
 
-
-
-
-
-
-
-
-    
-
-
-
-
-
+export default ServiceExample</code></pre>
+        </article>
+    </section>
 
 
 
