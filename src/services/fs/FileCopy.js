@@ -1,5 +1,5 @@
 import { copyFile, mkdir, readdir, stat } from 'node:fs/promises'
-import { join } from 'node:path'
+import path from 'path'
 
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
@@ -40,22 +40,16 @@ class FileCopy extends Service {
             source = this.getPropertyFromMyConfig(ns.trm.source)
             destination = this.getPropertyFromMyConfig(ns.trm.destination)
 
-            source = join(message.applicationRootDir, source)
-            destination = join(message.applicationRootDir, destination)
+            source = path.join(message.applicationRootDir, source)
+            destination = path.join(message.applicationRootDir, destination)
 
-            const sf = path.join(__dirname, toRootDir, message.dataDir, filePath);
 
-            // logger.debug('FileSource file : ' + sf)
-
-            // const sf = footpath.resolve(import.meta.url, '.', this.sourceFile)
-
-            const sf = path.join(__dirname, toRootDir, message.dataDir, filePath);
 
             // logger.debug('FileSource file : ' + sf)
 
             //   const currentDir = dirname(fileURLToPath(import.meta.url));
             // Navigate up to the application root
-            // this.rootDir = join(currentDir, '..', '..', 'applications', 'file-copy-remove-test');
+            // this.rootDir = path.join(currentDir, '..', '..', 'applications', 'file-copy-remove-test');
 
         }
         //  logger.log('message.dataDir = ' + message.dataDir)
@@ -86,7 +80,7 @@ class FileCopy extends Service {
      */
     async copyFile(source, destination) {
         try {
-            const destPath = join(destination, source.split('/').pop())
+            const destPath = path.join(destination, source.split('/').pop())
             logger.log('source = ' + source)
             logger.log('destPath = ' + destPath)
             await copyFile(source, destPath)
@@ -102,13 +96,13 @@ class FileCopy extends Service {
      */
     async copyDirectory(source, destination) {
         try {
-            const destDir = join(destination, source.split('/').pop())
+            const destDir = path.join(destination, source.split('/').pop())
             await mkdir(destDir, { recursive: true })
             const entries = await readdir(source, { withFileTypes: true })
 
             for (const entry of entries) {
-                const srcPath = join(source, entry.name)
-                const destPath = join(destDir, entry.name)
+                const srcPath = path.join(source, entry.name)
+                const destPath = path.join(destDir, entry.name)
 
                 //   logger.log('srcPath = ' + srcPath)
                 //   logger.log('destPath = ' + destPath)
