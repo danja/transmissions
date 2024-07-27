@@ -14,7 +14,7 @@ t:copySingleEmptyToSingleFull a trm:ServiceConfig ;
 
 t:removeSingleEmpty a trm:ServiceConfig ;
     trm:key t:removeSingleEmpty ;
-    trm:remove "data/single-empty/one.txt" .
+    trm:target "data/single-empty/one.txt" .
 
 t:copyStartToSeveralEmpty a trm:ServiceConfig ;
     trm:key t:copyStartToSeveralEmpty ;
@@ -28,4 +28,4 @@ t:copySeveralEmptyToSeveralFull a trm:ServiceConfig ;
 
 t:removeSeveralEmpty a trm:ServiceConfig ;
     trm:key t:removeSeveralEmpty ;
-    trm:remove "data/several-empty" .
+    trm:target "data/several-empty" .

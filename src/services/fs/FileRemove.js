@@ -1,5 +1,6 @@
 import { unlink, readdir, stat, rm } from 'node:fs/promises'
-import { join } from 'node:path'
+import path from 'path'
+import ns from '../../utils/ns.js'
 import logger from '../../utils/Logger.js'
 import Service from '../base/Service.js'
 
@@ -23,20 +24,30 @@ class FileRemove extends Service {
      * @param {string} message.remove - The path to the file or directory to remove.
      */
     async execute(message) {
-        try {
-            const { remove } = message
-            const removeStat = await stat(remove)
+     
+        var target
+
+        if (this.configKey === 'undefined') {
+            logger.debug('FileRemove no configKey from transmission, using message.target')
+         target =   message.target
+        } else {
+            logger.debug('FileCopy this.configKey = ' + this.configKey.value)
+            target = this.getPropertyFromMyConfig(ns.trm.target)
+
+            target = path.join(message.applicationRootDir, target)
+
+        }
+
+            const removeStat = await stat(target)
 
             if (removeStat.isFile()) {
-                await this.removeFile(remove)
+                await this.removeFile(target)
             } else if (removeStat.isDirectory()) {
-                await this.removeDirectoryContents(remove)
+                await this.removeDirectoryContents(target)
             }
 
             this.emit('message', message)
-        } catch (err) {
-            logger.error("FileRemove.execute error: " + err.message)
-        }
+       
     }
 
     /**
@@ -44,11 +55,7 @@ class FileRemove extends Service {
      * @param {string} filePath - The path to the file to remove.
      */
     async removeFile(filePath) {
-        try {
             await unlink(filePath)
-        } catch (err) {
-            logger.error("FileRemove.removeFile error: " + err.message)
-        }
     }
 
     /**
@@ -56,11 +63,11 @@ class FileRemove extends Service {
      * @param {string} dirPath - The path to the directory.
      */
     async removeDirectoryContents(dirPath) {
-        try {
+    
             const entries = await readdir(dirPath, { withFileTypes: true })
 
             for (const entry of entries) {
-                const entryPath = join(dirPath, entry.name)
+                const entryPath = path.join(dirPath, entry.name)
 
                 if (entry.isDirectory()) {
                     await this.removeDirectoryContents(entryPath)
@@ -68,9 +75,6 @@ class FileRemove extends Service {
                     await unlink(entryPath)
                 }
             }
-        } catch (err) {
-            logger.error("FileRemove.removeDirectoryContents error: " + err.message)
-        }
     }
 }
 
