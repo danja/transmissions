@@ -48,36 +48,23 @@ class FileCopy extends Service {
         logger.log('destination = ' + destination+'\n')
         // this.showMyConfig()
 
-
         const sourceStat = await stat(source)
 
+        // const destPath = path.join(destination, source.split('/').pop())
+
         if (sourceStat.isFile()) {
-            await this.copyFile(source, destination)
+            logger.log('copying file')
+            await copyFile(source, destination)
+          //  await this.copyFile(source, destination)
         } else if (sourceStat.isDirectory()) {
+            logger.log('copying dir')
             await this.copyDirectory(source, destination)
         }
 
         this.emit('message', message)
-        // } catch (err) {
-        //   logger.error("FileCopy.execute error: " + err.message)
-        // }
     }
 
-    /**
-     * Copies a file to the destination directory.
-     * @param {string} source - The source file path.
-     * @param {string} destination - The destination directory path.
-     */
-    async copyFile(source, destination) {
-        try {
-            const destPath = path.join(destination, source.split('/').pop())
-            logger.log('source = ' + source)
-            logger.log('destPath = ' + destPath)
-            await copyFile(source, destPath)
-        } catch (err) {
-            logger.error("FileCopy.copyFile error: " + err.message)
-        }
-    }
+  
 
     /**
      * Recursively copies a directory and its contents to the destination directory.
