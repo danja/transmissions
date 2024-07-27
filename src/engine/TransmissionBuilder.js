@@ -16,18 +16,14 @@ import Transmission from './Transmission.js'
 class TransmissionBuilder {
 
   static async build(transmissionConfigFile, servicesConfigFile) {
-    // const __filename = fileURLToPath(import.meta.url);
-    //const __dirname = path.dirname(__filename);
-    // const applicationRootDir = path.resolve(__dirname, '..', 'applications');
-    // logger.log('Application root dir : ' + applicationRootDir)
 
     logger.info('\n+ ***** Load Config ******')
     logger.info('[Transmission : ' + transmissionConfigFile + ']')
     const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile)
-    logger.info('[Config : ' + servicesConfigFile + ']')
+    logger.info('[Services Config : ' + servicesConfigFile + ']')
     const servicesConfig = await TransmissionBuilder.readDataset(servicesConfigFile)
-    // relative to run.js
-    // TransmissionBuilder.writeDataset(dataset, "./applications/output.ttl")
+
+
 
     const poi = grapoi({ dataset: transmissionConfig })
 

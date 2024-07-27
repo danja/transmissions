@@ -32,30 +32,20 @@ class FileCopy extends Service {
         var source, destination
 
         if (this.configKey === 'undefined') {
-            logger.log('FileCopy no configKey from transmission, using message.source, message.destination')
+            logger.debug('FileCopy no configKey from transmission, using message.source, message.destination')
             source = message.source
             destination = message.destination
         } else {
-            logger.log('FileCopy this.configKey = ' + this.configKey.value)
+            logger.debug('FileCopy this.configKey = ' + this.configKey.value)
             source = this.getPropertyFromMyConfig(ns.trm.source)
             destination = this.getPropertyFromMyConfig(ns.trm.destination)
 
             source = path.join(message.applicationRootDir, source)
             destination = path.join(message.applicationRootDir, destination)
-
-
-
-            // logger.debug('FileSource file : ' + sf)
-
-            //   const currentDir = dirname(fileURLToPath(import.meta.url));
-            // Navigate up to the application root
-            // this.rootDir = path.join(currentDir, '..', '..', 'applications', 'file-copy-remove-test');
-
         }
-        //  logger.log('message.dataDir = ' + message.dataDir)
-        //    logger.log('message.applicationRootDir = ' + message.applicationRootDir)
-        logger.log('source = ' + source)
-        logger.log('destination = ' + destination)
+
+        logger.log('\nsource = ' + source)
+        logger.log('destination = ' + destination+'\n')
         // this.showMyConfig()
 
 
