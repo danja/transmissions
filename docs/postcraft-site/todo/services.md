@@ -8,6 +8,10 @@ initially in `services/unsafe`
 - sandboxed JS
 - run code via system calls
 
+## Loop
+
+## AI connectors
+
 ---
 
 extend FileWriter & FileReader to handle multiple files (eg. templates)
