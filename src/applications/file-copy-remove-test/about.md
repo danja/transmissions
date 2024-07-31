@@ -1,5 +1,11 @@
 # file-copy-remove-test
 
+run with :
+
+```
+transmissions$ ./run file-copy-remove-test
+```
+
 this should :
 
 - copy `start/one.txt` into `single-empty/`
@@ -11,9 +17,3 @@ this should :
 - remove everything in `several-empty/`
 
 Hmm, test services would be helpful to check before and after - or maybe just use regular test runner script from npm?
-
-run with :
-
-```
-transmissions$ ./run file-copy-remove-test
-```

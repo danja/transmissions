@@ -8,10 +8,8 @@
         "useDefaultPatterns": true,
         "customPatterns": [
             "*.log",
-            "docs/jsdoc",
-            "docs/media",
-            "docs/postcraft-site",
-            "src/applications/mail-archive-meta"
+            "docs",
+            "**/*repopack*"
         ]
     }
 }

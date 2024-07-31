@@ -4,6 +4,10 @@ Application :
 
 ./run postcraft /home/danny/HKMS/postcraft/danny.ayers.name
 
+```
+repopack --verbose -c ./repopack.config.json
+```
+
 Individual test:
 
 `$npx jasmine --reporter=tests/helpers/reporter.js tests/unit/NOP.spec.js`
@@ -21,3 +25,5 @@ npm run <script>
     "serve": "webpack serve"
   },
 ```
+
+// npm test -- tests/integration/file-copy-remove-test.spec.js
