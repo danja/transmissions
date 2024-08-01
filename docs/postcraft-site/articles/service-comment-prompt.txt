@@ -31,6 +31,11 @@ At the top of the file, include details following the form of this example:
  * * Copies individual files directly
  * * Recursively copies directories and their contents
  * * Logs detailed information about the copying process for debugging
+ *
+ * #### __Tests__
+ * `./run file-copy-remove-test`
+ * `npm test -- tests/integration/file-copy-remove-test.spec.js`
+ *
  */
  ---
 

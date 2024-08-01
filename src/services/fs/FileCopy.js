@@ -24,6 +24,11 @@
  * * Copies individual files directly
  * * Recursively copies directories and their contents
  * * Logs detailed information about the copying process for debugging
+ * 
+ * #### __Tests__
+ * `./run file-copy-remove-test`
+ * `npm test -- tests/integration/file-copy-remove-test.spec.js`
+ * 
  */
 
 import { copyFile, mkdir, readdir, stat } from 'node:fs/promises'
