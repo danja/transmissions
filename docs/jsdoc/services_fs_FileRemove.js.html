@@ -26,78 +26,98 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { unlink, readdir, stat, rm } from 'node:fs/promises'
-import { join } from 'node:path'
+            <pre class="prettyprint source linenums"><code>// src/services/fs/FileRemove.js
+/**
+ * FileRemove Service
+ * 
+ * Removes files or directory contents on the local filesystem.
+ * @extends Service
+ * 
+ * #### __*Input*__
+ * * message.applicationRootDir (optional) - The root directory of the application
+ * * message.target (if no configKey) - The path of the file or directory to remove
+ * 
+ * #### __*Configuration*__
+ * If a configKey is provided in the transmission:
+ * * ns.trm.target - The target path relative to applicationRootDir
+ * 
+ * #### __*Output*__
+ * * Removes the specified file or directory contents
+ * * message (unmodified) - The input message is passed through
+ * 
+ * #### __*Behavior*__
+ * * Removes individual files directly
+ * * Recursively removes directory contents
+ * * Logs debug information about the removal process
+ * 
+ * #### __Tests__
+ * `./run file-copy-remove-test`
+ * `npm test -- tests/integration/file-copy-remove-test.spec.js`
+ * 
+ */
+
+import { unlink, readdir, stat, rm } from 'node:fs/promises'
+import path from 'path'
+import ns from '../../utils/ns.js'
 import logger from '../../utils/Logger.js'
 import Service from '../base/Service.js'
 
-/**
- * FileRemove class that extends Service.
- * Removes files or directory contents based on the provided path.
- */
 class FileRemove extends Service {
-
-    /**
-     * Constructs a new FileRemove instance.
-     * @param {Object} config - The configuration object.
-     */
     constructor(config) {
         super(config)
     }
 
     /**
-     * Removes the specified file or directory contents.
-     * @param {Object} message - The message object.
-     * @param {string} message.remove - The path to the file or directory to remove.
+     * Executes the file or directory removal operation
+     * @param {Object} message - The input message
      */
     async execute(message) {
-        try {
-            const { remove } = message
-            const removeStat = await stat(remove)
+        var target
 
-            if (removeStat.isFile()) {
-                await this.removeFile(remove)
-            } else if (removeStat.isDirectory()) {
-                await this.removeDirectoryContents(remove)
-            }
-
-            this.emit('message', message)
-        } catch (err) {
-            logger.error("FileRemove.execute error: " + err.message)
+        // Determine target path
+        if (this.configKey === 'undefined') {
+            logger.debug('FileRemove no configKey from transmission, using message.target')
+            target = message.target
+        } else {
+            logger.debug('FileRemove this.configKey = ' + this.configKey.value)
+            target = this.getPropertyFromMyConfig(ns.trm.target)
+            target = path.join(message.applicationRootDir, target)
         }
+
+        const removeStat = await stat(target)
+
+        if (removeStat.isFile()) {
+            await this.removeFile(target)
+        } else if (removeStat.isDirectory()) {
+            await this.removeDirectoryContents(target)
+        }
+
+        this.emit('message', message)
     }
 
     /**
-     * Removes a file.
-     * @param {string} filePath - The path to the file to remove.
+     * Removes a file
+     * @param {string} filePath - The path to the file to remove
      */
     async removeFile(filePath) {
-        try {
-            await unlink(filePath)
-        } catch (err) {
-            logger.error("FileRemove.removeFile error: " + err.message)
-        }
+        await unlink(filePath)
     }
 
     /**
-     * Removes the contents of a directory recursively.
-     * @param {string} dirPath - The path to the directory.
+     * Recursively removes the contents of a directory
+     * @param {string} dirPath - The path to the directory
      */
     async removeDirectoryContents(dirPath) {
-        try {
-            const entries = await readdir(dirPath, { withFileTypes: true })
+        const entries = await readdir(dirPath, { withFileTypes: true })
 
-            for (const entry of entries) {
-                const entryPath = join(dirPath, entry.name)
+        for (const entry of entries) {
+            const entryPath = path.join(dirPath, entry.name)
 
-                if (entry.isDirectory()) {
-                    await this.removeDirectoryContents(entryPath)
-                } else {
-                    await unlink(entryPath)
-                }
+            if (entry.isDirectory()) {
+                await this.removeDirectoryContents(entryPath)
+            } else {
+                await unlink(entryPath)
             }
-        } catch (err) {
-            logger.error("FileRemove.removeDirectoryContents error: " + err.message)
         }
     }
 }
@@ -112,13 +132,13 @@ export default FileRemove</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="ContextReader.html">ContextReader</a></li><li><a href="DirWalker.html">DirWalker</a></li><li><a href="FileCopy.html">FileCopy</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileRemove.html">FileRemove</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="RemapContext.html">RemapContext</a></li><li><a href="Service.html">Service</a></li><li><a href="ServiceExample.html">ServiceExample</a></li><li><a href="Stash.html">Stash</a></li><li><a href="Templater.html">Templater</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="ContextReader.html">ContextReader</a></li><li><a href="DirWalker.html">DirWalker</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="RemapContext.html">RemapContext</a></li><li><a href="Service.html">Service</a></li><li><a href="ServiceExample.html">ServiceExample</a></li><li><a href="Stash.html">Stash</a></li><li><a href="Templater.html">Templater</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Jul 23 2024 13:37:55 GMT+0200 (Central European Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Aug 01 2024 15:20:32 GMT+0200 (Central European Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>
