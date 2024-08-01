@@ -15,9 +15,33 @@ async function setupInitialStructure() {
     await fs.writeFile(path.join(startDir, 'two.txt'), 'Hello from Two');
 }
 
+async function checkFileExists(filePath) {
+    try {
+        await fs.access(filePath);
+        return true;
+    } catch {
+        return false;
+    }
+}
+
 describe('file-copy-remove-test', function () {
     // Increase the timeout for the entire test suite
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000; // 30 seconds
+
+    beforeAll(async function () {
+        console.log('Starting beforeAll...');
+        const sourceFile = path.join(testDir, 'start', 'one.txt');
+        const sourceExists = await checkFileExists(sourceFile);
+        console.log(`Source file exists: ${sourceExists}`);
+        await setupInitialStructure();
+        await Promise.all([
+            clearDir('single-empty'),
+            clearDir('single-full'),
+            clearDir('several-empty'),
+            clearDir('several-full')
+        ]);
+        console.log('Finished beforeAll');
+    });
 
     async function getDirContents(dir) {
         try {
@@ -36,17 +60,7 @@ describe('file-copy-remove-test', function () {
         }
     }
 
-    beforeAll(async function () {
-        console.log('Starting beforeAll...');
-        await setupInitialStructure();
-        await Promise.all([
-            clearDir('single-empty'),
-            clearDir('single-full'),
-            clearDir('several-empty'),
-            clearDir('several-full')
-        ]);
-        console.log('Finished beforeAll');
-    });
+
 
     it('performs file operations correctly', function (done) {
         console.log('Starting test...');

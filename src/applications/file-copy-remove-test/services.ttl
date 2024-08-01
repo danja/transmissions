@@ -2,6 +2,11 @@
 @prefix trm: <http://purl.org/stuff/transmission/> .
 @prefix t: <http://hyperdata.it/transmissions/> .
 
+#t:copyOneToSingleEmpty a trm:ServiceConfig ;
+ #   trm:key t:copyOneToSingleEmpty ;
+  #  trm:source "data/start/one.txt" ;
+   # trm:destination "data/single-empty/one.txt" .
+
 t:copyOneToSingleEmpty a trm:ServiceConfig ;
     trm:key t:copyOneToSingleEmpty ;
     trm:source "data/start/one.txt" ;

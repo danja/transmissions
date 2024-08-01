@@ -3,7 +3,15 @@
 run with :
 
 ```
-transmissions$ ./run file-copy-remove-test
+# in transmissions dir
+
+./run file-copy-remove-test
+```
+
+or
+
+```
+npm test -- tests/integration/file-copy-remove-test.spec.js
 ```
 
 this should :

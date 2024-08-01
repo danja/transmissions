@@ -4,7 +4,9 @@ _Original title Turtle Markdown Extensions_
 
 ##
 
----
+https://daringfireball.net/projects/markdown/syntax#link
+
+## https://www.markdownguide.org/
 
 ## Earlier
 
