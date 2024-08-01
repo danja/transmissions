@@ -1,3 +1,31 @@
+// src/services/fs/FileCopy.js
+/**
+ * FileCopy Service
+ * 
+ * Copies files or entire directories on the local filesystem.
+ * @extends Service
+ * 
+ * #### __*Input*__
+ * * message.applicationRootDir (optional) - The root directory of the application
+ * * message.source (if no configKey) - The source path of the file or directory to copy
+ * * message.destination (if no configKey) - The destination path for the copied file or directory
+ * 
+ * #### __*Configuration*__
+ * If a configKey is provided in the transmission:
+ * * ns.trm.source - The source path relative to applicationRootDir
+ * * ns.trm.destination - The destination path relative to applicationRootDir
+ * 
+ * #### __*Output*__
+ * * Copies the specified file or directory to the destination
+ * * message (unmodified) - The input message is passed through
+ * 
+ * #### __*Behavior*__
+ * * Checks and creates target directories if they don't exist
+ * * Copies individual files directly
+ * * Recursively copies directories and their contents
+ * * Logs detailed information about the copying process for debugging
+ */
+
 import { copyFile, mkdir, readdir, stat } from 'node:fs/promises'
 import path from 'path'
 import logger from '../../utils/Logger.js'
@@ -9,9 +37,14 @@ class FileCopy extends Service {
         super(config)
     }
 
+    /**
+     * Executes the file copy operation
+     * @param {Object} message - The input message
+     */
     async execute(message) {
         var source, destination
 
+        // Determine source and destination paths
         if (this.configKey === 'undefined') {
             logger.debug('FileCopy: Using message.source and message.destination')
             source = message.source
@@ -47,6 +80,10 @@ class FileCopy extends Service {
         this.emit('message', message)
     }
 
+    /**
+     * Ensures the specified directory exists, creating it if necessary
+     * @param {string} dirPath - The directory path to ensure
+     */
     async ensureDirectoryExists(dirPath) {
         logger.debug(`Ensuring directory exists: ${dirPath}`)
         try {
@@ -58,6 +95,11 @@ class FileCopy extends Service {
         }
     }
 
+    /**
+     * Recursively copies a directory and its contents
+     * @param {string} source - The source directory path
+     * @param {string} destination - The destination directory path
+     */
     async copyDirectory(source, destination) {
         logger.debug(`Copying directory: ${source} to ${destination}`)
         try {
