@@ -10,7 +10,7 @@ src/services
 │   └── SourceService.js
 ├── fs
 │   ├── DirWalker.js
-│   ├── FileCopy.js : C IT
+│   ├── FileCopy.js | C IT
 │   ├── FileReader.js
 │   ├── FileRemove.js
 │   ├── FileWriter.js

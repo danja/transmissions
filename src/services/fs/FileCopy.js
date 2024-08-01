@@ -1,34 +1,35 @@
 // src/services/fs/FileCopy.js
 /**
- * FileCopy Service
+ * @class FileCopy
+ * @extends Service
+ * @classdesc
+ * **a Transmissions Service**
  * 
  * Copies files or entire directories on the local filesystem.
- * @extends Service
- * 
- * #### __*Input*__
- * * message.applicationRootDir (optional) - The root directory of the application
- * * message.source (if no configKey) - The source path of the file or directory to copy
- * * message.destination (if no configKey) - The destination path for the copied file or directory
  * 
  * #### __*Configuration*__
- * If a configKey is provided in the transmission:
- * * ns.trm.source - The source path relative to applicationRootDir
- * * ns.trm.destination - The destination path relative to applicationRootDir
+ * If a `configKey` is provided in the transmission:
+ * * **`ns.trm.source`** - The source path relative to `applicationRootDir`
+ * * **`ns.trm.destination`** - The destination path relative to `applicationRootDir`
+ * 
+ * #### __*Input*__
+ * * **`message.applicationRootDir`** (optional) - The root directory of the application
+ * * **`message.source`** (if no `configKey`) - The source path of the file or directory to copy
+ * * **`message.destination`** (if no `configKey`) - The destination path for the copied file or directory
  * 
  * #### __*Output*__
- * * Copies the specified file or directory to the destination
- * * message (unmodified) - The input message is passed through
+ * * **`message`** - unmodified
  * 
  * #### __*Behavior*__
+ * * Copies the specified file or directory to the destination
  * * Checks and creates target directories if they don't exist
  * * Copies individual files directly
  * * Recursively copies directories and their contents
  * * Logs detailed information about the copying process for debugging
  * 
  * #### __Tests__
- * `./run file-copy-remove-test`
- * `npm test -- tests/integration/file-copy-remove-test.spec.js`
- * 
+ * * **`./run file-copy-remove-test`**
+ * * **`npm test -- tests/integration/file-copy-remove-test.spec.js`**
  */
 
 import { copyFile, mkdir, readdir, stat } from 'node:fs/promises'
@@ -36,6 +37,7 @@ import path from 'path'
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
 import Service from '../base/Service.js'
+
 
 class FileCopy extends Service {
     constructor(config) {

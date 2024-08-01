@@ -8,7 +8,7 @@ import logger from '../../utils/Logger.js'
  * #### __*Input*__
  * * message.templateFilename or if not present,
  * * message.template
- * * message.contentBlocks - {title, body...} or whatever
+* * message.contentBlocks - {Object} - An object with properties like title, body, etc.. I'll make this change for you.
  * #### __*Output*__
  * * message.content - the templated content
  * 
