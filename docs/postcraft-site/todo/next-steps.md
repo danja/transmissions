@@ -10,6 +10,12 @@
 
 - process articles
 
+- auto-update
+
+- simplify transmission
+
+- Atom feed
+
 ## Refactorings
 
 - relocate contents of `services/test`
