@@ -28,14 +28,29 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>ContextReader<span class="signature">(config)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>ContextReader<span class="signature">()</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>Reads a Turtle file and adds it to the message as a dataset.</p>
+            <div class="class-description"><p><strong>a Transmissions Service</strong></p>
+<p>Reads a Turtle file and adds it to the message as an RDF dataset.</p>
 <h4><strong><em>Input</em></strong></h4>
-<p><strong>data</strong> : TODO move ... root dir containing manifest.ttl
-<strong>message</strong> : any</p>
+<ul>
+<li><strong><code>message.rootDir</code></strong> - Root directory containing manifest.ttl</li>
+</ul>
 <h4><strong><em>Output</em></strong></h4>
-<p><strong>message</strong> : rootDir, dataset (RDF)</p></div>
+<ul>
+<li><strong><code>message.rootDir</code></strong> - Unchanged</li>
+<li><strong><code>message.dataset</code></strong> - RDF dataset created from manifest.ttl</li>
+</ul>
+<h4><strong><em>Behavior</em></strong></h4>
+<ul>
+<li>Reads the manifest.ttl file from the rootDir</li>
+<li>Creates an RDF dataset from the Turtle file</li>
+<li>Adds the dataset to the message object</li>
+</ul>
+<h4><strong>Tests</strong></h4>
+<ul>
+<li>TODO: Add test information</li>
+</ul></div>
         
     
 </header>
@@ -50,72 +65,19 @@
     
 
     
-    <h4 class="name" id="ContextReader"><span class="type-signature"></span>new ContextReader<span class="signature">(config)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="ContextReader"><span class="type-signature"></span>new ContextReader<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
 
 
 
-<div class="description">
-    <p>Create a ContextReader.</p>
-</div>
 
 
 
 
 
 
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>config</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The configuration object.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -151,7 +113,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_rdf_ContextReader.js.html">services/rdf/ContextReader.js</a>, <a href="services_rdf_ContextReader.js.html#line16">line 16</a>
+        <a href="services_rdf_ContextReader.js.html">services/rdf/ContextReader.js</a>, <a href="services_rdf_ContextReader.js.html#line2">line 2</a>
     </li></ul></dd>
     
 
@@ -226,7 +188,7 @@
 
 
 <div class="description">
-    <p>Execute the ContextReader service.</p>
+    <p>Executes the ContextReader service</p>
 </div>
 
 
@@ -278,7 +240,7 @@
 
             
 
-            <td class="description last"><p>The message object.</p></td>
+            <td class="description last"><p>The message object</p></td>
         </tr>
 
     
@@ -319,7 +281,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_rdf_ContextReader.js.html">services/rdf/ContextReader.js</a>, <a href="services_rdf_ContextReader.js.html#line39">line 39</a>
+        <a href="services_rdf_ContextReader.js.html">services/rdf/ContextReader.js</a>, <a href="services_rdf_ContextReader.js.html#line56">line 56</a>
     </li></ul></dd>
     
 
@@ -350,6 +312,232 @@
 
 
         
+            
+
+    
+
+    
+    <h4 class="name" id="getInputKeys"><span class="type-signature"></span>getInputKeys<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;string>}</span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="services_rdf_ContextReader.js.html">services/rdf/ContextReader.js</a>, <a href="services_rdf_ContextReader.js.html#line40">line 40</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>Implement properly</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Array of input keys</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;string></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getOutputKeys"><span class="type-signature"></span>getOutputKeys<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;string>}</span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="services_rdf_ContextReader.js.html">services/rdf/ContextReader.js</a>, <a href="services_rdf_ContextReader.js.html#line48">line 48</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>Implement properly</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Array of output keys</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;string></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
     
 
     
@@ -371,7 +559,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Aug 01 2024 19:04:46 GMT+0200 (Central European Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri Aug 02 2024 23:25:44 GMT+0200 (Central European Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>

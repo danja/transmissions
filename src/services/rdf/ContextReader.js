@@ -1,51 +1,66 @@
+// src/services/rdf/ContextReader.js
+/**
+ * @class ContextReader
+ * @extends SourceService
+ * @classdesc
+ * **a Transmissions Service**
+ * 
+ * Reads a Turtle file and adds it to the message as an RDF dataset.
+ * 
+ * #### __*Input*__
+ * * **`message.rootDir`** - Root directory containing `manifest.ttl`
+ * 
+ * #### __*Output*__
+ * * **`message.rootDir`** - Unchanged
+ * * **`message.dataset`** - RDF dataset created from `manifest.ttl`
+ * 
+ * #### __*Behavior*__
+ * * Reads the manifest.ttl file from the rootDir
+ * * Creates an RDF dataset from the Turtle file
+ * * Adds the dataset to the message object
+ * 
+ * #### __Tests__
+ * * TODO: Add test information
+ */
+
 import rdf from 'rdf-ext'
-import { fromFile, toFile } from 'rdf-utils-fs'
+import { fromFile } from 'rdf-utils-fs'
 import SourceService from '../base/SourceService.js'
 import logger from '../../utils/Logger.js'
 
-/**
- * Reads a Turtle file and adds it to the message as a dataset.
- * 
- * #### __*Input*__
- * **data** : TODO move ... root dir containing manifest.ttl
- * **message** : any
- * #### __*Output*__
- * **message** : rootDir, dataset (RDF) 
- * @extends SourceService
- */
 class ContextReader extends SourceService {
-
-    /**
-     * Create a ContextReader.
-     * @param {Object} config - The configuration object.
-     */
     constructor(config) {
         super(config)
     }
 
-    getInputKeys() { // TODO this should all be declarative
+    /**
+     * @returns {string[]} Array of input keys
+     * @todo Implement properly
+     */
+    getInputKeys() {
         return ['sdfsdf']
     }
 
+    /**
+     * @returns {string[]} Array of output keys
+     * @todo Implement properly
+     */
     getOutputKeys() {
         return ['sdfsdfsdfdataset']
     }
 
-
     /**
-     * Execute the ContextReader service.
-     * @param {Object} message - The message object.
+     * Executes the ContextReader service
+     * @param {Object} message - The message object
      */
-    async execute(message) { // TODO change to one argument 
+    async execute(message) {
         this.preProcess(message)
         const manifestFilename = message.rootDir + '/manifest.ttl'
         const stream = fromFile(manifestFilename)
 
-        // should append RDF to incoming
-        //   message.rootDir = rootDir
         message.dataset = await rdf.dataset().import(stream)
-        //  logger.log('DATASET = \n' + message.dataset)
         this.emit('message', message)
     }
 }
-export default ContextReader 
+
+export default ContextReader

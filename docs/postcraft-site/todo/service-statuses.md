@@ -31,7 +31,7 @@ src/services
 │   └── ProtocolsServicesFactory.js
 ├── rdf
 │   ├── ConfigMap.js
-│   ├── ContextReader.js
+│   ├── ContextReader.js | C
 │   └── RDFServicesFactory.js
 ├── ServiceExample.js
 ├── test
