@@ -25,9 +25,11 @@ class CommandUtils {
         const transmissionConfigFile = path.join(dir, 'transmission.ttl')
         const servicesConfigFile = path.join(dir, 'services.ttl')
 
-        const transmission = await TransmissionBuilder.build(transmissionConfigFile, servicesConfigFile)
+        const transmissions = await TransmissionBuilder.build(transmissionConfigFile, servicesConfigFile)
 
-        transmission.execute(message)
+        for (var i = 0; i < transmissions.length; i++) {
+            transmissions[i].execute(message)
+        }
     }
 
     static async parseOrLoadContext(contextArg) {

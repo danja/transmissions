@@ -12,7 +12,6 @@ import logger from '../utils/Logger.js'
 import AbstractServiceFactory from "./AbstractServiceFactory.js";
 import Transmission from './Transmission.js'
 
-
 class TransmissionBuilder {
 
   static async build(transmissionConfigFile, servicesConfigFile) {
@@ -23,25 +22,27 @@ class TransmissionBuilder {
     logger.info('[Services Config : ' + servicesConfigFile + ']')
     const servicesConfig = await TransmissionBuilder.readDataset(servicesConfigFile)
 
-
-
     const poi = grapoi({ dataset: transmissionConfig })
 
-    const transmission = new Transmission()
+    // const transmission = new Transmission()
+    const transmissions = []
 
     for (const q of poi.out(ns.rdf.type).quads()) { /// NEEDS MULTIPLE TODO
       if (q.object.equals(ns.trm.Pipeline)) { // 
-        TransmissionBuilder.addPipeline(transmission, transmissionConfig, q.subject, servicesConfig)
+        transmissions.push(TransmissionBuilder.constructTransmission(transmissionConfig, q.subject, servicesConfig))
+        logger.log('\n+ ' + q.subject.value)
+        //   logger.reveal(q.subject)
       }
     }
     // throw error
-    return transmission
+    return transmissions
   }
 
   // TODO refactor
-  static addPipeline(transmission, transmissionConfig, pipelineID, servicesConfig) {
+  static constructTransmission(transmissionConfig, pipelineID, servicesConfig) {
     logger.log('\n+ ***** Construct *****')
 
+    const transmission = new Transmission()
     let previousName = "nothing"
 
     // grapoi probably has a built-in for all this

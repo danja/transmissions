@@ -1,0 +1,36 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix trm: <http://purl.org/stuff/transmission/> .
+@prefix t: <http://hyperdata.it/transmissions/> .
+
+#t:copyOneToSingleEmpty a trm:ServiceConfig ;
+ #   trm:key t:copyOneToSingleEmpty ;
+  #  trm:source "data/start/one.txt" ;
+   # trm:destination "data/single-empty/one.txt" .
+
+t:copyOneToSingleEmpty a trm:ServiceConfig ;
+    trm:key t:copyOneToSingleEmpty ;
+    trm:source "data/start/one.txt" ;
+    trm:destination "data/single-empty/one.txt" .
+
+t:copySingleEmptyToSingleFull a trm:ServiceConfig ;
+    trm:key t:copySingleEmptyToSingleFull ;
+    trm:source "data/single-empty/one.txt" ;
+    trm:destination "data/single-full/one.txt" .
+
+t:removeSingleEmpty a trm:ServiceConfig ;
+    trm:key t:removeSingleEmpty ;
+    trm:target "data/single-empty/one.txt" .
+
+t:copyStartToSeveralEmpty a trm:ServiceConfig ;
+    trm:key t:copyStartToSeveralEmpty ;
+    trm:source "data/start" ;
+    trm:destination "data/several-empty" .
+
+t:copySeveralEmptyToSeveralFull a trm:ServiceConfig ;
+    trm:key t:copySeveralEmptyToSeveralFull ;
+    trm:source "data/several-empty" ;
+    trm:destination "data/several-full" .
+
+t:removeSeveralEmpty a trm:ServiceConfig ;
+    trm:key t:removeSeveralEmpty ;
+    trm:target "data/several-empty" .
