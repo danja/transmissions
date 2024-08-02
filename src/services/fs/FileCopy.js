@@ -50,11 +50,12 @@ class FileCopy extends Service {
      * @param {Object} message - The input message
      */
     async execute(message) {
-        logger.setLogLevel("debug")
-        //        logger.debug("message.applicationRootDir = " + message.applicationRootDir)
+        // logger.setLogLevel("debug")
+
         if (message.rootDir == "") {
             message.rootDir = message.applicationRootDir
         }
+        logger.debug("message.rootDir = " + message.rootDir)
         var source, destination
 
         // Determine source and destination paths

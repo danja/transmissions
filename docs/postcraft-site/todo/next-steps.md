@@ -1,12 +1,21 @@
 # Next Steps
 
+- multiple pipes?
+
 ## Postcraft
 
-fix entry permalinks
+- fix entry permalinks
+- code block formatting
+- drop-down blocks
+
+- process articles
 
 ## Refactorings
 
 - relocate contents of `services/test`
+- align namespaces
+
+---
 
 ## New Stuff
 

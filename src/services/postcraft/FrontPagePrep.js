@@ -18,7 +18,7 @@ class FrontPagePrep extends ProcessService {
       // bits for templater
       message.templateFilename = message.rootDir + '/' + message.indexPage.templateFilename
 
-      logger.log('TERMPLATE = ' + message.templateFilename)
+      logger.debug('Template = ' + message.templateFilename)
       const rawEntryPaths = this.resolveRawEntryPaths(message)
       message.content = ''
       // TODO move this out to template and/or separate services
