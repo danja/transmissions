@@ -4,7 +4,7 @@ import ns from '../../utils/ns.js'
 import DirWalker from './DirWalker.js'
 import FileReader from './FileReader.js'
 import FileWriter from './FileWriter.js'
-import FileCopy from './FileCopy.js'
+import FileCopy from './_FileCopy.js/index.js'
 import FileRemove from './FileRemove.js'
 
 class FsServicesFactory {

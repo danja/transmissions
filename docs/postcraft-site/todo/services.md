@@ -1,6 +1,15 @@
-# Services to build
+# TODO : Services
 
-## MessageRunner
+## Refactor
+
+- DatasetReader : generalise to accept named file as well as manifest.ttl
+- ConfigMap : generalise...somehow
+
+## Services to build
+
+### MessageRunner
+
+execute code
 
 initially in `services/unsafe`
 
@@ -8,9 +17,9 @@ initially in `services/unsafe`
 - sandboxed JS
 - run code via system calls
 
-## Loop
+### Loop
 
-## AI connectors
+### AI connectors
 
 ---
 

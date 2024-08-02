@@ -28,13 +28,28 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>ConfigMap<span class="signature">(config)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>ConfigMap<span class="signature">()</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>Takes the message.dataset and guided by services.ttl maps its contents to direct key:value pairs in the message</p>
+            <div class="class-description"><p><strong>a Transmissions Service</strong></p>
+<p>Maps RDF dataset contents to key-value pairs in the message object based on services.ttl configuration.</p>
 <h4><strong><em>Input</em></strong></h4>
-<p><strong>message</strong> : needs dataset</p>
+<ul>
+<li><strong><code>message.dataset</code></strong> - RDF dataset containing configuration</li>
+</ul>
 <h4><strong><em>Output</em></strong></h4>
-<p><strong>message</strong> : determined by mapping</p></div>
+<ul>
+<li><strong><code>message</code></strong> - Updated with mapped key-value pairs based on the dataset content</li>
+</ul>
+<h4><strong><em>Behavior</em></strong></h4>
+<ul>
+<li>Processes the RDF dataset in the message</li>
+<li>Identifies and processes different content groups (PostContent, PostPages, IndexPage)</li>
+<li>Maps relevant information to specific message properties</li>
+</ul>
+<h4><strong>Tests</strong></h4>
+<ul>
+<li>TODO: Add test information</li>
+</ul></div>
         
     
 </header>
@@ -49,72 +64,19 @@
     
 
     
-    <h4 class="name" id="ConfigMap"><span class="type-signature"></span>new ConfigMap<span class="signature">(config)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="ConfigMap"><span class="type-signature"></span>new ConfigMap<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
 
 
 
-<div class="description">
-    <p>Creates an instance of PostcraftDispatcher.</p>
-</div>
 
 
 
 
 
 
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>config</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The configuration object.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -150,7 +112,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_rdf_ConfigMap.js.html">services/rdf/ConfigMap.js</a>, <a href="services_rdf_ConfigMap.js.html#line18">line 18</a>
+        <a href="services_rdf_ConfigMap.js.html">services/rdf/ConfigMap.js</a>, <a href="services_rdf_ConfigMap.js.html#line2">line 2</a>
     </li></ul></dd>
     
 
@@ -217,7 +179,7 @@
     
 
     
-    <h4 class="name" id="execute"><span class="type-signature">(async) </span>execute<span class="signature">(data, message)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="entryContentToPostPage"><span class="type-signature">(async) </span>entryContentToPostPage<span class="signature">(message, contentGroupID)</span><span class="type-signature"></span></h4>
     
 
     
@@ -225,7 +187,7 @@
 
 
 <div class="description">
-    <p>Executes the service.</p>
+    <p>Processes entry content to post page</p>
 </div>
 
 
@@ -261,29 +223,6 @@
 
         <tr>
             
-                <td class="name"><code>data</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The data object.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
                 <td class="name"><code>message</code></td>
             
 
@@ -300,8 +239,30 @@
 
             
 
-            <td class="description last"><p>The message object.
-TODO this desperately needs refactoring, generalising a bit</p></td>
+            <td class="description last"><p>The message object</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>contentGroupID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The ID of the content group</p></td>
         </tr>
 
     
@@ -342,7 +303,471 @@ TODO this desperately needs refactoring, generalising a bit</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_rdf_ConfigMap.js.html">services/rdf/ConfigMap.js</a>, <a href="services_rdf_ConfigMap.js.html#line34">line 34</a>
+        <a href="services_rdf_ConfigMap.js.html">services/rdf/ConfigMap.js</a>, <a href="services_rdf_ConfigMap.js.html#line104">line 104</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="execute"><span class="type-signature">(async) </span>execute<span class="signature">(message)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Executes the ConfigMap service</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The message object containing the dataset</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="services_rdf_ConfigMap.js.html">services/rdf/ConfigMap.js</a>, <a href="services_rdf_ConfigMap.js.html#line41">line 41</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>Refactor for better generalization and maintainability</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="indexPage"><span class="type-signature">(async) </span>indexPage<span class="signature">(message, contentGroupID)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Processes index page</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The message object</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>contentGroupID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The ID of the content group</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="services_rdf_ConfigMap.js.html">services/rdf/ConfigMap.js</a>, <a href="services_rdf_ConfigMap.js.html#line119">line 119</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="markdownToEntryContent"><span class="type-signature">(async) </span>markdownToEntryContent<span class="signature">(message, contentGroupID)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Processes markdown to entry content</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The message object</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>contentGroupID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The ID of the content group</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="services_rdf_ConfigMap.js.html">services/rdf/ConfigMap.js</a>, <a href="services_rdf_ConfigMap.js.html#line83">line 83</a>
     </li></ul></dd>
     
 
@@ -386,7 +811,7 @@ TODO this desperately needs refactoring, generalising a bit</p></td>
 
 
 <div class="description">
-    <p>Processes a content group.</p>
+    <p>Processes a content group based on its type</p>
 </div>
 
 
@@ -438,7 +863,7 @@ TODO this desperately needs refactoring, generalising a bit</p></td>
 
             
 
-            <td class="description last"><p>The message object.</p></td>
+            <td class="description last"><p>The message object</p></td>
         </tr>
 
     
@@ -451,7 +876,7 @@ TODO this desperately needs refactoring, generalising a bit</p></td>
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Object</span>
 
 
             
@@ -461,7 +886,7 @@ TODO this desperately needs refactoring, generalising a bit</p></td>
 
             
 
-            <td class="description last"><p>The ID of the content group.</p></td>
+            <td class="description last"><p>The ID of the content group</p></td>
         </tr>
 
     
@@ -502,7 +927,7 @@ TODO this desperately needs refactoring, generalising a bit</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_rdf_ConfigMap.js.html">services/rdf/ConfigMap.js</a>, <a href="services_rdf_ConfigMap.js.html#line69">line 69</a>
+        <a href="services_rdf_ConfigMap.js.html">services/rdf/ConfigMap.js</a>, <a href="services_rdf_ConfigMap.js.html#line62">line 62</a>
     </li></ul></dd>
     
 
@@ -548,13 +973,13 @@ TODO this desperately needs refactoring, generalising a bit</p></td>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="ContextReader.html">ContextReader</a></li><li><a href="DirWalker.html">DirWalker</a></li><li><a href="FileCopy.html">FileCopy</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="RemapContext.html">RemapContext</a></li><li><a href="Service.html">Service</a></li><li><a href="ServiceExample.html">ServiceExample</a></li><li><a href="Stash.html">Stash</a></li><li><a href="Templater.html">Templater</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="DatasetReader.html">DatasetReader</a></li><li><a href="DirWalker.html">DirWalker</a></li><li><a href="FileCopy.html">FileCopy</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="RemapContext.html">RemapContext</a></li><li><a href="Service.html">Service</a></li><li><a href="ServiceExample.html">ServiceExample</a></li><li><a href="Stash.html">Stash</a></li><li><a href="StringReplace.html">StringReplace</a></li><li><a href="Templater.html">Templater</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri Aug 02 2024 23:25:44 GMT+0200 (Central European Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat Aug 03 2024 01:06:56 GMT+0200 (Central European Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -11,10 +11,9 @@
 :UF a :Unfork . # collapses all pipes but one 
 #############################################################
 
+
 :postcraft_init a trm:Pipeline ;
-    trm:pipe (:a1 :a2) .
+    trm:pipe (:s1) .
 
-:a1 a :NOP .
-
-:a2 a :NOP .
-
+:s1 a :FileCopy ;
+    trm:configKey :copyTemplateToDestination .

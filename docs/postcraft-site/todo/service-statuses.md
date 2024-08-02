@@ -10,9 +10,9 @@ src/services
 │   └── SourceService.js
 ├── fs
 │   ├── DirWalker.js
-│   ├── FileCopy.js | C IT
+C IT │   ├── FileCopy.js
 │   ├── FileReader.js
-│   ├── FileRemove.js
+IT │   ├── FileRemove.js
 │   ├── FileWriter.js
 │   └── FsServicesFactory.js
 ├── markup
@@ -30,8 +30,8 @@ src/services
 │   ├── HttpGet.js
 │   └── ProtocolsServicesFactory.js
 ├── rdf
-│   ├── ConfigMap.js
-│   ├── ContextReader.js | C
+C │   ├── ConfigMap.js
+C │   ├── DatasetReader.js
 │   └── RDFServicesFactory.js
 ├── ServiceExample.js
 ├── test

@@ -2,35 +2,7 @@
 @prefix trm: <http://purl.org/stuff/transmission/> .
 @prefix : <http://hyperdata.it/transmissions/> .
 
-#:copyOneToSingleEmpty a trm:ServiceConfig ;
- #   trm:key :copyOneToSingleEmpty ;
-  #  trm:source "data/start/one.txt" ;
-   # trm:destination "data/single-empty/one.txt" .
-
-:copyOneToSingleEmpty a trm:ServiceConfig ;
-    trm:key :copyOneToSingleEmpty ;
-    trm:source "data/start/one.txt" ;
-    trm:destination "data/single-empty/one.txt" .
-
-:copySingleEmptyToSingleFull a trm:ServiceConfig ;
-    trm:key :copySingleEmptyToSingleFull ;
-    trm:source "data/single-empty/one.txt" ;
-    trm:destination "data/single-full/one.txt" .
-
-:removeSingleEmpty a trm:ServiceConfig ;
-    trm:key :removeSingleEmpty ;
-    trm:target "data/single-empty/one.txt" .
-
-:copyStartToSeveralEmpty a trm:ServiceConfig ;
-    trm:key :copyStartToSeveralEmpty ;
-    trm:source "data/start" ;
-    trm:destination "data/several-empty" .
-
-:copySeveralEmptyToSeveralFull a trm:ServiceConfig ;
-    trm:key :copySeveralEmptyToSeveralFull ;
-    trm:source "data/several-empty" ;
-    trm:destination "data/several-full" .
-
-:removeSeveralEmpty a trm:ServiceConfig ;
-    trm:key :removeSeveralEmpty ;
-    trm:target "data/several-empty" .
+:copyTemplateToDestination a trm:ServiceConfig ;
+    trm:key :copyTemplateToDestination ;
+    trm:source "/home/danny/HKMS/postcraft/postcraft-template/" ;
+    trm:destination "{{destinationPath}}" .

@@ -1,6 +1,6 @@
-// src/services/rdf/ContextReader.js
+// src/services/rdf/DatasetReader.js
 /**
- * @class ContextReader
+ * @class DatasetReader
  * @extends SourceService
  * @classdesc
  * **a Transmissions Service**
@@ -28,7 +28,7 @@ import { fromFile } from 'rdf-utils-fs'
 import SourceService from '../base/SourceService.js'
 import logger from '../../utils/Logger.js'
 
-class ContextReader extends SourceService {
+class DatasetReader extends SourceService {
     constructor(config) {
         super(config)
     }
@@ -50,7 +50,7 @@ class ContextReader extends SourceService {
     }
 
     /**
-     * Executes the ContextReader service
+     * Executes the DatasetReader service
      * @param {Object} message - The message object
      */
     async execute(message) {
@@ -63,4 +63,4 @@ class ContextReader extends SourceService {
     }
 }
 
-export default ContextReader
+export default DatasetReader

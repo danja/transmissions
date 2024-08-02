@@ -1,9 +1,5 @@
-import ns from '../../utils/ns.js'
-import rdf from 'rdf-ext'
-import grapoi from 'grapoi'
+import path from 'path'
 
-import footpath from '../../utils/footpath.js'
-import logger from '../../utils/Logger.js'
 import ProcessService from '../base/ProcessService.js'
 
 class PostcraftPrep extends ProcessService {
@@ -18,7 +14,8 @@ class PostcraftPrep extends ProcessService {
     // logger.reveal(message)
 
     message.slug = this.extractSlug(message)
-    message.targetFilename = this.extractTargetFilename(message) + '.html'
+    message.targetFilename = this.extractTargetFilename(message)
+    //+ '.html'
 
     message.contentBlocks = {}
     // message.contentBlocks.content = message.content
@@ -47,11 +44,15 @@ class PostcraftPrep extends ProcessService {
     return slug
   }
 
+  //  extractTargetFilename(message) {
+  //  return message.rootDir + '/' + message.entryContentMeta.targetDir + '/' + this.extractSlug(message)
+  /*
+      AssertionError: expected '/root//target/2024-05-10_hello-postcr…' to equal '/root/target/2024-05-10_hello-postcra…'
+   */
+  //}
+
   extractTargetFilename(message) {
-    return message.rootDir + '/' + message.entryContentMeta.targetDir + '/' + this.extractSlug(message)
-    /*
-        AssertionError: expected '/root//target/2024-05-10_hello-postcr…' to equal '/root/target/2024-05-10_hello-postcra…'
-     */
+    return path.join(message.rootDir, message.entryContentMeta.targetDir, this.extractSlug(message) + '.html')
   }
 
   extractRelURL(message) {

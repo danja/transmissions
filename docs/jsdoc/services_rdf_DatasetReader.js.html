@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: services/util/Stash.js</title>
+    <title>JSDoc: Source: services/rdf/DatasetReader.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: services/util/Stash.js</h1>
+    <h1 class="page-title">Source: services/rdf/DatasetReader.js</h1>
 
     
 
@@ -26,47 +26,72 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import rdf from 'rdf-ext'
-import { fromFile, toFile } from 'rdf-utils-fs'
-import SourceService from '../base/SourceService.js'
-
+            <pre class="prettyprint source linenums"><code>// src/services/rdf/DatasetReader.js
 /**
- * Takes the input and stashes it in the message as told by services.ttl
+ * @class DatasetReader
+ * @extends SourceService
+ * @classdesc
+ * **a Transmissions Service**
+ * 
+ * Reads a Turtle file and adds it to the message as an RDF dataset.
  * 
  * #### __*Input*__
- * **data** : any
- * **message** : any
+ * * **`message.rootDir`** - Root directory containing `manifest.ttl`
+ * 
  * #### __*Output*__
- * **data** : as Input
- * **message** : adds key:value determined by services.ttl
- * @extends SourceService
+ * * **`message.rootDir`** - Unchanged
+ * * **`message.dataset`** - RDF dataset created from `manifest.ttl`
+ * 
+ * #### __*Behavior*__
+ * * Reads the manifest.ttl file from the rootDir
+ * * Creates an RDF dataset from the Turtle file
+ * * Adds the dataset to the message object
+ * 
+ * #### __Tests__
+ * * TODO: Add test information
  */
-class Stash extends SourceService {
 
-    /**
-     * Create a DatasetReader.
-     * @param {Object} config - The configuration object.
-     */
+import rdf from 'rdf-ext'
+import { fromFile } from 'rdf-utils-fs'
+import SourceService from '../base/SourceService.js'
+import logger from '../../utils/Logger.js'
+
+class DatasetReader extends SourceService {
     constructor(config) {
         super(config)
     }
 
     /**
-     * Execute the DatasetReader service.
-     * @param {string} data -.
-     * @param {Object} message - .
+     * @returns {string[]} Array of input keys
+     * @todo Implement properly
+     */
+    getInputKeys() {
+        return ['sdfsdf']
+    }
+
+    /**
+     * @returns {string[]} Array of output keys
+     * @todo Implement properly
+     */
+    getOutputKeys() {
+        return ['sdfsdfsdfdataset']
+    }
+
+    /**
+     * Executes the DatasetReader service
+     * @param {Object} message - The message object
      */
     async execute(message) {
-        const manifestFilename = rootDir + '/manifest.ttl'
+        this.preProcess(message)
+        const manifestFilename = message.rootDir + '/manifest.ttl'
         const stream = fromFile(manifestFilename)
 
-        // should append RDF to incoming
-        message.rootDir = rootDir
         message.dataset = await rdf.dataset().import(stream)
         this.emit('message', message)
     }
 }
-export default Stash</code></pre>
+
+export default DatasetReader</code></pre>
         </article>
     </section>
 

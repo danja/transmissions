@@ -21,19 +21,16 @@ class FileSource extends SourceService {
         this.sourceFile = poi.out(ns.trm.sourceFile).value
     }
 
+    // In FileSource.js
     async execute(message) {
         try {
             const toRootDir = '../../../'
             const dataDir = toRootDir + message.dataDir
             const sf = footpath.resolve(import.meta.url, dataDir, this.sourceFile)
-
-            // const sf = path.join(__dirname, toRootDir, message.dataDir, filePath);
-
             logger.debug('FileSource file : ' + sf)
-
             const contents = await readFile(sf, { encoding: 'utf8' })
             logger.debug('FileSource data : ' + contents)
-            this.emit('message', contents, message)
+            this.emit('message', { content: contents, ...message })
         } catch (err) {
             logger.error("FileSource.execute error : " + err.message)
         }

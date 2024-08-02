@@ -8,6 +8,8 @@ Application :
 repopack --verbose -c ./repopack.config.json
 ```
 
+npm run test
+
 Individual test:
 
 `$npx jasmine --reporter=tests/helpers/reporter.js tests/unit/NOP.spec.js`
@@ -27,5 +29,7 @@ npm run <script>
 ```
 
 // npm test -- tests/integration/file-copy-remove-test.spec.js
+
+npm test -- tests/unit/PostcraftPrep.spec.js
 
 see docs/dev-process.md

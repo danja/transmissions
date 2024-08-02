@@ -1,8 +1,8 @@
 # Next Steps
 
-- multiple pipes?
-
 ## Postcraft
+
+- clone template run.js dodgy
 
 - fix entry permalinks
 - code block formatting

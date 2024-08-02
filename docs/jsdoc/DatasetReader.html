@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Templater</title>
+    <title>JSDoc: Class: DatasetReader</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Templater</h1>
+    <h1 class="page-title">Class: DatasetReader</h1>
 
     
 
@@ -28,25 +28,24 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Templater<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>DatasetReader<span class="signature">()</span><span class="type-signature"></span></h2>
         
             <div class="class-description"><p><strong>a Transmissions Service</strong></p>
-<p>Provides templating functionality using Nunjucks.</p>
+<p>Reads a Turtle file and adds it to the message as an RDF dataset.</p>
 <h4><strong><em>Input</em></strong></h4>
 <ul>
-<li><strong><code>message.templateFilename</code></strong> - Path to the template file (optional)</li>
-<li><strong><code>message.template</code></strong> - Template string (used if templateFilename is not provided)</li>
-<li><strong><code>message.contentBlocks</code></strong> - Object with properties for template rendering (e.g., title, body)</li>
+<li><strong><code>message.rootDir</code></strong> - Root directory containing <code>manifest.ttl</code></li>
 </ul>
 <h4><strong><em>Output</em></strong></h4>
 <ul>
-<li><strong><code>message.content</code></strong> - The rendered template content</li>
+<li><strong><code>message.rootDir</code></strong> - Unchanged</li>
+<li><strong><code>message.dataset</code></strong> - RDF dataset created from <code>manifest.ttl</code></li>
 </ul>
 <h4><strong><em>Behavior</em></strong></h4>
 <ul>
-<li>Uses Nunjucks to render templates</li>
-<li>Can render from a template file or a template string</li>
-<li>Applies content from message.contentBlocks to the template</li>
+<li>Reads the manifest.ttl file from the rootDir</li>
+<li>Creates an RDF dataset from the Turtle file</li>
+<li>Adds the dataset to the message object</li>
 </ul>
 <h4><strong>Tests</strong></h4>
 <ul>
@@ -66,7 +65,7 @@
     
 
     
-    <h4 class="name" id="Templater"><span class="type-signature"></span>new Templater<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="DatasetReader"><span class="type-signature"></span>new DatasetReader<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -114,7 +113,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_text_Templater.js.html">services/text/Templater.js</a>, <a href="services_text_Templater.js.html#line2">line 2</a>
+        <a href="services_rdf_DatasetReader.js.html">services/rdf/DatasetReader.js</a>, <a href="services_rdf_DatasetReader.js.html#line2">line 2</a>
     </li></ul></dd>
     
 
@@ -154,7 +153,7 @@
 
 
     <ul>
-        <li>ProcessService</li>
+        <li>SourceService</li>
     </ul>
 
 
@@ -189,7 +188,7 @@
 
 
 <div class="description">
-    <p>Executes the templating process</p>
+    <p>Executes the DatasetReader service</p>
 </div>
 
 
@@ -241,7 +240,7 @@
 
             
 
-            <td class="description last"><p>The message object containing template and content information</p></td>
+            <td class="description last"><p>The message object</p></td>
         </tr>
 
     
@@ -282,7 +281,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_text_Templater.js.html">services/text/Templater.js</a>, <a href="services_text_Templater.js.html#line40">line 40</a>
+        <a href="services_rdf_DatasetReader.js.html">services/rdf/DatasetReader.js</a>, <a href="services_rdf_DatasetReader.js.html#line56">line 56</a>
     </li></ul></dd>
     
 
@@ -307,6 +306,232 @@
 
 
 
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getInputKeys"><span class="type-signature"></span>getInputKeys<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;string>}</span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="services_rdf_DatasetReader.js.html">services/rdf/DatasetReader.js</a>, <a href="services_rdf_DatasetReader.js.html#line40">line 40</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>Implement properly</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Array of input keys</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;string></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getOutputKeys"><span class="type-signature"></span>getOutputKeys<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;string>}</span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="services_rdf_DatasetReader.js.html">services/rdf/DatasetReader.js</a>, <a href="services_rdf_DatasetReader.js.html#line48">line 48</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>Implement properly</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Array of output keys</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;string></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 

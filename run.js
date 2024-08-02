@@ -1,14 +1,15 @@
 // run.js - ES module style
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { promises as fs } from 'fs';
+// import { promises as fs } from 'fs';
 import path from 'path'
+import fs from 'fs/promises'
 
+import TransmissionBuilder from './src/engine/TransmissionBuilder.js'
 import { fileURLToPath } from 'url';
 
 import logger from './src/utils/Logger.js'
 
-import TransmissionBuilder from './src/engine/TransmissionBuilder.js'
 
 const applicationsDir = './src/applications'
 
@@ -93,6 +94,65 @@ if (process.argv.length <= 2) {
             })
                 .positional('input', {
                     describe: 'The optional input',
+                    type: 'string',
+                    default: '' // Default value if the second argument is not provided
+                })
+        }, async (argv) => {
+            const { dirName, input, message: contextArg } = argv
+
+            const transmissionPath = path.join(applicationsDir, dirName)
+            const defaultDataDir = path.join(transmissionPath, '/data')
+
+            // TODO revisit base message, add constructor.name?
+            message = { "dataDir": defaultDataDir }
+            message.rootDir = input
+
+            // If a message argument was provided, parse or load it
+            if (contextArg) {
+                message = await CommandUtils.parseOrLoadContext(contextArg);
+            }
+
+            message.applicationRootDir = path.join(fileURLToPath(import.meta.url), '../', transmissionPath)
+
+            // Claude gave me this madness
+            if (dirName === 'postcraft-init') {
+                // Read the services.ttl file
+                const servicesConfigFile = path.join(transmissionPath, 'services.ttl')
+                let servicesContent = await fs.readFile(servicesConfigFile, 'utf8')
+
+                // Replace the placeholder with the actual destination path
+                servicesContent = servicesContent.replace('{{destinationPath}}', input)
+
+                // Write the modified services.ttl back to a temporary file
+                const tempServicesFile = path.join(transmissionPath, 'temp_services.ttl')
+                await fs.writeFile(tempServicesFile, servicesContent)
+
+                // Build and execute the transmission with the temporary services file
+                const transmissionConfigFile = path.join(transmissionPath, 'transmission.ttl')
+                const transmissions = await TransmissionBuilder.build(transmissionConfigFile, tempServicesFile)
+                for (var i = 0; i < transmissions.length; i++) {
+                    await transmissions[i].execute({
+                        ...message,
+                        source: "/home/danny/HKMS/postcraft/postcraft-template/",
+                        destination: input,
+                        rootDir: input
+                    })
+                }
+
+                // Clean up the temporary file
+                await fs.unlink(tempServicesFile)
+            } else {
+                await CommandUtils.run(transmissionPath, input, message)
+            }
+        })
+        /*
+        .command('$0 <dirName> [input]', 'Runs the specified transmission with optional input value', (yargs) => {
+            return yargs.positional('dirName', {
+                describe: 'The transmission to run',
+                type: 'string'
+            })
+                .positional('input', {
+                    describe: 'The optional input',
                     type: 'string', // Specify the type of the second argument
                     default: '' // Default value if the second argument is not provided
                 })
@@ -114,6 +174,7 @@ if (process.argv.length <= 2) {
             message.applicationRootDir = path.join(fileURLToPath(import.meta.url), '../', transmissionPath)
             await CommandUtils.run(transmissionPath, input, message) // Pass additional data and message as needed
         })
+        */
         .help('h')
         .alias('h', 'help')
 

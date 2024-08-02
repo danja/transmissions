@@ -23,6 +23,21 @@ class Transmission {
     connector.connect(this.services)
   }
 
+
+  // In src/engine/Transmission.js
+
+  async execute(message) {
+    logger.log("\n+ ***** Execute *****")
+    const serviceName = this.connectors[0]?.fromName || Object.keys(this.services)[0]
+    let service = this.get(serviceName)
+    if (service) {
+      logger.log("| Running : " + serviceName + " a " + service.constructor.name)
+      await service.receive(message)
+    } else {
+      logger.error("No valid service found to execute")
+    }
+  }
+  /*
   async execute(message) {
     logger.log("\n+ ***** Execute *****")
     // logger.log("\nDATA = " + data)
@@ -38,6 +53,7 @@ class Transmission {
     service.receive(message)
 
   }
+*/
 
   /**
  * Describes the structure of the Transmission instance,

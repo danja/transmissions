@@ -16,7 +16,7 @@ import SourceService from '../base/SourceService.js'
 class Stash extends SourceService {
 
     /**
-     * Create a ContextReader.
+     * Create a DatasetReader.
      * @param {Object} config - The configuration object.
      */
     constructor(config) {
@@ -24,7 +24,7 @@ class Stash extends SourceService {
     }
 
     /**
-     * Execute the ContextReader service.
+     * Execute the DatasetReader service.
      * @param {string} data -.
      * @param {Object} message - .
      */

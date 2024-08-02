@@ -6,7 +6,7 @@
 [Config : src/applications/postcraft/services.ttl]
 
 + ***** Construct *****
-| Create service <http://hyperdata.it/transmissions/s1> of type <http://hyperdata.it/transmissions/ContextReader>
+| Create service <http://hyperdata.it/transmissions/s1> of type <http://hyperdata.it/transmissions/DatasetReader>
 | Create service <http://hyperdata.it/transmissions/s2> of type <http://hyperdata.it/transmissions/ConfigMap>
 | Create service <http://hyperdata.it/transmissions/s3> of type <http://hyperdata.it/transmissions/FileReader>
 | Create service <http://hyperdata.it/transmissions/s4> of type <http://hyperdata.it/transmissions/RemapContext>
@@ -39,7 +39,7 @@
   > Connect #14 [http://hyperdata.it/transmissions/s15] => [http://hyperdata.it/transmissions/s16]
 
 + ***** Execute *****
-| Running : http://hyperdata.it/transmissions/s1 a ContextReader
+| Running : http://hyperdata.it/transmissions/s1 a DatasetReader
 | Running :  (s1) s2 a ConfigMap
 §§§§§§§§§§ contentGroupID http://hyperdata.it/transmissions/PostContent
 *****************+ sourceDir = test

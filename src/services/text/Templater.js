@@ -1,63 +1,61 @@
+// src/services/text/Templater.js
+/**
+ * @class Templater
+ * @extends ProcessService
+ * @classdesc
+ * **a Transmissions Service**
+ * 
+ * Provides templating functionality using Nunjucks.
+ * 
+ * #### __*Input*__
+ * * **`message.templateFilename`** - Path to the template file (optional)
+ * * **`message.template`** - Template string (used if templateFilename is not provided)
+ * * **`message.contentBlocks`** - Object with properties for template rendering (e.g., title, body)
+ * 
+ * #### __*Output*__
+ * * **`message.content`** - The rendered template content
+ * 
+ * #### __*Behavior*__
+ * * Uses Nunjucks to render templates
+ * * Can render from a template file or a template string
+ * * Applies content from message.contentBlocks to the template
+ * 
+ * #### __Tests__
+ * * TODO: Add test information
+ */
+
 import ProcessService from '../base/ProcessService.js'
 import nunjucks from 'nunjucks'
 import logger from '../../utils/Logger.js'
 
-/**
- * A class that provides templating functionality using Nunjucks.
- * @extends ProcessService
- * #### __*Input*__
- * * message.templateFilename or if not present,
- * * message.template
-* * message.contentBlocks - {Object} - An object with properties like title, body, etc.. I'll make this change for you.
- * #### __*Output*__
- * * message.content - the templated content
- * 
- */
 class Templater extends ProcessService {
-    /**
-     * Create a new instance of the Templater class.
-     * @param {object} config - The configuration object for the Templater.
-     */
     constructor(config) {
         super(config)
     }
 
     /**
-     * Executes the templating process.
-     * @param {object} data - The data object to be used for templating.
-     * @param {object} message - The message object containing template information.
+     * Executes the templating process
+     * @param {Object} message - The message object containing template and content information
      */
     async execute(message) {
-
-        if (message.templateFilename) { // if there's a filename, use it
-            //    logger.log('*************************************************************')
-            //    logger.log('message.templateFilename = ' + message.templateFilename)
-            //    logger.log('message.contentBlocks = ')
-            //    logger.reveal(message.contentBlocks)
-            //    logger.log('*************************************************************')
-
-            /* workaround for nunjucks odd/buggy/ugly handling of '' path 
-              at createTemplate (/home/danny/HKMS/transmissions/node_modules/nunjucks/src/environment.js:234:15)
-
-                   if (!info && !err && !ignoreMissing) {
-
-                    TODO read about nunjucks.configure, especially ignoreMissing
-            */
+        if (message.templateFilename) {
+            // Extract path and filename from templateFilename
             const path = message.templateFilename.substr(0, message.templateFilename.lastIndexOf("/"))
             const filename = message.templateFilename.substr(message.templateFilename.lastIndexOf("/") + 1)
 
-            //    logger.log('path  = ' + path)
-            //  logger.log(' filename = ' + filename)
+            // Configure Nunjucks with the template path
             nunjucks.configure(path, { autoescape: false })
 
+            // Render the template file
             message.content = nunjucks.render(filename, message.contentBlocks)
-            //    logger.log('*************************************************************')
-            //    logger.log('message.content = ' + message.content)
-            //    logger.log('*************************************************************')
         } else {
-            nunjucks.configure({ autoescape: false }); // otherwise use a string
+            // Configure Nunjucks for string templates
+            nunjucks.configure({ autoescape: false })
+
+            // Render the template string
             message.content = nunjucks.renderString(message.template, message.contentBlocks)
         }
+
         this.emit('message', message)
     }
 }
