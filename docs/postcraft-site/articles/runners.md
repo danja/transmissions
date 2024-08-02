@@ -27,3 +27,5 @@ npm run <script>
 ```
 
 // npm test -- tests/integration/file-copy-remove-test.spec.js
+
+see docs/dev-process.md

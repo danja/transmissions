@@ -1,5 +1,9 @@
 # Next Steps
 
+## Postcraft
+
+fix entry permalinks
+
 ## Refactorings
 
 - relocate contents of `services/test`

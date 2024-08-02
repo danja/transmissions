@@ -65,7 +65,7 @@ class TransmissionBuilder {
         try {
           logger.log("| Create service <" + serviceName + "> of type <" + serviceType.value + ">")
         } catch (err) {
-          logger.error('-> Can\'t resolve ' + serviceName + ' check transmission.ttl\n')
+          logger.error('-> Can\'t resolve ' + serviceName + ' (check transmission.ttl for typos!)\n')
         }
         let service = AbstractServiceFactory.createService(serviceType, servicesConfig)
         service.id = serviceName

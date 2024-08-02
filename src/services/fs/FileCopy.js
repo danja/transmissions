@@ -13,7 +13,8 @@
  * * **`ns.trm.destination`** - The destination path relative to `applicationRootDir`
  * 
  * #### __*Input*__
- * * **`message.applicationRootDir`** (optional) - The root directory of the application
+ * * **`message.rootDir`** (optional) - The root directory of the operation
+ * * **`message.applicationRootDir`** (optional) - The root directory of the application, fallback `rootDir`
  * * **`message.source`** (if no `configKey`) - The source path of the file or directory to copy
  * * **`message.destination`** (if no `configKey`) - The destination path for the copied file or directory
  * 
@@ -49,6 +50,11 @@ class FileCopy extends Service {
      * @param {Object} message - The input message
      */
     async execute(message) {
+        logger.setLogLevel("debug")
+        //        logger.debug("message.applicationRootDir = " + message.applicationRootDir)
+        if (message.rootDir == "") {
+            message.rootDir = message.applicationRootDir
+        }
         var source, destination
 
         // Determine source and destination paths
@@ -60,8 +66,8 @@ class FileCopy extends Service {
             logger.debug(`FileCopy: Using configKey ${this.configKey.value}`)
             source = this.getPropertyFromMyConfig(ns.trm.source)
             destination = this.getPropertyFromMyConfig(ns.trm.destination)
-            source = path.join(message.applicationRootDir, source)
-            destination = path.join(message.applicationRootDir, destination)
+            source = path.join(message.rootDir, source)
+            destination = path.join(message.rootDir, destination)
         }
 
         logger.debug(`Source: ${source}`)

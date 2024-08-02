@@ -1,11 +1,11 @@
 // VanillaJS Logger
 
-import fs from 'fs';
-
+import fs from 'fs'
+// 
 // NOTE: You probably shouldn't use this in production... you've been warned.
-let logger = {};
+let logger = {}
 
-logger.logfile = 'latest.log';
+logger.logfile = 'latest.log'
 
 // Log levels
 // debug=0, info=1, log=2, warn=3, error=4
@@ -22,11 +22,17 @@ logger.appendLogToFile = function (message) {
     if (logger.logfile) {
         fs.appendFileSync(logger.logfile, message + '\n', 'utf8');
     }
-};
+}
 
 logger.setLogLevel = function (logLevel = "warn") {
     console[logLevel]("[%s] log level: %s", logComponent, logLevel);
-    logger.currentLogLevel = logLevel;
+    let limit = LOG_LEVELS.indexOf(logLevel);
+    LOG_LEVELS.filter(function (level, index) {
+        if (index < limit) {
+            console[logLevel]("[%s] disabling console.%s()", logComponent, level);
+            console[level] = function () { }  // Disable lower log levels
+        }
+    });
 };
 
 logger.timestampISO = function () {
@@ -35,54 +41,52 @@ logger.timestampISO = function () {
 };
 
 logger.log = function (msg, level = "log") {
-    const currentLevelIndex = LOG_LEVELS.indexOf(logger.currentLogLevel);
-    const messageLevelIndex = LOG_LEVELS.indexOf(level);
-
-    if (messageLevelIndex >= currentLevelIndex) {
-        console[level](msg);
-        const logMessage = `[${logger.timestampISO()}] [${level.toUpperCase()}] - ${msg}`;
-        logger.appendLogToFile(logMessage);
-    }
-};
+    // console.log(msg)
+    console[level](msg)
+    const logMessage = `[${logger.timestampISO()}] [${level.toUpperCase()}] - ${msg}`
+    logger.appendLogToFile(logMessage)
+}
 
 logger.reveal = function (instance) {
     const serialized = {};
     for (const key in instance) {
         if (key === 'dataset') { // special case, RDF
-            serialized[key] = instance[key].toString(); // TODO make useful
+            serialized[key] = instance[key].toString() // TODO make useful
         } else {
             if (instance.hasOwnProperty(key)) {
-                let kiki = instance[key];
+                let kiki = instance[key]
 
                 if (Buffer.isBuffer(kiki)) {
-                    kiki = kiki.toString();
+                    kiki = kiki.toString()
                 }
                 if (kiki.length > 100) {
-                    kiki = kiki.substring(0, 100) + '...';
+                    kiki = kiki.substring(0, 100) + '...'
                 }
-                serialized[key] = kiki;
+                serialized[key] = kiki
             }
         }
     }
-    const props = JSON.stringify(serialized, null, 2);
-    logger.log(`Instance of ${instance.constructor.name} with properties - \n${props}`);
-};
+    const props = JSON.stringify(serialized, null, 2)
+    logger.log(`Instance of ${instance.constructor.name} with properties - \n${props}`)
+}
+
 
 logger.debug = function (msg) {
     logger.log(msg, "debug");
-};
+}
+
 
 logger.info = function (msg) {
     logger.log(msg, "info");
-};
+}
 
 logger.warn = function (msg) {
     logger.log(msg, "warn");
-};
+}
 
 logger.error = function (msg) {
     logger.log(msg, "error");
-};
+}
 
 logger.poi = function exploreGrapoi(grapoi, predicates, objects, subjects) {
     // Print the properties of the Grapoi object
@@ -97,7 +101,7 @@ logger.poi = function exploreGrapoi(grapoi, predicates, objects, subjects) {
     for (const quad of path.quads()) {
         console.log(`\t${quad.predicate.value}: ${quad.object.value}`);
     }
-};
+}
 
 function handleExit(options, exitCode) {
     if (options.cleanup) {
@@ -113,5 +117,6 @@ process.on('SIGINT', handleExit.bind(null, { exit: true })); // Catches ctrl+c e
 process.on('SIGUSR1', handleExit.bind(null, { exit: true })); // Catches "kill pid" (for example: nodemon restart)
 process.on('SIGUSR2', handleExit.bind(null, { exit: true })); // Catches "kill pid" (for example: nodemon restart)
 process.on('uncaughtException', handleExit.bind(null, { exit: true }));
+
 
 export default logger;
