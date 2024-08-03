@@ -16,6 +16,8 @@
 
 - Atom feed
 
+https://tavily.com/#pricing
+
 ## Refactorings
 
 - relocate contents of `services/test`
