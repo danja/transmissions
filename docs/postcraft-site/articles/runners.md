@@ -2,11 +2,13 @@
 
 Application :
 
-./run postcraft /home/danny/HKMS/postcraft/danny.ayers.name
+./run postcraft /home/danny/github-danny/postcraft/danny.ayers.name
 
 ```
-repopack --verbose -c ./repopack.config.json
+repopack --verbose -c /home/danny/github-danny/transmissions/repopack.config.json
 ```
+
+repopack --verbose -c ./repopack.config.json
 
 npm run test
 
