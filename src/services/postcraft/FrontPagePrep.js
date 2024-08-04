@@ -1,44 +1,36 @@
-import ns from '../../utils/ns.js'
-import rdf from 'rdf-ext'
-import grapoi from 'grapoi'
+// src/services/postcraft/FrontPagePrep.js
 
-import footpath from '../../utils/footpath.js'
 import logger from '../../utils/Logger.js'
 import ProcessService from '../base/ProcessService.js'
 import { readFile } from 'node:fs/promises'
 
 class FrontPagePrep extends ProcessService {
-
   constructor(config) {
     super(config)
   }
 
   async execute(message) {
     try {
-      // bits for templater
       message.templateFilename = message.rootDir + '/' + message.indexPage.templateFilename
-
       logger.debug('Template = ' + message.templateFilename)
+
       const rawEntryPaths = this.resolveRawEntryPaths(message)
       message.content = ''
-      // TODO move this out to template and/or separate services
-      //   for (var f of rawEntryPaths) {
-      //   const n = rawEntryPaths.length
-      const entryCount = 5
-      //    for (var i = entryCount - 1; i >= 0; i--) {
-      for (var i = 0; i < entryCount; i++) {
-        const rawEntryPath = rawEntryPaths.pop()
-        message.content += (await readFile(rawEntryPath)).toString()
+
+      const entryCount = Math.min(5, rawEntryPaths.length) // Limit to 5 entries or less
+
+      for (let i = 0; i < entryCount; i++) {
+        const rawEntryPath = rawEntryPaths[i]
+        if (rawEntryPath) {
+          message.content += await readFile(rawEntryPath, 'utf8')
+        } else {
+          logger.warn(`Skipping undefined entry path at index ${i}`)
+        }
       }
 
-      // needed?
       message.contentBlocks.content = message.content
-      //  "indexPage": {
-      //  "filepath": "public/blog/index.html",
       message.filepath = message.rootDir + '/' + message.indexPage.filepath
-      // message.rootDir + '/' + message.entryContentToPage.targetDir + '/' + message.slug + '.html'
 
-      // /home/danny/HKMS/postcraft/danny.ayers.name/layouts/mediocre
       this.emit('message', message)
     } catch (err) {
       logger.error('Error in FrontPagePrep')
@@ -46,25 +38,21 @@ class FrontPagePrep extends ProcessService {
     }
   }
 
-  resolveRawEntryPaths(message) { // TODO tidy up
-    var paths = []
-    //   const entryCount = 5
-
-    const slugs = message.slugs
+  resolveRawEntryPaths(message) {
+    const paths = []
+    const slugs = message.slugs || []
     const entryCount = slugs.length
-    var path
-    for (let i = 0; i < entryCount; i++) {
-      var path = slugs[i]
-      //   logger.log('slug = ' + path)
-      if (!path) break
 
-      path = message.rootDir + '/' + message.entryContentMeta.targetDir + '/' + path + '.html'
-      paths.push(path)
-      //logger.log('PATH = ' + path)
+    for (let i = 0; i < entryCount; i++) {
+      const slug = slugs[i]
+      if (slug) {
+        const path = message.rootDir + '/' + message.entryContentMeta.targetDir + '/' + slug + '.html'
+        paths.push(path)
+      }
     }
+
     return paths
   }
-
 }
 
 export default FrontPagePrep
