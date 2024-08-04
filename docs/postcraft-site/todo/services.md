@@ -21,6 +21,8 @@ initially in `services/unsafe`
 - sandboxed JS
 - run code via system calls
 
+https://healeycodes.com/sandboxing-javascript-code
+
 ### Loop
 
 ### AI connectors
