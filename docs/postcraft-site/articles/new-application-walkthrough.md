@@ -149,6 +149,10 @@ Its **Signature** (see JSDocs) declares that it has `message.content` as an inpu
 - Replaces every exact occurrence of `message.match` in `message.content` with `message.replace`
 - If `message.match` is not found, the content remains unchanged
 
+#### Implementation
+
+`/home/danny/github-danny/transmissions/src/services/ServiceExample.js`
+
 add to `TextServicesFactory`
 
 ### 5. Initialise environment as needed
