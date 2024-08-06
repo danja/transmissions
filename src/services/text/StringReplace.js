@@ -7,6 +7,8 @@
  * 
  * Replaces all occurrences of a specified substring in the content with a replacement string.
  * 
+ * ### Signature
+ * 
  * #### __*Input*__
  * * **`message.content`** - The original string content
  * * **`message.match`** - The substring to be replaced
