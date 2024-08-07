@@ -10,6 +10,8 @@ At the top of the file, include details following the form of this example:
  * **a Transmissions Service**
  * 
  * Copies files or entire directories on the local filesystem.
+ *
+ ### Service Signature
  * 
  * #### __*Configuration*__
  * If a `configKey` is provided in the transmission:

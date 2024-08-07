@@ -2,6 +2,8 @@
 
 Easy, but there are a lot of small steps
 
+Shallow but long learning curve
+
 TODO transmissions anatomy
 TODO responsibilities of a service
 TODO note about cumulative benefit of using transmissions/dogfood
@@ -111,49 +113,7 @@ There was a `src/services/text/StringFilter.js` but it wasn't in use anywhere, s
 
 ### 4. If necessary write new services
 
-1. Preparation
-2. Specification
-3. Implementation
-4. Integration
-5. Test
-6. Documentation
-
-#### Preparation
-
-_Lean towards YAGNI, at least on the first pass, but reusability is a #SoftGoal, so if a little generalization/extra utility is trivial to put, why not._
-
-What the **globbo** application needs this service to do is filter out strings that don't match `*.md`, but this can be generalised at low cost. A common pattern (for patterns) is having an **include** and **exclude** list.
-
-Find something similar :
-
-```
-src/services/text/StringReplace.js
-```
-
-Its **Signature** (see JSDocs) declares that it has `message.content` as an input and output.That's reusable here.
-
-#### StringFilter Signature
-
-**_Input_**
-
-- **`message.content`** - the string to be tested
-- **`message.include`** - (optional) a string or list of strings
-- **`message.exclude`** - (optional) a string or list of strings
-
-**_Output_**
-
-- **`message.content`** - WHAT ARE USUAL RULES?
-
-**_Behavior_**
-
-- Replaces every exact occurrence of `message.match` in `message.content` with `message.replace`
-- If `message.match` is not found, the content remains unchanged
-
-#### Implementation
-
-`/home/danny/github-danny/transmissions/src/services/ServiceExample.js`
-
-add to `TextServicesFactory`
+see `docs/postcraft-site/articles/new-service-walkthrough.md`
 
 ### 5. Initialise environment as needed
 
