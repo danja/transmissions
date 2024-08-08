@@ -115,6 +115,8 @@ There was a `src/services/text/StringFilter.js` but it wasn't in use anywhere, s
 
 see `docs/postcraft-site/articles/new-service-walkthrough.md`
 
+looks like I'll also need a `src/services/util/CaptureAll.js`, a singleton that all message will be received by
+
 ### 5. Initialise environment as needed
 
 The minimum necessary for a #Transmissions app is a `trasmission.ttl` TODO checkthis is the case

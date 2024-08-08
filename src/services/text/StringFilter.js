@@ -19,8 +19,8 @@
  * 
  * #### __*Behavior*__
  * * Tests input string against exclude patterns
- * * If not excluded, tests against include patterns
- * * Passes through the string if accepted
+ * * first the value of `message.content` is tested against `message.exclude`, if a match **isn't** found, `message.content` is passed through to the output
+ * * next the value of `message.content` is tested against `message.include`, if a match **is** found, `message.content` is passed through to the output
  * * Uses simplified glob-like pattern matching
  */
 
@@ -39,12 +39,31 @@ class StringFilter extends ProcessService {
      * @param {string|string[]} include - Patterns to include
      * @returns {boolean} True if the string is accepted, false otherwise
      */
-    isAccepted(input, exclude, include) {
-        if (this.isExcluded(input, exclude)) {
+    isAccepted(content, exclude, include) {
+        // Reject undefined content
+        if (content === undefined) {
             return false;
         }
-        return this.isIncluded(input, include);
+
+        // If no include or exclude patterns, accept all
+        if ((!exclude || exclude.length === 0) && (!include || include.length === 0)) {
+            return true;
+        }
+
+        // Check exclude patterns first
+        if (this.isExcluded(content, exclude)) {
+            return false;
+        }
+
+        // If include patterns exist, content must match at least one
+        if (include && include.length > 0) {
+            return this.isIncluded(content, include);
+        }
+
+        // If no include patterns, accept content that wasn't excluded
+        return true;
     }
+
 
     /**
      * Tests if the input string matches any of the exclude patterns
@@ -52,12 +71,12 @@ class StringFilter extends ProcessService {
      * @param {string|string[]} exclude - Patterns to exclude
      * @returns {boolean} True if the string matches any exclude pattern
      */
-    isExcluded(input, exclude) {
-        if (!exclude || (Array.isArray(exclude) && exclude.length === 0) || exclude === '') {
+    isExcluded(content, exclude) {
+        if (!exclude || exclude.length === 0) {
             return false;
         }
         const patterns = Array.isArray(exclude) ? exclude : [exclude];
-        return patterns.some(pattern => this.matchPattern(input, pattern));
+        return patterns.some(pattern => this.matchPattern(content, pattern));
     }
 
     /**
@@ -66,12 +85,12 @@ class StringFilter extends ProcessService {
      * @param {string|string[]} include - Patterns to include
      * @returns {boolean} True if the string matches any include pattern or if include is empty
      */
-    isIncluded(input, include) {
-        if (!include || (Array.isArray(include) && include.length === 0) || include === '') {
+    isIncluded(content, include) {
+        if (!include || include.length === 0) {
             return true;
         }
         const patterns = Array.isArray(include) ? include : [include];
-        return patterns.some(pattern => this.matchPattern(input, pattern));
+        return patterns.some(pattern => this.matchPattern(content, pattern));
     }
 
     /**
@@ -80,13 +99,13 @@ class StringFilter extends ProcessService {
      * @param {string} pattern - The pattern to match against
      * @returns {boolean} True if the string matches the pattern
      */
-    matchPattern(input, pattern) {
+    matchPattern(content, pattern) {
         const regexPattern = pattern
             .replace(/\*/g, '.*')
             .replace(/\?/g, '.')
-            .replace(/\[([^\]]+)\]/g, '[${1}]');
+            .replace(/\[([^\]]+)\]/g, '[$1]');
         const regex = new RegExp(`^${regexPattern}$`);
-        return regex.test(input);
+        return regex.test(content);
     }
 
     async execute(message) {

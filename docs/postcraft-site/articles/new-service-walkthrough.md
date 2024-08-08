@@ -1,13 +1,14 @@
 # Creating a new Service
 
 1. Preparation
-2. Specification
+2. Specification : StringFilter Signature
 3. Implementation
-4. Integration
-5. Test
-6. Documentation
+4. Unit Tests
+5. Integrate
+6. Integration Test(s)
+7. Documentation
 
-#### Preparation
+## Preparation
 
 _Lean towards YAGNI, at least on the first pass, but reusability is a #SoftGoal, so if a little generalization/extra utility is trivial to put, why not._
 
@@ -21,7 +22,7 @@ src/services/text/StringReplace.js
 
 Its **Signature** (see JSDocs) declares that it has `message.content` as an input and output.That's reusable here.
 
-#### StringFilter Signature
+## StringFilter Signature
 
 **_Input_**
 
@@ -40,13 +41,13 @@ Its **Signature** (see JSDocs) declares that it has `message.content` as an inpu
 
 The rules need to be defined. Seems easiest to follow those used by systems like `package.json`. Noted in `/home/danny/github-danny/transmissions/docs/postcraft-site/articles/service_string-filter.md`
 
-#### Implementation
+## Implementation
 
 The skeleton in : `src/services/ServiceExample.js` is copied to the appropriate subdir of `src/services/` (here `text`) and renamed. The `import` paths will need adjusting.
 
 Then the `execute(message)` needs to be written to provide the required functionality.
 
-Here's where AI can assist.
+**Here is where AI can really help.**
 
 In this instance I've expanded the skeleton code a little, which I will pass to an assistant along with a description of the required behaviour (in `service_string-filter.md`).
 
@@ -84,4 +85,24 @@ class StringFilter extends ProcessService {
 export default StringFilter;
 ```
 
-add to `TextServicesFactory`
+Claude gave me something that on visual inspection, seemed very close to what I asked for. It got the order of include/exclude back-to-front and made the code a little bit more verbose than it needed to be, but those issues are easily fixed manually.
+
+## Unit Tests
+
+Choose an existing test to serve as a model. `tests/unit/NOP.spec.js` is minimal but contains the essentials.
+
+**AI time again.**
+
+## Integrate
+
+Services are created using the Factory pattern. An entry should be added to `TextServicesFactory` (simply copy, paste & tweak an existing entry).
+
+## Integration Test(s)
+
+Create a minimal `transmission.ttl` that uses the new service.
+
+NEED A VALUE-TESTER SERVICE THAT LOADS A JSON AND/OR RDF FILE AND COMPARES VALUES WITH MESSAGE
+
+NEED A SINGLETON CAPTUREALL SERVICE TO COLLECT CONTENT
+
+7. Documentation

@@ -1,3 +1,4 @@
+```prompt
 Generate comments for the code below the '---' marker. They should follow jsdoc conventions and be concise, appearing only when the functionality isn't obvious from the code. Favour purpose description over implementation details.
 Show the whole code and comments result in the response. Ensure that it appears as a single code listing, beware of any contained markdown etc.
 At the top of the file, include details following the form of this example:
@@ -38,4 +39,4 @@ At the top of the file, include details following the form of this example:
  * * **`npm test -- tests/integration/file-copy-remove-test.spec.js`**
  */
  ---
-
+```
