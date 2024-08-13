@@ -9,7 +9,7 @@ import RemapContext from './RemapContext.js'
 import Unfork from './Unfork.js'
 import Fork from './Fork.js'
 import ShowTransmission from './ShowTransmission.js'
-
+import CaptureAll from './CaptureAll.js'
 
 class UtilServicesFactory {
     static createService(type, config) {
@@ -36,6 +36,9 @@ class UtilServicesFactory {
         }
         if (type.equals(ns.t.ShowTransmission)) {
             return new ShowTransmission(config)
+        }
+        if (type.equals(ns.t.CaptureAll)) {
+            return new CaptureAll(config)
         }
 
         return false

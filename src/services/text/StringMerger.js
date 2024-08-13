@@ -1,6 +1,7 @@
 import logger from '../../utils/Logger.js'
 import ProcessService from '../base/ProcessService.js'
 
+// OLD : PRE-REFACTOR
 class StringMerger extends ProcessService {
     constructor(config) {
         super(config)
