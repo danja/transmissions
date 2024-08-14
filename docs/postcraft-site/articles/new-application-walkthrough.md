@@ -109,6 +109,8 @@ src/services/
 
 All are subclasses of Service
 
+There is a `DirWalker`
+
 There was a `src/services/text/StringFilter.js` but it wasn't in use anywhere, so missed out on refactoring. It'll be easiest to write again to ensure consistency with other services.
 
 ### 4. If necessary write new services
@@ -131,3 +133,75 @@ src/applications/globbo/
 ```
 
 For the `run` script to address the application, `about.md` **must** exist. It **should** contain a description of the application.
+
+#### DirWalker
+
+**_Input_**
+
+- message.rootDir
+- message.sourceDir
+
+**_Output_**
+
+- message.filename
+
+```
+(:SM :DE) pipeline
+
+./run globbo
+...
+{
+  "dataDir": "src/applications/globbo/data",
+  "rootDir": "",
+  "applicationRootDir": "/home/danny/github-danny/transmissions/src/applications/globbo",
+  "dataString": "",
+  "tags": "SM"
+}
+```
+
+```
+./run globbo something
+...
+{
+  "dataDir": "src/applications/globbo/data",
+  "rootDir": "something",
+  "applicationRootDir": "/home/danny/github-danny/transmissions/src/applications/globbo",
+  "dataString": "something",
+  "tags": "SM"
+}
+```
+
+TODO fix up run.js, the command arg is getting put in rootDir, no!
+
+Ok, there is:
+
+```
+./run globbo -c '{"a":"something"}'
+...
+{
+  "a": "something",
+  "applicationRootDir": "/home/danny/github-danny/transmissions/src/applications/globbo",
+  "dataString": "",
+  "tags": "SM"
+}
+```
+
+TODO Where did `rootDir` go?
+
+```
+./run globbo -c '{"rootDir": "./", "sourceDir":"docs"}'
+...
+{
+  "rootDir": "./",
+  "sourceDir": "docs",
+  "applicationRootDir": "/home/danny/github-danny/transmissions/src/applications/globbo",
+  "dataString": "",
+  "tags": "SM"
+}
+```
+
+adding `DirWalker` - not bad!
+
+NEXT CaptureAll
+
+I need a ShowConfig

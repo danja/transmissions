@@ -3,9 +3,7 @@ import Service from '../base/Service.js'
 
 class CaptureAll extends Service {
 
-    constructor(config) {
-        super(config);
-    }
+
 
 
     constructor(config) {
@@ -25,7 +23,7 @@ class CaptureAll extends Service {
 
     async execute(message) {
         logger.log('CaptureAll at (' + message.tags + ') ' + this.getTag())
-        config.whiteboard.push(message)
+        this.config.whiteboard.push(message)
         this.emit('message', message)
     }
 

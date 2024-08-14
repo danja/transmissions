@@ -4,9 +4,11 @@ import { readdir } from 'fs/promises'
 import { join, extname } from 'path'
 import grapoi from 'grapoi'
 import logger from '../../utils/Logger.js'
-
-
 import SourceService from '../base/SourceService.js'
+
+/*
+TODO add handling for paths given in services.ttl, see FileCopy
+*/
 
 /**
  * Represents a directory walker service that traverses a directory and emits messages for files with desired extensions.
@@ -53,7 +55,7 @@ class DirWalker extends SourceService {
         message.counter = 0
         message.slugs = []
         message.done = false // maybe insert earlier
-        const dirPath = message.rootDir + '/' + message.sourceDir
+        const dirPath = message.rootDir + '/' + message.sourceDir // TODO use path.join
         try {
             const entries = await readdir(dirPath, { withFileTypes: true })
             for (const entry of entries) {

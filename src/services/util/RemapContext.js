@@ -15,7 +15,7 @@ import Service from '../base/Service.js'
  * 
  * @extends Service
  */
-class RemapContext extends Service {
+class RemapContext extends Service { // TODO rename RemapMessage
     /**
      * Creates an instance of RemapContext.
      * @param {Object} config - The configuration object.

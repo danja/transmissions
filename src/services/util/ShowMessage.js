@@ -16,7 +16,7 @@ class ShowMessage extends SinkService {
 
 
         logger.log("***************************")
-        logger.log("***  Context")
+        logger.log("***  Message")
         logger.reveal(message)
         logger.log("***************************")
         //     logger.log("***  Trace")
