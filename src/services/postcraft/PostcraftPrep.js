@@ -22,7 +22,13 @@ class PostcraftPrep extends ProcessService {
 
     // message.subdir = this.extractSubdir(message)
     message.contentBlocks.relURL = this.extractRelURL(message)
-    message.contentBlocks.link = message.siteURL + '/' + message.contentBlocks.relURL
+
+    // TODO generalise
+    //  message.contentBlocks.link = message.siteURL + '/' + message.contentBlocks.relURL
+    message.contentBlocks.link = 'entries/' + message.contentBlocks.relURL
+
+    // http://localhost/entries/home/2024-08-25_blog-improving.html
+
     message.contentBlocks.title = this.extractTitle(message)
 
     const { created, updated } = this.extractDates(message)
@@ -55,8 +61,10 @@ class PostcraftPrep extends ProcessService {
     return path.join(message.rootDir, message.entryContentMeta.targetDir, this.extractSlug(message) + '.html')
   }
 
-  extractRelURL(message) {
-    return message.subdir + '/' + this.extractSlug(message) + '.html'
+  extractRelURL(message) { // TODO refactor
+    // return message.subdir + '/' + this.extractSlug(message) + '.html'
+    return this.extractSlug(message) + '.html'
+
     /*
     AssertionError: expected 'target/2024-05-10_hello-postcraft.html' to equal '/target/2024-05-10_hello-postcraft.ht…'
     */

@@ -17,9 +17,13 @@ class FrontPagePrep extends ProcessService {
       const rawEntryPaths = this.resolveRawEntryPaths(message)
       message.content = ''
 
+      // TODO tidy up
       const entryCount = Math.min(5, rawEntryPaths.length) // Limit to 5 entries or less
 
-      for (let i = 0; i < entryCount; i++) {
+      const rangeStart = rawEntryPaths.length - entryCount
+      const rangeEnd = rawEntryPaths.length - 1
+      //     for (let i = 0; i < entryCount; i++) {
+      for (let i = rangeEnd; i > rangeStart; i--) {
         const rawEntryPath = rawEntryPaths[i]
         if (rawEntryPath) {
           message.content += await readFile(rawEntryPath, 'utf8')
