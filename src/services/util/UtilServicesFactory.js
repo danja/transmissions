@@ -10,6 +10,8 @@ import Unfork from './Unfork.js'
 import Fork from './Fork.js'
 import ShowTransmission from './ShowTransmission.js'
 import CaptureAll from './CaptureAll.js'
+import ShowConfig from './ShowConfig.js'
+import WhiteboardToMessage from './WhiteboardToMessage.js'
 
 class UtilServicesFactory {
     static createService(type, config) {
@@ -39,6 +41,12 @@ class UtilServicesFactory {
         }
         if (type.equals(ns.t.CaptureAll)) {
             return new CaptureAll(config)
+        }
+        if (type.equals(ns.t.ShowConfig)) {
+            return new ShowConfig(config)
+        }
+        if (type.equals(ns.t.WhiteboardToMessage)) {
+            return new WhiteboardToMessage(config)
         }
 
         return false

@@ -1,0 +1,59 @@
+[api.logger] log level: info
+
++ ***** Load Config ******
+[Transmission : src/applications/globbo/transmission.ttl]
+[Services Config : src/applications/globbo/services.ttl]
+
++ ***** Construct *****
+| Create service <http://hyperdata.it/transmissions/s10> of type <http://hyperdata.it/transmissions/DirWalker>
+| Create service <http://hyperdata.it/transmissions/s20> of type <http://hyperdata.it/transmissions/CaptureAll>
+| Create service <http://hyperdata.it/transmissions/s30> of type <http://hyperdata.it/transmissions/Unfork>
+| Create service <http://hyperdata.it/transmissions/s40> of type <http://hyperdata.it/transmissions/WhiteboardToMessage>
+| Create service <http://hyperdata.it/transmissions/SM> of type <http://hyperdata.it/transmissions/ShowMessage>
+  > Connect #0 [http://hyperdata.it/transmissions/s10] => [http://hyperdata.it/transmissions/s20]
+  > Connect #1 [http://hyperdata.it/transmissions/s20] => [http://hyperdata.it/transmissions/s30]
+  > Connect #2 [http://hyperdata.it/transmissions/s30] => [http://hyperdata.it/transmissions/s40]
+  > Connect #3 [http://hyperdata.it/transmissions/s40] => [http://hyperdata.it/transmissions/SM]
+
++ http://hyperdata.it/transmissions/globbo
+
++ ***** Execute *****
+| Running : http://hyperdata.it/transmissions/s10 a DirWalker
+| Running :  (s10) s20 a CaptureAll
+CaptureAll at (s10.s20) s20
+| Running :  (s10.s20) s30 a Unfork
+ - Unfork terminating pipe
+| Running :  (s10) s20 a CaptureAll
+| Running :  (s10) s20 a CaptureAll
+| Running :  (s10) s20 a CaptureAll
+| Running :  (s10) s20 a CaptureAll
+CaptureAll at (s10.s20) s20
+| Running :  (s10.s20) s30 a Unfork
+ - Unfork terminating pipe
+CaptureAll at (s10.s20) s20
+| Running :  (s10.s20) s30 a Unfork
+ - Unfork terminating pipe
+CaptureAll at (s10.s20) s20
+| Running :  (s10.s20) s30 a Unfork
+ - Unfork terminating pipe
+| Running :  (s10) s20 a CaptureAll
+CaptureAll at (s10.s20) s20
+| Running :  (s10.s20) s30 a Unfork
+ - Unfork terminating pipe
+CaptureAll at (s10.s20) s20
+| Running :  (s10.s20) s30 a Unfork
+ - Unfork passing message
+| Running :  (s10.s20.s30) s40 a WhiteboardToMessage
+WhiteboardToMessage at (s10.s20.s30.s40) s40
+TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at file:///home/danny/github-danny/transmissions/src/services/util/WhiteboardToMessage.js:16:20
+    at Array.reduce (<anonymous>)
+    at WhiteboardToMessage.execute (file:///home/danny/github-danny/transmissions/src/services/util/WhiteboardToMessage.js:14:57)
+    at WhiteboardToMessage.executeQueue (file:///home/danny/github-danny/transmissions/src/services/base/Service.js:175:24)
+    at WhiteboardToMessage.enqueue (file:///home/danny/github-danny/transmissions/src/services/base/Service.js:144:18)
+    at WhiteboardToMessage.receive (file:///home/danny/github-danny/transmissions/src/services/base/Service.js:133:20)
+    at Unfork.<anonymous> (file:///home/danny/github-danny/transmissions/src/engine/Connector.js:27:23)
+    at Unfork.emit (node:events:518:28)
+    at Unfork.execute (file:///home/danny/github-danny/transmissions/src/services/util/Unfork.js:28:18)
+0

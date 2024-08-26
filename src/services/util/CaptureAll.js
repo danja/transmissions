@@ -17,7 +17,6 @@ class CaptureAll extends Service {
             return CaptureAll.singleInstance
         }
         CaptureAll.singleInstance = this;
-
     }
 
 

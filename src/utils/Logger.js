@@ -1,5 +1,7 @@
 // VanillaJS Logger
 
+// TODO make better use of console.*
+
 import fs from 'fs';
 
 // NOTE: You probably shouldn't use this in production... you've been warned.
@@ -49,18 +51,21 @@ logger.reveal = function (instance) {
     const serialized = {};
     for (const key in instance) {
         if (key === 'dataset') { // special case, RDF
-            serialized[key] = instance[key].toString(); // TODO make useful
+            //    serialized[key] = instance[key].toString(); // TODO make useful
         } else {
             if (instance.hasOwnProperty(key)) {
                 let kiki = instance[key];
-
-                if (Buffer.isBuffer(kiki)) {
-                    kiki = kiki.toString();
+                if (kiki) {
+                    if (Buffer.isBuffer(kiki)) {
+                        kiki = kiki.toString();
+                    }
+                    if (kiki.length > 100) {
+                        kiki = kiki.substring(0, 100) + '...';
+                    }
+                    serialized[key] = kiki
+                } else {
+                    serialized[key] = '[no key]'
                 }
-                if (kiki.length > 100) {
-                    kiki = kiki.substring(0, 100) + '...';
-                }
-                serialized[key] = kiki;
             }
         }
     }

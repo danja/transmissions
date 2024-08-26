@@ -12,6 +12,8 @@ import logger from '../utils/Logger.js'
 import AbstractServiceFactory from "./AbstractServiceFactory.js";
 import Transmission from './Transmission.js'
 
+// TODO it looks like multiple copies of the config are being created - should be a singleton object
+
 class TransmissionBuilder {
 
   static async build(transmissionConfigFile, servicesConfigFile) {
