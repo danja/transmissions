@@ -10,11 +10,6 @@ t:phaseOne a trm:ServiceConfig ;
     trm:key t:markdownToRawPosts ;
     trm:marker "Phase One" .
 
-t:copyMedia a trm:ServiceConfig ;
-    trm:key t:mediaCopy ;
-    trm:source "media" ;
-    trm:destination "public/home/media" .
-    
 t:copyCSS a trm:ServiceConfig ;
     trm:key t:cssCopy ;
     trm:source "layouts/mediocre/css" ;

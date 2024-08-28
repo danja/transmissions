@@ -12,16 +12,12 @@
 #############################################################
 
 :postTemplating a trm:Pipeline ;
-    trm:pipe (:s00 :s05 :s10 :s11 :s12 :s20  :s30 :s40  :s50 :s60 :s70 :s80 :s90 :s100 
+    trm:pipe (:s00 :s10 :s11 :s12 :s20  :s30 :s40  :s50 :s60 :s70 :s80 :s90 :s100 
                 :s110 :s120 :s130 :s140 :s150  :s160 :s170 :s180) .
 
 :s00 a :DatasetReader . # read the manifest
 # trm:configKey trm:describe .
 
-### Copy media dirs
-:s05 a :FileCopy ;
-    trm:configKey :mediaCopy .
-    
 ### Copy layout dirs
 :s10 a :FileCopy ;
     trm:configKey :cssCopy .
