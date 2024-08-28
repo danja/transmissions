@@ -3,9 +3,6 @@ import Service from '../base/Service.js'
 
 class CaptureAll extends Service {
 
-
-
-
     constructor(config) {
         if (!config.whiteboard) {  // TODO refactor
             config.whiteboard = []

@@ -10,7 +10,7 @@ class WhiteboardToMessage extends Service {
 
         logger.log('WhiteboardToMessage at (' + message.tags + ') ' + this.getTag())
 
-        const originalArray = this.config
+        const originalArray = this.config.whiteboard
         //  message.whiteboard 
         message = Object.keys(originalArray).reduce((acc, key) => {
             const value = originalArray[key];

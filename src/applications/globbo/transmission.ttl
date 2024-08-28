@@ -13,12 +13,12 @@
 #############################################################
 
 :globbo a trm:Pipeline ;
-    trm:pipe (:s10 :s20 :s30 :SC :DE :s40 :SM) .
+    trm:pipe (:s10 :s20 :s30 :s40 :SM) .
 
 #:s40 a :RemapContext ;
  #   trm:configKey :walkPrep .
 
 :s10 a :DirWalker .
-:s20 a :CaptureAll .
+:s20 a :CaptureAll . # pushes all messages into config.whiteboard
 :s30 a :Unfork .
 :s40 a :WhiteboardToMessage .

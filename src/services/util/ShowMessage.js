@@ -14,7 +14,6 @@ class ShowMessage extends SinkService {
 
         if (this.verbose) logger.log("\n***  Show Message ***")
 
-
         logger.log("***************************")
         logger.log("***  Message")
         logger.reveal(message)
