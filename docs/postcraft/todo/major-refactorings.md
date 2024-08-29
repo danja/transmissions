@@ -1,4 +1,13 @@
-# A Big Refactor
+# Big Refactorings
+
+## Make config a singleton object
+
+```
+{ dataset: ..., whiteboard: ...}
+
+```
+
+must be a way of doing it incrementally, test for key 'dataset' ?
 
 MAKE TESTS FIRST
 

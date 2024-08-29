@@ -1,16 +1,8 @@
-# Treadmill Documentation
+# Transmissions Documentation
 
 ## Introduction
 
-Duct Ape
-
-Idraulico
-
-Treadmill is an opinionated micro-framework
-
-### Requirements
-
-By the nature of the project, functional requirements are not fixed.
+micro-framework
 
 ### Development Process
 

@@ -1,0 +1,88 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+@prefix trm: <http://purl.org/stuff/transmission/> . # TODO make plural
+@prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances - TODO make one @services s: 
+
+#############################################################
+# insert into pipe for debugging
+:DE a :DeadEnd . # ends the current pipe quietly
+:H  a :Halt . # kills everything 
+:SC a :ShowConfig . # verbose report, continues pipe
+:SM a :ShowMessage . # verbose report, continues pipe
+:N  a :NOP . # no operation (except for showing stage in pipe)
+:UF a :Unfork . # collapses all pipes but one 
+#############################################################
+
+:sm a trm:Pipeline ;
+    rdfs:label "sm" ;
+    trm:pipe (:DE :SM) .
+
+:clean a trm:Pipeline ;
+    rdfs:label "clean" ;
+    rdfs:comment "directory cleaner" ;
+    trm:pipe (:SC) .
+
+#:render a trm:Pipeline ;
+ #   trm:pipe (:s00 :s05 :s10 :s11 :s12 :s20  :s30 :s40  :s50 :s60 :s70 :s80 :s90 :s100 
+  #              :s110 :s120 :s130 :s140 :s150  :s160 :s170 :s180) .
+
+:s00 a :DatasetReader . # read the manifest
+# trm:configKey trm:describe .
+
+### Copy media dirs
+:s05 a :FileCopy ;
+    trm:configKey :mediaCopy .
+    
+### Copy layout dirs
+:s10 a :FileCopy ;
+    trm:configKey :cssCopy .
+
+:s11 a :FileCopy ;
+    trm:configKey :jsCopy .
+
+:s12 a :FileCopy ;
+    trm:configKey :fontsCopy .
+#####################
+
+:s20 a :ConfigMap ; ### use services.ttl? - defer to RemapContext as possible
+    trm:configKey :markdownToRawPosts .
+
+:s30 a :FileReader ; # the template for raw entry content
+    trm:describe trm:all .
+
+:s40 a :RemapContext ;
+    trm:configKey :walkPrep .
+
+:s50 a :DirWalker . # automatically forks
+
+:s60 a :FileReader . # the markdown content
+
+:s70 a :PostcraftPrep . # set up title, filenames etc
+
+:s80 a :MarkdownToHTML . 
+
+:s90 a :RemapContext ;
+   trm:configKey :entryRawPrep .
+
+ :s100 a :Templater .
+
+:s110 a :FileWriter .
+
+############### entryContentToEntryPage
+:s120 a :EntryContentToPagePrep .
+#:s12 a :RemapContext ;
+ #  trm:configKey :entryPagePrep .
+
+:s130 a :Templater .
+
+:s140 a :FileWriter .
+
+#######################
+:s150  a :Unfork .
+
+:s160 a :FrontPagePrep . 
+
+:s170 a :Templater .
+
+:s180 a :FileWriter .

@@ -23,7 +23,18 @@ class CommandUtils {
         logger.debug("Hello, logger!")
         logger.debug("process.cwd() = " + process.cwd())
 
-        const transmissionConfigFile = path.join(dir, 'transmission.ttl')
+        //     const transmissionConfigFile = path.join(dir, 'transmission.ttl')
+
+        var transmissionConfigFile = path.join(dir, 'transmissions.ttl')
+
+        // TODO remove once files renamed
+        try {
+            await fs.access(transmissionConfigFile);
+        } catch (error) {
+            transmissionConfigFile = path.join(dir, 'transmission.ttl')
+        }
+        ////////////
+
         const servicesConfigFile = path.join(dir, 'services.ttl')
 
         const transmissions = await TransmissionBuilder.build(transmissionConfigFile, servicesConfigFile)

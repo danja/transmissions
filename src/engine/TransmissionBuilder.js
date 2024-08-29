@@ -26,11 +26,24 @@ class TransmissionBuilder {
 
     const poi = grapoi({ dataset: transmissionConfig })
 
-    // const transmission = new Transmission()
     const transmissions = []
 
-    for (const q of poi.out(ns.rdf.type).quads()) { /// NEEDS MULTIPLE TODO
-      if (q.object.equals(ns.trm.Pipeline)) { // 
+    for (const q of poi.out(ns.rdf.type).quads()) {
+
+      if (q.object.equals(ns.trm.Pipeline)) {
+        //   logger.log('\nQ ' + q.subject.value)
+
+        const transPoi = grapoi({ dataset: transmissionConfig, term: q.subject })
+        var label = ''
+        for (const quad of transPoi.out(ns.rdfs.label).quads()) {
+          label = quad.object.value
+        }
+        logger.log('LABEL = ' + label)
+        //   process.exit()
+        //   const label = poi.out(q, ns.rdfs.label).quads()
+
+        // logger.reveal(label)
+
         transmissions.push(TransmissionBuilder.constructTransmission(transmissionConfig, q.subject, servicesConfig))
         logger.log('\n+ ' + q.subject.value)
         //   logger.reveal(q.subject)
@@ -42,6 +55,7 @@ class TransmissionBuilder {
 
   // TODO refactor
   static constructTransmission(transmissionConfig, pipelineID, servicesConfig) {
+    servicesConfig.whiteboard = {}
     logger.log('\n+ ***** Construct *****')
 
     const transmission = new Transmission()
@@ -49,7 +63,6 @@ class TransmissionBuilder {
 
     // grapoi probably has a built-in for all this
     const pipenodes = GrapoiHelpers.listToArray(transmissionConfig, pipelineID, ns.trm.pipe)
-
 
     this.createNodes(transmission, pipenodes, transmissionConfig, servicesConfig)
     this.connectNodes(transmission, pipenodes)
