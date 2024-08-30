@@ -28,37 +28,33 @@ class TransmissionBuilder {
 
     const transmissions = []
 
+    // TODO filter out others when subtask transmission is specified
     for (const q of poi.out(ns.rdf.type).quads()) {
-
       if (q.object.equals(ns.trm.Pipeline)) {
-        //   logger.log('\nQ ' + q.subject.value)
-
-        const transPoi = grapoi({ dataset: transmissionConfig, term: q.subject })
-        var label = ''
-        for (const quad of transPoi.out(ns.rdfs.label).quads()) {
-          label = quad.object.value
-        }
-        logger.log('LABEL = ' + label)
-        //   process.exit()
-        //   const label = poi.out(q, ns.rdfs.label).quads()
-
-        // logger.reveal(label)
-
-        transmissions.push(TransmissionBuilder.constructTransmission(transmissionConfig, q.subject, servicesConfig))
-        logger.log('\n+ ' + q.subject.value)
-        //   logger.reveal(q.subject)
+        const pipelineID = q.subject
+        logger.debug('\n+ ' + pipelineID)
+        transmissions.push(TransmissionBuilder.constructTransmission(transmissionConfig, pipelineID, servicesConfig))
       }
     }
-    // throw error
     return transmissions
   }
 
   // TODO refactor
   static constructTransmission(transmissionConfig, pipelineID, servicesConfig) {
     servicesConfig.whiteboard = {}
-    logger.log('\n+ ***** Construct *****')
 
     const transmission = new Transmission()
+    transmission.id = pipelineID.value
+    transmission.label = ''
+
+    const transPoi = grapoi({ dataset: transmissionConfig, term: pipelineID })
+
+    // TODO has grapoi got a first/single property method?
+    for (const quad of transPoi.out(ns.rdfs.label).quads()) {
+      transmission.label = quad.object.value
+    }
+    logger.log('\n+ ***** Construct Transmission : ' + transmission.label + ' <' + transmission.id + '>')
+
     let previousName = "nothing"
 
     // grapoi probably has a built-in for all this

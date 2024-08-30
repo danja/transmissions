@@ -33,6 +33,7 @@ class FrontPagePrep extends ProcessService {
       }
 
       message.contentBlocks.content = message.content
+      // TODO join
       message.filepath = message.rootDir + '/' + message.indexPage.filepath
 
       this.emit('message', message)

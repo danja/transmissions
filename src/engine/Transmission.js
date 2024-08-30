@@ -27,7 +27,7 @@ class Transmission {
   // In src/engine/Transmission.js
 
   async execute(message) {
-    logger.log("\n+ ***** Execute *****")
+    logger.log('\n+ ***** Execute Transmission : ' + this.label + ' <' + this.id + '>')
     const serviceName = this.connectors[0]?.fromName || Object.keys(this.services)[0]
     let service = this.get(serviceName)
     if (service) {

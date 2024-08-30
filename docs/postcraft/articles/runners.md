@@ -1,8 +1,10 @@
 # Runners
 
+./trans postcraft.clean /home/danny/github-danny/postcraft/danny.ayers.name
+
 Application :
 
-./run postcraft /home/danny/github-danny/postcraft/danny.ayers.name
+./trans postcraft /home/danny/github-danny/postcraft/danny.ayers.name
 
 ```
 repopack --verbose -c /home/danny/github-danny/transmissions/repopack.config.json
