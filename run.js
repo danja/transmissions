@@ -25,7 +25,6 @@ class CommandUtils {
         const dir = appSplit.first
         const subtask = appSplit.second
 
-
         message.dataString = data // TODO tidy/remove
         //    message.rootApplication = application
         logger.setLogLevel("info")
@@ -152,7 +151,7 @@ if (process.argv.length <= 2) {
 
             // TODO revisit base message, add constructor.name?
             message = { "dataDir": defaultDataDir }
-            message.rootDir = application
+            message.rootDir = target // application
 
             // If a message argument was provided, parse or load it
             if (contextArg) {

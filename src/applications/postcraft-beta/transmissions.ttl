@@ -14,18 +14,18 @@
 :UF a :Unfork . # collapses all pipes but one 
 #############################################################
 
-:sm a trm:Pipeline ;
-    rdfs:label "sm" ;
-    trm:pipe (:DE :SM) .
+#:sm a trm:Pipeline ;
+ #   rdfs:label "sm" ;
+  #  trm:pipe (:DE :SM) .
 
-:clean a trm:Pipeline ;
-    rdfs:label "clean" ;
-    rdfs:comment "directory cleaner" ;
-    trm:pipe (:SC) .
+#:clean a trm:Pipeline ;
+ #   rdfs:label "clean" ;
+  #  rdfs:comment "directory cleaner" ;
+   # trm:pipe (:SC) .
 
-#:render a trm:Pipeline ;
- #   trm:pipe (:s00 :s05 :s10 :s11 :s12 :s20  :s30 :s40  :s50 :s60 :s70 :s80 :s90 :s100 
-  #              :s110 :s120 :s130 :s140 :s150  :s160 :s170 :s180) .
+:render a trm:Pipeline ;
+   trm:pipe (:s00 :s05 :s10 :s11 :s12 :s20  :s30 :s40  :s50 :s60 :s70 :s80 :s90 :s100 
+              :s110 :s120 :s130 :s140 :s150  :s160 :s170 :s180) .
 
 :s00 a :DatasetReader . # read the manifest
 # trm:configKey trm:describe .
