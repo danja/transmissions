@@ -45,7 +45,7 @@ class FileRemove extends Service {
      */
     async execute(message) {
 
-        //   logger.setLogLevel('debug')
+        logger.setLogLevel('info')
 
         this.ignoreDotfiles = true // default, simplify ".gitinclude"
 
@@ -74,7 +74,7 @@ class FileRemove extends Service {
             }
         } catch (err) {
             // probably already gone
-            logger.warn('FileRemove, target stat caused err : ' + target)
+            logger.debug('FileRemove, target stat caused err : ' + target)
         }
 
         this.emit('message', message)

@@ -41,7 +41,8 @@ class DirWalker extends SourceService {
      * @returns {Promise<void>} A promise that resolves when the directory walking process is complete.
      */
     async execute(message) {
-
+        logger.setLogLevel('info')
+        logger.debug('DirWalker.execute')
         await this.emitThem(message)
 
 
@@ -55,36 +56,41 @@ class DirWalker extends SourceService {
         message.counter = 0
         message.slugs = []
         message.done = false // maybe insert earlier
-        const dirPath = message.rootDir + '/' + message.sourceDir // TODO use path.join
-        try {
-            const entries = await readdir(dirPath, { withFileTypes: true })
-            for (const entry of entries) {
-                const fullPath = join(dirPath, entry.name)
-                if (entry.isDirectory()) {
-                    await this.execute(entry.name, message) // rearrange to make things easier to read?
-                } else {
-                    // Check if the file extension is in the list of desired extensions
-                    if (this.desiredExtensions.includes(extname(entry.name))) {
+        //   const dirPath = message.rootDir + '/' + message.sourceDir 
+        const dirPath = join(message.rootDir, message.sourceDir)
+        logger.debug('DirWalker, dirPath = ' + dirPath)
+        // try {
 
-                        message.filename = entry.name
-                        message.filepath = message.sourceDir + '/' + entry.name
-                        const slug = this.extractSlug(message.filename)
-                        message.slugs.push(slug)
-                        // globalish
-                        //    this.addPropertyToMyConfig(ns.trm.postPath, rdf.literal(message.filename))
-                        //  logger.log('CONFIG : ' + this.config)
+        const entries = await readdir(dirPath, { withFileTypes: true })
+        for (const entry of entries) {
+            const fullPath = join(dirPath, entry.name)
+            if (entry.isDirectory()) {
+                await this.execute(entry.name, message) // rearrange to make things easier to read?
+            } else {
+                logger.debug('DirWalker, entry.name = ' + entry.name)
+                // Check if the file extension is in the list of desired extensions
+                if (this.desiredExtensions.includes(extname(entry.name))) {
 
-                        //   this.showMyConfig()
-                        message.done = false
-                        message.counter = message.counter + 1
-                        const messageClone = structuredClone(message) // move?
-                        this.emit('message', messageClone)
-                    }
+                    message.filename = entry.name
+                    message.filepath = message.sourceDir + '/' + entry.name
+                    const slug = this.extractSlug(message.filename)
+                    message.slugs.push(slug)
+                    // globalish
+                    //    this.addPropertyToMyConfig(ns.trm.postPath, rdf.literal(message.filename))
+                    //  logger.log('CONFIG : ' + this.config)
+
+                    //   this.showMyConfig()
+                    message.done = false
+                    message.counter = message.counter + 1
+                    const messageClone = structuredClone(message) // move?
+                    this.emit('message', messageClone)
                 }
             }
-        } catch (err) {
-            logger.error("DirWalker.execute error : " + err.message)
         }
+        //    } catch (err) {
+        //   logger.error("DirWalker.execute error : " + err.message)
+        //    throw err
+        //  }
     }
 
     extractSlug(filepath) { // TODO move this into a utils file - similar in PostcraftPrep

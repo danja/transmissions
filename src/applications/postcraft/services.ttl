@@ -3,12 +3,39 @@
 # @prefix fs: <http://purl.org/stuff/filesystem/> .
 @prefix t: <http://hyperdata.it/transmissions/> . # for custom terms & instances
 
-trm:Describe  a trm:ServiceConfig ; 
- trm:key trm:describe .
+### clean
 
-t:phaseOne a trm:ServiceConfig ; 
-    trm:key t:markdownToRawPosts ;
-    trm:marker "Phase One" .
+t:cacheRemove a trm:ServiceConfig ;
+    trm:key t:removeCache ;
+    trm:target "cache/" .
+
+t:articlesRemove a trm:ServiceConfig ;
+    trm:key t:removeArticles ;
+    trm:target "public/home/articles" .
+
+t:entriesRemove a trm:ServiceConfig ;
+    trm:key t:removeEntries ;
+    trm:target "public/home/entries" .
+
+t:journalRemove a trm:ServiceConfig ;
+    trm:key t:removeJournal ;
+    trm:target "public/home/journal" .
+
+t:todoRemove a trm:ServiceConfig ;
+    trm:key t:removeTodo ;
+    trm:target "public/home/todo" .
+
+t:indexRemove a trm:ServiceConfig ;
+    trm:key t:removeIndex ;
+    trm:target "public/home/index.html" .
+
+### copy #####################################
+
+t:copyStatic a trm:ServiceConfig ;
+    trm:key t:staticCopy ;
+    trm:source "content-static" ;
+    trm:destination "public/home/static" .
+
 
 t:copyMedia a trm:ServiceConfig ;
     trm:key t:mediaCopy ;
@@ -29,6 +56,15 @@ t:copyJS a trm:ServiceConfig ;
     trm:key t:jsCopy ;
     trm:source "layouts/mediocre/fonts" ;
     trm:destination "public/home/fonts" .
+
+### render ##################################
+
+trm:Describe  a trm:ServiceConfig ; 
+ trm:key trm:describe .
+
+t:phaseOne a trm:ServiceConfig ; 
+    trm:key t:markdownToRawPosts ;
+    trm:marker "Phase One" .
 
 # TODO IS COPY, not rename!!
 

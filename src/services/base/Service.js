@@ -111,7 +111,12 @@ class Service extends EventEmitter {
 
     getPropertyFromMyConfig(property) {
         const poi = this.getMyPoi()
-        return poi.out(property).term.value
+        try {
+            return poi.out(property).term.value
+        } catch (err) {
+            logger.log('property not defined : ' + property)
+            throw err
+        }
     }
 
 

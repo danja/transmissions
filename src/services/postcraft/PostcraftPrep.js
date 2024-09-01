@@ -10,7 +10,7 @@ class PostcraftPrep extends ProcessService {
   }
 
   async execute(message) {
-    logger.setLogLevel("debug")
+    logger.setLogLevel("info")
     // this.preProcess(message)
     // logger.log('----------BEFORE------------')
     // logger.reveal(message)

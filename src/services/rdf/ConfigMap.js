@@ -39,6 +39,8 @@ class ConfigMap extends ProcessService {
    * @todo Refactor for better generalization and maintainability
    */
   async execute(message) {
+    logger.setLogLevel('debug')
+
     this.preProcess(message)
     const dataset = message.dataset
     const poi = grapoi({ dataset, factory: rdf })
@@ -84,8 +86,8 @@ class ConfigMap extends ProcessService {
     const postcraftConfig = message.dataset
     const groupPoi = rdf.grapoi({ dataset: postcraftConfig, term: contentGroupID })
 
-    message.siteURL = groupPoi.out(ns.pc.site).term.value
-    message.subdir = groupPoi.out(ns.pc.subdir).term.value
+    // message.location = groupPoi.out(ns.pc.location).term.value
+    // message.subdir = groupPoi.out(ns.pc.subdir).term.value
     message.filepath = groupPoi.out(ns.pc.template).term.value
     message.template = '§§§ placeholer for debugging §§§'
 
