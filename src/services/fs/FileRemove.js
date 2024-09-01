@@ -44,7 +44,14 @@ class FileRemove extends Service {
      * @param {Object} message - The input message
      */
     async execute(message) {
+
+        //   logger.setLogLevel('debug')
+
+        this.ignoreDotfiles = true // default, simplify ".gitinclude"
+
         var target
+
+        // TODO add check for  ignoreDotfiles = false
 
         // Determine target path
         if (this.configKey === 'undefined') {
@@ -53,15 +60,21 @@ class FileRemove extends Service {
         } else {
             logger.debug('FileRemove this.configKey = ' + this.configKey.value)
             target = this.getPropertyFromMyConfig(ns.trm.target)
-            target = path.join(message.applicationRootDir, target)
+            target = path.join(message.rootDir, target)
         }
 
-        const removeStat = await stat(target)
+        logger.debug('FileRemove, target = ' + target)
+        try {
+            const removeStat = await stat(target)
 
-        if (removeStat.isFile()) {
-            await this.removeFile(target)
-        } else if (removeStat.isDirectory()) {
-            await this.removeDirectoryContents(target)
+            if (removeStat.isFile()) {
+                await this.removeFile(target)
+            } else if (removeStat.isDirectory()) {
+                await this.removeDirectoryContents(target)
+            }
+        } catch (err) {
+            // probably already gone
+            logger.warn('FileRemove, target stat caused err : ' + target)
         }
 
         this.emit('message', message)
@@ -80,9 +93,13 @@ class FileRemove extends Service {
      * @param {string} dirPath - The path to the directory
      */
     async removeDirectoryContents(dirPath) {
+        logger.debug('FileRemove, dirPath = ' + dirPath)
         const entries = await readdir(dirPath, { withFileTypes: true })
 
         for (const entry of entries) {
+            if (this.ignoreDotfiles && (entry.name.charAt(0) === ".")) {
+                continue
+            }
             const entryPath = path.join(dirPath, entry.name)
 
             if (entry.isDirectory()) {

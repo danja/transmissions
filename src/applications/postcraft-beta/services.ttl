@@ -3,6 +3,29 @@
 # @prefix fs: <http://purl.org/stuff/filesystem/> .
 @prefix t: <http://hyperdata.it/transmissions/> . # for custom terms & instances
 
+### clean
+
+t:cacheRemove a trm:ServiceConfig ;
+    trm:key t:removeCache ;
+    trm:target "cache/" .
+
+t:entriesRemove a trm:ServiceConfig ;
+    trm:key t:removeEntries ;
+    trm:target "public/home/entries" .
+
+t:indexRemove a trm:ServiceConfig ;
+    trm:key t:removeIndex ;
+    trm:target "public/home/index.html" .
+
+### copy
+
+t:copyStatic a trm:ServiceConfig ;
+    trm:key t:staticCopy ;
+    trm:source "content-static" ;
+    trm:destination "public/home/static" .
+
+### render
+
 trm:Describe  a trm:ServiceConfig ; 
  trm:key trm:describe .
 

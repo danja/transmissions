@@ -57,7 +57,7 @@ logger.reveal = function (instance) {
         } else {
             if (instance.hasOwnProperty(key)) {
                 let kiki = instance[key];
-                logger.log('OOOO ' + Object.prototype.toString.call(kiki))
+                //   logger.debug('OOOO ' + Object.prototype.toString.call(kiki))
                 if (kiki) {
                     if (Buffer.isBuffer(kiki)) {
                         kiki = kiki.toString();

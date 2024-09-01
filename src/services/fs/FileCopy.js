@@ -50,8 +50,9 @@ class FileCopy extends Service {
      * @param {Object} message - The input message
      */
     async execute(message) {
-        // logger.setLogLevel("debug")
+        //  logger.setLogLevel("debug")
 
+        // TODO move to super?
         if (message.rootDir == "") {
             message.rootDir = message.applicationRootDir
         }

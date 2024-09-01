@@ -5,25 +5,50 @@
 @prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances - TODO make one @services s: 
 
 #############################################################
-# insert into pipe for debugging
+# insert into pipe for debugging - one instance only like this
 :DE a :DeadEnd . # ends the current pipe quietly
 :H  a :Halt . # kills everything 
 :SC a :ShowConfig . # verbose report, continues pipe
 :SM a :ShowMessage . # verbose report, continues pipe
+:SM2 a :ShowMessage . # verbose report, continues pipe
 :N  a :NOP . # no operation (except for showing stage in pipe)
 :UF a :Unfork . # collapses all pipes but one 
 #############################################################
 
-#:sm a trm:Pipeline ;
- #   rdfs:label "sm" ;
-  #  trm:pipe (:DE :SM) .
 
-#:clean a trm:Pipeline ;
- #   rdfs:label "clean" ;
-  #  rdfs:comment "directory cleaner" ;
-   # trm:pipe (:SC) .
+## POSTCRAFT.CLEAN ##########################################
+
+:clean a trm:Pipeline ;
+    rdfs:label "clean" ;
+    rdfs:comment "directory cleaner" ;
+    trm:pipe (:c10 :c20 :c30) .
+
+:c10 a :FileRemove ;
+    trm:configKey :removeCache .
+
+:c20 a :FileRemove ;
+    trm:configKey  :removeEntries .
+
+:c30 a :FileRemove ;
+    trm:configKey  :removeIndex .
+
+## POSTCRAFT.COPY ##################################################################
+
+:copy a trm:Pipeline ;
+    rdfs:label "copy" ;
+    rdfs:comment "dir/file copier" ;
+    trm:pipe (:cp10) .
+
+### static dirs
+:cp10 a :FileCopy ;
+    trm:configKey :staticCopy .
+
+
+## POSTCRAFT.RENDER ###############################################################
 
 :render a trm:Pipeline ;
+    rdfs:label "render" ;
+    rdfs:comment "render the pages" ;
    trm:pipe (:s00 :s05 :s10 :s11 :s12 :s20  :s30 :s40  :s50 :s60 :s70 :s80 :s90 :s100 
               :s110 :s120 :s130 :s140 :s150  :s160 :s170 :s180) .
 
