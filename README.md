@@ -8,6 +8,40 @@ The code is in active development, ie. **not stable**, subject to arbitrary chan
 
 A bit like `make` or a `package.json` builder. But much harder work (and fun).
 
+Applications are defined in several places, the bits of interest are eg. Postcraft's [transmissions.ttl](https://github.com/danja/transmissions/blob/main/src/applications/postcraft/transmissions.ttl) and [services.ttl](https://github.com/danja/transmissions/blob/main/src/applications/postcraft/services.ttl).
+The former defines the flow, the latter config of the services (under [src/services](https://github.com/danja/transmissions/tree/main/src/services)). The runtime instance of the application is given in the target [manifest.ttl](https://github.com/danja/postcraft/blob/main/danny.ayers.name/manifest.ttl).
+
+### Installation etc.
+
+This is not ready yet. But if you really must...
+
+Make a fresh dir. Clone this repo and [Postcraft](https://github.com/danja/postcraft) into it.
+
+```
+cd transmissions
+npm i
+```
+
+This may or may not work :
+
+```
+npm run test
+```
+
+Then if you do :
+
+```
+./trans postcraft /home/danny/github-danny/postcraft/danny.ayers.name
+```
+
+it may build a site (my blog - this is dogfooding to the max) under `public/home`
+
+```
+./trans
+```
+
+on its own should list the applications available. Most of these won't work, the code has been shapeshifting a lot.
+
 ### Status
 
 **2024-09-02** Getting used as a serrrrriously over-engineered, feature-lacking static site builder, proof of concept is [Postcraft](https://github.com/danja/postcraft), as evinced by my [blog](https://danny.ayers.name/) (where, for now at least you will find update on this). But it mostly works as intended. Docs lagging. But now I have a documentation engine...
