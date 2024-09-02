@@ -2,13 +2,15 @@
 
 After _No Code_ and _Lo Code_ comes _Marginally Less Code_
 
-**Transmissions** is a micro-framework which will simplify construction of small data processing applications in JavaScript (assuming you are already familiar with JavaScript and RDF).
+**Transmissions** is a micro-framework intended simplify construction of small pipeliney data processing applications in JavaScript (assuming you are already familiar with JavaScript and RDF).
 
-A bit like `make` or a `package.json` builder.
+The code is in active development, ie. **not stable**, subject to arbitrary changes.
+
+A bit like `make` or a `package.json` builder. But much harder work (and fun).
 
 ### Status
 
-The code is in active development, ie. **not stable**, subject to arbitrary changes.
+**2024-09-02** Getting used as a serrrrriously over-engineered, feature-lacking static site builder, proof of concept is [Postcraft](https://github.com/danja/postcraft), as evinced by my [blog](https://danny.ayers.name/) (where, for now at least you will find update on this). But it mostly works as intended. Docs lagging. But now I have a documentation engine...
 
 Documentation will be lagging behind code, be incomplete and out of date.
 
