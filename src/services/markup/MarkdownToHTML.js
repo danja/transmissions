@@ -1,15 +1,31 @@
 import logger from '../../utils/Logger.js'
 import ProcessService from '../base/ProcessService.js'
-import { parse } from 'marked'
+// import { parse } from 'marked'
+import { marked } from 'marked'
+
+// marked extensions
+import markedFootnote from 'marked-footnote'
+import markedCodeFormat from 'marked-code-format'
+// import customHeadingId from "marked-custom-heading-id";
 
 class MarkdownToHTML extends ProcessService {
 
+
     async execute(message) {
         const input = message.content
-        message.content = await parse(input.toString())
-        //  const output =  
-        // { articles: html }
-        //      logger.log("=UTPUT = " + output)
+
+        // new Marked()
+        message.content = await
+            marked
+                //                .use(customHeadingId())
+                .use(markedFootnote())
+                .use(
+                    markedCodeFormat({
+                        /* Prettier options */
+                    })
+                )
+                .parse(input.toString())
+
         this.emit('message', message)
     }
 }
