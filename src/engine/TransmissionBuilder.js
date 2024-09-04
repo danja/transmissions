@@ -22,6 +22,7 @@ class TransmissionBuilder {
     logger.info('[Transmission : ' + transmissionConfigFile + ']')
     const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile)
     logger.info('[Services Config : ' + servicesConfigFile + ']')
+    // process.exit()
     const servicesConfig = await TransmissionBuilder.readDataset(servicesConfigFile)
 
     const poi = grapoi({ dataset: transmissionConfig })

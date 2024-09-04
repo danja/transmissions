@@ -39,7 +39,7 @@ class ConfigMap extends ProcessService {
    * @todo Refactor for better generalization and maintainability
    */
   async execute(message) {
-    logger.setLogLevel('debug')
+    //  logger.setLogLevel('debug')
 
     this.preProcess(message)
     const dataset = message.dataset

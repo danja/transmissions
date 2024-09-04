@@ -26,6 +26,8 @@ class ServiceExample extends Service {
      * @param {Object} message - The message object.
      */
     async execute(message) {
+        logger.setLogLevel('debug')
+
         // processing goes here
         this.emit('message', message)
     } catch(err) {

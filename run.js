@@ -10,7 +10,7 @@ import { fileURLToPath } from 'url';
 
 import logger from './src/utils/Logger.js'
 
-const applicationsDir = './src/applications'
+var applicationsDir = './src/applications'
 
 
 
@@ -19,26 +19,40 @@ const applicationsDir = './src/applications'
 class CommandUtils {
 
     // TODO refactor all this out
-    static async run(application, data, message = {}) {
+    static async run(appsDir, application, message = {}) {
+        logger.setLogLevel("debug")
+
+        logger.debug('\nRUN, appsDir =' + appsDir)
+        logger.debug('RUN, application =' + application)
 
         const appSplit = CommandUtils.splitName(application)
-        const dir = appSplit.first
+
+        var appName = appSplit.first
+        logger.debug(' = ' + appName)
+        //     if (appsDir) {
+        //       dir = appsDir // path.join(appsDir, dir)
+        // }
+        var dir = path.join(appsDir, appName)
+        ///  path.join(appsDir, appName)
+        logger.debug('DIR = ' + dir)
         const subtask = appSplit.second
 
-        message.dataString = data // TODO tidy/remove
+        // message.dataString = data // TODO tidy/remove
         //    message.rootApplication = application
-        logger.setLogLevel("info")
-        logger.debug("Hello, logger!")
+
+        logger.debug("run.js, Hello, logger!")
         logger.debug("process.cwd() = " + process.cwd())
 
+        logger.debug("dir = " + dir)
         var transmissionConfigFile = path.join(dir, 'transmissions.ttl')
 
+
         // TODO remove once files renamed
-        try {
-            await fs.access(transmissionConfigFile);
-        } catch (error) {
-            transmissionConfigFile = path.join(dir, 'transmission.ttl')
-        }
+        //   try {
+        //     await fs.access(transmissionConfigFile);
+        //} catch (error) {
+        //  transmissionConfigFile = path.join(dir, 'transmission.ttl')
+        //}
         ////////////
 
         const servicesConfigFile = path.join(dir, 'services.ttl')
@@ -125,10 +139,15 @@ if (process.argv.length <= 2) {
     // TODO add rest of help
 } else {
     await yargs(hideBin(process.argv))
-        .usage('Usage: $0 <application>[.subtask] [options] [target]')
+        .usage('Usage: ./trans <application>[.subtask] [options] [target]')
         .option('message', {
             alias: 'm',
             describe: 'message as a JSON string or a path to a JSON file',
+            type: 'string',
+        })
+        .option('dir', {
+            alias: 'd',
+            describe: 'application directory',
             type: 'string',
         })
         .command('$0 <application> [target]', 'runs the specified application', (yargs) => {
@@ -140,15 +159,31 @@ if (process.argv.length <= 2) {
                     //    default: '' // Default value if the second argument is not provided
                 })
         }, async (argv) => {
-            const { application, target, message: contextArg } = argv
-            console.log('application = ' + application)
-            console.log('target = ' + target)
-            console.log('message = ' + message)
-            //   process.exit()
+            const { dir, application, target, message: contextArg } = argv
+            logger.debug('dir = ' + dir)
+            logger.log('application = ' + application)
+            logger.log('target = ' + target)
+            // logger.reveal('message = ' + message)
+
+            // process.exit()
+
+            // TODO this is a bloody mess. Refactor!
+            const appSplit = CommandUtils.splitName(application)
+            //  var dir = appSplit.first
+
+            logger.debug('appSplit.first = ' + appSplit.first)
+            //  if (dir) {
+            //    applicationsDir = path.join(dir, appSplit.first) // TODO refactor
+            // }
+            logger.log('appsDir = ' + applicationsDir)
 
             const transmissionPath = path.join(applicationsDir, application)
             const defaultDataDir = path.join(transmissionPath, '/data')
 
+            //      applicationsDir, application
+            logger.debug('\nA PRERUN  applicationsDir =' + applicationsDir)
+            logger.debug('\nA PRERUN  application =' + application)
+            logger.debug('\n')
             // TODO revisit base message, add constructor.name?
             message = { "dataDir": defaultDataDir }
             message.rootDir = target // application
@@ -158,7 +193,14 @@ if (process.argv.length <= 2) {
                 message = await CommandUtils.parseOrLoadContext(contextArg);
             }
 
-            message.applicationRootDir = path.join(fileURLToPath(import.meta.url), '../', transmissionPath)
+            if (dir) { // TODO refactor with above
+                message.applicationRootDir = applicationsDir
+            } else {
+                message.applicationRootDir = path.join(fileURLToPath(import.meta.url), '../', transmissionPath)
+            }
+
+            logger.log('transmissionPath = ' + transmissionPath)
+            //    process.exit()
 
             // Claude gave me this madness
             if (application === 'postcraft-init') {
@@ -188,7 +230,9 @@ if (process.argv.length <= 2) {
                 // Clean up the temporary file
                 await fs.unlink(tempServicesFile)
             } else {
-                await CommandUtils.run(transmissionPath, application, message)
+                await CommandUtils.run(applicationsDir, application, message)
+
+                // run(appsDir, application, data, message = {}) {
             }
         })
         .help('h')

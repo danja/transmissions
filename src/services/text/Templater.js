@@ -38,16 +38,22 @@ class Templater extends ProcessService {
      * @param {Object} message - The message object containing template and content information
      */
     async execute(message) {
+        logger.setLogLevel('debug')
         if (message.templateFilename) {
             // Extract path and filename from templateFilename
             const path = message.templateFilename.substr(0, message.templateFilename.lastIndexOf("/"))
             const filename = message.templateFilename.substr(message.templateFilename.lastIndexOf("/") + 1)
 
+            logger.debug('Templater, path = ' + path)
+            logger.debug('Templater, filename = ' + filename)
             // Configure Nunjucks with the template path
             nunjucks.configure(path, { autoescape: false })
 
             // Render the template file
             message.content = nunjucks.render(filename, message.contentBlocks)
+
+            logger.debug('======')
+            logger.reveal(message.contentBlocks)
         } else {
             // Configure Nunjucks for string templates
             nunjucks.configure({ autoescape: false })

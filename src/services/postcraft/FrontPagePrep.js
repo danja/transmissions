@@ -1,15 +1,20 @@
 // src/services/postcraft/FrontPagePrep.js
 
+import path from 'path'
+import { readFile } from 'node:fs/promises'
+
 import logger from '../../utils/Logger.js'
 import ProcessService from '../base/ProcessService.js'
-import { readFile } from 'node:fs/promises'
+
 
 class FrontPagePrep extends ProcessService {
   constructor(config) {
     super(config)
   }
 
+
   async execute(message) {
+    logger.setLogLevel('debug')
     try {
       message.templateFilename = message.rootDir + '/' + message.indexPage.templateFilename
       logger.debug('Template = ' + message.templateFilename)
@@ -51,8 +56,9 @@ class FrontPagePrep extends ProcessService {
     for (let i = 0; i < entryCount; i++) {
       const slug = slugs[i]
       if (slug) {
-        const path = message.rootDir + '/' + message.entryContentMeta.targetDir + '/' + slug + '.html'
-        paths.push(path)
+        //   const path = message.rootDir + '/' + message.entryContentMeta.targetDir + '/' + slug + '.html'
+        const filePath = path.join(message.rootDir, message.entryContentMeta.targetDir, slug + '.html')
+        paths.push(filePath)
       }
     }
 
