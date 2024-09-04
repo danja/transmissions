@@ -38,7 +38,7 @@ class Templater extends ProcessService {
      * @param {Object} message - The message object containing template and content information
      */
     async execute(message) {
-        logger.setLogLevel('debug')
+        //logger.setLogLevel('debug')
         if (message.templateFilename) {
             // Extract path and filename from templateFilename
             const path = message.templateFilename.substr(0, message.templateFilename.lastIndexOf("/"))
@@ -65,5 +65,4 @@ class Templater extends ProcessService {
         this.emit('message', message)
     }
 }
-
 export default Templater

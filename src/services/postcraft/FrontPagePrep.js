@@ -14,7 +14,7 @@ class FrontPagePrep extends ProcessService {
 
 
   async execute(message) {
-    logger.setLogLevel('debug')
+    //  logger.setLogLevel('debug')
     try {
       message.templateFilename = message.rootDir + '/' + message.indexPage.templateFilename
       logger.debug('Template = ' + message.templateFilename)
@@ -24,11 +24,13 @@ class FrontPagePrep extends ProcessService {
 
       // TODO tidy up
       const entryCount = Math.min(5, rawEntryPaths.length) // Limit to 5 entries or less
+      logger.debug('FrontPagePrep, entryCount = ' + entryCount)
 
       const rangeStart = rawEntryPaths.length - entryCount
       const rangeEnd = rawEntryPaths.length - 1
       //     for (let i = 0; i < entryCount; i++) {
-      for (let i = rangeEnd; i > rangeStart; i--) {
+      for (let i = rangeEnd; i >= rangeStart; i--) {
+        logger.debug('FrontPagePrep, i = ' + entryCount)
         const rawEntryPath = rawEntryPaths[i]
         if (rawEntryPath) {
           message.content += await readFile(rawEntryPath, 'utf8')
