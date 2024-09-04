@@ -20,7 +20,7 @@ class CommandUtils {
 
     // TODO refactor all this out
     static async run(appsDir, application, message = {}) {
-        logger.setLogLevel("debug")
+
 
         logger.debug('\nRUN, appsDir =' + appsDir)
         logger.debug('RUN, application =' + application)
@@ -126,11 +126,12 @@ class CommandUtils {
 
 let message = {}
 
-console.log('\nARGS')
-for (var i = 0; i < process.argv.length; i++) {
-    console.log(i + ' : ' + process.argv[i])
-}
-console.log('----')
+logger.setLogLevel("info")
+//console.log('\nARGS')
+//for (var i = 0; i < process.argv.length; i++) {
+//  console.log(i + ' : ' + process.argv[i])
+//}
+//console.log('----')
 
 if (process.argv.length <= 2) {
     // No arguments were provided, list subdirectories and exit
@@ -160,9 +161,10 @@ if (process.argv.length <= 2) {
                 })
         }, async (argv) => {
             const { dir, application, target, message: contextArg } = argv
+            logger.setLogLevel("info")
             logger.debug('dir = ' + dir)
-            logger.log('application = ' + application)
-            logger.log('target = ' + target)
+            logger.debug('application = ' + application)
+            logger.debug('target = ' + target)
             // logger.reveal('message = ' + message)
 
             // process.exit()
@@ -175,7 +177,7 @@ if (process.argv.length <= 2) {
             //  if (dir) {
             //    applicationsDir = path.join(dir, appSplit.first) // TODO refactor
             // }
-            logger.log('appsDir = ' + applicationsDir)
+            logger.debug('appsDir = ' + applicationsDir)
 
             const transmissionPath = path.join(applicationsDir, application)
             const defaultDataDir = path.join(transmissionPath, '/data')
@@ -199,7 +201,7 @@ if (process.argv.length <= 2) {
                 message.applicationRootDir = path.join(fileURLToPath(import.meta.url), '../', transmissionPath)
             }
 
-            logger.log('transmissionPath = ' + transmissionPath)
+            logger.debug('transmissionPath = ' + transmissionPath)
             //    process.exit()
 
             // Claude gave me this madness

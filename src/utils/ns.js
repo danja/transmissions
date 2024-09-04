@@ -12,4 +12,16 @@ const ns = {
     pc: rdf.namespace('http://purl.org/stuff/postcraft/')
 }
 
+//ns.getPrefix = function (nsObj) {
+//  return Object.keys(nsObj)[0];
+//}
+
+ns.getShortname = function (url) {
+    // const url = uri.toString()
+    if (!url) return
+    const lastSlashIndex = url.lastIndexOf('/');
+    const lastHashIndex = url.lastIndexOf('#');
+    const path = url.slice(lastSlashIndex + 1);
+    return path.split('#')[0].split('?')[0];
+}
 export default ns

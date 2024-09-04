@@ -52,8 +52,8 @@ class Templater extends ProcessService {
             // Render the template file
             message.content = nunjucks.render(filename, message.contentBlocks)
 
-            logger.debug('======')
-            logger.reveal(message.contentBlocks)
+            //   logger.debug('======')
+            // logger.reveal(message.contentBlocks)
         } else {
             // Configure Nunjucks for string templates
             nunjucks.configure({ autoescape: false })

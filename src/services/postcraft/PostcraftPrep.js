@@ -10,7 +10,7 @@ class PostcraftPrep extends ProcessService {
   }
 
   async execute(message) {
-    logger.setLogLevel("info")
+    // logger.setLogLevel("info")
     // this.preProcess(message)
     // logger.log('----------BEFORE------------')
     // logger.reveal(message)
@@ -45,7 +45,7 @@ class PostcraftPrep extends ProcessService {
 
   // TODO lots of tidying up
   extractSlug(message) { // TODO move this into a utils file - is also in DirWalker
-    logger.reveal(message)
+    //  logger.reveal(message)
     var slug = message.filename
     //  var slug = message.filepath
     if (slug.includes('.')) {

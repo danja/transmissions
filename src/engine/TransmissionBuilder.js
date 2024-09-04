@@ -33,7 +33,7 @@ class TransmissionBuilder {
     for (const q of poi.out(ns.rdf.type).quads()) {
       if (q.object.equals(ns.trm.Pipeline)) {
         const pipelineID = q.subject
-        logger.debug('\n+ ' + pipelineID)
+        logger.debug('\n+ ' + pipelineID.value)
         transmissions.push(TransmissionBuilder.constructTransmission(transmissionConfig, pipelineID, servicesConfig))
       }
     }
@@ -71,12 +71,19 @@ class TransmissionBuilder {
       let node = pipenodes[i]
       let serviceName = node.value
 
+
       if (!transmission.get(serviceName)) { // may have been created in earlier pipeline
         let np = rdf.grapoi({ dataset: transmissionConfig, term: node })
         let serviceType = np.out(ns.rdf.type).term
         let serviceConfig = np.out(ns.trm.configKey).term
+
         try {
-          logger.log("| Create service <" + serviceName + "> of type <" + serviceType.value + ">")
+
+          let name = ns.getShortname(serviceName)
+          let type = ns.getShortname(serviceType.value)
+
+          logger.log("| Create service :" + name + " of type :" + type)
+          //  logger.log("| Create service <" + serviceName + "> of type <" + serviceType.value + ">")
         } catch (err) {
           logger.error('-> Can\'t resolve ' + serviceName + ' (check transmission.ttl for typos!)\n')
         }
@@ -101,7 +108,7 @@ class TransmissionBuilder {
       let leftServiceName = leftNode.value
       let rightNode = pipenodes[i + 1]
       let rightServiceName = rightNode.value
-      logger.log("  > Connect #" + i + " [" + leftServiceName + "] => [" + rightServiceName + "]")
+      logger.log("  > Connect #" + i + " [" + ns.getShortname(leftServiceName) + "] => [" + ns.getShortname(rightServiceName) + "]")
       transmission.connect(leftServiceName, rightServiceName)
     }
   }
