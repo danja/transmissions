@@ -1,0 +1,16 @@
+body {
+    --background: #f2f2f2;
+    /* default background color */
+    --text-color: #000;
+    /* default text color */
+}
+
+.dark-theme {
+    --background: black;
+    --text-color: white;
+}
+
+.light-theme {
+    --background: white;
+    --text-color: black;
+}
