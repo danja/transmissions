@@ -6333,7 +6333,7 @@ class RemapContext extends Service {
             value = value.toString()
             if (post.includes('.')) {
                 const s = post.split('.')
-                logger.log('post split = ' + s)
+                logger.debug('post split = ' + s)
                 message[s[0]][s[1]] = value
             } else {
                 message[post] = value

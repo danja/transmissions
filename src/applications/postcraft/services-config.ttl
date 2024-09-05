@@ -54,8 +54,8 @@ t:copyFonts a trm:ServiceConfig ;
 
 t:copyJS a trm:ServiceConfig ;
     trm:key t:jsCopy ;
-    trm:source "layouts/mediocre/fonts" ;
-    trm:destination "public/home/fonts" .
+    trm:source "layouts/mediocre/js" ;
+    trm:destination "public/home/js" .
 
 ### render ##################################
 
