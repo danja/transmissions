@@ -5,7 +5,9 @@
  * @classdesc
  * **a Transmissions Service**
  * 
- * Maps RDF dataset contents to key-value pairs in the message object based on services.ttl configuration.
+ * Maps RDF dataset contents to key-value pairs in the message object based on services-config.ttl 
+ * 
+ * ### Signature
  * 
  * #### __*Input*__
  * * **`message.dataset`** - RDF dataset containing configuration
@@ -39,7 +41,13 @@ class ConfigMap extends ProcessService {
    * @todo Refactor for better generalization and maintainability
    */
   async execute(message) {
-    //  logger.setLogLevel('debug')
+    logger.setLogLevel('debug')
+
+    logger.debug(`ConfigMap, Using configKey ${this.configKey.value}`)
+    const group = this.getPropertyFromMyConfig(ns.trm.group)
+    logger.debug(`ConfigMap, group =  ${group}`)
+
+    // source = path.join(message.rootDir, source);
 
     this.preProcess(message)
     const dataset = message.dataset

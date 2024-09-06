@@ -3,7 +3,12 @@
 # @prefix fs: <http://purl.org/stuff/filesystem/> .
 @prefix t: <http://hyperdata.it/transmissions/> . # for custom terms & instances
 
-### clean
+### ConfigMap
+t:PostcraftMap a trm:ServiceConfig ;
+    trm:key t:postcraftMap ;
+    trm:group t:SampleGroup .
+
+### clean 
 
 t:cacheRemove a trm:ServiceConfig ;
     trm:key t:removeCache ;
