@@ -3,6 +3,7 @@
 
 @prefix trm: <http://purl.org/stuff/transmission/> . # TODO make plural
 @prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances - TODO make one @services s: 
+@prefix pc: <http://purl.org/stuff/postcraft/> .
 
 #############################################################
 # insert into pipe for debugging - one instance only like this

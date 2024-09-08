@@ -31,12 +31,12 @@ class DirWalker extends SourceService {
         super(config)
         const dataset = this.config
         const poi = grapoi({ dataset })
-        this.desiredExtensions = ['.md']
+        this.includeExtensions = ['.md']
+        this.excludePrefixes = ['_']
     }
 
     /**
      * Executes the directory walking process.
-     * @param {any} data - The data to be passed to the execute method.
      * @param {Object} message - The message object containing information about the directory and source file.
      * @returns {Promise<void>} A promise that resolves when the directory walking process is complete.
      */
@@ -68,8 +68,13 @@ class DirWalker extends SourceService {
                 await this.execute(entry.name, message) // rearrange to make things easier to read?
             } else {
                 logger.debug('DirWalker, entry.name = ' + entry.name)
+
+                const includeExtension = this.includeExtensions.includes(extname(entry.name))
+                const prefix = entry.name.charAt(0)
+                const excludePrefix = this.excludePrefixes.includes(prefix)
+
                 // Check if the file extension is in the list of desired extensions
-                if (this.desiredExtensions.includes(extname(entry.name))) {
+                if (!excludePrefix && includeExtension) {
 
                     message.filename = entry.name
                     message.filepath = message.sourceDir + '/' + entry.name

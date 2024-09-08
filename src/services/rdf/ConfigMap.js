@@ -44,8 +44,10 @@ class ConfigMap extends ProcessService {
     logger.setLogLevel('debug')
 
     logger.debug(`ConfigMap, Using configKey ${this.configKey.value}`)
+
     const group = this.getPropertyFromMyConfig(ns.trm.group)
-    logger.debug(`ConfigMap, group =  ${group}`)
+    const targetGroup = rdf.namedNode(group)
+    logger.debug(`ConfigMap, group =  ${targetGroup}`)
 
     // source = path.join(message.rootDir, source);
 
@@ -56,7 +58,10 @@ class ConfigMap extends ProcessService {
 
     for (const q of quads) {
       const type = q.object
-      if (type.equals(ns.pc.ContentGroup)) {
+      //   logger.debug('type = ' + type.value)
+      // logger.debug('targetGroup = ' + targetGroup)
+      if (type.equals(targetGroup)) {
+        //          if (type.equals(ns.pc.ContentGroup)) {
         await this.processContentGroup(message, q.subject)
       }
     }
@@ -70,6 +75,7 @@ class ConfigMap extends ProcessService {
    * @param {Object} contentGroupID - The ID of the content group
    */
   async processContentGroup(message, contentGroupID) {
+    logger.debug('contentGroupID = ' + contentGroupID.value)
     switch (contentGroupID.value) {
       case ns.t.PostContent.value:
         await this.markdownToEntryContent(message, contentGroupID)
