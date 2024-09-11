@@ -55,7 +55,7 @@ class DatasetReader extends SourceService {
      */
     async execute(message) {
         this.preProcess(message)
-        var datasetName = 'manifest' // TODO generalise better
+        var datasetName = 'dataset' // TODO rename to manifest, generalise better
         var datasetFilename = message.rootDir + '/manifest.ttl'
         if (message.datasetFilename) {
             datasetFilename = message.datasetFilename
@@ -66,6 +66,7 @@ class DatasetReader extends SourceService {
 
         const stream = fromFile(datasetFilename)
 
+        // TODO this needs changing
         message[datasetName] = await rdf.dataset().import(stream)
         this.emit('message', message)
     }
