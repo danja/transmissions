@@ -37,7 +37,7 @@ class DatasetReader extends SourceService {
      * @returns {string[]} Array of input keys
      * @todo Implement properly
      */
-    getInputKeys() {
+    getInputKeys() { // what were these for!?
         return ['sdfsdf']
     }
 
@@ -55,10 +55,18 @@ class DatasetReader extends SourceService {
      */
     async execute(message) {
         this.preProcess(message)
-        const manifestFilename = message.rootDir + '/manifest.ttl'
-        const stream = fromFile(manifestFilename)
+        var datasetName = 'manifest' // TODO generalise better
+        var datasetFilename = message.rootDir + '/manifest.ttl'
+        if (message.datasetFilename) {
+            datasetFilename = message.datasetFilename
+        }
+        if (message.datasetName) {
+            datasetName = message.datasetName
+        }
 
-        message.dataset = await rdf.dataset().import(stream)
+        const stream = fromFile(datasetFilename)
+
+        message[datasetName] = await rdf.dataset().import(stream)
         this.emit('message', message)
     }
 }
