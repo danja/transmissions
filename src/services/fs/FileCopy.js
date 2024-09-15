@@ -61,11 +61,11 @@ class FileCopy extends Service {
 
         // Determine source and destination paths
         if (this.configKey === 'undefined') {
-            logger.debug('FileCopy: Using message.source and message.destination')
+            logger.debug('FileCopy: using message.source and message.destination')
             source = message.source
             destination = message.destination
         } else {
-            logger.debug(`FileCopy: Using configKey ${this.configKey.value}`)
+            logger.debug(`FileCopy: using configKey ${this.configKey.value}`)
             source = this.getPropertyFromMyConfig(ns.trm.source)
             destination = this.getPropertyFromMyConfig(ns.trm.destination)
             source = path.join(message.rootDir, source)

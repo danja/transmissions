@@ -1,5 +1,7 @@
 import { readFile } from 'node:fs/promises'
+import path from 'path'
 import logger from '../../utils/Logger.js'
+import ns from '../../utils/ns.js'
 import SourceService from '../base/SourceService.js'
 
 /**
@@ -33,20 +35,30 @@ class FileReader extends SourceService {
         var filepath = message.filepath
 
         if (!filepath) {
-            filepath = this.getMyConfig().value // services.ttl
+            logger.debug(`FileReader: using configKey ${this.configKey.value}`)
+            filepath = this.getPropertyFromMyConfig(ns.trm.messageFile)
+
+            //filepath = this.getMyConfig().value // services.ttl
+            logger.log(' - filepath from config : ' + filepath)
         }
         logger.log(' - FileReader reading filepath : ' + filepath)
-        const f = message.rootDir + '/' + filepath
-        //logger.log('####in Filereader f = ' + f)
+
+        // TODO move this into run.js
+        var f = path.join(message.dataDir, filepath)
+        if (message.rootDir) {
+            f = path.join(message.rootDir, filepath)
+        }
+
+        const mediaType = this.getPropertyFromMyConfig(ns.trm.mediaType)
+        logger.debug('in FileReader, mediaType = ' + mediaType)
+
+
         try {
-            //   logger.log('####in Filereader ' + message.sourceFile)
             message.content = (await readFile(f)).toString()
-            //  logger.log('####in Filereader message.content = ' + message.content)
-            /*
-            if (message.loadContext) { // get rid?
-                message[message.loadContext] = content
+            // TODO shift to a method/util
+            if (mediaType === 'application/json') {
+                message.fromfile = JSON.parse(message.content)
             }
-            */
             this.emit('message', message)
         } catch (err) {
             logger.error("FileReader.execute error : " + err.message)

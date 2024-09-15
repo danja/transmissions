@@ -33,7 +33,7 @@ class RemapContext extends Service { // TODO rename RemapMessage
             return
         }
 
-        logger.log('RemapContext this.configKey = ' + this.configKey.value)
+        logger.debug('RemapContext this.configKey = ' + this.configKey.value)
 
         const renames = GrapoiHelpers.listToArray(this.config, this.configKey, ns.trm.rename)
         const dataset = this.config
