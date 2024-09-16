@@ -114,11 +114,10 @@ class Service extends EventEmitter {
         try {
             return poi.out(property).term.value
         } catch (err) {
-            logger.log('property not defined : ' + property)
-            throw err
+            logger.debug('property not defined : ' + property)
+            return rdf.literal('undefined')
         }
     }
-
 
     async deletePropertyFromMyConfig(predicate, value) {
         const myConfigNode = this.getMyConfigNode()
