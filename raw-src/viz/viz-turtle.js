@@ -1,8 +1,14 @@
 // vis-turtle.js
 import rdf from 'rdf-ext';
 import { fromFile } from 'rdf-utils-fs';
-import * as d3 from 'd3'
-// import d3 from 'd3';
+import * as d3 from 'd3';
+import { JSDOM } from 'jsdom';
+import fs from 'fs/promises';
+
+// Create a virtual DOM
+const dom = new JSDOM('<!DOCTYPE html><body></body>');
+global.document = dom.window.document;
+global.window = dom.window;
 
 // Function to convert RDF dataset to JSON-LD like structure
 function datasetToJsonld(dataset) {
@@ -27,6 +33,7 @@ function datasetToJsonld(dataset) {
 function jsonldVis(jsonld, selector, config) {
     if (!arguments.length) return jsonldVis;
     config = config || {};
+
 
     var h = config.h || 600
         , w = config.w || 800
