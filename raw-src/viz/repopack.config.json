@@ -1,0 +1,15 @@
+{
+    "output": {
+        "filePath": "./viz-turtle-repopack.txt",
+        "headerText": "viz-turtle current",
+        "removeComments": true
+    },
+    "ignore": {
+        "useDefaultPatterns": true,
+        "customPatterns": [
+            "*.log",
+            "docs",
+            "**/*repopack*"
+        ]
+    }
+}
