@@ -1,5 +1,16 @@
 # Next Steps
 
+imperative runners
+
+eg. load JSON processors-config.ttl equiv, read md file, convert to html
+
+include in tests
+
+processors/turing - including R...E...P...L
+
+loops etc
+
+
 ## Postcraft
 
 - clone template run.js dodgy
