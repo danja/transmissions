@@ -1,7 +1,7 @@
 // tests/unit/StringFilter.spec.js
 
 /**
- * This test file covers various scenarios for the StringFilter service, including:
+ * This test file covers various scenarios for the StringFilter processor, including:
  *
  * empty include and exclude patterns
  * undefined content
@@ -15,7 +15,7 @@
  * `npm test -- tests/unit/StringFilter.spec.js`
  */
 
-import StringFilter from '../../src/services/text/StringFilter.js';
+import StringFilter from '../../src/processors/text/StringFilter.js';
 import { expect } from 'chai';
 
 describe('StringFilter', function () {

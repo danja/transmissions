@@ -13,7 +13,7 @@ import logger from './Logger.js'
 var applicationsDir = '../applications'
 
 const defaultTransmissionsFilename = 'transmissions.ttl'
-const defaultServicesConfigFile = 'services-config.ttl'
+const defaultProcessorsConfigFile = 'processors-config.ttl'
 
 class CommandUtils {
 
@@ -40,10 +40,10 @@ class CommandUtils {
         logger.debug('transmissionsDir = ' + transmissionsDir)
 
         const transmissionsFile = path.join(transmissionsDir, defaultTransmissionsFilename)
-        const servicesConfigFile = path.join(transmissionsDir, defaultServicesConfigFile)
+        const processorsConfigFile = path.join(transmissionsDir, defaultProcessorsConfigFile)
 
         logger.debug("transmissionConfigFile = " + transmissionsFile)
-        logger.debug("servicesConfigFile = " + servicesConfigFile)
+        logger.debug("processorsConfigFile = " + processorsConfigFile)
 
 
 
@@ -53,7 +53,7 @@ class CommandUtils {
 
         // process.exit()
 
-        const transmissions = await TransmissionBuilder.build(transmissionsFile, servicesConfigFile)
+        const transmissions = await TransmissionBuilder.build(transmissionsFile, processorsConfigFile)
 
         if (subtask) {
             for (var i = 0; i < transmissions.length; i++) {

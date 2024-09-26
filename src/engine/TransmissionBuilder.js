@@ -9,21 +9,21 @@ import ns from '../utils/ns.js'
 import GrapoiHelpers from '../utils/GrapoiHelpers.js'
 import logger from '../utils/Logger.js'
 
-import AbstractServiceFactory from "./AbstractServiceFactory.js";
+import AbstractProcessorFactory from "./AbstractProcessorFactory.js";
 import Transmission from './Transmission.js'
 
 // TODO it looks like multiple copies of the config are being created - should be a singleton object
 
 class TransmissionBuilder {
 
-  static async build(transmissionConfigFile, servicesConfigFile) {
+  static async build(transmissionConfigFile, processorsConfigFile) {
 
     logger.info('\n+ ***** Load Config ******')
     logger.info('[Transmission : ' + transmissionConfigFile + ']')
     const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile)
-    logger.info('[Services Config : ' + servicesConfigFile + ']')
+    logger.info('[Processors Config : ' + processorsConfigFile + ']')
     // process.exit()
-    const servicesConfig = await TransmissionBuilder.readDataset(servicesConfigFile)
+    const processorsConfig = await TransmissionBuilder.readDataset(processorsConfigFile)
 
     const poi = grapoi({ dataset: transmissionConfig })
 
@@ -34,15 +34,15 @@ class TransmissionBuilder {
       if (q.object.equals(ns.trm.Pipeline)) {
         const pipelineID = q.subject
         logger.debug('\n+ ' + pipelineID.value)
-        transmissions.push(TransmissionBuilder.constructTransmission(transmissionConfig, pipelineID, servicesConfig))
+        transmissions.push(TransmissionBuilder.constructTransmission(transmissionConfig, pipelineID, processorsConfig))
       }
     }
     return transmissions
   }
 
   // TODO refactor
-  static constructTransmission(transmissionConfig, pipelineID, servicesConfig) {
-    servicesConfig.whiteboard = {}
+  static constructTransmission(transmissionConfig, pipelineID, processorsConfig) {
+    processorsConfig.whiteboard = {}
 
     const transmission = new Transmission()
     transmission.id = pipelineID.value
@@ -61,42 +61,42 @@ class TransmissionBuilder {
     // grapoi probably has a built-in for all this
     const pipenodes = GrapoiHelpers.listToArray(transmissionConfig, pipelineID, ns.trm.pipe)
 
-    this.createNodes(transmission, pipenodes, transmissionConfig, servicesConfig)
+    this.createNodes(transmission, pipenodes, transmissionConfig, processorsConfig)
     this.connectNodes(transmission, pipenodes)
     return transmission
   }
 
-  static createNodes(transmission, pipenodes, transmissionConfig, servicesConfig) {
+  static createNodes(transmission, pipenodes, transmissionConfig, processorsConfig) {
     for (let i = 0; i < pipenodes.length; i++) {
       let node = pipenodes[i]
-      let serviceName = node.value
+      let processorName = node.value
 
 
-      if (!transmission.get(serviceName)) { // may have been created in earlier pipeline
+      if (!transmission.get(processorName)) { // may have been created in earlier pipeline
         let np = rdf.grapoi({ dataset: transmissionConfig, term: node })
-        let serviceType = np.out(ns.rdf.type).term
-        let serviceConfig = np.out(ns.trm.configKey).term
+        let processorType = np.out(ns.rdf.type).term
+        let processorConfig = np.out(ns.trm.configKey).term
 
         try {
 
-          let name = ns.getShortname(serviceName)
-          let type = ns.getShortname(serviceType.value)
+          let name = ns.getShortname(processorName)
+          let type = ns.getShortname(processorType.value)
 
-          logger.log("| Create service :" + name + " of type :" + type)
-          //  logger.log("| Create service <" + serviceName + "> of type <" + serviceType.value + ">")
+          logger.log("| Create processor :" + name + " of type :" + type)
+          //  logger.log("| Create processor <" + processorName + "> of type <" + processorType.value + ">")
         } catch (err) {
-          logger.error('-> Can\'t resolve ' + serviceName + ' (check transmission.ttl for typos!)\n')
+          logger.error('-> Can\'t resolve ' + processorName + ' (check transmission.ttl for typos!)\n')
         }
-        let service = AbstractServiceFactory.createService(serviceType, servicesConfig)
-        service.id = serviceName
-        service.type = serviceType
-        service.transmission = transmission
+        let processor = AbstractProcessorFactory.createProcessor(processorType, processorsConfig)
+        processor.id = processorName
+        processor.type = processorType
+        processor.transmission = transmission
 
-        if (serviceConfig) {
-          //  logger.debug("\n*****SERVICE***** serviceConfig = " + serviceConfig.value)
-          service.configKey = serviceConfig // .value
+        if (processorConfig) {
+          //  logger.debug("\n*****SERVICE***** processorConfig = " + processorConfig.value)
+          processor.configKey = processorConfig // .value
         }
-        transmission.register(serviceName, service)
+        transmission.register(processorName, processor)
       }
     }
     //  return transmission
@@ -105,11 +105,11 @@ class TransmissionBuilder {
   static connectNodes(transmission, pipenodes) {
     for (let i = 0; i < pipenodes.length - 1; i++) {
       let leftNode = pipenodes[i]
-      let leftServiceName = leftNode.value
+      let leftProcessorName = leftNode.value
       let rightNode = pipenodes[i + 1]
-      let rightServiceName = rightNode.value
-      logger.log("  > Connect #" + i + " [" + ns.getShortname(leftServiceName) + "] => [" + ns.getShortname(rightServiceName) + "]")
-      transmission.connect(leftServiceName, rightServiceName)
+      let rightProcessorName = rightNode.value
+      logger.log("  > Connect #" + i + " [" + ns.getShortname(leftProcessorName) + "] => [" + ns.getShortname(rightProcessorName) + "]")
+      transmission.connect(leftProcessorName, rightProcessorName)
     }
   }
   // follows chain in rdf:List

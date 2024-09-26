@@ -1,4 +1,4 @@
-import PostcraftPrep from '../../src/services/postcraft/PostcraftPrep.js'
+import PostcraftPrep from '../../src/processors/postcraft/PostcraftPrep.js'
 import { expect } from 'chai'
 
 describe('PostcraftPrep', function () {

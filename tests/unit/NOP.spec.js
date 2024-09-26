@@ -1,4 +1,4 @@
-import NOP from '../../src/services/util/NOP.js'
+import NOP from '../../src/processors/util/NOP.js'
 import { expect } from 'chai'
 
 describe('NOP', function () {

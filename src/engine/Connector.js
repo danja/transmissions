@@ -11,20 +11,20 @@ class Connector extends EventEmitter {
         this.toName = toName
     }
 
-    connect(services) {
-        let fromService = services[this.fromName]
-        let toService = services[this.toName]
+    connect(processors) {
+        let fromProcessor = processors[this.fromName]
+        let toProcessor = processors[this.toName]
 
-        fromService.on('message', (message) => { //  = {}
+        fromProcessor.on('message', (message) => { //  = {}
             var tags = ''
-            //     if (toService.message) {
-            tags = ' (' + fromService.message.tags + ') '
-            toService.tags = tags // TODO tidy
+            //     if (toProcessor.message) {
+            tags = ' (' + fromProcessor.message.tags + ') '
+            toProcessor.tags = tags // TODO tidy
             //   }
             const thisTag = footpath.urlLastPart(this.toName)
-            logger.log("| Running : " + tags + thisTag + " a " + toService.constructor.name)
+            logger.log("| Running : " + tags + thisTag + " a " + toProcessor.constructor.name)
 
-            toService.receive(message)
+            toProcessor.receive(message)
         })
     }
 

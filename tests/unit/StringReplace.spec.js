@@ -1,10 +1,10 @@
 // tests/unit/StringReplace.spec.js
 
-import StringReplace from '../../src/services/text/StringReplace.js'
+import StringReplace from '../../src/processors/text/StringReplace.js'
 import { expect } from 'chai'
 
 /**
- * Unit tests for the StringReplace service
+ * Unit tests for the StringReplace processor
  */
 describe('StringReplace', function () {
     /**
