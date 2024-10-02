@@ -36,6 +36,7 @@
     "workbox-webpack-plugin": "^7.0.0"
   },
   "dependencies": {
+    "@dotenvx/dotenvx": "^1.14.2",
     "@rdfjs/formats": "^4.0.0",
     "axios": "^1.6.8",
     "cheerio": "^1.0.0-rc.12",
