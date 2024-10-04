@@ -11,8 +11,8 @@ class WhiteboardToMessage extends Processor {
         logger.log('WhiteboardToMessage at (' + message.tags + ') ' + this.getTag())
 
         const originalArray = this.config.whiteboard
-        //  message.whiteboard 
-        message = Object.keys(originalArray).reduce((acc, key) => {
+
+        message.whiteboard = Object.keys(originalArray).reduce((acc, key) => {
             const value = originalArray[key];
             if (value !== undefined && value !== null) {
                 Object.keys(value).forEach((prop) => {
@@ -25,7 +25,8 @@ class WhiteboardToMessage extends Processor {
             return acc;
         }, {});
 
-        this.emit('message', message)
+        return super.handle(message)
+        //        this.emit('message', message)
     }
 }
 

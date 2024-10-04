@@ -1,6 +1,6 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix trm: <http://purl.org/stuff/transmission/> . # TODO make plural
-@prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances - TODO make one @services s: 
+@prefix trm: <http://purl.org/stuff/transmission/> .
+@prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances
 
 #############################################################
 # insert into pipe for debugging
@@ -12,14 +12,5 @@
 :UF a :Unfork . # collapses all pipes but one 
 #############################################################
 
-:test_fork a :Transmission ;
-   trm:contains :pipeA .
-
-:pipeA a trm:Pipeline ;
-trm:pipe (:p10 :SM ) .
-
-:p10 a :Fork .
-
-# :s10 a :Unfork .
-:s11 a :NOP .
-
+:nope a trm:Pipeline ;
+    trm:pipe (:N :SC :SM) .

@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises' // whatever else
 
-import logger from '../utils/Logger.js' // path will likely change
+import logger from '../../utils/Logger.js' // path will likely change
 import Processor from '../base/Processor.js' // maybe more specific
 
 /**

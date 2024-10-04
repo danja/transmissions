@@ -2,7 +2,7 @@ import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
 
 
-import HttpGet from './HttpGet.js'
+import EnvLoader from './EnvLoader.js'
 
 
 

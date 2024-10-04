@@ -1,7 +1,10 @@
-import { readFile } from 'node:fs/promises' // whatever else
+import 'dotenv/config'
 
-import logger from '../utils/Logger.js' // path will likely change
+// import { readFile } from 'node:fs/promises' // whatever else
+
+import logger from '../../utils/Logger.js'
 import Processor from '../base/Processor.js' // maybe more specific
+
 
 /**
  * FileReader class that extends xxxxxProcessor.
@@ -10,7 +13,11 @@ import Processor from '../base/Processor.js' // maybe more specific
  * **message.INPUT** 
  * #### __*Output*__
  * **message.OUTPUT**
- */
+ *
+ * ### References
+ * * https://dotenvx.com/
+ * * https://github.com/motdotla/dotenv
+*/
 class EnvLoader extends Processor {
 
     /**
@@ -27,11 +34,16 @@ class EnvLoader extends Processor {
      */
     async execute(message) {
         logger.setLogLevel('debug')
+        // console.log(process.env)
 
-        // processing goes here
-        this.emit('message', message)
+        this.config.whiteboard.env = process.env
+
+        // this.emit('message', message)
+
+        return super.handle(message)
+
     } catch(err) {
-        logger.error("ProcessorExample.execute error : " + err.message)
+        logger.error("EnvLoader.execute error : " + err.message)
     }
 }
 

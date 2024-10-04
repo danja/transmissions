@@ -38,11 +38,16 @@ footpath.resolve = function footpath(here, relative, start) {
     return filePath
 }
 
-footpath.urlLastPart = function footpath(url) {
+footpath.urlLastPart = function footpath(url = 'http://example.org/not-a-url') {
+    // logger.debug('url = ' + url)
+    //   try {
     const urlObj = new URL(url);
     const hash = urlObj.hash;
     const path = urlObj.pathname;
     const lastPart = hash ? hash.replace(/^#/, '') : path.split('/').pop();
+    // } catch {
+    //  return 'not-a-url'
+    //}
     return lastPart;
 }
 

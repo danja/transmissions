@@ -17,7 +17,7 @@ class ShowConfig extends SinkProcessor {
 
         logger.log("***************************")
         logger.log("***  Config")
-        logger.reveal(this.config.whiteboard) // TODO the rest
+        logger.reveal(this.config) // TODO the rest
         logger.log("***************************")
         //     logger.log("***  Trace")
         //   console.trace() // move to Logger, only when debugging

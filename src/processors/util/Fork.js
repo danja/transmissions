@@ -1,9 +1,8 @@
 import logger from '../../utils/Logger.js'
 import Processor from '../base/Processor.js'
-import ns from '../../utils/ns.js'
-import rdf from 'rdf-ext'
-import grapoi from 'grapoi'
 
+
+// rough, only for system testing
 
 class Fork extends Processor {
 
@@ -11,22 +10,22 @@ class Fork extends Processor {
         super(config)
     }
 
-    /*
-only for testing for now
-*/
-    async execute(data, baseContext) {
+    async execute(message) {
+        const nForks = message.nForks || 2
 
-        for (let i = 0; i < 5; i++) {
-            var message = this.cloneContext(baseContext)
-            message.done = false
-            logger.log('--- emit --- ' + i)
-            this.emit('message', message)
+        logger.debug('forks = ' + nForks)
+
+        for (let i = 0; i < nForks; i++) {
+            var messageClone = structuredClone(message)
+            messageClone.forkN = i
+            logger.debug('--- emit --- ' + i)
+            this.emit('message', messageClone)
         }
-        var message = this.cloneContext(baseContext)
-        message.done = true
+
+        message.done = true // one extra to flag completion
 
         this.emit('message', message)
-
+        return this.getOutputs()
     }
 
 }

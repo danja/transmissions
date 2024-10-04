@@ -6,17 +6,12 @@ class NOP extends Processor {
     constructor(config) {
         super(config);
     }
+
     async execute(message) {
 
         logger.log('NOP at (' + message.tags + ') ' + this.getTag())
-
-        this.emit('message', message)
-    }
-
-    // testing
-    double(string) {
-        return string + string
+        return this.emit('message', message)
+        //  return this.getOutputs()
     }
 }
-
 export default NOP

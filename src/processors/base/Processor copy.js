@@ -21,7 +21,6 @@ class Processor extends EventEmitter {
         this.messageQueue = []
         this.processing = false
         this.done = false
-        this.outputs = []
     }
 
     preProcess(message) {
@@ -214,37 +213,6 @@ class Processor extends EventEmitter {
      */
     async doEmit(message) {
         this.emit(message)
-    }
-
-    /////////////////////// for simples
-    //  emit(event, message) {
-
-    // }
-
-    //    this.emit('message', message)
-    //  return this.getOutputs()
-    /*
-    async forward(event = 'message', message) {
-        if (event === 'message') {
-            this.outputs.push(message)
-        }
-        super.emit(event, message)
-        return this.getOutputs()
-    }
-*/
-    emit(event, message) {
-        if (event === 'message') {
-            this.outputs.push(message)
-        }
-        super.emit(event, message)
-        // return this.getOutputs()
-        // TODO in NOP,   return this.emit('message', message) - why?
-    }
-
-    getOutputs() {
-        const results = this.outputs
-        this.outputs = []
-        return results
     }
 }
 

@@ -2,11 +2,22 @@
     "version": "0.2.0",
     "configurations": [
       {
-        "type": "node",
+        "name": "Launch Program",
+        "program": "${workspaceFolder}/apps-simple/nop/nop.js",
         "request": "launch",
-        "name": "Launch run.js",
-        "skipFiles": ["<node_internals>/**"],
-        "program": "${workspaceFolder}/src/run.js"
+        "skipFiles": [
+          "<node_internals>/**"
+        ],
+        "type": "node"
+      },
+      {
+        "name": "Attach",
+        "port": 9229,
+        "request": "attach",
+        "skipFiles": [
+          "<node_internals>/**"
+        ],
+        "type": "node"
       }
     ]
   }

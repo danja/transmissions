@@ -2,6 +2,7 @@ import logger from '../utils/Logger.js'
 import ns from '../utils/ns.js'
 
 // Import processor groups
+import SystemProcessorsFactory from '../processors/system/SystemProcessorsFactory.js'
 import TestProcessorsFactory from '../processors/test/TestProcessorsFactory.js'
 import FsProcessorsFactory from '../processors/fs/FsProcessorsFactory.js'
 import MarkupProcessorsFactory from '../processors/markup/MarkupProcessorsFactory.js'
@@ -10,6 +11,8 @@ import TextProcessorsFactory from '../processors/text/TextProcessorsFactory.js'
 import ProtocolsProcessorsFactory from '../processors/protocols/ProtocolsProcessorsFactory.js'
 import RDFProcessorsFactory from '../processors/rdf/RDFProcessorsFactory.js'
 import PostcraftProcessorsFactory from '../processors/postcraft/PostcraftProcessorsFactory.js'
+
+
 
 class AbstractProcessorFactory {
 
@@ -41,6 +44,9 @@ class AbstractProcessorFactory {
         if (processor) return processor
 
         processor = PostcraftProcessorsFactory.createProcessor(type, config)
+        if (processor) return processor
+
+        processor = SystemProcessorsFactory.createProcessor(type, config)
         if (processor) return processor
 
         throw new Error("Unknown processor type: " + type.value)
