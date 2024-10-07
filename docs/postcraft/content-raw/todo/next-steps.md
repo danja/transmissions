@@ -1,5 +1,11 @@
 # Next Steps
 
+check Claude chats -refactoring! perf!
+
+---
+
+sort this lot out
+
 imperative runners
 
 eg. load JSON processors-config.ttl equiv, read md file, convert to html
