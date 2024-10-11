@@ -1,7 +1,7 @@
 {
     "output": {
-        "filePath": "./misc/transmissions-repopack.txt",
-        "headerText": "Transmissions repo",
+        "filePath": "./repopack-transmissions.txt",
+        "headerText": "Transmissions source code",
         "removeComments": true
     },
     "ignore": {
@@ -9,7 +9,9 @@
         "customPatterns": [
             "*.log",
             "docs",
-            "**/*repopack*"
+            "**/*repopack*",
+            "**/*.html",
+            "**/data/*"
         ]
     }
 }
