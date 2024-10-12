@@ -1,0 +1,10 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix trm: <http://purl.org/stuff/transmission/> .
+@prefix : <http://hyperdata.it/transmissions/> .
+
+:foreach_test a trm:Pipeline ;
+    trm:pipe (:s1 :s2 :s3) .
+
+:s1 a :ForEach .
+:s2 a :ShowMessage .
+:s3 a :DeadEnd .

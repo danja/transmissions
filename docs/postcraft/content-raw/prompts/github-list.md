@@ -53,6 +53,7 @@ Initially, `GitHubList` will be tested and used via a runner of the same shape a
  ```
 
 After you have finished all these, re-read the high level Goal and taking each of your derived subgoals in turn, review your code to ensure that it fulfils the requirements.
+Show me the full source of the implementations.
 
 ---
 

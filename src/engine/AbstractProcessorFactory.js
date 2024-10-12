@@ -11,7 +11,7 @@ import TextProcessorsFactory from '../processors/text/TextProcessorsFactory.js'
 import ProtocolsProcessorsFactory from '../processors/protocols/ProtocolsProcessorsFactory.js'
 import RDFProcessorsFactory from '../processors/rdf/RDFProcessorsFactory.js'
 import PostcraftProcessorsFactory from '../processors/postcraft/PostcraftProcessorsFactory.js'
-
+import FlowProcessorsFactory from '../processors/flow/FlowProcessorsFactory.js'
 
 
 class AbstractProcessorFactory {
@@ -47,6 +47,9 @@ class AbstractProcessorFactory {
         if (processor) return processor
 
         processor = SystemProcessorsFactory.createProcessor(type, config)
+        if (processor) return processor
+
+        processor = FlowProcessorsFactory.createProcessor(type, config)
         if (processor) return processor
 
         throw new Error("Unknown processor type: " + type.value)
