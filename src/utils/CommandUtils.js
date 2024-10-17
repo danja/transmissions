@@ -1,59 +1,58 @@
-// run.js - ES module style
-import yargs from 'yargs';
-import { hideBin } from 'yargs/helpers';
-// import { promises as fs } from 'fs';
+// run.js
 import path from 'path'
 import fs from 'fs/promises'
 
-import TransmissionBuilder from '../engine/TransmissionBuilder.js'
-import { fileURLToPath } from 'url';
-
 import logger from './Logger.js'
+import TransmissionBuilder from '../engine/TransmissionBuilder.js'
+import { ModuleLoader } from '../engine/ModuleLoader.js';
 
-var applicationsDir = '../applications'
 
 const defaultTransmissionsFilename = 'transmissions.ttl'
 const defaultProcessorsConfigFile = 'processors-config.ttl'
 
 class CommandUtils {
-
-    // TODO refactor all this out
     static async run(appsDir, application, target, message = {}) {
-        logger.setLogLevel('debug')
-        //  logger.debug("run.js, Hello, logger!")
-        // logger.debug("process.cwd() = " + process.cwd())
-        logger.debug('\nCommandUtils.run()')
+        logger.setLogLevel('debug');
+        logger.debug('\nCommandUtils.run()');
+        logger.debug('CommandUtils, appsDir =' + appsDir);
+        logger.debug('CommandUtils, application =' + application);
+        logger.debug('CommandUtils, target =' + target);
 
-        logger.debug('CommandUtils, appsDir =' + appsDir)
-        logger.debug('CommandUtils, application =' + application)
-        logger.debug('CommandUtils, target =' + target)
+        const normalizedAppPath = path.normalize(application);
+        const isRemoteModule = normalizedAppPath.startsWith('..');
 
-        const appSplit = CommandUtils.splitName(application)
-        const appName = appSplit.first
-        const subtask = appSplit.second
+        const appSplit = CommandUtils.splitName(normalizedAppPath);
+        const appName = appSplit.first;
+        const subtask = appSplit.second;
 
-        logger.debug('appName = ' + appName)
-        logger.debug('subtask  = ' + subtask)
+        logger.debug('appName = ' + appName);
+        logger.debug('subtask  = ' + subtask);
 
-        var transmissionsDir = path.join(appsDir, appName)
+        const transmissionsDir = isRemoteModule
+            ? normalizedAppPath  // Use the full path for remote modules
+            : path.join(appsDir, appName);
 
-        logger.debug('transmissionsDir = ' + transmissionsDir)
+        const modulePath = path.join(transmissionsDir, 'processors');
 
-        const transmissionsFile = path.join(transmissionsDir, defaultTransmissionsFilename)
-        const processorsConfigFile = path.join(transmissionsDir, defaultProcessorsConfigFile)
+        logger.debug('transmissionsDir = ' + transmissionsDir);
 
-        logger.debug("transmissionConfigFile = " + transmissionsFile)
-        logger.debug("processorsConfigFile = " + processorsConfigFile)
+        const transmissionsFile = path.join(transmissionsDir, 'transmissions.ttl');
+        const processorsConfigFile = path.join(transmissionsDir, 'processors-config.ttl');
 
+        logger.debug("transmissionConfigFile = " + transmissionsFile);
+        logger.debug("processorsConfigFile = " + processorsConfigFile);
 
+        const defaultDataDir = path.join(transmissionsDir, '/data');
+        message = { "dataDir": defaultDataDir };
+        message.rootDir = target;
 
-        const defaultDataDir = path.join(transmissionsDir, '/data')
-        message = { "dataDir": defaultDataDir }
-        message.rootDir = target // application target dir
+        const moduleLoader = new ModuleLoader([modulePath]);
 
-        // process.exit()
-
-        const transmissions = await TransmissionBuilder.build(transmissionsFile, processorsConfigFile)
+        const transmissions = await TransmissionBuilder.build(
+            transmissionsFile,
+            processorsConfigFile,
+            moduleLoader
+        );
 
         if (subtask) {
             for (var i = 0; i < transmissions.length; i++) {
@@ -104,19 +103,14 @@ class CommandUtils {
         }
     }
 
-    static splitName(input) {
-        if (input.includes('.')) {
-            let parts = input.split('.');
-            return {
-                first: parts[0],
-                second: parts[1]
-            };
-        } else {
-            return {
-                first: input,
-                second: false
-            };
+    static splitName(fullPath) {
+        const parts = fullPath.split(path.sep);
+        const lastPart = parts[parts.length - 1];
+        if (lastPart.includes('.')) {
+            const [name, task] = lastPart.split('.');
+            return { first: name, second: task };
         }
+        return { first: lastPart, second: false };
     }
 }
 

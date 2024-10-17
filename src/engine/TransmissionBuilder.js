@@ -16,7 +16,8 @@ import Transmission from './Transmission.js'
 
 class TransmissionBuilder {
 
-  static async build(transmissionConfigFile, processorsConfigFile) {
+
+  static async build(transmissionConfigFile, processorsConfigFile, moduleLoader) {
 
     logger.info('\n+ ***** Load Config ******')
     logger.info('[Transmission : ' + transmissionConfigFile + ']')
@@ -39,6 +40,7 @@ class TransmissionBuilder {
     }
     return transmissions
   }
+
 
   // TODO refactor
   static constructTransmission(transmissionConfig, pipelineID, processorsConfig) {

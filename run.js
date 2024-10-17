@@ -69,7 +69,8 @@ if (process.argv.length <= 2) {
             logger.debug('target = ' + target)
             // logger.reveal('message = ' + message)
 
-            await CommandUtils.run(applicationsDir, application, target, message)
+            const modulePath = path.join(applicationsDir, application, 'processors');
+            await CommandUtils.run(applicationsDir, application, target, message, modulePath);
         })
         .help('h')
         .alias('h', 'help')
