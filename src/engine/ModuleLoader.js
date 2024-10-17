@@ -23,7 +23,7 @@ export class ModuleLoader {
         this.moduleCache = new Map();
     }
 
-    loadModule(moduleName) {
+    loadCJSModule(moduleName) {
         if (this.moduleCache.has(moduleName)) {
             console.log(`Module ${moduleName} loaded from cache`);
             return this.moduleCache.get(moduleName);
@@ -46,7 +46,7 @@ export class ModuleLoader {
         throw new Error(`Module ${moduleName} not found in provided classpath`);
     }
 
-    async loadESModule(moduleName) {
+    async loadModule(moduleName) {
         if (this.moduleCache.has(moduleName)) {
             console.log(`ES Module ${moduleName} loaded from cache`);
             return this.moduleCache.get(moduleName);

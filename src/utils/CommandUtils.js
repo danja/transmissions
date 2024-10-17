@@ -46,6 +46,8 @@ class CommandUtils {
         message = { "dataDir": defaultDataDir };
         message.rootDir = target;
 
+        logger.log("ModuleLoader created with modulePath = " + modulePath);
+
         const moduleLoader = new ModuleLoader([modulePath]);
 
         const transmissions = await TransmissionBuilder.build(
