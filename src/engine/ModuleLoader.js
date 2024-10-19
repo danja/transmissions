@@ -15,17 +15,19 @@ Remember to run Node.js with the --experimental-modules flag if you're using an 
 */
 import { createRequire } from 'module';
 import { join } from 'path';
-import { fileURLToPath } from 'url';
+// import { fileURLToPath } from 'url';
+import logger from '../utils/Logger.js'
 
 export class ModuleLoader {
     constructor(classpath) {
+        logger.log(`ModuleLoader constructor, classpath = ${classpath}`);
         this.classpath = classpath;
         this.moduleCache = new Map();
     }
 
     loadCJSModule(moduleName) {
         if (this.moduleCache.has(moduleName)) {
-            console.log(`Module ${moduleName} loaded from cache`);
+            logger.log(`Module ${moduleName} loaded from cache`);
             return this.moduleCache.get(moduleName);
         }
 
@@ -34,7 +36,7 @@ export class ModuleLoader {
             try {
                 const module = require(`./${moduleName}`);
                 this.moduleCache.set(moduleName, module);
-                console.log(`Module ${moduleName} loaded from ${path} and cached`);
+                logger.log(`Module ${moduleName} loaded from ${path} and cached`);
                 return module;
             } catch (error) {
                 if (error.code !== 'MODULE_NOT_FOUND') {
@@ -46,18 +48,23 @@ export class ModuleLoader {
         throw new Error(`Module ${moduleName} not found in provided classpath`);
     }
 
+    // from TB const ProcessorClass = this.moduleLoader.loadModule(type.value); // was await
+
     async loadModule(moduleName) {
+        logger.log(`ModuleLoader, checking cache for ${moduleName}`);
+        //    process.exit()
         if (this.moduleCache.has(moduleName)) {
-            console.log(`ES Module ${moduleName} loaded from cache`);
+            logger.log(`Module ${moduleName} loaded from cache`);
             return this.moduleCache.get(moduleName);
         }
 
         for (const path of this.classpath) {
+            logger.log(`path of this.classpath : ${path}`);
             try {
                 const modulePath = new URL(`file://${join(path, moduleName)}.js`).href;
                 const module = await import(modulePath);
                 this.moduleCache.set(moduleName, module);
-                console.log(`ES Module ${moduleName} loaded from ${path} and cached`);
+                logger.log(`ES Module ${moduleName} loaded from ${path} and cached`);
                 return module;
             } catch (error) {
                 if (error.code !== 'ERR_MODULE_NOT_FOUND') {

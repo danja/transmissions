@@ -1,5 +1,5 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
+//import path from 'path';
+//import { fileURLToPath } from 'url';
 
 import rdf from 'rdf-ext'
 import grapoi from 'grapoi'
@@ -9,6 +9,7 @@ import ns from '../utils/ns.js'
 import GrapoiHelpers from '../utils/GrapoiHelpers.js'
 import logger from '../utils/Logger.js'
 
+import { ModuleLoader } from './ModuleLoader.js';
 import AbstractProcessorFactory from "./AbstractProcessorFactory.js";
 import Transmission from './Transmission.js'
 
@@ -17,33 +18,40 @@ import Transmission from './Transmission.js'
 class TransmissionBuilder {
 
 
-  static async build(transmissionConfigFile, processorsConfigFile, moduleLoader) {
+  constructor(moduleLoader) {
+    this.moduleLoader = moduleLoader;
 
-    logger.info('\n+ ***** Load Config ******')
-    logger.info('[Transmission : ' + transmissionConfigFile + ']')
-    const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile)
-    logger.info('[Processors Config : ' + processorsConfigFile + ']')
-    // process.exit()
-    const processorsConfig = await TransmissionBuilder.readDataset(processorsConfigFile)
-
-    const poi = grapoi({ dataset: transmissionConfig })
-
-    const transmissions = []
-
-    // TODO filter out others when subtask transmission is specified
-    for (const q of poi.out(ns.rdf.type).quads()) {
-      if (q.object.equals(ns.trm.Pipeline)) {
-        const pipelineID = q.subject
-        logger.debug('\n+ ' + pipelineID.value)
-        transmissions.push(TransmissionBuilder.constructTransmission(transmissionConfig, pipelineID, processorsConfig))
-      }
-    }
-    return transmissions
   }
 
+  static async build(transmissionConfigFile, processorsConfigFile, modulePath) {
 
-  // TODO refactor
-  static constructTransmission(transmissionConfig, pipelineID, processorsConfig) {
+    const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile);
+    const processorsConfig = await TransmissionBuilder.readDataset(processorsConfigFile);
+
+    const moduleLoader = new ModuleLoader([modulePath]);
+    logger.log("ModuleLoader created with modulePath = " + modulePath);
+
+    logger.log('RRRReveal moduleLoader: ')
+    logger.reveal(moduleLoader)
+    const builder = new TransmissionBuilder(moduleLoader);
+    return builder.buildTransmissions(transmissionConfig, processorsConfig);
+  }
+
+  async buildTransmissions(transmissionConfig, processorsConfig) {
+    const poi = grapoi({ dataset: transmissionConfig });
+    const transmissions = [];
+
+    for (const q of poi.out(ns.rdf.type).quads()) {
+      if (q.object.equals(ns.trm.Pipeline)) {
+        const pipelineID = q.subject;
+        //    transmissions.push(await this.constructTransmission(transmissionConfig, pipelineID, processorsConfig));
+        transmissions.push(await this.constructTransmission(transmissionConfig, pipelineID, processorsConfig)); // was await 
+      }
+    }
+    return transmissions;
+  }
+
+  async constructTransmission(transmissionConfig, pipelineID, processorsConfig) {
     processorsConfig.whiteboard = {}
 
     const transmission = new Transmission()
@@ -61,50 +69,46 @@ class TransmissionBuilder {
     let previousName = "nothing"
 
     // grapoi probably has a built-in for all this
-    const pipenodes = GrapoiHelpers.listToArray(transmissionConfig, pipelineID, ns.trm.pipe)
-
-    this.createNodes(transmission, pipenodes, transmissionConfig, processorsConfig)
-    this.connectNodes(transmission, pipenodes)
-    return transmission
+    const pipenodes = GrapoiHelpers.listToArray(transmissionConfig, pipelineID, ns.trm.pipe);
+    await this.createNodes(transmission, pipenodes, transmissionConfig, processorsConfig); // was await, bad Claude
+    //    this.createNodes(transmission, pipenodes, transmissionConfig, processorsConfig); // was await, bad Claude
+    this.connectNodes(transmission, pipenodes);
+    return transmission;
   }
 
-  static createNodes(transmission, pipenodes, transmissionConfig, processorsConfig) {
+  async createNodes(transmission, pipenodes, transmissionConfig, processorsConfig) {
     for (let i = 0; i < pipenodes.length; i++) {
-      let node = pipenodes[i]
-      let processorName = node.value
+      let node = pipenodes[i];
+      let processorName = node.value;
 
-
-      if (!transmission.get(processorName)) { // may have been created in earlier pipeline
-        let np = rdf.grapoi({ dataset: transmissionConfig, term: node })
-        let processorType = np.out(ns.rdf.type).term
-        let processorConfig = np.out(ns.trm.configKey).term
+      if (!transmission.get(processorName)) {
+        let np = rdf.grapoi({ dataset: transmissionConfig, term: node });
+        let processorType = np.out(ns.rdf.type).term;
+        let processorConfig = np.out(ns.trm.configKey).term;
 
         try {
+          let name = ns.getShortname(processorName);
+          let type = ns.getShortname(processorType.value);
 
-          let name = ns.getShortname(processorName)
-          let type = ns.getShortname(processorType.value)
+          logger.log("| Create processor :" + name + " of type :" + type);
+          let processor = await this.createProcessor(processorType, processorsConfig); // was await
+          processor.id = processorName;
+          processor.type = processorType;
+          processor.transmission = transmission;
 
-          logger.log("| Create processor :" + name + " of type :" + type)
-          //  logger.log("| Create processor <" + processorName + "> of type <" + processorType.value + ">")
+          if (processorConfig) {
+            processor.configKey = processorConfig;
+          }
+          transmission.register(processorName, processor);
         } catch (err) {
-          logger.error('-> Can\'t resolve ' + processorName + ' (check transmission.ttl for typos!)\n')
+          logger.error('-> Can\'t resolve ' + processorName + ' (check transmission.ttl for typos!)\n');
+          logger.error(err);
         }
-        let processor = AbstractProcessorFactory.createProcessor(processorType, processorsConfig)
-        processor.id = processorName
-        processor.type = processorType
-        processor.transmission = transmission
-
-        if (processorConfig) {
-          //  logger.debug("\n*****SERVICE***** processorConfig = " + processorConfig.value)
-          processor.configKey = processorConfig // .value
-        }
-        transmission.register(processorName, processor)
       }
     }
-    //  return transmission
   }
 
-  static connectNodes(transmission, pipenodes) {
+  async connectNodes(transmission, pipenodes) {
     for (let i = 0; i < pipenodes.length - 1; i++) {
       let leftNode = pipenodes[i]
       let leftProcessorName = leftNode.value
@@ -114,26 +118,34 @@ class TransmissionBuilder {
       transmission.connect(leftProcessorName, rightProcessorName)
     }
   }
-  // follows chain in rdf:List
-  /*
-  static listToArray(dataset, first) {
-    let p = rdf.grapoi({ dataset, term: first })
-    let object = p.out(ns.rdf.first).term
-    const result = [object]
 
-    while (true) {
-      let restHead = p.out(ns.rdf.rest).term
-      let p2 = rdf.grapoi({ dataset, term: restHead })
-      let object = p2.out(ns.rdf.first).term
 
-      if (restHead.equals(ns.rdf.nil)) break
-      result.push(object)
-      p = rdf.grapoi({ dataset, term: restHead })
+  async createProcessor(type, config) {
+    try {
+      const coreProcessor = AbstractProcessorFactory.createProcessor(type, config);
+      if (coreProcessor) {
+        return coreProcessor;
+      }
+    } catch (error) {
+      logger.debug(`| -> ${type.value} processor not found in core. Trying remote module loader...`);
+
+      try {
+
+        const shortName = type.value.split('/').pop(); // TODO use util function
+        logger.debug(`shortName = ${shortName}`);
+        const ProcessorClass = await this.moduleLoader.loadModule(shortName);
+        logger.debug('reveal---------------------------------vvvv-------')
+        logger.reveal(ProcessorClass)
+        logger.debug(`ProcessorClass = ${ProcessorClass}`)
+        logger.debug('reveal-------------------------^^^^---------------')
+        return new ProcessorClass(config);
+      } catch (error) {
+        logger.debug(`\n!!! Processor not found anywhere : ${type.value}. \n\n*** I quit. ***`);
+
+        //  process.exit(1)
+      }
     }
-    return result
   }
-  */
-
 
   // file utils
   static async readDataset(filename) {

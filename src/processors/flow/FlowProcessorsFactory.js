@@ -8,7 +8,7 @@ class FlowProcessorsFactory {
             logger.debug('FlowProcessorsFactory: Creating ForEach processor')
             return new ForEach(config)
         }
-        logger.debug('FlowProcessorsFactory: Unknown processor type')
+        //    logger.debug('FlowProcessorsFactory: Unknown processor type')
         return false
     }
 }

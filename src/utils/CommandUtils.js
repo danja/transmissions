@@ -4,8 +4,6 @@ import fs from 'fs/promises'
 
 import logger from './Logger.js'
 import TransmissionBuilder from '../engine/TransmissionBuilder.js'
-import { ModuleLoader } from '../engine/ModuleLoader.js';
-
 
 const defaultTransmissionsFilename = 'transmissions.ttl'
 const defaultProcessorsConfigFile = 'processors-config.ttl'
@@ -32,7 +30,7 @@ class CommandUtils {
             ? normalizedAppPath  // Use the full path for remote modules
             : path.join(appsDir, appName);
 
-        const modulePath = path.join(transmissionsDir, 'processors');
+        const modulePath = path.join(transmissionsDir, 'processors', '/'); ///////////// added '/'
 
         logger.debug('transmissionsDir = ' + transmissionsDir);
 
@@ -46,14 +44,10 @@ class CommandUtils {
         message = { "dataDir": defaultDataDir };
         message.rootDir = target;
 
-        logger.log("ModuleLoader created with modulePath = " + modulePath);
-
-        const moduleLoader = new ModuleLoader([modulePath]);
-
         const transmissions = await TransmissionBuilder.build(
             transmissionsFile,
             processorsConfigFile,
-            moduleLoader
+            modulePath
         );
 
         if (subtask) {

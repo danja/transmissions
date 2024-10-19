@@ -18,6 +18,7 @@ class Transmission {
   }
 
   connect(fromProcessorName, toProcessorName) {
+    logger.log(`Transmission.connect from ${fromProcessorName} to ${fromProcessorName}`)
     let connector = new Connector(fromProcessorName, toProcessorName)
     this.connectors.push(connector)
     connector.connect(this.processors)

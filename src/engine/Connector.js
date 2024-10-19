@@ -12,6 +12,9 @@ class Connector extends EventEmitter {
     }
 
     connect(processors) {
+        logger.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+        logger.log(`Connector.connect this.fromName = ${this.fromName} this.toName =  ${this.toName}`)
+        logger.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
         let fromProcessor = processors[this.fromName]
         let toProcessor = processors[this.toName]
 
