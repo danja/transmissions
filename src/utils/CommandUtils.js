@@ -30,7 +30,7 @@ class CommandUtils {
             ? normalizedAppPath  // Use the full path for remote modules
             : path.join(appsDir, appName);
 
-        const modulePath = path.join(transmissionsDir, 'processors', '/'); ///////////// added '/'
+        const modulePath = path.join(transmissionsDir, 'processors'); /////////////  '/'
 
         logger.debug('transmissionsDir = ' + transmissionsDir);
 

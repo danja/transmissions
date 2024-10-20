@@ -25,6 +25,40 @@ export class ModuleLoader {
         this.moduleCache = new Map();
     }
 
+
+
+    // from TB const ProcessorClass = this.moduleLoader.loadModule(type.value); // was await
+
+    async loadModule(moduleName) {
+        logger.log('ModuleLoader§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§')
+        logger.log(`ModuleLoader, checking cache for ${moduleName}`);
+
+        if (this.moduleCache.has(moduleName)) {
+            logger.log(`Module ${moduleName} loaded from cache`);
+            return this.moduleCache.get(moduleName);
+        }
+
+        for (const path of this.classpath) {
+            logger.log(`ModuleLoader.loadModule, path = : ${path}`);
+            try {
+                const modulePath = new URL(`file://${join(path, moduleName)}.js`).href;
+                logger.log(`ModuleLoader.loadModule, modulePath = : ${modulePath}`);
+                const module = await import(modulePath);
+                logger.log('ModuleLoader.loadModule, module = ')
+                logger.reveal(module)
+                this.moduleCache.set(moduleName, module);
+                logger.log(`ES Module ${moduleName} loaded from ${path} and cached`);
+                return module;
+            } catch (error) {
+                if (error.code !== 'ERR_MODULE_NOT_FOUND') {
+                    throw error;
+                }
+                // Module not found in this path, continue to next
+            }
+        }
+        throw new Error(`Module ${moduleName} not found in provided classpath`);
+    }
+
     loadCJSModule(moduleName) {
         if (this.moduleCache.has(moduleName)) {
             logger.log(`Module ${moduleName} loaded from cache`);
@@ -46,33 +80,5 @@ export class ModuleLoader {
             }
         }
         throw new Error(`Module ${moduleName} not found in provided classpath`);
-    }
-
-    // from TB const ProcessorClass = this.moduleLoader.loadModule(type.value); // was await
-
-    async loadModule(moduleName) {
-        logger.log(`ModuleLoader, checking cache for ${moduleName}`);
-        //    process.exit()
-        if (this.moduleCache.has(moduleName)) {
-            logger.log(`Module ${moduleName} loaded from cache`);
-            return this.moduleCache.get(moduleName);
-        }
-
-        for (const path of this.classpath) {
-            logger.log(`path of this.classpath : ${path}`);
-            try {
-                const modulePath = new URL(`file://${join(path, moduleName)}.js`).href;
-                const module = await import(modulePath);
-                this.moduleCache.set(moduleName, module);
-                logger.log(`ES Module ${moduleName} loaded from ${path} and cached`);
-                return module;
-            } catch (error) {
-                if (error.code !== 'ERR_MODULE_NOT_FOUND') {
-                    throw error;
-                }
-                // Module not found in this path, continue to next
-            }
-        }
-        throw new Error(`ES Module ${moduleName} not found in provided classpath`);
     }
 }
