@@ -16,6 +16,10 @@ class CommandUtils {
         logger.debug('CommandUtils, application =' + application);
         logger.debug('CommandUtils, target =' + target);
 
+
+
+
+
         const normalizedAppPath = path.normalize(application);
         const isRemoteModule = normalizedAppPath.startsWith('..');
 
@@ -31,6 +35,8 @@ class CommandUtils {
             : path.join(appsDir, appName);
 
         const modulePath = path.join(transmissionsDir, 'processors'); /////////////  '/'
+        logger.debug('in CommandUtils, modulePath = ' + modulePath);
+
 
         logger.debug('transmissionsDir = ' + transmissionsDir);
 
@@ -43,6 +49,9 @@ class CommandUtils {
         const defaultDataDir = path.join(transmissionsDir, '/data');
         message = { "dataDir": defaultDataDir };
         message.rootDir = target;
+        if (!message.rootDir) {
+            message.rootDir = application // might need message.datasetFilename?
+        }
 
         const transmissions = await TransmissionBuilder.build(
             transmissionsFile,

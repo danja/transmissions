@@ -20,7 +20,6 @@ class TransmissionBuilder {
 
   constructor(moduleLoader) {
     this.moduleLoader = moduleLoader;
-
   }
 
   static async build(transmissionConfigFile, processorsConfigFile, modulePath) {
@@ -28,10 +27,8 @@ class TransmissionBuilder {
     const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile);
     const processorsConfig = await TransmissionBuilder.readDataset(processorsConfigFile);
 
-    const moduleLoader = new ModuleLoader([modulePath]);
-    logger.log("ModuleLoader created with modulePath = " + modulePath);
-
-    logger.log('RRRReveal moduleLoader: ')
+    // const moduleLoader = new ModuleLoader([modulePath]);
+    const moduleLoader = new ModuleLoader([modulePath]) // TODO only getting one entry
     logger.reveal(moduleLoader)
     const builder = new TransmissionBuilder(moduleLoader);
     return builder.buildTransmissions(transmissionConfig, processorsConfig);
@@ -119,7 +116,6 @@ class TransmissionBuilder {
     }
   }
 
-
   async createProcessor(type, config) {
     try {
       const coreProcessor = AbstractProcessorFactory.createProcessor(type, config);
@@ -127,23 +123,18 @@ class TransmissionBuilder {
         return coreProcessor;
       }
     } catch (error) {
-      logger.debug(`| -> ${type.value} processor not found in core. Trying remote module loader...`);
+      logger.debug(`Core processor not found for ${type.value}. Trying remote module loader...`);
+    }
 
-      try {
-
-        const shortName = type.value.split('/').pop(); // TODO use util function
-        logger.debug(`shortName = ${shortName}`);
-        const ProcessorClass = await this.moduleLoader.loadModule(shortName);
-        logger.debug('reveal---------------------------------vvvv-------')
-        logger.reveal(ProcessorClass)
-        logger.debug(`ProcessorClass = ${ProcessorClass}`)
-        logger.debug('reveal-------------------------^^^^---------------')
-        return new ProcessorClass(config);
-      } catch (error) {
-        logger.debug(`\n!!! Processor not found anywhere : ${type.value}. \n\n*** I quit. ***`);
-
-        //  process.exit(1)
-      }
+    try {
+      const shortName = type.value.split('/').pop();
+      logger.debug(`Loading module: ${shortName}`);
+      const ProcessorClass = await this.moduleLoader.loadModule(shortName);
+      logger.debug(`Module loaded successfully: ${shortName}`);
+      return new ProcessorClass.default(config);
+    } catch (error) {
+      logger.error(`Failed to load processor ${type.value}: ${error.message}`);
+      throw error;
     }
   }
 

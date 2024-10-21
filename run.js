@@ -45,6 +45,11 @@ if (process.argv.length <= 2) {
             describe: 'application directory',
             type: 'string',
         })
+        .option('graph', {
+            alias: 'g',
+            describe: 'Path to the dataset file',
+            type: 'string'
+        })
         .command('$0 <application> [target]', 'runs the specified application', (yargs) => {
             return yargs.positional('application', {
                 describe: 'the application to run'
@@ -66,6 +71,13 @@ if (process.argv.length <= 2) {
             // logger.reveal('message = ' + message)
 
             const modulePath = path.join(applicationsDir, application, 'processors');
+            //   const fullApplicationPath = path.resolve(applicationsDir, application);
+            if (argv.graph) {
+                message.datasetFilename = path.resolve(argv.graph);
+            }
+            // if (!message.datasetFilename) {
+            // message.datasetFilename = path.join(fullApplicationPath, 'manifest.ttl');
+            // }
             await CommandUtils.run(applicationsDir, application, target, message, modulePath);
         })
         .help('h')

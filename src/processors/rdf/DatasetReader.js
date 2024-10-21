@@ -23,6 +23,7 @@
  * * TODO: Add test information
  */
 
+import path from 'path'
 import rdf from 'rdf-ext'
 import { fromFile } from 'rdf-utils-fs'
 import SourceProcessor from '../base/SourceProcessor.js'
@@ -56,7 +57,7 @@ class DatasetReader extends SourceProcessor {
     async execute(message) {
         this.preProcess(message)
         var datasetName = 'dataset' // TODO rename to manifest, generalise better
-        var datasetFilename = message.rootDir + '/manifest.ttl'
+        var datasetFilename = path.join(message.rootDir, '/manifest.ttl')
         if (message.datasetFilename) {
             datasetFilename = message.datasetFilename
         }
@@ -68,6 +69,8 @@ class DatasetReader extends SourceProcessor {
 
         // TODO this needs changing
         message[datasetName] = await rdf.dataset().import(stream)
+        logger.log(`-------------------------DatasetReader, datasetName = ${datasetName}`)
+        logger.log(`-------------------------DatasetReader, message[datasetName] = ${message[datasetName]}`)
         this.emit('message', message)
     }
 }
