@@ -1,38 +1,15 @@
-// CommandUtils.js - run.js helpers
-
-import yargs from 'yargs';
-import { hideBin } from 'yargs/helpers';
-// import { promises as fs } from 'fs';
-import path from 'path'
-import fs from 'fs/promises'
-import { fileURLToPath } from 'url';
-
-import logger from './src/utils/Logger.js'
-import CommandUtils from './src/utils/CommandUtils.js'
-
-var applicationsDir = './src/applications' // default inside transmissions
+// Example updated run.js
 
 
+import yargs from 'yargs'
+import { hideBin } from 'yargs/helpers'
+import CommandUtils from './src/cli/CommandUtils.js'
+import WebRunner from './src/web/WebRunner.js'
 
-// logger.log('DESCRIBE ' + await transmission.describe())
+const applicationsDir = './src/applications'
+const commandUtils = new CommandUtils(applicationsDir)
 
-
-
-let message = {}
-
-logger.setLogLevel("info")
-//console.log('\nARGS')
-//for (var i = 0; i < process.argv.length; i++) {
-//  console.log(i + ' : ' + process.argv[i])
-//}
-//console.log('----')
-
-if (process.argv.length <= 2) {
-    // No arguments were provided, list subdirectories and exit
-    console.log('Available applications :');
-    CommandUtils.listSubdirectories(applicationsDir)
-    // TODO add rest of help
-} else {
+async function main() {
     await yargs(hideBin(process.argv))
         .usage('Usage: ./trans <application>[.subtask] [options] [target]')
         .option('message', {
@@ -40,55 +17,49 @@ if (process.argv.length <= 2) {
             describe: 'message as a JSON string or a path to a JSON file',
             type: 'string',
         })
-        .option('dir', {
-            alias: 'd',
-            describe: 'application directory',
-            type: 'string',
+        .option('web', {
+            alias: 'w',
+            describe: 'Start web interface',
+            type: 'boolean',
         })
-        .option('graph', {
-            alias: 'g',
-            describe: 'Path to the dataset file',
-            type: 'string'
+        .option('port', {
+            alias: 'p',
+            describe: 'Port for web interface',
+            type: 'number',
+            default: 3000
         })
-        .command('$0 <application> [target]', 'runs the specified application', (yargs) => {
-            return yargs.positional('application', {
-                describe: 'the application to run'
-            })
+        .command('$0 [application] [target]', 'runs the specified application', (yargs) => {
+            return yargs
+                .positional('application', {
+                    describe: 'the application to run'
+                })
                 .positional('target', {
                     describe: 'the target of the application'
-                    //    default: '' // Default value if the second argument is not provided
                 })
         }, async (argv) => {
-            const { dir, application, target, message: contextArg } = argv
-            if (dir) {
-                applicationsDir = dir
+            if (argv.web) {
+                const webRunner = new WebRunner(applicationsDir, argv.port)
+                webRunner.start()
+                return
             }
-            logger.setLogLevel("info")
-            logger.debug('\n**** run.js, async (args)')
-            logger.debug('applicationsDir = ' + applicationsDir)
-            logger.debug('application = ' + application)
-            logger.debug('target = ' + target)
-            // logger.reveal('message = ' + message)
 
-            const modulePath = path.join(applicationsDir, application, 'processors');
-            //   const fullApplicationPath = path.resolve(applicationsDir, application);
-            if (argv.graph) {
-                message.datasetFilename = path.resolve(argv.graph);
+            if (!argv.application) {
+                console.log('Available applications:')
+                const apps = await commandUtils.listApplications()
+                console.log(apps.join('\n'))
+                return
             }
-            // if (!message.datasetFilename) {
-            // message.datasetFilename = path.join(fullApplicationPath, 'manifest.ttl');
-            // }
-            await CommandUtils.run(applicationsDir, application, target, message, modulePath);
+
+            let message = {}
+            if (argv.message) {
+                message = await CommandUtils.parseOrLoadContext(argv.message)
+            }
+
+            await commandUtils.run(argv.application, argv.target, message)
         })
         .help('h')
         .alias('h', 'help')
-
-        .fail((msg, err, yargs) => {
-            if (err) throw err; // Preserve stack
-            console.error(msg);
-            process.exit(1);
-        })
         .argv
 }
 
-
+main().catch(console.error)

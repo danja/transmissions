@@ -9,8 +9,8 @@ import ns from '../utils/ns.js'
 import GrapoiHelpers from '../utils/GrapoiHelpers.js'
 import logger from '../utils/Logger.js'
 
-import { ModuleLoader } from './ModuleLoader.js';
-import AbstractProcessorFactory from "./AbstractProcessorFactory.js";
+import ModuleLoader from './ModuleLoader.js'
+import AbstractProcessorFactory from "./AbstractProcessorFactory.js"
 import Transmission from './Transmission.js'
 
 // TODO it looks like multiple copies of the config are being created - should be a singleton object
@@ -19,33 +19,33 @@ class TransmissionBuilder {
 
 
   constructor(moduleLoader) {
-    this.moduleLoader = moduleLoader;
+    this.moduleLoader = moduleLoader
   }
 
   static async build(transmissionConfigFile, processorsConfigFile, modulePath) {
 
-    const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile);
-    const processorsConfig = await TransmissionBuilder.readDataset(processorsConfigFile);
+    const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile)
+    const processorsConfig = await TransmissionBuilder.readDataset(processorsConfigFile)
 
     // const moduleLoader = new ModuleLoader([modulePath]);
     const moduleLoader = new ModuleLoader([modulePath]) // TODO only getting one entry
     logger.reveal(moduleLoader)
-    const builder = new TransmissionBuilder(moduleLoader);
-    return builder.buildTransmissions(transmissionConfig, processorsConfig);
+    const builder = new TransmissionBuilder(moduleLoader)
+    return builder.buildTransmissions(transmissionConfig, processorsConfig)
   }
 
   async buildTransmissions(transmissionConfig, processorsConfig) {
-    const poi = grapoi({ dataset: transmissionConfig });
-    const transmissions = [];
+    const poi = grapoi({ dataset: transmissionConfig })
+    const transmissions = []
 
     for (const q of poi.out(ns.rdf.type).quads()) {
       if (q.object.equals(ns.trm.Pipeline)) {
-        const pipelineID = q.subject;
+        const pipelineID = q.subject
         //    transmissions.push(await this.constructTransmission(transmissionConfig, pipelineID, processorsConfig));
-        transmissions.push(await this.constructTransmission(transmissionConfig, pipelineID, processorsConfig)); // was await 
+        transmissions.push(await this.constructTransmission(transmissionConfig, pipelineID, processorsConfig)) // was await 
       }
     }
-    return transmissions;
+    return transmissions
   }
 
   async constructTransmission(transmissionConfig, pipelineID, processorsConfig) {
@@ -66,40 +66,40 @@ class TransmissionBuilder {
     let previousName = "nothing"
 
     // grapoi probably has a built-in for all this
-    const pipenodes = GrapoiHelpers.listToArray(transmissionConfig, pipelineID, ns.trm.pipe);
-    await this.createNodes(transmission, pipenodes, transmissionConfig, processorsConfig); // was await, bad Claude
+    const pipenodes = GrapoiHelpers.listToArray(transmissionConfig, pipelineID, ns.trm.pipe)
+    await this.createNodes(transmission, pipenodes, transmissionConfig, processorsConfig) // was await, bad Claude
     //    this.createNodes(transmission, pipenodes, transmissionConfig, processorsConfig); // was await, bad Claude
-    this.connectNodes(transmission, pipenodes);
-    return transmission;
+    this.connectNodes(transmission, pipenodes)
+    return transmission
   }
 
   async createNodes(transmission, pipenodes, transmissionConfig, processorsConfig) {
     for (let i = 0; i < pipenodes.length; i++) {
-      let node = pipenodes[i];
-      let processorName = node.value;
+      let node = pipenodes[i]
+      let processorName = node.value
 
       if (!transmission.get(processorName)) {
-        let np = rdf.grapoi({ dataset: transmissionConfig, term: node });
-        let processorType = np.out(ns.rdf.type).term;
-        let processorConfig = np.out(ns.trm.configKey).term;
+        let np = rdf.grapoi({ dataset: transmissionConfig, term: node })
+        let processorType = np.out(ns.rdf.type).term
+        let processorConfig = np.out(ns.trm.configKey).term
 
         try {
-          let name = ns.getShortname(processorName);
-          let type = ns.getShortname(processorType.value);
+          let name = ns.getShortname(processorName)
+          let type = ns.getShortname(processorType.value)
 
-          logger.log("| Create processor :" + name + " of type :" + type);
-          let processor = await this.createProcessor(processorType, processorsConfig); // was await
-          processor.id = processorName;
-          processor.type = processorType;
-          processor.transmission = transmission;
+          logger.log("| Create processor :" + name + " of type :" + type)
+          let processor = await this.createProcessor(processorType, processorsConfig) // was await
+          processor.id = processorName
+          processor.type = processorType
+          processor.transmission = transmission
 
           if (processorConfig) {
-            processor.configKey = processorConfig;
+            processor.configKey = processorConfig
           }
-          transmission.register(processorName, processor);
+          transmission.register(processorName, processor)
         } catch (err) {
-          logger.error('-> Can\'t resolve ' + processorName + ' (check transmission.ttl for typos!)\n');
-          logger.error(err);
+          logger.error('-> Can\'t resolve ' + processorName + ' (check transmission.ttl for typos!)\n')
+          logger.error(err)
         }
       }
     }
@@ -118,23 +118,23 @@ class TransmissionBuilder {
 
   async createProcessor(type, config) {
     try {
-      const coreProcessor = AbstractProcessorFactory.createProcessor(type, config);
+      const coreProcessor = AbstractProcessorFactory.createProcessor(type, config)
       if (coreProcessor) {
-        return coreProcessor;
+        return coreProcessor
       }
     } catch (error) {
-      logger.debug(`Core processor not found for ${type.value}. Trying remote module loader...`);
+      logger.debug(`Core processor not found for ${type.value}. Trying remote module loader...`)
     }
 
     try {
-      const shortName = type.value.split('/').pop();
-      logger.debug(`Loading module: ${shortName}`);
-      const ProcessorClass = await this.moduleLoader.loadModule(shortName);
-      logger.debug(`Module loaded successfully: ${shortName}`);
-      return new ProcessorClass.default(config);
+      const shortName = type.value.split('/').pop()
+      logger.debug(`Loading module: ${shortName}`)
+      const ProcessorClass = await this.moduleLoader.loadModule(shortName)
+      logger.debug(`Module loaded successfully: ${shortName}`)
+      return new ProcessorClass.default(config)
     } catch (error) {
-      logger.error(`Failed to load processor ${type.value}: ${error.message}`);
-      throw error;
+      logger.error(`Failed to load processor ${type.value}: ${error.message}`)
+      throw error
     }
   }
 
