@@ -3,6 +3,8 @@
 * better logger
 * make types.ts
 
+* self-documenting, .md & .turtle
+ 
 ## Refactoring
 
 move

@@ -48,7 +48,7 @@ class TransmissionRunner {
 
             return { success: true }
         } catch (error) {
-            logger.error('Error in TransmissionRunner:', error)
+            logger.error('Error in TransmissionRunner:' + error)
             return {
                 success: false,
                 error: error.message

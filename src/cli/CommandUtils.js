@@ -28,9 +28,15 @@ class CommandUtils {
     async run(application, target, message = {}) {
         logger.setLogLevel('debug')
         logger.debug('\nCommandUtils.run()')
+        logger.debug('process.cwd() = ' + process.cwd())
+        logger.debug('application = ' + application)
+        logger.debug('target = ' + target)
 
-        const normalizedAppPath = path.normalize(application)
-        const isRemoteModule = normalizedAppPath.startsWith('..')
+        const normalizedAppPath = path.normalize(application) // needed?
+        logger.debug('normalizedAppPath = ' + normalizedAppPath)
+
+        const isRemoteModule = normalizedAppPath.includes('/')
+        //normalizedAppPath.startsWith('..') // no!
 
         const appSplit = CommandUtils.splitName(normalizedAppPath)
         const appName = appSplit.first
@@ -40,8 +46,12 @@ class CommandUtils {
             ? normalizedAppPath
             : this.appManager.resolveApplicationPath(appName)
 
+        logger.debug('transmissionsDir = ' + transmissionsDir)
+        const appPath = path.join(transmissionsDir, appName)
         const config = await this.appManager.getApplicationConfig(appName)
 
+        logger.debug('config.modulePath = ' + config.modulePath)
+        //        this.runner = new TransmissionRunner()
         await this.runner.initialize(config.modulePath)
 
         const defaultDataDir = path.join(transmissionsDir, '/data')

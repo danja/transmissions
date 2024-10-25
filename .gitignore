@@ -1,5 +1,5 @@
-src-old
-
+**/src-old
+**/*\ copy.js
 
 # Logs
 logs
