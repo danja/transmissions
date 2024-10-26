@@ -9,28 +9,26 @@ import ns from '../utils/ns.js'
 import GrapoiHelpers from '../utils/GrapoiHelpers.js'
 import logger from '../utils/Logger.js'
 
-import ModuleLoader from './ModuleLoader.js'
+import ModuleLoader from '../api/ModuleLoader.js'
 import AbstractProcessorFactory from "./AbstractProcessorFactory.js"
 import Transmission from './Transmission.js'
+import ModuleLoaderFactory from '../api/ModuleLoaderFactory.js'
 
 // TODO it looks like multiple copies of the config are being created - should be a singleton object
 
 class TransmissionBuilder {
 
-
   constructor(moduleLoader) {
     this.moduleLoader = moduleLoader
   }
 
-  static async build(transmissionConfigFile, processorsConfigFile, modulePath) {
-
+  static async build(transmissionConfigFile, processorsConfigFile, appPath) {
     const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile)
     const processorsConfig = await TransmissionBuilder.readDataset(processorsConfigFile)
 
-    // const moduleLoader = new ModuleLoader([modulePath]);
-    const moduleLoader = new ModuleLoader([modulePath]) // TODO only getting one entry
-    logger.reveal(moduleLoader)
-    const builder = new TransmissionBuilder(moduleLoader)
+    //const moduleLoader =
+    // ModuleLoaderFactory.createApplicationLoader(appPath)
+    const builder = new TransmissionBuilder(this.moduleLoader)
     return builder.buildTransmissions(transmissionConfig, processorsConfig)
   }
 
@@ -151,5 +149,5 @@ class TransmissionBuilder {
 
 
 }
-
+// export { ModuleLoader, ModuleLoaderFactory, TransmissionBuilder }
 export default TransmissionBuilder 

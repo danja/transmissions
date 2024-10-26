@@ -1,13 +1,11 @@
-// src/cli/CommandUtils.js
+// src/api/CommandUtils.js
 
 import path from 'path'
 import fs from 'fs/promises'
 import logger from '../utils/Logger.js'
 
-import TransmissionRunner from '../core/TransmissionRunner.js'
-import ApplicationManager from '../core/ApplicationManager.js'
-
-
+import TransmissionRunner from '../engine/TransmissionRunner.js'
+import ApplicationManager from './ApplicationManager.js'
 
 class CommandUtils {
     constructor(appsDir) {
@@ -28,12 +26,12 @@ class CommandUtils {
     async run(application, target, message = {}) {
         logger.setLogLevel('debug')
         logger.debug('\nCommandUtils.run()')
-        logger.debug('process.cwd() = ' + process.cwd())
-        logger.debug('application = ' + application)
-        logger.debug('target = ' + target)
+        logger.debug('CommandUtils.run, process.cwd() = ' + process.cwd())
+        logger.debug('CommandUtils.run, application = ' + application)
+        logger.debug('CommandUtils.run, target = ' + target)
 
         const normalizedAppPath = path.normalize(application) // needed?
-        logger.debug('normalizedAppPath = ' + normalizedAppPath)
+        logger.debug('CommandUtils.run, normalizedAppPath = ' + normalizedAppPath)
 
         const isRemoteModule = normalizedAppPath.includes('/')
         //normalizedAppPath.startsWith('..') // no!
@@ -46,9 +44,14 @@ class CommandUtils {
             ? normalizedAppPath
             : this.appManager.resolveApplicationPath(appName)
 
-        logger.debug('transmissionsDir = ' + transmissionsDir)
+        logger.debug('CommandUtils.run, transmissionsDir = ' + transmissionsDir)
         const appPath = path.join(transmissionsDir, appName)
-        const config = await this.appManager.getApplicationConfig(appName)
+
+        logger.debug('CommandUtils.run,  normalizedAppPath = ' + normalizedAppPath)
+
+        //const config = await this.appManager.getApplicationConfig(appName)
+        // const config = await this.appManager.getApplicationConfig(appPath)
+        const config = await this.appManager.getApplicationConfig(transmissionsDir)
 
         logger.debug('config.modulePath = ' + config.modulePath)
         //        this.runner = new TransmissionRunner()

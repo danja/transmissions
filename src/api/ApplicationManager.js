@@ -27,17 +27,17 @@ class ApplicationManager {
         }
     }
 
-    /*
-        resolveApplicationPath(appName) {
-            logger.debug('appName = ' + appName)
-            if (appName.startsWith('..')) {
-                // For external paths, use absolute path resolution
-                return path.resolve(process.cwd(), appName)
-            }
-            // Default internal path resolution
-            return path.join(this.appsDir, appName)
+
+    resolveApplicationPath(appName) {
+        logger.debug('appName = ' + appName)
+        if (appName.startsWith('..')) {
+            // For external paths, use absolute path resolution
+            return path.resolve(process.cwd(), appName)
         }
-    */
+        // Default internal path resolution
+        return path.join(this.appsDir, appName)
+    }
+
     async getApplicationConfig(appPath) {
         logger.debug('appPath = ' + appPath)
         //    const appPath = this.resolveApplicationPath(appName)

@@ -1,7 +1,9 @@
-// src/api/TransmissionRunner.js
+// src/core/TransmissionRunner.js
 
-import ModuleLoader from '../engine/ModuleLoader.js'
-import TransmissionBuilder from '../engine/TransmissionBuilder.js'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import ModuleLoaderFactory from '../api/ModuleLoaderFactory.js'
+import TransmissionBuilder from './TransmissionBuilder.js'
 import logger from '../utils/Logger.js'
 
 class TransmissionRunner {
@@ -10,7 +12,10 @@ class TransmissionRunner {
     }
 
     async initialize(modulePath) {
-        this.moduleLoader = new ModuleLoader([modulePath])
+        if (typeof modulePath !== 'string') {
+            throw new TypeError('Module path must be a string')
+        }
+        this.moduleLoader = ModuleLoaderFactory.createModuleLoader([modulePath])
     }
 
     async run(options) {
@@ -18,15 +23,19 @@ class TransmissionRunner {
             transmissionsFile,
             processorsConfigFile,
             message = {},
-            rootDir = "",
+            rootDir = '',
             applicationRootDir
         } = options
 
         logger.debug('\nTransmissionRunner.run()')
-        logger.debug('transmissionsFile = ' + transmissionsFile)
-        logger.debug('processorsConfigFile = ' + processorsConfigFile)
+        logger.debug('transmissionsFile =', transmissionsFile)
+        logger.debug('processorsConfigFile =', processorsConfigFile)
 
         try {
+            if (!this.moduleLoader) {
+                throw new Error('ModuleLoader not initialized. Call initialize() first.')
+            }
+
             const transmissions = await TransmissionBuilder.build(
                 transmissionsFile,
                 processorsConfigFile,
@@ -48,13 +57,10 @@ class TransmissionRunner {
 
             return { success: true }
         } catch (error) {
-            logger.error('Error in TransmissionRunner:' + error)
-            return {
-                success: false,
-                error: error.message
-            }
+            logger.error('Error in TransmissionRunner:', error)
+            throw error
         }
     }
 }
 
-export default TransmissionRunner
+export default TransmissionRunner 

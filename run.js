@@ -3,8 +3,8 @@
 
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
-import CommandUtils from './src/cli/CommandUtils.js'
-import WebRunner from './src/web/WebRunner.js'
+import CommandUtils from './src/api/CommandUtils.js'
+import WebRunner from './src/api/WebRunner.js'
 
 const applicationsDir = './src/applications'
 const commandUtils = new CommandUtils(applicationsDir)
