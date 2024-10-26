@@ -28,7 +28,7 @@ class RemapContext extends Processor { // TODO rename RemapMessage
      * Executes the remapping of the message object.
      * @param {Object} message - The message object to be remapped.
      */
-    async execute(message) {
+    async process(message) {
         if (this.preProcess(message)) {
             return
         }

@@ -11,7 +11,7 @@ import markedCodeFormat from 'marked-code-format'
 class MarkdownToHTML extends ProcessProcessor {
 
 
-    async execute(message) {
+    async process(message) {
         const input = message.content
 
         // new Marked()

@@ -38,7 +38,7 @@ class DirWalker extends SourceProcessor {
      * @param {Object} message - The message object containing information about the directory and source file.
      * @returns {Promise<void>} A promise that resolves when the directory walking process is complete.
      */
-    async execute(message) {
+    async process(message) {
         logger.setLogLevel('info')
         logger.debug('DirWalker.execute')
         await this.emitThem(message)
@@ -63,7 +63,7 @@ class DirWalker extends SourceProcessor {
         for (const entry of entries) {
             const fullPath = join(dirPath, entry.name)
             if (entry.isDirectory()) {
-                await this.execute(entry.name, message) // rearrange to make things easier to read?
+                await this.process(entry.name, message) // rearrange to make things easier to read?
             } else {
                 logger.debug('DirWalker, entry.name = ' + entry.name)
 

@@ -27,7 +27,7 @@ class Transmission {
 
   // In src/engine/Transmission.js
 
-  async execute(message) {
+  async process(message) {
     logger.log('\n+ ***** Execute Transmission : ' + this.label + ' <' + this.id + '>')
     const processorName = this.connectors[0]?.fromName || Object.keys(this.processors)[0]
     let processor = this.get(processorName)
@@ -39,7 +39,7 @@ class Transmission {
     }
   }
   /*
-  async execute(message) {
+  async process(message) {
     logger.log("\n+ ***** Execute *****")
     // logger.log("\nDATA = " + data)
     const processorName = this.connectors[0].fromName
@@ -50,7 +50,7 @@ class Transmission {
     // logger.log("\nTransmission running processor : " + processor)
     // Start the first processor
     // QQQ
-    //  processor.execute(message)
+    //  processor.process(message)
     processor.receive(message)
 
   }

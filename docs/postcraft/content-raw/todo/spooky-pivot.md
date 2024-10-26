@@ -22,7 +22,7 @@ q3: "How can we implement real-time monitoring of running transmissions?"
 q4: "What's the best way to handle errors and provide meaningful feedback across interfaces?"
 ```
 
-### execute() to process()
+### process() to process()
 
 * renaming
 * add profile support

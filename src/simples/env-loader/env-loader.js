@@ -20,11 +20,11 @@ var message = {
 
 const x = 3
 
-message = await p10.execute(message)
+message = await p10.process(message)
 
 logger.log('p10 output ' + p10.getTag() + message)
 
-message = await p20.execute(message)
+message = await p20.process(message)
 
 logger.log('p20 output ')
 

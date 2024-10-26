@@ -12,6 +12,6 @@ const nop = new NOP(config)
 
 var message = { 'value': '42' }
 
-message = await nop.execute(message)
+message = await nop.process(message)
 
 console.log('value = ' + message.value)

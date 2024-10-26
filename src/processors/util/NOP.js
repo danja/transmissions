@@ -7,7 +7,7 @@ class NOP extends Processor {
         super(config);
     }
 
-    async execute(message) {
+    async process(message) {
 
         logger.log('NOP at (' + message.tags + ') ' + this.getTag())
         return this.emit('message', message)

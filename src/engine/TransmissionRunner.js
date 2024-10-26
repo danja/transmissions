@@ -51,7 +51,7 @@ class TransmissionRunner {
 
             for (const transmission of transmissions) {
                 if (!options.subtask || options.subtask === transmission.label) {
-                    await transmission.execute(message)
+                    await transmission.process(message)
                 }
             }
 

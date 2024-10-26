@@ -9,7 +9,7 @@ class PostcraftPrep extends ProcessProcessor {
     super(config)
   }
 
-  async execute(message) {
+  async process(message) {
     // logger.setLogLevel("info")
     // this.preProcess(message)
     // logger.log('----------BEFORE------------')

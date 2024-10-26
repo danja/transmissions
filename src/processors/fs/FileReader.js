@@ -29,7 +29,7 @@ class FileReader extends SourceProcessor {
      * @param {string} filepath - The name of the file to read.
      * @param {Object} message - The message object.
      */
-    async execute(message) {
+    async process(message) {
         this.preProcess(message)
         //    logger.reveal(message)
         var filepath = message.filepath

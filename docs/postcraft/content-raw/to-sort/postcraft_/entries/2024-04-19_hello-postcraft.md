@@ -8,7 +8,7 @@ PC = Postcraft
 2. walk dirs
 3. render
 
-transmission.execute('../../data/mail-archive-sample')
+transmission.process('../../data/mail-archive-sample')
 
 ### 1. Read Manifest
 

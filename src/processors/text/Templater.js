@@ -37,7 +37,7 @@ class Templater extends ProcessProcessor {
      * Executes the templating process
      * @param {Object} message - The message object containing template and content information
      */
-    async execute(message) {
+    async process(message) {
         //logger.setLogLevel('debug')
         if (message.templateFilename) {
             // Extract path and filename from templateFilename

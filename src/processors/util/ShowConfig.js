@@ -8,7 +8,7 @@ class ShowConfig extends SinkProcessor {
         this.verbose = false
     }
 
-    async execute(message) {
+    async process(message) {
 
         //    logger.log("\n\nStringSink outputs : \"" + data + "\"\n\n")
 

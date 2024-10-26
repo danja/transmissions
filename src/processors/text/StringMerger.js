@@ -8,7 +8,7 @@ class StringMerger extends ProcessProcessor {
         this.merged = ''
     }
 
-    async execute(message) {
+    async process(message) {
         logger.log('SMDATA*********************************\n' + data)
 
         if (data === '~~done~~') {

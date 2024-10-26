@@ -4,7 +4,7 @@ import Fork from '../../processors/util/Fork.js'
 
 /*
 async function runProcessor(processor, message) {
-    const outputs = await processor.execute(message)
+    const outputs = await processor.process(message)
     return outputs
 }
 */
@@ -18,12 +18,12 @@ async function main() {
 
     // Run NOP
     // message = await nop.execut(message)
-    var outputs = await nop.execute(message)
+    var outputs = await nop.process(message)
     console.log('NOP outputs:', outputs)
 
     // Run Fork
     message.nForks = 3
-    outputs = await fork.execute(message)
+    outputs = await fork.process(message)
     console.log('Fork outputs:', outputs)
 }
 

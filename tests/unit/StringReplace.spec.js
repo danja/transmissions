@@ -20,7 +20,7 @@ describe('StringReplace', function () {
         }
 
         // Act
-        stringReplace.execute(message)
+        stringReplace.process(message)
 
         // Assert
         const expectedOutput = 'Hi world! Hi universe!'
@@ -40,7 +40,7 @@ describe('StringReplace', function () {
         }
 
         // Act
-        stringReplace.execute(message)
+        stringReplace.process(message)
 
         // Assert
         const expectedOutput = 'Hello world!'
@@ -60,7 +60,7 @@ describe('StringReplace', function () {
         }
 
         // Act
-        stringReplace.execute(message)
+        stringReplace.process(message)
 
         // Assert
         const expectedOutput = ''

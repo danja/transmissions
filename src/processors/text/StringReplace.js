@@ -37,7 +37,7 @@ class StringReplace extends ProcessProcessor {
      * Executes the string replacement process
      * @param {Object} message - The message object containing content, match, and replace strings
      */
-    async execute(message) {
+    async process(message) {
         logger.debug('StringReplace input: ' + message.content)
 
         if (message.content && message.match && message.replace) {

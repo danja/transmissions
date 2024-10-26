@@ -5,7 +5,7 @@ constructor(config) {
 super(config)
 }
 
-    async execute(data, context) {
+    async process(data, context) {
         this.emit('message', data, context)
     }
 

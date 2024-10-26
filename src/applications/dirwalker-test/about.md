@@ -1,3 +1,3 @@
 it originally ran from
 
-transmission.execute('../../data/mail-archive-sample')
+transmission.process('../../data/mail-archive-sample')

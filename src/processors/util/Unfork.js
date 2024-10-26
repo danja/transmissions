@@ -20,7 +20,7 @@ class Unfork extends Processor {
 */
     }
 
-    async execute(message) {
+    async process(message) {
 
         if (message.done) {
             logger.log(' - Unfork passing message')

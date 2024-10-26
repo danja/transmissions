@@ -6,7 +6,7 @@ class SourceProcessor extends Processor {
     }
 
     /*
-    async execute(message) {
+    async process(message) {
         logger.log('in SourceProcessor, data = ' + data)
         return data
     }

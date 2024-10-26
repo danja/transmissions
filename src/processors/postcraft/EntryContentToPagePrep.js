@@ -12,7 +12,7 @@ class EntryContentToPagePrep extends ProcessProcessor {
     super(config)
   }
 
-  async execute(message) {
+  async process(message) {
     if (message.done) {
       this.emit('message', message)
       return

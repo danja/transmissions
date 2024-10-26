@@ -6,7 +6,7 @@ class StringSource extends SourceProcessor {
         super(config)
     }
 
-    async execute(message) {
+    async process(message) {
         console.log("message = " + message)
         console.log("data = " + data)
         this.emit('message', message)

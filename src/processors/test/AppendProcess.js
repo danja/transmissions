@@ -4,7 +4,7 @@ import ProcessProcessor from '../base/ProcessProcessor.js'
 class AppendProcess extends ProcessProcessor {
 
     // In AppendProcess.js
-    async execute(message) {
+    async process(message) {
         logger.debug("AppendProcess data : " + message.content)
         message.content = message.content + " world"
         this.emit('message', message)

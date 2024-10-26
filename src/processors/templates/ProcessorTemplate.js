@@ -25,7 +25,7 @@ class ProcessorExample extends Processor {
      * Does something with the message and emits a 'message' event with the processed message.
      * @param {Object} message - The message object.
      */
-    async execute(message) {
+    async process(message) {
         logger.setLogLevel('debug')
 
         // processing goes here

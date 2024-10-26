@@ -3,7 +3,7 @@ import SinkProcessor from '../base/SinkProcessor.js'
 
 class StringSink extends SinkProcessor {
 
-    execute(message) {
+    process(message) {
         logger.log("\n\nStringSink outputs : \"" + data + "\"\n\n")
     }
 }

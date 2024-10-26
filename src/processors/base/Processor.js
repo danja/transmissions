@@ -177,7 +177,7 @@ class Processor extends EventEmitter {
             // structuredClone(message, {transfer:[dataset]}) failed too 
             this.addTag(message)
 
-            await this.execute(message)
+            await this.process(message)
         }
         this.processing = false
     }
@@ -202,7 +202,7 @@ class Processor extends EventEmitter {
      * @param {*} data - The data to be processed.
      * @param {*} message - The message for processing.
      */
-    async execute(message) {
+    async process(message) {
         throw new Error('execute method not implemented')
     }
 

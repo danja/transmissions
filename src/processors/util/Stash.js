@@ -28,7 +28,7 @@ class Stash extends SourceProcessor {
      * @param {string} data -.
      * @param {Object} message - .
      */
-    async execute(message) {
+    async process(message) {
         const manifestFilename = rootDir + '/manifest.ttl'
         const stream = fromFile(manifestFilename)
 

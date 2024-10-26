@@ -34,7 +34,7 @@ class FileWriter extends SinkProcessor {
      * Executes the write operation.
      * @param {Object} message - The execution message.
      */
-    async execute(message) {
+    async process(message) {
         this.preProcess()
         var filepath = message.filepath
 

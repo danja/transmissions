@@ -6,7 +6,7 @@ class ForEach extends ProcessProcessor {
         super(config)
     }
 
-    async execute(message) {
+    async process(message) {
         logger.setLogLevel('debug')
         logger.debug('ForEach execute method called')
 
@@ -28,5 +28,4 @@ class ForEach extends ProcessProcessor {
         logger.debug('ForEach: Finished processing all items')
     }
 }
-
 export default ForEach

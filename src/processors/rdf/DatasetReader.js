@@ -54,7 +54,7 @@ class DatasetReader extends SourceProcessor {
      * Executes the DatasetReader processor
      * @param {Object} message - The message object
      */
-    async execute(message) {
+    async process(message) {
         this.preProcess(message)
         var datasetName = 'dataset' // TODO rename to manifest, generalise better
         var datasetFilename = path.join(message.rootDir, '/manifest.ttl')

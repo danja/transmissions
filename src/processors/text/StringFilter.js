@@ -108,7 +108,7 @@ class StringFilter extends ProcessProcessor {
         return regex.test(content);
     }
 
-    async execute(message) {
+    async process(message) {
         logger.debug('\nStringFilter Input : \nmessage.content = ' + message.content);
         logger.debug('message.exclude = ');
         logger.reveal(message.exclude);

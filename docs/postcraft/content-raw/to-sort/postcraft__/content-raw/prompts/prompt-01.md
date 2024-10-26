@@ -13,7 +13,7 @@ class NOP extends Processor {
         super(config);
     }
 
-    async execute(message) {
+    async process(message) {
       this.emit('message', message)
       return message
     }
@@ -33,7 +33,7 @@ const nop = new NOP(config)
 
 var message = { 'value': '42' }
 
-message = await nop.execute(message)
+message = await nop.process(message)
 
 console.log('value = ' + message.value)
 ```
@@ -53,7 +53,7 @@ class Fork extends Processor {
         super(config)
     }
 
-    async execute(message) {
+    async process(message) {
         var nForks = 2
         if (message.nForks) {
             nForks = message.nForks

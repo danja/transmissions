@@ -40,7 +40,7 @@ class ConfigMap extends ProcessProcessor {
    * @param {Object} message - The message object containing the dataset
    * @todo Refactor for better generalization and maintainability
    */
-  async execute(message) {
+  async process(message) {
     logger.setLogLevel('debug')
 
     logger.debug(`ConfigMap, Using configKey ${this.configKey.value}`)

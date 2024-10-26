@@ -13,7 +13,7 @@ class FrontPagePrep extends ProcessProcessor {
     super(config)
   }
 
-  async execute(message) {
+  async process(message) {
     logger.setLogLevel('debug')
     try {
       // bits for templater

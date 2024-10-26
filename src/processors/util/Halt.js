@@ -3,7 +3,7 @@ import Processor from '../base/Processor.js'
 
 class Halt extends Processor {
 
-    execute(message) {
+    process(message) {
         logger.log('\n************************************************************************')
         logger.log('*** << Thou Hast Summoned HALT, the Mighty Stopper of All Things  >> ***')
         logger.log('*** <<                   ~~~ ALL IS GOOD ~~~                      >> ***')

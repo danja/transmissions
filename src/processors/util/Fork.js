@@ -10,7 +10,7 @@ class Fork extends Processor {
         super(config)
     }
 
-    async execute(message) {
+    async process(message) {
         const nForks = message.nForks || 2
 
         logger.debug('forks = ' + nForks)

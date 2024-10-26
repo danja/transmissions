@@ -49,7 +49,7 @@ class FileCopy extends Processor {
      * Executes the file copy operation
      * @param {Object} message - The input message
      */
-    async execute(message) {
+    async process(message) {
         //  logger.setLogLevel("debug")
 
         // TODO move to super?

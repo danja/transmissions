@@ -1,6 +1,6 @@
 #### 2024-07-06
 
-Currently the code is set up around passing messages of the form execute(data, context) where data is a string and context is a dictionary.
+Currently the code is set up around passing messages of the form process(data, context) where data is a string and context is a dictionary.
 I wish to refactor the code under src such that the methods with a signature like this:
 
 ```

@@ -13,7 +13,7 @@ class FrontPagePrep extends ProcessProcessor {
   }
 
 
-  async execute(message) {
+  async process(message) {
     //  logger.setLogLevel('debug')
     try {
       message.templateFilename = message.rootDir + '/' + message.indexPage.templateFilename

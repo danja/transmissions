@@ -67,7 +67,7 @@ class StringFilter extends ProcessService {
     logger.debug("testing patterns");
     return accepted;
   }
-  async execute(message) {
+  async process(message) {
     logger.debug(
       "\nStringFilter Input : \nmessage.content = " + message.content
     );

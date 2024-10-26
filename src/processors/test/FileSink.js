@@ -18,7 +18,7 @@ class FileSink extends SinkProcessor {
     }
 
     // In FileSink.js
-    async execute(message) {
+    async process(message) {
         const toRootDir = '../../../'
         const dataDir = path.join(toRootDir, message.dataDir)
         const df = footpath.resolve(import.meta.url, dataDir, this.destinationFile)

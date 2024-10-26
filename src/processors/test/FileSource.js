@@ -22,7 +22,7 @@ class FileSource extends SourceProcessor {
     }
 
     // In FileSource.js
-    async execute(message) {
+    async process(message) {
         try {
             const toRootDir = '../../../'
             const dataDir = toRootDir + message.dataDir

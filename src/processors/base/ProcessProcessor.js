@@ -7,7 +7,7 @@ class ProcessProcessor extends Processor {
     }
 
 
-    async execute(message) {
+    async process(message) {
         this.emit('message', message)
     }
 }

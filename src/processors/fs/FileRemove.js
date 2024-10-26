@@ -43,7 +43,7 @@ class FileRemove extends Processor {
      * Executes the file or directory removal operation
      * @param {Object} message - The input message
      */
-    async execute(message) {
+    async process(message) {
 
         logger.setLogLevel('info')
 

@@ -6,7 +6,7 @@ class WhiteboardToMessage extends Processor {
     constructor(config) {
         super(config);
     }
-    async execute(message) {
+    async process(message) {
 
         logger.log('WhiteboardToMessage at (' + message.tags + ') ' + this.getTag())
 

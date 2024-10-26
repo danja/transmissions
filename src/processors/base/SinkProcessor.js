@@ -5,7 +5,7 @@ class SinkProcessor extends Processor {
         super(config)
     }
 
-    async execute(message) {
+    async process(message) {
         // Consume data
     }
 }

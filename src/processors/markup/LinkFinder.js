@@ -5,7 +5,7 @@ import ProcessProcessor from '../base/ProcessProcessor.js'
 
 class LinkFinder extends ProcessProcessor {
 
-    async execute(message) {
+    async process(message) {
 
         await this.extractLinks(message)
 
