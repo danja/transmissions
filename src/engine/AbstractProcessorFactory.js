@@ -1,4 +1,6 @@
 
+// TODO move
+
 // Import processor groups
 import SystemProcessorsFactory from '../processors/system/SystemProcessorsFactory.js'
 import TestProcessorsFactory from '../processors/test/TestProcessorsFactory.js'
@@ -10,7 +12,7 @@ import ProtocolsProcessorsFactory from '../processors/protocols/ProtocolsProcess
 import RDFProcessorsFactory from '../processors/rdf/RDFProcessorsFactory.js'
 import PostcraftProcessorsFactory from '../processors/postcraft/PostcraftProcessorsFactory.js'
 import FlowProcessorsFactory from '../processors/flow/FlowProcessorsFactory.js'
-
+import StagingProcessorsFactory from '../processors/staging/StagingProcessorsFactory.js'
 
 class AbstractProcessorFactory {
 
@@ -48,6 +50,9 @@ class AbstractProcessorFactory {
         if (processor) return processor
 
         processor = FlowProcessorsFactory.createProcessor(type, config)
+        if (processor) return processor
+
+        processor = StagingProcessorsFactory.createProcessor(type, config)
         if (processor) return processor
 
         throw new Error("Unknown processor type: " + type.value)
