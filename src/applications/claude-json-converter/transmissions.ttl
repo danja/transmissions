@@ -1,0 +1,28 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix trm: <http://purl.org/stuff/transmission/> .
+@prefix : <http://hyperdata.it/transmissions/> .
+
+#############################################################
+# insert into pipe for debugging
+:DE a :DeadEnd . # ends the current pipe quietly
+:H  a :Halt . # kills everything 
+:SC a :ShowConfig . # verbose report, continues pipe
+:SM a :ShowMessage . # verbose report, continues pipe
+:SM1 a :ShowMessage . # verbose report, continues pipe
+:SM2 a :ShowMessage . # verbose report, continues pipe
+:N  a :NOP . # no operation (except for showing stage in pipe)
+:UF a :Unfork . # collapses all pipes but one 
+#############################################################
+
+:cjc a trm:Pipeline ;
+
+# trm:pipe (:p10 :p20 :p30 :p40) . 
+
+trm:pipe (:p10 :p30 :p40) . 
+
+:p10 a :JSONWalker .
+:p20 a :Unfork .
+:p30 a :MarkdownFormatter .
+:p40 a :FileWriter .
+# :p10 a :DatasetReader . 
+

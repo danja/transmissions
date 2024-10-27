@@ -77,14 +77,15 @@ class CommandUtils {
     }
 
     static async parseOrLoadContext(contextArg) {
-        let message = ''
+        logger.debug(`CommandUtils.parseOrLoadContext(), contextArg = ${contextArg}`)
+        let message = {}
         try {
-            message = JSON.parse(contextArg)
+            message.payload = JSON.parse(contextArg)
         } catch (err) {
-            logger.log(err)
+            logger.debug('*** Loading JSON from file...')
             const filePath = path.resolve(contextArg)
             const fileContent = await fs.readFile(filePath, 'utf8')
-            message = JSON.parse(fileContent)
+            message.payload = JSON.parse(fileContent)
         }
         return message
     }

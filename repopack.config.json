@@ -11,7 +11,8 @@
             "docs",
             "**/*repopack*",
             "**/*.html",
-            "**/data/*"
+            "**/data/*",
+            "**/*copy.js"
         ]
     }
 }

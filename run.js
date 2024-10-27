@@ -12,9 +12,9 @@ const commandUtils = new CommandUtils(applicationsDir)
 async function main() {
     await yargs(hideBin(process.argv))
         .usage('Usage: ./trans <application>[.subtask] [options] [target]')
-        .option('message', {
-            alias: 'm',
-            describe: 'message as a JSON string or a path to a JSON file',
+        .option('payload', {
+            alias: 'P',
+            describe: 'message.payload as a JSON string or a path to a JSON file',
             type: 'string',
         })
         .option('web', {
@@ -51,8 +51,8 @@ async function main() {
             }
 
             let message = {}
-            if (argv.message) {
-                message = await CommandUtils.parseOrLoadContext(argv.message)
+            if (argv.payload) {
+                message = await CommandUtils.parseOrLoadContext(argv.payload)
             }
 
             await commandUtils.run(argv.application, argv.target, message)
