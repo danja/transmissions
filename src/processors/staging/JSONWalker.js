@@ -10,7 +10,8 @@ class JSONWalker extends ProcessProcessor {
     async process(message) {
         try {
             // targetDir
-            logger.debug(`JSONWalker: using configKey ${this.configKey.value}`)
+
+            //  logger.debug(`JSONWalker: using configKey ${this.configKey.value}`)
             const targetDir = this.getPropertyFromMyConfig(ns.trm.targetDir)
             logger.debug(`JSONWalker:targetDir =  ${targetDir}`)
 

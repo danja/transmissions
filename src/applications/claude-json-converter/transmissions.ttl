@@ -19,7 +19,7 @@
 trm:pipe (:p10 :UF :DE :p30 :p40) . 
 
 :p10 a :JSONWalker ;
- trm:configKey :topConfig .
+     trm:configKey :topConfig .
 :p20 a :Unfork .
 :p30 a :MarkdownFormatter .
 :p40 a :FileWriter .

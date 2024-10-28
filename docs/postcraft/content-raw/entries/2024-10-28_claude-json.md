@@ -83,3 +83,5 @@ logger.debug(`JSONWalker:targetDir =  ${targetDir}`)
 ```
 
 Next, how does `FileWriter` work..?
+
+./trans ../trans-apps/applications/github-list-repos -P '{"github": {"name":"danja"}}'
