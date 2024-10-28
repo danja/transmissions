@@ -28,8 +28,8 @@ class TransmissionRunner {
         } = options
 
         logger.debug('\nTransmissionRunner.run()')
-        logger.debug('transmissionsFile =', transmissionsFile)
-        logger.debug('processorsConfigFile =', processorsConfigFile)
+        logger.debug('transmissionsFile =' + transmissionsFile)
+        logger.debug('processorsConfigFile =' + processorsConfigFile)
 
         try {
             if (!this.moduleLoader) {

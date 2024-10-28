@@ -1,5 +1,6 @@
 import logger from '../../utils/Logger.js'
 import ProcessProcessor from '../base/ProcessProcessor.js'
+import ns from '../../utils/ns.js'
 
 class JSONWalker extends ProcessProcessor {
     constructor(config) {
@@ -8,6 +9,10 @@ class JSONWalker extends ProcessProcessor {
 
     async process(message) {
         try {
+            // targetDir
+            logger.debug(`JSONWalker: using configKey ${this.configKey.value}`)
+            const targetDir = this.getPropertyFromMyConfig(ns.trm.targetDir)
+            logger.debug(`JSONWalker:targetDir =  ${targetDir}`)
 
             const payload = structuredClone(message.payload)
             if (!payload || typeof payload !== 'object') {

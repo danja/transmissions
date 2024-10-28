@@ -91,6 +91,8 @@ class TransmissionBuilder {
           processor.type = processorType
           processor.transmission = transmission
 
+          //    logger.log("| processorConfig :" + processorConfig)
+          //  logger.reveal(processorConfig)
           if (processorConfig) {
             processor.configKey = processorConfig
           }

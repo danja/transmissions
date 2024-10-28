@@ -2,11 +2,9 @@
 @prefix trm: <http://purl.org/stuff/transmission/> .
 @prefix t: <http://hyperdata.it/transmissions/> .
 
-t:baseConfig a trm:ServiceConfig ;
-    trm:key t:baseConfig ;
-    trm:baseURI "http://example.org/data/" .
+t:TopConfig a trm:ServiceConfig ;
+    trm:key t:topConfig ;
+    trm:targetDir "claude-chat" .
 
-t:outputConfig a trm:ServiceConfig ;
-    trm:key t:outputConfig ;
-    trm:markdownDir "output/markdown/" ;
-    trm:turtleDir "output/turtle/" .
+
+

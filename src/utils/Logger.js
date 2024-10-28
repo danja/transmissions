@@ -51,10 +51,14 @@ logger.log = function (msg, level = "log") {
 logger.reveal = function (instance) {
     const serialized = {}
 
+    logger.log('***    hidden keys :  ')
     for (const key in instance) {
 
-        if (key === 'dataset') { // special case, RDF
+        if (key.startsWith('_')) { // special case, RDF
             //    serialized[key] = instance[key].toString(); // TODO make useful
+            // DatasetExt
+            logger.log(`       ${key}`)
+            continue
         } else {
             if (instance.hasOwnProperty(key)) {
                 let kiki = instance[key]
