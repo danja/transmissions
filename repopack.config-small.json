@@ -1,0 +1,48 @@
+{
+    "output": {
+        "filePath": "./repopack-transmissions-small.txt",
+        "format": "text",
+        "headerText": "Transmissions source code",
+        "removeComments": true
+    },
+    "ignore": {
+        "useDefaultPatterns": true,
+        "customPatterns": [
+            ".env",
+            ".git",
+            "node_modules",
+            "*.log",
+            "docs",
+            "**/*repopack*.txt",
+            "**/*.html",
+            "**/data/*",
+            "**/*copy.js",
+            "**/conversations.json"
+        ]
+    },
+    "include": [
+        "src/api/**/*.js",
+        "src/engine/**/*.js",
+        "src/processors/base/**/*.js",
+        "src/processors/flow/**/*.js",
+        "src/processors/util/**/*.js",
+        "src/utils/**/*.js",
+        "src/applications/string-pipeline/**/*",
+        "src/applications/file-pipeline/**/*",
+        "src/applications/test_fork/**/*",
+        "package.json",
+        "README.md",
+        "run.js"
+    ],
+    "exclude": [
+        "**/node_modules/**",
+        "**/*.spec.js",
+        "**/test/**",
+        "**/__tests__/**",
+        "**/coverage/**",
+        "**/docs/**",
+        "**/*.md",
+        "**/*.log",
+        "**/dist/**"
+    ]
+}

@@ -9,7 +9,7 @@
     "build": "webpack --mode=production --node-env=production",
     "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production --node-env=production",
-    "rp": "repopack --verbose -c repopack.config.json .",
+    "rp": "repopack -c repopack.config-small.json . && repopack -c repopack.config-large.json . ",
     "watch": "webpack --watch",
     "serve": "webpack serve"
   },

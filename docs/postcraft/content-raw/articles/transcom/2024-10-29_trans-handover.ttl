@@ -1,0 +1,31 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix prj: <http://purl.org/stuff/project/> .
+[
+    a prj:Handover ;
+    dcterms:title "ComfyUI-Transmissions Integration Notes" ;
+    dcterms:description "Key points for mapping between ComfyUI and Transmissions architectures" ;
+    prj:status "Analysis" ;
+    prj:keywords "workflow, pipeline, node-graph, message-passing"
+] .
+
+[
+    a prj:Handover ;
+    dcterms:title "ComfyUI to Transmissions Integration Guide" ;
+    dcterms:description """
+Key points for ComfyUI developers:
+1. Transmissions uses a linear pipeline vs ComfyUI's graph model
+2. Configuration is RDF/Turtle vs JSON
+3. Single message object passed vs multiple data types
+4. No built-in GPU/resource management
+5. EventEmitter pattern vs Promise-based coordination
+
+Integration approaches:
+- Map ComfyUI workflow JSON to transmissions.ttl
+- Wrap ComfyUI nodes as transmission processors
+- Use transmission pipelines as composite ComfyUI nodes
+- Bridge message formats between systems
+- Consider resource management needs""" ;
+    prj:status "Design Phase" ;
+    prj:keywords "workflow, pipeline, eventEmitter, RDF, message passing"
+] .

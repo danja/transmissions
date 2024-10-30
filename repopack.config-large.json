@@ -1,0 +1,22 @@
+{
+    "output": {
+        "filePath": "./repopack-transmissions-large.txt",
+        "headerText": "Transmissions source code",
+        "removeComments": true
+    },
+    "ignore": {
+        "useDefaultPatterns": true,
+        "customPatterns": [
+            ".env",
+            ".git",
+            "node_modules",
+            "*.log",
+            "docs",
+            "**/*repopack*.txt",
+            "**/*.html",
+            "**/data/*",
+            "**/*copy.js",
+            "**/conversations.json"
+        ]
+    }
+}
