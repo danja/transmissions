@@ -35,6 +35,7 @@ class FileWriter extends SinkProcessor {
      * @param {Object} message - The execution message.
      */
     async process(message) {
+        logger.setLogLevel('debug')
         this.preProcess()
         var filepath = message.filepath
 
@@ -43,27 +44,28 @@ class FileWriter extends SinkProcessor {
         //  if (!filepath) {
         //    filepath = this.getMyConfig().value
         // }
-        logger.debug("Filewriter.targetFile = " + filepath)
+        // logger.debug("Filewriter, filepath = " + filepath)
 
         const dirName = dirname(filepath)
-        try {
-            await this.mkdirs(dirName) // is this OK when the dirs ???
-            logger.log(' - FileWriter writing : ' + filepath)
-            await writeFile(filepath, content)
+        logger.debug("Filewriter, dirName = " + dirName)
+        // try {
+        await this.mkdirs(dirName) // is this OK when the dirs ???
+        logger.log(' - FileWriter writing : ' + filepath)
+        await writeFile(filepath, content)
 
-        } catch (err) {
-            logger.error("FileWriter.execute error : " + err.message)
-        }
+        //} catch (err) {
+        //  logger.error("FileWriter.process error : " + err.message)
+        //}
 
         this.emit('message', message)
     }
 
     async mkdirs(dir) {
-        if (!dir) return;
+        if (!dir) return
         try {
             mkdir(dir, { recursive: true }, (error) => { })
         } catch (error) {
-            console.error(error);
+            console.error(error)
         }
     }
 }

@@ -40,7 +40,7 @@ class DirWalker extends SourceProcessor {
      */
     async process(message) {
         logger.setLogLevel('info')
-        logger.debug('DirWalker.execute')
+        logger.debug('DirWalker.process')
         await this.emitThem(message)
 
 
@@ -54,7 +54,7 @@ class DirWalker extends SourceProcessor {
         message.counter = 0
         message.slugs = []
         message.done = false // maybe insert earlier
-        //   const dirPath = message.rootDir + '/' + message.sourceDir 
+
         const dirPath = join(message.rootDir, message.sourceDir)
         logger.debug('DirWalker, dirPath = ' + dirPath)
         // try {
@@ -75,7 +75,7 @@ class DirWalker extends SourceProcessor {
                 if (!excludePrefix && includeExtension) {
 
                     message.filename = entry.name
-                    message.filepath = message.sourceDir + '/' + entry.name
+                    message.filepath = join(message.sourceDir, '/', entry.name)
                     const slug = this.extractSlug(message.filename)
                     message.slugs.push(slug)
                     // globalish

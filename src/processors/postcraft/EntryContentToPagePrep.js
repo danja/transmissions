@@ -1,3 +1,4 @@
+import path from 'path'
 import ns from '../../utils/ns.js'
 import rdf from 'rdf-ext'
 import grapoi from 'grapoi'
@@ -17,17 +18,24 @@ class EntryContentToPagePrep extends ProcessProcessor {
       this.emit('message', message)
       return
     }
+    logger.setLogLevel('debug')
 
+    // TODO path.join
     message.templateFilename = message.rootDir + '/' + message.entryContentToPage.templateFilename
 
     message.template = false
 
     message.contentBlocks.content = message.content
 
-    message.filepath = message.rootDir + '/' + message.entryContentToPage.targetDir + '/' + message.slug + '.html'
+    if (message.entryContentToPage.targetDir.startsWith('/')) { // TODO unhacky!!
+      message.filepath = path.join(message.entryContentToPage.targetDir, message.slug + '.html')
+    } else {
+      message.filepath = path.join(message.rootDir, message.entryContentToPage.targetDir, message.slug + '.html')
+    }
+    logger.debug('server-setup_2024-10-19.html************BBBB  message.filepath = ' + message.filepath)
 
-    //   logger.log('\nmessage.filepath  = ' + message.filepath)
-    // /home/danny/HKMS/postcraft/danny.ayers.name/layouts/mediocre
+    //  logger.log('server-setup_2024-10-19.html************ message.rootDir = ' + message.rootDir)
+    //  logger.log('server-setup_2024-10-19.html************ message.entryContentToPage.targetDir = ' + message.entryContentToPage.targetDir)
     this.emit('message', message)
   }
 

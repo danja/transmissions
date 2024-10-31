@@ -1,0 +1,1725 @@
+From: <Saved by Blink>
+Snapshot-Content-Location: https://ontola.io/blog/ordered-data-in-rdf
+Subject: Ordered data in RDF: About Arrays, Lists, Collections, Sequences and Pagination
+Date: Thu, 31 Oct 2024 12:09:30 +0100
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----MultipartBoundary--MAz8gSl4UPHwjW6LM7uvF4YebFhV1C4g05IhsJdjvu----"
+
+
+------MultipartBoundary--MAz8gSl4UPHwjW6LM7uvF4YebFhV1C4g05IhsJdjvu----
+Content-Type: text/html
+Content-ID: <frame-529079A10A62B83A67237D2D4A2800FF@mhtml.blink>
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://ontola.io/blog/ordered-data-in-rdf
+
+<!DOCTYPE html><html lang=3D"en"><head><meta http-equiv=3D"Content-Type" co=
+ntent=3D"text/html; charset=3DUTF-8"><link rel=3D"stylesheet" type=3D"text/=
+css" href=3D"cid:css-7a05868e-36bb-4771-b38e-25df0af7e5f2@mhtml.blink" /><l=
+ink rel=3D"stylesheet" type=3D"text/css" href=3D"cid:css-5d97b5d7-192d-4d58=
+-a65f-f9757ab493e0@mhtml.blink" /><link rel=3D"stylesheet" type=3D"text/css=
+" href=3D"cid:css-30db94d0-90f0-48f5-a555-f41d7eca4ee1@mhtml.blink" /><link=
+ rel=3D"stylesheet" type=3D"text/css" href=3D"cid:css-1a207713-3eb2-4838-83=
+05-44a6ed911ec1@mhtml.blink" /><meta name=3D"viewport" content=3D"width=3Dd=
+evice-width,initial-scale=3D1"><link rel=3D"apple-touch-icon" href=3D"https=
+://ontola.io/apple-touch-icon.png"><link rel=3D"icon" type=3D"image/png" si=
+zes=3D"32x32" href=3D"https://ontola.io/favicon-32x32.png"><link rel=3D"ico=
+n" type=3D"image/png" sizes=3D"16x16" href=3D"https://ontola.io/favicon-16x=
+16.png"><link rel=3D"icon" href=3D"https://ontola.io/favicon.ico"><title>Or=
+dered data in RDF: About Arrays, Lists, Collections, Sequences and Paginati=
+on</title><meta name=3D"robots" content=3D"index,follow"><meta name=3D"goog=
+lebot" content=3D"index,follow"><meta name=3D"description" content=3D"In th=
+is article, we'll discuss one of the most confusing but important topics of=
+ RDF: the various ways you can create ordered data."><meta property=3D"og:t=
+itle" content=3D"Ordered data in RDF: About Arrays, Lists, Collections, Seq=
+uences and Pagination"><meta property=3D"og:description" content=3D"In this=
+ article, we'll discuss one of the most confusing but important topics of R=
+DF: the various ways you can create ordered data."><meta property=3D"og:loc=
+ale" content=3D"en"><meta property=3D"og:site_name" content=3D"Ontola"><met=
+a name=3D"next-head-count" content=3D"14"><link rel=3D"preconnect" href=3D"=
+https://fonts.googleapis.com/"><link rel=3D"preconnect" href=3D"https://fon=
+ts.gstatic.com/"><link rel=3D"stylesheet" href=3D"https://cdnjs.cloudflare.=
+com/ajax/libs/highlight.js/11.4.0/styles/github-dark.min.css"><link rel=3D"=
+preconnect" href=3D"https://fonts.gstatic.com/" crossorigin=3D""></head><bo=
+dy class=3D" t-irJbnR"><div id=3D"__next"><div class=3D"c-ienSvb t-irJbnR">=
+<nav class=3D"c-hArmhj"><div class=3D"c-dNuSyE"><a href=3D"https://ontola.i=
+o/" class=3D"c-fYDYit"><svg width=3D"248" height=3D"44" viewBox=3D"0 0 248 =
+44" fill=3D"none" xmlns=3D"http://www.w3.org/2000/svg"><path fill-rule=3D"e=
+venodd" clip-rule=3D"evenodd" d=3D"M9.08568 40.3934C12.0964 40.3934 14.5371=
+ 37.9713 14.5371 34.9836C14.5371 31.9958 12.0964 29.5737 9.08568 29.5737C6.=
+07495 29.5737 3.63427 31.9958 3.63427 34.9836C3.63427 37.9713 6.07495 40.39=
+34 9.08568 40.3934ZM9.08568 44C14.1036 44 18.1714 39.9632 18.1714 34.9836C1=
+8.1714 30.0039 14.1036 25.9672 9.08568 25.9672C4.0678 25.9672 0 30.0039 0 3=
+4.9836C0 39.9632 4.0678 44 9.08568 44Z" fill=3D"var(--colors-circlesBg)"></=
+path><path fill-rule=3D"evenodd" clip-rule=3D"evenodd" d=3D"M38.8867 40.393=
+4C41.8974 40.3934 44.3381 37.9713 44.3381 34.9836C44.3381 31.9958 41.8974 2=
+9.5737 38.8867 29.5737C35.876 29.5737 33.4353 31.9958 33.4353 34.9836C33.43=
+53 37.9713 35.876 40.3934 38.8867 40.3934ZM38.8867 44C43.9046 44 47.9724 39=
+.9632 47.9724 34.9836C47.9724 30.0039 43.9046 25.9672 38.8867 25.9672C33.86=
+88 25.9672 29.801 30.0039 29.801 34.9836C29.801 39.9632 33.8688 44 38.8867 =
+44Z" fill=3D"var(--colors-circlesBg)"></path><path fill-rule=3D"evenodd" cl=
+ip-rule=3D"evenodd" d=3D"M23.6228 14.4262C26.6335 14.4262 29.0742 12.0042 2=
+9.0742 9.01639C29.0742 6.02862 26.6335 3.60656 23.6228 3.60656C20.6121 3.60=
+656 18.1714 6.02862 18.1714 9.01639C18.1714 12.0042 20.6121 14.4262 23.6228=
+ 14.4262ZM23.6228 18.0328C28.6407 18.0328 32.7085 13.996 32.7085 9.01639C32=
+.7085 4.03678 28.6407 0 23.6228 0C18.6049 0 14.5371 4.03678 14.5371 9.01639=
+C14.5371 13.996 18.6049 18.0328 23.6228 18.0328Z" fill=3D"var(--colors-circ=
+lesBg)"></path><path fill-rule=3D"evenodd" clip-rule=3D"evenodd" d=3D"M14.2=
+882 14.7869C11.2001 17.0728 8.99201 20.4646 8.25952 24.3711C8.53222 24.3508=
+ 8.80772 24.3405 9.08562 24.3405C10.0586 24.3405 11.0017 24.4669 11.8993 24=
+.7042C12.5396 21.7585 14.2786 19.2184 16.6696 17.5272C15.73 16.7544 14.9232=
+ 15.828 14.2882 14.7869ZM30.5758 17.5272C33.0221 19.2575 34.7859 21.8765 35=
+.3888 24.9093C36.4867 24.5405 37.6631 24.3405 38.8866 24.3405C38.9179 24.34=
+05 38.949 24.3406 38.9802 24.3409C38.242 20.4471 36.0373 17.0669 32.9571 14=
+.7869C32.3222 15.828 31.5154 16.7544 30.5758 17.5272ZM28.4037 38.1441C28.74=
+4 39.3236 29.281 40.4207 29.9772 41.3981C28.0358 42.2567 25.8854 42.7339 23=
+.6227 42.7339C21.5739 42.7339 19.6172 42.3426 17.8242 41.6313C18.5508 40.66=
+66 19.119 39.5775 19.4905 38.4021C20.7787 38.8712 22.1706 39.1274 23.6227 3=
+9.1274C25.3221 39.1274 26.9389 38.7766 28.4037 38.1441Z" fill=3D"var(--colo=
+rs-circlesBg)"></path><path d=3D"M70.8072 35.4674C68.6074 35.4674 66.6234 3=
+4.9912 64.8552 34.0387C63.0871 33.0656 61.6993 31.73 60.6919 30.0322C59.684=
+5 28.3136 59.1808 26.3983 59.1808 24.2863C59.1808 22.1743 59.6845 20.2693 6=
+0.6919 18.5714C61.6993 16.8529 63.0871 15.5173 64.8552 14.5649C66.6234 13.5=
+917 68.6074 13.1051 70.8072 13.1051C73.0071 13.1051 74.9911 13.5917 76.7592=
+ 14.5649C78.5274 15.5173 79.9151 16.8425 80.9225 18.5404C81.93 20.2383 82.4=
+337 22.1536 82.4337 24.2863C82.4337 26.419 81.93 28.3343 80.9225 30.0322C79=
+.9151 31.73 78.5274 33.0656 76.7592 34.0387C74.9911 34.9912 73.0071 35.4674=
+ 70.8072 35.4674ZM70.8072 31.9267C72.2464 31.9267 73.5417 31.6058 74.693 30=
+.9639C75.8443 30.3013 76.7489 29.3903 77.4069 28.2307C78.0648 27.0505 78.39=
+37 25.7357 78.3937 24.2863C78.3937 22.8369 78.0648 21.5324 77.4069 20.3729C=
+76.7489 19.1926 75.8443 18.2816 74.693 17.6397C73.5417 16.9771 72.2464 16.6=
+458 70.8072 16.6458C69.3681 16.6458 68.0728 16.9771 66.9215 17.6397C65.7701=
+ 18.2816 64.8655 19.1926 64.2076 20.3729C63.5497 21.5324 63.2207 22.8369 63=
+.2207 24.2863C63.2207 25.7357 63.5497 27.0505 64.2076 28.2307C64.8655 29.39=
+03 65.7701 30.3013 66.9215 30.9639C68.0728 31.6058 69.3681 31.9267 70.8072 =
+31.9267Z" fill=3D"var(--colors-headerText)"></path><path d=3D"M95.6575 18.3=
+851C97.734 18.3851 99.3993 18.9959 100.653 20.2176C101.908 21.4392 102.535 =
+23.251 102.535 25.6529V35.1569H98.6798V26.1498C98.6798 24.7004 98.3405 23.6=
+133 97.6621 22.8886C96.9836 22.1432 96.0173 21.7705 94.7632 21.7705C93.3446=
+ 21.7705 92.2241 22.2053 91.4017 23.075C90.5793 23.9239 90.1681 25.1559 90.=
+1681 26.771V35.1569H86.3132V18.5714H89.9831V20.7145C90.6204 19.9484 91.4222=
+ 19.3686 92.3885 18.9752C93.3548 18.5818 94.4445 18.3851 95.6575 18.3851Z" =
+fill=3D"var(--colors-headerText)"></path><path d=3D"M117.324 34.2562C116.87=
+2 34.6289 116.317 34.9084 115.659 35.0947C115.022 35.2811 114.343 35.3743 1=
+13.624 35.3743C111.814 35.3743 110.416 34.898 109.429 33.9456C108.443 32.99=
+31 107.949 31.6058 107.949 29.7837V21.8016H105.235V18.6957H107.949V14.9065H=
+111.804V18.6957H116.214V21.8016H111.804V29.6905C111.804 30.498 111.999 31.1=
+192 112.39 31.554C112.781 31.9682 113.346 32.1752 114.086 32.1752C114.95 32=
+.1752 115.669 31.9474 116.245 31.4919L117.324 34.2562Z" fill=3D"var(--color=
+s-headerText)"></path><path d=3D"M127.355 35.3743C125.69 35.3743 124.189 35=
+.0119 122.852 34.2872C121.516 33.5625 120.467 32.5583 119.707 31.2745C118.9=
+67 29.97 118.596 28.4999 118.596 26.8641C118.596 25.2284 118.967 23.7686 11=
+9.707 22.4849C120.467 21.2011 121.516 20.1969 122.852 19.4721C124.189 18.74=
+74 125.69 18.3851 127.355 18.3851C129.041 18.3851 130.552 18.7474 131.888 1=
+9.4721C133.225 20.1969 134.263 21.2011 135.003 22.4849C135.764 23.7686 136.=
+144 25.2284 136.144 26.8641C136.144 28.4999 135.764 29.97 135.003 31.2745C1=
+34.263 32.5583 133.225 33.5625 131.888 34.2872C130.552 35.0119 129.041 35.3=
+743 127.355 35.3743ZM127.355 32.051C128.773 32.051 129.945 31.5747 130.871 =
+30.6223C131.796 29.6698 132.258 28.4171 132.258 26.8641C132.258 25.3112 131=
+.796 24.0585 130.871 23.106C129.945 22.1536 128.773 21.6773 127.355 21.6773=
+C125.936 21.6773 124.764 22.1536 123.839 23.106C122.935 24.0585 122.482 25.=
+3112 122.482 26.8641C122.482 28.4171 122.935 29.6698 123.839 30.6223C124.76=
+4 31.5747 125.936 32.051 127.355 32.051Z" fill=3D"var(--colors-headerText)"=
+></path><path d=3D"M139.83 12.1112H143.685V35.1569H139.83V12.1112Z" fill=3D=
+"var(--colors-headerText)"></path><path d=3D"M155.036 18.3851C157.462 18.38=
+51 159.312 18.9752 160.587 20.1554C161.882 21.315 162.53 23.075 162.53 25.4=
+354V35.1569H158.891V33.138C158.418 33.8627 157.74 34.4218 156.856 34.8152C1=
+55.992 35.1879 154.944 35.3743 153.71 35.3743C152.476 35.3743 151.397 35.16=
+72 150.472 34.7531C149.547 34.3183 148.827 33.7281 148.313 32.9827C147.82 3=
+2.2166 147.573 31.3573 147.573 30.4049C147.573 28.914 148.118 27.7234 149.2=
+07 26.8331C150.318 25.922 152.055 25.4665 154.419 25.4665H158.675V25.218C15=
+8.675 24.0585 158.326 23.1681 157.627 22.547C156.948 21.9258 155.93 21.6152=
+ 154.573 21.6152C153.648 21.6152 152.733 21.7601 151.829 22.05C150.945 22.3=
+399 150.194 22.7437 149.577 23.2613L148.066 20.435C148.93 19.7724 149.968 1=
+9.2651 151.181 18.9131C152.394 18.5611 153.679 18.3851 155.036 18.3851ZM154=
+.512 32.5479C155.478 32.5479 156.331 32.3305 157.071 31.8957C157.832 31.440=
+1 158.367 30.7983 158.675 29.97V28.0444H154.697C152.476 28.0444 151.366 28.=
+7794 151.366 30.2496C151.366 30.9536 151.644 31.5126 152.199 31.9267C152.75=
+4 32.3409 153.525 32.5479 154.512 32.5479Z" fill=3D"var(--colors-headerText=
+)"></path><path d=3D"M168.711 35.3743C168.012 35.3743 167.416 35.1362 166.9=
+22 34.6599C166.429 34.163 166.182 33.5418 166.182 32.7964C166.182 32.0303 1=
+66.419 31.4091 166.891 30.9329C167.385 30.4566 167.991 30.2185 168.711 30.2=
+185C169.43 30.2185 170.027 30.4566 170.5 30.9329C170.993 31.4091 171.24 32.=
+0303 171.24 32.7964C171.24 33.5418 170.993 34.163 170.5 34.6599C170.006 35.=
+1362 169.41 35.3743 168.711 35.3743Z" fill=3D"var(--colors-headerText)"></p=
+ath><path d=3D"M175.006 18.5714H178.861V35.1569H175.006V18.5714ZM176.949 15=
+.8383C176.25 15.8383 175.664 15.6209 175.192 15.186C174.719 14.7305 174.482=
+ 14.1714 174.482 13.5089C174.482 12.8463 174.719 12.2976 175.192 11.8627C17=
+5.664 11.4072 176.25 11.1794 176.949 11.1794C177.648 11.1794 178.234 11.396=
+9 178.707 11.8317C179.18 12.2458 179.417 12.7738 179.417 13.4157C179.417 14=
+.099 179.18 14.6787 178.707 15.155C178.255 15.6105 177.669 15.8383 176.949 =
+15.8383Z" fill=3D"var(--colors-headerText)"></path><path d=3D"M191.322 35.3=
+743C189.657 35.3743 188.156 35.0119 186.82 34.2872C185.484 33.5625 184.435 =
+32.5583 183.674 31.2745C182.934 29.97 182.564 28.4999 182.564 26.8641C182.5=
+64 25.2284 182.934 23.7686 183.674 22.4849C184.435 21.2011 185.484 20.1969 =
+186.82 19.4721C188.156 18.7474 189.657 18.3851 191.322 18.3851C193.008 18.3=
+851 194.519 18.7474 195.856 19.4721C197.192 20.1969 198.23 21.2011 198.971 =
+22.4849C199.731 23.7686 200.112 25.2284 200.112 26.8641C200.112 28.4999 199=
+.731 29.97 198.971 31.2745C198.23 32.5583 197.192 33.5625 195.856 34.2872C1=
+94.519 35.0119 193.008 35.3743 191.322 35.3743ZM191.322 32.051C192.741 32.0=
+51 193.913 31.5747 194.838 30.6223C195.763 29.6698 196.226 28.4171 196.226 =
+26.8641C196.226 25.3112 195.763 24.0585 194.838 23.106C193.913 22.1536 192.=
+741 21.6773 191.322 21.6773C189.904 21.6773 188.732 22.1536 187.807 23.106C=
+186.902 24.0585 186.45 25.3112 186.45 26.8641C186.45 28.4171 186.902 29.669=
+8 187.807 30.6223C188.732 31.5747 189.904 32.051 191.322 32.051Z" fill=3D"v=
+ar(--colors-headerText)"></path><defs><linearGradient id=3D"paint0_linear_8=
+55_877" x1=3D"18.1714" y1=3D"35.0092" x2=3D"2.76134e-07" y2=3D"35.0092" gra=
+dientUnits=3D"userSpaceOnUse"><stop stop-color=3D"#9863DB"></stop><stop off=
+set=3D"1" stop-color=3D"#50A5CA"></stop></linearGradient><linearGradient id=
+=3D"paint1_linear_855_877" x1=3D"47.9724" y1=3D"35.0092" x2=3D"29.801" y2=
+=3D"35.0092" gradientUnits=3D"userSpaceOnUse"><stop stop-color=3D"#9863DB">=
+</stop><stop offset=3D"1" stop-color=3D"#50A5CA"></stop></linearGradient><l=
+inearGradient id=3D"paint2_linear_855_877" x1=3D"32.7085" y1=3D"9.04208" x2=
+=3D"14.5371" y2=3D"9.04208" gradientUnits=3D"userSpaceOnUse"><stop stop-col=
+or=3D"#9863DB"></stop><stop offset=3D"1" stop-color=3D"#50A5CA"></stop></li=
+nearGradient><linearGradient id=3D"paint3_linear_855_877" x1=3D"38.9802" y1=
+=3D"28.8002" x2=3D"8.25952" y2=3D"28.8002" gradientUnits=3D"userSpaceOnUse"=
+><stop stop-color=3D"#9863DB"></stop><stop offset=3D"1" stop-color=3D"#50A5=
+CA"></stop></linearGradient></defs></svg></a><button class=3D"c-cpGZkl c-cp=
+GZkl-ieLVpLf-css">Menu</button><div class=3D"c-iiIzXT"><a href=3D"https://o=
+ntola.io/services/" class=3D"c-bMrOCQ">Services</a><a href=3D"https://ontol=
+a.io/cases/" class=3D"c-bMrOCQ">Cases</a><a href=3D"https://ontola.io/tech/=
+" class=3D"c-bMrOCQ">Technologies</a><a href=3D"https://ontola.io/blog/" cl=
+ass=3D"c-bMrOCQ">Blog</a><a href=3D"https://ontola.io/about/" class=3D"c-bM=
+rOCQ">About us</a><a href=3D"https://ontola.io/contact/" class=3D"c-bMrOCQ"=
+>Contact</a><div class=3D"c-bxaRrq"><a href=3D"https://ontola.io/"><svg wid=
+th=3D"248" height=3D"44" viewBox=3D"0 0 248 44" fill=3D"none" xmlns=3D"http=
+://www.w3.org/2000/svg"><path fill-rule=3D"evenodd" clip-rule=3D"evenodd" d=
+=3D"M9.08568 40.3934C12.0964 40.3934 14.5371 37.9713 14.5371 34.9836C14.537=
+1 31.9958 12.0964 29.5737 9.08568 29.5737C6.07495 29.5737 3.63427 31.9958 3=
+.63427 34.9836C3.63427 37.9713 6.07495 40.3934 9.08568 40.3934ZM9.08568 44C=
+14.1036 44 18.1714 39.9632 18.1714 34.9836C18.1714 30.0039 14.1036 25.9672 =
+9.08568 25.9672C4.0678 25.9672 0 30.0039 0 34.9836C0 39.9632 4.0678 44 9.08=
+568 44Z" fill=3D"var(--colors-circlesBg)"></path><path fill-rule=3D"evenodd=
+" clip-rule=3D"evenodd" d=3D"M38.8867 40.3934C41.8974 40.3934 44.3381 37.97=
+13 44.3381 34.9836C44.3381 31.9958 41.8974 29.5737 38.8867 29.5737C35.876 2=
+9.5737 33.4353 31.9958 33.4353 34.9836C33.4353 37.9713 35.876 40.3934 38.88=
+67 40.3934ZM38.8867 44C43.9046 44 47.9724 39.9632 47.9724 34.9836C47.9724 3=
+0.0039 43.9046 25.9672 38.8867 25.9672C33.8688 25.9672 29.801 30.0039 29.80=
+1 34.9836C29.801 39.9632 33.8688 44 38.8867 44Z" fill=3D"var(--colors-circl=
+esBg)"></path><path fill-rule=3D"evenodd" clip-rule=3D"evenodd" d=3D"M23.62=
+28 14.4262C26.6335 14.4262 29.0742 12.0042 29.0742 9.01639C29.0742 6.02862 =
+26.6335 3.60656 23.6228 3.60656C20.6121 3.60656 18.1714 6.02862 18.1714 9.0=
+1639C18.1714 12.0042 20.6121 14.4262 23.6228 14.4262ZM23.6228 18.0328C28.64=
+07 18.0328 32.7085 13.996 32.7085 9.01639C32.7085 4.03678 28.6407 0 23.6228=
+ 0C18.6049 0 14.5371 4.03678 14.5371 9.01639C14.5371 13.996 18.6049 18.0328=
+ 23.6228 18.0328Z" fill=3D"var(--colors-circlesBg)"></path><path fill-rule=
+=3D"evenodd" clip-rule=3D"evenodd" d=3D"M14.2882 14.7869C11.2001 17.0728 8.=
+99201 20.4646 8.25952 24.3711C8.53222 24.3508 8.80772 24.3405 9.08562 24.34=
+05C10.0586 24.3405 11.0017 24.4669 11.8993 24.7042C12.5396 21.7585 14.2786 =
+19.2184 16.6696 17.5272C15.73 16.7544 14.9232 15.828 14.2882 14.7869ZM30.57=
+58 17.5272C33.0221 19.2575 34.7859 21.8765 35.3888 24.9093C36.4867 24.5405 =
+37.6631 24.3405 38.8866 24.3405C38.9179 24.3405 38.949 24.3406 38.9802 24.3=
+409C38.242 20.4471 36.0373 17.0669 32.9571 14.7869C32.3222 15.828 31.5154 1=
+6.7544 30.5758 17.5272ZM28.4037 38.1441C28.744 39.3236 29.281 40.4207 29.97=
+72 41.3981C28.0358 42.2567 25.8854 42.7339 23.6227 42.7339C21.5739 42.7339 =
+19.6172 42.3426 17.8242 41.6313C18.5508 40.6666 19.119 39.5775 19.4905 38.4=
+021C20.7787 38.8712 22.1706 39.1274 23.6227 39.1274C25.3221 39.1274 26.9389=
+ 38.7766 28.4037 38.1441Z" fill=3D"var(--colors-circlesBg)"></path><path d=
+=3D"M70.8072 35.4674C68.6074 35.4674 66.6234 34.9912 64.8552 34.0387C63.087=
+1 33.0656 61.6993 31.73 60.6919 30.0322C59.6845 28.3136 59.1808 26.3983 59.=
+1808 24.2863C59.1808 22.1743 59.6845 20.2693 60.6919 18.5714C61.6993 16.852=
+9 63.0871 15.5173 64.8552 14.5649C66.6234 13.5917 68.6074 13.1051 70.8072 1=
+3.1051C73.0071 13.1051 74.9911 13.5917 76.7592 14.5649C78.5274 15.5173 79.9=
+151 16.8425 80.9225 18.5404C81.93 20.2383 82.4337 22.1536 82.4337 24.2863C8=
+2.4337 26.419 81.93 28.3343 80.9225 30.0322C79.9151 31.73 78.5274 33.0656 7=
+6.7592 34.0387C74.9911 34.9912 73.0071 35.4674 70.8072 35.4674ZM70.8072 31.=
+9267C72.2464 31.9267 73.5417 31.6058 74.693 30.9639C75.8443 30.3013 76.7489=
+ 29.3903 77.4069 28.2307C78.0648 27.0505 78.3937 25.7357 78.3937 24.2863C78=
+.3937 22.8369 78.0648 21.5324 77.4069 20.3729C76.7489 19.1926 75.8443 18.28=
+16 74.693 17.6397C73.5417 16.9771 72.2464 16.6458 70.8072 16.6458C69.3681 1=
+6.6458 68.0728 16.9771 66.9215 17.6397C65.7701 18.2816 64.8655 19.1926 64.2=
+076 20.3729C63.5497 21.5324 63.2207 22.8369 63.2207 24.2863C63.2207 25.7357=
+ 63.5497 27.0505 64.2076 28.2307C64.8655 29.3903 65.7701 30.3013 66.9215 30=
+.9639C68.0728 31.6058 69.3681 31.9267 70.8072 31.9267Z" fill=3D"var(--color=
+s-headerText)"></path><path d=3D"M95.6575 18.3851C97.734 18.3851 99.3993 18=
+.9959 100.653 20.2176C101.908 21.4392 102.535 23.251 102.535 25.6529V35.156=
+9H98.6798V26.1498C98.6798 24.7004 98.3405 23.6133 97.6621 22.8886C96.9836 2=
+2.1432 96.0173 21.7705 94.7632 21.7705C93.3446 21.7705 92.2241 22.2053 91.4=
+017 23.075C90.5793 23.9239 90.1681 25.1559 90.1681 26.771V35.1569H86.3132V1=
+8.5714H89.9831V20.7145C90.6204 19.9484 91.4222 19.3686 92.3885 18.9752C93.3=
+548 18.5818 94.4445 18.3851 95.6575 18.3851Z" fill=3D"var(--colors-headerTe=
+xt)"></path><path d=3D"M117.324 34.2562C116.872 34.6289 116.317 34.9084 115=
+.659 35.0947C115.022 35.2811 114.343 35.3743 113.624 35.3743C111.814 35.374=
+3 110.416 34.898 109.429 33.9456C108.443 32.9931 107.949 31.6058 107.949 29=
+.7837V21.8016H105.235V18.6957H107.949V14.9065H111.804V18.6957H116.214V21.80=
+16H111.804V29.6905C111.804 30.498 111.999 31.1192 112.39 31.554C112.781 31.=
+9682 113.346 32.1752 114.086 32.1752C114.95 32.1752 115.669 31.9474 116.245=
+ 31.4919L117.324 34.2562Z" fill=3D"var(--colors-headerText)"></path><path d=
+=3D"M127.355 35.3743C125.69 35.3743 124.189 35.0119 122.852 34.2872C121.516=
+ 33.5625 120.467 32.5583 119.707 31.2745C118.967 29.97 118.596 28.4999 118.=
+596 26.8641C118.596 25.2284 118.967 23.7686 119.707 22.4849C120.467 21.2011=
+ 121.516 20.1969 122.852 19.4721C124.189 18.7474 125.69 18.3851 127.355 18.=
+3851C129.041 18.3851 130.552 18.7474 131.888 19.4721C133.225 20.1969 134.26=
+3 21.2011 135.003 22.4849C135.764 23.7686 136.144 25.2284 136.144 26.8641C1=
+36.144 28.4999 135.764 29.97 135.003 31.2745C134.263 32.5583 133.225 33.562=
+5 131.888 34.2872C130.552 35.0119 129.041 35.3743 127.355 35.3743ZM127.355 =
+32.051C128.773 32.051 129.945 31.5747 130.871 30.6223C131.796 29.6698 132.2=
+58 28.4171 132.258 26.8641C132.258 25.3112 131.796 24.0585 130.871 23.106C1=
+29.945 22.1536 128.773 21.6773 127.355 21.6773C125.936 21.6773 124.764 22.1=
+536 123.839 23.106C122.935 24.0585 122.482 25.3112 122.482 26.8641C122.482 =
+28.4171 122.935 29.6698 123.839 30.6223C124.764 31.5747 125.936 32.051 127.=
+355 32.051Z" fill=3D"var(--colors-headerText)"></path><path d=3D"M139.83 12=
+.1112H143.685V35.1569H139.83V12.1112Z" fill=3D"var(--colors-headerText)"></=
+path><path d=3D"M155.036 18.3851C157.462 18.3851 159.312 18.9752 160.587 20=
+.1554C161.882 21.315 162.53 23.075 162.53 25.4354V35.1569H158.891V33.138C15=
+8.418 33.8627 157.74 34.4218 156.856 34.8152C155.992 35.1879 154.944 35.374=
+3 153.71 35.3743C152.476 35.3743 151.397 35.1672 150.472 34.7531C149.547 34=
+.3183 148.827 33.7281 148.313 32.9827C147.82 32.2166 147.573 31.3573 147.57=
+3 30.4049C147.573 28.914 148.118 27.7234 149.207 26.8331C150.318 25.922 152=
+.055 25.4665 154.419 25.4665H158.675V25.218C158.675 24.0585 158.326 23.1681=
+ 157.627 22.547C156.948 21.9258 155.93 21.6152 154.573 21.6152C153.648 21.6=
+152 152.733 21.7601 151.829 22.05C150.945 22.3399 150.194 22.7437 149.577 2=
+3.2613L148.066 20.435C148.93 19.7724 149.968 19.2651 151.181 18.9131C152.39=
+4 18.5611 153.679 18.3851 155.036 18.3851ZM154.512 32.5479C155.478 32.5479 =
+156.331 32.3305 157.071 31.8957C157.832 31.4401 158.367 30.7983 158.675 29.=
+97V28.0444H154.697C152.476 28.0444 151.366 28.7794 151.366 30.2496C151.366 =
+30.9536 151.644 31.5126 152.199 31.9267C152.754 32.3409 153.525 32.5479 154=
+.512 32.5479Z" fill=3D"var(--colors-headerText)"></path><path d=3D"M168.711=
+ 35.3743C168.012 35.3743 167.416 35.1362 166.922 34.6599C166.429 34.163 166=
+.182 33.5418 166.182 32.7964C166.182 32.0303 166.419 31.4091 166.891 30.932=
+9C167.385 30.4566 167.991 30.2185 168.711 30.2185C169.43 30.2185 170.027 30=
+.4566 170.5 30.9329C170.993 31.4091 171.24 32.0303 171.24 32.7964C171.24 33=
+.5418 170.993 34.163 170.5 34.6599C170.006 35.1362 169.41 35.3743 168.711 3=
+5.3743Z" fill=3D"var(--colors-headerText)"></path><path d=3D"M175.006 18.57=
+14H178.861V35.1569H175.006V18.5714ZM176.949 15.8383C176.25 15.8383 175.664 =
+15.6209 175.192 15.186C174.719 14.7305 174.482 14.1714 174.482 13.5089C174.=
+482 12.8463 174.719 12.2976 175.192 11.8627C175.664 11.4072 176.25 11.1794 =
+176.949 11.1794C177.648 11.1794 178.234 11.3969 178.707 11.8317C179.18 12.2=
+458 179.417 12.7738 179.417 13.4157C179.417 14.099 179.18 14.6787 178.707 1=
+5.155C178.255 15.6105 177.669 15.8383 176.949 15.8383Z" fill=3D"var(--color=
+s-headerText)"></path><path d=3D"M191.322 35.3743C189.657 35.3743 188.156 3=
+5.0119 186.82 34.2872C185.484 33.5625 184.435 32.5583 183.674 31.2745C182.9=
+34 29.97 182.564 28.4999 182.564 26.8641C182.564 25.2284 182.934 23.7686 18=
+3.674 22.4849C184.435 21.2011 185.484 20.1969 186.82 19.4721C188.156 18.747=
+4 189.657 18.3851 191.322 18.3851C193.008 18.3851 194.519 18.7474 195.856 1=
+9.4721C197.192 20.1969 198.23 21.2011 198.971 22.4849C199.731 23.7686 200.1=
+12 25.2284 200.112 26.8641C200.112 28.4999 199.731 29.97 198.971 31.2745C19=
+8.23 32.5583 197.192 33.5625 195.856 34.2872C194.519 35.0119 193.008 35.374=
+3 191.322 35.3743ZM191.322 32.051C192.741 32.051 193.913 31.5747 194.838 30=
+.6223C195.763 29.6698 196.226 28.4171 196.226 26.8641C196.226 25.3112 195.7=
+63 24.0585 194.838 23.106C193.913 22.1536 192.741 21.6773 191.322 21.6773C1=
+89.904 21.6773 188.732 22.1536 187.807 23.106C186.902 24.0585 186.45 25.311=
+2 186.45 26.8641C186.45 28.4171 186.902 29.6698 187.807 30.6223C188.732 31.=
+5747 189.904 32.051 191.322 32.051Z" fill=3D"var(--colors-headerText)"></pa=
+th><defs><linearGradient id=3D"paint0_linear_855_877" x1=3D"18.1714" y1=3D"=
+35.0092" x2=3D"2.76134e-07" y2=3D"35.0092" gradientUnits=3D"userSpaceOnUse"=
+><stop stop-color=3D"#9863DB"></stop><stop offset=3D"1" stop-color=3D"#50A5=
+CA"></stop></linearGradient><linearGradient id=3D"paint1_linear_855_877" x1=
+=3D"47.9724" y1=3D"35.0092" x2=3D"29.801" y2=3D"35.0092" gradientUnits=3D"u=
+serSpaceOnUse"><stop stop-color=3D"#9863DB"></stop><stop offset=3D"1" stop-=
+color=3D"#50A5CA"></stop></linearGradient><linearGradient id=3D"paint2_line=
+ar_855_877" x1=3D"32.7085" y1=3D"9.04208" x2=3D"14.5371" y2=3D"9.04208" gra=
+dientUnits=3D"userSpaceOnUse"><stop stop-color=3D"#9863DB"></stop><stop off=
+set=3D"1" stop-color=3D"#50A5CA"></stop></linearGradient><linearGradient id=
+=3D"paint3_linear_855_877" x1=3D"38.9802" y1=3D"28.8002" x2=3D"8.25952" y2=
+=3D"28.8002" gradientUnits=3D"userSpaceOnUse"><stop stop-color=3D"#9863DB">=
+</stop><stop offset=3D"1" stop-color=3D"#50A5CA"></stop></linearGradient></=
+defs></svg></a></div></div></div></nav><main class=3D"c-dVbgSW"><article><h=
+eader class=3D"c-ekpeUW"><div class=3D"c-kgNnDI"><div class=3D"c-gkSXVp"><d=
+iv class=3D"c-jWxpbI" style=3D"left: 10rem; width: 28rem;"><svg width=3D"56=
+4" height=3D"564" viewBox=3D"0 0 564 564" fill=3D"none" xmlns=3D"http://www=
+.w3.org/2000/svg"><mask id=3D"mask0_1156_1269" maskUnits=3D"userSpaceOnUse"=
+ x=3D"0" y=3D"0" width=3D"564" height=3D"564"><path fill-rule=3D"evenodd" c=
+lip-rule=3D"evenodd" d=3D"M282 451.2C375.447 451.2 451.2 375.447 451.2 282C=
+451.2 188.553 375.447 112.8 282 112.8C188.553 112.8 112.8 188.553 112.8 282=
+C112.8 375.447 188.553 451.2 282 451.2ZM282 564C437.744 564 564 437.744 564=
+ 282C564 126.256 437.744 0 282 0C126.256 0 0 126.256 0 282C0 437.744 126.25=
+6 564 282 564Z" fill=3D"#BBB"></path></mask><g mask=3D"url(#mask0_1156_1269=
+)"><path id=3D"circle-id" d=3D"M-24 -24H588V286V596H-24V-24Z" fill=3D"var(-=
+-colors-circlesBg)"></path></g><defs><linearGradient id=3D"circles-gradient=
+" x1=3D"100%" y1=3D"0" x2=3D"0%" y2=3D"0" gradientUnits=3D"userSpaceOnUse">=
+<stop stop-color=3D"#9863DB"></stop><stop offset=3D"1" stop-color=3D"#50A5C=
+A"></stop></linearGradient></defs></svg></div><div class=3D"c-jWxpbI" style=
+=3D"left: 0px; width: 8rem; animation-delay: -2000ms;"><svg width=3D"564" h=
+eight=3D"564" viewBox=3D"0 0 564 564" fill=3D"none" xmlns=3D"http://www.w3.=
+org/2000/svg"><mask id=3D"mask0_1156_1269" maskUnits=3D"userSpaceOnUse" x=
+=3D"0" y=3D"0" width=3D"564" height=3D"564"><path fill-rule=3D"evenodd" cli=
+p-rule=3D"evenodd" d=3D"M282 451.2C375.447 451.2 451.2 375.447 451.2 282C45=
+1.2 188.553 375.447 112.8 282 112.8C188.553 112.8 112.8 188.553 112.8 282C1=
+12.8 375.447 188.553 451.2 282 451.2ZM282 564C437.744 564 564 437.744 564 2=
+82C564 126.256 437.744 0 282 0C126.256 0 0 126.256 0 282C0 437.744 126.256 =
+564 282 564Z" fill=3D"#BBB"></path></mask><g mask=3D"url(#mask0_1156_1269)"=
+><path id=3D"circle-id" d=3D"M-24 -24H588V286V596H-24V-24Z" fill=3D"var(--c=
+olors-circlesBg)"></path></g><defs><linearGradient id=3D"circles-gradient" =
+x1=3D"100%" y1=3D"0" x2=3D"0%" y2=3D"0" gradientUnits=3D"userSpaceOnUse"><s=
+top stop-color=3D"#9863DB"></stop><stop offset=3D"1" stop-color=3D"#50A5CA"=
+></stop></linearGradient></defs></svg></div><div class=3D"c-jWxpbI" style=
+=3D"left: 3rem; width: 4rem; top: 10rem; animation-delay: -5000ms;"><svg wi=
+dth=3D"564" height=3D"564" viewBox=3D"0 0 564 564" fill=3D"none" xmlns=3D"h=
+ttp://www.w3.org/2000/svg"><mask id=3D"mask0_1156_1269" maskUnits=3D"userSp=
+aceOnUse" x=3D"0" y=3D"0" width=3D"564" height=3D"564"><path fill-rule=3D"e=
+venodd" clip-rule=3D"evenodd" d=3D"M282 451.2C375.447 451.2 451.2 375.447 4=
+51.2 282C451.2 188.553 375.447 112.8 282 112.8C188.553 112.8 112.8 188.553 =
+112.8 282C112.8 375.447 188.553 451.2 282 451.2ZM282 564C437.744 564 564 43=
+7.744 564 282C564 126.256 437.744 0 282 0C126.256 0 0 126.256 0 282C0 437.7=
+44 126.256 564 282 564Z" fill=3D"#BBB"></path></mask><g mask=3D"url(#mask0_=
+1156_1269)"><path id=3D"circle-id" d=3D"M-24 -24H588V286V596H-24V-24Z" fill=
+=3D"var(--colors-circlesBg)"></path></g><defs><linearGradient id=3D"circles=
+-gradient" x1=3D"100%" y1=3D"0" x2=3D"0%" y2=3D"0" gradientUnits=3D"userSpa=
+ceOnUse"><stop stop-color=3D"#9863DB"></stop><stop offset=3D"1" stop-color=
+=3D"#50A5CA"></stop></linearGradient></defs></svg></div><div class=3D"c-jWx=
+pbI" style=3D"left: 10rem; width: 2.4rem; top: 14rem; animation-delay: -700=
+0ms;"><svg width=3D"564" height=3D"564" viewBox=3D"0 0 564 564" fill=3D"non=
+e" xmlns=3D"http://www.w3.org/2000/svg"><mask id=3D"mask0_1156_1269" maskUn=
+its=3D"userSpaceOnUse" x=3D"0" y=3D"0" width=3D"564" height=3D"564"><path f=
+ill-rule=3D"evenodd" clip-rule=3D"evenodd" d=3D"M282 451.2C375.447 451.2 45=
+1.2 375.447 451.2 282C451.2 188.553 375.447 112.8 282 112.8C188.553 112.8 1=
+12.8 188.553 112.8 282C112.8 375.447 188.553 451.2 282 451.2ZM282 564C437.7=
+44 564 564 437.744 564 282C564 126.256 437.744 0 282 0C126.256 0 0 126.256 =
+0 282C0 437.744 126.256 564 282 564Z" fill=3D"#BBB"></path></mask><g mask=
+=3D"url(#mask0_1156_1269)"><path id=3D"circle-id" d=3D"M-24 -24H588V286V596=
+H-24V-24Z" fill=3D"var(--colors-circlesBg)"></path></g><defs><linearGradien=
+t id=3D"circles-gradient" x1=3D"100%" y1=3D"0" x2=3D"0%" y2=3D"0" gradientU=
+nits=3D"userSpaceOnUse"><stop stop-color=3D"#9863DB"></stop><stop offset=3D=
+"1" stop-color=3D"#50A5CA"></stop></linearGradient></defs></svg></div></div=
+></div><div class=3D"c-gqPPss"><div class=3D"c-XaQtC"><h1 class=3D"c-sxUZY"=
+>Ordered data in RDF: About Arrays, Lists, Collections, Sequences and Pagin=
+ation</h1><div class=3D"c-jjBAMt"><div class=3D"c-iTDQIF"></div><div class=
+=3D"c-hMsoij">2/7/2020 - <a href=3D"https://github.com/joepio">Joep Meinder=
+tma</a></div></div></div></div></header><div class=3D"c-GKXIB"><p>Sooner or=
+ later when working with RDF, you'll need to work with ordered data / n-ary=
+ relations.
+The <code>subject predicate object</code> model does not support Arrays, an=
+d no - you can't use the order in which triples appear.</p>
+<p>However, RDF <em>does</em> support <em>Collections</em> (<code>rdf:List<=
+/code>) and <em>Containers</em> (<code>rdf:Bag</code>, <code>rdf:Seq</code>=
+, <code>rdf:Alt</code>).
+And the open nature of RDF allows for even more alternatives, such as the <=
+a href=3D"http://smiy.sourceforge.net/olo/spec/orderedlistontology.html">Or=
+dered List Ontology</a>.
+All these concepts are (subtly) different, and can be quite confusing.
+In this article, I'll explain the models behind these concepts, show how th=
+ey are serialized, and give some insights into when you should use which.</=
+p>
+<p>Skip to the bottom for a TL;DR!</p>
+<h2>RDF Collections</h2>
+<p>Maybe you've seen something like this in JSON-LD:</p>
+<pre><code class=3D"hljs language-json"><span class=3D"hljs-punctuation">{<=
+/span>
+  <span class=3D"hljs-attr">"@list"</span><span class=3D"hljs-punctuation">=
+:</span> <span class=3D"hljs-punctuation">[</span> <span class=3D"hljs-stri=
+ng">"Arnold"</span><span class=3D"hljs-punctuation">,</span> <span class=3D=
+"hljs-string">"Bob"</span><span class=3D"hljs-punctuation">,</span> <span c=
+lass=3D"hljs-string">"Catherine"</span> <span class=3D"hljs-punctuation">]<=
+/span>
+<span class=3D"hljs-punctuation">}</span>
+</code></pre>
+<p>Or something like this in a Turtle document:</p>
+<pre><code class=3D"hljs language-ruby">someList <span class=3D"hljs-symbol=
+">:b</span> ( <span class=3D"hljs-string">"Arnold"</span> <span class=3D"hl=
+js-string">"Bob"</span> <span class=3D"hljs-string">"Catherine"</span>)
+</code></pre>
+<p>These are <code>rdf:Collection</code>s.
+These serialization formats (turtle and JSON-LD) have syntactic sugar for C=
+ollections, so they appear as regular arrays.
+Under the hood, however, they have a very different data model.
+Collections are <a href=3D"https://en.wikipedia.org/wiki/Linked_list">linke=
+d lists</a> and its chains consist of <code>rdf:List</code> nodes, connecte=
+d by <code>rdf:rest</code> relations:</p>
+<p><div class=3D"c-cmpvrW"><span style=3D"box-sizing: border-box; display: =
+block; overflow: hidden; width: initial; height: initial; background: none;=
+ opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative;"><=
+span style=3D"box-sizing: border-box; display: block; width: initial; heigh=
+t: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding=
+: 50% 0px 0px;"></span><img alt=3D"RDF:List" src=3D"data:image/gif;base64,R=
+0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" decoding=3D"async"=
+ data-nimg=3D"responsive" style=3D"position: absolute; inset: 0px; box-sizi=
+ng: border-box; padding: 0px; border: none; margin: auto; display: block; w=
+idth: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%;=
+ max-height: 100%; object-fit: contain;"></span></div></p>
+<p>Every <code>rdf:List</code> has a <code>rdf:first</code> object, which r=
+efers to the actual content of the list item.
+Intuitively, it might be a bit weird to refer to Bob as a <code>first</code=
+> in a List.
+However, since Lists are recursive and often contain other Lists, it actual=
+ly makes sense to refer to the content as <code>first</code>.
+Collections always end with an <code>rdf:nil</code> namednode, which means =
+they have a <em>formally known ending</em>.
+If we'd express the same information in N-Triples, we'd get something like =
+this:</p>
+<pre><code class=3D"hljs language-less">_:b0 &lt;http://www.w3.org/1999/02/=
+22-rdf-syntax-ns#first&gt; "Arnold" .
+_:b0 &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#<span class=3D"hljs-att=
+ribute">rest&gt; _</span>:b1 .
+<span class=3D"hljs-attribute">_</span>:b1 &lt;<span class=3D"hljs-attribut=
+e">http</span>:<span class=3D"hljs-comment">//www.w3.org/1999/02/22-rdf-syn=
+tax-ns#first&gt; "Bob" .</span>
+<span class=3D"hljs-attribute">_</span>:b1 &lt;<span class=3D"hljs-attribut=
+e">http</span>:<span class=3D"hljs-comment">//www.w3.org/1999/02/22-rdf-syn=
+tax-ns#rest&gt; _:b2 .</span>
+<span class=3D"hljs-attribute">_</span>:b2 &lt;<span class=3D"hljs-attribut=
+e">http</span>:<span class=3D"hljs-comment">//www.w3.org/1999/02/22-rdf-syn=
+tax-ns#first&gt; "Catherine" .</span>
+<span class=3D"hljs-attribute">_</span>:b2 &lt;<span class=3D"hljs-attribut=
+e">http</span>:<span class=3D"hljs-comment">//www.w3.org/1999/02/22-rdf-syn=
+tax-ns#rest&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#nil&gt; .</s=
+pan>
+</code></pre>
+<p>This explicitly linked nature means that it's possible to start a list i=
+n location A, and have it continue in a completely different domain:</p>
+<p><div class=3D"c-cmpvrW"><span style=3D"box-sizing: border-box; display: =
+block; overflow: hidden; width: initial; height: initial; background: none;=
+ opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative;"><=
+span style=3D"box-sizing: border-box; display: block; width: initial; heigh=
+t: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding=
+: 50% 0px 0px;"></span><img alt=3D"RDF:List" src=3D"data:image/gif;base64,R=
+0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" decoding=3D"async"=
+ data-nimg=3D"responsive" style=3D"position: absolute; inset: 0px; box-sizi=
+ng: border-box; padding: 0px; border: none; margin: auto; display: block; w=
+idth: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%;=
+ max-height: 100%; object-fit: contain;"></span></div></p>
+<p>It also means that inserting items is quite easy, as only the node befor=
+e it has to be adjusted:</p>
+<p><div class=3D"c-cmpvrW"><span style=3D"box-sizing: border-box; display: =
+block; overflow: hidden; width: initial; height: initial; background: none;=
+ opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative;"><=
+span style=3D"box-sizing: border-box; display: block; width: initial; heigh=
+t: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding=
+: 50% 0px 0px;"></span><img alt=3D"RDF:List" src=3D"data:image/gif;base64,R=
+0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" decoding=3D"async"=
+ data-nimg=3D"responsive" style=3D"position: absolute; inset: 0px; box-sizi=
+ng: border-box; padding: 0px; border: none; margin: auto; display: block; w=
+idth: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%;=
+ max-height: 100%; object-fit: contain;"></span></div></p>
+<p>However... This structure can be kind of hard to deal with.
+Parsing is non-trivial, and might require a lot of lookups, which is very c=
+ostly.
+Also, appending a single node to a List is hard, because it requires that t=
+he link of the item before it is adjusted.</p>
+<h2>RDF Containers</h2>
+<p>There are three types of RDF Containers <code>rdf:Seq</code>, <code>rdf:=
+Bag</code>, <code>rdf:Alt</code></p>
+<ul>
+<li>An <code>rdf:Seq</code> is an <em>ordered</em> container</li>
+<li>An <code>rdf:Bag</code> is an <em>unordered</em> container</li>
+<li>An <code>rdf:Alt</code> is an <em>unordered</em> set of alternatives, i=
+n which the first one is the default option</li>
+</ul>
+<p>RDF Containers use a numbered predicate (e.g. <code>rdf:_1</code>) to in=
+dicate that something is a child / member of the Container:</p>
+<p><div class=3D"c-cmpvrW"><span style=3D"box-sizing: border-box; display: =
+block; overflow: hidden; width: initial; height: initial; background: none;=
+ opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative;"><=
+span style=3D"box-sizing: border-box; display: block; width: initial; heigh=
+t: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding=
+: 50% 0px 0px;"></span><img alt=3D"RDF:Seq" src=3D"data:image/gif;base64,R0=
+lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" decoding=3D"async" =
+data-nimg=3D"responsive" style=3D"position: absolute; inset: 0px; box-sizin=
+g: border-box; padding: 0px; border: none; margin: auto; display: block; wi=
+dth: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; =
+max-height: 100%; object-fit: contain;"></span></div></p>
+<p>This model is often easier to parse and serialize than an <code>rdf:List=
+</code>.</p>
+<pre><code class=3D"hljs language-perl"><span class=3D"hljs-number">_</span=
+>:someSe<span class=3D"hljs-string">q &lt;http://www.w3.org/1999/02/22-rdf-=
+syntax-ns#_1&gt;</span> <span class=3D"hljs-string">"Arnold"</span> .
+<span class=3D"hljs-number">_</span>:someSe<span class=3D"hljs-string">q &l=
+t;http://www.w3.org/1999/02/22-rdf-syntax-ns#_2&gt;</span> <span class=3D"h=
+ljs-string">"Bob"</span> .
+<span class=3D"hljs-number">_</span>:someSe<span class=3D"hljs-string">q &l=
+t;http://www.w3.org/1999/02/22-rdf-syntax-ns#_3&gt;</span> <span class=3D"h=
+ljs-string">"Catherine"</span> .
+</code></pre>
+<p>Appending items is easy as well, simply add one new statement and increm=
+ent the predicate.
+However, inserting items requires you to rewrite many triples.
+If you use a reasoner that has implemented the basic RDFS spec, you can use=
+ <a href=3D"https://www.w3.org/TR/rdf-schema/#ch_member"><code>rdfs:member<=
+/code></a> (the superclass of every <code>rdf:_n</code> property) to get al=
+l members of an RDF Container.</p>
+<h2>Pagination with ActivityStreams and Hydra Collections</h2>
+<p>When your arrays will be either too long to serialize, or too computatio=
+nally heavy to generate at run-time, you'll need some form of pagination.
+It's recommended to use an existing ontology for this.
+The W3C Activity Streams 2.0 ontology defines the <a href=3D"https://www.w3=
+.org/TR/activitystreams-core/#collection"><code>as:Collection</code></a>.
+It provides keys for things like <code>next</code>, <code>totalItems</code>=
+ and <code>orderedItems</code>.
+This spec seems to be designed with <code>JSON-LD</code> serialization in m=
+ind, so it relies on JSON arrays, which represent <code>rdf:List</code> Col=
+lections.</p>
+<p>Similar to this is the <a href=3D"https://www.hydra-cg.com/spec/latest/c=
+ore/#collections"><code>hydra:Collection</code></a>.
+The Hyrda spec still is in draft status, but it has been updated in october=
+ last year.</p>
+<h2>Converting to Arrays</h2>
+<p>If you're building an RDF application, and you want to access your RDF L=
+ists / Collections / Sequences as an array, make sure to find an RDF librar=
+y that has support for ordered data.
+We've open-sourced a JS library that might be useful for this: <a href=3D"h=
+ttps://js.rdf.dev/modules/_rdfdev_collections"><code>@rdfdev/collections</c=
+ode></a>.
+<a href=3D"mailto:joep@ontola.io">Get in touch</a> if we can help!</p>
+<h2>TL;DR</h2>
+<p>There are no arrays in RDF, and don't use the order in which serialized =
+triples appear.</p>
+<p><strong>RDF Containers:</strong></p>
+<ul>
+<li>Come in three forms: <code>rdf:Seq</code> (ordered), <code>rdf:Bag</cod=
+e> (unordered), <code>rdf:Alt</code> (alternatives with default)</li>
+<li>You can add new items by simply adding RDF triples</li>
+<li>Inserting items is hard: requires rewriting <em>many</em> statements</l=
+i>
+<li>Must be stored in a single graph / machine / server (centralized)</li>
+<li>Have a formally unknown ending (open world assumption)</li>
+</ul>
+<p><strong>RDF Collections:</strong></p>
+<ul>
+<li>An ordered chain of <code>rdf:List</code> resources</li>
+<li>You have to edit / remove statements before you can add new items</li>
+<li>Inserting items is easy: requires changing <em>just a few</em> statemen=
+ts</li>
+<li>Can span many graphs / machines / servers (decentralized)</li>
+<li>Have a known ending (the <code>rdf:nil</code>)</li>
+</ul>
+<p><strong>Pagination:</strong></p>
+<ul>
+<li>Use <a href=3D"https://www.w3.org/TR/activitystreams-core/#collection">=
+ActivityStreams collections</a></li>
+</ul>
+<p><strong>Converting to arrays:</strong></p>
+<ul>
+<li>Use a library, such as <a href=3D"https://js.rdf.dev/modules/_rdfdev_co=
+llections"><code>@rdfdev/collections</code></a></li>
+</ul></div></article></main><footer class=3D"c-iZUsOw"><div class=3D"c-bhec=
+MF"><div class=3D"c-gZchqP"><div class=3D"c-bMtUlk"><a href=3D"https://onto=
+la.io/"><h3>Ontola</h3></a><a href=3D"https://ontola.io/services/">Services=
+</a><a href=3D"https://ontola.io/cases/">Cases</a><a href=3D"https://ontola=
+.io/tech/">Technologies</a><a href=3D"https://ontola.io/blog/">Blog</a><a h=
+ref=3D"https://ontola.io/about/">About us</a><a href=3D"https://ontola.io/c=
+ontact/">Contact</a></div><div class=3D"c-bMtUlk"><a href=3D"https://ontola=
+.io/contact/"><h3>Contact</h3></a><a href=3D"https://calendly.com/ontola/30=
+min">Plan a meeting</a><a href=3D"tel:+31636020942">+31636020942</a><a href=
+=3D"mailto:info@ontola.io">info@ontola.io</a></div><div class=3D"c-bMtUlk">=
+<a href=3D"https://ontola.io/about/"><h3>About us</h3></a><a href=3D"https:=
+//argu.co/">Subsidiary of Argu B.V.</a><a href=3D"https://goo.gl/maps/rN2ZM=
+1xpz7SFpH7J8"><p>Maliebaan 100</p><p>3581 CZ, Utrecht</p></a></div></div></=
+div><div class=3D"c-gVogGt"></div><div class=3D"c-bhecMF"><div class=3D"c-i=
+cyBXA"><a href=3D"https://ontola.io/"><img src=3D"https://ontola.io/images/=
+logo_white.svg" alt=3D"Ontola logo" class=3D"c-ftDPZP"></a><span><a href=3D=
+"https://ontola.io/nl/blog/ordered-data-in-rdf/">NL</a></span><button class=
+=3D"c-OMYxk">dark mode</button></div><div class=3D"c-aoXsO"><a href=3D"http=
+s://github.com/ontola/"><img src=3D"https://ontola.io/images/github.svg" al=
+t=3D"Github" class=3D"c-kJKhAa"></a><a href=3D"https://www.facebook.com/ont=
+ola.io/"><img src=3D"https://ontola.io/images/facebook.svg" alt=3D"Facebook=
+" class=3D"c-kJKhAa"></a><a href=3D"https://www.linkedin.com/company/187152=
+31/"><img src=3D"https://ontola.io/images/linkedin.svg" alt=3D"LinkedIn" cl=
+ass=3D"c-kJKhAa"></a><a href=3D"https://twitter.com/ontola_io"><img src=3D"=
+https://ontola.io/images/twitter.svg" alt=3D"Twitter" class=3D"c-kJKhAa"></=
+a></div></div></footer></div></div><iframe height=3D"0" width=3D"0" style=
+=3D"display: none; visibility: hidden;"></iframe><next-route-announcer><p a=
+ria-live=3D"assertive" id=3D"__next-route-announcer__" role=3D"alert" style=
+=3D"border: 0px; clip: rect(0px, 0px, 0px, 0px); height: 1px; margin: -1px;=
+ overflow: hidden; padding: 0px; position: absolute; width: 1px; white-spac=
+e: nowrap; overflow-wrap: normal;"></p></next-route-announcer></body></html>
+------MultipartBoundary--MAz8gSl4UPHwjW6LM7uvF4YebFhV1C4g05IhsJdjvu----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: cid:css-7a05868e-36bb-4771-b38e-25df0af7e5f2@mhtml.blink
+
+@charset "utf-8";
+
+--sxs { --sxs: 0 t-WyhPN; }
+
+@media  {
+  :root, .t-WyhPN { --fonts-heading: "inter", "Helvetica Neue", Helvetica, =
+Arial, sans-serif; --fonts-body: "inter", "Helvetica Neue", Helvetica, Aria=
+l, sans-serif; --fonts-code: monospace; --colors-headerText: black; --color=
+s-headerBg: white; --colors-text: black; --colors-text1: #999999; --colors-=
+bg0: white; --colors-bg: #F6F8FB; --colors-bg1: #f4f4f4; --colors-bg2: #d7d=
+7d7; --colors-bgBody: linear-gradient(0deg, rgba(19,76,105,1) 0%, rgba(19,7=
+6,105,1) 50%, rgba(255,255,255,1) 50%, rgba(255,255,255,1) 100%); --colors-=
+nav: rgba(255,255,255,0.7); --colors-navContrast: rgba(0,0,0,0.05); --color=
+s-navContrast2: rgba(0,0,0,0.1); --colors-primary: rgb(19,76,105); --colors=
+-footerBg: rgb(19,76,105); --colors-c2a: rgba(152,99,219,1); --colors-circl=
+esBg: url(#circles-gradient); --colors-gradient: linear-gradient(90deg, rgb=
+a(80,165,202,1) 0%, rgba(152,99,219,1) 100%); --colors-gradientDark: linear=
+-gradient(90deg, rgba(70,155,192,1) 0%, rgba(142,89,209,1) 100%); --fontSiz=
+es-small: .8rem; --fontSizes-body: 1rem; --fontSizes-h3: 1.2rem; --fontSize=
+s-h2: 1.7rem; --fontSizes-h1: 3rem; --sizes-container: 40rem; --sizes-conta=
+inerBig: 60rem; --sizes-gridItem: 15rem; --sizes-gridItemSmall: 10rem; --si=
+zes-radius: .6rem; --shadows-button: 0px 3px 15px rgba(0,0,0,0.2); --shadow=
+s-buttonInset: inset 0px 3px 15px rgba(0,0,0,0.2); --zIndices-contentFloati=
+ng: 1; --zIndices-featureTextBlock: 2; --zIndices-navigationBar: 10; --zInd=
+ices-menu: 100; }
+  .t-irJbnR { --colors-headerText: white; --colors-headerBg: black; --color=
+s-text: white; --colors-text1: #555555; --colors-bgBody: black; --colors-bg=
+0: black; --colors-bg: #111111; --colors-bg1: #222222; --colors-bg2: #33333=
+3; --colors-nav: rgba(0,0,0,0.7); --colors-navContrast: rgba(255,255,255,0.=
+2); --colors-navContrast2: rgba(255,255,255,0.4); --colors-footerBg: black;=
+ --colors-primary: #5cc8ff; }
+}
+
+--sxs { --sxs: 1 k-hXlRYS feQpxh grIEdc XUKWC; }
+
+@media  {
+  @keyframes k-hXlRYS {=20
+  0% { transform: translate(0px, 1rem); }
+  50% { transform: translate(0.2rem, 0.5rem); }
+  100% { transform: translate(0px, 1rem); }
+}
+  html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p,=
+ blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em,=
+ img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u,=
+ i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, c=
+aption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, e=
+mbed, figure, figcaption, footer, header, hgroup, main, menu, nav, output, =
+ruby, section, summary, time, mark, audio, video { margin: 0px; padding: 0p=
+x; border: 0px; font: inherit; vertical-align: baseline; }
+  article, aside, details, figcaption, figure, footer, header, hgroup, main=
+, menu, nav, section { display: block; }
+  [hidden] { display: none; }
+  body { line-height: 1; }
+  ol, ul { list-style: none; }
+  blockquote, q { quotes: none; }
+  blockquote::before, blockquote::after, q::before, q::after { content: non=
+e; }
+  table { border-spacing: 0px; }
+  * { box-sizing: border-box; font-family: var(--fonts-body); }
+  body { margin: 0px; font-family: var(--fonts-body); color: var(--colors-t=
+ext); height: 100%; background: var(--colors-footerBg); }
+  h1, h2, h3, h4 { --fontfamily: var(--fonts-heading); font-family: var(--f=
+ontfamily, sans-serif); font-weight: bold; color: var(--colors-text); margi=
+n: 1.5em 0px 0.5rem; line-height: 1.1em; }
+  h1 { font-size: var(--fontSizes-h1); }
+  h2 { font-size: var(--fontSizes-h2); }
+  h3 { font-size: var(--fontSizes-h3); }
+  p { margin-bottom: 1em; }
+  p, ul, li, table, a, span { line-height: 1.7em; font-size: var(--fontSize=
+s-body); color: inherit; }
+  li { margin-bottom: 0.1em; margin-left: 1rem; }
+  ul, ol { margin-bottom: 1rem; }
+  ul li { list-style: disc; }
+  ol li { list-style: number; }
+  em { font-style: italic; }
+  strong { font-weight: bold; }
+  p code, pre code { font-family: var(--fonts-code); color: var(--colors-te=
+xt); background: var(--colors-bg1); border: solid 1px var(--colors-bg2); pa=
+dding: 0.2rem; font-size: 1rem; overflow: auto; margin-bottom: 1em; line-he=
+ight: 1.5rem; }
+  pre code { display: block; }
+  button { font-size: var(--fontSizes-body); }
+  img { max-width: 100%; }
+  table { background: var(--colors-bg1); border-collapse: collapse; }
+  th, td { text-align: left; padding: 0.4em; border: solid 1px var(--colors=
+-bg2); }
+  video { max-width: 100%; }
+  variants show true body { overflow: hidden; max-height: 100vh; }
+}
+
+--sxs { --sxs: 2 c-ienSvb c-hArmhj c-dNuSyE c-fYDYit c-cpGZkl c-iiIzXT c-bM=
+rOCQ c-bxaRrq c-dVbgSW c-ekpeUW c-kgNnDI c-gkSXVp c-jWxpbI c-gqPPss c-XaQtC=
+ c-sxUZY c-jjBAMt c-iTDQIF c-hMsoij c-GKXIB c-cmpvrW c-iZUsOw c-bhecMF c-gZ=
+chqP c-bMtUlk c-gVogGt c-icyBXA c-ftDPZP c-OMYxk c-aoXsO c-kJKhAa; }
+
+@media  {
+  .c-ienSvb { background: var(--colors-bg0); display: flex; flex-direction:=
+ column; min-height: 100vh; position: relative; z-index: 0; }
+  .c-hArmhj { background: var(--colors-nav); z-index: var(--zIndices-naviga=
+tionBar); }
+  .c-dNuSyE { padding: 0px 1rem; margin: 0px auto; max-width: var(--sizes-c=
+ontainerBig); display: flex; height: 3rem; align-items: center; }
+  .c-fYDYit { height: 2rem; }
+  .c-fYDYit svg { width: auto; height: 2rem; }
+  .c-fYDYit { align-items: center; display: flex; flex: 1 1 0%; }
+  .c-cpGZkl { border-radius: var(--sizes-radius); font-size: 1rem; padding:=
+ 0.5rem 1rem; background: var(--colors-gradient); transition: 0.2s; box-siz=
+ing: border-box; text-decoration: none; align-self: flex-start; color: whit=
+e !important; }
+  .c-cpGZkl:hover { box-shadow: var(--shadows-button); cursor: pointer; bac=
+kground: var(--colors-gradientDark); }
+  .c-cpGZkl:active { box-shadow: var(--shadows-buttonInset); }
+  .c-cpGZkl { border: none; }
+  @media (max-width: 700px) {
+  .c-iiIzXT { background-color: var(--colors-headerBg); position: fixed; in=
+set: 110% 0px 0px; max-width: 100vw; height: 100%; z-index: var(--zIndices-=
+menu); flex-direction: column; padding: 1rem; transition: inset 0.2s; }
+}
+  @media (max-width: 700px) {
+  .c-iiIzXT variants show true { top: 0%; }
+}
+  @media (max-width: 700px) {
+  .c-iiIzXT .c-bMrOCQ { padding: 0.3rem; font-size: 1.2rem; }
+}
+  @media (min-width: 701px) {
+  .c-iiIzXT { display: flex; align-items: center; }
+}
+  .c-bMrOCQ { color: var(--colors-headerText); display: block; text-decorat=
+ion: none; font-size: 0.9rem; border-radius: 0.5rem; padding: 0.2rem 0.6rem=
+; }
+  .c-bMrOCQ:hover { background: var(--colors-navContrast); }
+  .c-bMrOCQ:active { background: var(--colors-navContrast2); }
+  .c-bxaRrq { flex: 1 1 0%; display: flex; padding: 0.5rem; align-items: fl=
+ex-end; }
+  @media (min-width: 701px) {
+  .c-bxaRrq { display: none; }
+}
+  .c-dVbgSW { flex: 1 0 auto; }
+  .c-ekpeUW { background: var(--colors-headerBg); margin: -3rem auto 2rem; =
+display: flex; place-content: start center; flex-direction: column; padding=
+-top: 10rem; padding-bottom: 5rem; overflow: visible; position: relative; c=
+olor: var(--colors-headerText); width: 100%; }
+  @media (min-width: 1100px) {
+  .c-ekpeUW { padding-top: 14rem; }
+}
+  .c-kgNnDI { width: 100%; height: 30rem; position: absolute; top: 0px; ove=
+rflow: hidden; pointer-events: none; }
+  .c-gkSXVp { display: flex; max-width: 20rem; height: 20rem; position: abs=
+olute; top: -10rem; right: 40%; transform: scale(0.5); }
+  @media (min-width: 600px) {
+  .c-gkSXVp { transform: scale(1); }
+}
+  .c-jWxpbI { position: absolute; left: 1rem; height: 40rem; animation: 100=
+00ms ease 0s infinite normal none running k-hXlRYS; }
+  .c-jWxpbI svg { height: 100%; width: 100%; }
+  .c-gqPPss { width: 100%; max-width: var(--sizes-containerBig); position: =
+relative; margin: 0px auto; padding-left: 1rem; padding-right: 1rem; displa=
+y: flex; align-items: flex-start; flex-direction: column; }
+  @media (min-width: 600px) {
+  .c-gqPPss { flex-flow: wrap; }
+}
+  .c-XaQtC { display: flex; flex-direction: column; max-width: 33rem; }
+  .c-sxUZY { font-size: 2.5rem; color: var(--colors-headerText); }
+  @media (min-width: 600px) {
+  .c-jjBAMt { max-width: 20rem; }
+}
+  .c-jjBAMt * { color: var(--colors-headerText); }
+  .c-iTDQIF { display: block; background: var(--colors-gradient); height: 2=
+px; width: 100%; }
+  .c-hMsoij { color: var(--colors-text1); }
+  .c-hMsoij a { text-decoration: none; }
+  .c-GKXIB { max-width: var(--sizes-container); margin: 0px auto; padding: =
+1rem; }
+  .c-cmpvrW { position: relative; }
+  .c-iZUsOw { background: var(--colors-footerBg); flex-shrink: 0; padding-b=
+ottom: 3rem; padding-top: 3rem; margin-top: 10rem; }
+  .c-iZUsOw * { color: white; }
+  .c-iZUsOw a { text-decoration: none; }
+  .c-iZUsOw a:hover { text-decoration: underline; }
+  .c-bhecMF { max-width: var(--sizes-containerBig); margin: 0px auto; displ=
+ay: flex; flex-flow: wrap; padding: 1rem; }
+  .c-gZchqP { display: flex; flex: 1 1 0%; flex-flow: wrap; justify-content=
+: space-between; }
+  .c-bMtUlk { display: flex; margin-right: 3rem; flex-direction: column; }
+  .c-bMtUlk p { margin-bottom: 0rem; }
+  .c-gVogGt { height: 2px; width: 100%; max-width: var(--sizes-containerBig=
+); background: white; margin: 2rem auto; }
+  .c-icyBXA { flex: 1 1 0%; align-items: center; display: flex; margin-bott=
+om: 1rem; }
+  .c-ftDPZP { width: 2rem; height: 2rem; margin-right: 1rem; }
+  .c-OMYxk { background: transparent; color: white; outline: none; border: =
+none; display: inline-block; line-height: 1.2rem; margin-left: 1rem; }
+  .c-OMYxk:hover { cursor: pointer; text-decoration: underline; }
+  .c-aoXsO { flex: 1 1 0%; justify-content: flex-end; display: flex; }
+  .c-kJKhAa { align-self: end; }
+  .c-kJKhAa svg { fill: var(--colors-bg0); }
+  .c-kJKhAa { width: 1.5rem; margin-right: 0.5rem; }
+}
+
+--sxs { --sxs: 6 c-cpGZkl-ieLVpLf-css; }
+
+--sxs { --sxs: 3; }
+
+@media  {
+}
+
+--sxs { --sxs: 4; }
+
+@media  {
+}
+
+--sxs { --sxs: 5; }
+
+@media  {
+}
+
+@media  {
+  .c-cpGZkl-ieLVpLf-css { align-self: center; }
+  @media (min-width: 701px) {
+  .c-cpGZkl-ieLVpLf-css { display: none; }
+}
+}
+
+--sxs { --sxs: 6; }
+
+@media  {
+}
+------MultipartBoundary--MAz8gSl4UPHwjW6LM7uvF4YebFhV1C4g05IhsJdjvu----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: cid:css-5d97b5d7-192d-4d58-a65f-f9757ab493e0@mhtml.blink
+
+@charset "utf-8";
+
+@font-face { font-family: Inter; font-style: normal; font-weight: 300; font=
+-display: swap; src: url("https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3i=
+LTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuOKfMZs.woff") format("woff"); }
+
+@font-face { font-family: Inter; font-style: normal; font-weight: 800; font=
+-display: swap; src: url("https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3i=
+LTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuDyYMZs.woff") format("woff"); }
+
+@font-face { font-family: Inter; font-style: normal; font-weight: 300; font=
+-display: swap; src: url("https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3i=
+LTeHuS_nVMrMxCp50SjIa2JL7W0Q5n-wU.woff2") format("woff2"); unicode-range: U=
++460-52F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F; }
+
+@font-face { font-family: Inter; font-style: normal; font-weight: 300; font=
+-display: swap; src: url("https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3i=
+LTeHuS_nVMrMxCp50SjIa0ZL7W0Q5n-wU.woff2") format("woff2"); unicode-range: U=
++301, U+400-45F, U+490-491, U+4B0-4B1, U+2116; }
+
+@font-face { font-family: Inter; font-style: normal; font-weight: 300; font=
+-display: swap; src: url("https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3i=
+LTeHuS_nVMrMxCp50SjIa2ZL7W0Q5n-wU.woff2") format("woff2"); unicode-range: U=
++1F00-1FFF; }
+
+@font-face { font-family: Inter; font-style: normal; font-weight: 300; font=
+-display: swap; src: url("https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3i=
+LTeHuS_nVMrMxCp50SjIa1pL7W0Q5n-wU.woff2") format("woff2"); unicode-range: U=
++370-377, U+37A-37F, U+384-38A, U+38C, U+38E-3A1, U+3A3-3FF; }
+
+@font-face { font-family: Inter; font-style: normal; font-weight: 300; font=
+-display: swap; src: url("https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3i=
+LTeHuS_nVMrMxCp50SjIa2pL7W0Q5n-wU.woff2") format("woff2"); unicode-range: U=
++102-103, U+110-111, U+128-129, U+168-169, U+1A0-1A1, U+1AF-1B0, U+300-301,=
+ U+303-304, U+308-309, U+323, U+329, U+1EA0-1EF9, U+20AB; }
+
+@font-face { font-family: Inter; font-style: normal; font-weight: 300; font=
+-display: swap; src: url("https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3i=
+LTeHuS_nVMrMxCp50SjIa25L7W0Q5n-wU.woff2") format("woff2"); unicode-range: U=
++100-2AF, U+304, U+308, U+329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20A=
+B, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+@font-face { font-family: Inter; font-style: normal; font-weight: 300; font=
+-display: swap; src: url("https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3i=
+LTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2") format("woff2"); unicode-range: U+0=
+-FF, U+131, U+152-153, U+2BB-2BC, U+2C6, U+2DA, U+2DC, U+304, U+308, U+329,=
+ U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEF=
+F, U+FFFD; }
+
+@font-face { font-family: Inter; font-style: normal; font-weight: 800; font=
+-display: swap; src: url("https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3i=
+LTeHuS_nVMrMxCp50SjIa2JL7W0Q5n-wU.woff2") format("woff2"); unicode-range: U=
++460-52F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F; }
+
+@font-face { font-family: Inter; font-style: normal; font-weight: 800; font=
+-display: swap; src: url("https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3i=
+LTeHuS_nVMrMxCp50SjIa0ZL7W0Q5n-wU.woff2") format("woff2"); unicode-range: U=
++301, U+400-45F, U+490-491, U+4B0-4B1, U+2116; }
+
+@font-face { font-family: Inter; font-style: normal; font-weight: 800; font=
+-display: swap; src: url("https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3i=
+LTeHuS_nVMrMxCp50SjIa2ZL7W0Q5n-wU.woff2") format("woff2"); unicode-range: U=
++1F00-1FFF; }
+
+@font-face { font-family: Inter; font-style: normal; font-weight: 800; font=
+-display: swap; src: url("https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3i=
+LTeHuS_nVMrMxCp50SjIa1pL7W0Q5n-wU.woff2") format("woff2"); unicode-range: U=
++370-377, U+37A-37F, U+384-38A, U+38C, U+38E-3A1, U+3A3-3FF; }
+
+@font-face { font-family: Inter; font-style: normal; font-weight: 800; font=
+-display: swap; src: url("https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3i=
+LTeHuS_nVMrMxCp50SjIa2pL7W0Q5n-wU.woff2") format("woff2"); unicode-range: U=
++102-103, U+110-111, U+128-129, U+168-169, U+1A0-1A1, U+1AF-1B0, U+300-301,=
+ U+303-304, U+308-309, U+323, U+329, U+1EA0-1EF9, U+20AB; }
+
+@font-face { font-family: Inter; font-style: normal; font-weight: 800; font=
+-display: swap; src: url("https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3i=
+LTeHuS_nVMrMxCp50SjIa25L7W0Q5n-wU.woff2") format("woff2"); unicode-range: U=
++100-2AF, U+304, U+308, U+329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20A=
+B, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+@font-face { font-family: Inter; font-style: normal; font-weight: 800; font=
+-display: swap; src: url("https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3i=
+LTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2") format("woff2"); unicode-range: U+0=
+-FF, U+131, U+152-153, U+2BB-2BC, U+2C6, U+2DA, U+2DC, U+304, U+308, U+329,=
+ U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEF=
+F, U+FFFD; }
+------MultipartBoundary--MAz8gSl4UPHwjW6LM7uvF4YebFhV1C4g05IhsJdjvu----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: cid:css-30db94d0-90f0-48f5-a555-f41d7eca4ee1@mhtml.blink
+
+@charset "utf-8";
+=0A
+------MultipartBoundary--MAz8gSl4UPHwjW6LM7uvF4YebFhV1C4g05IhsJdjvu----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: cid:css-1a207713-3eb2-4838-8305-44a6ed911ec1@mhtml.blink
+
+@charset "utf-8";
+
+:root [href^=3D"//mage98rquewz.com/"], :root [href^=3D"//x4pollyxxpush.com/=
+"], :root span[id^=3D"ezoic-pub-ad-placeholder-"], :root ins.adsbygoogle[da=
+ta-ad-slot], :root ins.adsbygoogle[data-ad-client], :root guj-ad, :root gpt=
+-ad, :root div[id^=3D"zergnet-widget"], :root div[id^=3D"vuukle-ad-"], :roo=
+t div[id^=3D"taboola-stream-"], :root div[id^=3D"sticky_ad_"], :root div[id=
+^=3D"st"][style^=3D"z-index: 999999999;"], :root div[id^=3D"pa_sticky_ad_bo=
+x_middle_"], :root div[id^=3D"gpt_ad_"], :root div[id^=3D"ezoic-pub-ad-"], =
+:root div[id^=3D"dfp-ad-"], :root div[id^=3D"crt-"][style], :root div[id^=
+=3D"adspot-"], :root div[id^=3D"adrotate_widgets-"], :root ps-connatix-modu=
+le, :root div[id^=3D"ad_position_"], :root div[id^=3D"ad-div-"], :root div[=
+id*=3D"ScriptRoot"], :root div[id*=3D"MarketGid"], :root div[data-id-advert=
+dfpconf], :root hl-adsense, :root div[data-contentexchange-widget], :root d=
+iv[data-alias=3D"300x250 Ad 2"], :root div[data-adzone], :root div[data-adu=
+nit-path], :root div[data-adname], :root div[data-ad-placeholder], :root di=
+v[class^=3D"native-ad-"], :root div[data-dfp-id], :root div[class^=3D"kiwi-=
+ad-wrapper"], :root div[aria-label=3D"Ads"], :root display-ads, :root displ=
+ay-ad-component, :root atf-ad-slot, :root aside[id^=3D"adrotate_widgets-"],=
+ :root ark-top-ad, :root amp-fx-flying-carpet, :root amp-embed[type=3D"tabo=
+ola"], :root amp-connatix-player, :root amp-ad-custom, :root amp-ad, :root =
+div[id^=3D"google_dfp_"], :root ad-slot, :root ad-shield-ads, :root a[style=
+=3D"width:100%;height:100%;z-index:10000000000000000;position:absolute;top:=
+0;left:0;"], :root a[onmousedown^=3D"this.href=3D'https://paid.outbrain.com=
+/network/redir?"][target=3D"_blank"] + .ob_source, :root a[href^=3D"https:/=
+/xbet-4.com/"], :root div[id^=3D"ad-position-"], :root a[href^=3D"https://w=
+ww.toprevenuegate.com/"], :root a[href^=3D"https://www.sugarinstant.com/?pa=
+rtner_id=3D"], :root a[href^=3D"https://www.purevpn.com/"][href*=3D"&utm_so=
+urce=3Daff-"], :root a[href^=3D"https://www.privateinternetaccess.com/"] > =
+img, :root a[href^=3D"https://www.onlineusershielder.com/"], :root a[href^=
+=3D"https://www.liquidfire.mobi/"], :root a[href^=3D"https://www.infowarsst=
+ore.com/"] > img, :root a[href^=3D"https://www.highperformancecpmgate.com/"=
+], :root a[href^=3D"https://www.highcpmrevenuenetwork.com/"], :root a[href^=
+=3D"https://lnkxt.bannerator.com/"], :root a[href^=3D"https://www.geekbuyin=
+g.com/dynamic-ads/"], :root a[href^=3D"https://www.financeads.net/tc.php?"]=
+, :root [href^=3D"https://www.herbanomic.com/"] > img, :root a[href^=3D"htt=
+ps://maymooth-stopic.com/"], :root a[href^=3D"https://www.dql2clk.com/"], :=
+root a[href^=3D"https://www.nutaku.net/signup/landing/"], :root a[href^=3D"=
+https://www.dating-finder.com/signup/?ai_d=3D"], :root a[href^=3D"https://e=
+xplore-site.com/"], :root a[href^=3D"https://www.brazzersnetwork.com/landin=
+g/"], :root a[href^=3D"https://www.adxsrve.com/"], :root [data-template-typ=
+e=3D"nativead"], :root a[href^=3D"https://www.endorico.com/Smartlink/"], :r=
+oot a[href^=3D"https://www.adultempire.com/"][href*=3D"?partner_id=3D"], :r=
+oot a[href^=3D"https://voluum.prom-xcams.com/"], :root div[data-type=3D"_mg=
+widget"]:not(.eyeo), :root a[href^=3D"https://twinrdsrv.com/"], :root a[hre=
+f^=3D"https://trk.nfl-online-streams.club/"], :root a[href^=3D"https://trac=
+king.avapartner.com/"], :root a[href^=3D"https://track.wg-aff.com"], :root =
+a[href^=3D"https://track.ultravpn.com/"], :root a[href^=3D"https://track.af=
+cpatrk.com/"], :root a[href^=3D"https://torguard.net/aff.php"] > img, :root=
+ [data-identity=3D"adhesive-ad"], :root a[href^=3D"https://tc.tradetracker.=
+net/"] > img, :root a[href^=3D"https://tatrck.com/"], :root a[href^=3D"http=
+s://click.candyoffers.com/"], :root [href^=3D"https://zstacklife.com/"] img=
+, :root a[href^=3D"https://t.aslnk.link/"], :root a[href^=3D"https://t.adat=
+ing.link/"], :root a[href^=3D"https://safesurfingtoday.com/"][href*=3D"?ski=
+p=3D"], :root a[href^=3D"https://land.brazzersnetwork.com/landing/"], :root=
+ a[href^=3D"https://t.acam.link/"], :root a[href*=3D"//daichoho.com/"], :ro=
+ot a[href^=3D"https://syndication.optimizesrv.com/"], :root a[href^=3D"http=
+s://go.trackitalltheway.com/"], :root [href^=3D"https://track.fiverr.com/vi=
+sit/"] > img, :root a[href^=3D"https://syndication.exoclick.com/"], :root a=
+[href^=3D"https://syndication.dynsrvtbg.com/"], :root div[data-alias=3D"300=
+x250 Ad 1"], :root a[href^=3D"https://syndicate.contentsserved.com/"], :roo=
+t a[href^=3D"https://svb-analytics.trackerrr.com/"], :root a[href^=3D"https=
+://ad.doubleclick.net/"], :root a[href^=3D"https://static.fleshlight.com/im=
+ages/banners/"], :root a[href^=3D"https://slkmis.com/"], :root bottomadbloc=
+k, :root a[href^=3D"https://s.zlinkd.com/"], :root a[href^=3D"https://s.zli=
+nk3.com/"], :root a[href^=3D"https://www.mrskin.com/account/"], :root a[hre=
+f^=3D"https://s.optzsrv.com/"], :root a[href^=3D"https://random-affiliate.a=
+timaze.com/"], :root #kt_player > div[style$=3D"display: block;"][style*=3D=
+"inset: 0px;"], :root a[href^=3D"https://quotationfirearmrevision.com/"], :=
+root a[href^=3D"https://pubads.g.doubleclick.net/"], :root a[href^=3D"https=
+://ak.oalsauwy.net/"], :root a[href^=3D"https://softwa.cfd/"], :root a[href=
+^=3D"https://play1ad.shop/"], :root a[href^=3D"https://prf.hn/click/"][href=
+*=3D"/camref:"] > img, :root a[href^=3D"https://www.dating-finder.com/?ai_d=
+=3D"], :root a[href^=3D"https://serve.awmdelivery.com/"], :root a[href^=3D"=
+https://prf.hn/click/"][href*=3D"/adref:"] > img, :root app-ad, :root [href=
+^=3D"https://ap.octopuspop.com/click/"] > img, :root a[href^=3D"https://pos=
+tback1win.com/"], :root a[href^=3D"https://mmwebhandler.aff-online.com/"], =
+:root a[href^=3D"https://www.bet365.com/"][href*=3D"affiliate=3D"], :root a=
+[href^=3D"https://pb-track.com/"], :root a[href^=3D"https://pb-front.com/"]=
+, :root a[href^=3D"https://paid.outbrain.com/network/redir?"], :root a[href=
+^=3D"https://streamate.com/landing/click/"], :root div[class^=3D"Adstyled__=
+AdWrapper-"], :root a[href^=3D"https://startgaming.net/tienda/" i], :root a=
+[href^=3D"https://osfultrbriolenai.info/"], :root a[href^=3D"https://nginee=
+t.cfd/"], :root a[href^=3D"https://upsups.click/"], :root a[href^=3D"https:=
+//ndt5.net/"], :root a[href^=3D"http://eighteenderived.com/"], :root a[href=
+^=3D"https://natour.naughtyamerica.com/track/"], :root a[href^=3D"https://m=
+ediaserver.entainpartners.com/renderBanner.do?"], :root a[href^=3D"https://=
+m.do.co/c/"] > img, :root .nya-slot[style], :root a[href^=3D"https://a.best=
+contentweb.top/"], :root a[href^=3D"https://lobimax.com/"], :root a[href^=
+=3D"https://lead1.pl/"], :root a[href^=3D"https://landing.brazzersnetwork.c=
+om/"], :root a[href^=3D"https://join.virtuallust3d.com/"], :root a[href^=3D=
+"https://kiksajex.com/"], :root a[href^=3D"https://juicyads.in/"], :root a[=
+href^=3D"https://snowdayonline.xyz/"], :root a[href^=3D"https://mediaserver=
+.gvcaffiliates.com/renderBanner.do?"], :root a[href^=3D"https://join.dreams=
+exworld.com/"], :root a[href^=3D"https://jaxofuna.com/"], :root a[href^=3D"=
+https://itubego.com/video-downloader/?affid=3D"], :root a[href^=3D"https://=
+italarizege.xyz/"], :root a[href^=3D"https://iqbroker.com/"][href*=3D"?aff=
+=3D"], :root a[href^=3D"https://hot-growngames.life/"], :root a[href^=3D"ht=
+tps://golinks.work/"], :root a[href^=3D"https://go.xxxvjmp.com/"], :root [c=
+lass^=3D"tile-picker__CitrusBannerContainer-sc-"], :root a[href^=3D"https:/=
+/go.xxxiijmp.com"], :root a[href^=3D"https://go.xtbaffiliates.com/"], :root=
+ .OUTBRAIN[data-widget-id^=3D"FMS_REELD_"], :root [data-role=3D"tile-ads-mo=
+dule"], :root a[href^=3D"https://go.xlviirdr.com"], :root a[href^=3D"https:=
+//go.xlviiirdr.com"], :root a[href^=3D"https://ismlks.com/"], :root [href^=
+=3D"https://www.mypillow.com/"] > img, :root a[href^=3D"https://go.xlirdr.c=
+om"], :root [data-css-class=3D"dfp-inarticle"], :root a[href^=3D"https://l.=
+hyenadata.com/"], :root a[href^=3D"https://go.tmrjmp.com"], :root a[href^=
+=3D"https://zirdough.net/"], :root a[href^=3D"https://s.deltraff.com/"], :r=
+oot a[href^=3D"https://go.markets.com/visit/?bta=3D"], :root a[href^=3D"htt=
+ps://billing.purevpn.com/aff.php"] > img, :root a[href^=3D"https://go.hpyrd=
+r.com/"], :root a[href^=3D"https://lijavaxa.com/"], :root a[href^=3D"https:=
+//go.goaserv.com/"], :root a[href^=3D"https://t.hrtye.com/"], :root a[href^=
+=3D"https://go.etoro.com/"] > img, :root a[href^=3D"https://go.dmzjmp.com"]=
+, :root div[class^=3D"Display_displayAd"], :root a[href^=3D"https://www.ban=
+g.com/?aff=3D"], :root #mgb-container > #mgb, :root a[href^=3D"https://go.a=
+dmjmp.com"], :root a[href^=3D"https://get.surfshark.net/aff_c?"][href*=3D"&=
+aff_id=3D"] > img, :root a[href^=3D"https://www.mrskin.com/tour"], :root a[=
+href^=3D"https://financeads.net/tc.php?"], :root a[href^=3D"https://www.ads=
+keeper.com"], :root a[data-redirect^=3D"https://paid.outbrain.com/network/r=
+edir?"], :root [href^=3D"https://clicks.affstrack.com/"] > img, :root a[hre=
+f^=3D"https://ak.hauchiwu.com/"], :root a[href^=3D"https://engine.phn.doubl=
+epimp.com/"], :root a[href^=3D"https://engine.blueistheneworanges.com/"], :=
+root a[href^=3D"https://drumskilxoa.click/"], :root a[href^=3D"https://dl-p=
+rotect.net/"], :root a[href^=3D"https://rixofa.com/"], :root #ads[style^=3D=
+"position: absolute; z-index: 30; width: 100%; height"], :root a[href^=3D"h=
+ttps://disobediencecalculatormaiden.com/"], :root a[href*=3D".foxqck.com/"]=
+, :root a[href^=3D"https://ctosrd.com/"], :root div[id*=3D"ScriptRoot"]:not=
+(.eyeo), :root a[href^=3D"https://clixtrac.com/"], :root [href^=3D"https://=
+noqreport.com/"] > img, :root a[href^=3D"https://clicks.pipaffiliates.com/"=
+], :root a[href^=3D"https://datewhisper.life/"], :root a[href^=3D"https://g=
+et-link.xyz/"], :root a[href^=3D"https://click.linksynergy.com/fs-bin/"] > =
+img, :root a[href^=3D"https://combodef.com/"], :root ad-triple-box, :root a=
+[href^=3D"https://click.hoolig.app/"], :root a[href^=3D"https://track.total=
+av.com/"], :root a[href^=3D"https://ctrdwm.com/"], :root img[src^=3D"https:=
+//images.purevpnaffiliates.com"], :root a[href^=3D"https://porntubemate.com=
+/"], :root a[href^=3D"https://clickadilla.com/"], :root a[href^=3D"https://=
+click.dtiserv2.com/"], :root a[href^=3D"https://go.xlvirdr.com"], :root a[h=
+ref^=3D"http://www.iyalc.com/"], :root a[href^=3D"https://claring-loccelkin=
+.com/"], :root a[href^=3D"https://s.ma3ion.com/"], :root a[href^=3D"https:/=
+/cams.imagetwist.com/in/?track=3D"], :root a[href^=3D"https://bongacams2.co=
+m/track?"], :root a[href^=3D"https://t.ajrkm1.com/"], :root [href=3D"https:=
+//masstortfinancing.com"] img, :root a[href^=3D"https://bongacams10.com/tra=
+ck?"], :root a[href^=3D"https://www.sheetmusicplus.com/"][href*=3D"?aff_id=
+=3D"], :root a[href^=3D"https://bngpt.com/"], :root a[href^=3D"https://blac=
+k77854.com/"], :root a[href^=3D"https://banners.livepartners.com/"], :root =
+a[href^=3D"http://revolvemockerycopper.com/"], :root a[href^=3D"https://awp=
+tjmp.com/"], :root a[href^=3D"https://join.sexworld3d.com/track/"], :root a=
+[href^=3D"https://intenseaffiliates.com/redirect/"], :root a[href^=3D"https=
+://aweptjmp.com/"], :root [class^=3D"s2nPlayer"], :root a[href^=3D"https://=
+chaturbate.jjgirls.com/?track=3D"], :root a[href^=3D"https://ausoafab.net/"=
+], :root a[href^=3D"https://activate-game.com/"], :root .scroll-fixable.rai=
+l-right > .deals-rail, :root [data-wpas-zoneid], :root a[href^=3D"https://a=
+2.adform.net/"], :root a[href^=3D"https://auesk.cfd/"], :root a[href^=3D"ht=
+tps://ak.psaltauw.net/"], :root a[href^=3D"https://adclick.g.doubleclick.ne=
+t/"], :root a[href^=3D"https://bc.game/"], :root a[href^=3D"https://a.bestc=
+ontentoperation.top/"], :root a[href^=3D"https://adultfriendfinder.com/go/"=
+], :root a[href^=3D"https://ads.planetwin365affiliate.com/"], :root a[href^=
+=3D"https://ads.leovegas.com/"], :root a[href^=3D"https://a.candyai.love/"]=
+, :root a[href^=3D"https://playnano.online/offerwalls/?ref=3D"], :root a[hr=
+ef^=3D"https://a.adtng.com/"], :root [data-m-ad-id], :root a[href^=3D"https=
+://a-ads.com/"], :root div[id^=3D"rc-widget-"], :root a[href^=3D"http://esl=
+p34af.click/"], :root a[href^=3D"https://turnstileunavailablesite.com/"], :=
+root a[href^=3D"https://chaturbate.com/in/?"], :root a[href^=3D"https://prf=
+.hn/click/"][href*=3D"/creativeref:"] > img, :root a[href*=3D"&maxads=3D"],=
+ :root a[href^=3D"http://www.adultempire.com/unlimited/promo?"][href*=3D"&p=
+artner_id=3D"], :root a[href^=3D"https://1betandgonow.com/"], :root a[href^=
+=3D"https://eergortu.net/"], :root div[id^=3D"optidigital-adslot"], :root a=
+[href^=3D"https://123-stream.org/"], :root a[href^=3D"http://www.friendlydu=
+ck.com/AF_"], :root a[href^=3D"https://allhost.shop/aff.php?"], :root [data=
+-dynamic-ads], :root a[href^=3D"http://vnte9urn.click/"], :root a[href^=3D"=
+https://getvideoz.click/"], :root a[href^=3D"http://troopsassistedstupidity=
+.com/"], :root a[href^=3D"http://trk.globwo.online/"], :root a-ad, :root a[=
+href^=3D"https://offhandpump.com/"], :root a[href^=3D"http://stickingrepute=
+.com/"], :root #slashboxes > .deals-rail, :root [data-rc-widget=3D"data-rc-=
+widget"], :root a[href^=3D"http://premonitioninventdisagree.com/"], :root a=
+[href^=3D"http://naggingirresponsible.com/"], :root a[href^=3D"https://in.r=
+abbtrk.com/"], :root div[data-ad-targeting], :root a[href^=3D"https://hotpl=
+aystime.life/"], :root a[href^=3D"http://www.h4trck.com/"], :root a[href^=
+=3D"https://81ac.xyz/"], :root a[href^=3D"http://guestblackmail.com/"], :ro=
+ot a[href^=3D"http://cam4com.go2cloud.org/aff_c?"], :root a[href^=3D"https:=
+//ads.betfair.com/redirect.aspx?"], :root [href^=3D"https://www.mypatriotsu=
+pply.com/"] > img, :root a[href^=3D"https://trk.softonixs.xyz/"], :root a[h=
+ref^=3D"https://sexynearme.com/"], :root a[href^=3D"https://myclick-2.com/"=
+], :root a[href^=3D"http://dragnag.com/"], :root a[href^=3D"https://trk.spo=
+rtsflix4k.club/"], :root a[href^=3D"http://dragfault.com/"], :root [id^=3D"=
+div-gpt-ad"], :root .ob_container .item-container-obpd, :root div[id^=3D"ya=
+ndex_ad"], :root a[href^=3D"https://www8.smartadserver.com/"], :root a[href=
+^=3D"https://pb-imc.com/"], :root a[href^=3D"http://deskfrontfreely.com/"],=
+ :root [data-advadstrackid], :root a[href^=3D"http://muzzlematrix.com/"], :=
+root a[href^=3D"https://track.adform.net/"], :root a[href^=3D"http://avthel=
+kp.net/"], :root a[href^=3D"https://a.medfoodhome.com/"], :root a[href^=3D"=
+https://engine.flixtrial.com/"], :root [data-type=3D"ad-vertical"], :root [=
+data-taboola-options], :root a[href^=3D"http://annulmentequitycereals.com/"=
+], :root a[href^=3D"//startgaming.net/tienda/" i], :root a[href^=3D"https:/=
+/www.get-express-vpn.com/offer/"], :root a[href^=3D"https://s.cant3am.com/"=
+], :root a[href^=3D"//s.st1net.com/splash.php"], :root a[href^=3D"https://j=
+oin.virtualtaboo.com/track/"], :root [id^=3D"ad_sky"], :root a[href^=3D"htt=
+p://coefficienttolerategravel.com/"], :root a[href^=3D"https://a.medfoodsaf=
+ety.com/"], :root a[href^=3D"//go.eabids.com/"], :root a[href^=3D"//ejitsir=
+dosha.net/"], :root a[href^=3D" https://www.friendlyduck.com/AF_"], :root a=
+[href*=3D"/jump/next.php?r=3D"], :root [href^=3D"https://ilovemyfreedoms.co=
+m/landing-"], :root a[href^=3D"https://go.nordvpn.net/aff"] > img, :root .\=
+[\&_\.gdprAdTransparencyCogWheelButton\]\:\!pjra-z-\[5\], :root [href^=3D"h=
+ttp://clicks.totemcash.com/"], :root a[href^=3D"https://ad.zanox.com/ppc/"]=
+ > img, :root a[href^=3D"https://lone-pack.com/"], :root [data-d-ad-id], :r=
+oot a[href*=3D".engine.adglare.net/"], :root a[href^=3D"https://t.ajrkm3.co=
+m/"], :root a[href^=3D"//stighoazon.com/"], :root [href^=3D"https://www.pro=
+fitablegatecpm.com/"], :root div[id^=3D"lazyad-"], :root a[href^=3D"http://=
+com-1.pro/"], :root a[href*=3D".cfm?domain=3D"][href*=3D"&fp=3D"], :root [d=
+ata-ad-name], :root a[href^=3D"https://loboclick.com/"], :root a[data-url^=
+=3D"https://vulpix.bet/?ref=3D"], :root a[href^=3D"https://ab.advertiserurl=
+.com/aff/"], :root a[data-oburl^=3D"https://paid.outbrain.com/network/redir=
+?"], :root a[href^=3D"https://go.xlivrdr.com"], :root [onclick^=3D"location=
+.href=3D'https://1337x.vpnonly.site/"], :root [name^=3D"google_ads_iframe"]=
+, :root [id^=3D"section-ad-banner"], :root [href^=3D"https://zone.gotrackie=
+r.com/"], :root a[href^=3D"http://sarcasmadvisor.com/"], :root [href^=3D"ht=
+tps://www.restoro.com/"], :root [href^=3D"https://www.targetingpartner.com/=
+"], :root .section-subheader > .section-hotel-prices-header, :root [href^=
+=3D"https://www.hostg.xyz/"] > img, :root a[href^=3D"http://adultfriendfind=
+er.com/go/"], :root a[href^=3D"https://fastestvpn.com/lifetime-special-deal=
+?a_aid=3D"], :root a[href^=3D"https://tour.mrskin.com/"], :root [href^=3D"h=
+ttps://www.brighteonstore.com/products/"] img, :root citrus-ad-wrapper, :ro=
+ot a[onmousedown^=3D"this.href=3D'https://paid.outbrain.com/network/redir?"=
+][target=3D"_blank"], :root a[href^=3D"https://go.grinsbest.com/"], :root a=
+[href^=3D"https://vo2.qrlsx.com/"], :root [href^=3D"https://www.avantlink.c=
+om/click.php"] img, :root a[href^=3D"https://losingoldfry.com/"], :root [hr=
+ef^=3D"https://routewebtk.com/"], :root div[id^=3D"div-ads-"], :root [href^=
+=3D"https://rapidgator.net/article/premium/ref/"], :root [href^=3D"https://=
+join.girlsoutwest.com/"], :root a[href^=3D"https://track.aftrk3.com/"], :ro=
+ot [href^=3D"https://join3.bannedsextapes.com"], :root a[href^=3D"https://b=
+odelen.com/"], :root a[href*=3D".g2afse.com/"], :root div[id^=3D"adngin-"],=
+ :root [data-rc-widget], :root span[data-ez-ph-id], :root [href^=3D"https:/=
+/track.aftrk1.com/"], :root [href^=3D"https://join.playboyplus.com/track/"]=
+, :root a[href^=3D"https://go.xxxijmp.com"], :root [href^=3D"https://istlnk=
+cl.com/"], :root [href^=3D"https://go.xlrdr.com"], :root a[href^=3D"https:/=
+/tm-offers.gamingadult.com/"], :root [href^=3D"https://charmingdatings.life=
+/"], :root [href^=3D"https://glersakr.com/"], :root a[href^=3D"https://www.=
+goldenfrog.com/vyprvpn?offer_id=3D"][href*=3D"&aff_id=3D"], :root [id^=3D"a=
+d-wrap-"], :root a[href*=3D"//jjgirls.com/sex/Chaturbate"], :root a[href^=
+=3D"https://a.bestcontentfood.top/"], :root [href^=3D"https://cpa.10kfreesi=
+lver.com/"], :root [data-id^=3D"div-gpt-ad"], :root a[href^=3D"https://trac=
+ker.loropartners.com/"], :root [href^=3D"https://awbbjmp.com/"], :root a[da=
+ta-href^=3D"http://ads.trafficjunky.net/"], :root a[href*=3D".adsrv.eacdn.c=
+om/"], :root [href^=3D"https://antiagingbed.com/discount/"] > img, :root a[=
+href^=3D"http://partners.etoro.com/"], :root a[href^=3D"https://www.friendl=
+yduck.com/AF_"], :root [href^=3D"https://ad1.adfarm1.adition.com/"], :root =
+a[href^=3D"https://bngprm.com/"], :root [href^=3D"https://shiftnetwork.infu=
+sionsoft.com/go/"] > img, :root a[href^=3D"https://go.strpjmp.com/"], :root=
+ a[href^=3D"https://go.bushheel.com/"], :root a[href^=3D"https://ctjdwm.com=
+/"], :root a[href^=3D"https://camfapr.com/landing/click/"], :root div[data-=
+ad-wrapper], :root .gnt_em_vp_c[data-g-s=3D"vp_dk"], :root [href=3D"//sexca=
+ms.plus/"], :root [href^=3D"http://www.mypillow.com/"] > img, :root #kt_pla=
+yer > a[target=3D"_blank"], :root a[href^=3D"http://bongacams.com/track?"],=
+ :root [href^=3D"http://mypillow.com/"] > img, :root [href=3D"https://ourgo=
+ldguy.com/contact/"] img, :root #teaser3[style=3D"width: 100%;text-align: c=
+enter;display: scroll;position:fixed;bottom: 0;margin: 0 auto;z-index: 103;=
+"], :root [href=3D"https://www.masstortfinancing.com/"] > img, :root a[href=
+^=3D"https://go.rmhfrtnd.com/"], :root [href=3D"https://jdrucker.com/gold"]=
+ > img, :root a[href^=3D"https://track.1234sd123.com/"], :root zeus-ad, :ro=
+ot [data-testid=3D"prism-ad-wrapper"], :root [href^=3D"https://ad.admitad.c=
+om/"], :root [href^=3D"https://mypillow.com/"] > img, :root [data-testid=3D=
+"ad_testID"], :root [href^=3D"https://optimizedelite.com/"] > img, :root [d=
+ata-name=3D"adaptiveConstructorAd"], :root a[href^=3D"https://go.cmtaffilia=
+tes.com/"], :root [href^=3D"https://mylead.global/stl/"] > img, :root [data=
+-testid=3D"adBanner-wrapper"], :root [href^=3D"https://goldcometals.com/clk=
+.trk"], :root [href^=3D"https://mypatriotsupply.com/"] > img, :root a[href^=
+=3D"https://go.hpyjmp.com"], :root [href^=3D"https://mystore.com/"] > img, =
+:root [href^=3D"https://wct.link/click?"], :root div[data-adunit], :root ap=
+p-large-ad, :root [href^=3D"https://turtlebids.irauctions.com/"] img, :root=
+ div[class*=3D"publift-widget-"]:has(.fuse-slot-sticky), :root a[href^=3D"h=
+ttps://witnessjacket.com/"], :root [data-mobile-ad-id], :root a[href^=3D"ht=
+tps://fc.lc/ref/"], :root [data-adshim], :root topadblock, :root a[href^=3D=
+"//s.zlinkd.com/"], :root [class^=3D"amp-ad-"], :root a[href^=3D"http://han=
+dgripvegetationhols.com/"], :root a[href^=3D"https://bs.serving-sys.com"], =
+:root a[href^=3D"https://gamingadlt.com/?offer=3D"], :root [data-desktop-ad=
+-id], :root .grid > .container > #aside-promotion, :root dfp-ad, :root [id^=
+=3D"ad_slider"], :root [data-adbridg-ad-class], :root #teaser3[style^=3D"wi=
+dth:autopx;"], :root [data-adblockkey], :root [data-block-type=3D"ad"], :ro=
+ot [data-ad-width], :root [onclick*=3D"content.ad/"], :root [data-ad-manage=
+r-id], :root amp-ad, :root [data-ad-cls], :root [data-revive-zoneid] > ifra=
+me, :root [data-ez-name], :root a[href^=3D"https://go.mnaspm.com/"], :root =
+a[href^=3D"https://service.bv-aff-trx.com/"], :root a[href^=3D"https://6-pa=
+rtner.com/"], :root a[href^=3D"https://traffdaq.com/"], :root [href^=3D"htt=
+ps://www.cloudways.com/en/?id"], :root #teaser1[style^=3D"width:autopx;"], =
+:root [class^=3D"div-gpt-ad"], :root a[href^=3D"http://tc.tradetracker.net/=
+"] > img, :root [href^=3D"https://affiliate.fastcomet.com/"] > img, :root [=
+class^=3D"adDisplay-module"], :root [data-freestar-ad][id], :root a[href^=
+=3D"https://baipahanoop.net/"], :root [href^=3D"https://v.investologic.co.u=
+k/"], :root ad-slot, :root a[href^=3D"https://www.googleadservices.com/page=
+ad/aclk?"] > img, :root [data-ad-module], :root div[id^=3D"div-gpt-"], :roo=
+t a[href^=3D"https://gml-grp.com/"], :root .ob_dual_right > .ob_ads_header =
+~ .odb_div, :root app-advertisement, :root a[href^=3D"https://getmatchedloc=
+ally.com/"], :root a[href^=3D"https://clickins.slixa.com/"], :root a[href^=
+=3D"https://cam4com.go2cloud.org/"], :root a[href^=3D"http://li.blogtrottr.=
+com/click?"], :root a[href^=3D"https://go.skinstrip.net"][href*=3D"?campaig=
+nId=3D"], :root #teaser2[style^=3D"width:autopx;"], :root a[href^=3D"https:=
+//t.ajump1.com/"], :root a[href^=3D"https://go.xxxjmp.com"], :root #leader-=
+companion > a[href] { display: none !important; }
+------MultipartBoundary--MAz8gSl4UPHwjW6LM7uvF4YebFhV1C4g05IhsJdjvu----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark.min.css
+
+@charset "utf-8";
+
+pre code.hljs { display: block; overflow-x: auto; padding: 1em; }
+
+code.hljs { padding: 3px 5px; }
+
+.hljs { color: rgb(201, 209, 217); background: rgb(13, 17, 23); }
+
+.hljs-doctag, .hljs-keyword, .hljs-meta .hljs-keyword, .hljs-template-tag, =
+.hljs-template-variable, .hljs-type, .hljs-variable.language_ { color: rgb(=
+255, 123, 114); }
+
+.hljs-title, .hljs-title.class_, .hljs-title.class_.inherited__, .hljs-titl=
+e.function_ { color: rgb(210, 168, 255); }
+
+.hljs-attr, .hljs-attribute, .hljs-literal, .hljs-meta, .hljs-number, .hljs=
+-operator, .hljs-selector-attr, .hljs-selector-class, .hljs-selector-id, .h=
+ljs-variable { color: rgb(121, 192, 255); }
+
+.hljs-meta .hljs-string, .hljs-regexp, .hljs-string { color: rgb(165, 214, =
+255); }
+
+.hljs-built_in, .hljs-symbol { color: rgb(255, 166, 87); }
+
+.hljs-code, .hljs-comment, .hljs-formula { color: rgb(139, 148, 158); }
+
+.hljs-name, .hljs-quote, .hljs-selector-pseudo, .hljs-selector-tag { color:=
+ rgb(126, 231, 135); }
+
+.hljs-subst { color: rgb(201, 209, 217); }
+
+.hljs-section { color: rgb(31, 111, 235); font-weight: 700; }
+
+.hljs-bullet { color: rgb(242, 204, 96); }
+
+.hljs-emphasis { color: rgb(201, 209, 217); font-style: italic; }
+
+.hljs-strong { color: rgb(201, 209, 217); font-weight: 700; }
+
+.hljs-addition { color: rgb(175, 245, 180); background-color: rgb(3, 58, 22=
+); }
+
+.hljs-deletion { color: rgb(255, 220, 215); background-color: rgb(103, 6, 1=
+2); }
+------MultipartBoundary--MAz8gSl4UPHwjW6LM7uvF4YebFhV1C4g05IhsJdjvu----
+Content-Type: image/svg+xml
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://ontola.io/images/logo_white.svg
+
+<svg width=3D"39" height=3D"35" viewBox=3D"0 0 39 35" fill=3D"none" xmlns=
+=3D"http://www.w3.org/2000/svg">
+<path fill-rule=3D"evenodd" clip-rule=3D"evenodd" d=3D"M7.31355 32.1311C9.7=
+3705 32.1311 11.7017 30.2045 11.7017 27.8279C11.7017 25.4512 9.73705 23.524=
+6 7.31355 23.5246C4.89005 23.5246 2.92542 25.4512 2.92542 27.8279C2.92542 3=
+0.2045 4.89005 32.1311 7.31355 32.1311ZM7.31355 35C11.3527 35 14.6271 31.78=
+89 14.6271 27.8279C14.6271 23.8668 11.3527 20.6558 7.31355 20.6558C3.27439 =
+20.6558 0 23.8668 0 27.8279C0 31.7889 3.27439 35 7.31355 35Z" fill=3D"white=
+"/>
+<path fill-rule=3D"evenodd" clip-rule=3D"evenodd" d=3D"M31.3018 32.1311C33.=
+7253 32.1311 35.69 30.2045 35.69 27.8279C35.69 25.4512 33.7253 23.5246 31.3=
+018 23.5246C28.8783 23.5246 26.9137 25.4512 26.9137 27.8279C26.9137 30.2045=
+ 28.8783 32.1311 31.3018 32.1311ZM31.3018 35C35.341 35 38.6154 31.7889 38.6=
+154 27.8279C38.6154 23.8668 35.341 20.6558 31.3018 20.6558C27.2627 20.6558 =
+23.9883 23.8668 23.9883 27.8279C23.9883 31.7889 27.2627 35 31.3018 35Z" fil=
+l=3D"white"/>
+<path fill-rule=3D"evenodd" clip-rule=3D"evenodd" d=3D"M19.0152 11.4753C21.=
+4387 11.4753 23.4033 9.54872 23.4033 7.17209C23.4033 4.79547 21.4387 2.8688=
+4 19.0152 2.86884C16.5917 2.86884 14.6271 4.79547 14.6271 7.17209C14.6271 9=
+.54872 16.5917 11.4753 19.0152 11.4753ZM19.0152 14.3442C23.0544 14.3442 26.=
+3288 11.1331 26.3288 7.17209C26.3288 3.21106 23.0544 0 19.0152 0C14.976 0 1=
+1.7017 3.21106 11.7017 7.17209C11.7017 11.1331 14.976 14.3442 19.0152 14.34=
+42Z" fill=3D"white"/>
+<path fill-rule=3D"evenodd" clip-rule=3D"evenodd" d=3D"M11.5013 11.7617C9.0=
+1545 13.5801 7.23806 16.278 6.64844 19.3855C6.86795 19.3694 7.08971 19.3611=
+ 7.31341 19.3611C8.09658 19.3611 8.85575 19.4617 9.57829 19.6505C10.0937 17=
+.3073 11.4936 15.2868 13.4182 13.9416C12.6618 13.3268 12.0124 12.5899 11.50=
+13 11.7617ZM24.612 13.9416C26.5812 15.3179 28.001 17.4012 28.4862 19.8136C2=
+9.3701 19.5202 30.317 19.3611 31.3019 19.3611C31.327 19.3611 31.3521 19.361=
+2 31.3771 19.3615C30.7829 16.2641 29.0083 13.5754 26.5289 11.7617C26.0178 1=
+2.5899 25.3684 13.3268 24.612 13.9416ZM22.8636 30.3412C23.1375 31.2795 23.5=
+698 32.1521 24.1302 32.9297C22.5674 33.6126 20.8364 33.9922 19.0151 33.9922=
+C17.3659 33.9922 15.7908 33.681 14.3476 33.1151C14.9325 32.3477 15.3898 31.=
+4814 15.6889 30.5464C16.7258 30.9197 17.8462 31.1234 19.0151 31.1234C20.383=
+ 31.1234 21.6845 30.8444 22.8636 30.3412Z" fill=3D"white"/>
+</svg>=0A
+------MultipartBoundary--MAz8gSl4UPHwjW6LM7uvF4YebFhV1C4g05IhsJdjvu----
+Content-Type: image/svg+xml
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://ontola.io/images/github.svg
+
+<svg role=3D"img" fill=3D"white" viewBox=3D"0 0 24 24" xmlns=3D"http://www.=
+w3.org/2000/svg"><title>GitHub</title><path d=3D"M12 .297c-6.63 0-12 5.373-=
+12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-=
+.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7=
+c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835=
+ 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.4=
+66-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-=
+.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 =
+3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.2=
+2 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.=
+015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.3=
+73-12-12-12"/></svg>=0A
+------MultipartBoundary--MAz8gSl4UPHwjW6LM7uvF4YebFhV1C4g05IhsJdjvu----
+Content-Type: image/svg+xml
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://ontola.io/images/facebook.svg
+
+<svg role=3D"img" viewBox=3D"0 0 24 24" fill=3D"white" xmlns=3D"http://www.=
+w3.org/2000/svg"><title>Facebook</title><path d=3D"M24 12.073c0-6.627-5.373=
+-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3=
+.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v=
+2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.3=
+85C19.612 23.027 24 18.062 24 12.073z"/></svg>=0A
+------MultipartBoundary--MAz8gSl4UPHwjW6LM7uvF4YebFhV1C4g05IhsJdjvu----
+Content-Type: image/svg+xml
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://ontola.io/images/linkedin.svg
+
+<svg role=3D"img" fill=3D"white" viewBox=3D"0 0 24 24" xmlns=3D"http://www.=
+w3.org/2000/svg"><title>LinkedIn</title><path d=3D"M20.447 20.452h-3.554v-5=
+.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9=
+.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.2=
+67 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.06=
+3 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm=
+1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.=
+542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .7=
+74 23.2 0 22.222 0h.003z"/></svg>=0A
+------MultipartBoundary--MAz8gSl4UPHwjW6LM7uvF4YebFhV1C4g05IhsJdjvu----
+Content-Type: image/svg+xml
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://ontola.io/images/twitter.svg
+
+<svg role=3D"img" fill=3D"white" viewBox=3D"0 0 24 24" xmlns=3D"http://www.=
+w3.org/2000/svg"><title>Twitter</title><path d=3D"M23.953 4.57a10 10 0 01-2=
+.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4=
+.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666=
+ 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.=
+923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 =
+9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007=
+.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.=
+935 0 0024 4.59z"/></svg>=0A
+------MultipartBoundary--MAz8gSl4UPHwjW6LM7uvF4YebFhV1C4g05IhsJdjvu----
+Content-Type: text/html
+Content-ID: <frame-BE34A04C15F164E6F46DFF82C6DD7FD7@mhtml.blink>
+Content-Transfer-Encoding: quoted-printable
+
+<html><head><meta http-equiv=3D"Content-Type" content=3D"text/html; charset=
+=3DUTF-8"></head><body><iframe height=3D"0" width=3D"0" src=3D"cid:frame-F1=
+FE0D2F41BEC4FB36895538AB7B119C@mhtml.blink" style=3D"display: none; visibil=
+ity: hidden;"></iframe></body></html>
+------MultipartBoundary--MAz8gSl4UPHwjW6LM7uvF4YebFhV1C4g05IhsJdjvu----
+Content-Type: text/html
+Content-ID: <frame-F1FE0D2F41BEC4FB36895538AB7B119C@mhtml.blink>
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://www.googletagmanager.com/static/service_worker/4al0/sw_iframe.html?origin=https%3A%2F%2Fontola.io
+
+<!DOCTYPE html><html><head><meta http-equiv=3D"Content-Type" content=3D"tex=
+t/html; charset=3Dwindows-1252"><link rel=3D"stylesheet" type=3D"text/css" =
+href=3D"cid:css-56e08f0d-f69f-4343-9c3b-d7c2dc428563@mhtml.blink" />
+  <link rel=3D"shortcut icon" href=3D"data:image/x-icon;," type=3D"image/x-=
+icon">
+</head>
+<body>
+ =20
+
+</body></html>
+------MultipartBoundary--MAz8gSl4UPHwjW6LM7uvF4YebFhV1C4g05IhsJdjvu----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: cid:css-56e08f0d-f69f-4343-9c3b-d7c2dc428563@mhtml.blink
+
+@charset "windows-1252";
+
+:root [href^=3D"//mage98rquewz.com/"], :root [href^=3D"//x4pollyxxpush.com/=
+"], :root span[id^=3D"ezoic-pub-ad-placeholder-"], :root ins.adsbygoogle[da=
+ta-ad-slot], :root ins.adsbygoogle[data-ad-client], :root guj-ad, :root gpt=
+-ad, :root div[id^=3D"zergnet-widget"], :root div[id^=3D"vuukle-ad-"], :roo=
+t div[id^=3D"taboola-stream-"], :root div[id^=3D"sticky_ad_"], :root div[id=
+^=3D"st"][style^=3D"z-index: 999999999;"], :root div[id^=3D"pa_sticky_ad_bo=
+x_middle_"], :root div[id^=3D"gpt_ad_"], :root div[id^=3D"ezoic-pub-ad-"], =
+:root div[id^=3D"dfp-ad-"], :root div[id^=3D"crt-"][style], :root div[id^=
+=3D"adspot-"], :root div[id^=3D"adrotate_widgets-"], :root ps-connatix-modu=
+le, :root div[id^=3D"ad_position_"], :root div[id^=3D"ad-div-"], :root div[=
+id*=3D"ScriptRoot"], :root div[id*=3D"MarketGid"], :root div[data-id-advert=
+dfpconf], :root hl-adsense, :root div[data-contentexchange-widget], :root d=
+iv[data-alias=3D"300x250 Ad 2"], :root div[data-adzone], :root div[data-adu=
+nit-path], :root div[data-adname], :root div[data-ad-placeholder], :root di=
+v[class^=3D"native-ad-"], :root div[data-dfp-id], :root div[class^=3D"kiwi-=
+ad-wrapper"], :root div[aria-label=3D"Ads"], :root display-ads, :root displ=
+ay-ad-component, :root atf-ad-slot, :root aside[id^=3D"adrotate_widgets-"],=
+ :root ark-top-ad, :root amp-fx-flying-carpet, :root amp-embed[type=3D"tabo=
+ola"], :root amp-connatix-player, :root amp-ad-custom, :root amp-ad, :root =
+div[id^=3D"google_dfp_"], :root ad-slot, :root ad-shield-ads, :root a[style=
+=3D"width:100%;height:100%;z-index:10000000000000000;position:absolute;top:=
+0;left:0;"], :root a[onmousedown^=3D"this.href=3D'https://paid.outbrain.com=
+/network/redir?"][target=3D"_blank"] + .ob_source, :root a[href^=3D"https:/=
+/xbet-4.com/"], :root div[id^=3D"ad-position-"], :root a[href^=3D"https://w=
+ww.toprevenuegate.com/"], :root a[href^=3D"https://www.sugarinstant.com/?pa=
+rtner_id=3D"], :root a[href^=3D"https://www.purevpn.com/"][href*=3D"&utm_so=
+urce=3Daff-"], :root a[href^=3D"https://www.privateinternetaccess.com/"] > =
+img, :root a[href^=3D"https://www.onlineusershielder.com/"], :root a[href^=
+=3D"https://www.liquidfire.mobi/"], :root a[href^=3D"https://www.infowarsst=
+ore.com/"] > img, :root a[href^=3D"https://www.highperformancecpmgate.com/"=
+], :root a[href^=3D"https://www.highcpmrevenuenetwork.com/"], :root a[href^=
+=3D"https://lnkxt.bannerator.com/"], :root a[href^=3D"https://www.geekbuyin=
+g.com/dynamic-ads/"], :root a[href^=3D"https://www.financeads.net/tc.php?"]=
+, :root [href^=3D"https://www.herbanomic.com/"] > img, :root a[href^=3D"htt=
+ps://maymooth-stopic.com/"], :root a[href^=3D"https://www.dql2clk.com/"], :=
+root a[href^=3D"https://www.nutaku.net/signup/landing/"], :root a[href^=3D"=
+https://www.dating-finder.com/signup/?ai_d=3D"], :root a[href^=3D"https://e=
+xplore-site.com/"], :root a[href^=3D"https://www.brazzersnetwork.com/landin=
+g/"], :root a[href^=3D"https://www.adxsrve.com/"], :root [data-template-typ=
+e=3D"nativead"], :root a[href^=3D"https://www.endorico.com/Smartlink/"], :r=
+oot a[href^=3D"https://www.adultempire.com/"][href*=3D"?partner_id=3D"], :r=
+oot a[href^=3D"https://voluum.prom-xcams.com/"], :root div[data-type=3D"_mg=
+widget"]:not(.eyeo), :root a[href^=3D"https://twinrdsrv.com/"], :root a[hre=
+f^=3D"https://trk.nfl-online-streams.club/"], :root a[href^=3D"https://trac=
+king.avapartner.com/"], :root a[href^=3D"https://track.wg-aff.com"], :root =
+a[href^=3D"https://track.ultravpn.com/"], :root a[href^=3D"https://track.af=
+cpatrk.com/"], :root a[href^=3D"https://torguard.net/aff.php"] > img, :root=
+ [data-identity=3D"adhesive-ad"], :root a[href^=3D"https://tc.tradetracker.=
+net/"] > img, :root a[href^=3D"https://tatrck.com/"], :root a[href^=3D"http=
+s://click.candyoffers.com/"], :root [href^=3D"https://zstacklife.com/"] img=
+, :root a[href^=3D"https://t.aslnk.link/"], :root a[href^=3D"https://t.adat=
+ing.link/"], :root a[href^=3D"https://safesurfingtoday.com/"][href*=3D"?ski=
+p=3D"], :root a[href^=3D"https://land.brazzersnetwork.com/landing/"], :root=
+ a[href^=3D"https://t.acam.link/"], :root a[href*=3D"//daichoho.com/"], :ro=
+ot a[href^=3D"https://syndication.optimizesrv.com/"], :root a[href^=3D"http=
+s://go.trackitalltheway.com/"], :root [href^=3D"https://track.fiverr.com/vi=
+sit/"] > img, :root a[href^=3D"https://syndication.exoclick.com/"], :root a=
+[href^=3D"https://syndication.dynsrvtbg.com/"], :root div[data-alias=3D"300=
+x250 Ad 1"], :root a[href^=3D"https://syndicate.contentsserved.com/"], :roo=
+t a[href^=3D"https://svb-analytics.trackerrr.com/"], :root a[href^=3D"https=
+://ad.doubleclick.net/"], :root a[href^=3D"https://static.fleshlight.com/im=
+ages/banners/"], :root a[href^=3D"https://slkmis.com/"], :root bottomadbloc=
+k, :root a[href^=3D"https://s.zlinkd.com/"], :root a[href^=3D"https://s.zli=
+nk3.com/"], :root a[href^=3D"https://www.mrskin.com/account/"], :root a[hre=
+f^=3D"https://s.optzsrv.com/"], :root a[href^=3D"https://random-affiliate.a=
+timaze.com/"], :root #kt_player > div[style$=3D"display: block;"][style*=3D=
+"inset: 0px;"], :root a[href^=3D"https://quotationfirearmrevision.com/"], :=
+root a[href^=3D"https://pubads.g.doubleclick.net/"], :root a[href^=3D"https=
+://ak.oalsauwy.net/"], :root a[href^=3D"https://softwa.cfd/"], :root a[href=
+^=3D"https://play1ad.shop/"], :root a[href^=3D"https://prf.hn/click/"][href=
+*=3D"/camref:"] > img, :root a[href^=3D"https://www.dating-finder.com/?ai_d=
+=3D"], :root a[href^=3D"https://serve.awmdelivery.com/"], :root a[href^=3D"=
+https://prf.hn/click/"][href*=3D"/adref:"] > img, :root app-ad, :root [href=
+^=3D"https://ap.octopuspop.com/click/"] > img, :root a[href^=3D"https://pos=
+tback1win.com/"], :root a[href^=3D"https://mmwebhandler.aff-online.com/"], =
+:root a[href^=3D"https://www.bet365.com/"][href*=3D"affiliate=3D"], :root a=
+[href^=3D"https://pb-track.com/"], :root a[href^=3D"https://pb-front.com/"]=
+, :root a[href^=3D"https://paid.outbrain.com/network/redir?"], :root a[href=
+^=3D"https://streamate.com/landing/click/"], :root div[class^=3D"Adstyled__=
+AdWrapper-"], :root a[href^=3D"https://startgaming.net/tienda/" i], :root a=
+[href^=3D"https://osfultrbriolenai.info/"], :root a[href^=3D"https://nginee=
+t.cfd/"], :root a[href^=3D"https://upsups.click/"], :root a[href^=3D"https:=
+//ndt5.net/"], :root a[href^=3D"http://eighteenderived.com/"], :root a[href=
+^=3D"https://natour.naughtyamerica.com/track/"], :root a[href^=3D"https://m=
+ediaserver.entainpartners.com/renderBanner.do?"], :root a[href^=3D"https://=
+m.do.co/c/"] > img, :root .nya-slot[style], :root a[href^=3D"https://a.best=
+contentweb.top/"], :root a[href^=3D"https://lobimax.com/"], :root a[href^=
+=3D"https://lead1.pl/"], :root a[href^=3D"https://landing.brazzersnetwork.c=
+om/"], :root a[href^=3D"https://join.virtuallust3d.com/"], :root a[href^=3D=
+"https://kiksajex.com/"], :root a[href^=3D"https://juicyads.in/"], :root a[=
+href^=3D"https://snowdayonline.xyz/"], :root a[href^=3D"https://mediaserver=
+.gvcaffiliates.com/renderBanner.do?"], :root a[href^=3D"https://join.dreams=
+exworld.com/"], :root a[href^=3D"https://jaxofuna.com/"], :root a[href^=3D"=
+https://itubego.com/video-downloader/?affid=3D"], :root a[href^=3D"https://=
+italarizege.xyz/"], :root a[href^=3D"https://iqbroker.com/"][href*=3D"?aff=
+=3D"], :root a[href^=3D"https://hot-growngames.life/"], :root a[href^=3D"ht=
+tps://golinks.work/"], :root a[href^=3D"https://go.xxxvjmp.com/"], :root [c=
+lass^=3D"tile-picker__CitrusBannerContainer-sc-"], :root a[href^=3D"https:/=
+/go.xxxiijmp.com"], :root a[href^=3D"https://go.xtbaffiliates.com/"], :root=
+ .OUTBRAIN[data-widget-id^=3D"FMS_REELD_"], :root [data-role=3D"tile-ads-mo=
+dule"], :root a[href^=3D"https://go.xlviirdr.com"], :root a[href^=3D"https:=
+//go.xlviiirdr.com"], :root a[href^=3D"https://ismlks.com/"], :root [href^=
+=3D"https://www.mypillow.com/"] > img, :root a[href^=3D"https://go.xlirdr.c=
+om"], :root [data-css-class=3D"dfp-inarticle"], :root a[href^=3D"https://l.=
+hyenadata.com/"], :root a[href^=3D"https://go.tmrjmp.com"], :root a[href^=
+=3D"https://zirdough.net/"], :root a[href^=3D"https://s.deltraff.com/"], :r=
+oot a[href^=3D"https://go.markets.com/visit/?bta=3D"], :root a[href^=3D"htt=
+ps://billing.purevpn.com/aff.php"] > img, :root a[href^=3D"https://go.hpyrd=
+r.com/"], :root a[href^=3D"https://lijavaxa.com/"], :root a[href^=3D"https:=
+//go.goaserv.com/"], :root a[href^=3D"https://t.hrtye.com/"], :root a[href^=
+=3D"https://go.etoro.com/"] > img, :root a[href^=3D"https://go.dmzjmp.com"]=
+, :root div[class^=3D"Display_displayAd"], :root a[href^=3D"https://www.ban=
+g.com/?aff=3D"], :root #mgb-container > #mgb, :root a[href^=3D"https://go.a=
+dmjmp.com"], :root a[href^=3D"https://get.surfshark.net/aff_c?"][href*=3D"&=
+aff_id=3D"] > img, :root a[href^=3D"https://www.mrskin.com/tour"], :root a[=
+href^=3D"https://financeads.net/tc.php?"], :root a[href^=3D"https://www.ads=
+keeper.com"], :root a[data-redirect^=3D"https://paid.outbrain.com/network/r=
+edir?"], :root [href^=3D"https://clicks.affstrack.com/"] > img, :root a[hre=
+f^=3D"https://ak.hauchiwu.com/"], :root a[href^=3D"https://engine.phn.doubl=
+epimp.com/"], :root a[href^=3D"https://engine.blueistheneworanges.com/"], :=
+root a[href^=3D"https://drumskilxoa.click/"], :root a[href^=3D"https://dl-p=
+rotect.net/"], :root a[href^=3D"https://rixofa.com/"], :root #ads[style^=3D=
+"position: absolute; z-index: 30; width: 100%; height"], :root a[href^=3D"h=
+ttps://disobediencecalculatormaiden.com/"], :root a[href*=3D".foxqck.com/"]=
+, :root a[href^=3D"https://ctosrd.com/"], :root div[id*=3D"ScriptRoot"]:not=
+(.eyeo), :root a[href^=3D"https://clixtrac.com/"], :root [href^=3D"https://=
+noqreport.com/"] > img, :root a[href^=3D"https://clicks.pipaffiliates.com/"=
+], :root a[href^=3D"https://datewhisper.life/"], :root a[href^=3D"https://g=
+et-link.xyz/"], :root a[href^=3D"https://click.linksynergy.com/fs-bin/"] > =
+img, :root a[href^=3D"https://combodef.com/"], :root ad-triple-box, :root a=
+[href^=3D"https://click.hoolig.app/"], :root a[href^=3D"https://track.total=
+av.com/"], :root a[href^=3D"https://ctrdwm.com/"], :root img[src^=3D"https:=
+//images.purevpnaffiliates.com"], :root a[href^=3D"https://porntubemate.com=
+/"], :root a[href^=3D"https://clickadilla.com/"], :root a[href^=3D"https://=
+click.dtiserv2.com/"], :root a[href^=3D"https://go.xlvirdr.com"], :root a[h=
+ref^=3D"http://www.iyalc.com/"], :root a[href^=3D"https://claring-loccelkin=
+.com/"], :root a[href^=3D"https://s.ma3ion.com/"], :root a[href^=3D"https:/=
+/cams.imagetwist.com/in/?track=3D"], :root a[href^=3D"https://bongacams2.co=
+m/track?"], :root a[href^=3D"https://t.ajrkm1.com/"], :root [href=3D"https:=
+//masstortfinancing.com"] img, :root a[href^=3D"https://bongacams10.com/tra=
+ck?"], :root a[href^=3D"https://www.sheetmusicplus.com/"][href*=3D"?aff_id=
+=3D"], :root a[href^=3D"https://bngpt.com/"], :root a[href^=3D"https://blac=
+k77854.com/"], :root a[href^=3D"https://banners.livepartners.com/"], :root =
+a[href^=3D"http://revolvemockerycopper.com/"], :root a[href^=3D"https://awp=
+tjmp.com/"], :root a[href^=3D"https://join.sexworld3d.com/track/"], :root a=
+[href^=3D"https://intenseaffiliates.com/redirect/"], :root a[href^=3D"https=
+://aweptjmp.com/"], :root [class^=3D"s2nPlayer"], :root a[href^=3D"https://=
+chaturbate.jjgirls.com/?track=3D"], :root a[href^=3D"https://ausoafab.net/"=
+], :root a[href^=3D"https://activate-game.com/"], :root .scroll-fixable.rai=
+l-right > .deals-rail, :root [data-wpas-zoneid], :root a[href^=3D"https://a=
+2.adform.net/"], :root a[href^=3D"https://auesk.cfd/"], :root a[href^=3D"ht=
+tps://ak.psaltauw.net/"], :root a[href^=3D"https://adclick.g.doubleclick.ne=
+t/"], :root a[href^=3D"https://bc.game/"], :root a[href^=3D"https://a.bestc=
+ontentoperation.top/"], :root a[href^=3D"https://adultfriendfinder.com/go/"=
+], :root a[href^=3D"https://ads.planetwin365affiliate.com/"], :root a[href^=
+=3D"https://ads.leovegas.com/"], :root a[href^=3D"https://a.candyai.love/"]=
+, :root a[href^=3D"https://playnano.online/offerwalls/?ref=3D"], :root a[hr=
+ef^=3D"https://a.adtng.com/"], :root [data-m-ad-id], :root a[href^=3D"https=
+://a-ads.com/"], :root div[id^=3D"rc-widget-"], :root a[href^=3D"http://esl=
+p34af.click/"], :root a[href^=3D"https://turnstileunavailablesite.com/"], :=
+root a[href^=3D"https://chaturbate.com/in/?"], :root a[href^=3D"https://prf=
+.hn/click/"][href*=3D"/creativeref:"] > img, :root a[href*=3D"&maxads=3D"],=
+ :root a[href^=3D"http://www.adultempire.com/unlimited/promo?"][href*=3D"&p=
+artner_id=3D"], :root a[href^=3D"https://1betandgonow.com/"], :root a[href^=
+=3D"https://eergortu.net/"], :root div[id^=3D"optidigital-adslot"], :root a=
+[href^=3D"https://123-stream.org/"], :root a[href^=3D"http://www.friendlydu=
+ck.com/AF_"], :root a[href^=3D"https://allhost.shop/aff.php?"], :root [data=
+-dynamic-ads], :root a[href^=3D"http://vnte9urn.click/"], :root a[href^=3D"=
+https://getvideoz.click/"], :root a[href^=3D"http://troopsassistedstupidity=
+.com/"], :root a[href^=3D"http://trk.globwo.online/"], :root a-ad, :root a[=
+href^=3D"https://offhandpump.com/"], :root a[href^=3D"http://stickingrepute=
+.com/"], :root #slashboxes > .deals-rail, :root [data-rc-widget=3D"data-rc-=
+widget"], :root a[href^=3D"http://premonitioninventdisagree.com/"], :root a=
+[href^=3D"http://naggingirresponsible.com/"], :root a[href^=3D"https://in.r=
+abbtrk.com/"], :root div[data-ad-targeting], :root a[href^=3D"https://hotpl=
+aystime.life/"], :root a[href^=3D"http://www.h4trck.com/"], :root a[href^=
+=3D"https://81ac.xyz/"], :root a[href^=3D"http://guestblackmail.com/"], :ro=
+ot a[href^=3D"http://cam4com.go2cloud.org/aff_c?"], :root a[href^=3D"https:=
+//ads.betfair.com/redirect.aspx?"], :root [href^=3D"https://www.mypatriotsu=
+pply.com/"] > img, :root a[href^=3D"https://trk.softonixs.xyz/"], :root a[h=
+ref^=3D"https://sexynearme.com/"], :root a[href^=3D"https://myclick-2.com/"=
+], :root a[href^=3D"http://dragnag.com/"], :root a[href^=3D"https://trk.spo=
+rtsflix4k.club/"], :root a[href^=3D"http://dragfault.com/"], :root [id^=3D"=
+div-gpt-ad"], :root .ob_container .item-container-obpd, :root div[id^=3D"ya=
+ndex_ad"], :root a[href^=3D"https://www8.smartadserver.com/"], :root a[href=
+^=3D"https://pb-imc.com/"], :root a[href^=3D"http://deskfrontfreely.com/"],=
+ :root [data-advadstrackid], :root a[href^=3D"http://muzzlematrix.com/"], :=
+root a[href^=3D"https://track.adform.net/"], :root a[href^=3D"http://avthel=
+kp.net/"], :root a[href^=3D"https://a.medfoodhome.com/"], :root a[href^=3D"=
+https://engine.flixtrial.com/"], :root [data-type=3D"ad-vertical"], :root [=
+data-taboola-options], :root a[href^=3D"http://annulmentequitycereals.com/"=
+], :root a[href^=3D"//startgaming.net/tienda/" i], :root a[href^=3D"https:/=
+/www.get-express-vpn.com/offer/"], :root a[href^=3D"https://s.cant3am.com/"=
+], :root a[href^=3D"//s.st1net.com/splash.php"], :root a[href^=3D"https://j=
+oin.virtualtaboo.com/track/"], :root [id^=3D"ad_sky"], :root a[href^=3D"htt=
+p://coefficienttolerategravel.com/"], :root a[href^=3D"https://a.medfoodsaf=
+ety.com/"], :root a[href^=3D"//go.eabids.com/"], :root a[href^=3D"//ejitsir=
+dosha.net/"], :root a[href^=3D" https://www.friendlyduck.com/AF_"], :root a=
+[href*=3D"/jump/next.php?r=3D"], :root [href^=3D"https://ilovemyfreedoms.co=
+m/landing-"], :root a[href^=3D"https://go.nordvpn.net/aff"] > img, :root .\=
+[\&_\.gdprAdTransparencyCogWheelButton\]\:\!pjra-z-\[5\], :root [href^=3D"h=
+ttp://clicks.totemcash.com/"], :root a[href^=3D"https://ad.zanox.com/ppc/"]=
+ > img, :root a[href^=3D"https://lone-pack.com/"], :root [data-d-ad-id], :r=
+oot a[href*=3D".engine.adglare.net/"], :root a[href^=3D"https://t.ajrkm3.co=
+m/"], :root a[href^=3D"//stighoazon.com/"], :root [href^=3D"https://www.pro=
+fitablegatecpm.com/"], :root div[id^=3D"lazyad-"], :root a[href^=3D"http://=
+com-1.pro/"], :root a[href*=3D".cfm?domain=3D"][href*=3D"&fp=3D"], :root [d=
+ata-ad-name], :root a[href^=3D"https://loboclick.com/"], :root a[data-url^=
+=3D"https://vulpix.bet/?ref=3D"], :root a[href^=3D"https://ab.advertiserurl=
+.com/aff/"], :root a[data-oburl^=3D"https://paid.outbrain.com/network/redir=
+?"], :root a[href^=3D"https://go.xlivrdr.com"], :root [onclick^=3D"location=
+.href=3D'https://1337x.vpnonly.site/"], :root [name^=3D"google_ads_iframe"]=
+, :root [id^=3D"section-ad-banner"], :root [href^=3D"https://zone.gotrackie=
+r.com/"], :root a[href^=3D"http://sarcasmadvisor.com/"], :root [href^=3D"ht=
+tps://www.restoro.com/"], :root [href^=3D"https://www.targetingpartner.com/=
+"], :root .section-subheader > .section-hotel-prices-header, :root [href^=
+=3D"https://www.hostg.xyz/"] > img, :root a[href^=3D"http://adultfriendfind=
+er.com/go/"], :root a[href^=3D"https://fastestvpn.com/lifetime-special-deal=
+?a_aid=3D"], :root a[href^=3D"https://tour.mrskin.com/"], :root [href^=3D"h=
+ttps://www.brighteonstore.com/products/"] img, :root citrus-ad-wrapper, :ro=
+ot a[onmousedown^=3D"this.href=3D'https://paid.outbrain.com/network/redir?"=
+][target=3D"_blank"], :root a[href^=3D"https://go.grinsbest.com/"], :root a=
+[href^=3D"https://vo2.qrlsx.com/"], :root [href^=3D"https://www.avantlink.c=
+om/click.php"] img, :root a[href^=3D"https://losingoldfry.com/"], :root [hr=
+ef^=3D"https://routewebtk.com/"], :root div[id^=3D"div-ads-"], :root [href^=
+=3D"https://rapidgator.net/article/premium/ref/"], :root [href^=3D"https://=
+join.girlsoutwest.com/"], :root a[href^=3D"https://track.aftrk3.com/"], :ro=
+ot [href^=3D"https://join3.bannedsextapes.com"], :root a[href^=3D"https://b=
+odelen.com/"], :root a[href*=3D".g2afse.com/"], :root div[id^=3D"adngin-"],=
+ :root [data-rc-widget], :root span[data-ez-ph-id], :root [href^=3D"https:/=
+/track.aftrk1.com/"], :root [href^=3D"https://join.playboyplus.com/track/"]=
+, :root a[href^=3D"https://go.xxxijmp.com"], :root [href^=3D"https://istlnk=
+cl.com/"], :root [href^=3D"https://go.xlrdr.com"], :root a[href^=3D"https:/=
+/tm-offers.gamingadult.com/"], :root [href^=3D"https://charmingdatings.life=
+/"], :root [href^=3D"https://glersakr.com/"], :root a[href^=3D"https://www.=
+goldenfrog.com/vyprvpn?offer_id=3D"][href*=3D"&aff_id=3D"], :root [id^=3D"a=
+d-wrap-"], :root a[href*=3D"//jjgirls.com/sex/Chaturbate"], :root a[href^=
+=3D"https://a.bestcontentfood.top/"], :root [href^=3D"https://cpa.10kfreesi=
+lver.com/"], :root [data-id^=3D"div-gpt-ad"], :root a[href^=3D"https://trac=
+ker.loropartners.com/"], :root [href^=3D"https://awbbjmp.com/"], :root a[da=
+ta-href^=3D"http://ads.trafficjunky.net/"], :root a[href*=3D".adsrv.eacdn.c=
+om/"], :root [href^=3D"https://antiagingbed.com/discount/"] > img, :root a[=
+href^=3D"http://partners.etoro.com/"], :root a[href^=3D"https://www.friendl=
+yduck.com/AF_"], :root [href^=3D"https://ad1.adfarm1.adition.com/"], :root =
+a[href^=3D"https://bngprm.com/"], :root [href^=3D"https://shiftnetwork.infu=
+sionsoft.com/go/"] > img, :root a[href^=3D"https://go.strpjmp.com/"], :root=
+ a[href^=3D"https://go.bushheel.com/"], :root a[href^=3D"https://ctjdwm.com=
+/"], :root a[href^=3D"https://camfapr.com/landing/click/"], :root div[data-=
+ad-wrapper], :root .gnt_em_vp_c[data-g-s=3D"vp_dk"], :root [href=3D"//sexca=
+ms.plus/"], :root [href^=3D"http://www.mypillow.com/"] > img, :root #kt_pla=
+yer > a[target=3D"_blank"], :root a[href^=3D"http://bongacams.com/track?"],=
+ :root [href^=3D"http://mypillow.com/"] > img, :root [href=3D"https://ourgo=
+ldguy.com/contact/"] img, :root #teaser3[style=3D"width: 100%;text-align: c=
+enter;display: scroll;position:fixed;bottom: 0;margin: 0 auto;z-index: 103;=
+"], :root [href=3D"https://www.masstortfinancing.com/"] > img, :root a[href=
+^=3D"https://go.rmhfrtnd.com/"], :root [href=3D"https://jdrucker.com/gold"]=
+ > img, :root a[href^=3D"https://track.1234sd123.com/"], :root zeus-ad, :ro=
+ot [data-testid=3D"prism-ad-wrapper"], :root [href^=3D"https://ad.admitad.c=
+om/"], :root [href^=3D"https://mypillow.com/"] > img, :root [data-testid=3D=
+"ad_testID"], :root [href^=3D"https://optimizedelite.com/"] > img, :root [d=
+ata-name=3D"adaptiveConstructorAd"], :root a[href^=3D"https://go.cmtaffilia=
+tes.com/"], :root [href^=3D"https://mylead.global/stl/"] > img, :root [data=
+-testid=3D"adBanner-wrapper"], :root [href^=3D"https://goldcometals.com/clk=
+.trk"], :root [href^=3D"https://mypatriotsupply.com/"] > img, :root a[href^=
+=3D"https://go.hpyjmp.com"], :root [href^=3D"https://mystore.com/"] > img, =
+:root [href^=3D"https://wct.link/click?"], :root div[data-adunit], :root ap=
+p-large-ad, :root [href^=3D"https://turtlebids.irauctions.com/"] img, :root=
+ div[class*=3D"publift-widget-"]:has(.fuse-slot-sticky), :root a[href^=3D"h=
+ttps://witnessjacket.com/"], :root [data-mobile-ad-id], :root a[href^=3D"ht=
+tps://fc.lc/ref/"], :root [data-adshim], :root topadblock, :root a[href^=3D=
+"//s.zlinkd.com/"], :root [class^=3D"amp-ad-"], :root a[href^=3D"http://han=
+dgripvegetationhols.com/"], :root a[href^=3D"https://bs.serving-sys.com"], =
+:root a[href^=3D"https://gamingadlt.com/?offer=3D"], :root [data-desktop-ad=
+-id], :root .grid > .container > #aside-promotion, :root dfp-ad, :root [id^=
+=3D"ad_slider"], :root [data-adbridg-ad-class], :root #teaser3[style^=3D"wi=
+dth:autopx;"], :root [data-adblockkey], :root [data-block-type=3D"ad"], :ro=
+ot [data-ad-width], :root [onclick*=3D"content.ad/"], :root [data-ad-manage=
+r-id], :root amp-ad, :root [data-ad-cls], :root [data-revive-zoneid] > ifra=
+me, :root [data-ez-name], :root a[href^=3D"https://go.mnaspm.com/"], :root =
+a[href^=3D"https://service.bv-aff-trx.com/"], :root a[href^=3D"https://6-pa=
+rtner.com/"], :root a[href^=3D"https://traffdaq.com/"], :root [href^=3D"htt=
+ps://www.cloudways.com/en/?id"], :root #teaser1[style^=3D"width:autopx;"], =
+:root [class^=3D"div-gpt-ad"], :root a[href^=3D"http://tc.tradetracker.net/=
+"] > img, :root [href^=3D"https://affiliate.fastcomet.com/"] > img, :root [=
+class^=3D"adDisplay-module"], :root [data-freestar-ad][id], :root a[href^=
+=3D"https://baipahanoop.net/"], :root [href^=3D"https://v.investologic.co.u=
+k/"], :root ad-slot, :root a[href^=3D"https://www.googleadservices.com/page=
+ad/aclk?"] > img, :root [data-ad-module], :root div[id^=3D"div-gpt-"], :roo=
+t a[href^=3D"https://gml-grp.com/"], :root .ob_dual_right > .ob_ads_header =
+~ .odb_div, :root app-advertisement, :root a[href^=3D"https://getmatchedloc=
+ally.com/"], :root a[href^=3D"https://clickins.slixa.com/"], :root a[href^=
+=3D"https://cam4com.go2cloud.org/"], :root a[href^=3D"http://li.blogtrottr.=
+com/click?"], :root a[href^=3D"https://go.skinstrip.net"][href*=3D"?campaig=
+nId=3D"], :root #teaser2[style^=3D"width:autopx;"], :root a[href^=3D"https:=
+//t.ajump1.com/"], :root a[href^=3D"https://go.xxxjmp.com"], :root #leader-=
+companion > a[href] { display: none !important; }
+------MultipartBoundary--MAz8gSl4UPHwjW6LM7uvF4YebFhV1C4g05IhsJdjvu------
