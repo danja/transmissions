@@ -5,9 +5,14 @@ application
 target
 payload
 
-Proctor!!! - self-examination functionality
+Proctor!!! - self-examination functionality (not proctologist)
 
 note surveillance
+
+
+Transmissions, as an agent, should eat its own dogfood.
+
+Agents have communication skills, agency and intelligence - but the levels of each may be *zero*. 
 
 ###
 
