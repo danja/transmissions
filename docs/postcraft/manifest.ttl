@@ -30,8 +30,7 @@ t:PostContent a pc:ContentGroup ;
 # POST PAGES
 t:PostPages a pc:ContentGroup ;
     pc:site <https://danny.ayers.name> ;
-   # fs:sourceDirectory "public/post-content-cache" ;
-    fs:targetDirectory "public/home/entries" ;
+    fs:targetDirectory "/home/danny/github-danny/server/2024/hyperdata.it/postcrafts/transmissions/entries" ;
     pc:template "layouts/mediocre/templates/entry-page_template.njk" .
 
 # MAIN PAGE

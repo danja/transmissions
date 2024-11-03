@@ -1,7 +1,7 @@
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
 
-import JSONWalker from './JSONWalker.js'
+
 import MarkdownFormatter from './MarkdownFormatter.js'
 import TurtleFormatter from './TurtleFormatter.js'
 
@@ -10,9 +10,7 @@ import TurtleFormatter from './TurtleFormatter.js'
 
 class StagingProcessorsFactory {
     static createProcessor(type, config) {
-        if (type.equals(ns.t.JSONWalker)) {
-            return new JSONWalker(config)
-        }
+
         if (type.equals(ns.t.MarkdownFormatter)) {
             return new MarkdownFormatter(config)
         }

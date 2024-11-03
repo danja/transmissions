@@ -5,6 +5,8 @@ import rdf from 'rdf-ext'
 import grapoi from 'grapoi'
 import DeadEnd from './DeadEnd.js'
 /*
+TODO move to ./flow
+
 only accept the first call
 */
 

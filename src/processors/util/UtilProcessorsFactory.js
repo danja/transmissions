@@ -5,7 +5,7 @@ import NOP from './NOP.js'
 import DeadEnd from './DeadEnd.js'
 import ShowMessage from './ShowMessage.js'
 import Halt from './Halt.js'
-import RemapContext from './RemapContext.js'
+import Restructure from '../json/Restructure.js'
 import Unfork from './Unfork.js'
 import Fork from './Fork.js'
 import ShowTransmission from './ShowTransmission.js'
@@ -27,8 +27,8 @@ class UtilProcessorsFactory {
         if (type.equals(ns.t.Halt)) {
             return new Halt(config)
         }
-        if (type.equals(ns.t.RemapContext)) {
-            return new RemapContext(config)
+        if (type.equals(ns.t.Restructure)) {
+            return new Restructure(config)
         }
         if (type.equals(ns.t.Fork)) {
             return new Fork(config)

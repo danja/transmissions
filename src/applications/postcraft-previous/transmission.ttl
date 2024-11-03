@@ -33,13 +33,13 @@
     trm:configKey :fontsCopy .
 #####################
 
-:s20 a :ConfigMap ; ### use services.ttl? - defer to RemapContext as possible
+:s20 a :ConfigMap ; ### use services.ttl? - defer to Restructure as possible
     trm:configKey :markdownToRawPosts .
 
 :s30 a :FileReader ; # the template for raw entry content
     trm:describe trm:all .
 
-:s40 a :RemapContext ;
+:s40 a :Restructure ;
     trm:configKey :walkPrep .
 
 :s50 a :DirWalker . # automatically forks
@@ -50,7 +50,7 @@
 
 :s80 a :MarkdownToHTML . 
 
-:s90 a :RemapContext ;
+:s90 a :Restructure ;
    trm:configKey :entryRawPrep .
 
  :s100 a :Templater .
@@ -59,7 +59,7 @@
 
 ############### entryContentToEntryPage
 :s120 a :EntryContentToPagePrep .
-#:s12 a :RemapContext ;
+#:s12 a :Restructure ;
  #  trm:configKey :entryPagePrep .
 
 :s130 a :Templater .

@@ -8,15 +8,15 @@
 :s1 a :DatasetReader . # the manifest
 :s2 a :ConfigMap . 
 
-### use services.ttl? - defer to RemapContext as possible
+### use services.ttl? - defer to Restructure as possible
 
 # :s3 a :FileReader . # the template for main page
-# :s4 a :RemapContext ;
+# :s4 a :Restructure ;
 #    trm:configKey :mainTemplateDirMap .
 
 :s3 a :FileReader . # the template for posts
 
-:s4 a :RemapContext ;
+:s4 a :Restructure ;
     trm:configKey :postTemplateMap .
 # context.content -> context.template ## Remaps should go here????
 #
@@ -34,7 +34,7 @@
 :s8 a :MarkdownToHTML .
 :s9 a :Templater .
 
-:s10 a :RemapContext ;
+:s10 a :Restructure ;
    trm:configKey :postSaver .
 
 # :s11 a :NOP .

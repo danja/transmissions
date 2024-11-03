@@ -15,7 +15,7 @@
 :globbo a trm:Pipeline ;
     trm:pipe (:s10 :s20 :s30 :s40 :SM) .
 
-#:s40 a :RemapContext ;
+#:s40 a :Restructure ;
  #   trm:configKey :walkPrep .
 
 :s10 a :DirWalker .

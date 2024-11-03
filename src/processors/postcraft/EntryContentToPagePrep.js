@@ -32,10 +32,8 @@ class EntryContentToPagePrep extends ProcessProcessor {
     } else {
       message.filepath = path.join(message.rootDir, message.entryContentToPage.targetDir, message.slug + '.html')
     }
-    logger.debug('server-setup_2024-10-19.html************BBBB  message.filepath = ' + message.filepath)
+    logger.debug('EntryContentToPagePrep, message.filepath = ' + message.filepath)
 
-    //  logger.log('server-setup_2024-10-19.html************ message.rootDir = ' + message.rootDir)
-    //  logger.log('server-setup_2024-10-19.html************ message.entryContentToPage.targetDir = ' + message.entryContentToPage.targetDir)
     this.emit('message', message)
   }
 

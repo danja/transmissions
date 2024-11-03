@@ -1,0 +1,53 @@
+
+## POSTCRAFT.CLEAN ##########################################
+
+:clean a trm:Pipeline ;
+    rdfs:label "clean" ;
+    rdfs:comment "directory cleaner" ;
+    trm:pipe (:r10 :r20 :r30 :r40 :r50 :r60) .
+
+:r10 a :FileRemove ;
+    trm:configKey :removeCache .
+
+:r20 a :FileRemove ;
+    trm:configKey  :removeArticles .
+
+:r30 a :FileRemove ;
+    trm:configKey  :removeJournal .
+
+:r40 a :FileRemove ;
+    trm:configKey  :removeEntries .
+
+:r50 a :FileRemove ;
+    trm:configKey  :removeTodo .
+
+:r60 a :FileRemove ;
+    trm:configKey  :removeIndex .
+
+## POSTCRAFT.COPY ##################################################################
+
+:copy a trm:Pipeline ;
+    rdfs:label "copy" ;
+    rdfs:comment "dir/file copier" ;
+    trm:pipe (:cp10 :cp20 :cp30 :cp40 :cp50) .
+
+### static dirs
+:cp10 a :FileCopy ;
+    trm:configKey :staticCopy .
+
+### media dirs
+:cp20 a :FileCopy ;
+    trm:configKey :mediaCopy .
+    
+### layout dirs
+:cp30 a :FileCopy ;
+    trm:configKey :cssCopy .
+
+:cp40 a :FileCopy ;
+    trm:configKey :jsCopy .
+
+:cp50 a :FileCopy ;
+    trm:configKey :fontsCopy .
+
+#####################
+

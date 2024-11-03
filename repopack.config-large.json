@@ -8,6 +8,7 @@
         "useDefaultPatterns": true,
         "customPatterns": [
             ".env",
+            "**/_*",
             ".git",
             "node_modules",
             "*.log",

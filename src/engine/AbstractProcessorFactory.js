@@ -14,6 +14,7 @@ import PostcraftProcessorsFactory from '../processors/postcraft/PostcraftProcess
 import FlowProcessorsFactory from '../processors/flow/FlowProcessorsFactory.js'
 import StagingProcessorsFactory from '../processors/staging/StagingProcessorsFactory.js'
 import GitHubProcessorsFactory from '../processors/github/GitHubProcessorsFactory.js'
+import JSONProcessorsFactory from '../processors/json/JSONProcessorsFactory.js'
 
 class AbstractProcessorFactory {
 
@@ -57,6 +58,9 @@ class AbstractProcessorFactory {
         if (processor) return processor
 
         processor = StagingProcessorsFactory.createProcessor(type, config)
+        if (processor) return processor
+
+        processor = JSONProcessorsFactory.createProcessor(type, config)
         if (processor) return processor
 
         throw new Error("Unknown processor type: " + type.value)

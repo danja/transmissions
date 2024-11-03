@@ -80,11 +80,14 @@ class GitHubList extends ProcessProcessor {
                 page
             })
 
-            logger.debug(`Page ${page}: Got ${response.data.length} repos`)
+            let data = response.data
+            data = data.slice(0, 3) // Limit to first 3 repos
 
-            repositories.push(...response.data.map(repo => repo.name))
+            logger.debug(`Page ${page}: Got ${data.length} repos`)
 
-            if (response.data.length < 100) break
+            repositories.push(...data.map(repo => repo.name))
+
+            if (data.length < 100) break
             page++
 
             // Add delay between requests

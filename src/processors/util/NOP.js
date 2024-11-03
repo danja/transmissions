@@ -9,12 +9,8 @@ class NOP extends Processor {
     }
 
     async process(message) {
-
-
         logger.log('NOP at (' + message.tags + ') ' + this.getTag())
-        //  logger.log('NOP, this.config.targetDir = ' + this.config.targetDir)
         return this.emit('message', message)
-        //  return this.getOutputs()
     }
 }
 export default NOP

@@ -15,9 +15,9 @@ import Processor from '../base/Processor.js'
  * 
  * @extends Processor
  */
-class RemapContext extends Processor { // TODO rename RemapMessage
+class Restructure extends Processor {
     /**
-     * Creates an instance of RemapContext.
+     * Creates an instance of Restructure.
      * @param {Object} config - The configuration object.
      */
     constructor(config) {
@@ -33,7 +33,7 @@ class RemapContext extends Processor { // TODO rename RemapMessage
             return
         }
 
-        logger.debug('RemapContext this.configKey = ' + this.configKey.value)
+        logger.debug('Restructure this.configKey = ' + this.configKey.value)
 
         const renames = GrapoiHelpers.listToArray(this.config, this.configKey, ns.trm.rename)
         const dataset = this.config
@@ -71,4 +71,4 @@ class RemapContext extends Processor { // TODO rename RemapMessage
     }
 }
 
-export default RemapContext
+export default Restructure

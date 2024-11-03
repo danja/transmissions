@@ -1,9 +1,10 @@
 ```prompt
-Generate comments for the code below the '---' marker. They should follow jsdoc conventions and be concise, appearing only when the functionality isn't obvious from the code. Favor purpose description over implementation details.
+# Transmissions Processors Comment Generator Instructions
+Generate comments for the code supplied. They should follow jsdoc conventions and be concise, appearing only when the functionality isn't obvious from the code. Favor purpose description over implementation details.
 Show the whole code and comments result in the response. Ensure that it appears as a single code listing, beware of any contained markdown etc.
 At the top of the file, include details following the form of this example:
 
-// src/services/fs/FileCopy.js
+// src/processors/fs/FileCopy.js
 /**
  * @class FileCopy
  * @extends Processor

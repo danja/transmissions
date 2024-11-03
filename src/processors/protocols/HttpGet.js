@@ -13,6 +13,8 @@ class HttpGet extends ProcessProcessor {
     }
 
     async process(url, message) {
+        logger.setLogLevel('debug')
+        logger.debug('HttpGet, url = ' + url)
         if (url === '~~done~~') {
             logger.log('HG DONE*****************')
             this.emit('message', url, message)
