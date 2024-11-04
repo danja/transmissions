@@ -2,9 +2,14 @@
 @prefix trm: <http://purl.org/stuff/transmission/> .
 @prefix t: <http://hyperdata.it/transmissions/> .
 
-t:TopConfig a trm:ServiceConfig ;
-    trm:key t:topConfig ;
+t:Conversations a trm:ServiceConfig ;
+    trm:key t:conversationsConfig ;
     trm:targetDir "claude-chat" .
+
+t:retreeConvs a trm:ServiceConfig ;
+    trm:rename (t:pp1 ) . # consider using blank nodes
+    t:pp1   trm:pre     "item.chat_messages" ;
+            trm:post    "payload"  .
 
 
 

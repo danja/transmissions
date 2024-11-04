@@ -14,6 +14,7 @@ class Unfork extends Processor {
 
     constructor(config) {
         super(config)
+        logger.setLogLevel("info")
         /* NOPE
         if (Unfork._instance) {
             return new DeadEnd(config)
@@ -25,11 +26,11 @@ class Unfork extends Processor {
     async process(message) {
 
         if (message.done) {
-            logger.log(' - Unfork passing message')
+            logger.debug(' - Unfork passing message')
             message.done = false // in case it's needed later
             this.emit('message', message)
         } else {
-            logger.log(' - Unfork terminating pipe')
+            logger.debug(' - Unfork terminating pipe')
         }
     }
 

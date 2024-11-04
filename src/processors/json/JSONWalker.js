@@ -1,3 +1,4 @@
+import path from 'path'
 import logger from '../../utils/Logger.js'
 import ProcessProcessor from '../base/ProcessProcessor.js'
 import ns from '../../utils/ns.js'
@@ -11,11 +12,16 @@ class JSONWalker extends ProcessProcessor {
         try {
             // targetDir
 
-            //  logger.debug(`JSONWalker: using configKey ${this.configKey.value}`)
-            const targetDir = this.getPropertyFromMyConfig(ns.trm.targetDir)
+            // TODO MOVE!
+            var targetDir = this.getPropertyFromMyConfig(ns.trm.targetDir)
+            targetDir = path.join(process.cwd(), targetDir)
             logger.debug(`JSONWalker:targetDir =  ${targetDir}`)
 
             const payload = structuredClone(message.payload)
+
+            // SEEMS TO BE GETTING A STRING
+            logger.log(payload)
+            logger.log(typeof payload)
             if (!payload || typeof payload !== 'object') {
                 throw new Error('Invalid JSON payload')
             }

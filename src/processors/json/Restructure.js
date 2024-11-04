@@ -18,7 +18,7 @@ import Processor from '../base/Processor.js'
 class Restructure extends Processor {
     /**
      * Creates an instance of Restructure.
-     * @param {Object} config - The configuration object.
+     * @param {Object} config - The configuration object. 
      */
     constructor(config) {
         super(config)
@@ -29,7 +29,8 @@ class Restructure extends Processor {
      * @param {Object} message - The message object to be remapped.
      */
     async process(message) {
-        if (this.preProcess(message)) {
+        logger.setLogLevel("debug")
+        if (this.preProcess(message)) { // TODO wtf, sort out!!
             return
         }
 
@@ -43,15 +44,21 @@ class Restructure extends Processor {
             let poi = rdf.grapoi({ dataset: dataset, term: rename })
             let pre = poi.out(ns.trm.pre).value
             let post = poi.out(ns.trm.post).value
+
+            logger.debug('Restructure, pre = ' + pre)
+            logger.debug('Restructure, post = ' + post)
+
             var value
 
             // TODO unhackify
             // for copying value of eg. x.y.z to message.b
             if (pre.includes('.')) {
                 const spre = pre.split('.')
-                logger.log('pre- split = ' + spre)
+                logger.debug('pre- split = ' + spre)
+                //    value = structuredClone(message[spre[0]][spre[1]])
                 value = message[spre[0]][spre[1]]
             } else {
+                //  value = structuredClone(message[pre])
                 value = message[pre]
             }
 

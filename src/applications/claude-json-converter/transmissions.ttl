@@ -16,13 +16,25 @@
 
 :cjc a trm:Pipeline ;
 
-trm:pipe (:p10 :UF :DE :p30 :p40) . 
+### RESTRUCTURE TEST RUNNER
+### WHY IS IT BEING CALLED TWICE?
 
-:p10 a :JSONWalker ;
-     trm:configKey :topConfig .
-:p20 a :Unfork .
-:p30 a :MarkdownFormatter .
-:p40 a :FileWriter .
+### ShowConnections
+
+trm:pipe (:walk_convs :uf_convs :retree :walk_msgs :uf_msgs  :SM :DE  :mf :write) . 
+
+:walk_convs a :JSONWalker ;
+     trm:configKey :conversationsConfig .
+
+:uf_convs a :Unfork .
+
+:retree a :Restructure ;
+     trm:configKey :retreeConvs .
+
+:walk_msgs a :JSONWalker .
+:uf_msgs a :Unfork .
+:mf a :MarkdownFormatter .
+:write a :FileWriter .
 # :p10 a :DatasetReader . 
 
 #:cjc_test a trm:Pipeline ;
