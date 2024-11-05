@@ -21,32 +21,8 @@
 
 ### ShowConnections util
 
-trm:pipe (:walk_convs :uf_convs  :retree1  :SM :DE   :walk_msgs :uf_msgs  :retree2  :SM :DE  :mf :write) .
+trm:pipe (:retree1  :SM :DE  ) .
 
-# :retree2 
-
-:walk_convs a :JSONWalker ;
-     trm:configKey :conversationsConfig . # has targetDir TODO move
-
-:uf_convs a :Unfork .
 
 :retree1 a :Restructure ;
-     trm:configKey :retreeConvs .
-
-:walk_msgs a :JSONWalker .
-# trm:configKey ?
-
-:uf_msgs a :Unfork .
-
-:retree2 a :Restructure ;
-     trm:configKey :retreeMsgs .
-
-:mf a :MarkdownFormatter .
-:write a :FileWriter .
-# :p10 a :DatasetReader . 
-
-#:cjc_test a trm:Pipeline ;
-#trm:pipe (:t10 :SC) .
-
-#:t10 a :NOP ;
- # trm:configKey :topConfig .
+     trm:configKey :retree .

@@ -21,9 +21,13 @@ class MarkdownFormatter extends ProcessProcessor {
             message.sessionID = `CC_${dt}`
             message.sessionName = item.name
 
+            // TODO is in config
             const dir = '/home/danny/github-danny/hyperdata/docs/postcraft/content-raw/claude-chat'
+
             message.filepath = path.join(dir, `CC_${dt}.md`) // message.dataDir,
-            message.content = this.formatMarkdown(item.chat_messages)
+
+
+            message.content = this.formatMarkdown(message.content)
 
             this.emit('message', message)
         } catch (err) {
@@ -50,6 +54,7 @@ class MarkdownFormatter extends ProcessProcessor {
 }
   */
     formatMarkdown(item) {
+        logger.reveal(item)
         const lines = []
         lines.push(`# ${item.title || 'Untitled'}`)
         lines.push('')

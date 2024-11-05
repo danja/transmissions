@@ -6,7 +6,7 @@ class Connector extends EventEmitter {
 
 
     constructor(fromName, toName) {
-        super();
+        super()
         this.fromName = fromName
         this.toName = toName
     }
@@ -15,6 +15,10 @@ class Connector extends EventEmitter {
         logger.log(`Connector.connect this.fromName = ${this.fromName} this.toName =  ${this.toName}`)
         let fromProcessor = processors[this.fromName]
         let toProcessor = processors[this.toName]
+
+        if (!fromProcessor) {
+            throw new Error(`\nMissing processor : ${this.fromName} \n(check for typos in transmissions.ttl)\n`)
+        }
 
         fromProcessor.on('message', (message) => { //  = {}
             var tags = ''
@@ -27,6 +31,7 @@ class Connector extends EventEmitter {
 
             toProcessor.receive(message)
         })
+
     }
 
 
