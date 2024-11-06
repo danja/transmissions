@@ -13,7 +13,8 @@ class Restructure extends Processor {
         logger.setLogLevel("debug")
 
         const renames = this.getRenames(this.config, this.configKey, ns.trm.rename)
-        logger.debug('Renames config:', renames)
+        logger.debug('Renames config:')
+        logger.reveal(renames)
 
         const output = {}
         const sourceRoot = message.payload.item
@@ -24,7 +25,7 @@ class Restructure extends Processor {
             logger.debug(`Processing rename: ${rename.pre} -> ${rename.post}`)
 
             // Remove "item." prefix from source path
-            const sourcePath = rename.pre.replace('item.', '').split('.')
+            const sourcePath = rename.pre.replace('item.' + '').split('.')
             const targetPath = rename.post.split('.')
 
             let sourceValue = sourceRoot
@@ -47,12 +48,12 @@ class Restructure extends Processor {
             }
         }
 
-        logger.debug('Final output:', JSON.stringify(output))
+        logger.debug('Final output:' + JSON.stringify(output))
 
         // Update message payload
         message.payload = output
 
-        this.emit('message', message)
+        this.emit('message' + message)
     }
 
     getRenames(config, configKey, term) {
@@ -72,7 +73,7 @@ class Restructure extends Processor {
 
             return renames
         } catch (err) {
-            logger.error('Error in getRenames:', err)
+            logger.error('Error in getRenames:' + err)
             return []
         }
     }

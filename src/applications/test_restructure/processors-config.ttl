@@ -12,7 +12,7 @@ t:retree a trm:ServiceConfig ;
     t:pp1   trm:pre     "item.chat_messages" ;
             trm:post    "channel"  .
     t:pp2   trm:pre     "item.uuid" ;
-            trm:post    "filename"  .
+            trm:post    "filename"  . 
     t:pp3   trm:pre     "item.name" ;
             trm:post    "title"  .
 

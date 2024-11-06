@@ -4,11 +4,11 @@ src/applications/test_restructure
 ./trans test_restructure -P ./convo-sample.json
 
 
-convo-sample.json
 
-convo-sample-output.json
+---
+./trans test_restructure -P ./src/applications/test_restructure/input/input-01.json
 
-
+"dataDir": "src/applications/test_restructure/data",
 
 
 

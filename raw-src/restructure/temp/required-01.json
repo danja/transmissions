@@ -1,0 +1,14 @@
+{
+    "channel": [
+        {
+            "uuid": "id1",
+            "text": "Text one"
+        },
+        {
+            "uuid": "id2",
+            "text": "Text two"
+        }
+    ],
+    "filename": "convo",
+    "title": "Name of this convo"
+}

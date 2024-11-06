@@ -16,13 +16,8 @@
 
 :cjc a trm:Pipeline ;
 
-### RESTRUCTURE TEST RUNNER
-
-
-### ShowConnections util
 
 trm:pipe (:retree1  :SM :DE  ) .
-
 
 :retree1 a :Restructure ;
      trm:configKey :retree .

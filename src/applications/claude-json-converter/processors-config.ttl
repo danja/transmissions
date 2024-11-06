@@ -13,10 +13,13 @@ t:retreeConvs a trm:ServiceConfig ;
 
 t:retreeMsgs a trm:ServiceConfig ;
     trm:rename (t:pp1 t:pp2 t:pp3) . # consider using blank nodes
+
     t:pp1   trm:pre     "item.chat_messages" ;
             trm:post    "channel"  .
+
     t:pp2   trm:pre     "item.uuid" ;
             trm:post    "filename"  .
+            
     t:pp3   trm:pre     "item.name" ;
             trm:post    "title"  .
 

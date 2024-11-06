@@ -1,0 +1,20 @@
+{
+    "mappings": [
+        {
+            "pre": "A",
+            "post": "U"
+        },
+        {
+            "pre": "B.a1",
+            "post": "V"
+        },
+        {
+            "pre": "B.a3",
+            "post": "W"
+        },
+        {
+            "pre": "C.c1",
+            "post": "X.d"
+        }
+    ]
+}
