@@ -61,3 +61,6 @@ Required output `output_01.json` :
 "X":{"d":"seven"}
 }
 ```
+
+
+please refactor restructure.js into classes and methods, so it will be easy to integrate into a different system, where the json data may be passed as strings or objects

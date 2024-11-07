@@ -36,18 +36,25 @@ class FileReader extends SourceProcessor {
 
         if (!filepath) {
             logger.debug(`FileReader: using configKey ${this.configKey.value}`)
-            filepath = this.getPropertyFromMyConfig(ns.trm.messageFile)
+            //  filepath = this.getPropertyFromMyConfig(ns.trm.messageFile)
+            filepath = this.getPropertyFromMyConfig(ns.trm.sourceFile)
 
             //filepath = this.getMyConfig().value // processors.ttl
             logger.log(' - filepath from config : ' + filepath)
         }
-        logger.log(' - FileReader reading filepath : ' + filepath)
+        logger.log(' - FileReader, process.cwd() : ' + process.cwd())
+
 
         // TODO move this into run.js
+
         var f = path.join(message.dataDir, filepath)
+        /*
         if (message.rootDir) {
             f = path.join(message.rootDir, filepath)
         }
+*/
+
+        logger.log(' - FileReader reading filepath : ' + f)
 
         const mediaType = this.getPropertyFromMyConfig(ns.trm.mediaType)
         logger.debug('in FileReader, mediaType = ' + mediaType)

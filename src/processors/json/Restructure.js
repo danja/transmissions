@@ -1,80 +1,67 @@
 import logger from '../../utils/Logger.js'
-import rdf from 'rdf-ext'
+import ProcessProcessor from '../base/ProcessProcessor.js'
+import JsonRestructurer from './JsonRestructurer.js'
 import ns from '../../utils/ns.js'
 import GrapoiHelpers from '../../utils/GrapoiHelpers.js'
-import Processor from '../base/Processor.js'
+import rdf from 'rdf-ext'
 
-class Restructure extends Processor {
+class Restructure extends ProcessProcessor {
     constructor(config) {
         super(config)
     }
 
-    async process(message) {
-        logger.setLogLevel("debug")
-
-        const renames = this.getRenames(this.config, this.configKey, ns.trm.rename)
-        logger.debug('Renames config:')
-        logger.reveal(renames)
-
-        const output = {}
-        const sourceRoot = message.payload.item
-
-        for (const rename of renames) {
-            if (!rename.pre || !rename.post) continue
-
-            logger.debug(`Processing rename: ${rename.pre} -> ${rename.post}`)
-
-            // Remove "item." prefix from source path
-            const sourcePath = rename.pre.replace('item.' + '').split('.')
-            const targetPath = rename.post.split('.')
-
-            let sourceValue = sourceRoot
-            for (const key of sourcePath) {
-                logger.debug(`Accessing key: ${key}, Current value:`, JSON.stringify(sourceValue))
-                sourceValue = sourceValue?.[key]
-                if (sourceValue === undefined) break
-            }
-
-            logger.debug(`Source value found:`, JSON.stringify(sourceValue))
-
-            if (sourceValue !== undefined) {
-                let target = output
-                for (let i = 0; i < targetPath.length - 1; i++) {
-                    const key = targetPath[i]
-                    target[key] = target[key] || {}
-                    target = target[key]
-                }
-                target[targetPath[targetPath.length - 1]] = sourceValue
-            }
+    async getRenames(config, configKey, term) {
+        logger.log(`***** config = ${config}`)
+        logger.log(`***** configKey = ${configKey}`)
+        logger.log(`***** term = ${term}`)
+        const renamesRDF = GrapoiHelpers.listToArray(config, configKey, term)
+        const dataset = this.config
+        var renames = []
+        for (let i = 0; i < renamesRDF.length; i++) {
+            let rename = renamesRDF[i]
+            let poi = rdf.grapoi({ dataset: dataset, term: rename })
+            let pre = poi.out(ns.trm.pre).value
+            let post = poi.out(ns.trm.post).value
+            renames.push({ "pre": pre, "post": post })
         }
-
-        logger.debug('Final output:' + JSON.stringify(output))
-
-        // Update message payload
-        message.payload = output
-
-        this.emit('message' + message)
+        return renames
     }
 
-    getRenames(config, configKey, term) {
-        try {
-            const renamesRDF = GrapoiHelpers.listToArray(config, configKey, term)
-            const dataset = this.config
-            const renames = []
+    async process(message) {
+        logger.setLogLevel('debug')
+        logger.debug('Restructure this.configKey = ' + this.configKey.value)
+        // Extract mappings array from config 
+        const renames = await this.getRenames(this.config, this.configKey, ns.trm.rename)
 
-            for (const rename of renamesRDF) {
-                const poi = rdf.grapoi({ dataset: dataset, term: rename })
-                const pre = poi.out(ns.trm.pre).value
-                const post = poi.out(ns.trm.post).value
-                if (pre && post) {
-                    renames.push({ pre, post })
-                }
+        //   logger.log('Renames :')
+        //  logger.reveal(renames)
+
+        // Initialize JsonRestructurer with mappings
+        this.restructurer = new JsonRestructurer({
+            mappings: renames
+        })
+        try {
+            logger.debug('Restructure processor executing...')
+
+            // Get input data from message
+            const input = message.payload?.item || message.payload
+
+            if (!input) {
+                throw new Error('No input data found in message')
             }
 
-            return renames
+            // Perform restructuring
+            const restructured = this.restructurer.restructure(input)
+
+            // Update message with restructured data
+            message.payload = restructured
+
+            logger.debug('Restructure successful')
+            this.emit('message', message)
+
         } catch (err) {
-            logger.error('Error in getRenames:' + err)
-            return []
+            logger.error("Restructure processor error: " + err.message)
+            throw err
         }
     }
 }

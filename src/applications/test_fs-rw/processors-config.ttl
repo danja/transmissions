@@ -1,0 +1,19 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix trm: <http://purl.org/stuff/transmission/> .
+@prefix t: <http://hyperdata.it/transmissions/> .
+
+
+t:inputFile a trm:Config ;
+    trm:key t:input ; 
+    trm:sourceFile  "input/input-01.md" .
+
+t:outputFile a trm:Config ;
+    trm:key t:output ;
+ trm:destinationFile "output/output-01.md" .
+
+ # http://purl.org/stuff/transmission/sourceFile
+
+
+
+
+

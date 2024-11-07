@@ -8,6 +8,7 @@
 
 :s1 a :FileReader ;
     trm:configKey :sourceFile .
+    
 :s2 a :LineReader .
 :s3 a :HttpGet .
 

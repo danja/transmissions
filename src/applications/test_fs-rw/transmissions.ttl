@@ -14,13 +14,13 @@
 :UF a :Unfork . # collapses all pipes but one 
 #############################################################
 
-:cjc a trm:Pipeline ;
-
-
-trm:pipe (:SM :read :SM1 :DE :retree1  ) .
+:fsrw a trm:Pipeline ;
+trm:pipe (:read :write ) .
 
 :read a :FileReader ;
-     trm:configKey :sourceFile .
+     trm:configKey :input .
 
-:retree1 a :Restructure ;
-     trm:configKey :retree .
+:write a :FileWriter ;
+     trm:configKey :output .
+
+

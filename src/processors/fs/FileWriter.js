@@ -1,3 +1,5 @@
+import path from 'path'
+import ns from '../../utils/ns.js'
 import { writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { mkdir, mkdirSync } from 'node:fs'
@@ -39,19 +41,25 @@ class FileWriter extends SinkProcessor {
         this.preProcess()
         var filepath = message.filepath
 
+        if (!filepath) {
+            logger.debug(`FileWriter: using configKey ${this.configKey.value}`)
+            //  filepath = this.getPropertyFromMyConfig(ns.trm.messageFile)
+            filepath = this.getPropertyFromMyConfig(ns.trm.destinationFile)
+
+            //filepath = this.getMyConfig().value // processors.ttl
+            logger.log(' - filepath from config : ' + filepath)
+        }
+
+        var f = path.join(message.dataDir, filepath)
+
         const content = message.content
 
-        //  if (!filepath) {
-        //    filepath = this.getMyConfig().value
-        // }
-        // logger.debug("Filewriter, filepath = " + filepath)
-
-        const dirName = dirname(filepath)
+        const dirName = dirname(f)
         logger.debug("Filewriter, dirName = " + dirName)
         // try {
         await this.mkdirs(dirName) // is this OK when the dirs ???
-        logger.log(' - FileWriter writing : ' + filepath)
-        await writeFile(filepath, content)
+        logger.log(' - FileWriter writing : ' + f)
+        await writeFile(f, content)
 
         //} catch (err) {
         //  logger.error("FileWriter.process error : " + err.message)

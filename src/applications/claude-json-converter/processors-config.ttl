@@ -23,3 +23,10 @@ t:retreeMsgs a trm:ServiceConfig ;
     t:pp3   trm:pre     "item.name" ;
             trm:post    "title"  .
 
+            t:walkPrep a trm:ReMap ;
+    trm:rename (t:pp1 t:pp2) . # consider using blank nodes
+    t:pp1   trm:pre     "content" ;
+            trm:post    "template"  .
+    t:pp2   trm:pre     "entryContentMeta.sourceDir" ;
+            trm:post    "sourceDir" .
+

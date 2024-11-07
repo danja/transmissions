@@ -123,7 +123,7 @@ class TransmissionBuilder {
         return coreProcessor
       }
     } catch (error) {
-      logger.debug(`Core processor not found for ${type.value}. Trying remote module loader...`)
+      logger.debug(`TransmissionBuilder, core processor not found for ${type.value}. Trying remote module loader...`)
     }
 
     try {
@@ -133,10 +133,16 @@ class TransmissionBuilder {
       logger.debug(`Module loaded successfully: ${shortName}`)
       return new ProcessorClass.default(config)
     } catch (error) {
-      logger.error(`Failed to load processor ${type.value}: ${error.message}`)
-      throw error
+      //   throw new Error(`Failed to load processor ${type.value}: ${error.message}`)
+      logger.error(`TransmissionBuilder, failed to load processor ${type.value}`)
+      process.exit(1)
     }
   }
+
+  //  logger.error(`Failed to load processor ${type.value}: ${error.message}`)
+  //   throw new Error (`Failed to load processor ${type.value}: ${error.message}`) 
+  //process.exit(1)
+  // throw error
 
   // file utils
   static async readDataset(filename) {

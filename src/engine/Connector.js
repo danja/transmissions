@@ -17,7 +17,7 @@ class Connector extends EventEmitter {
         let toProcessor = processors[this.toName]
 
         if (!fromProcessor) {
-            throw new Error(`\nMissing processor : ${this.fromName} \n(check for typos in transmissions.ttl)\n`)
+            throw new Error(`\nMissing processor : ${this.fromName}, going to ${this.toName} \n(check for typos in transmissions.ttl)\n`)
         }
 
         fromProcessor.on('message', (message) => { //  = {}
