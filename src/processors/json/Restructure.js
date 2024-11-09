@@ -33,8 +33,8 @@ class Restructure extends ProcessProcessor {
         // Extract mappings array from config 
         const renames = await this.getRenames(this.config, this.configKey, ns.trm.rename)
 
-        //   logger.log('Renames :')
-        //  logger.reveal(renames)
+        logger.log('Renames :')
+        logger.reveal(renames)
 
         // Initialize JsonRestructurer with mappings
         this.restructurer = new JsonRestructurer({
@@ -44,8 +44,8 @@ class Restructure extends ProcessProcessor {
             logger.debug('Restructure processor executing...')
 
             // Get input data from message
-            const input = message.payload?.item || message.payload
-
+            // const input = message.payload?.item || message.payload
+            const input = message
             if (!input) {
                 throw new Error('No input data found in message')
             }
@@ -54,13 +54,14 @@ class Restructure extends ProcessProcessor {
             const restructured = this.restructurer.restructure(input)
 
             // Update message with restructured data
-            message.payload = restructured
-
+            // message.payload = restructured
+            message.content = restructured
             logger.debug('Restructure successful')
-            this.emit('message', message)
+            return this.emit('message', message)
 
         } catch (err) {
             logger.error("Restructure processor error: " + err.message)
+            logger.reveal(message)
             throw err
         }
     }

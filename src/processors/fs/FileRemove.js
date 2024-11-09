@@ -77,7 +77,7 @@ class FileRemove extends Processor {
             logger.debug('FileRemove, target stat caused err : ' + target)
         }
 
-        this.emit('message', message)
+        return this.emit('message', message)
     }
 
     /**

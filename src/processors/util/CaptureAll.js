@@ -13,14 +13,14 @@ class CaptureAll extends Processor {
         if (CaptureAll.singleInstance) {
             return CaptureAll.singleInstance
         }
-        CaptureAll.singleInstance = this;
+        CaptureAll.singleInstance = this
     }
 
 
     async process(message) {
         logger.log('CaptureAll at (' + message.tags + ') ' + this.getTag())
         this.config.whiteboard.push(message)
-        this.emit('message', message)
+        return this.emit('message', message)
     }
 
 

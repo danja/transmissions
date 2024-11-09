@@ -28,7 +28,7 @@ class Unfork extends Processor {
         if (message.done) {
             logger.debug(' - Unfork passing message')
             message.done = false // in case it's needed later
-            this.emit('message', message)
+            return this.emit('message', message)
         } else {
             logger.debug(' - Unfork terminating pipe')
         }

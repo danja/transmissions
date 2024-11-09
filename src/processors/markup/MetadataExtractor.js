@@ -19,7 +19,7 @@ class MetadataExtractor extends ProcessProcessor {
 
         const output = { filename: targetFilename, content: jsonString }
 
-        this.emit('message', output, message)
+        return this.emit('message', output, message)
     }
 
     relocate(filename) {
@@ -30,7 +30,7 @@ class MetadataExtractor extends ProcessProcessor {
     }
 
     convertEmailToJSON(htmlContent) {
-        const $ = cheerio.load(htmlContent);
+        const $ = cheerio.load(htmlContent)
         var subjectLine = $('H1').text().trim()
         var fromName = $('B').first().text().trim()
         var nextMessageLink = $('LINK[REL="Next"]').attr('HREF')
@@ -68,7 +68,7 @@ class MetadataExtractor extends ProcessProcessor {
         :\n\n>
         */
 
-        return jsonResult;
+        return jsonResult
     }
 
     pruneContent(content) {
@@ -76,7 +76,7 @@ class MetadataExtractor extends ProcessProcessor {
         const regex1 = /(^|\n).*?:\n>/s
         content = content.replace(regex1, '$1')
 
-        const regex2 = /\n>.*?\n/g;
+        const regex2 = /\n>.*?\n/g
 
         //   const inputString = "keep before\n>remove this\nkeep after";
         //   const cleanedString = inputString.replace(regex2, '\n');

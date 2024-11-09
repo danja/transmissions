@@ -62,7 +62,7 @@ class Templater extends ProcessProcessor {
             message.content = nunjucks.renderString(message.template, message.contentBlocks)
         }
 
-        this.emit('message', message)
+        return this.emit('message', message)
     }
 }
 export default Templater

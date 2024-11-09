@@ -22,7 +22,7 @@ class ShowMessage extends SinkProcessor {
         //   console.trace() // move to Logger, only when debugging
         // logger.log("***************************")
 
-        this.emit('message', message)
+        return this.emit('message', message)
     }
 }
 

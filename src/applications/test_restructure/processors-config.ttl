@@ -6,18 +6,21 @@ t:Conversations a trm:ServiceConfig ;
     trm:key t:conversationsConfig ;
     trm:targetDir "claudish-chat" .
 
-t:jsonFile a trm:Config ;
-    trm:key t:sourceFile ;
-    trm:value "./src/applications/test_restructure/input/input-01.json" .
-
-
+t:jsonFileIn a trm:Config ;
+    trm:key t:reader ;
+    trm:sourceFile "input/input-01.json" ;
+    trm:mediaType "application/json" .
 
 t:retree a trm:ServiceConfig ;
     trm:rename (t:pp1 t:pp2 t:pp3) . # consider using blank nodes
-    t:pp1   trm:pre     "payload.item.chat_messages" ;
+    t:pp1   trm:pre     "content.item.chat_messages" ;
             trm:post    "channel"  .
-    t:pp2   trm:pre     "payload.item.uuid" ;
+    t:pp2   trm:pre     "content.item.uuid" ;
             trm:post    "filename"  . 
-    t:pp3   trm:pre     "payload.item.name" ;
+    t:pp3   trm:pre     "content.item.name" ;
             trm:post    "title"  .
+
+t:jsonFileOut a trm:Config ;
+    trm:key t:writer ;
+    trm:destinationFile "output/output-01.json" .
 

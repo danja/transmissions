@@ -13,7 +13,7 @@ class StringMerger extends ProcessProcessor {
 
         if (data === '~~done~~') {
             logger.log('SM  DONE**********************************\n' + this.merged)
-            this.emit('message', this.merged, message)
+            return this.emit('message', this.merged, message)
             return
         }
         this.merged = this.merged + data

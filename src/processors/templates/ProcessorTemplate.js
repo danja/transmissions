@@ -29,7 +29,7 @@ class ProcessorExample extends Processor {
         logger.setLogLevel('debug')
 
         // processing goes here
-        this.emit('message', message)
+        return this.emit('message', message)
     } catch(err) {
         logger.error("ProcessorExample.execute error : " + err.message)
     }

@@ -7,9 +7,9 @@ class ProcessProcessor extends Processor {
     }
 
 
-    async process(message) {
-        this.emit('message', message)
-    }
+    //    async process(message) {
+    //      this.emit('message', message)
+    // }
 }
 
 export default ProcessProcessor

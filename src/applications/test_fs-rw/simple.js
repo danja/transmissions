@@ -1,18 +1,21 @@
-// src/applications/test_restructure/simple.js
+// src/applications/test_fs-rw/simple.js
 
 import FileReader from '../../processors/fs/FileReader.js'
-import Restructure from '../../processors/json/Restructure.js'
-import FileWriter from '../../processors/fs/FileReader.js'
+import FileWriter from '../../processors/fs/FileWriter.js'
 
 const config = {
-    "runmode": "functions",
-    whiteboard: []
+    "simples": "true",
+    "sourceFile": "input/input-01.md",
+    "destinationFile": "output/output-01.md"
 }
 
-const nop = new NOP(config)
+var message = { "dataDir": "src/applications/test_fs-rw/data" }
 
-var message = { 'value': '42' }
+const read = new FileReader(config)
 
-message = await nop.process(message)
+message = await read.process(message)
 
-console.log('value = ' + message.value)
+const write = new FileWriter(config)
+
+message = await write.process(message)
+

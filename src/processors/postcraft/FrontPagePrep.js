@@ -43,7 +43,7 @@ class FrontPagePrep extends ProcessProcessor {
       // TODO join
       message.filepath = message.rootDir + '/' + message.indexPage.filepath
 
-      this.emit('message', message)
+      return this.emit('message', message)
     } catch (err) {
       logger.error('Error in FrontPagePrep')
       logger.error(err)

@@ -9,7 +9,7 @@ t:inputFile a trm:Config ;
 
 t:outputFile a trm:Config ;
     trm:key t:output ;
- trm:destinationFile "output/output-01.md" .
+    trm:destinationFile "output/output-01.md" .
 
  # http://purl.org/stuff/transmission/sourceFile
 

@@ -16,23 +16,16 @@ class LineReader extends ProcessProcessor {
 
         const text = data.toString()
 
-        /*
-        text.split('\n').forEach(line => {
-            if (line.trim() && !line.startsWith('#')) {
-                logger.debug('Line = [[[' + line + ']]]')
-                this.emit('message', line, message)
-            }
-        })
-*/
+
         const lines = text.split('\n')
         for await (let line of lines) {
             if (line.trim() && !line.startsWith('#')) {
                 logger.debug('Line = [[[' + line + ']]]')
-                this.emit('message', line, message)
+                return this.emit('message', line, message)
             }
         }
 
-        this.emit('message', '~~done~~', message)
+        return this.emit('message', '~~done~~', message)
     }
 }
 

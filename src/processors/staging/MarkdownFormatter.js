@@ -29,7 +29,7 @@ class MarkdownFormatter extends ProcessProcessor {
 
             message.content = this.formatMarkdown(message.content)
 
-            this.emit('message', message)
+            return this.emit('message', message)
         } catch (err) {
             logger.error("MarkdownFormatter.execute error: " + err.message)
             throw err

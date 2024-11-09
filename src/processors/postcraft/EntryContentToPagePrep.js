@@ -15,7 +15,7 @@ class EntryContentToPagePrep extends ProcessProcessor {
 
   async process(message) {
     if (message.done) {
-      this.emit('message', message)
+      return this.emit('message', message)
       return
     }
     logger.setLogLevel('debug')

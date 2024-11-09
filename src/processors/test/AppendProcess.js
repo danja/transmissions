@@ -7,7 +7,7 @@ class AppendProcess extends ProcessProcessor {
     async process(message) {
         logger.debug("AppendProcess data : " + message.content)
         message.content = message.content + " world"
-        this.emit('message', message)
+        return this.emit('message', message)
     }
 }
 

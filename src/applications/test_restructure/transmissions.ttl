@@ -17,10 +17,13 @@
 :cjc a trm:Pipeline ;
 
 
-trm:pipe (:SM :read :SM1 :DE :retree1  ) .
+trm:pipe (:read :retree1 :SM :writer) .
 
 :read a :FileReader ;
-     trm:configKey :sourceFile .
+     trm:configKey :reader .
 
 :retree1 a :Restructure ;
      trm:configKey :retree .
+
+:writer a :FileWriter ;
+     trm:configKey :writer .

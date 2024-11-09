@@ -48,7 +48,7 @@ class StringReplace extends ProcessProcessor {
         }
 
         logger.debug('StringReplace output: ' + message.content)
-        this.emit('message', message)
+        return this.emit('message', message)
     }
 }
 

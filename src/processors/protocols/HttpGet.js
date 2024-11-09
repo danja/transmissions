@@ -49,7 +49,7 @@ class HttpGet extends ProcessProcessor {
         logger.debug('HttpGet, url = ' + url)
         if (url === '~~done~~') {
             logger.log('HG DONE*****************')
-            this.emit('message', url, message)
+            return this.emit('message', url, message)
             return
         }
         try {
@@ -58,7 +58,7 @@ class HttpGet extends ProcessProcessor {
             const content = response.data
 
             message.sourceURL = url
-            this.emit('message', content, message)
+            return this.emit('message', content, message)
         } catch (error) {
             logger.error("HttpGet.execute error\n" + error)
         }

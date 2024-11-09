@@ -30,7 +30,7 @@ class FileSource extends SourceProcessor {
             logger.debug('FileSource file : ' + sf)
             const contents = await readFile(sf, { encoding: 'utf8' })
             logger.debug('FileSource data : ' + contents)
-            this.emit('message', { content: contents, ...message })
+            return this.emit('message', { content: contents, ...message })
         } catch (err) {
             logger.error("FileSource.execute error : " + err.message)
         }

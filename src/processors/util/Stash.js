@@ -35,7 +35,7 @@ class Stash extends SourceProcessor {
         // should append RDF to incoming
         message.rootDir = rootDir
         message.dataset = await rdf.dataset().import(stream)
-        this.emit('message', message)
+        return this.emit('message', message)
     }
 }
 export default Stash

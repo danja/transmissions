@@ -5,7 +5,7 @@ class ShowTransmission extends Processor {
 
     async process(message) {
         logger.log(this.transmission.toString())
-        this.emit('message', message)
+        return this.emit('message', message)
     }
 }
 

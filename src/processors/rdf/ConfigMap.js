@@ -66,7 +66,7 @@ class ConfigMap extends ProcessProcessor {
       }
     }
 
-    this.emit('message', message)
+    return this.emit('message', message)
   }
 
   /**

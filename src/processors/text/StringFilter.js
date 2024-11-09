@@ -24,12 +24,12 @@
  * * Uses simplified glob-like pattern matching
  */
 
-import logger from '../../utils/Logger.js';
-import ProcessProcessor from '../base/ProcessProcessor.js';
+import logger from '../../utils/Logger.js'
+import ProcessProcessor from '../base/ProcessProcessor.js'
 
 class StringFilter extends ProcessProcessor {
     constructor(config) {
-        super(config);
+        super(config)
     }
 
     /**
@@ -42,26 +42,26 @@ class StringFilter extends ProcessProcessor {
     isAccepted(content, exclude, include) {
         // Reject undefined content
         if (content === undefined) {
-            return false;
+            return false
         }
 
         // If no include or exclude patterns, accept all
         if ((!exclude || exclude.length === 0) && (!include || include.length === 0)) {
-            return true;
+            return true
         }
 
         // Check exclude patterns first
         if (this.isExcluded(content, exclude)) {
-            return false;
+            return false
         }
 
         // If include patterns exist, content must match at least one
         if (include && include.length > 0) {
-            return this.isIncluded(content, include);
+            return this.isIncluded(content, include)
         }
 
         // If no include patterns, accept content that wasn't excluded
-        return true;
+        return true
     }
 
 
@@ -73,10 +73,10 @@ class StringFilter extends ProcessProcessor {
      */
     isExcluded(content, exclude) {
         if (!exclude || exclude.length === 0) {
-            return false;
+            return false
         }
-        const patterns = Array.isArray(exclude) ? exclude : [exclude];
-        return patterns.some(pattern => this.matchPattern(content, pattern));
+        const patterns = Array.isArray(exclude) ? exclude : [exclude]
+        return patterns.some(pattern => this.matchPattern(content, pattern))
     }
 
     /**
@@ -87,10 +87,10 @@ class StringFilter extends ProcessProcessor {
      */
     isIncluded(content, include) {
         if (!include || include.length === 0) {
-            return true;
+            return true
         }
-        const patterns = Array.isArray(include) ? include : [include];
-        return patterns.some(pattern => this.matchPattern(content, pattern));
+        const patterns = Array.isArray(include) ? include : [include]
+        return patterns.some(pattern => this.matchPattern(content, pattern))
     }
 
     /**
@@ -103,27 +103,27 @@ class StringFilter extends ProcessProcessor {
         const regexPattern = pattern
             .replace(/\*/g, '.*')
             .replace(/\?/g, '.')
-            .replace(/\[([^\]]+)\]/g, '[$1]');
-        const regex = new RegExp(`^${regexPattern}$`);
-        return regex.test(content);
+            .replace(/\[([^\]]+)\]/g, '[$1]')
+        const regex = new RegExp(`^${regexPattern}$`)
+        return regex.test(content)
     }
 
     async process(message) {
-        logger.debug('\nStringFilter Input : \nmessage.content = ' + message.content);
-        logger.debug('message.exclude = ');
-        logger.reveal(message.exclude);
-        logger.debug('message.include = ');
-        logger.reveal(message.include);
+        logger.debug('\nStringFilter Input : \nmessage.content = ' + message.content)
+        logger.debug('message.exclude = ')
+        logger.reveal(message.exclude)
+        logger.debug('message.include = ')
+        logger.reveal(message.include)
 
-        const accepted = this.isAccepted(message.content, message.exclude, message.include);
+        const accepted = this.isAccepted(message.content, message.exclude, message.include)
 
         if (accepted) {
-            logger.debug('\nOutput : \nmessage.content = ' + message.content);
-            this.emit('message', message);
+            logger.debug('\nOutput : \nmessage.content = ' + message.content)
+            return this.emit('message', message)
         } else {
-            logger.debug('\nString filtered out');
+            logger.debug('\nString filtered out')
         }
     }
 }
 
-export default StringFilter;
+export default StringFilter

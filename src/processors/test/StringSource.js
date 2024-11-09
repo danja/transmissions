@@ -9,7 +9,7 @@ class StringSource extends SourceProcessor {
     async process(message) {
         console.log("message = " + message)
         console.log("data = " + data)
-        this.emit('message', message)
+        return this.emit('message', message)
     }
 }
 

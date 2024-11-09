@@ -92,7 +92,7 @@ class FileCopy extends Processor {
             logger.error(`Destination: ${destination}`)
         }
 
-        this.emit('message', message)
+        return this.emit('message', message)
     }
 
     /**

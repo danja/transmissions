@@ -27,7 +27,7 @@ class PostcraftPrep extends ProcessProcessor {
     message.contentBlocks.created = created
     message.contentBlocks.updated = updated
 
-    this.emit('message', message)
+    return this.emit('message', message)
   }
 
   // TODO lots of tidying up

@@ -38,7 +38,7 @@ class GitHubList extends ProcessProcessor {
             message.payload.github.repositories = repositories
             message.payload.github.totalRepos = repositories.length
 
-            this.emit('message', message)
+            return this.emit('message', message)
         } catch (error) {
             this.handleError(error, username)
         }
@@ -81,7 +81,7 @@ class GitHubList extends ProcessProcessor {
             })
 
             let data = response.data
-            data = data.slice(0, 3) // Limit to first 3 repos
+            //  data = data.slice(0, 3) // Limit to first 3 repos
 
             logger.debug(`Page ${page}: Got ${data.length} repos`)
 

@@ -39,10 +39,11 @@ class FileWriter extends SinkProcessor {
     async process(message) {
         logger.setLogLevel('debug')
         this.preProcess()
+
         var filepath = message.filepath
 
         if (!filepath) {
-            logger.debug(`FileWriter: using configKey ${this.configKey.value}`)
+            //  logger.debug(`FileWriter: using configKey ${this.configKey.value}`)
             //  filepath = this.getPropertyFromMyConfig(ns.trm.messageFile)
             filepath = this.getPropertyFromMyConfig(ns.trm.destinationFile)
 
@@ -52,8 +53,20 @@ class FileWriter extends SinkProcessor {
 
         var f = path.join(message.dataDir, filepath)
 
-        const content = message.content
+        var contentPath = this.getPropertyFromMyConfig(ns.trm.contentPath)
+        //   logger.debug("Filewriter, contentPath = " + contentPath)
+        //  logger.debug("Filewriter, typeof contentPath = " + typeof contentPath)
+        if (typeof contentPath === 'undefined' || contentPath === 'undefined' || contentPath.value === 'undefined') {
+            contentPath = 'content'
+        }
 
+        // logger.debug("Filewriter, contentPath = " + contentPath)
+        var content = message[contentPath.toString()] // TODO generalise.it
+        if (typeof content === 'object') {
+            content = JSON.stringify(content)
+        }
+        logger.debug("Filewriter, content = " + content)
+        logger.debug("Filewriter, typeof content = " + typeof content)
         const dirName = dirname(f)
         logger.debug("Filewriter, dirName = " + dirName)
         // try {
@@ -65,7 +78,7 @@ class FileWriter extends SinkProcessor {
         //  logger.error("FileWriter.process error : " + err.message)
         //}
 
-        this.emit('message', message)
+        return this.emit('message', message)
     }
 
     async mkdirs(dir) {

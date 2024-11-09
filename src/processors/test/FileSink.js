@@ -1,7 +1,7 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import { writeFile } from 'node:fs/promises';
+import { writeFile } from 'node:fs/promises'
 import footpath from '../../utils/footpath.js'
 import grapoi from 'grapoi'
 import ns from '../../utils/ns.js'
@@ -24,7 +24,7 @@ class FileSink extends SinkProcessor {
         const df = footpath.resolve(import.meta.url, dataDir, this.destinationFile)
         logger.debug("FileSink to = " + df)
         await writeFile(df, message.content)
-        this.emit('message', message)
+        return this.emit('message', message)
     }
 }
 

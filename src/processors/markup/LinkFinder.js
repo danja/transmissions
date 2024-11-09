@@ -11,7 +11,7 @@ class LinkFinder extends ProcessProcessor {
 
         if (data === '~~done~~') {
             logger.log('LF DONE*****************')
-            this.emitLocal('message', '~~done~~', message)
+            return this.emitLocal('message', '~~done~~', message)
             return
         }
     }
@@ -32,7 +32,7 @@ class LinkFinder extends ProcessProcessor {
             if (tagName.startsWith('h')) {
                 const level = tagName.substring(1)
                 const headerText = $(element).text()
-                label = `\n\n${'#'.repeat(parseInt(level))} ${headerText}\n`;
+                label = `\n\n${'#'.repeat(parseInt(level))} ${headerText}\n`
             } else if (tagName === 'a') {
                 const linkText = $(element).text()
                 //  logger.debug('linkText = ' + linkText)
@@ -44,13 +44,13 @@ class LinkFinder extends ProcessProcessor {
                     //  logger.debug('message.sourceURL = ' + message.sourceURL)
                     const baseURL = message.sourceURL
                     //  logger.debug('this.baseUrl = ' + baseURL)
-                    href = new URL(href, baseURL).toString();
+                    href = new URL(href, baseURL).toString()
                 }
                 label = `\n[${linkText}](${href})`
 
             }
             message.label = label
-            this.emit('message', message)
+            return this.emit('message', message)
         })
     }
 }

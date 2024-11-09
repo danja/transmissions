@@ -67,7 +67,7 @@ class PostcraftDispatcher extends ProcessProcessor {
     message.templateFilename = templateFilename
     message.loadContext = 'template'
 
-    this.emit('message', sourceDir, message)
+    return this.emit('message', sourceDir, message)
   }
 }
 

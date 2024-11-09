@@ -71,7 +71,7 @@ class DatasetReader extends SourceProcessor {
         message[datasetName] = await rdf.dataset().import(stream)
         logger.debug(`DatasetReader, datasetName = ${datasetName}`)
         logger.debug(`DatasetReader, message[datasetName] = ${message[datasetName]}`)
-        this.emit('message', message)
+        return this.emit('message', message)
     }
 }
 

@@ -26,7 +26,7 @@ class MarkdownToHTML extends ProcessProcessor {
                 )
                 .parse(input.toString())
 
-        this.emit('message', message)
+        return this.emit('message', message)
     }
 }
 

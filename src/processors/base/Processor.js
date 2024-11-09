@@ -111,11 +111,19 @@ class Processor extends EventEmitter {
     }
 
     getPropertyFromMyConfig(property) {
+
+        if (this.config.simples) {
+            const shortName = property.value.split('/').pop()
+            logger.debug(`Processor (simples), property = ${shortName}`)
+            const value = this.config[shortName]
+            logger.debug(`Processor (simples), value = ${value}`)
+            return value
+        }
         const poi = this.getMyPoi()
         try {
             return poi.out(property).term.value
         } catch (err) {
-            logger.debug('property not defined : ' + property)
+            logger.warn('* Warn : Processor.getPropertyFromMyConfig(), property not defined : ' + property)
             return rdf.literal('undefined')
         }
     }
@@ -233,11 +241,12 @@ class Processor extends EventEmitter {
     }
 */
     emit(event, message) {
-        if (event === 'message') {
-            this.outputs.push(message)
-        }
+        //   if (event === 'message') {
+        //     this.outputs.push(message)
+        // }
         super.emit(event, message)
-        // return this.getOutputs()
+        return message
+        //  return this.getOutputs()
         // TODO in NOP,   return this.emit('message', message) - why?
     }
 
