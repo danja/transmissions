@@ -29,9 +29,14 @@ class Restructure extends ProcessProcessor {
 
     async process(message) {
         logger.setLogLevel('debug')
-        logger.debug('Restructure this.configKey = ' + this.configKey.value)
+        //  logger.debug('Restructure this.configKey = ' + this.configKey.value)
         // Extract mappings array from config 
-        const renames = await this.getRenames(this.config, this.configKey, ns.trm.rename)
+        var renames
+        if (this.config.simples) {
+            renames = this.config.rename
+        } else {
+            renames = await this.getRenames(this.config, this.configKey, ns.trm.rename)
+        }
 
         logger.log('Renames :')
         logger.reveal(renames)

@@ -1,5 +1,15 @@
 # Transmissions : Next Steps
 
+* make tests for `Restructure.js`
+* get `src/applications/claude-json-converter` working
+* get `trans-apps/applications/claude-json-converter` working
+* fix #:postcraft
+
+
+* sort out refactoring todos
+
+
+
 transmissions/todo/sub-trans.md
 
 blackjack & hookers

@@ -2,10 +2,6 @@
 @prefix trm: <http://purl.org/stuff/transmission/> .
 @prefix t: <http://hyperdata.it/transmissions/> .
 
-t:Conversations a trm:ServiceConfig ;
-    trm:key t:conversationsConfig ;
-    trm:targetDir "claudish-chat" .
-
 t:jsonFileIn a trm:Config ;
     trm:key t:reader ;
     trm:sourceFile "input/input-01.json" ;

@@ -54,8 +54,7 @@ class FileWriter extends SinkProcessor {
         var f = path.join(message.dataDir, filepath)
 
         var contentPath = this.getPropertyFromMyConfig(ns.trm.contentPath)
-        //   logger.debug("Filewriter, contentPath = " + contentPath)
-        //  logger.debug("Filewriter, typeof contentPath = " + typeof contentPath)
+
         if (typeof contentPath === 'undefined' || contentPath === 'undefined' || contentPath.value === 'undefined') {
             contentPath = 'content'
         }
