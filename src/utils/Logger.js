@@ -28,7 +28,7 @@ logger.appendLogToFile = function (message) {
 
 logger.setLogLevel = function (logLevel = "warn") {
     // console[logLevel]("[%s] log level: %s", logComponent, logLevel);
-    console[logLevel]('', logComponent, logLevel)
+    // console[logLevel]('', logComponent, logLevel)
     logger.currentLogLevel = logLevel
 }
 

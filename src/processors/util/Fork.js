@@ -19,13 +19,13 @@ class Fork extends Processor {
             var messageClone = structuredClone(message)
             messageClone.forkN = i
             logger.debug('--- emit --- ' + i)
-            return this.emit('message', messageClone)
+            this.emit('message', messageClone)
         }
 
         message.done = true // one extra to flag completion
 
         return this.emit('message', message)
-        return this.getOutputs()
+        //   return this.getOutputs()
     }
 
 }

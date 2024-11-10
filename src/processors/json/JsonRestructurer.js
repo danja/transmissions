@@ -4,7 +4,7 @@ import logger from '../../utils/Logger.js'
 
 class JsonRestructurer {
     constructor(mappings) {
-        logger.setLogLevel('debug')
+        logger.setLogLevel('info')
         if (!mappings?.mappings || !Array.isArray(mappings.mappings)) {
             throw new Error('Invalid mapping structure')
         }
@@ -15,7 +15,7 @@ class JsonRestructurer {
 
     getValueByPath(obj, path) {
         logger.debug('JsonRestructurer, path = ' + path)
-        logger.reveal(obj)
+        //   logger.reveal(obj)
         try {
 
             return path.split('.').reduce((acc, part) => acc[part], obj)

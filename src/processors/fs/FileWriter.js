@@ -37,17 +37,13 @@ class FileWriter extends SinkProcessor {
      * @param {Object} message - The execution message.
      */
     async process(message) {
-        logger.setLogLevel('debug')
+        logger.setLogLevel('info')
         this.preProcess()
 
         var filepath = message.filepath
 
         if (!filepath) {
-            //  logger.debug(`FileWriter: using configKey ${this.configKey.value}`)
-            //  filepath = this.getPropertyFromMyConfig(ns.trm.messageFile)
             filepath = this.getPropertyFromMyConfig(ns.trm.destinationFile)
-
-            //filepath = this.getMyConfig().value // processors.ttl
             logger.log(' - filepath from config : ' + filepath)
         }
 

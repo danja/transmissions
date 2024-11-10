@@ -16,10 +16,10 @@
    trm:contains :pipeA .
 
 :pipeA a trm:Pipeline ;
-trm:pipe (:p10 :SM ) .
+trm:pipe (:p10 :p20 :SM ) .
 
 :p10 a :Fork .
 
 # :s10 a :Unfork .
-:s11 a :NOP .
+:p20 a :NOP .
 
