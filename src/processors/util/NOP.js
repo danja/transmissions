@@ -12,5 +12,9 @@ class NOP extends Processor {
         logger.log('NOP at (' + message.tags + ') ' + this.getTag())
         return this.emit('message', message)
     }
+
+    double(string) {
+        return string + string
+    }
 }
 export default NOP

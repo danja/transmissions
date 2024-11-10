@@ -24,6 +24,7 @@ describe('test_restructure', function () {
         }
     }
 
+
     async function compareFiles(index) {
         const outputFile = path.join(dataDir, 'output', `output-${index}.json`)
         const requiredFile = path.join(dataDir, 'output', `required-${index}.json`)
@@ -32,10 +33,11 @@ describe('test_restructure', function () {
         console.log(`Output: ${outputFile}`)
         console.log(`Required: ${requiredFile}`)
 
-        const output = await fs.readFile(outputFile, 'utf8')
-        const required = await fs.readFile(requiredFile, 'utf8')
+        const output = JSON.parse(await fs.readFile(outputFile, 'utf8'))
+        const required = JSON.parse(await fs.readFile(requiredFile, 'utf8'))
 
-        return JSON.parse(output) === JSON.parse(required)
+        // Deep compare objects instead of strings
+        return JSON.stringify(output) === JSON.stringify(required)
     }
 
     beforeEach(async () => {
