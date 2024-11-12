@@ -20,7 +20,7 @@ class JsonRestructurer {
 
             return path.split('.').reduce((acc, part) => acc[part], obj)
         } catch (e) {
-            console.warn(`Warning: Path ${path} not found`)
+            logger.warn(`Warning: Path ${path} not found`)
             return undefined
         }
     }

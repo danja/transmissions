@@ -1,5 +1,4 @@
-// Example updated run.js
-
+// run.js
 
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'

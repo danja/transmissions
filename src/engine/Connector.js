@@ -27,7 +27,7 @@ class Connector extends EventEmitter {
             toProcessor.tags = tags // TODO tidy
             //   }
             const thisTag = footpath.urlLastPart(this.toName)
-            logger.log("| Running : " + tags + thisTag + " a " + toProcessor.constructor.name)
+            logger.log("| Running >>> : " + tags + thisTag + " a " + toProcessor.constructor.name)
 
             toProcessor.receive(message)
         })

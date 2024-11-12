@@ -123,7 +123,7 @@ class Processor extends EventEmitter {
         try {
             return poi.out(property).term.value
         } catch (err) {
-            logger.warn('* Warn : Processor.getPropertyFromMyConfig(), property not defined : ' + property)
+            logger.debug('* Warn : Processor.getPropertyFromMyConfig(), property not defined : ' + property)
             return rdf.literal('undefined')
         }
     }

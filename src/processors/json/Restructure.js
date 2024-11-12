@@ -11,9 +11,9 @@ class Restructure extends ProcessProcessor {
     }
 
     async getRenames(config, configKey, term) {
-        logger.log(`***** config = ${config}`)
-        logger.log(`***** configKey = ${configKey}`)
-        logger.log(`***** term = ${term}`)
+        //logger.log(`***** config = ${config}`)
+        //logger.log(`***** configKey = ${configKey}`)
+        //logger.log(`***** term = ${term}`)
         const renamesRDF = GrapoiHelpers.listToArray(config, configKey, term)
         const dataset = this.config
         var renames = []
@@ -38,8 +38,8 @@ class Restructure extends ProcessProcessor {
             renames = await this.getRenames(this.config, this.configKey, ns.trm.rename)
         }
 
-        logger.log('Renames :')
-        logger.reveal(renames)
+        //   logger.log('Renames :')
+        //  logger.reveal(renames)
 
         // Initialize JsonRestructurer with mappings
         this.restructurer = new JsonRestructurer({

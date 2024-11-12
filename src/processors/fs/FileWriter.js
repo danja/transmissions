@@ -37,17 +37,27 @@ class FileWriter extends SinkProcessor {
      * @param {Object} message - The execution message.
      */
     async process(message) {
-        logger.setLogLevel('info')
+        logger.setLogLevel('debug')
         this.preProcess()
 
+        logger.debug("Filewriter, message.filepath = " + message.filepath)
+
         var filepath = message.filepath
+
 
         if (!filepath) {
             filepath = this.getPropertyFromMyConfig(ns.trm.destinationFile)
             logger.log(' - filepath from config : ' + filepath)
         }
 
-        var f = path.join(message.dataDir, filepath)
+        var f
+        if (filepath.startsWith('/')) { // TODO unhackify
+            f = filepath
+        } else {
+            f = path.join(message.dataDir, filepath)
+        }
+        const dirName = dirname(f)
+        logger.debug("Filewriter, dirName = " + dirName)
 
         var contentPath = this.getPropertyFromMyConfig(ns.trm.contentPath)
 
@@ -60,10 +70,10 @@ class FileWriter extends SinkProcessor {
         if (typeof content === 'object') {
             content = JSON.stringify(content)
         }
+
         logger.debug("Filewriter, content = " + content)
         logger.debug("Filewriter, typeof content = " + typeof content)
-        const dirName = dirname(f)
-        logger.debug("Filewriter, dirName = " + dirName)
+
         // try {
         await this.mkdirs(dirName) // is this OK when the dirs ???
         logger.log(' - FileWriter writing : ' + f)

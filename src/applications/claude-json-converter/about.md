@@ -1,9 +1,7 @@
 ```sh
 cd ~/github-danny/transmissions/
- ./trans ../trans-apps/templates/new-app
+./trans claude-json-converter -P src/applications/claude-json-converter/data/input/conversations.json
 ```
-
-./trans claude-json-converter -P ./conversations.json
 
 ```turtle
 :s40 a :Restructure ;

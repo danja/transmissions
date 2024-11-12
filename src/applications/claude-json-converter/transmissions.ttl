@@ -16,37 +16,29 @@
 
 :cjc a trm:Pipeline ;
 
-### RESTRUCTURE TEST RUNNER
-
-
 ### ShowConnections util
 
-trm:pipe (:walk_convs :uf_convs  :retree1  :SM :DE   :walk_msgs :uf_msgs  :retree2  :SM :DE  :mf :write) .
+# trm:pipe (:walk_convs :uf_convs  :retree1  :walk_msgs :uf_msgs :SM :DE :retree2  :mf :write) .
 
-# :retree2 
+trm:pipe (:p10 :p15 :p20 :p30 :p35 :p40 :p50 :p60) .
 
-:walk_convs a :JSONWalker ;
+:p10 a :JSONWalker ;
      trm:configKey :conversationsConfig . # has targetDir TODO move
 
-:uf_convs a :Unfork .
+:p15 a :Unfork .
 
-:retree1 a :Restructure ;
+:p20 a :Restructure ;
      trm:configKey :retreeConvs .
 
-:walk_msgs a :JSONWalker .
+:p30 a :JSONWalker .
 # trm:configKey ?
 
-:uf_msgs a :Unfork .
+:p35 a :Unfork .
 
-:retree2 a :Restructure ;
+:p40 a :Restructure ;
      trm:configKey :retreeMsgs .
 
-:mf a :MarkdownFormatter .
-:write a :FileWriter .
-# :p10 a :DatasetReader . 
+:p50 a :MarkdownFormatter .
 
-#:cjc_test a trm:Pipeline ;
-#trm:pipe (:t10 :SC) .
-
-#:t10 a :NOP ;
- # trm:configKey :topConfig .
+:p60 a :FileWriter ;
+     trm:configKey :writer . 
