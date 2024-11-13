@@ -34,10 +34,10 @@ class Processor extends EventEmitter {
         return false
         */
         const processorPoi = rdf.grapoi({ dataset: this.config, term: this.configKey })
-        logger.log('this.configKey = ' + this.configKey.value)
-        logger.poi(processorPoi)
+        //    logger.log('this.configKey = ' + this.configKey.value)
+        //   logger.poi(processorPoi)
 
-        logger.log('describe Desc')
+        // logger.log('describe Desc')
         if (this.configKey.value === ns.trm.describe.value) {
             this.describe()
         }
@@ -111,7 +111,6 @@ class Processor extends EventEmitter {
     }
 
     getPropertyFromMyConfig(property) {
-
         if (this.config.simples) {
             const shortName = property.value.split('/').pop()
             logger.debug(`Processor (simples), property = ${shortName}`)

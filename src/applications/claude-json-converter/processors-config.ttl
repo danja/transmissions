@@ -6,6 +6,11 @@ t:Conversations a trm:ServiceConfig ;
     trm:key t:conversationsConfig ;
     trm:targetDir "claude-chat" .
 
+t:setDump a trm:ServiceConfig ;
+    trm:setValue (t:sv0)  . # consider using blank nodes
+    t:sv0   trm:key    "dump" ;
+            trm:value    "true"  .
+
 t:retreeConvs a trm:ServiceConfig ;
     trm:rename (t:pp0 ) . # consider using blank nodes
     t:pp0   trm:pre     "item.chat_messages" ;

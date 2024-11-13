@@ -24,7 +24,7 @@ class CommandUtils {
     }
 
     async run(application, target, message = {}) {
-        logger.setLogLevel('debug')
+        logger.setLogLevel('info')
         logger.debug('\nCommandUtils.run()')
         logger.debug('CommandUtils.run, process.cwd() = ' + process.cwd())
         logger.debug('CommandUtils.run, application = ' + application)

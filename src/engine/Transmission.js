@@ -38,41 +38,25 @@ class Transmission {
       logger.error("No valid processor found to execute")
     }
   }
-  /*
-  async process(message) {
-    logger.log("\n+ ***** Execute *****")
-    // logger.log("\nDATA = " + data)
-    const processorName = this.connectors[0].fromName
 
-    let processor = this.get(processorName)
-    logger.log("| Running : " + processorName + " a " + processor.constructor.name) // first processor
-    // logger.log("\nTransmission running first processor : " + processorName)
-    // logger.log("\nTransmission running processor : " + processor)
-    // Start the first processor
-    // QQQ
-    //  processor.process(message)
-    processor.receive(message)
-
-  }
-*/
 
   /**
  * Describes the structure of the Transmission instance,
  * listing all registered processors and connectors.
  */
   toString() {
-    let description = 'Transmission Structure:\n';
+    let description = 'Transmission Structure:\n'
 
     // Describe processors
-    description += 'Processors:\n';
+    description += 'Processors:\n'
     Object.keys(this.processors).forEach(processorName => {
-      description += `  - ${processorName}\n`;
-    });
+      description += `  - ${processorName}\n`
+    })
 
     // Describe connectors
-    description += 'Connectors:\n';
+    description += 'Connectors:\n'
     this.connectors.forEach((connector, index) => {
-      description += `  - Connector ${index + 1}: ${connector.fromName} -> ${connector.toName}\n`;
+      description += `  - Connector ${index + 1}: ${connector.fromName} -> ${connector.toName}\n`
     })
 
     return description

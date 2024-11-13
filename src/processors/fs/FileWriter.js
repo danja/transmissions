@@ -40,6 +40,12 @@ class FileWriter extends SinkProcessor {
         logger.setLogLevel('debug')
         this.preProcess()
 
+        if (message.dump) {
+            const f = path.join(message.dataDir, 'message.json')
+            const content = JSON.stringify(message)
+            return this.doWrite(f, content, message)
+        }
+
         logger.debug("Filewriter, message.filepath = " + message.filepath)
 
         var filepath = message.filepath
@@ -76,13 +82,13 @@ class FileWriter extends SinkProcessor {
 
         // try {
         await this.mkdirs(dirName) // is this OK when the dirs ???
+
+        return this.doWrite(f, content, message)
+    }
+
+    async doWrite(f, content, message) {
         logger.log(' - FileWriter writing : ' + f)
         await writeFile(f, content)
-
-        //} catch (err) {
-        //  logger.error("FileWriter.process error : " + err.message)
-        //}
-
         return this.emit('message', message)
     }
 

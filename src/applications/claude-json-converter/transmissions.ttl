@@ -20,12 +20,19 @@
 
 # trm:pipe (:walk_convs :uf_convs  :retree1  :walk_msgs :uf_msgs :SM :DE :retree2  :mf :write) .
 
-trm:pipe (:p10 :p15 :p20 :p30 :p35 :p40 :p50 :p60) .
+trm:pipe (:p5 :p6 :SM :DE :p10   :p15 :p18 :p20 :p30 :p35 :p40 :p50 :p60) .
+
+:p5 a :SetMessage ;
+     trm:configKey :setDump .
+
+:p6 a :FileWriter .
 
 :p10 a :JSONWalker ;
      trm:configKey :conversationsConfig . # has targetDir TODO move
 
 :p15 a :Unfork .
+
+:p18 a :FileWriter .
 
 :p20 a :Restructure ;
      trm:configKey :retreeConvs .
