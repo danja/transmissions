@@ -5,11 +5,11 @@ cd ~/github-danny/transmissions/
 # -P src/applications/claude-json-converter/data/input/conversations.json
 ```
 
-After `FileReader` :
+After `FileReader` (and `Blanker`):
 
 ```
 {
-    // system message bits
+    // system message bits,
 
     "content": [
         {
@@ -47,3 +47,9 @@ After `FileReader` :
         }
 }
 ```
+
+`JSONWalker` fires off a message per-conversation.
+
+These need `Restructure` to split off the common metadata as `message.content`, and move `chat_messages` to `message.content`, ready for -
+
+`JSONWalker` fires off a message per-conversation.

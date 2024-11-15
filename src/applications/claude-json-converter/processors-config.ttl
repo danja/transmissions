@@ -15,6 +15,7 @@ t:setDump a trm:ServiceConfig ;
             trm:value  "true"  .
 #########################################################################
 
+# should really be in a manifest.ttl
 t:ReadFile a trm:ServiceConfig ;
     rdfs:label "Read file" ;
     trm:configKey t:readFile ;
@@ -22,14 +23,16 @@ t:ReadFile a trm:ServiceConfig ;
     trm:sourceFile "input/input-01.json" ;
     trm:mediaType "application/json" .
 
+
 t:ConversationsWalker a trm:ServiceConfig ;
     trm:key t:conversationsConfig ;
     trm:pointer "content" .
 
+
 t:retreeConvs a trm:ServiceConfig ;
-    trm:rename (t:pp0 ) . # consider using blank nodes
-    t:pp0   trm:pre     "item.chat_messages" ;
-            trm:post    "payload"  .
+    trm:rename (t:pp0 ) . 
+    t:pp0   trm:pre     "content.uuid" ;
+            trm:post    "meta.conv_uuid"  .
 
 t:MessagesWalker a trm:ServiceConfig ;
     trm:key t:messagesConfig ;
@@ -37,7 +40,7 @@ t:MessagesWalker a trm:ServiceConfig ;
 
 
 t:retreeMsgs a trm:ServiceConfig ;
-    trm:rename (t:pp1 t:pp2 t:pp3) . # consider using blank nodes
+    trm:rename (t:pp1 t:pp2 t:pp3) . 
 
     t:pp1   trm:pre     "content.item.chat_messages" ;
             trm:post    "channel"  .

@@ -25,6 +25,8 @@ docs : # trm:pipe (:walk_convs :uf_convs  :retree1  :walk_msgs :uf_msgs :SM :DE 
 
 #:todo use 'payload' rather that 'content' as default in messages?
 
+#:todo in `FileWriter` dump, add datetime stamp to filename
+
 ### ShowConnections util
 
 In transmissions :

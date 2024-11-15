@@ -14,11 +14,11 @@ class JsonRestructurer {
     }
 
     getValueByPath(obj, path) {
-        logger.debug('JsonRestructurer, path = ' + path)
-        logger.debug('JsonRestructurer, OBJECT = ' + obj)
+        //    logger.debug('JsonRestructurer, path = ' + path)
+        //  logger.debug('JsonRestructurer, OBJECT = ' + obj)
 
-        logger.reveal(obj)
-        logger.debug('JsonRestructurer, OBJECT = ^^^^')
+        //        logger.reveal(obj)
+        //      logger.debug('JsonRestructurer, OBJECT = ^^^^')
 
         //   logger.debug('JsonRestructurer, obj.item.chat_messages = ' + obj.item.chat_messages)
         try {
@@ -60,7 +60,7 @@ class JsonRestructurer {
         this.mappings.forEach(({ pre, post }) => {
             //   logger.log(`PRE = ${pre}, POST = ${post}`)
             const value = this.getValueByPath(inputData, pre)
-            logger.log(`PRE = ${pre}, value = ${value}`)
+            logger.log(`PRE = ${pre}, POST = ${post} value = ${value}`)
             if (value !== undefined) {
                 this.setValueByPath(result, post, value)
             }

@@ -23,17 +23,23 @@
 ####################################
 
 :cjc a trm:Pipeline ;
-trm:pipe (:SD  :p10 :p20 :SM :FW) .
+trm:pipe (:SD  :p10 :p20 :p30 :FW) .
 
 # Start 
 
 :p10 a :FileReader ; # Claude conversations.json
        trm:configKey :readFile .
 
+# Separates into conversations
 :p20 a :JSONWalker ;
      trm:configKey :conversationsConfig . 
 
-:p30 a :JSONWalker ;
+
+:p30 a :Restructure ;
+     trm:configKey :retreeConvs .
+
+# Separates into messages
+:p40 a :JSONWalker ;
      trm:configKey :messagesConfig . 
 
 

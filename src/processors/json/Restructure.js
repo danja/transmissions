@@ -50,10 +50,7 @@ class Restructure extends ProcessProcessor {
 
             // Get input data from message
             // const input = message.payload?.item || message.payload
-            const input = message
-            if (!input) {
-                throw new Error('No input data found in message')
-            }
+            const input = structuredClone(message)
 
             // Perform restructuring
             const restructured = this.restructurer.restructure(input)

@@ -58,10 +58,6 @@ class JSONWalker extends ProcessProcessor {
             for (var i = 0; i < content.length; i++) {
                 const newMessage = structuredClone(message)
                 newMessage.content = content[i]
-                //    newMessage.content.items = []
-                //  newMessage.content.items.push[item]
-                //   message.item = item  // TODO refactor, it's just to grab the last
-                //    finalMessage = newMessage
                 this.emit('message', newMessage)
             }
 

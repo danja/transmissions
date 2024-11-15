@@ -24,7 +24,6 @@ describe('test_restructure', function () {
         }
     }
 
-
     async function compareFiles(index) {
         const outputFile = path.join(dataDir, 'output', `output-${index}.json`)
         const requiredFile = path.join(dataDir, 'output', `required-${index}.json`)
