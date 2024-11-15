@@ -23,7 +23,7 @@
 ####################################
 
 :cjc a trm:Pipeline ;
-trm:pipe (:SD  :p10 :p20 :p30 :FW) .
+trm:pipe (:p10 :p20 :p30 :p40 :p50  :p60) .
 
 # Start 
 
@@ -42,5 +42,10 @@ trm:pipe (:SD  :p10 :p20 :p30 :FW) .
 :p40 a :JSONWalker ;
      trm:configKey :messagesConfig . 
 
+#:p50 a :Restructure ;
+ #    trm:configKey :retreeMsgs .
 
+:p50 a :MarkdownFormatter .
+
+:p60 a :FileWriter .
 

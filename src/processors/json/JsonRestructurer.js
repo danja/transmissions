@@ -4,7 +4,7 @@ import logger from '../../utils/Logger.js'
 
 class JsonRestructurer {
     constructor(mappings) {
-        logger.setLogLevel('debug')
+        logger.setLogLevel('info')
         if (!mappings?.mappings || !Array.isArray(mappings.mappings)) {
             throw new Error('Invalid mapping structure')
         }
@@ -60,14 +60,14 @@ class JsonRestructurer {
         this.mappings.forEach(({ pre, post }) => {
             //   logger.log(`PRE = ${pre}, POST = ${post}`)
             const value = this.getValueByPath(inputData, pre)
-            logger.log(`PRE = ${pre}, POST = ${post} value = ${value}`)
+            // logger.log(`PRE = ${pre}, POST = ${post} value = ${value}`)
             if (value !== undefined) {
                 this.setValueByPath(result, post, value)
             }
         })
-        logger.log('RESULT%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55')
-        logger.reveal(result)
-        logger.log('RESULT ^^^^')
+        //    logger.log('RESULT%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55')
+        //  logger.reveal(result)
+        // logger.log('RESULT ^^^^')
         return result
     }
 }

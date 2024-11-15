@@ -1,1 +1,32 @@
-{"dataDir":"src/applications/claude-json-converter/data","rootDir":"claude-json-converter","applicationRootDir":"claude-json-converter","tags":"SD.p10.p20.p30.FW","dump":"true","content":{"meta":{"conv_uuid":"conversation 2 uuid"}},"done":true}
+{
+    "dataDir": "src/applications/claude-json-converter/data",
+    "rootDir": "claude-json-converter",
+    "applicationRootDir": "claude-json-converter",
+    "tags": "SD.p10.p20.p30.p40.SM.FW",
+    "dump": "true",
+    "content": {
+        "uuid": "c2 message 2 uuid",
+        "text": "",
+        "content": [
+            {
+                "type": "c2 message 2 type",
+                "text": "c2 message 2 text"
+            }
+        ],
+        "sender": "",
+        "created_at": "",
+        "updated_at": "",
+        "attachments": [],
+        "files": [
+            {
+                "file_name": ""
+            }
+        ]
+    },
+    "done": true,
+    "meta": {
+        "conv_uuid": "conversation 2 uuid",
+        "conv_name": "conversation 2 name",
+        "updated_at": ""
+    }
+}

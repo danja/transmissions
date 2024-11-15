@@ -19,8 +19,8 @@ t:setDump a trm:ServiceConfig ;
 t:ReadFile a trm:ServiceConfig ;
     rdfs:label "Read file" ;
     trm:configKey t:readFile ;
-  #  trm:sourceFile "input/conversations.json" ;
-    trm:sourceFile "input/input-01.json" ;
+    trm:sourceFile "input/conversations.json" ;
+  #  trm:sourceFile "input/input-01.json" ;
     trm:mediaType "application/json" .
 
 
@@ -30,29 +30,36 @@ t:ConversationsWalker a trm:ServiceConfig ;
 
 
 t:retreeConvs a trm:ServiceConfig ;
-    trm:rename (t:pp0 ) . 
-    t:pp0   trm:pre     "content.uuid" ;
-            trm:post    "meta.conv_uuid"  .
+    trm:rename (t:pp100 t:pp101 t:pp102  t:pp103) . 
+    t:pp100     trm:pre     "content.uuid" ;
+                trm:post    "meta.conv_uuid"  .
+    t:pp101     trm:pre     "content.name" ;
+                trm:post    "meta.conv_name"  .
+    t:pp102     trm:pre     "content.updated_at" ;
+                trm:post    "meta.updated_at"  .
+    t:pp103     trm:pre     "content.chat_messages" ;
+                trm:post    "content"  .
 
 t:MessagesWalker a trm:ServiceConfig ;
     trm:key t:messagesConfig ;
     trm:pointer "content" .
 
-
+# unused
 t:retreeMsgs a trm:ServiceConfig ;
-    trm:rename (t:pp1 t:pp2 t:pp3) . 
+    trm:rename (t:pp200 t:pp201 t:pp202) . 
 
-    t:pp1   trm:pre     "content.item.chat_messages" ;
-            trm:post    "channel"  .
+    t:pp200     trm:pre     "content.item.chat_messages" ;
+                trm:post    "channel"  .
 
-    t:pp2   trm:pre     "content.item.uuid" ;
-            trm:post    "filename"  .
+    t:pp201     trm:pre     "content.item.uuid" ;
+                trm:post    "filename"  .
             
-    t:pp3   trm:pre     "content.item.name" ;
-            trm:post    "title"  .
+    t:pp202     trm:pre     "content.item.name" ;
+                trm:post    "title"  .
 
 #      filepath = this.getPropertyFromMyConfig(ns.trm.destinationFile)
 
+# unused
 t:Writer a trm:ServiceConfig ;
     trm:key t:writer ;
     trm:destinationFile "DESTINATION" .

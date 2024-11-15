@@ -28,7 +28,7 @@ class Restructure extends ProcessProcessor {
     }
 
     async process(message) {
-        logger.setLogLevel('debug')
+        logger.setLogLevel('info')
         //  logger.debug('Restructure this.configKey = ' + this.configKey.value)
         // Extract mappings array from config 
         var renames
@@ -38,8 +38,8 @@ class Restructure extends ProcessProcessor {
             renames = await this.getRenames(this.config, this.configKey, ns.trm.rename)
         }
 
-        logger.log('Renames :')
-        logger.reveal(renames)
+        //  logger.log('Renames :')
+        // logger.reveal(renames)
 
         // Initialize JsonRestructurer with mappings
         this.restructurer = new JsonRestructurer({
@@ -55,9 +55,16 @@ class Restructure extends ProcessProcessor {
             // Perform restructuring
             const restructured = this.restructurer.restructure(input)
 
-            // Update message with restructured data
-            // message.payload = restructured
-            message.content = restructured
+            const type = typeof restructured
+            //   logger.debug(`typeof restructured = ${type}`) // is object... TODO need different handling for returned arrays?
+            // logger.debug(`restructured = ${restructured}`)
+            //    logger.reveal(restructured)
+
+            for (const key of Object.keys(restructured)) {
+                message[key] = restructured[key]
+            }
+
+
             logger.debug('Restructure successful')
             return this.emit('message', message)
 

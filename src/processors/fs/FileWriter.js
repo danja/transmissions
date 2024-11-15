@@ -83,7 +83,7 @@ class FileWriter extends SinkProcessor {
         // try {
         await this.mkdirs(dirName) // is this OK when the dirs ???
 
-        return this.doWrite(f, content, message)
+        return await this.doWrite(f, content, message)
     }
 
     async doWrite(f, content, message) {
@@ -95,7 +95,9 @@ class FileWriter extends SinkProcessor {
     async mkdirs(dir) {
         if (!dir) return
         try {
-            mkdir(dir, { recursive: true }, (error) => { })
+            mkdir(dir, { recursive: true }, (error) => {
+                logger.log('EEEEEEEEEEEEEEEEEK!' + error)
+            })
         } catch (error) {
             console.error(error)
         }

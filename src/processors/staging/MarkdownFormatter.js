@@ -8,32 +8,24 @@ class MarkdownFormatter extends ProcessProcessor {
     }
 
     async process(message) {
-        try {
-            /*
-            const item = message.currentItem
-            if (!item) {
-                return
-            }
-*/
-            const item = message.item
 
-            const dt = item ? item.updated_at.substring(0, 19) : 'no item field' // HERE!!!!!!!!!!!!!!!!
-            message.sessionID = `CC_${dt}`
-            message.sessionName = item.name
 
-            // TODO is in config
-            const dir = '/home/danny/github-danny/hyperdata/docs/postcraft/content-raw/claude-chat'
+        ///  var dir = path.join(message.dataDir, message.meta.conv_uuid.substring(0, 4))
+        //    if (!message.content) {
+        // logger.log(`messyage = ${message.content}`)
+        //  }
+        if (message.content) {
+            const filename = `${message.content.created_at.substring(0, 10)}_${message.content.uuid.substring(0, 3)}.md`
 
-            message.filepath = path.join(dir, `CC_${dt}.md`) // message.dataDir,
-
+            message.filepath = path.join('output', message.meta.conv_uuid.substring(0, 4), filename) // message.dataDir,
 
             message.content = this.formatMarkdown(message.content)
-
-            return this.emit('message', message)
-        } catch (err) {
-            logger.error("MarkdownFormatter.execute error: " + err.message)
-            throw err
+        } else {
+            logger.log('UNDEFINED CONTENT')
+            return {}
         }
+
+        return this.emit('message', message)
     }
 
     /*
@@ -48,11 +40,7 @@ class MarkdownFormatter extends ProcessProcessor {
         return content
     }
     */
-    /*
-    for (const [key, value] of Object.entries(object1)) {
-  console.log(`${key}: ${value}`);
-}
-  */
+
     formatMarkdown(item) {
         logger.reveal(item)
         const lines = []
