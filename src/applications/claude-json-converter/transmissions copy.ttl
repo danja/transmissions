@@ -1,0 +1,61 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix trm: <http://purl.org/stuff/transmission/> .
+@prefix : <http://hyperdata.it/transmissions/> .
+
+#############################################################
+# insert into pipe for debugging
+:DE a :DeadEnd . # ends the current pipe quietly
+:H  a :Halt . # kills everything 
+:SC a :ShowConfig . # verbose report, continues pipe
+:SM a :ShowMessage . # verbose report, continues pipe
+:SM1 a :ShowMessage . # verbose report, continues pipe
+:SM2 a :ShowMessage . # verbose report, continues pipe
+:N  a :NOP . # no operation (except for showing stage in pipe)
+:UF a :Unfork . # collapses all pipes but one 
+
+# testing only - FileWriter will save message
+:SD a :SetMessage ;
+     trm:configKey :setDump .
+ :FW a :FileWriter .
+#############################################################
+
+
+
+# testing only
+:BLK a :Blanker ; # clear values
+     trm:configKey :blankin .
+
+####################################
+
+:cjc a trm:Pipeline ;
+trm:pipe (:SD  :p10 :BLK :p15 :p20  :FW :DE :p30  :p40 :SM :p50 :p60) .
+
+# trm:pipe (:q10  :q20 :q30) .
+
+
+# Start 
+
+:p10 a :JSONWalker ;
+     trm:configKey :conversationsConfig . # has targetDir TODO move
+
+:p15 a :Unfork .
+
+:p20 a :Restructure ;
+     trm:configKey :retreeConvs .
+
+
+####################
+
+:p30 a :JSONWalker .
+# trm:configKey ?
+
+:p35 a :Unfork .
+
+:p40 a :Restructure ;
+     trm:configKey :retreeMsgs .
+
+
+:p50 a :MarkdownFormatter .
+
+:p60 a :FileWriter ;
+     trm:configKey :writer . 

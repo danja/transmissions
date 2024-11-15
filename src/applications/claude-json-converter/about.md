@@ -1,18 +1,49 @@
 ```sh
 cd ~/github-danny/transmissions/
-./trans claude-json-converter -P src/applications/claude-json-converter/data/input/conversations.json
+./trans claude-json-converter
+
+# -P src/applications/claude-json-converter/data/input/conversations.json
 ```
 
-```turtle
-:s40 a :Restructure ;
-    trm:configKey :walkPrep .
+After `FileReader` :
 
-...
+```
+{
+    // system message bits
 
-t:walkPrep a trm:ReMap ;
-    trm:rename (t:pp1 t:pp2) . # consider using blank nodes
-    t:pp1   trm:pre     "content" ;
-            trm:post    "template"  .
-    t:pp2   trm:pre     "entryContentMeta.sourceDir" ;
-            trm:post    "sourceDir" .
+    "content": [
+        {
+            "uuid": "",
+            "name": "",
+            "created_at": "",
+            "updated_at": "",
+            "account": {
+                "uuid": ""
+            },
+            "chat_messages": [
+                {
+                    "uuid": "",
+                    "text": "",
+                    "content": [
+                        {
+                            "type": "",
+                            "text": ""
+                        }
+                    ],
+                    "sender": "",
+                    "created_at": "",
+                    "updated_at": "",
+                    "attachments": [],
+                    "files": [
+                        {
+                            "file_name": ""
+                        }
+                    ]
+                },
+                {
+                    ...
+                }
+            ]
+        }
+}
 ```

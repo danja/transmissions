@@ -38,8 +38,8 @@ class Restructure extends ProcessProcessor {
             renames = await this.getRenames(this.config, this.configKey, ns.trm.rename)
         }
 
-        //   logger.log('Renames :')
-        //  logger.reveal(renames)
+        logger.log('Renames :')
+        logger.reveal(renames)
 
         // Initialize JsonRestructurer with mappings
         this.restructurer = new JsonRestructurer({

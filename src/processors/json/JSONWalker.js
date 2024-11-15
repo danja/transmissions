@@ -35,46 +35,60 @@ import ProcessProcessor from '../base/ProcessProcessor.js'
 import ns from '../../utils/ns.js'
 
 class JSONWalker extends ProcessProcessor {
-   constructor(config) {
-       super(config)
-   }
+    constructor(config) {
+        super(config)
+    }
 
-   /**
-    * Processes JSON payload by walking its structure and emitting messages
-    * @param {Object} message - Contains payload to process
-    * @throws {Error} If payload is invalid
-    * @emits message - For each item and completion
-    */
-   async process(message) {
-       try {
-           // TODO MOVE!
-           var targetDir = this.getPropertyFromMyConfig(ns.trm.targetDir)
-           targetDir = path.join(process.cwd(), targetDir)
-           logger.debug(`JSONWalker:targetDir =  ${targetDir}`)
+    /**
+     * Processes JSON payload by walking its structure and emitting messages
+     * @param {Object} message - Contains payload to process
+     * @throws {Error} If payload is invalid
+     * @emits message - For each item and completion
+     */
+    async process(message) {
+        try {
+            var pointer = this.getPropertyFromMyConfig(ns.trm.pointer)
 
-           const payload = structuredClone(message.payload)
+            logger.debug(`JSONWalker pointer =  ${pointer}`)
 
-           logger.log(payload)
-           logger.log(typeof payload)
-           if (!payload || typeof payload !== 'object') {
-               throw new Error('Invalid JSON payload')
-           }
-           message.payload = {} // TODO option in config
+            const content = structuredClone(message.content)
+            message.content = {} // TODO option in config
 
-           for (const item of Object.values(payload)) {
-               const clonedMessage = structuredClone(message)
-               clonedMessage.item = item
-               message.item = item  // TODO refactor, grab the last
-               this.emit('message', clonedMessage)
-           }
+            //  for (const item of Object.values(content)) {
+            for (var i = 0; i < content.length; i++) {
+                const newMessage = structuredClone(message)
+                newMessage.content = content[i]
+                //    newMessage.content.items = []
+                //  newMessage.content.items.push[item]
+                //   message.item = item  // TODO refactor, it's just to grab the last
+                //    finalMessage = newMessage
+                this.emit('message', newMessage)
+            }
 
-           message.done = true
-           this.emit('message', message)
-       } catch (err) {
-           logger.error("JSONWalker.process error: " + err.message)
-           throw err
-       }
-   }
+            var finalMessage = structuredClone(message)
+            finalMessage.content = content[content.length - 1]
+            //  finalMessage.content = {}
+
+
+            /* this is for values - dict
+            for (const item of Object.values(content)) {
+                const newMessage = structuredClone(message)
+                newMessage.content = {}
+                newMessage.content.items = []
+                newMessage.content.items.push[item]
+                //   message.item = item  // TODO refactor, it's just to grab the last
+                finalMessage = newMessage
+                this.emit('message', newMessage)
+            }
+                */
+
+            finalMessage.done = true
+            this.emit('message', finalMessage)
+        } catch (err) {
+            logger.error("JSONWalker.process error: " + err.message)
+            throw err
+        }
+    }
 }
 
 export default JSONWalker

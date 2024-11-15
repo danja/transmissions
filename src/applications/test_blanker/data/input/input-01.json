@@ -1,0 +1,17 @@
+{
+    "notpayload": "keep",
+    "payload": {
+        "nottest": "also keep",
+        "test": {
+            "first": "firststuff",
+            "second": {
+                "two": "twotwo"
+            },
+            "third": [
+                "31",
+                "32",
+                "33"
+            ]
+        }
+    }
+}

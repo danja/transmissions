@@ -1,8 +1,0 @@
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix trm: <http://purl.org/stuff/transmission/> .
-@prefix : <http://hyperdata.it/transmissions/> .
-
-:copyTemplateToDestination a trm:ServiceConfig ;
-    trm:key :copyTemplateToDestination ;
-    trm:source "/home/danny/HKMS/postcraft/postcraft-template/" ;
-    trm:destination "{{destinationPath}}" .

@@ -20,9 +20,9 @@ class SetMessage extends Processor {
     }
 
     async getSetters(config, configKey, term) { // TODO refactor - is same in RestructureJSON
-        logger.log(`***** config = ${config}`)
-        logger.log(`***** configKey = ${configKey}`)
-        logger.log(`***** term = ${term}`)
+        //    logger.log(`***** config = ${config}`)
+        //  logger.log(`***** configKey = ${configKey}`)
+        // logger.log(`***** term = ${term}`)
         const settersRDF = GrapoiHelpers.listToArray(config, configKey, term)
         const dataset = this.config
         var setters = []

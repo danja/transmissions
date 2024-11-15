@@ -1,31 +1,51 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix trm: <http://purl.org/stuff/transmission/> .
 @prefix t: <http://hyperdata.it/transmissions/> .
 
-t:Conversations a trm:ServiceConfig ;
-    trm:key t:conversationsConfig ;
-    trm:targetDir "claude-chat" .
+##################### only for testing
+t:bContent a trm:ServiceConfig ;
+    rdfs:label "Root node in JSON object for blanker" ;
+    trm:configKey t:blankContent  ;
+    trm:pointer "content"  .
 
 t:setDump a trm:ServiceConfig ;
     trm:setValue (t:sv0)  . # consider using blank nodes
     t:sv0   trm:key    "dump" ;
-            trm:value    "true"  .
+            trm:value  "true"  .
+#########################################################################
+
+t:ReadFile a trm:ServiceConfig ;
+    rdfs:label "Read file" ;
+    trm:configKey t:readFile ;
+  #  trm:sourceFile "input/conversations.json" ;
+    trm:sourceFile "input/input-01.json" ;
+    trm:mediaType "application/json" .
+
+t:ConversationsWalker a trm:ServiceConfig ;
+    trm:key t:conversationsConfig ;
+    trm:pointer "content" .
 
 t:retreeConvs a trm:ServiceConfig ;
     trm:rename (t:pp0 ) . # consider using blank nodes
     t:pp0   trm:pre     "item.chat_messages" ;
             trm:post    "payload"  .
 
+t:MessagesWalker a trm:ServiceConfig ;
+    trm:key t:messagesConfig ;
+    trm:pointer "content" .
+
+
 t:retreeMsgs a trm:ServiceConfig ;
     trm:rename (t:pp1 t:pp2 t:pp3) . # consider using blank nodes
 
-    t:pp1   trm:pre     "item.chat_messages" ;
+    t:pp1   trm:pre     "content.item.chat_messages" ;
             trm:post    "channel"  .
 
-    t:pp2   trm:pre     "item.uuid" ;
+    t:pp2   trm:pre     "content.item.uuid" ;
             trm:post    "filename"  .
             
-    t:pp3   trm:pre     "item.name" ;
+    t:pp3   trm:pre     "content.item.name" ;
             trm:post    "title"  .
 
 #      filepath = this.getPropertyFromMyConfig(ns.trm.destinationFile)

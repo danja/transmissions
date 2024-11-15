@@ -12,40 +12,29 @@
 :SM2 a :ShowMessage . # verbose report, continues pipe
 :N  a :NOP . # no operation (except for showing stage in pipe)
 :UF a :Unfork . # collapses all pipes but one 
-#############################################################
+
+# testing only - FileWriter will save message
+:SD a :SetMessage ;
+     trm:configKey :setDump .
+:FW a :FileWriter .
+
+:BLK a :Blanker ; # clear values
+     trm:configKey :blankContent .
+####################################
 
 :cjc a trm:Pipeline ;
+trm:pipe (:SD  :p10 :p20 :SM :FW) .
 
-### ShowConnections util
+# Start 
 
-# trm:pipe (:walk_convs :uf_convs  :retree1  :walk_msgs :uf_msgs :SM :DE :retree2  :mf :write) .
+:p10 a :FileReader ; # Claude conversations.json
+       trm:configKey :readFile .
 
-trm:pipe (:p5 :p6 :SM :DE :p10   :p15 :p18 :p20 :p30 :p35 :p40 :p50 :p60) .
+:p20 a :JSONWalker ;
+     trm:configKey :conversationsConfig . 
 
-:p5 a :SetMessage ;
-     trm:configKey :setDump .
+:p30 a :JSONWalker ;
+     trm:configKey :messagesConfig . 
 
-:p6 a :FileWriter .
 
-:p10 a :JSONWalker ;
-     trm:configKey :conversationsConfig . # has targetDir TODO move
 
-:p15 a :Unfork .
-
-:p18 a :FileWriter .
-
-:p20 a :Restructure ;
-     trm:configKey :retreeConvs .
-
-:p30 a :JSONWalker .
-# trm:configKey ?
-
-:p35 a :Unfork .
-
-:p40 a :Restructure ;
-     trm:configKey :retreeMsgs .
-
-:p50 a :MarkdownFormatter .
-
-:p60 a :FileWriter ;
-     trm:configKey :writer . 

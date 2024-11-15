@@ -17,7 +17,7 @@ class MarkdownFormatter extends ProcessProcessor {
 */
             const item = message.item
 
-            const dt = item.updated_at.substring(0, 19)
+            const dt = item ? item.updated_at.substring(0, 19) : 'no item field' // HERE!!!!!!!!!!!!!!!!
             message.sessionID = `CC_${dt}`
             message.sessionName = item.name
 

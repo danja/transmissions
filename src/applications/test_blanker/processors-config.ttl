@@ -1,0 +1,21 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix trm: <http://purl.org/stuff/transmission/> .
+@prefix t: <http://hyperdata.it/transmissions/> . # for custom terms & instances
+
+
+t:r a trm:ServiceConfig ;
+    rdfs:label "Read file" ;
+    trm:configKey t:readFile ;
+    trm:sourceFile "input/input-01.json" ;
+    trm:mediaType "application/json" .
+
+t:pointy a trm:ServiceConfig ;
+    rdfs:label "Root node in JSON object" ;
+    trm:configKey t:blankin ;
+    trm:pointer "content.payload.test"  .
+
+t:w a trm:ServiceConfig ;
+    rdfs:label "Write file" ;
+    trm:configKey t:writeFile ;
+    trm:destinationFile "output/output-01.json"  .

@@ -1,0 +1,100 @@
+[
+    {
+        "uuid": "conversation 1 uuid",
+        "name": "conversation 1 name",
+        "created_at": "",
+        "updated_at": "",
+        "account": {
+            "uuid": "account.uuid"
+        },
+        "chat_messages": [
+            {
+                "uuid": "c1 message 1 uuid",
+                "text": "",
+                "content": [
+                    {
+                        "type": "c1 message 1 type",
+                        "text": "c1 message 1 text"
+                    }
+                ],
+                "sender": "",
+                "created_at": "",
+                "updated_at": "",
+                "attachments": [],
+                "files": [
+                    {
+                        "file_name": ""
+                    }
+                ]
+            },
+            {
+                "uuid": "c1 message 2 uuid",
+                "text": "",
+                "content": [
+                    {
+                        "type": "c1 message 2 type",
+                        "text": "c1 message 2 text"
+                    }
+                ],
+                "sender": "",
+                "created_at": "",
+                "updated_at": "",
+                "attachments": [],
+                "files": [
+                    {
+                        "file_name": ""
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "uuid": "conversation 2 uuid",
+        "name": "conversation 2 name",
+        "created_at": "",
+        "updated_at": "",
+        "account": {
+            "uuid": "account.uuid"
+        },
+        "chat_messages": [
+            {
+                "uuid": "c2 message 1 uuid",
+                "text": "",
+                "content": [
+                    {
+                        "type": "c2 message 1 type",
+                        "text": "c2 message 1 text"
+                    }
+                ],
+                "sender": "",
+                "created_at": "",
+                "updated_at": "",
+                "attachments": [],
+                "files": [
+                    {
+                        "file_name": ""
+                    }
+                ]
+            },
+            {
+                "uuid": "c2 message 2 uuid",
+                "text": "",
+                "content": [
+                    {
+                        "type": "c2 message 2 type",
+                        "text": "c2 message 2 text"
+                    }
+                ],
+                "sender": "",
+                "created_at": "",
+                "updated_at": "",
+                "attachments": [],
+                "files": [
+                    {
+                        "file_name": ""
+                    }
+                ]
+            }
+        ]
+    }
+]
