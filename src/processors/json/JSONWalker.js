@@ -47,6 +47,7 @@ class JSONWalker extends ProcessProcessor {
      */
     async process(message) {
         try {
+            message.done = false
             var pointer = this.getPropertyFromMyConfig(ns.trm.pointer)
 
             logger.debug(`JSONWalker pointer =  ${pointer}`)
@@ -63,8 +64,6 @@ class JSONWalker extends ProcessProcessor {
 
             var finalMessage = structuredClone(message)
             finalMessage.content = content[content.length - 1]
-            //  finalMessage.content = {}
-
 
             /* this is for values - dict
             for (const item of Object.values(content)) {

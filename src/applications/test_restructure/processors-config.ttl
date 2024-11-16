@@ -10,11 +10,12 @@ t:jsonFileIn a trm:Config ;
 t:retree a trm:ServiceConfig ;
     trm:rename (t:pp1 t:pp2 t:pp3) . # consider using blank nodes
     t:pp1   trm:pre     "content.item.chat_messages" ;
-            trm:post    "channel"  .
+            trm:post    "content.channel"  .
     t:pp2   trm:pre     "content.item.uuid" ;
-            trm:post    "filename"  . 
+            trm:post    "content.filename"  . 
     t:pp3   trm:pre     "content.item.name" ;
-            trm:post    "title"  .
+            trm:post    "content.title"  .
+
 
 t:jsonFileOut a trm:Config ;
     trm:key t:writer ;

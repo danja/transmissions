@@ -37,11 +37,15 @@ class FileWriter extends SinkProcessor {
      * @param {Object} message - The execution message.
      */
     async process(message) {
-        logger.setLogLevel('debug')
+        logger.setLogLevel('info')
         this.preProcess()
 
         if (message.dump) {
-            const f = path.join(message.dataDir, 'message.json')
+            // TODO make optional (on done?) - is a pain for multi
+            //    const filename = `message_${new Date().toISOString()}.json`
+
+            const filename = 'message.json'
+            const f = path.join(message.dataDir, filename)
             const content = JSON.stringify(message)
             return this.doWrite(f, content, message)
         }
@@ -80,8 +84,8 @@ class FileWriter extends SinkProcessor {
         logger.debug("Filewriter, content = " + content)
         logger.debug("Filewriter, typeof content = " + typeof content)
 
-        // try {
-        await this.mkdirs(dirName) // is this OK when the dirs ???
+
+        this.mkdirs(dirName) // sync - see below
 
         return await this.doWrite(f, content, message)
     }
@@ -92,15 +96,13 @@ class FileWriter extends SinkProcessor {
         return this.emit('message', message)
     }
 
-    async mkdirs(dir) {
-        if (!dir) return
-        try {
-            mkdir(dir, { recursive: true }, (error) => {
-                logger.log('EEEEEEEEEEEEEEEEEK!' + error)
-            })
-        } catch (error) {
-            console.error(error)
-        }
+    mkdirs(dir) {
+        mkdirSync(dir, { recursive: true })
+        /*
+                mkdir(dir, { recursive: true }, (error) => {
+                    logger.log('EEEEEEEEEEEEEEEEEK!' + error)
+                })
+           */
     }
 }
 

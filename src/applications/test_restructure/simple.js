@@ -11,13 +11,13 @@ const config = {
     "mediaType": "application/json",
     "rename": [{
         "pre": "content.item.chat_messages",
-        "post": "channel"
+        "post": "content.channel"
     }, {
         "pre": "content.item.uuid",
-        "post": "filename"
+        "post": "content.filename"
     }, {
         "pre": "content.item.name",
-        "post": "title"
+        "post": "content.title"
     }]
 }
 

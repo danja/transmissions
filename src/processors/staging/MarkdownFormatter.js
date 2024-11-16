@@ -9,55 +9,37 @@ class MarkdownFormatter extends ProcessProcessor {
 
     async process(message) {
 
+        // logger.reveal(message)
+        if (message.done) return
 
-        ///  var dir = path.join(message.dataDir, message.meta.conv_uuid.substring(0, 4))
-        //    if (!message.content) {
-        // logger.log(`messyage = ${message.content}`)
-        //  }
-        if (message.content) {
-            const filename = `${message.content.created_at.substring(0, 10)}_${message.content.uuid.substring(0, 3)}.md`
+        const filename = `${message.content.created_at.substring(0, 10)}_${message.content.uuid.substring(0, 3)}.md`
 
-            message.filepath = path.join('output', message.meta.conv_uuid.substring(0, 4), filename) // message.dataDir,
-
-            message.content = this.formatMarkdown(message.content)
-        } else {
-            logger.log('UNDEFINED CONTENT')
-            return {}
-        }
+        //   message.filepath = path.join('output', 'temp', message.meta.conv_uuid.substring(0, 4), filename) // message.dataDir,
+        message.filepath = path.join('/home/danny/github-danny/hyperdata/docs/chat-archives/md', message.meta.conv_uuid.substring(0, 4), filename)
+        message.content = this.extractMarkdown(message)
 
         return this.emit('message', message)
     }
 
-    /*
-    walkItem(item) {
-        //  logger.reveal(item)
-        //  for (const key of item) { // [key, value] 
-        var content = ""
-        for (const [key, value] of Object.entries(item)) {
-            content = content + '\n' +  formatMarkdown(key)
-     
-        }
-        return content
-    }
-    */
-
-    formatMarkdown(item) {
-        logger.reveal(item)
+    extractMarkdown(message) {
         const lines = []
-        lines.push(`# ${item.title || 'Untitled'}`)
-        lines.push('')
+        lines.push(`# ${message.meta.conv_name}\n`)
+        lines.push(`${message.meta.conv_uuid}\n`)
+        lines.push(`${message.content.uuid}\n`)
+        // lines.push('')
+        lines.push(message.content.text)
+        lines.push('\n---\n')
 
-        for (const [key, value] of Object.entries(item)) {
-            if (key !== 'title' && value !== null) {
-                lines.push(`## ${key}`)
-                lines.push('')
-                lines.push(typeof value === 'object' ? JSON.stringify(value, null, 2) : value.toString())
-                lines.push('')
+        for (const [key, value] of Object.entries(message)) {
+            if (key !== 'content' && value !== null) {
+                const v = typeof value === 'object' ? JSON.stringify(value, null, 2) : value.toString()
+                lines.push(`* **${key}** : ${v}`)
             }
         }
 
         return lines.join('\n')
     }
+
 }
 
 export default MarkdownFormatter

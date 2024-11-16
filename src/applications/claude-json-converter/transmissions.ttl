@@ -20,6 +20,8 @@
 
 :BLK a :Blanker ; # clear values
      trm:configKey :blankContent .
+
+# :UF :SD :FW :DE 
 ####################################
 
 :cjc a trm:Pipeline ;
