@@ -2,10 +2,10 @@ import { readFile } from 'node:fs/promises'
 import path from 'path'
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
-import SourceProcessor from '../base/SourceProcessor.js'
+import Processor from '../base/Processor.js'
 
 /**
- * FileReader class that extends SourceProcessor.
+ * FileReader class that extends Processor.
  * Reads the content of a file and emits a 'message' event with the content and message.
  * #### __*Input*__
  * **message.filepath** 
@@ -14,7 +14,7 @@ import SourceProcessor from '../base/SourceProcessor.js'
  * 
  * if message.loadContext is set, that is used as a name in the message for the file content
  */
-class FileReader extends SourceProcessor {
+class FileReader extends Processor {
 
     /**
      * Constructs a new FileReader instance.

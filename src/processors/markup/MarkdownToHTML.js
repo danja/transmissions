@@ -1,5 +1,5 @@
 import logger from '../../utils/Logger.js'
-import ProcessProcessor from '../base/ProcessProcessor.js'
+import Processor from '../base/Processor.js'
 // import { parse } from 'marked'
 import { marked } from 'marked'
 
@@ -8,7 +8,7 @@ import markedFootnote from 'marked-footnote'
 import markedCodeFormat from 'marked-code-format'
 // import customHeadingId from "marked-custom-heading-id";
 
-class MarkdownToHTML extends ProcessProcessor {
+class MarkdownToHTML extends Processor {
 
 
     async process(message) {

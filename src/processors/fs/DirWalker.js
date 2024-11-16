@@ -2,7 +2,7 @@ import { readdir } from 'fs/promises'
 import { join, extname } from 'path'
 import grapoi from 'grapoi'
 import logger from '../../utils/Logger.js'
-import SourceProcessor from '../base/SourceProcessor.js'
+import Processor from '../base/Processor.js'
 
 /*
 TODO add handling for paths given in processors.ttl, see FileCopy
@@ -10,7 +10,7 @@ TODO add handling for paths given in processors.ttl, see FileCopy
 
 /**
  * Represents a directory walker processor that traverses a directory and emits messages for files with desired extensions.
- * @extends SourceProcessor
+ * @extends Processor
  * 
  * #### __*Input*__
  * * message.rootDir 
@@ -19,7 +19,7 @@ TODO add handling for paths given in processors.ttl, see FileCopy
  * * message.filename (multi)
  * 
  */
-class DirWalker extends SourceProcessor {
+class DirWalker extends Processor {
 
     /**
      * Creates an instance of DirWalker.

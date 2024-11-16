@@ -6,9 +6,9 @@ import footpath from '../../utils/footpath.js'
 import grapoi from 'grapoi'
 import ns from '../../utils/ns.js'
 import logger from '../../utils/Logger.js'
-import SinkProcessor from '../base/SinkProcessor.js'
+import Processor from '../base/Processor.js'
 
-class FileSink extends SinkProcessor {
+class FileSink extends Processor {
 
     constructor(config) {
         super(config)

@@ -10,9 +10,9 @@ import grapoi from 'grapoi'
 import ns from '../../utils/ns.js'
 
 import logger from '../../utils/Logger.js'
-import SourceProcessor from '../base/SourceProcessor.js'
+import Processor from '../base/Processor.js'
 
-class FileSource extends SourceProcessor {
+class FileSource extends Processor {
 
     constructor(config) {
         super(config)

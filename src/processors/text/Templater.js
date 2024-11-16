@@ -1,7 +1,7 @@
 // src/processors/text/Templater.js
 /**
  * @class Templater
- * @extends ProcessProcessor
+ * @extends Processor
  * @classdesc
  * **a Transmissions Processor**
  * 
@@ -24,11 +24,11 @@
  * * TODO: Add test information
  */
 
-import ProcessProcessor from '../base/ProcessProcessor.js'
+import Processor from '../base/Processor.js'
 import nunjucks from 'nunjucks'
 import logger from '../../utils/Logger.js'
 
-class Templater extends ProcessProcessor {
+class Templater extends Processor {
     constructor(config) {
         super(config)
     }

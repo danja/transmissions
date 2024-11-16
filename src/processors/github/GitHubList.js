@@ -1,11 +1,11 @@
 import { Octokit } from '@octokit/rest'
 import dotenv from 'dotenv'
-import ProcessProcessor from '../../../../transmissions/src/processors/base/ProcessProcessor.js'
+import Processor from '../../../../transmissions/src/processors/base/Processor.js'
 import logger from '../../../../transmissions/src/utils/Logger.js'
 
 dotenv.config({ path: './trans-apps/applications/git-apps/.env' })
 
-class GitHubList extends ProcessProcessor {
+class GitHubList extends Processor {
     constructor(config) {
         super(config)
         logger.debug('GitHubList constructor called')

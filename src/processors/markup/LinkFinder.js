@@ -1,9 +1,9 @@
 import * as cheerio from 'cheerio'
 
 import logger from '../../utils/Logger.js'
-import ProcessProcessor from '../base/ProcessProcessor.js'
+import Processor from '../base/Processor.js'
 
-class LinkFinder extends ProcessProcessor {
+class LinkFinder extends Processor {
 
     async process(message) {
 

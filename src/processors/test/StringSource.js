@@ -1,6 +1,6 @@
-import SourceProcessor from '../base/SourceProcessor.js'
+import Processor from '../base/Processor.js'
 
-class StringSource extends SourceProcessor {
+class StringSource extends Processor {
 
     constructor(config) {
         super(config)

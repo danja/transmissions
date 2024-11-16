@@ -4,9 +4,9 @@ import grapoi from 'grapoi'
 import ns from '../../utils/ns.js'
 import footpath from '../../utils/footpath.js'
 import logger from '../../utils/Logger.js'
-import ProcessProcessor from '../base/ProcessProcessor.js'
+import Processor from '../base/Processor.js'
 
-class LineReader extends ProcessProcessor {
+class LineReader extends Processor {
 
     constructor(config) {
         super(config)

@@ -1,7 +1,7 @@
 // src/processors/json/JSONWalker.js
 /**
 * @class JSONWalker
-* @extends ProcessProcessor
+* @extends Processor
 * @classdesc
 * **A Transmissions Processor**
 *
@@ -31,10 +31,10 @@
 
 import path from 'path'
 import logger from '../../utils/Logger.js'
-import ProcessProcessor from '../base/ProcessProcessor.js'
+import Processor from '../base/Processor.js'
 import ns from '../../utils/ns.js'
 
-class JSONWalker extends ProcessProcessor {
+class JSONWalker extends Processor {
     constructor(config) {
         super(config)
     }

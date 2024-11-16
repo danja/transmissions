@@ -5,9 +5,9 @@ import grapoi from 'grapoi'
 
 import footpath from '../../utils/footpath.js'
 import logger from '../../utils/Logger.js'
-import ProcessProcessor from '../base/ProcessProcessor.js'
+import Processor from '../base/Processor.js'
 
-class EntryContentToPagePrep extends ProcessProcessor {
+class EntryContentToPagePrep extends Processor {
 
   constructor(config) {
     super(config)

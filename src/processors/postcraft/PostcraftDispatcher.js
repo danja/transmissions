@@ -6,7 +6,7 @@ import grapoi from 'grapoi'
 
 import footpath from '../../utils/footpath.js'
 import logger from '../../utils/Logger.js'
-import ProcessProcessor from '../base/ProcessProcessor.js'
+import Processor from '../base/Processor.js'
 
 /**
  * A class that represents the PostcraftDispatcher processor.
@@ -16,9 +16,9 @@ import ProcessProcessor from '../base/ProcessProcessor.js'
 * #### __*Output*__
 * **data** : templateFilename
 * **message** : adds sourceDir, targetDir, templateFilename
-* @extends ProcessProcessor
+* @extends Processor
 */
-class PostcraftDispatcher extends ProcessProcessor {
+class PostcraftDispatcher extends Processor {
 
   /**
    * Creates an instance of PostcraftDispatcher.

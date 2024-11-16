@@ -1,6 +1,6 @@
 import rdf from 'rdf-ext'
 import { fromFile, toFile } from 'rdf-utils-fs'
-import SourceProcessor from '../base/SourceProcessor.js'
+import Processor from '../base/Processor.js'
 
 /**
  * Takes the input and stashes it in the message as told by processors.ttl
@@ -11,9 +11,9 @@ import SourceProcessor from '../base/SourceProcessor.js'
  * #### __*Output*__
  * **data** : as Input
  * **message** : adds key:value determined by processors.ttl
- * @extends SourceProcessor
+ * @extends Processor
  */
-class Stash extends SourceProcessor {
+class Stash extends Processor {
 
     /**
      * Create a DatasetReader.

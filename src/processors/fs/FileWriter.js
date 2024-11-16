@@ -4,9 +4,9 @@ import { writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { mkdir, mkdirSync } from 'node:fs'
 import logger from '../../utils/Logger.js'
-import SinkProcessor from '../base/SinkProcessor.js'
+import Processor from '../base/Processor.js'
 /**
- * FileWriter class that extends SinkProcessor
+ * FileWriter class that extends Processor
  * Write data to a file.
  * 
  * First checks `message.targetFilepath` and if not set, uses the value from `processors.ttl` using `configKey` for this processor instance.
@@ -19,7 +19,7 @@ import SinkProcessor from '../base/SinkProcessor.js'
  * 
  * if message.loadContext is set, that is used as a name in the message for the file content
  */
-class FileWriter extends SinkProcessor {
+class FileWriter extends Processor {
 
     /**
      * Constructs a new FileWriter object.

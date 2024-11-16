@@ -1,9 +1,9 @@
 import * as cheerio from 'cheerio'
 
 import logger from '../../utils/Logger.js'
-import ProcessProcessor from '../base/ProcessProcessor.js'
+import Processor from '../base/Processor.js'
 
-class MetadataExtractor extends ProcessProcessor {
+class MetadataExtractor extends Processor {
 
     async process(message) {
         const filename = data.filename

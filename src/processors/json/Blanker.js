@@ -1,8 +1,8 @@
 import logger from '../../utils/Logger.js'
-import ProcessProcessor from '../base/ProcessProcessor.js'
+import Processor from '../base/Processor.js'
 import ns from '../../utils/ns.js'
 
-class Blanker extends ProcessProcessor {
+class Blanker extends Processor {
     constructor(config) {
         super(config)
         this.blankValue = config.blankValue || ''

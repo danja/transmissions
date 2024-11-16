@@ -1,7 +1,7 @@
 import logger from '../../utils/Logger.js'
-import ProcessProcessor from '../base/ProcessProcessor.js'
+import Processor from '../base/Processor.js'
 
-class TurtleFormatter extends ProcessProcessor {
+class TurtleFormatter extends Processor {
     constructor(config) {
         super(config)
         this.baseURI = config.baseURI || 'http://example.org/'
@@ -18,7 +18,7 @@ class TurtleFormatter extends ProcessProcessor {
             const turtle = this.formatTurtle(item)
             message.content = turtle
             message.targetFile = `${item.id}.ttl`
-            
+
             this.emit('message', message)
         } catch (err) {
             logger.error("TurtleFormatter.execute error: " + err.message)
@@ -31,7 +31,7 @@ class TurtleFormatter extends ProcessProcessor {
         lines.push('@prefix : <http://example.org/ns#> .')
         lines.push('@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .')
         lines.push('')
-        
+
         const subject = `<${this.baseURI}${item.id}>`
         lines.push(`${subject} a :Item ;`)
 
@@ -39,8 +39,8 @@ class TurtleFormatter extends ProcessProcessor {
         entries.forEach(([key, value], index) => {
             if (value !== null) {
                 const isLast = index === entries.length - 1
-                const literal = typeof value === 'string' ? 
-                    `"${value.replace(/"/g, '\\"')}"` : 
+                const literal = typeof value === 'string' ?
+                    `"${value.replace(/"/g, '\\"')}"` :
                     `"${JSON.stringify(value)}"`
                 lines.push(`    :${key} ${literal}${isLast ? ' .' : ' ;'}`)
             }

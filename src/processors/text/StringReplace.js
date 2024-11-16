@@ -1,7 +1,7 @@
 // src/processors/text/StringReplace.js
 /**
  * @class StringReplace
- * @extends ProcessProcessor
+ * @extends Processor
  * @classdesc
  * **a Transmissions Processor**
  * 
@@ -26,9 +26,9 @@
  */
 
 import logger from '../../utils/Logger.js'
-import ProcessProcessor from '../base/ProcessProcessor.js'
+import Processor from '../base/Processor.js'
 
-class StringReplace extends ProcessProcessor {
+class StringReplace extends Processor {
     constructor(config) {
         super(config)
     }

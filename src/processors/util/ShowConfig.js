@@ -1,7 +1,7 @@
 import logger from '../../utils/Logger.js'
-import SinkProcessor from '../base/SinkProcessor.js'
+import Processor from '../base/Processor.js'
 
-class ShowConfig extends SinkProcessor {
+class ShowConfig extends Processor {
 
     constructor(config) {
         super(config)

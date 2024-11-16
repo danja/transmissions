@@ -1,7 +1,7 @@
 import logger from '../../utils/Logger.js'
-import ProcessProcessor from '../base/ProcessProcessor.js'
+import Processor from '../base/Processor.js'
 
-class AppendProcess extends ProcessProcessor {
+class AppendProcess extends Processor {
 
     // In AppendProcess.js
     async process(message) {

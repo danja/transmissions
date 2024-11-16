@@ -1,7 +1,7 @@
 // src/processors/rdf/DatasetReader.js
 /**
  * @class DatasetReader
- * @extends SourceProcessor
+ * @extends Processor
  * @classdesc
  * **a Transmissions Processor**
  * 
@@ -26,10 +26,10 @@
 import path from 'path'
 import rdf from 'rdf-ext'
 import { fromFile } from 'rdf-utils-fs'
-import SourceProcessor from '../base/SourceProcessor.js'
+import Processor from '../base/Processor.js'
 import logger from '../../utils/Logger.js'
 
-class DatasetReader extends SourceProcessor {
+class DatasetReader extends Processor {
     constructor(config) {
         super(config)
     }

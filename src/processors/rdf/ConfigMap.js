@@ -1,7 +1,7 @@
 // src/processors/rdf/ConfigMap.js
 /**
  * @class ConfigMap
- * @extends ProcessProcessor
+ * @extends Processor
  * @classdesc
  * **a Transmissions Processor**
  * 
@@ -28,9 +28,9 @@ import ns from '../../utils/ns.js'
 import rdf from 'rdf-ext'
 import grapoi from 'grapoi'
 import logger from '../../utils/Logger.js'
-import ProcessProcessor from '../base/ProcessProcessor.js'
+import Processor from '../base/Processor.js'
 
-class ConfigMap extends ProcessProcessor {
+class ConfigMap extends Processor {
   constructor(config) {
     super(config)
   }

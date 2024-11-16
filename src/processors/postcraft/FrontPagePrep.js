@@ -4,10 +4,10 @@ import path from 'path'
 import { readFile } from 'node:fs/promises'
 
 import logger from '../../utils/Logger.js'
-import ProcessProcessor from '../base/ProcessProcessor.js'
+import Processor from '../base/Processor.js'
 
 
-class FrontPagePrep extends ProcessProcessor {
+class FrontPagePrep extends Processor {
   constructor(config) {
     super(config)
   }

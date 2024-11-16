@@ -1,11 +1,11 @@
 import logger from '../../utils/Logger.js'
-import ProcessProcessor from '../base/ProcessProcessor.js'
+import Processor from '../base/Processor.js'
 import JsonRestructurer from './JsonRestructurer.js'
 import ns from '../../utils/ns.js'
 import GrapoiHelpers from '../../utils/GrapoiHelpers.js'
 import rdf from 'rdf-ext'
 
-class Restructure extends ProcessProcessor {
+class Restructure extends Processor {
     constructor(config) {
         super(config)
     }

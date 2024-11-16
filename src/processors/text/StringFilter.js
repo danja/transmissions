@@ -1,7 +1,7 @@
 // src/processors/text/StringFilter.js
 /**
  * @class StringFilter
- * @extends ProcessProcessor
+ * @extends Processor
  * @classdesc
  * **a Transmissions Processor**
  * 
@@ -25,9 +25,9 @@
  */
 
 import logger from '../../utils/Logger.js'
-import ProcessProcessor from '../base/ProcessProcessor.js'
+import Processor from '../base/Processor.js'
 
-class StringFilter extends ProcessProcessor {
+class StringFilter extends Processor {
     constructor(config) {
         super(config)
     }

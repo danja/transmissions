@@ -1,8 +1,8 @@
 import logger from '../../utils/Logger.js'
-import ProcessProcessor from '../base/ProcessProcessor.js'
+import Processor from '../base/Processor.js'
 
 // OLD : PRE-REFACTOR
-class StringMerger extends ProcessProcessor {
+class StringMerger extends Processor {
     constructor(config) {
         super(config)
         this.merged = ''
