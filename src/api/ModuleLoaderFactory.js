@@ -28,24 +28,31 @@ class ModuleLoaderFactory {
         return ModuleLoaderFactory.instance
     }
 
-    /*
     static createApplicationLoader(appPath) {
-        if (typeof appPath !== 'string') {
-            throw new TypeError('Application path must be a string')
+        if (!appPath) {
+            throw new Error('Application path is required')
         }
 
-        const appProcessorsPath = path.resolve(appPath, 'processors')
+        // Ensure we're working with a string path
+        const basePath = typeof appPath === 'string' ? appPath : appPath.toString()
+
+        // Normalize the application path
+        const normalizedPath = path.resolve(process.cwd(), basePath)
+        logger.debug(`Creating application loader for normalized path: ${normalizedPath}`)
+
+        const appProcessorsPath = path.join(normalizedPath, 'processors')
         const __filename = fileURLToPath(import.meta.url)
         const __dirname = path.dirname(__filename)
         const corePath = path.resolve(__dirname, '../processors')
 
+        logger.debug(`App processors path: ${appProcessorsPath}`)
+        logger.debug(`Core processors path: ${corePath}`)
+
         return this.createModuleLoader([appProcessorsPath, corePath])
     }
-        */
-
 
     static clearInstance() {
         ModuleLoaderFactory.instance = null
     }
 }
-export default ModuleLoaderFactory 
+export default ModuleLoaderFactory

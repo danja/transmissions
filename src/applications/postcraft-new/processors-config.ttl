@@ -42,7 +42,6 @@ t:copyStatic a trm:ServiceConfig ;
     trm:source "content-static" ;
     trm:destination "public/home/static" .
 
-
 t:copyMedia a trm:ServiceConfig ;
     trm:key t:mediaCopy ;
     trm:source "media" ;
