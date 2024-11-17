@@ -46,6 +46,7 @@ class TransmissionRunner {
                 message.rootDir = rootDir
             }
             if (!message.applicationRootDir) {
+                // logger.log('PWDDDDDDDDDDDDD ' + process.cwd())
                 message.applicationRootDir = applicationRootDir
             }
 

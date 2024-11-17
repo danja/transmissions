@@ -24,11 +24,15 @@ class CommandUtils {
     }
 
     async run(application, target, message = {}) {
-        logger.setLogLevel('info')
+        logger.setLogLevel('debug')
         logger.debug('\nCommandUtils.run()')
         logger.debug('CommandUtils.run, process.cwd() = ' + process.cwd())
         logger.debug('CommandUtils.run, application = ' + application)
         logger.debug('CommandUtils.run, target = ' + target)
+
+        if (!target.startsWith('/')) {
+            target = path.join(process.cwd(), target)
+        }
 
         const normalizedAppPath = path.normalize(application) // needed?
         logger.debug('CommandUtils.run, normalizedAppPath = ' + normalizedAppPath)
@@ -45,7 +49,7 @@ class CommandUtils {
             : this.appManager.resolveApplicationPath(appName)
 
         logger.debug('CommandUtils.run, transmissionsDir = ' + transmissionsDir)
-        const appPath = path.join(transmissionsDir, appName)
+        //   const appPath = path.join(transmissionsDir, appName)
 
         logger.debug('CommandUtils.run,  normalizedAppPath = ' + normalizedAppPath)
 
@@ -58,6 +62,10 @@ class CommandUtils {
         await this.runner.initialize(config.modulePath)
 
         const defaultDataDir = path.join(transmissionsDir, '/data')
+
+        logger.debug('CommandUtils.run,  LL target = ' + target)
+        logger.debug('CommandUtils.run,  LL application = ' + application)
+
         message = {
             ...message,
             dataDir: defaultDataDir,

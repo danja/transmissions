@@ -20,9 +20,15 @@ class EntryContentToPagePrep extends Processor {
     }
     logger.setLogLevel('debug')
 
-    // TODO path.join
-    message.templateFilename = message.rootDir + '/' + message.entryContentToPage.templateFilename
+    //   "applicationRootDir": "../postcraft/danny.ayers.name",
 
+
+    // TODO path.join
+    // message.templateFilename = message.rootDir + '/' + message.entryContentToPage.templateFilename
+
+    message.templateFilename = path.join(message.applicationRootDir, message.entryContentToPage.templateFilename)
+
+    logger.log("################ message.templateFilename = " + message.templateFilename)
     message.template = false
 
     message.contentBlocks.content = message.content

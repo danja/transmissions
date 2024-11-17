@@ -53,7 +53,10 @@ logger.reveal = function (instance) {
 
     logger.log('***    hidden keys :  ')
     for (const key in instance) {
-
+        if (key === 'dataset') {
+            logger.log('[[dataset found, skipping]]')
+            continue
+        }
         if (key.startsWith('_')) { // special case, RDF
             //    serialized[key] = instance[key].toString(); // TODO make useful
             // DatasetExt
