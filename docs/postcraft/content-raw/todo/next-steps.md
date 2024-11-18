@@ -1,14 +1,9 @@
 # Transmissions : Next Steps
 
-
-* fix #:postcraft
-
-* fix modules/trans-apps
-
+* look into fs `watch` and git messaging to pull recent changes into #:postcraft 
 * quick overview doc (enough for ClaudioB)
-
+* fix modules/trans-apps
 * transmissions/todo/sub-trans.md
-
 * sort out refactoring todos
 
 #:todo ShowConnections util
@@ -51,3 +46,5 @@ t:retree a trm:ServiceConfig ;
 
 * make tests for `Restructure.js`
 * get `src/applications/claude-json-converter` working
+
+* fix #:postcraft - good enough for now
