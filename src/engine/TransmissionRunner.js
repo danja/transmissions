@@ -12,10 +12,12 @@ class TransmissionRunner {
     }
 
     async initialize(modulePath) {
+        logger.debug(`\nTransmissionRunner.initialize, modulePath = ${modulePath}`)
         if (typeof modulePath !== 'string') {
             throw new TypeError('Module path must be a string')
         }
-        this.moduleLoader = ModuleLoaderFactory.createModuleLoader([modulePath])
+        //   this.moduleLoader = ModuleLoaderFactory.createModuleLoader([modulePath])
+        this.moduleLoader = ModuleLoaderFactory.createApplicationLoader(modulePath)
     }
 
     async run(options) {
@@ -28,9 +30,11 @@ class TransmissionRunner {
         } = options
 
         logger.debug('\nTransmissionRunner.run()')
+        logger.reveal(options)
         logger.debug('transmissionsFile =' + transmissionsFile)
         logger.debug('processorsConfigFile =' + processorsConfigFile)
 
+        //  message.applicationRootDir
         try {
             if (!this.moduleLoader) {
                 throw new Error('ModuleLoader not initialized. Call initialize() first.')

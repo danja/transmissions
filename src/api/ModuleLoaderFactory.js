@@ -28,7 +28,11 @@ class ModuleLoaderFactory {
         return ModuleLoaderFactory.instance
     }
 
+    // THIS ISN'T GETTING CALLED
+    /*
     static createApplicationLoader(appPath) {
+        logger.setLogLevel('debug')
+        logger.debug('££££££££££££££££££££££££££££££££££')
         if (!appPath) {
             throw new Error('Application path is required')
         }
@@ -47,6 +51,26 @@ class ModuleLoaderFactory {
 
         logger.debug(`App processors path: ${appProcessorsPath}`)
         logger.debug(`Core processors path: ${corePath}`)
+
+        return this.createModuleLoader([appProcessorsPath, corePath])
+    }
+*/
+    // src/api/ModuleLoaderFactory.js
+    static createApplicationLoader(appPath) {
+        logger.debug(`ModuleLoaderFactory.createApplicationLoader called with ${appPath}`)
+        if (!appPath) {
+            throw new Error('Application path is required')
+        }
+        const __filename = fileURLToPath(import.meta.url)
+        const __dirname = path.dirname(__filename)
+
+        const normalizedPath = path.resolve(process.cwd(), appPath)
+        const appProcessorsPath = path.join(normalizedPath, 'processors')
+        const corePath = path.resolve(__dirname, '../processors')
+
+        logger.debug(`Creating loader with paths:
+      App: ${appProcessorsPath}
+      Core: ${corePath}`)
 
         return this.createModuleLoader([appProcessorsPath, corePath])
     }

@@ -20,39 +20,41 @@ class CommandUtils {
         logger.debug('CommandUtils.run, application = ' + application)
         logger.debug('CommandUtils.run, target = ' + target)
 
+
+
         // dir containing manifest
         if (target && !target.startsWith('/')) {
             target = path.join(process.cwd(), target)
         }
 
-        const appSplit = CommandUtils.splitName(application)
-        const appName = appSplit.first // short name or path (TODO or URL)
-        const subtask = appSplit.second
+        var { appName, appPath, subtask } = CommandUtils.splitName(application)
+        // short name or path (TODO or URL)
 
-        logger.debug('CommandUtils.run, appName = ' + appName)
+        logger.debug('\nCommandUtils.run, appName = ' + appName)
+        logger.debug(`CommandUtils.run, appPath = ${appPath}`)
 
-        const transmissionsDir = this.appManager.resolveApplicationPath(appName)
+        appPath = this.appManager.resolveApplicationPath(appPath)
 
-        logger.debug('CommandUtils.run, transmissionsDir = ' + transmissionsDir)
+        logger.debug('CommandUtils.run, appPath = ' + appPath)
         //   logger.debug('CommandUtils.run,  normalizedAppPath = ' + normalizedAppPath)
 
-        const config = await this.appManager.getApplicationConfig(transmissionsDir)
+        const config = await this.appManager.getApplicationConfig(appPath)
 
         logger.debug('config.modulePath = ' + config.modulePath)
         //        this.runner = new TransmissionRunner()
         await this.runner.initialize(config.modulePath)
 
-        const defaultDataDir = path.join(transmissionsDir, '/data')
+        const defaultDataDir = path.join(appPath, '/data')
         logger.debug('CommandUtils.run, defaultDataDir = ' + defaultDataDir)
 
         logger.debug('CommandUtils.run,  target = ' + target)
-        logger.debug('CommandUtils.run,  application = ' + application)
+        logger.debug('CommandUtils.run,  application = ' + appPath)
 
         message = {
             ...message,
             dataDir: defaultDataDir,
-            rootDir: target || transmissionsDir,
-            applicationRootDir: transmissionsDir
+            rootDir: target || appPath,
+            applicationRootDir: appPath
         }
 
         return await this.runner.run({
@@ -63,13 +65,25 @@ class CommandUtils {
     }
 
     static splitName(fullPath) {
+        logger.debug(`\nCommandUtils.splitName, fullPath  = ${fullPath}`)
         const parts = fullPath.split(path.sep)
-        const lastPart = parts[parts.length - 1]
+        logger.debug(`\nCommandUtils.splitName, parts  = ${parts}`)
+        var lastPart = parts[parts.length - 1]
+
+        var task = false
         if (lastPart.includes('.')) {
-            const [name, task] = lastPart.split('.')
-            return { first: name, second: task }
+            const split = lastPart.split('.')
+            task = split[1]
+            lastPart = split[0]
         }
-        return { first: lastPart, second: false }
+        var appPath = parts.slice(0, parts.length - 1).join(path.sep)
+        appPath = path.join(appPath, lastPart)
+        //  logger.debug(`\nCommandUtils.splitName, parts.slice(0, parts.length - 1) = ${parts.slice(0, parts.length - 1)}`)
+
+        // const appPath = parts.join(path.sep)
+        logger.debug(`CommandUtils.splitName, appName:${lastPart}, appPath:${appPath}, task:${task},`)
+
+        return { appName: lastPart, appPath: appPath, task: task }
     }
 
     async listApplications() {

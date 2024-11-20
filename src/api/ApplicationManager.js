@@ -29,7 +29,7 @@ class ApplicationManager {
 
 
     resolveApplicationPath(appName) {
-        logger.debug(`ApplicationManager.resolveApplicationPath, appName = ${appName}`)
+        logger.debug(`\nApplicationManager.resolveApplicationPath, appName = ${appName}`)
 
         if (appName.startsWith('/')) { // it's an absolute path
             return appName
@@ -42,7 +42,9 @@ class ApplicationManager {
 
         if (appName.startsWith('..')) {
             // For external paths, use absolute path resolution
-            return path.resolve(process.cwd(), appName)
+            const resolved = path.resolve(process.cwd(), appName)
+            logger.debug(`ApplicationManager.resolveApplicationPath, resolved = ${resolved}`)
+            return resolved
         }
         logger.debug(`ApplicationManager.resolveApplicationPath, this.appsDir = ${this.appsDir}`)
 
