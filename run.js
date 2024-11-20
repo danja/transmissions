@@ -5,12 +5,18 @@ import { hideBin } from 'yargs/helpers'
 import CommandUtils from './src/api/CommandUtils.js'
 import WebRunner from './src/api/WebRunner.js'
 
-const applicationsDir = './src/applications'
-const commandUtils = new CommandUtils(applicationsDir)
+const defaultApplicationsDir = 'src/applications'
+const commandUtils = new CommandUtils(defaultApplicationsDir)
 
 async function main() {
     await yargs(hideBin(process.argv))
         .usage('Usage: ./trans <application>[.subtask] [options] [target]')
+        .option('message', {
+            alias: 'm',
+            describe: 'Input message as JSON',
+            type: 'string',
+            coerce: JSON.parse
+        })
         .option('payload', {
             alias: 'P',
             describe: 'message.payload as a JSON string or a path to a JSON file',

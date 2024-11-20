@@ -13,6 +13,55 @@ class CommandUtils {
         this.runner = new TransmissionRunner()
     }
 
+    async run(application, target, message = {}) {
+        logger.setLogLevel('debug')
+        logger.debug('\nCommandUtils.run()')
+        logger.debug('CommandUtils.run, process.cwd() = ' + process.cwd())
+        logger.debug('CommandUtils.run, application = ' + application)
+        logger.debug('CommandUtils.run, target = ' + target)
+
+        // dir containing manifest
+        if (target && !target.startsWith('/')) {
+            target = path.join(process.cwd(), target)
+        }
+
+        const appSplit = CommandUtils.splitName(application)
+        const appName = appSplit.first // short name or path (TODO or URL)
+        const subtask = appSplit.second
+
+        logger.debug('CommandUtils.run, appName = ' + appName)
+
+        const transmissionsDir = this.appManager.resolveApplicationPath(appName)
+
+        logger.debug('CommandUtils.run, transmissionsDir = ' + transmissionsDir)
+        //   logger.debug('CommandUtils.run,  normalizedAppPath = ' + normalizedAppPath)
+
+        const config = await this.appManager.getApplicationConfig(transmissionsDir)
+
+        logger.debug('config.modulePath = ' + config.modulePath)
+        //        this.runner = new TransmissionRunner()
+        await this.runner.initialize(config.modulePath)
+
+        const defaultDataDir = path.join(transmissionsDir, '/data')
+        logger.debug('CommandUtils.run, defaultDataDir = ' + defaultDataDir)
+
+        logger.debug('CommandUtils.run,  target = ' + target)
+        logger.debug('CommandUtils.run,  application = ' + application)
+
+        message = {
+            ...message,
+            dataDir: defaultDataDir,
+            rootDir: target || transmissionsDir,
+            applicationRootDir: transmissionsDir
+        }
+
+        return await this.runner.run({
+            ...config,
+            message,
+            subtask
+        })
+    }
+
     static splitName(fullPath) {
         const parts = fullPath.split(path.sep)
         const lastPart = parts[parts.length - 1]
@@ -21,63 +70,6 @@ class CommandUtils {
             return { first: name, second: task }
         }
         return { first: lastPart, second: false }
-    }
-
-    async run(application, target, message = {}) {
-        logger.setLogLevel('debug')
-        logger.debug('\nCommandUtils.run()')
-        logger.debug('CommandUtils.run, process.cwd() = ' + process.cwd())
-        logger.debug('CommandUtils.run, application = ' + application)
-        logger.debug('CommandUtils.run, target = ' + target)
-
-        if (!target.startsWith('/')) {
-            target = path.join(process.cwd(), target)
-        }
-
-        const normalizedAppPath = path.normalize(application) // needed?
-        logger.debug('CommandUtils.run, normalizedAppPath = ' + normalizedAppPath)
-
-        const isRemoteModule = normalizedAppPath.includes('/')
-        //normalizedAppPath.startsWith('..') // no!
-
-        const appSplit = CommandUtils.splitName(normalizedAppPath)
-        const appName = appSplit.first
-        const subtask = appSplit.second
-
-        const transmissionsDir = isRemoteModule
-            ? normalizedAppPath
-            : this.appManager.resolveApplicationPath(appName)
-
-        logger.debug('CommandUtils.run, transmissionsDir = ' + transmissionsDir)
-        //   const appPath = path.join(transmissionsDir, appName)
-
-        logger.debug('CommandUtils.run,  normalizedAppPath = ' + normalizedAppPath)
-
-        //const config = await this.appManager.getApplicationConfig(appName)
-        // const config = await this.appManager.getApplicationConfig(appPath)
-        const config = await this.appManager.getApplicationConfig(transmissionsDir)
-
-        logger.debug('config.modulePath = ' + config.modulePath)
-        //        this.runner = new TransmissionRunner()
-        await this.runner.initialize(config.modulePath)
-
-        const defaultDataDir = path.join(transmissionsDir, '/data')
-
-        logger.debug('CommandUtils.run,  LL target = ' + target)
-        logger.debug('CommandUtils.run,  LL application = ' + application)
-
-        message = {
-            ...message,
-            dataDir: defaultDataDir,
-            rootDir: target || application,
-            applicationRootDir: target || application
-        }
-
-        return await this.runner.run({
-            ...config,
-            message,
-            subtask
-        })
     }
 
     async listApplications() {

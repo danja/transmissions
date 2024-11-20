@@ -26,8 +26,6 @@ class TransmissionBuilder {
     const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile)
     const processorsConfig = await TransmissionBuilder.readDataset(processorsConfigFile)
 
-    //const moduleLoader =
-    // ModuleLoaderFactory.createApplicationLoader(appPath)
     const builder = new TransmissionBuilder(this.moduleLoader)
     return builder.buildTransmissions(transmissionConfig, processorsConfig)
   }
@@ -117,19 +115,21 @@ class TransmissionBuilder {
   }
 
   async createProcessor(type, config) {
-    try {
-      const coreProcessor = AbstractProcessorFactory.createProcessor(type, config)
-      if (coreProcessor) {
-        return coreProcessor
-      }
-    } catch (error) {
-      logger.debug(`TransmissionBuilder, core processor not found for ${type.value}. Trying remote module loader...`)
+    // try {
+    const coreProcessor = AbstractProcessorFactory.createProcessor(type, config)
+    if (coreProcessor) {
+      return coreProcessor
     }
+    //   } catch (error) {
+    logger.debug(`TransmissionBuilder, core processor not found for ${type.value}. Trying remote module loader...`)
+    //  }
 
     try {
       const shortName = type.value.split('/').pop()
       logger.debug(`Loading module: ${shortName}`)
+
       const ProcessorClass = await this.moduleLoader.loadModule(shortName)
+
       logger.debug(`Module loaded successfully: ${shortName}`)
       return new ProcessorClass.default(config)
     } catch (error) {

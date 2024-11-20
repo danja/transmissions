@@ -1,4 +1,5 @@
 import path from 'path'
+import { access, constants } from 'node:fs'
 import ns from '../../utils/ns.js'
 import { writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
@@ -47,6 +48,15 @@ class FileWriter extends Processor {
             const filename = 'message.json'
             const f = path.join(message.dataDir, filename)
             const content = JSON.stringify(message)
+
+            // Check if the file is readable.
+            access(f, constants.W_OK, (err) => {
+                if (err) {
+                    logger.error(`FileWriter error : ${f} is not writable.`)
+                    logger.reveal(message)
+                }
+            })
+
             return this.doWrite(f, content, message)
         }
 

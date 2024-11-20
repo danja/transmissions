@@ -29,13 +29,25 @@ class ApplicationManager {
 
 
     resolveApplicationPath(appName) {
-        logger.debug('appName = ' + appName)
+        logger.debug(`ApplicationManager.resolveApplicationPath, appName = ${appName}`)
+
+        if (appName.startsWith('/')) { // it's an absolute path
+            return appName
+        }
+        /* const isRemote = appName.includes('/')
+        if (!isRemote) {
+            return appName
+        }
+            */
+
         if (appName.startsWith('..')) {
             // For external paths, use absolute path resolution
             return path.resolve(process.cwd(), appName)
         }
-        // Default internal path resolution
-        return path.join(this.appsDir, appName)
+        logger.debug(`ApplicationManager.resolveApplicationPath, this.appsDir = ${this.appsDir}`)
+
+        // Default local (core) path resolution
+        return path.join(process.cwd(), this.appsDir, appName)
     }
 
     async getApplicationConfig(appPath) {

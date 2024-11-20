@@ -1,4 +1,5 @@
 import { readFile } from 'node:fs/promises'
+import { access, constants } from 'node:fs'
 import path from 'path'
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
@@ -39,8 +40,8 @@ class FileReader extends Processor {
         }
         logger.debug(' - FileReader, process.cwd() : ' + process.cwd())
 
-        //  var f = path.join(message.dataDir, filepath)
-        var f = path.join(message.applicationRootDir, filepath)
+        var f = path.join(message.dataDir, filepath)
+        //        var f = path.join(message.applicationRootDir, filepath)
 
 
         logger.log(' - FileReader reading filepath : ' + f)
@@ -50,7 +51,16 @@ class FileReader extends Processor {
 
         logger.debug('FileReader, mediaType = ' + mediaType)
 
+        // Check if the file is readable.
+        access(f, constants.R_OK, (err) => {
+            if (err) {
+                logger.error(`FileReader error : ${f} is not readable.`)
+                logger.reveal(message)
+            }
+        })
+
         const content = (await readFile(f)).toString()
+
         logger.debug('FileReader, content = ' + content)
 
         // TODO shift to a method/util
