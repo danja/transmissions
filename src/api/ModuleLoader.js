@@ -22,6 +22,7 @@ class ModuleLoader {
     }
 
     async loadModule(moduleName) {
+        logger.setLogLevel('debug')
         logger.debug(`ModuleLoader.loadModule looking for module in classpath ${this.classpath} `)
         if (typeof moduleName !== 'string') {
             throw new TypeError('Module name must be a string')

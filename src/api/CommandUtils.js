@@ -4,23 +4,20 @@ import path from 'path'
 import fs from 'fs/promises'
 import logger from '../utils/Logger.js'
 
-import TransmissionRunner from '../engine/TransmissionRunner.js'
 import ApplicationManager from './ApplicationManager.js'
 
 class CommandUtils {
     constructor(appsDir) {
         this.appManager = new ApplicationManager(appsDir)
-        this.runner = new TransmissionRunner()
+        //   this.runner = new TransmissionRunner()
     }
 
     async run(application, target, message = {}) {
-        logger.setLogLevel('debug')
+        logger.setLogLevel('info')
         logger.debug('\nCommandUtils.run()')
         logger.debug('CommandUtils.run, process.cwd() = ' + process.cwd())
         logger.debug('CommandUtils.run, application = ' + application)
         logger.debug('CommandUtils.run, target = ' + target)
-
-
 
         // dir containing manifest
         if (target && !target.startsWith('/')) {
@@ -42,7 +39,7 @@ class CommandUtils {
 
         logger.debug('config.modulePath = ' + config.modulePath)
         //        this.runner = new TransmissionRunner()
-        await this.runner.initialize(config.modulePath)
+        await this.appManager.initialize(config.modulePath)
 
         const defaultDataDir = path.join(appPath, '/data')
         logger.debug('CommandUtils.run, defaultDataDir = ' + defaultDataDir)
@@ -57,7 +54,7 @@ class CommandUtils {
             applicationRootDir: appPath
         }
 
-        return await this.runner.run({
+        return await this.appManager.run({
             ...config,
             message,
             subtask

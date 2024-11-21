@@ -1,13 +1,13 @@
 // src/web/WebRunner.js
 import express from 'express'
-import TransmissionRunner from '../engine/TransmissionRunner.js'
+
 import ApplicationManager from './ApplicationManager.js'
 import logger from '../utils/Logger.js'
 
 class WebRunner {
     constructor(appsDir, port = 7247) { // was  3000
         this.appManager = new ApplicationManager(appsDir)
-        this.runner = new TransmissionRunner()
+        //  this.runner = new TransmissionRunner()
         this.app = express()
         this.port = port
 
@@ -28,9 +28,9 @@ class WebRunner {
 
             try {
                 const config = await this.appManager.getApplicationConfig(application)
-                await this.runner.initialize(config.modulePath)
+                await this.appManager.initialize(config.modulePath)
 
-                const result = await this.runner.run({
+                const result = await this.appManager.run({
                     ...config,
                     message,
                     target

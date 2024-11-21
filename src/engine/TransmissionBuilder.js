@@ -115,6 +115,7 @@ class TransmissionBuilder {
   }
 
   async createProcessor(type, config) {
+    logger.setLogLevel('debug')
     // try {
     const coreProcessor = AbstractProcessorFactory.createProcessor(type, config)
     if (coreProcessor) {
@@ -126,8 +127,8 @@ class TransmissionBuilder {
 
     try {
       const shortName = type.value.split('/').pop()
-      logger.debug(`Loading module: ${shortName}`)
-
+      logger.debug(`TransmissionBuilder, loading module: ${shortName}`)
+      logger.log(this.moduleLoader)
       const ProcessorClass = await this.moduleLoader.loadModule(shortName)
 
       logger.debug(`Module loaded successfully: ${shortName}`)

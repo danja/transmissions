@@ -63,7 +63,7 @@ class AbstractProcessorFactory {
         processor = JSONProcessorsFactory.createProcessor(type, config)
         if (processor) return processor
 
-        throw new Error("Unknown processor type: " + type.value)
+        //   throw new Error("Unknown processor type: " + type.value)
     }
 }
 
