@@ -5,6 +5,7 @@
   "name": "transmissions",
   "scripts": {
     "tests": "jasmine --config=jasmine.json --reporter=tests/helpers/reporter.js",
+    "cov": "nyc --reporter=lcov npm run tests",
     "docs": "jsdoc -c jsdoc.json",
     "build": "webpack --mode=production --node-env=production",
     "build:dev": "webpack --mode=development",
@@ -12,6 +13,12 @@
     "rp": "repopack -c repopack.config-small.json . && repopack -c repopack.config-large.json . ",
     "watch": "webpack --watch",
     "serve": "webpack serve"
+  },
+  "nyc": {
+    "report-dir": "spec/coverage",
+    "exclude": [
+      "spec/**/*"
+    ]
   },
   "devDependencies": {
     "@babel/core": "^7.23.7",

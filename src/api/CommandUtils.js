@@ -7,12 +7,11 @@ import logger from '../utils/Logger.js'
 import ApplicationManager from './ApplicationManager.js'
 
 class CommandUtils {
-    constructor(appsDir) {
-        this.appManager = new ApplicationManager(appsDir)
-        //   this.runner = new TransmissionRunner()
+    constructor() {
+        // this.applicationLocator = applicationLocator
     }
 
-    async run(application, target, message = {}) {
+    async begin(application, target, message = {}) {
         logger.setLogLevel('info')
         logger.debug('\nCommandUtils.run()')
         logger.debug('CommandUtils.run, process.cwd() = ' + process.cwd())
@@ -27,38 +26,22 @@ class CommandUtils {
         var { appName, appPath, subtask } = CommandUtils.splitName(application)
         // short name or path (TODO or URL)
 
-        logger.debug('\nCommandUtils.run, appName = ' + appName)
-        logger.debug(`CommandUtils.run, appPath = ${appPath}`)
+        logger.debug(`\n
+    CommandUtils.run, 
+    appName = ${appName}
+    appPath = ${appPath}
+    subtask = ${subtask}
+    target = ${target}`)
 
-        appPath = this.appManager.resolveApplicationPath(appPath)
 
-        logger.debug('CommandUtils.run, appPath = ' + appPath)
-        //   logger.debug('CommandUtils.run,  normalizedAppPath = ' + normalizedAppPath)
+        //message.rootDir = target || appPath
+        //  message.applicationRootDir = appPath
 
-        const config = await this.appManager.getApplicationConfig(appPath)
 
-        logger.debug('config.modulePath = ' + config.modulePath)
-        //        this.runner = new TransmissionRunner()
-        await this.appManager.initialize(config.modulePath)
+        const appManager = new ApplicationManager()
+        await appManager.initialize(appPath)
 
-        const defaultDataDir = path.join(appPath, '/data')
-        logger.debug('CommandUtils.run, defaultDataDir = ' + defaultDataDir)
-
-        logger.debug('CommandUtils.run,  target = ' + target)
-        logger.debug('CommandUtils.run,  application = ' + appPath)
-
-        message = {
-            ...message,
-            dataDir: defaultDataDir,
-            rootDir: target || appPath,
-            applicationRootDir: appPath
-        }
-
-        return await this.appManager.run({
-            ...config,
-            message,
-            subtask
-        })
+        return await appManager.start(subtask, message)
     }
 
     static splitName(fullPath) {
@@ -87,7 +70,7 @@ class CommandUtils {
         return await this.appManager.listApplications()
     }
 
-    static async parseOrLoadContext(contextArg) {
+    static async parseOrLoadContext(contextArg) { // TODO rename context -> message
         logger.debug(`CommandUtils.parseOrLoadContext(), contextArg = ${contextArg}`)
         let message = {}
         try {

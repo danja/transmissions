@@ -5,30 +5,30 @@ import logger from '../utils/Logger.js'
 
 class ModuleLoader {
     constructor(classpath) {
-        if (!Array.isArray(classpath)) {
-            throw new TypeError('Classpath must be an array')
-        }
+        this.classpath = classpath
+        /*
+ if (!Array.isArray(classpath)) {
+     throw new TypeError('Classpath must be an array')
+ }
 
-        // Ensure all paths are strings and normalize them
-        this.classpath = classpath.map(p => {
-            if (typeof p !== 'string') {
-                throw new TypeError('All classpath entries must be strings')
-            }
-            return path.normalize(p)
-        })
+ // Ensure all paths are strings and normalize them
+ 
+ this.classpath = classpath.map(p => {
+     if (typeof p !== 'string') {
+         throw new TypeError('All classpath entries must be strings')
+     }
+     return path.normalize(p)
+ })
+*/
 
         this.moduleCache = new Map()
-        logger.debug('ModuleLoader initialized with paths:', this.classpath)
+        logger.debug(`ModuleLoader initialized with paths :\n${this.classpath}`)
     }
 
     async loadModule(moduleName) {
         logger.setLogLevel('debug')
+        logger.debug(`\n\nModuleLoader.loadModule, moduleName = ${moduleName}`)
         logger.debug(`ModuleLoader.loadModule looking for module in classpath ${this.classpath} `)
-        if (typeof moduleName !== 'string') {
-            throw new TypeError('Module name must be a string')
-        }
-
-        logger.debug(`Attempting to load module: ${moduleName}`)
 
         // Check cache first
         if (this.moduleCache.has(moduleName)) {

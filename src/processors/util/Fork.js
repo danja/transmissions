@@ -11,6 +11,7 @@ class Fork extends Processor {
     }
 
     async process(message) {
+        logger.setLogLevel('debug')
         const nForks = message.nForks || 2
 
         logger.debug('forks = ' + nForks)

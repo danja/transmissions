@@ -17,11 +17,13 @@ async function main() {
             type: 'string',
             coerce: JSON.parse
         })
+        /*
         .option('payload', {
             alias: 'P',
             describe: 'message.payload as a JSON string or a path to a JSON file',
             type: 'string',
         })
+            */
         .option('web', {
             alias: 'w',
             describe: 'Start web interface',
@@ -54,13 +56,17 @@ async function main() {
                 console.log(apps.join('\n'))
                 return
             }
+            //   if (argv.message) {
+            //     message = await CommandUtils.parseOrLoadContext(argv.payload)
+            //}
 
-            let message = {}
+            //let message = {}
+            /*
             if (argv.payload) {
                 message = await CommandUtils.parseOrLoadContext(argv.payload)
             }
-
-            await commandUtils.run(argv.application, argv.target, message)
+*/
+            await commandUtils.begin(argv.application, argv.target, argv.message)
         })
         .help('h')
         .alias('h', 'help')

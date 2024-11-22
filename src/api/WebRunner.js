@@ -27,8 +27,9 @@ class WebRunner {
             const { target, message } = req.body
 
             try {
-                const config = await this.appManager.getApplicationConfig(application)
-                await this.appManager.initialize(config.modulePath)
+
+                //  const config = await this.appManager.getApplicationConfig(application)
+                await this.appManager.initialize()
 
                 const result = await this.appManager.run({
                     ...config,

@@ -31,7 +31,7 @@ class FileReader extends Processor {
      * @param {Object} message - The message object.
      */
     async process(message) {
-        logger.setLogLevel('info')
+        logger.setLogLevel('debug')
         var filepath = message.filepath
 
         if (!filepath) {

@@ -15,7 +15,7 @@
 #############################################################
 
 :fsrw a trm:Pipeline ;
-trm:pipe (:read :write ) .
+trm:pipe (:SM :read :write ) .
 
 :read a :FileReader ;
      trm:configKey :input .

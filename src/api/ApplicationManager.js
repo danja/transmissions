@@ -6,56 +6,57 @@ import TransmissionBuilder from '../engine/TransmissionBuilder.js'
 import ModuleLoaderFactory from '../api/ModuleLoaderFactory.js'
 
 class ApplicationManager {
-    constructor(appsDir) {
-        this.appsDir = appsDir
-        this.moduleLoader = null
+    constructor() {
+        this.appsDir = 'src/applications'
+        this.transmissionFilename = 'transmissions.ttl'
+        this.configFilename = 'processors-config.ttl'
+        this.moduleSubDir = 'processors'
+        this.dataSubDir = 'data'
     }
 
-    async initialize(modulePath) {
-        logger.debug(`\nTransmissionRunner.initialize, modulePath = ${modulePath}`)
-        if (typeof modulePath !== 'string') {
-            throw new TypeError('Module path must be a string')
-        }
-        //   this.moduleLoader = ModuleLoaderFactory.createModuleLoader([modulePath])
-        this.moduleLoader = ModuleLoaderFactory.createApplicationLoader(modulePath)
+    async initialize(appPath) {
+        logger.setLogLevel('info')
+        logger.debug(`\n\nApplicationManager.initialize appPath =  ${appPath} `)
+        this.appPath = this.resolveApplicationPath(appPath)
+
+        logger.debug(`\nApplicationManager.initialize this.appPath =  ${this.appPath} `)
+        this.transmissionsFile = path.join(this.appPath, this.transmissionFilename)
+        this.processorsConfigFile = path.join(this.appPath, this.configFilename)
+        this.modulePath = path.join(this.appPath, this.moduleSubDir)
+
+        this.moduleLoader = ModuleLoaderFactory.createApplicationLoader(this.modulePath)
     }
 
-    async run(options) {
-        const {
-            transmissionsFile,
-            processorsConfigFile,
-            message = {},
-            rootDir = '',
-            applicationRootDir
-        } = options
+    async start(subtask, message) {
+        logger.setLogLevel('debug')
+        logger.debug(`\nApplicationManager.start 
+    transmissionsFile : ${this.transmissionsFile}, 
+    processorsConfigFile : ${this.processorsConfigFile}
+    subtask : ${subtask}`)
 
-        logger.debug('\nTransmissionRunner.run()')
-        logger.reveal(options)
-        logger.debug('transmissionsFile =' + transmissionsFile)
-        logger.debug('processorsConfigFile =' + processorsConfigFile)
-
-        //  message.applicationRootDir
         try {
-            if (!this.moduleLoader) {
-                throw new Error('ModuleLoader not initialized. Call initialize() first.')
-            }
-
             const transmissions = await TransmissionBuilder.build(
-                transmissionsFile,
-                processorsConfigFile,
+                this.transmissionsFile,
+                this.processorsConfigFile,
                 this.moduleLoader
             )
 
+
             if (!message.rootDir) {
-                message.rootDir = rootDir
+                message.rootDir = this.appPath
             }
-            if (!message.applicationRootDir) {
-                // logger.log('PWDDDDDDDDDDDDD ' + process.cwd())
-                message.applicationRootDir = applicationRootDir
+            if (!message.dataDir) {
+                message.dataDir = path.join(this.appPath, this.dataSubDir)
             }
 
+            /*
+            if (!message.applicationRootDir) {
+                message.applicationRootDir = this.applicationRootDir
+            }
+                */
+
             for (const transmission of transmissions) {
-                if (!options.subtask || options.subtask === transmission.label) {
+                if (!subtask || subtask === transmission.label) {
                     await transmission.process(message)
                 }
             }
@@ -93,11 +94,6 @@ class ApplicationManager {
         if (appName.startsWith('/')) { // it's an absolute path
             return appName
         }
-        /* const isRemote = appName.includes('/')
-        if (!isRemote) {
-            return appName
-        }
-            */
 
         if (appName.startsWith('..')) {
             // For external paths, use absolute path resolution
@@ -111,15 +107,7 @@ class ApplicationManager {
         return path.join(process.cwd(), this.appsDir, appName)
     }
 
-    async getApplicationConfig(appPath) {
-        logger.debug('appPath = ' + appPath)
-        //    const appPath = this.resolveApplicationPath(appName)
-        return {
-            transmissionsFile: path.join(appPath, 'transmissions.ttl'),
-            processorsConfigFile: path.join(appPath, 'processors-config.ttl'),
-            modulePath: path.join(appPath, 'processors')
-        }
-    }
+
 }
 
 export default ApplicationManager

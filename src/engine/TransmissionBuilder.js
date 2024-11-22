@@ -22,11 +22,11 @@ class TransmissionBuilder {
     this.moduleLoader = moduleLoader
   }
 
-  static async build(transmissionConfigFile, processorsConfigFile, appPath) {
+  static async build(transmissionConfigFile, processorsConfigFile, moduleLoader) {
     const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile)
     const processorsConfig = await TransmissionBuilder.readDataset(processorsConfigFile)
 
-    const builder = new TransmissionBuilder(this.moduleLoader)
+    const builder = new TransmissionBuilder(moduleLoader)
     return builder.buildTransmissions(transmissionConfig, processorsConfig)
   }
 
@@ -141,7 +141,7 @@ class TransmissionBuilder {
   }
 
   //  logger.error(`Failed to load processor ${type.value}: ${error.message}`)
-  //   throw new Error (`Failed to load processor ${type.value}: ${error.message}`) 
+  //   throw new Error (`Failed to load processor ${type.value}: ${error.mesage}`) 
   //process.exit(1)
   // throw error
 
