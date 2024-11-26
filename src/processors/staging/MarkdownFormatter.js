@@ -16,7 +16,6 @@ class MarkdownFormatter extends Processor {
 
         const filename = `${message.content.created_at.substring(0, 10)}_${message.content.uuid.substring(0, 3)}.md`
 
-        //   message.filepath = path.join('output', 'temp', message.meta.conv_uuid.substring(0, 4), filename) // message.dataDir,
         message.filepath = path.join(dir, message.meta.conv_uuid.substring(0, 4), filename)
         message.content = this.extractMarkdown(message)
 
@@ -39,8 +38,12 @@ class MarkdownFormatter extends Processor {
 
         for (const [key, value] of Object.entries(message)) {
             if (key !== 'content' && value !== null) {
-                const v = typeof value === 'object' ? JSON.stringify(value, null, 2) : value.toString()
-                lines.push(`* **${key}** : ${v}`)
+                if (value) {
+                    const v = typeof value === 'object' ? JSON.stringify(value, null, 2) : value.toString()
+                    lines.push(`* **${key}** : ${v}`)
+                } else {
+                    lines.push(`* **${key}** : [undefined]`)
+                }
             }
         }
 
