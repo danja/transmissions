@@ -14,40 +14,45 @@ class FrontPagePrep extends Processor {
 
 
   async process(message) {
-    //  logger.setLogLevel('debug')
-    try {
-      message.templateFilename = message.rootDir + '/' + message.indexPage.templateFilename
-      logger.debug('Template = ' + message.templateFilename)
+    logger.setLogLevel('debug')
 
-      const rawEntryPaths = this.resolveRawEntryPaths(message)
-      message.content = ''
-
-      // TODO tidy up
-      const entryCount = Math.min(5, rawEntryPaths.length) // Limit to 5 entries or less
-      logger.debug('FrontPagePrep, entryCount = ' + entryCount)
-
-      const rangeStart = rawEntryPaths.length - entryCount
-      const rangeEnd = rawEntryPaths.length - 1
-      //     for (let i = 0; i < entryCount; i++) {
-      for (let i = rangeEnd; i >= rangeStart; i--) {
-        logger.debug('FrontPagePrep, i = ' + entryCount)
-        const rawEntryPath = rawEntryPaths[i]
-        if (rawEntryPath) {
-          message.content += await readFile(rawEntryPath, 'utf8')
-        } else {
-          logger.warn(`Skipping undefined entry path at index ${i}`)
-        }
-      }
-
-      message.contentBlocks.content = message.content
-      // TODO join
-      message.filepath = message.rootDir + '/' + message.indexPage.filepath
-
-      return this.emit('message', message)
-    } catch (err) {
-      logger.error('Error in FrontPagePrep')
-      logger.error(err)
+    if (message.targetPath) {
+      message.templateFilename = path.join(message.targetPath, message.indexPage.templateFilename)
+    } else {
+      message.templateFilename = path.join(message.rootDir, message.indexPage.templateFilename)
     }
+
+    logger.debug('Template = ' + message.templateFilename)
+
+    const rawEntryPaths = this.resolveRawEntryPaths(message)
+    message.content = ''
+
+    // TODO tidy up
+    const entryCount = Math.min(5, rawEntryPaths.length) // Limit to 5 entries or less
+    logger.debug('FrontPagePrep, entryCount = ' + entryCount)
+
+    const rangeStart = rawEntryPaths.length - entryCount
+    const rangeEnd = rawEntryPaths.length - 1
+    //     for (let i = 0; i < entryCount; i++) {
+    for (let i = rangeEnd; i >= rangeStart; i--) {
+      logger.debug('FrontPagePrep, i = ' + entryCount)
+      const rawEntryPath = rawEntryPaths[i]
+      if (rawEntryPath) {
+        message.content += await readFile(rawEntryPath, 'utf8')
+      } else {
+        logger.warn(`Skipping undefined entry path at index ${i}`)
+      }
+    }
+
+    message.contentBlocks.content = message.content
+
+    if (message.targetPath) {
+      message.filepath = path.join(message.targetPath, message.indexPage.filepath)
+    } else {
+      message.filepath = path.join(message.rootDir, message.indexPage.filepath)
+    }
+    return this.emit('message', message)
+
   }
 
   resolveRawEntryPaths(message) {
@@ -59,7 +64,12 @@ class FrontPagePrep extends Processor {
       const slug = slugs[i]
       if (slug) {
         //   const path = message.rootDir + '/' + message.entryContentMeta.targetDir + '/' + slug + '.html'
-        const filePath = path.join(message.rootDir, message.entryContentMeta.targetDir, slug + '.html')
+        let filePath
+        if (message.targetPath) {
+          filePath = path.join(message.targetPath, message.entryContentMeta.targetDir, slug + '.html')
+        } else {
+          filePath = path.join(message.rootDir, message.entryContentMeta.targetDir, slug + '.html')
+        }
         paths.push(filePath)
       }
     }

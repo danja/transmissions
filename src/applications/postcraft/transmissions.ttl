@@ -69,18 +69,17 @@
 
 #####################
 
-
 ## POSTCRAFT.RENDER ###############################################################
 
 :render a trm:Pipeline ;
     rdfs:label "render" ;
     rdfs:comment "render the pages" ;
-   trm:pipe (:s10 :s20 :s30 :s40  :s50 :s60 :s70 :s80 :s90 :s100 
-              :s110 :s120 :s130 :s140 :s150  :s160 :s170 :s180) .
+   trm:pipe (:s20  :s30 :s40  :s50 :s60 :s70   :s80 :s90  :s100 
+              :s110  :s120  :s130 :s140 :s150 :s160 :s170 :s180) .
  #  trm:pipe (:s10 :SM :s20 :SM2 :DE  :s30 :s40  :s50 :s60 :s70 :s80 :s90 :s100 
   #               :s110 :s120 :s130 :s140 :s150  :s160 :s170 :s180) .
 
-:s10 a :DatasetReader . # read the manifest
+:s10 a :DatasetReader . # read the manifest NO done in system
 # trm:configKey trm:describe .
 
 :s20 a :ConfigMap ;
@@ -103,7 +102,7 @@
 :s90 a :Restructure ;
    trm:configKey :entryRawPrep .
 
- :s100 a :Templater .
+:s100 a :Templater .
 
 :s110 a :FileWriter .
 

@@ -40,7 +40,12 @@ class FileReader extends Processor {
         }
         logger.debug(' - FileReader, process.cwd() : ' + process.cwd())
 
-        var f = path.join(message.dataDir, filepath)
+        let f
+        if (message.targetPath) {
+            f = path.join(message.targetPath, filepath)
+        } else {
+            f = path.join(message.dataDir, filepath)
+        }
         //        var f = path.join(message.applicationRootDir, filepath)
 
 

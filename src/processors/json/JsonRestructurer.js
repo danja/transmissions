@@ -10,7 +10,7 @@ class JsonRestructurer {
         }
         this.mappings = mappings.mappings
         logger.debug('JsonRestructurer,  this.mappings = ' + this.mappings)
-        logger.reveal(this.mappings)
+        //  logger.reveal(this.mappings)
     }
 
     getValueByPath(obj, path) {

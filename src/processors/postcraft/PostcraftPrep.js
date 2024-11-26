@@ -41,7 +41,12 @@ class PostcraftPrep extends Processor {
   }
 
   extractTargetFilename(message) {
-    return path.join(message.rootDir, message.entryContentMeta.targetDir, this.extractSlug(message) + '.html')
+    if (message.targetPath) {
+      return path.join(message.targetPath, message.entryContentMeta.targetDir, this.extractSlug(message) + '.html')
+    } else {
+      return path.join(message.rootDir, message.entryContentMeta.targetDir, this.extractSlug(message) + '.html')
+    }
+
   }
 
   extractRelURL(message) { // TODO refactor

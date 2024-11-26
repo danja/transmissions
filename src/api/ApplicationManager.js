@@ -1,6 +1,11 @@
 // src/api/ApplicationManager.js
 import path from 'path'
 import fs from 'fs/promises'
+import _ from 'lodash'
+
+import rdf from 'rdf-ext'
+import { fromFile } from 'rdf-utils-fs'
+
 import logger from '../utils/Logger.js'
 import TransmissionBuilder from '../engine/TransmissionBuilder.js'
 import ModuleLoaderFactory from '../api/ModuleLoaderFactory.js'
@@ -12,12 +17,13 @@ class ApplicationManager {
         this.configFilename = 'processors-config.ttl'
         this.moduleSubDir = 'processors'
         this.dataSubDir = 'data'
+        this.manifestFilename = 'manifest.ttl'
     }
 
-    async initialize(appPath) {
+    async initialize(appName, appPath, subtask, target) {
         logger.setLogLevel('info')
         logger.debug(`\n\nApplicationManager.initialize appPath =  ${appPath} `)
-        this.appPath = this.resolveApplicationPath(appPath)
+        this.appPath = this.resolveApplicationPath(appPath) // TODO tidy with object below
 
         logger.debug(`\nApplicationManager.initialize this.appPath =  ${this.appPath} `)
         this.transmissionsFile = path.join(this.appPath, this.transmissionFilename)
@@ -25,14 +31,25 @@ class ApplicationManager {
         this.modulePath = path.join(this.appPath, this.moduleSubDir)
 
         this.moduleLoader = ModuleLoaderFactory.createApplicationLoader(this.modulePath)
+        this.app = { // TODO tidy
+            appName: appName,
+            appPath: appPath,
+            subtask: subtask,
+        }
+        if (target) {
+            this.app.manifestFilename = path.join(target, this.manifestFilename)
+            this.app.dataset = await this.loadManifest(this.app.manifestFilename)
+            this.app.targetPath = target
+        }
     }
 
-    async start(subtask, message) {
+
+    async start(message) {
         logger.setLogLevel('debug')
         logger.debug(`\nApplicationManager.start 
     transmissionsFile : ${this.transmissionsFile}, 
     processorsConfigFile : ${this.processorsConfigFile}
-    subtask : ${subtask}`)
+    subtask : ${this.app.subtask}`)
 
         try {
             const transmissions = await TransmissionBuilder.build(
@@ -41,6 +58,10 @@ class ApplicationManager {
                 this.moduleLoader
             )
 
+            // lodash _.merge(object, [sources])
+            // https://lodash.com/docs/4.17.15#merge
+            message = _.merge(message, this.app)
+
 
             if (!message.rootDir) {
                 message.rootDir = this.appPath
@@ -48,15 +69,10 @@ class ApplicationManager {
             if (!message.dataDir) {
                 message.dataDir = path.join(this.appPath, this.dataSubDir)
             }
-
-            /*
-            if (!message.applicationRootDir) {
-                message.applicationRootDir = this.applicationRootDir
-            }
-                */
+            // TODO figure out when to use rootDir and when targetPath - rename to be clearer?
 
             for (const transmission of transmissions) {
-                if (!subtask || subtask === transmission.label) {
+                if (!this.app.subtask || this.app.subtask === transmission.label) {
                     await transmission.process(message)
                 }
             }
@@ -66,6 +82,13 @@ class ApplicationManager {
             logger.error('Error in TransmissionRunner:', error)
             throw error
         }
+    }
+
+    async loadManifest(manifestFilename) { // TODO generalise, add URLs
+        logger.debug(`ApplicationManager.loadManifest, loading : ${manifestFilename}`)
+        const stream = fromFile(manifestFilename)
+        const dataset = await rdf.dataset().import(stream)
+        return dataset
     }
 
     async listApplications() {

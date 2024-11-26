@@ -25,10 +25,13 @@ class EntryContentToPagePrep extends Processor {
 
     // TODO path.join
     // message.templateFilename = message.rootDir + '/' + message.entryContentToPage.templateFilename
-
-    message.templateFilename = path.join(message.applicationRootDir, message.entryContentToPage.templateFilename)
-
+    if (message.targetPath) {
+      message.templateFilename = path.join(message.targetPath, message.entryContentToPage.templateFilename)
+    } else {
+      message.templateFilename = path.join(message.rootDir, message.entryContentToPage.templateFilename)
+    }
     logger.log("################ message.templateFilename = " + message.templateFilename)
+
     message.template = false
 
     message.contentBlocks.content = message.content
@@ -36,7 +39,12 @@ class EntryContentToPagePrep extends Processor {
     if (message.entryContentToPage.targetDir.startsWith('/')) { // TODO unhacky!!
       message.filepath = path.join(message.entryContentToPage.targetDir, message.slug + '.html')
     } else {
-      message.filepath = path.join(message.rootDir, message.entryContentToPage.targetDir, message.slug + '.html')
+      if (message.targetPath) {
+        message.filepath = path.join(message.targetPath, message.entryContentToPage.targetDir, message.slug + '.html')
+      } else {
+        message.filepath = path.join(message.rootDir, message.entryContentToPage.targetDir, message.slug + '.html')
+      }
+
     }
     logger.debug('EntryContentToPagePrep, message.filepath = ' + message.filepath)
 

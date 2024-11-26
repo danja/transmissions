@@ -74,8 +74,17 @@ class FileWriter extends Processor {
         if (filepath.startsWith('/')) { // TODO unhackify
             f = filepath
         } else {
-            f = path.join(message.dataDir, filepath)
+
+            if (message.targetPath) {
+                f = path.join(message.targetPath, filepath)
+            } else {
+                f = path.join(message.dataDir, filepath)
+            }
         }
+
+
+
+
         const dirName = dirname(f)
         logger.debug("Filewriter, dirName = " + dirName)
 

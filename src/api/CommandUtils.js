@@ -34,14 +34,10 @@ class CommandUtils {
     target = ${target}`)
 
 
-        //message.rootDir = target || appPath
-        //  message.applicationRootDir = appPath
-
-
         const appManager = new ApplicationManager()
-        await appManager.initialize(appPath)
+        await appManager.initialize(appName, appPath, subtask, target)
 
-        return await appManager.start(subtask, message)
+        return await appManager.start(message)
     }
 
     static splitName(fullPath) {

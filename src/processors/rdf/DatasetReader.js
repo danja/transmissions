@@ -55,19 +55,21 @@ class DatasetReader extends Processor {
      * @param {Object} message - The message object
      */
     async process(message) {
-        this.preProcess(message)
-        var datasetName = 'dataset' // TODO rename to manifest, generalise better
-        var datasetFilename = path.join(message.rootDir, '/manifest.ttl') // TODO align with config
+        this.preProcess(message) ////// TODO manifest loading has been moved to ApplicationManager
+
+        /// TODO make this more useful!!!
+        var datasetName = 'dataset'
+        var datasetFilename = path.join(message.rootDir, '/manifest.ttl') // TODO move to system config
         if (message.datasetFilename) {
             datasetFilename = message.datasetFilename
         }
         if (message.datasetName) {
             datasetName = message.datasetName
         }
+        /////
 
         const stream = fromFile(datasetFilename)
 
-        // TODO this needs changing
         message[datasetName] = await rdf.dataset().import(stream)
         logger.debug(`DatasetReader, datasetName = ${datasetName}`)
         //   logger.debug(`DatasetReader, message[datasetName] = ${message[datasetName]}`)

@@ -60,6 +60,7 @@ class FileRemove extends Processor {
         } else {
             logger.debug('FileRemove this.configKey = ' + this.configKey.value)
             target = this.getPropertyFromMyConfig(ns.trm.target)
+
             target = path.join(message.rootDir, target)
         }
 

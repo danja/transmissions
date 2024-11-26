@@ -10,8 +10,9 @@
 :DE a :DeadEnd . # ends the current pipe quietly
 :H  a :Halt . # kills everything 
 :SC a :ShowConfig . # verbose report, continues pipe
-:SM a :ShowMessage . # verbose report, continues pipe
+:SM1 a :ShowMessage . # verbose report, continues pipe
 :SM2 a :ShowMessage . # verbose report, continues pipe
+:SM3 a :ShowMessage . # verbose report, continues pipe
 :N  a :NOP . # no operation (except for showing stage in pipe) 
 :UF a :Unfork . # collapses all pipes but one 
 #############################################################
@@ -22,12 +23,12 @@
 :render a trm:Pipeline ;
     rdfs:label "render" ;
     rdfs:comment "render the pages" ;
-   trm:pipe (:s10 :s20 :s30 :s40  :s50 :s60 :s70 :s80 :s90 :s100 
-              :s110 :s120 :s130 :s140 :s150  :s160 :s170 :s180) .
+   trm:pipe (:s20  :s30 :s40  :s50 :s60 :s70   :s80 :s90  :s100 
+              :s110  :s120  :s130 :s140 :s150 :s160 :s170 :s180) .
  #  trm:pipe (:s10 :SM :s20 :SM2 :DE  :s30 :s40  :s50 :s60 :s70 :s80 :s90 :s100 
   #               :s110 :s120 :s130 :s140 :s150  :s160 :s170 :s180) .
 
-:s10 a :DatasetReader . # read the manifest
+:s10 a :DatasetReader . # read the manifest NO done in system
 # trm:configKey trm:describe .
 
 :s20 a :ConfigMap ;
@@ -50,7 +51,7 @@
 :s90 a :Restructure ;
    trm:configKey :entryRawPrep .
 
- :s100 a :Templater .
+:s100 a :Templater .
 
 :s110 a :FileWriter .
 

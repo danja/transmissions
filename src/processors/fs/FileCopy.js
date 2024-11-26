@@ -52,10 +52,6 @@ class FileCopy extends Processor {
     async process(message) {
         //  logger.setLogLevel("debug")
 
-        // TODO move to super?
-        if (message.rootDir == "") {
-            message.rootDir = message.applicationRootDir
-        }
         logger.debug("message.rootDir = " + message.rootDir)
         var source, destination
 
@@ -68,8 +64,14 @@ class FileCopy extends Processor {
             logger.debug(`FileCopy: using configKey ${this.configKey.value}`)
             source = this.getPropertyFromMyConfig(ns.trm.source)
             destination = this.getPropertyFromMyConfig(ns.trm.destination)
-            source = path.join(message.rootDir, source)
-            destination = path.join(message.rootDir, destination)
+            if (message.targetPath) {
+                source = path.join(message.targetPath, source)
+                destination = path.join(message.targetPath, destination)
+            } else {
+                source = path.join(message.rootDir, source)
+                destination = path.join(message.rootDir, destination)
+            }
+
         }
 
         logger.debug(`Source: ${source}`)

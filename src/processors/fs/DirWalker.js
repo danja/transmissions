@@ -55,7 +55,12 @@ class DirWalker extends Processor {
         message.slugs = []
         message.done = false // maybe insert earlier
 
-        const dirPath = join(message.rootDir, message.sourceDir)
+        let dirPath
+        if (message.targetPath) {
+            dirPath = join(message.targetPath, message.sourceDir)
+        } else {
+            dirPath = join(message.rootDir, message.sourceDir)
+        }
         logger.debug('DirWalker, dirPath = ' + dirPath)
         // try {
 
@@ -75,7 +80,8 @@ class DirWalker extends Processor {
                 if (!excludePrefix && includeExtension) {
 
                     message.filename = entry.name
-                    message.filepath = join(message.sourceDir, '/', entry.name)
+                    message.filepath = join(message.sourceDir, entry.name)
+
                     const slug = this.extractSlug(message.filename)
                     message.slugs.push(slug)
                     // globalish
