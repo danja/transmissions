@@ -1,7 +1,7 @@
 // src/web/WebRunner.js
 import express from 'express'
 
-import ApplicationManager from './ApplicationManager.js'
+import ApplicationManager from '../core/ApplicationManager.js'
 import logger from '../utils/Logger.js'
 
 class WebRunner {

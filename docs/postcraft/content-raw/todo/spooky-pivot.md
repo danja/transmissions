@@ -4,13 +4,10 @@
 * make types.ts
 
 * self-documenting, .md & .turtle
- 
+
 ## Refactoring
 
-move
-```sh
-transmissions/src/engine/AbstractProcessorFactory.js
-```
+
 
 * CLI - add help to ` ./trans`
 
@@ -22,10 +19,9 @@ q3: "How can we implement real-time monitoring of running transmissions?"
 q4: "What's the best way to handle errors and provide meaningful feedback across interfaces?"
 ```
 
-### process() to process()
+### process()
 
-* renaming
-* add profile support
+* add profile support (what was I thinking?)
 
 ### Threading
 
