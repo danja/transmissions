@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: services/fs/FileRemove.js</title>
+    <title>JSDoc: Source: processors/fs/FileRemove.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: services/fs/FileRemove.js</h1>
+    <h1 class="page-title">Source: processors/fs/FileRemove.js</h1>
 
     
 
@@ -26,12 +26,12 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>// src/services/fs/FileRemove.js
+            <pre class="prettyprint source linenums"><code>// src/processors/fs/FileRemove.js
 /**
- * FileRemove Service
+ * FileRemove Processor
  * 
  * Removes files or directory contents on the local filesystem.
- * @extends Service
+ * @extends Processor
  * 
  * #### __*Input*__
  * * message.applicationRootDir (optional) - The root directory of the application
@@ -60,9 +60,9 @@ import { unlink, readdir, stat, rm } from 'node:fs/promises'
 import path from 'path'
 import ns from '../../utils/ns.js'
 import logger from '../../utils/Logger.js'
-import Service from '../base/Service.js'
+import Processor from '../base/Processor.js'
 
-class FileRemove extends Service {
+class FileRemove extends Processor {
     constructor(config) {
         super(config)
     }
@@ -71,8 +71,15 @@ class FileRemove extends Service {
      * Executes the file or directory removal operation
      * @param {Object} message - The input message
      */
-    async execute(message) {
+    async process(message) {
+
+        logger.setLogLevel('debug')
+
+        this.ignoreDotfiles = true // default, simplify ".gitinclude"
+
         var target
+
+        // TODO add check for  ignoreDotfiles = false
 
         // Determine target path
         if (this.configKey === 'undefined') {
@@ -81,18 +88,25 @@ class FileRemove extends Service {
         } else {
             logger.debug('FileRemove this.configKey = ' + this.configKey.value)
             target = this.getPropertyFromMyConfig(ns.trm.target)
-            target = path.join(message.applicationRootDir, target)
+
+            target = path.join(message.rootDir, target)
         }
 
-        const removeStat = await stat(target)
+        logger.debug('FileRemove, target = ' + target)
+        try {
+            const removeStat = await stat(target)
 
-        if (removeStat.isFile()) {
-            await this.removeFile(target)
-        } else if (removeStat.isDirectory()) {
-            await this.removeDirectoryContents(target)
+            if (removeStat.isFile()) {
+                await this.removeFile(target)
+            } else if (removeStat.isDirectory()) {
+                await this.removeDirectoryContents(target)
+            }
+        } catch (err) {
+            // probably already gone
+            logger.debug('FileRemove, target stat caused err : ' + target)
         }
 
-        this.emit('message', message)
+        return this.emit('message', message)
     }
 
     /**
@@ -108,9 +122,13 @@ class FileRemove extends Service {
      * @param {string} dirPath - The path to the directory
      */
     async removeDirectoryContents(dirPath) {
+        logger.debug('FileRemove, dirPath = ' + dirPath)
         const entries = await readdir(dirPath, { withFileTypes: true })
 
         for (const entry of entries) {
+            if (this.ignoreDotfiles &amp;&amp; (entry.name.charAt(0) === ".")) {
+                continue
+            }
             const entryPath = path.join(dirPath, entry.name)
 
             if (entry.isDirectory()) {
@@ -132,13 +150,13 @@ export default FileRemove</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="DatasetReader.html">DatasetReader</a></li><li><a href="DirWalker.html">DirWalker</a></li><li><a href="FileCopy.html">FileCopy</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="RemapContext.html">RemapContext</a></li><li><a href="Service.html">Service</a></li><li><a href="ServiceExample.html">ServiceExample</a></li><li><a href="Stash.html">Stash</a></li><li><a href="StringReplace.html">StringReplace</a></li><li><a href="Templater.html">Templater</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="DatasetReader.html">DatasetReader</a></li><li><a href="DirWalker.html">DirWalker</a></li><li><a href="EnvLoader.html">EnvLoader</a></li><li><a href="FileCopy.html">FileCopy</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="HttpGet.html">HttpGet</a></li><li><a href="JSONWalker.html">JSONWalker</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="Processor.html">Processor</a></li><li><a href="ProcessorExample.html">ProcessorExample</a></li><li><a href="Stash.html">Stash</a></li><li><a href="StringFilter.html">StringFilter</a></li><li><a href="StringReplace.html">StringReplace</a></li><li><a href="Templater.html">Templater</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Aug 06 2024 14:35:50 GMT+0200 (Central European Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Nov 27 2024 12:40:43 GMT+0100 (Central European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Service</title>
+    <title>JSDoc: Class: Processor</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Service</h1>
+    <h1 class="page-title">Class: Processor</h1>
 
     
 
@@ -28,9 +28,9 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Service<span class="signature">(config)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Processor<span class="signature">(config)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>Base class for services.</p></div>
+            <div class="class-description"><p>Base class for processors.</p></div>
         
     
 </header>
@@ -45,7 +45,7 @@
     
 
     
-    <h4 class="name" id="Service"><span class="type-signature"></span>new Service<span class="signature">(config)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Processor"><span class="type-signature"></span>new Processor<span class="signature">(config)</span><span class="type-signature"></span></h4>
     
 
     
@@ -53,7 +53,7 @@
 
 
 <div class="description">
-    <p>Creates an instance of Service.</p>
+    <p>Creates an instance of Processor.</p>
 </div>
 
 
@@ -105,7 +105,7 @@
 
             
 
-            <td class="description last"><p>The configuration object for the service.</p></td>
+            <td class="description last"><p>The configuration object for the processor.</p></td>
         </tr>
 
     
@@ -146,7 +146,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_base_Service.js.html">services/base/Service.js</a>, <a href="services_base_Service.js.html#line12">line 12</a>
+        <a href="processors_base_Processor.js.html">processors/base/Processor.js</a>, <a href="processors_base_Processor.js.html#line12">line 12</a>
     </li></ul></dd>
     
 
@@ -360,7 +360,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_base_Service.js.html">services/base/Service.js</a>, <a href="services_base_Service.js.html#line210">line 210</a>
+        <a href="processors_base_Processor.js.html">processors/base/Processor.js</a>, <a href="processors_base_Processor.js.html#line222">line 222</a>
     </li></ul></dd>
     
 
@@ -520,7 +520,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_base_Service.js.html">services/base/Service.js</a>, <a href="services_base_Service.js.html#line141">line 141</a>
+        <a href="processors_base_Processor.js.html">processors/base/Processor.js</a>, <a href="processors_base_Processor.js.html#line153">line 153</a>
     </li></ul></dd>
     
 
@@ -556,7 +556,7 @@
     
 
     
-    <h4 class="name" id="execute"><span class="type-signature">(async) </span>execute<span class="signature">(data, message)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="executeQueue"><span class="type-signature">(async) </span>executeQueue<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -564,7 +564,208 @@
 
 
 <div class="description">
-    <p>Executes the processing logic for the service.</p>
+    <p>Executes the message queue.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="processors_base_Processor.js.html">processors/base/Processor.js</a>, <a href="processors_base_Processor.js.html#line174">line 174</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getMyConfigNode"><span class="type-signature"></span>getMyConfigNode<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>SHOULD REPLACE THE ABOVE AND USE THE BLOCK NAME FOR ID
+Locates the configuration node in processors.ttl for the processor.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="processors_base_Processor.js.html">processors/base/Processor.js</a>, <a href="processors_base_Processor.js.html#line83">line 83</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>The configuration node.</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="process"><span class="type-signature">(async) </span>process<span class="signature">(data, message)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Executes the processing logic for the processor.</p>
 </div>
 
 
@@ -680,7 +881,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_base_Service.js.html">services/base/Service.js</a>, <a href="services_base_Service.js.html#line200">line 200</a>
+        <a href="processors_base_Processor.js.html">processors/base/Processor.js</a>, <a href="processors_base_Processor.js.html#line212">line 212</a>
     </li></ul></dd>
     
 
@@ -705,207 +906,6 @@
 
 
 
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="executeQueue"><span class="type-signature">(async) </span>executeQueue<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Executes the message queue.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_base_Service.js.html">services/base/Service.js</a>, <a href="services_base_Service.js.html#line162">line 162</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="getMyConfigNode"><span class="type-signature"></span>getMyConfigNode<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>SHOULD REPLACE THE ABOVE AND USE THE BLOCK NAME FOR ID
-Locates the configuration node in services.ttl for the service.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_base_Service.js.html">services/base/Service.js</a>, <a href="services_base_Service.js.html#line82">line 82</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <ul>
-<li>The configuration node.</li>
-</ul>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Object</span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
@@ -1041,7 +1041,7 @@ Locates the configuration node in services.ttl for the service.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_base_Service.js.html">services/base/Service.js</a>, <a href="services_base_Service.js.html#line132">line 132</a>
+        <a href="processors_base_Processor.js.html">processors/base/Processor.js</a>, <a href="processors_base_Processor.js.html#line144">line 144</a>
     </li></ul></dd>
     
 
@@ -1087,13 +1087,13 @@ Locates the configuration node in services.ttl for the service.</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="DatasetReader.html">DatasetReader</a></li><li><a href="DirWalker.html">DirWalker</a></li><li><a href="FileCopy.html">FileCopy</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="RemapContext.html">RemapContext</a></li><li><a href="Service.html">Service</a></li><li><a href="ServiceExample.html">ServiceExample</a></li><li><a href="Stash.html">Stash</a></li><li><a href="StringReplace.html">StringReplace</a></li><li><a href="Templater.html">Templater</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="DatasetReader.html">DatasetReader</a></li><li><a href="DirWalker.html">DirWalker</a></li><li><a href="EnvLoader.html">EnvLoader</a></li><li><a href="FileCopy.html">FileCopy</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="HttpGet.html">HttpGet</a></li><li><a href="JSONWalker.html">JSONWalker</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="Processor.html">Processor</a></li><li><a href="ProcessorExample.html">ProcessorExample</a></li><li><a href="Stash.html">Stash</a></li><li><a href="StringFilter.html">StringFilter</a></li><li><a href="StringReplace.html">StringReplace</a></li><li><a href="Templater.html">Templater</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Aug 06 2024 14:35:50 GMT+0200 (Central European Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Nov 27 2024 12:40:43 GMT+0100 (Central European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

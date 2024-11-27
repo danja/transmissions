@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: FileReader</title>
+    <title>JSDoc: Class: EnvLoader</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: FileReader</h1>
+    <h1 class="page-title">Class: EnvLoader</h1>
 
     
 
@@ -28,15 +28,19 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>FileReader<span class="signature">(config)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>EnvLoader<span class="signature">(config)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>FileReader class that extends Processor.
-Reads the content of a file and emits a 'message' event with the content and message.</p>
+            <div class="class-description"><p>FileReader class that extends xxxxxProcessor.
+DESCRIPTION</p>
 <h4><strong><em>Input</em></strong></h4>
-<p><strong>message.filepath</strong></p>
+<p><strong>message.INPUT</strong></p>
 <h4><strong><em>Output</em></strong></h4>
-<p><strong>message.content</strong></p>
-<p>if message.loadContext is set, that is used as a name in the message for the file content</p></div>
+<p><strong>message.OUTPUT</strong></p>
+<h3>References</h3>
+<ul>
+<li>https://dotenvx.com/</li>
+<li>https://github.com/motdotla/dotenv</li>
+</ul></div>
         
     
 </header>
@@ -51,7 +55,7 @@ Reads the content of a file and emits a 'message' event with the content and mes
     
 
     
-    <h4 class="name" id="FileReader"><span class="type-signature"></span>new FileReader<span class="signature">(config)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="EnvLoader"><span class="type-signature"></span>new EnvLoader<span class="signature">(config)</span><span class="type-signature"></span></h4>
     
 
     
@@ -59,7 +63,7 @@ Reads the content of a file and emits a 'message' event with the content and mes
 
 
 <div class="description">
-    <p>Constructs a new FileReader instance.</p>
+    <p>Constructs a new ProcessorExample instance.</p>
 </div>
 
 
@@ -152,7 +156,7 @@ Reads the content of a file and emits a 'message' event with the content and mes
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="processors_fs_FileReader.js.html">processors/fs/FileReader.js</a>, <a href="processors_fs_FileReader.js.html#line18">line 18</a>
+        <a href="processors_system_EnvLoader.js.html">processors/system/EnvLoader.js</a>, <a href="processors_system_EnvLoader.js.html#line21">line 21</a>
     </li></ul></dd>
     
 
@@ -208,7 +212,7 @@ Reads the content of a file and emits a 'message' event with the content and mes
     
 
     
-    <h4 class="name" id="process"><span class="type-signature">(async) </span>process<span class="signature">(filepath, message)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="process"><span class="type-signature">(async) </span>process<span class="signature">(message)</span><span class="type-signature"></span></h4>
     
 
     
@@ -216,7 +220,7 @@ Reads the content of a file and emits a 'message' event with the content and mes
 
 
 <div class="description">
-    <p>Reads the content of a file and emits a 'message' event with the content and message.</p>
+    <p>Does something with the message and emits a 'message' event with the processed message.</p>
 </div>
 
 
@@ -248,29 +252,6 @@ Reads the content of a file and emits a 'message' event with the content and mes
     </thead>
 
     <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>filepath</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The name of the file to read.</p></td>
-        </tr>
-
     
 
         <tr>
@@ -332,7 +313,7 @@ Reads the content of a file and emits a 'message' event with the content and mes
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="processors_fs_FileReader.js.html">processors/fs/FileReader.js</a>, <a href="processors_fs_FileReader.js.html#line33">line 33</a>
+        <a href="processors_system_EnvLoader.js.html">processors/system/EnvLoader.js</a>, <a href="processors_system_EnvLoader.js.html#line35">line 35</a>
     </li></ul></dd>
     
 

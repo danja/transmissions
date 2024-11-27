@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: processors/util/Stash.js</title>
+    <title>JSDoc: Source: processors/system/EnvLoader.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: processors/util/Stash.js</h1>
+    <h1 class="page-title">Source: processors/system/EnvLoader.js</h1>
 
     
 
@@ -26,25 +26,30 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import rdf from 'rdf-ext'
-import { fromFile, toFile } from 'rdf-utils-fs'
-import Processor from '../base/Processor.js'
+            <pre class="prettyprint source linenums"><code>import 'dotenv/config'
+
+// import { readFile } from 'node:fs/promises' // whatever else
+
+import logger from '../../utils/Logger.js'
+import Processor from '../base/Processor.js' // maybe more specific
+
 
 /**
- * Takes the input and stashes it in the message as told by processors.ttl
- * 
+ * FileReader class that extends xxxxxProcessor.
+ * DESCRIPTION
  * #### __*Input*__
- * **data** : any
- * **message** : any
+ * **message.INPUT** 
  * #### __*Output*__
- * **data** : as Input
- * **message** : adds key:value determined by processors.ttl
- * @extends Processor
- */
-class Stash extends Processor {
+ * **message.OUTPUT**
+ *
+ * ### References
+ * * https://dotenvx.com/
+ * * https://github.com/motdotla/dotenv
+*/
+class EnvLoader extends Processor {
 
     /**
-     * Create a DatasetReader.
+     * Constructs a new ProcessorExample instance.
      * @param {Object} config - The configuration object.
      */
     constructor(config) {
@@ -52,21 +57,25 @@ class Stash extends Processor {
     }
 
     /**
-     * Execute the DatasetReader processor.
-     * @param {string} data -.
-     * @param {Object} message - .
+     * Does something with the message and emits a 'message' event with the processed message.
+     * @param {Object} message - The message object.
      */
     async process(message) {
-        const manifestFilename = rootDir + '/manifest.ttl'
-        const stream = fromFile(manifestFilename)
+        logger.setLogLevel('debug')
+        // console.log(process.env)
 
-        // should append RDF to incoming
-        message.rootDir = rootDir
-        message.dataset = await rdf.dataset().import(stream)
-        return this.emit('message', message)
+        this.config.whiteboard.env = process.env
+
+        // this.emit('message', message)
+
+        return super.handle(message)
+
+    } catch(err) {
+        logger.error("EnvLoader.execute error : " + err.message)
     }
 }
-export default Stash</code></pre>
+
+export default EnvLoader</code></pre>
         </article>
     </section>
 

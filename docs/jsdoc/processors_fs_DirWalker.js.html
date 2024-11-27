@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: services/fs/DirWalker.js</title>
+    <title>JSDoc: Source: processors/fs/DirWalker.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: services/fs/DirWalker.js</h1>
+    <h1 class="page-title">Source: processors/fs/DirWalker.js</h1>
 
     
 
@@ -26,19 +26,19 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import rdf from 'rdf-ext'
-import ns from '../../utils/ns.js'
-import { readdir } from 'fs/promises'
+            <pre class="prettyprint source linenums"><code>import { readdir } from 'fs/promises'
 import { join, extname } from 'path'
 import grapoi from 'grapoi'
 import logger from '../../utils/Logger.js'
+import Processor from '../base/Processor.js'
 
-
-import SourceService from '../base/SourceService.js'
+/*
+TODO add handling for paths given in processors.ttl, see FileCopy
+*/
 
 /**
- * Represents a directory walker service that traverses a directory and emits messages for files with desired extensions.
- * @extends SourceService
+ * Represents a directory walker processor that traverses a directory and emits messages for files with desired extensions.
+ * @extends Processor
  * 
  * #### __*Input*__
  * * message.rootDir 
@@ -47,27 +47,28 @@ import SourceService from '../base/SourceService.js'
  * * message.filename (multi)
  * 
  */
-class DirWalker extends SourceService {
+class DirWalker extends Processor {
 
     /**
      * Creates an instance of DirWalker.
-     * @param {Object} config - The configuration object for the DirWalker service.
+     * @param {Object} config - The configuration object for the DirWalker processor.
      */
     constructor(config) {
         super(config)
         const dataset = this.config
         const poi = grapoi({ dataset })
-        this.desiredExtensions = ['.md']
+        this.includeExtensions = ['.md']
+        this.excludePrefixes = ['_']
     }
 
     /**
      * Executes the directory walking process.
-     * @param {any} data - The data to be passed to the execute method.
      * @param {Object} message - The message object containing information about the directory and source file.
      * @returns {Promise&lt;void>} A promise that resolves when the directory walking process is complete.
      */
-    async execute(message) {
-
+    async process(message) {
+        logger.setLogLevel('info')
+        logger.debug('DirWalker.process')
         await this.emitThem(message)
 
 
@@ -81,36 +82,52 @@ class DirWalker extends SourceService {
         message.counter = 0
         message.slugs = []
         message.done = false // maybe insert earlier
-        const dirPath = message.rootDir + '/' + message.sourceDir
-        try {
-            const entries = await readdir(dirPath, { withFileTypes: true })
-            for (const entry of entries) {
-                const fullPath = join(dirPath, entry.name)
-                if (entry.isDirectory()) {
-                    await this.execute(entry.name, message) // rearrange to make things easier to read?
-                } else {
-                    // Check if the file extension is in the list of desired extensions
-                    if (this.desiredExtensions.includes(extname(entry.name))) {
 
-                        message.filename = entry.name
-                        message.filepath = message.sourceDir + '/' + entry.name
-                        const slug = this.extractSlug(message.filename)
-                        message.slugs.push(slug)
-                        // globalish
-                        //    this.addPropertyToMyConfig(ns.trm.postPath, rdf.literal(message.filename))
-                        //  logger.log('CONFIG : ' + this.config)
+        let dirPath
+        if (message.targetPath) {
+            dirPath = join(message.targetPath, message.sourceDir)
+        } else {
+            dirPath = join(message.rootDir, message.sourceDir)
+        }
+        logger.debug('DirWalker, dirPath = ' + dirPath)
+        // try {
 
-                        //   this.showMyConfig()
-                        message.done = false
-                        message.counter = message.counter + 1
-                        const messageClone = structuredClone(message) // move?
-                        this.emit('message', messageClone)
-                    }
+        const entries = await readdir(dirPath, { withFileTypes: true })
+        for (const entry of entries) {
+            const fullPath = join(dirPath, entry.name)
+            if (entry.isDirectory()) {
+                await this.process(entry.name, message) // rearrange to make things easier to read?
+            } else {
+                logger.debug('DirWalker, entry.name = ' + entry.name)
+
+                const includeExtension = this.includeExtensions.includes(extname(entry.name))
+                const prefix = entry.name.charAt(0)
+                const excludePrefix = this.excludePrefixes.includes(prefix)
+
+                // Check if the file extension is in the list of desired extensions
+                if (!excludePrefix &amp;&amp; includeExtension) {
+
+                    message.filename = entry.name
+                    message.filepath = join(message.sourceDir, entry.name)
+
+                    const slug = this.extractSlug(message.filename)
+                    message.slugs.push(slug)
+                    // globalish
+                    //    this.addPropertyToMyConfig(ns.trm.postPath, rdf.literal(message.filename))
+                    //  logger.log('CONFIG : ' + this.config)
+
+                    //   this.showMyConfig()
+                    message.done = false
+                    message.counter = message.counter + 1
+                    const messageClone = structuredClone(message) // move?
+                    this.emit('message', messageClone)
                 }
             }
-        } catch (err) {
-            logger.error("DirWalker.execute error : " + err.message)
         }
+        //    } catch (err) {
+        //   logger.error("DirWalker.execute error : " + err.message)
+        //    throw err
+        //  }
     }
 
     extractSlug(filepath) { // TODO move this into a utils file - similar in PostcraftPrep
@@ -132,13 +149,13 @@ export default DirWalker
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="DatasetReader.html">DatasetReader</a></li><li><a href="DirWalker.html">DirWalker</a></li><li><a href="FileCopy.html">FileCopy</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="RemapContext.html">RemapContext</a></li><li><a href="Service.html">Service</a></li><li><a href="ServiceExample.html">ServiceExample</a></li><li><a href="Stash.html">Stash</a></li><li><a href="StringReplace.html">StringReplace</a></li><li><a href="Templater.html">Templater</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="DatasetReader.html">DatasetReader</a></li><li><a href="DirWalker.html">DirWalker</a></li><li><a href="EnvLoader.html">EnvLoader</a></li><li><a href="FileCopy.html">FileCopy</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="HttpGet.html">HttpGet</a></li><li><a href="JSONWalker.html">JSONWalker</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="Processor.html">Processor</a></li><li><a href="ProcessorExample.html">ProcessorExample</a></li><li><a href="Stash.html">Stash</a></li><li><a href="StringFilter.html">StringFilter</a></li><li><a href="StringReplace.html">StringReplace</a></li><li><a href="Templater.html">Templater</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Aug 06 2024 14:35:50 GMT+0200 (Central European Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Nov 27 2024 12:40:43 GMT+0100 (Central European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: StringReplace</title>
+    <title>JSDoc: Class: StringFilter</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: StringReplace</h1>
+    <h1 class="page-title">Class: StringFilter</h1>
 
     
 
@@ -28,29 +28,27 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>StringReplace<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>StringFilter<span class="signature">()</span><span class="type-signature"></span></h2>
         
             <div class="class-description"><p><strong>a Transmissions Processor</strong></p>
-<p>Replaces all occurrences of a specified substring in the content with a replacement string.</p>
-<h3>Signature</h3>
+<p>Filters a string based on include and exclude patterns.</p>
+<h3>Processor Signature</h3>
 <h4><strong><em>Input</em></strong></h4>
 <ul>
-<li><strong><code>message.content</code></strong> - The original string content</li>
-<li><strong><code>message.match</code></strong> - The substring to be replaced</li>
-<li><strong><code>message.replace</code></strong> - The replacement string</li>
+<li><strong><code>message.content</code></strong> - The string to be filtered</li>
+<li><strong><code>message.exclude</code></strong> - Patterns to exclude (blacklist)</li>
+<li><strong><code>message.include</code></strong> - Patterns to include (whitelist)</li>
 </ul>
 <h4><strong><em>Output</em></strong></h4>
 <ul>
-<li><strong><code>message.content</code></strong> - The modified string with replacements</li>
+<li><strong><code>message.content</code></strong> - The string (if accepted)</li>
 </ul>
 <h4><strong><em>Behavior</em></strong></h4>
 <ul>
-<li>Replaces every exact occurrence of <code>message.match</code> in <code>message.content</code> with <code>message.replace</code></li>
-<li>If <code>message.match</code> is not found, the content remains unchanged</li>
-</ul>
-<h4><strong>Tests</strong></h4>
-<ul>
-<li>TODO: Add test information</li>
+<li>Tests input string against exclude patterns</li>
+<li>first the value of <code>message.content</code> is tested against <code>message.exclude</code>, if a match <strong>isn't</strong> found, <code>message.content</code> is passed through to the output</li>
+<li>next the value of <code>message.content</code> is tested against <code>message.include</code>, if a match <strong>is</strong> found, <code>message.content</code> is passed through to the output</li>
+<li>Uses simplified glob-like pattern matching</li>
 </ul></div>
         
     
@@ -66,7 +64,7 @@
     
 
     
-    <h4 class="name" id="StringReplace"><span class="type-signature"></span>new StringReplace<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="StringFilter"><span class="type-signature"></span>new StringFilter<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -114,7 +112,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="processors_text_StringReplace.js.html">processors/text/StringReplace.js</a>, <a href="processors_text_StringReplace.js.html#line2">line 2</a>
+        <a href="processors_text_StringFilter.js.html">processors/text/StringFilter.js</a>, <a href="processors_text_StringFilter.js.html#line2">line 2</a>
     </li></ul></dd>
     
 
@@ -745,7 +743,7 @@ Locates the configuration node in processors.ttl for the processor.</p>
     
 
     
-    <h4 class="name" id="process"><span class="type-signature">(async) </span>process<span class="signature">(message)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="isAccepted"><span class="type-signature"></span>isAccepted<span class="signature">(input, exclude, include)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
 
     
@@ -753,7 +751,7 @@ Locates the configuration node in processors.ttl for the processor.</p>
 
 
 <div class="description">
-    <p>Executes the string replacement process</p>
+    <p>Tests if the input string is accepted based on exclude and include patterns</p>
 </div>
 
 
@@ -789,13 +787,13 @@ Locates the configuration node in processors.ttl for the processor.</p>
 
         <tr>
             
-                <td class="name"><code>message</code></td>
+                <td class="name"><code>input</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">string</span>
 
 
             
@@ -805,7 +803,793 @@ Locates the configuration node in processors.ttl for the processor.</p>
 
             
 
-            <td class="description last"><p>The message object containing content, match, and replace strings</p></td>
+            <td class="description last"><p>The string to test</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>exclude</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Patterns to exclude</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>include</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Patterns to include</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="processors_text_StringFilter.js.html">processors/text/StringFilter.js</a>, <a href="processors_text_StringFilter.js.html#line42">line 42</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>True if the string is accepted, false otherwise</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="isExcluded"><span class="type-signature"></span>isExcluded<span class="signature">(input, exclude)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Tests if the input string matches any of the exclude patterns</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>input</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The string to test</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>exclude</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Patterns to exclude</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="processors_text_StringFilter.js.html">processors/text/StringFilter.js</a>, <a href="processors_text_StringFilter.js.html#line74">line 74</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>True if the string matches any exclude pattern</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="isIncluded"><span class="type-signature"></span>isIncluded<span class="signature">(input, include)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Tests if the input string matches any of the include patterns</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>input</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The string to test</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>include</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Patterns to include</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="processors_text_StringFilter.js.html">processors/text/StringFilter.js</a>, <a href="processors_text_StringFilter.js.html#line88">line 88</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>True if the string matches any include pattern or if include is empty</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="matchPattern"><span class="type-signature"></span>matchPattern<span class="signature">(input, pattern)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Matches a string against a glob-like pattern</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>input</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The string to match</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pattern</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The pattern to match against</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="processors_text_StringFilter.js.html">processors/text/StringFilter.js</a>, <a href="processors_text_StringFilter.js.html#line102">line 102</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>True if the string matches the pattern</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="process"><span class="type-signature">(async) </span>process<span class="signature">(data, message)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Executes the processing logic for the processor.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The data to be processed.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The message for processing.</p></td>
         </tr>
 
     
@@ -851,7 +1635,7 @@ Locates the configuration node in processors.ttl for the processor.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="processors_text_StringReplace.js.html">processors/text/StringReplace.js</a>, <a href="processors_text_StringReplace.js.html#line40">line 40</a>
+        <a href="processors_base_Processor.js.html">processors/base/Processor.js</a>, <a href="processors_base_Processor.js.html#line212">line 212</a>
     </li></ul></dd>
     
 

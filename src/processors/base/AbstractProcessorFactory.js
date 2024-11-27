@@ -2,19 +2,19 @@
 // TODO move
 
 // Import processor groups
-import SystemProcessorsFactory from '../processors/system/SystemProcessorsFactory.js'
-import TestProcessorsFactory from '../processors/test/TestProcessorsFactory.js'
-import FsProcessorsFactory from '../processors/fs/FsProcessorsFactory.js'
-import MarkupProcessorsFactory from '../processors/markup/MarkupProcessorsFactory.js'
-import UtilProcessorsFactory from '../processors/util/UtilProcessorsFactory.js'
-import TextProcessorsFactory from '../processors/text/TextProcessorsFactory.js'
-import ProtocolsProcessorsFactory from '../processors/protocols/ProtocolsProcessorsFactory.js'
-import RDFProcessorsFactory from '../processors/rdf/RDFProcessorsFactory.js'
-import PostcraftProcessorsFactory from '../processors/postcraft/PostcraftProcessorsFactory.js'
-import FlowProcessorsFactory from '../processors/flow/FlowProcessorsFactory.js'
-import StagingProcessorsFactory from '../processors/staging/StagingProcessorsFactory.js'
-import GitHubProcessorsFactory from '../processors/github/GitHubProcessorsFactory.js'
-import JSONProcessorsFactory from '../processors/json/JSONProcessorsFactory.js'
+import SystemProcessorsFactory from '../system/SystemProcessorsFactory.js'
+import TestProcessorsFactory from '../test/TestProcessorsFactory.js'
+import FsProcessorsFactory from '../fs/FsProcessorsFactory.js'
+import MarkupProcessorsFactory from '../markup/MarkupProcessorsFactory.js'
+import UtilProcessorsFactory from '../util/UtilProcessorsFactory.js'
+import TextProcessorsFactory from '../text/TextProcessorsFactory.js'
+import ProtocolsProcessorsFactory from '../protocols/ProtocolsProcessorsFactory.js'
+import RDFProcessorsFactory from '../rdf/RDFProcessorsFactory.js'
+import PostcraftProcessorsFactory from '../postcraft/PostcraftProcessorsFactory.js'
+import FlowProcessorsFactory from '../flow/FlowProcessorsFactory.js'
+import StagingProcessorsFactory from '../staging/StagingProcessorsFactory.js'
+import GitHubProcessorsFactory from '../github/GitHubProcessorsFactory.js'
+import JSONProcessorsFactory from '../json/JSONProcessorsFactory.js'
 
 class AbstractProcessorFactory {
 

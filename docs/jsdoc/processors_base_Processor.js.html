@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: services/base/Service.js</title>
+    <title>JSDoc: Source: processors/base/Processor.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: services/base/Service.js</h1>
+    <h1 class="page-title">Source: processors/base/Processor.js</h1>
 
     
 
@@ -34,14 +34,14 @@ import ns from '../../utils/ns.js'
 import footpath from '../../utils/footpath.js'
 
 /**
- * Base class for services.
+ * Base class for processors.
  * @extends EventEmitter
  */
-class Service extends EventEmitter {
+class Processor extends EventEmitter {
 
     /**
-     * Creates an instance of Service.
-     * @param {Object} config - The configuration object for the service.
+     * Creates an instance of Processor.
+     * @param {Object} config - The configuration object for the processor.
      */
     constructor(config) {
         super()
@@ -49,6 +49,7 @@ class Service extends EventEmitter {
         this.messageQueue = []
         this.processing = false
         this.done = false
+        this.outputs = []
     }
 
     preProcess(message) {
@@ -60,11 +61,11 @@ class Service extends EventEmitter {
         }
         return false
         */
-        const servicePoi = rdf.grapoi({ dataset: this.config, term: this.configKey })
-        logger.log('this.configKey = ' + this.configKey.value)
-        logger.poi(servicePoi)
+        const processorPoi = rdf.grapoi({ dataset: this.config, term: this.configKey })
+        //    logger.log('this.configKey = ' + this.configKey.value)
+        //   logger.poi(processorPoi)
 
-        logger.log('describe Desc')
+        // logger.log('describe Desc')
         if (this.configKey.value === ns.trm.describe.value) {
             this.describe()
         }
@@ -90,7 +91,7 @@ class Service extends EventEmitter {
     /**
      * TODO refactor
      * 
-     * Locates the configuration node in services.ttl for the service.
+     * Locates the configuration node in processors.ttl for the processor.
      * @returns {Object} - The configuration node.
      */
     // is this duplicating? getMyConfig() 
@@ -103,7 +104,7 @@ class Service extends EventEmitter {
         }
     */
     /** SHOULD REPLACE THE ABOVE AND USE THE BLOCK NAME FOR ID
- * Locates the configuration node in services.ttl for the service.
+ * Locates the configuration node in processors.ttl for the processor.
  * @returns {Object} - The configuration node.
  */
     // is this duplicating? 
@@ -138,10 +139,21 @@ class Service extends EventEmitter {
     }
 
     getPropertyFromMyConfig(property) {
+        if (this.config.simples) {
+            const shortName = property.value.split('/').pop()
+            logger.debug(`Processor (simples), property = ${shortName}`)
+            const value = this.config[shortName]
+            logger.debug(`Processor (simples), value = ${value}`)
+            return value
+        }
         const poi = this.getMyPoi()
-        return poi.out(property).term.value
+        try {
+            return poi.out(property).term.value
+        } catch (err) {
+            logger.debug('* Warn : Processor.getPropertyFromMyConfig(), property not defined : ' + property)
+            return rdf.literal('undefined')
+        }
     }
-
 
     async deletePropertyFromMyConfig(predicate, value) {
         const myConfigNode = this.getMyConfigNode()
@@ -200,7 +212,7 @@ class Service extends EventEmitter {
             // structuredClone(message, {transfer:[dataset]}) failed too 
             this.addTag(message)
 
-            await this.execute(message)
+            await this.process(message)
         }
         this.processing = false
     }
@@ -212,7 +224,7 @@ class Service extends EventEmitter {
             return
         }
         message.tags = message.tags + '.' + tag
-        //   logger.log('in Service, tags = ' + message.tags)
+        //   logger.log('in Processor, tags = ' + message.tags)
     }
 
     getTag() {
@@ -221,11 +233,11 @@ class Service extends EventEmitter {
 
 
     /**
-     * Executes the processing logic for the service.
+     * Executes the processing logic for the processor.
      * @param {*} data - The data to be processed.
      * @param {*} message - The message for processing.
      */
-    async execute(message) {
+    async process(message) {
         throw new Error('execute method not implemented')
     }
 
@@ -238,10 +250,41 @@ class Service extends EventEmitter {
     async doEmit(message) {
         this.emit(message)
     }
+
+    /////////////////////// for simples
+    //  emit(event, message) {
+
+    // }
+
+    //    this.emit('message', message)
+    //  return this.getOutputs()
+    /*
+    async forward(event = 'message', message) {
+        if (event === 'message') {
+            this.outputs.push(message)
+        }
+        super.emit(event, message)
+        return this.getOutputs()
+    }
+*/
+    emit(event, message) {
+        //   if (event === 'message') {
+        //     this.outputs.push(message)
+        // }
+        super.emit(event, message)
+        return message
+        //  return this.getOutputs()
+        // TODO in NOP,   return this.emit('message', message) - why?
+    }
+
+    getOutputs() {
+        const results = this.outputs
+        this.outputs = []
+        return results
+    }
 }
 
-export default Service
-</code></pre>
+export default Processor</code></pre>
         </article>
     </section>
 
@@ -251,13 +294,13 @@ export default Service
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="DatasetReader.html">DatasetReader</a></li><li><a href="DirWalker.html">DirWalker</a></li><li><a href="FileCopy.html">FileCopy</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="RemapContext.html">RemapContext</a></li><li><a href="Service.html">Service</a></li><li><a href="ServiceExample.html">ServiceExample</a></li><li><a href="Stash.html">Stash</a></li><li><a href="StringReplace.html">StringReplace</a></li><li><a href="Templater.html">Templater</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="DatasetReader.html">DatasetReader</a></li><li><a href="DirWalker.html">DirWalker</a></li><li><a href="EnvLoader.html">EnvLoader</a></li><li><a href="FileCopy.html">FileCopy</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="HttpGet.html">HttpGet</a></li><li><a href="JSONWalker.html">JSONWalker</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="Processor.html">Processor</a></li><li><a href="ProcessorExample.html">ProcessorExample</a></li><li><a href="Stash.html">Stash</a></li><li><a href="StringFilter.html">StringFilter</a></li><li><a href="StringReplace.html">StringReplace</a></li><li><a href="Templater.html">Templater</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Aug 06 2024 14:35:50 GMT+0200 (Central European Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Nov 27 2024 12:40:43 GMT+0100 (Central European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

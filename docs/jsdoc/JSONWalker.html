@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: StringReplace</title>
+    <title>JSDoc: Class: JSONWalker</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: StringReplace</h1>
+    <h1 class="page-title">Class: JSONWalker</h1>
 
     
 
@@ -28,29 +28,32 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>StringReplace<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>JSONWalker<span class="signature">()</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p><strong>a Transmissions Processor</strong></p>
-<p>Replaces all occurrences of a specified substring in the content with a replacement string.</p>
-<h3>Signature</h3>
-<h4><strong><em>Input</em></strong></h4>
+            <div class="class-description"><p><strong>A Transmissions Processor</strong></p>
+<p>Walks through a JSON structure and emits messages for each item.</p>
+<h3>Processor Signature</h3>
+<h4><em><strong>Configuration</strong></em></h4>
+<p>*<strong><code>ns.trm.targetDir</code></strong> - Target directory path relative to current working directory</p>
+<h4><em><strong>Input</strong></em></h4>
+<p>*<strong><code>message.payload</code></strong> - JSON object to process</p>
+<h4><em><strong>Output</strong></em></h4>
 <ul>
-<li><strong><code>message.content</code></strong> - The original string content</li>
-<li><strong><code>message.match</code></strong> - The substring to be replaced</li>
-<li><strong><code>message.replace</code></strong> - The replacement string</li>
+<li>Emits a message for each item in the input payload</li>
+<li>Final message has <code>done: true</code> flag</li>
+<li>Each emitted message contains:
+<ul>
+<li>*<strong><code>message.item</code></strong> - Current item being processed</li>
+<li>*<strong><code>message.payload</code></strong> - Empty object (configurable)</li>
 </ul>
-<h4><strong><em>Output</em></strong></h4>
-<ul>
-<li><strong><code>message.content</code></strong> - The modified string with replacements</li>
+</li>
 </ul>
-<h4><strong><em>Behavior</em></strong></h4>
+<h4><em><strong>Behavior</strong></em></h4>
 <ul>
-<li>Replaces every exact occurrence of <code>message.match</code> in <code>message.content</code> with <code>message.replace</code></li>
-<li>If <code>message.match</code> is not found, the content remains unchanged</li>
-</ul>
-<h4><strong>Tests</strong></h4>
-<ul>
-<li>TODO: Add test information</li>
+<li>Validates input is a JSON object</li>
+<li>Creates separate message for each value in payload</li>
+<li>Clones messages to prevent cross-contamination</li>
+<li>Signals completion with done flag</li>
 </ul></div>
         
     
@@ -66,7 +69,7 @@
     
 
     
-    <h4 class="name" id="StringReplace"><span class="type-signature"></span>new StringReplace<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="JSONWalker"><span class="type-signature"></span>new JSONWalker<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -114,7 +117,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="processors_text_StringReplace.js.html">processors/text/StringReplace.js</a>, <a href="processors_text_StringReplace.js.html#line2">line 2</a>
+        <a href="processors_json_JSONWalker.js.html">processors/json/JSONWalker.js</a>, <a href="processors_json_JSONWalker.js.html#line2">line 2</a>
     </li></ul></dd>
     
 
@@ -753,7 +756,7 @@ Locates the configuration node in processors.ttl for the processor.</p>
 
 
 <div class="description">
-    <p>Executes the string replacement process</p>
+    <p>Processes JSON payload by walking its structure and emitting messages</p>
 </div>
 
 
@@ -805,7 +808,7 @@ Locates the configuration node in processors.ttl for the processor.</p>
 
             
 
-            <td class="description last"><p>The message object containing content, match, and replace strings</p></td>
+            <td class="description last"><p>Contains payload to process</p></td>
         </tr>
 
     
@@ -851,7 +854,7 @@ Locates the configuration node in processors.ttl for the processor.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="processors_text_StringReplace.js.html">processors/text/StringReplace.js</a>, <a href="processors_text_StringReplace.js.html#line40">line 40</a>
+        <a href="processors_json_JSONWalker.js.html">processors/json/JSONWalker.js</a>, <a href="processors_json_JSONWalker.js.html#line48">line 48</a>
     </li></ul></dd>
     
 
@@ -866,6 +869,10 @@ Locates the configuration node in processors.ttl for the processor.</p>
 
 
 
+<h5>Fires:</h5>
+<ul>
+    <li>event:message - For each item and completion</li>
+</ul>
 
 
 
@@ -874,6 +881,36 @@ Locates the configuration node in processors.ttl for the processor.</p>
 
 
 
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>If payload is invalid</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
 
 
 

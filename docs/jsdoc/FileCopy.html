@@ -30,7 +30,7 @@
     
         <h2><span class="attribs"><span class="type-signature"></span></span>FileCopy<span class="signature">()</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p><strong>a Transmissions Service</strong></p>
+            <div class="class-description"><p><strong>a Transmissions Processor</strong></p>
 <p>Copies files or entire directories on the local filesystem.</p>
 <h4><strong><em>Configuration</em></strong></h4>
 <p>If a <code>configKey</code> is provided in the transmission:</p>
@@ -124,7 +124,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_fs_FileCopy.js.html">services/fs/FileCopy.js</a>, <a href="services_fs_FileCopy.js.html#line2">line 2</a>
+        <a href="processors_fs_FileCopy.js.html">processors/fs/FileCopy.js</a>, <a href="processors_fs_FileCopy.js.html#line2">line 2</a>
     </li></ul></dd>
     
 
@@ -164,7 +164,7 @@
 
 
     <ul>
-        <li><a href="Service.html">Service</a></li>
+        <li><a href="Processor.html">Processor</a></li>
     </ul>
 
 
@@ -315,7 +315,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_fs_FileCopy.js.html">services/fs/FileCopy.js</a>, <a href="services_fs_FileCopy.js.html#line117">line 117</a>
+        <a href="processors_fs_FileCopy.js.html">processors/fs/FileCopy.js</a>, <a href="processors_fs_FileCopy.js.html#line120">line 120</a>
     </li></ul></dd>
     
 
@@ -478,7 +478,7 @@
     
     <dt class="inherited-from">Inherited From:</dt>
     <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#doEmit">Service#doEmit</a>
+        <a href="Processor.html#doEmit">Processor#doEmit</a>
     </li></ul></dd>
     
 
@@ -503,7 +503,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_base_Service.js.html">services/base/Service.js</a>, <a href="services_base_Service.js.html#line210">line 210</a>
+        <a href="processors_base_Processor.js.html">processors/base/Processor.js</a>, <a href="processors_base_Processor.js.html#line222">line 222</a>
     </li></ul></dd>
     
 
@@ -643,7 +643,7 @@
     
     <dt class="inherited-from">Inherited From:</dt>
     <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#enqueue">Service#enqueue</a>
+        <a href="Processor.html#enqueue">Processor#enqueue</a>
     </li></ul></dd>
     
 
@@ -668,7 +668,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_base_Service.js.html">services/base/Service.js</a>, <a href="services_base_Service.js.html#line141">line 141</a>
+        <a href="processors_base_Processor.js.html">processors/base/Processor.js</a>, <a href="processors_base_Processor.js.html#line153">line 153</a>
     </li></ul></dd>
     
 
@@ -805,7 +805,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_fs_FileCopy.js.html">services/fs/FileCopy.js</a>, <a href="services_fs_FileCopy.js.html#line101">line 101</a>
+        <a href="processors_fs_FileCopy.js.html">processors/fs/FileCopy.js</a>, <a href="processors_fs_FileCopy.js.html#line104">line 104</a>
     </li></ul></dd>
     
 
@@ -841,7 +841,218 @@
     
 
     
-    <h4 class="name" id="execute"><span class="type-signature">(async) </span>execute<span class="signature">(message)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="executeQueue"><span class="type-signature">(async) </span>executeQueue<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Executes the message queue.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Processor.html#executeQueue">Processor#executeQueue</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="processors_base_Processor.js.html">processors/base/Processor.js</a>, <a href="processors_base_Processor.js.html#line174">line 174</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getMyConfigNode"><span class="type-signature"></span>getMyConfigNode<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>SHOULD REPLACE THE ABOVE AND USE THE BLOCK NAME FOR ID
+Locates the configuration node in processors.ttl for the processor.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Processor.html#getMyConfigNode">Processor#getMyConfigNode</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="processors_base_Processor.js.html">processors/base/Processor.js</a>, <a href="processors_base_Processor.js.html#line83">line 83</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>The configuration node.</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="process"><span class="type-signature">(async) </span>process<span class="signature">(message)</span><span class="type-signature"></span></h4>
     
 
     
@@ -924,7 +1135,7 @@
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="Service.html#execute">Service#execute</a>
+        <a href="Processor.html#process">Processor#process</a>
     </li></ul></dd>
     
 
@@ -947,7 +1158,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_fs_FileCopy.js.html">services/fs/FileCopy.js</a>, <a href="services_fs_FileCopy.js.html#line52">line 52</a>
+        <a href="processors_fs_FileCopy.js.html">processors/fs/FileCopy.js</a>, <a href="processors_fs_FileCopy.js.html#line52">line 52</a>
     </li></ul></dd>
     
 
@@ -972,217 +1183,6 @@
 
 
 
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="executeQueue"><span class="type-signature">(async) </span>executeQueue<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Executes the message queue.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#executeQueue">Service#executeQueue</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_base_Service.js.html">services/base/Service.js</a>, <a href="services_base_Service.js.html#line162">line 162</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="getMyConfigNode"><span class="type-signature"></span>getMyConfigNode<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>SHOULD REPLACE THE ABOVE AND USE THE BLOCK NAME FOR ID
-Locates the configuration node in services.ttl for the service.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#getMyConfigNode">Service#getMyConfigNode</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_base_Service.js.html">services/base/Service.js</a>, <a href="services_base_Service.js.html#line82">line 82</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <ul>
-<li>The configuration node.</li>
-</ul>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Object</span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
@@ -1298,7 +1298,7 @@ Locates the configuration node in services.ttl for the service.</p>
     
     <dt class="inherited-from">Inherited From:</dt>
     <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#receive">Service#receive</a>
+        <a href="Processor.html#receive">Processor#receive</a>
     </li></ul></dd>
     
 
@@ -1323,7 +1323,7 @@ Locates the configuration node in services.ttl for the service.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_base_Service.js.html">services/base/Service.js</a>, <a href="services_base_Service.js.html#line132">line 132</a>
+        <a href="processors_base_Processor.js.html">processors/base/Processor.js</a>, <a href="processors_base_Processor.js.html#line144">line 144</a>
     </li></ul></dd>
     
 
@@ -1369,13 +1369,13 @@ Locates the configuration node in services.ttl for the service.</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="DatasetReader.html">DatasetReader</a></li><li><a href="DirWalker.html">DirWalker</a></li><li><a href="FileCopy.html">FileCopy</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="RemapContext.html">RemapContext</a></li><li><a href="Service.html">Service</a></li><li><a href="ServiceExample.html">ServiceExample</a></li><li><a href="Stash.html">Stash</a></li><li><a href="StringReplace.html">StringReplace</a></li><li><a href="Templater.html">Templater</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="DatasetReader.html">DatasetReader</a></li><li><a href="DirWalker.html">DirWalker</a></li><li><a href="EnvLoader.html">EnvLoader</a></li><li><a href="FileCopy.html">FileCopy</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="HttpGet.html">HttpGet</a></li><li><a href="JSONWalker.html">JSONWalker</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="Processor.html">Processor</a></li><li><a href="ProcessorExample.html">ProcessorExample</a></li><li><a href="Stash.html">Stash</a></li><li><a href="StringFilter.html">StringFilter</a></li><li><a href="StringReplace.html">StringReplace</a></li><li><a href="Templater.html">Templater</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Aug 06 2024 14:35:50 GMT+0200 (Central European Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Nov 27 2024 12:40:43 GMT+0100 (Central European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

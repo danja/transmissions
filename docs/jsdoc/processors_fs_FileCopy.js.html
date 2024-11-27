@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: services/fs/FileCopy.js</title>
+    <title>JSDoc: Source: processors/fs/FileCopy.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: services/fs/FileCopy.js</h1>
+    <h1 class="page-title">Source: processors/fs/FileCopy.js</h1>
 
     
 
@@ -26,12 +26,12 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>// src/services/fs/FileCopy.js
+            <pre class="prettyprint source linenums"><code>// src/processors/fs/FileCopy.js
 /**
  * @class FileCopy
- * @extends Service
+ * @extends Processor
  * @classdesc
- * **a Transmissions Service**
+ * **a Transmissions Processor**
  * 
  * Copies files or entire directories on the local filesystem.
  * 
@@ -65,10 +65,10 @@ import { copyFile, mkdir, readdir, stat } from 'node:fs/promises'
 import path from 'path'
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
-import Service from '../base/Service.js'
+import Processor from '../base/Processor.js'
 
 
-class FileCopy extends Service {
+class FileCopy extends Processor {
     constructor(config) {
         super(config)
     }
@@ -77,26 +77,29 @@ class FileCopy extends Service {
      * Executes the file copy operation
      * @param {Object} message - The input message
      */
-    async execute(message) {
-        // logger.setLogLevel("debug")
+    async process(message) {
+        //  logger.setLogLevel("debug")
 
-        if (message.rootDir == "") {
-            message.rootDir = message.applicationRootDir
-        }
         logger.debug("message.rootDir = " + message.rootDir)
         var source, destination
 
         // Determine source and destination paths
         if (this.configKey === 'undefined') {
-            logger.debug('FileCopy: Using message.source and message.destination')
+            logger.debug('FileCopy: using message.source and message.destination')
             source = message.source
             destination = message.destination
         } else {
-            logger.debug(`FileCopy: Using configKey ${this.configKey.value}`)
+            logger.debug(`FileCopy: using configKey ${this.configKey.value}`)
             source = this.getPropertyFromMyConfig(ns.trm.source)
             destination = this.getPropertyFromMyConfig(ns.trm.destination)
-            source = path.join(message.rootDir, source)
-            destination = path.join(message.rootDir, destination)
+            if (message.targetPath) {
+                source = path.join(message.targetPath, source)
+                destination = path.join(message.targetPath, destination)
+            } else {
+                source = path.join(message.rootDir, source)
+                destination = path.join(message.rootDir, destination)
+            }
+
         }
 
         logger.debug(`Source: ${source}`)
@@ -119,7 +122,7 @@ class FileCopy extends Service {
             logger.error(`Destination: ${destination}`)
         }
 
-        this.emit('message', message)
+        return this.emit('message', message)
     }
 
     /**
@@ -178,13 +181,13 @@ export default FileCopy</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="DatasetReader.html">DatasetReader</a></li><li><a href="DirWalker.html">DirWalker</a></li><li><a href="FileCopy.html">FileCopy</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="RemapContext.html">RemapContext</a></li><li><a href="Service.html">Service</a></li><li><a href="ServiceExample.html">ServiceExample</a></li><li><a href="Stash.html">Stash</a></li><li><a href="StringReplace.html">StringReplace</a></li><li><a href="Templater.html">Templater</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="DatasetReader.html">DatasetReader</a></li><li><a href="DirWalker.html">DirWalker</a></li><li><a href="EnvLoader.html">EnvLoader</a></li><li><a href="FileCopy.html">FileCopy</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="HttpGet.html">HttpGet</a></li><li><a href="JSONWalker.html">JSONWalker</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="Processor.html">Processor</a></li><li><a href="ProcessorExample.html">ProcessorExample</a></li><li><a href="Stash.html">Stash</a></li><li><a href="StringFilter.html">StringFilter</a></li><li><a href="StringReplace.html">StringReplace</a></li><li><a href="Templater.html">Templater</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Aug 06 2024 14:35:50 GMT+0200 (Central European Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Nov 27 2024 12:40:43 GMT+0100 (Central European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

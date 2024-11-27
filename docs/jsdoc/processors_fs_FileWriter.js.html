@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: services/fs/FileWriter.js</title>
+    <title>JSDoc: Source: processors/fs/FileWriter.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: services/fs/FileWriter.js</h1>
+    <h1 class="page-title">Source: processors/fs/FileWriter.js</h1>
 
     
 
@@ -26,16 +26,19 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { writeFile } from 'node:fs/promises'
+            <pre class="prettyprint source linenums"><code>import path from 'path'
+import { access, constants } from 'node:fs'
+import ns from '../../utils/ns.js'
+import { writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { mkdir, mkdirSync } from 'node:fs'
 import logger from '../../utils/Logger.js'
-import SinkService from '../base/SinkService.js'
+import Processor from '../base/Processor.js'
 /**
- * FileWriter class that extends SinkService
+ * FileWriter class that extends Processor
  * Write data to a file.
  * 
- * First checks `message.targetFilepath` and if not set, uses the value from `services.ttl` using `configKey` for this service instance.
+ * First checks `message.targetFilepath` and if not set, uses the value from `processors.ttl` using `configKey` for this processor instance.
  * 
  * #### __*Input*__
  * * message.filepath 
@@ -45,7 +48,7 @@ import SinkService from '../base/SinkService.js'
  * 
  * if message.loadContext is set, that is used as a name in the message for the file content
  */
-class FileWriter extends SinkService {
+class FileWriter extends Processor {
 
     /**
      * Constructs a new FileWriter object.
@@ -62,37 +65,91 @@ class FileWriter extends SinkService {
      * Executes the write operation.
      * @param {Object} message - The execution message.
      */
-    async execute(message) {
+    async process(message) {
+        logger.setLogLevel('info')
         this.preProcess()
+
+        if (message.dump) {
+            // TODO make optional (on done?) - is a pain for multi
+            //    const filename = `message_${new Date().toISOString()}.json`
+
+            const filename = 'message.json'
+            const f = path.join(message.dataDir, filename)
+            const content = JSON.stringify(message)
+
+            // Check if the file is readable.
+            access(f, constants.W_OK, (err) => {
+                if (err) {
+                    logger.error(`FileWriter error : ${f} is not writable.`)
+                    logger.reveal(message)
+                }
+            })
+
+            return this.doWrite(f, content, message)
+        }
+
+        logger.debug("Filewriter, message.filepath = " + message.filepath)
+
         var filepath = message.filepath
 
-        const content = message.content
 
-        //  if (!filepath) {
-        //    filepath = this.getMyConfig().value
-        // }
-        logger.debug("Filewriter.targetFile = " + filepath)
-
-        const dirName = dirname(filepath)
-        try {
-            await this.mkdirs(dirName) // is this OK when the dirs ???
-            logger.log(' - FileWriter writing : ' + filepath)
-            await writeFile(filepath, content)
-
-        } catch (err) {
-            logger.error("FileWriter.execute error : " + err.message)
+        if (!filepath) {
+            filepath = this.getPropertyFromMyConfig(ns.trm.destinationFile)
+            logger.log(' - filepath from config : ' + filepath)
         }
 
-        this.emit('message', message)
+        var f
+        if (filepath.startsWith('/')) { // TODO unhackify
+            f = filepath
+        } else {
+
+            if (message.targetPath) {
+                f = path.join(message.targetPath, filepath)
+            } else {
+                f = path.join(message.dataDir, filepath)
+            }
+        }
+
+
+
+
+        const dirName = dirname(f)
+        logger.debug("Filewriter, dirName = " + dirName)
+
+        var contentPath = this.getPropertyFromMyConfig(ns.trm.contentPath)
+
+        if (typeof contentPath === 'undefined' || contentPath === 'undefined' || contentPath.value === 'undefined') {
+            contentPath = 'content'
+        }
+
+        // logger.debug("Filewriter, contentPath = " + contentPath)
+        var content = message[contentPath.toString()] // TODO generalise.it
+        if (typeof content === 'object') {
+            content = JSON.stringify(content)
+        }
+
+        logger.debug("Filewriter, content = " + content)
+        logger.debug("Filewriter, typeof content = " + typeof content)
+
+
+        this.mkdirs(dirName) // sync - see below
+
+        return await this.doWrite(f, content, message)
     }
 
-    async mkdirs(dir) {
-        if (!dir) return;
-        try {
-            mkdir(dir, { recursive: true }, (error) => { })
-        } catch (error) {
-            console.error(error);
-        }
+    async doWrite(f, content, message) {
+        logger.log(' - FileWriter writing : ' + f)
+        await writeFile(f, content)
+        return this.emit('message', message)
+    }
+
+    mkdirs(dir) {
+        mkdirSync(dir, { recursive: true })
+        /*
+                mkdir(dir, { recursive: true }, (error) => {
+                    logger.log('EEEEEEEEEEEEEEEEEK!' + error)
+                })
+           */
     }
 }
 
@@ -107,13 +164,13 @@ export default FileWriter
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="DatasetReader.html">DatasetReader</a></li><li><a href="DirWalker.html">DirWalker</a></li><li><a href="FileCopy.html">FileCopy</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="RemapContext.html">RemapContext</a></li><li><a href="Service.html">Service</a></li><li><a href="ServiceExample.html">ServiceExample</a></li><li><a href="Stash.html">Stash</a></li><li><a href="StringReplace.html">StringReplace</a></li><li><a href="Templater.html">Templater</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="DatasetReader.html">DatasetReader</a></li><li><a href="DirWalker.html">DirWalker</a></li><li><a href="EnvLoader.html">EnvLoader</a></li><li><a href="FileCopy.html">FileCopy</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="HttpGet.html">HttpGet</a></li><li><a href="JSONWalker.html">JSONWalker</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="Processor.html">Processor</a></li><li><a href="ProcessorExample.html">ProcessorExample</a></li><li><a href="Stash.html">Stash</a></li><li><a href="StringFilter.html">StringFilter</a></li><li><a href="StringReplace.html">StringReplace</a></li><li><a href="Templater.html">Templater</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Aug 06 2024 14:35:50 GMT+0200 (Central European Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Nov 27 2024 12:40:43 GMT+0100 (Central European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

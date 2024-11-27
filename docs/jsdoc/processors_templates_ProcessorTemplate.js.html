@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: processors/util/Stash.js</title>
+    <title>JSDoc: Source: processors/templates/ProcessorTemplate.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: processors/util/Stash.js</h1>
+    <h1 class="page-title">Source: processors/templates/ProcessorTemplate.js</h1>
 
     
 
@@ -26,25 +26,23 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import rdf from 'rdf-ext'
-import { fromFile, toFile } from 'rdf-utils-fs'
-import Processor from '../base/Processor.js'
+            <pre class="prettyprint source linenums"><code>import { readFile } from 'node:fs/promises' // whatever else
+
+import logger from '../../utils/Logger.js' // path will likely change
+import Processor from '../base/Processor.js' // maybe more specific
 
 /**
- * Takes the input and stashes it in the message as told by processors.ttl
- * 
+ * FileReader class that extends xxxxxProcessor.
+ * DESCRIPTION
  * #### __*Input*__
- * **data** : any
- * **message** : any
+ * **message.INPUT** 
  * #### __*Output*__
- * **data** : as Input
- * **message** : adds key:value determined by processors.ttl
- * @extends Processor
+ * **message.OUTPUT**
  */
-class Stash extends Processor {
+class ProcessorExample extends Processor {
 
     /**
-     * Create a DatasetReader.
+     * Constructs a new ProcessorExample instance.
      * @param {Object} config - The configuration object.
      */
     constructor(config) {
@@ -52,21 +50,20 @@ class Stash extends Processor {
     }
 
     /**
-     * Execute the DatasetReader processor.
-     * @param {string} data -.
-     * @param {Object} message - .
+     * Does something with the message and emits a 'message' event with the processed message.
+     * @param {Object} message - The message object.
      */
     async process(message) {
-        const manifestFilename = rootDir + '/manifest.ttl'
-        const stream = fromFile(manifestFilename)
+        logger.setLogLevel('debug')
 
-        // should append RDF to incoming
-        message.rootDir = rootDir
-        message.dataset = await rdf.dataset().import(stream)
+        // processing goes here
         return this.emit('message', message)
+    } catch(err) {
+        logger.error("ProcessorExample.execute error : " + err.message)
     }
 }
-export default Stash</code></pre>
+
+export default ProcessorExample</code></pre>
         </article>
     </section>
 

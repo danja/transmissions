@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: services/rdf/ConfigMap.js</title>
+    <title>JSDoc: Source: processors/rdf/ConfigMap.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: services/rdf/ConfigMap.js</h1>
+    <h1 class="page-title">Source: processors/rdf/ConfigMap.js</h1>
 
     
 
@@ -26,14 +26,16 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>// src/services/rdf/ConfigMap.js
+            <pre class="prettyprint source linenums"><code>// src/processors/rdf/ConfigMap.js
 /**
  * @class ConfigMap
- * @extends ProcessService
+ * @extends Processor
  * @classdesc
- * **a Transmissions Service**
+ * **a Transmissions Processor**
  * 
- * Maps RDF dataset contents to key-value pairs in the message object based on services.ttl configuration.
+ * Maps RDF dataset contents to key-value pairs in the message object based on processors-config.ttl 
+ * 
+ * ### Signature
  * 
  * #### __*Input*__
  * * **`message.dataset`** - RDF dataset containing configuration
@@ -54,19 +56,29 @@ import ns from '../../utils/ns.js'
 import rdf from 'rdf-ext'
 import grapoi from 'grapoi'
 import logger from '../../utils/Logger.js'
-import ProcessService from '../base/ProcessService.js'
+import Processor from '../base/Processor.js'
 
-class ConfigMap extends ProcessService {
+class ConfigMap extends Processor {
   constructor(config) {
     super(config)
   }
 
   /**
-   * Executes the ConfigMap service
+   * Executes the ConfigMap processor
    * @param {Object} message - The message object containing the dataset
    * @todo Refactor for better generalization and maintainability
    */
-  async execute(message) {
+  async process(message) {
+    logger.setLogLevel('debug')
+
+    logger.debug(`ConfigMap, Using configKey ${this.configKey.value}`)
+
+    const group = this.getPropertyFromMyConfig(ns.trm.group)
+    const targetGroup = rdf.namedNode(group)
+    logger.debug(`ConfigMap, group =  ${targetGroup}`)
+
+    // source = path.join(message.rootDir, source);
+
     this.preProcess(message)
     const dataset = message.dataset
     const poi = grapoi({ dataset, factory: rdf })
@@ -74,12 +86,15 @@ class ConfigMap extends ProcessService {
 
     for (const q of quads) {
       const type = q.object
-      if (type.equals(ns.pc.ContentGroup)) {
+      //   logger.debug('type = ' + type.value)
+      // logger.debug('targetGroup = ' + targetGroup)
+      if (type.equals(targetGroup)) {
+        //          if (type.equals(ns.pc.ContentGroup)) {
         await this.processContentGroup(message, q.subject)
       }
     }
 
-    this.emit('message', message)
+    return this.emit('message', message)
   }
 
   /**
@@ -88,6 +103,7 @@ class ConfigMap extends ProcessService {
    * @param {Object} contentGroupID - The ID of the content group
    */
   async processContentGroup(message, contentGroupID) {
+    logger.debug('contentGroupID = ' + contentGroupID.value)
     switch (contentGroupID.value) {
       case ns.t.PostContent.value:
         await this.markdownToEntryContent(message, contentGroupID)
@@ -112,8 +128,8 @@ class ConfigMap extends ProcessService {
     const postcraftConfig = message.dataset
     const groupPoi = rdf.grapoi({ dataset: postcraftConfig, term: contentGroupID })
 
-    message.siteURL = groupPoi.out(ns.pc.site).term.value
-    message.subdir = groupPoi.out(ns.pc.subdir).term.value
+    // message.location = groupPoi.out(ns.pc.location).term.value
+    // message.subdir = groupPoi.out(ns.pc.subdir).term.value
     message.filepath = groupPoi.out(ns.pc.template).term.value
     message.template = '§§§ placeholer for debugging §§§'
 
@@ -165,13 +181,13 @@ export default ConfigMap</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="DatasetReader.html">DatasetReader</a></li><li><a href="DirWalker.html">DirWalker</a></li><li><a href="FileCopy.html">FileCopy</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="RemapContext.html">RemapContext</a></li><li><a href="Service.html">Service</a></li><li><a href="ServiceExample.html">ServiceExample</a></li><li><a href="Stash.html">Stash</a></li><li><a href="StringReplace.html">StringReplace</a></li><li><a href="Templater.html">Templater</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConfigMap.html">ConfigMap</a></li><li><a href="DatasetReader.html">DatasetReader</a></li><li><a href="DirWalker.html">DirWalker</a></li><li><a href="EnvLoader.html">EnvLoader</a></li><li><a href="FileCopy.html">FileCopy</a></li><li><a href="FileReader.html">FileReader</a></li><li><a href="FileWriter.html">FileWriter</a></li><li><a href="HttpGet.html">HttpGet</a></li><li><a href="JSONWalker.html">JSONWalker</a></li><li><a href="PostcraftDispatcher.html">PostcraftDispatcher</a></li><li><a href="Processor.html">Processor</a></li><li><a href="ProcessorExample.html">ProcessorExample</a></li><li><a href="Stash.html">Stash</a></li><li><a href="StringFilter.html">StringFilter</a></li><li><a href="StringReplace.html">StringReplace</a></li><li><a href="Templater.html">Templater</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Aug 06 2024 14:35:50 GMT+0200 (Central European Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Nov 27 2024 12:40:43 GMT+0100 (Central European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
