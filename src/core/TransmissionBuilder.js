@@ -35,23 +35,23 @@ class TransmissionBuilder {
     const transmissions = []
 
     for (const q of poi.out(ns.rdf.type).quads()) {
-      if (q.object.equals(ns.trm.Pipeline)) {
-        const pipelineID = q.subject
-        //    transmissions.push(await this.constructTransmission(transmissionConfig, pipelineID, processorsConfig));
-        transmissions.push(await this.constructTransmission(transmissionConfig, pipelineID, processorsConfig)) // was await 
+      if (q.object.equals(ns.trm.Transmission)) {
+        const transmissionID = q.subject
+        //    transmissions.push(await this.constructTransmission(transmissionConfig, transmissionID, processorsConfig));
+        transmissions.push(await this.constructTransmission(transmissionConfig, transmissionID, processorsConfig)) // was await 
       }
     }
     return transmissions
   }
 
-  async constructTransmission(transmissionConfig, pipelineID, processorsConfig) {
+  async constructTransmission(transmissionConfig, transmissionID, processorsConfig) {
     processorsConfig.whiteboard = {}
 
     const transmission = new Transmission()
-    transmission.id = pipelineID.value
+    transmission.id = transmissionID.value
     transmission.label = ''
 
-    const transPoi = grapoi({ dataset: transmissionConfig, term: pipelineID })
+    const transPoi = grapoi({ dataset: transmissionConfig, term: transmissionID })
 
     // TODO has grapoi got a first/single property method?
     for (const quad of transPoi.out(ns.rdfs.label).quads()) {
@@ -62,7 +62,7 @@ class TransmissionBuilder {
     let previousName = "nothing"
 
     // grapoi probably has a built-in for all this
-    const pipenodes = GrapoiHelpers.listToArray(transmissionConfig, pipelineID, ns.trm.pipe)
+    const pipenodes = GrapoiHelpers.listToArray(transmissionConfig, transmissionID, ns.trm.pipe)
     await this.createNodes(transmission, pipenodes, transmissionConfig, processorsConfig) // was await, bad Claude
     //    this.createNodes(transmission, pipenodes, transmissionConfig, processorsConfig); // was await, bad Claude
     this.connectNodes(transmission, pipenodes)

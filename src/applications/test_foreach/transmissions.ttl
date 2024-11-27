@@ -2,7 +2,7 @@
 @prefix trm: <http://purl.org/stuff/transmission/> .
 @prefix : <http://hyperdata.it/transmissions/> .
 
-:foreach_test a trm:Pipeline ;
+:foreach_test a trm:Transmission ;
     trm:pipe (:s1 :s2 :s3) .
 
 :s1 a :ForEach .

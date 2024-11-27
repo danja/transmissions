@@ -12,7 +12,7 @@
 :UF a :Unfork . # collapses all pipes but one 
 #############################################################
 
-:envy a trm:Pipeline ;
+:envy a trm:Transmission ;
     trm:pipe (:s10 :s20 :SM) .
 # trm:pipe (:SC) .
 :s10 a :EnvLoader .

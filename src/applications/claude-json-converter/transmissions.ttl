@@ -24,7 +24,7 @@
 # :UF :SD :FW :DE 
 ####################################
 
-:cjc a trm:Pipeline ;
+:cjc a trm:Transmission ;
 trm:pipe (:p10 :p20 :p30 :p40 :p50  :p60) .
 
 # Start 

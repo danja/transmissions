@@ -14,7 +14,7 @@
 :UF a :Unfork . # collapses all pipes but one 
 #############################################################
 
-:fsrw a trm:Pipeline ;
+:fsrw a trm:Transmission ;
 trm:pipe (:SM :read :write ) .
 
 :read a :FileReader ;

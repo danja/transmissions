@@ -14,7 +14,7 @@
 :UF a :Unfork . # collapses all pipes but one 
 #############################################################
 
-:cjc a trm:Pipeline ;
+:cjc a trm:Transmission ;
 
 
 trm:pipe (:read :retree1 :SM :writer) .

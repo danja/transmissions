@@ -20,7 +20,7 @@
 
 ## POSTCRAFT.RENDER ###############################################################
 
-:render a trm:Pipeline ;
+:render a trm:Transmission ;
     rdfs:label "render" ;
     rdfs:comment "render the pages" ;
    trm:pipe (:s10 :s20 :s30  :s40  :s50 :s60 :s70 :s80 :s90 :s100 

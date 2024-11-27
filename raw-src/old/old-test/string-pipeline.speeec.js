@@ -6,9 +6,9 @@ import { exec } from 'child_process'
 // const exec = require('child_process').exec;
 // const expect = chai.expect;
 
-describe('string-pipeline', function () {
+describe('string-transmission', function () {
     it('produces correct output', function (done) {
-        exec('node run.js string-pipeline Hello', (error, stdout, stderr) => {
+        exec('node run.js string-transmission Hello', (error, stdout, stderr) => {
             if (error) {
                 console.error(`exec error: ${error}`);
                 return;

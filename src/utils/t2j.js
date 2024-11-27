@@ -15,7 +15,7 @@ const testTurtle = `
 @prefix trm: <http://purl.org/stuff/transmission/> .
 @prefix : <https://hyperdata.it/transmissions/> . # for custom terms & instances
 
-:simplepipe a trm:PipelineTransmission ;
+:simplepipe a trm:TransmissionTransmission ;
     trm:pipe (:s1 :s2 :s3) .
 
 :s1 a trm:StringSource .

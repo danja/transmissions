@@ -2,7 +2,7 @@
 @prefix trm: <http://purl.org/stuff/transmission/> .
 @prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances
 
-:stringpipe a trm:Pipeline ;
+:stringpipe a trm:Transmission ;
     trm:pipe (:s1 :s2 :s3 :s4) .
 
 :s1 a :StringSource .

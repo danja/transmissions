@@ -12,5 +12,5 @@
 :UF a :Unfork . # collapses all pipes but one 
 #############################################################
 
-:nope a trm:Pipeline ;
+:nope a trm:Transmission ;
     trm:pipe (:N :SC :SM) .

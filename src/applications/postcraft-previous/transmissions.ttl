@@ -19,7 +19,7 @@
 
 ## POSTCRAFT.CLEAN ##########################################
 
-:clean a trm:Pipeline ;
+:clean a trm:Transmission ;
     rdfs:label "clean" ;
     rdfs:comment "directory cleaner" ;
     trm:pipe (:r10 :r20 :r30 :r40 :r50 :r60) .
@@ -44,7 +44,7 @@
 
 ## POSTCRAFT.COPY ##################################################################
 
-:copy a trm:Pipeline ;
+:copy a trm:Transmission ;
     rdfs:label "copy" ;
     rdfs:comment "dir/file copier" ;
     trm:pipe (:cp10 :cp20 :cp30 :cp40 :cp50) .
@@ -72,7 +72,7 @@
 
 ## POSTCRAFT.RENDER ###############################################################
 
-:render a trm:Pipeline ;
+:render a trm:Transmission ;
     rdfs:label "render" ;
     rdfs:comment "render the pages" ;
    trm:pipe (:s10 :s20 :s30 :s40  :s50 :s60 :s70 :s80 :s90 :s100 

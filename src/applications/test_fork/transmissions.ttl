@@ -15,7 +15,7 @@
 :test_fork a :Transmission ;
    trm:contains :pipeA .
 
-:pipeA a trm:Pipeline ;
+:pipeA a trm:Transmission ;
 trm:pipe (:p10 :p20 :SM ) .
 
 :p10 a :Fork .

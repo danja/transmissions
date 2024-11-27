@@ -13,7 +13,7 @@
 :UF a :Unfork . # collapses all pipes but one 
 #############################################################
 
-:mini a trm:Pipeline ;
+:mini a trm:Transmission ;
     trm:pipe (:p10 :p20) .
 
 :p10 a :SetMessage ;

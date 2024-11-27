@@ -11,14 +11,14 @@
 :UF a :Unfork . # collapses all pipes but one 
 #############################################################
 
-:transmission_one a trm:Pipeline ;
+:transmission_one a trm:Transmission ;
     trm:pipe (:a1 :a2) .
 
 :a1 a :NOP .
 
 :a2 a :NOP .
 
-:transmission_two a trm:Pipeline ;
+:transmission_two a trm:Transmission ;
     trm:pipe (:b1 :b2 :b3) .
 
 :b1 a :NOP .

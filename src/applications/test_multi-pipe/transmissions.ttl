@@ -5,16 +5,16 @@
 :test_multi-pipes a :Transmission ;
    trm:contains :pipeA, :pipeB, :pipeC .
 
-:pipeA a trm:Pipeline ;
+:pipeA a trm:Transmission ;
 trm:pipe (:s1 :s2 :s3 ) .
 
-:pipeB  a trm:Pipeline ;
+:pipeB  a trm:Transmission ;
  trm:pipe (:s3 :s104 :s105) .
 
-:pipeC a trm:Pipeline ;
+:pipeC a trm:Transmission ;
 trm:pipe (:s3 :s204 :s205) .
 
-# :postcraft a trm:Pipeline ;
+# :postcraft a trm:Transmission ;
 
 :s1 a :NOP .
 :s2 a :NOP .

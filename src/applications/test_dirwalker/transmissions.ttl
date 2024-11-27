@@ -11,7 +11,7 @@
 :UF a :Unfork . # collapses all pipes but one 
 #############################################################
 
-:dirwalkpipe a trm:Pipeline ;
+:dirwalkpipe a trm:Transmission ;
     trm:pipe (:s1 :s2 :s3) .
 
 :s1 a :DirWalker .

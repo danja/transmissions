@@ -3,7 +3,7 @@
 @prefix trm: <http://purl.org/stuff/transmission/> .
 @prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances
 
-:linklister a trm:Pipeline ;
+:linklister a trm:Transmission ;
     trm:pipe (:s1 :s2 :s3 :s4 :s5 :s6 :s7 :s8) .
 
 :s1 a :FileReader ;

@@ -12,7 +12,7 @@
 :UF a :Unfork . # collapses all pipes but one 
 #############################################################
 
-:h2m a trm:Pipeline ;
+:h2m a trm:Transmission ;
     trm:pipe (:s10 :s20 :s30 :s40 :SM) .
 
 #:s40 a :Restructure ;

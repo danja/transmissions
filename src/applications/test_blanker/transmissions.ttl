@@ -12,7 +12,7 @@
 :UF a :Unfork . # collapses all pipes but one 
 #############################################################
 
-:testBlanker a trm:Pipeline ;
+:testBlanker a trm:Transmission ;
     trm:pipe (:p10 :p20 :p30 ) .
 
 :p10 a :FileReader ; # JSON test file
