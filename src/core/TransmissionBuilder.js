@@ -11,7 +11,7 @@ import logger from '../utils/Logger.js'
 
 import ModuleLoader from '../api/ModuleLoader.js'
 import AbstractProcessorFactory from "../processors/base/AbstractProcessorFactory.js"
-import Transmission from './Transmission.js'
+import Transmission from '../engine/Transmission.js'
 import ModuleLoaderFactory from '../api/ModuleLoaderFactory.js'
 
 // TODO it looks like multiple copies of the config are being created - should be a singleton object

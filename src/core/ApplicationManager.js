@@ -7,7 +7,7 @@ import rdf from 'rdf-ext'
 import { fromFile } from 'rdf-utils-fs'
 
 import logger from '../utils/Logger.js'
-import TransmissionBuilder from '../engine/TransmissionBuilder.js'
+import TransmissionBuilder from './TransmissionBuilder.js'
 import ModuleLoaderFactory from '../api/ModuleLoaderFactory.js'
 
 class ApplicationManager {

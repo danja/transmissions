@@ -1,0 +1,13 @@
+{
+    "transmissions": [
+        {
+            "name": "test_fs-rw",
+            "message": {
+                "content": "Hello World"
+            },
+            "requiredFiles": [
+                "output-01.md"
+            ]
+        }
+    ]
+}
