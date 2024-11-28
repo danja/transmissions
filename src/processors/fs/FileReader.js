@@ -49,7 +49,7 @@ class FileReader extends Processor {
         //        var f = path.join(message.applicationRootDir, filepath)
 
 
-        logger.log(' - FileReader reading filepath : ' + f)
+        logger.debug(' - FileReader reading filepath : ' + f)
 
         const mediaType = this.getPropertyFromMyConfig(ns.trm.mediaType)
 
