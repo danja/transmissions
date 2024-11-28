@@ -51,37 +51,34 @@ class ApplicationManager {
     processorsConfigFile : ${this.processorsConfigFile}
     subtask : ${this.app.subtask}`)
 
-        try {
-            const transmissions = await TransmissionBuilder.build(
-                this.transmissionsFile,
-                this.processorsConfigFile,
-                this.moduleLoader
-            )
 
-            // lodash _.merge(object, [sources])
-            // https://lodash.com/docs/4.17.15#merge
-            message = _.merge(message, this.app)
+        const transmissions = await TransmissionBuilder.build(
+            this.transmissionsFile,
+            this.processorsConfigFile,
+            this.moduleLoader
+        )
+
+        // lodash _.merge(object, [sources])
+        // https://lodash.com/docs/4.17.15#merge
+        message = _.merge(message, this.app)
 
 
-            if (!message.rootDir) {
-                message.rootDir = this.appPath
-            }
-            if (!message.dataDir) {
-                message.dataDir = path.join(this.appPath, this.dataSubDir)
-            }
-            // TODO figure out when to use rootDir and when targetPath - rename to be clearer?
-
-            for (const transmission of transmissions) {
-                if (!this.app.subtask || this.app.subtask === transmission.label) {
-                    await transmission.process(message)
-                }
-            }
-
-            return { success: true }
-        } catch (error) {
-            logger.error('Error in TransmissionRunner:', error)
-            throw error
+        if (!message.rootDir) {
+            message.rootDir = this.appPath
         }
+        if (!message.dataDir) {
+            message.dataDir = path.join(this.appPath, this.dataSubDir)
+        }
+        // TODO figure out when to use rootDir and when targetPath - rename to be clearer?
+
+        for (const transmission of transmissions) {
+            if (!this.app.subtask || this.app.subtask === transmission.label) {
+                await transmission.process(message)
+            }
+        }
+
+        return { success: true }
+
     }
 
     async loadManifest(manifestFilename) { // TODO generalise, add URLs
