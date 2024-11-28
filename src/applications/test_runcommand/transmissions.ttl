@@ -1,0 +1,12 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix trm: <http://purl.org/stuff/transmission/> .
+@prefix : <http://hyperdata.it/transmissions/> .
+
+:runcommand a trm:Transmission ;
+    trm:pipe (:cmd :write) .
+
+:cmd a :RunCommand ;
+    trm:configKey :runCommand .
+
+:write a :FileWriter ;
+    trm:configKey :runCommand .

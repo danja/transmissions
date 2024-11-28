@@ -1,0 +1,12 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix trm: <http://purl.org/stuff/transmission/> .
+@prefix t: <http://hyperdata.it/transmissions/> .
+
+t:runCommandConfig a trm:ServiceConfig ;
+    rdfs:label "Run test command" ;
+    trm:configKey t:runCommand ;
+    trm:command "echo 'Hello from RunCommand!'" ;
+    trm:allowedCommands ( "echo" "ls" ) ;
+    trm:blockedPatterns ( "rm" ">" "|" ";" ) ;
+    trm:destinationFile "output/output-01.txt" .
