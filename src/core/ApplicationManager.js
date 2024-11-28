@@ -8,7 +8,7 @@ import { fromFile } from 'rdf-utils-fs'
 
 import logger from '../utils/Logger.js'
 import TransmissionBuilder from './TransmissionBuilder.js'
-import ModuleLoaderFactory from '../api/ModuleLoaderFactory.js'
+import ModuleLoaderFactory from './ModuleLoaderFactory.js'
 
 class ApplicationManager {
     constructor() {

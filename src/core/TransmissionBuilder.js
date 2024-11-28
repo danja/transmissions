@@ -9,10 +9,10 @@ import ns from '../utils/ns.js'
 import GrapoiHelpers from '../utils/GrapoiHelpers.js'
 import logger from '../utils/Logger.js'
 
-import ModuleLoader from '../api/ModuleLoader.js'
+// import ModuleLoader from './ModuleLoader.js'
 import AbstractProcessorFactory from "../processors/base/AbstractProcessorFactory.js"
 import Transmission from '../engine/Transmission.js'
-import ModuleLoaderFactory from '../api/ModuleLoaderFactory.js'
+// import ModuleLoaderFactory from './ModuleLoaderFactory.js'
 
 // TODO it looks like multiple copies of the config are being created - should be a singleton object
 
