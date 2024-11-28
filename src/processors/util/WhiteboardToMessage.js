@@ -25,8 +25,7 @@ class WhiteboardToMessage extends Processor {
             return acc;
         }, {});
 
-        return super.handle(message)
-        //        this.emit('message', message)
+        return this.emit('message', message)
     }
 }
 

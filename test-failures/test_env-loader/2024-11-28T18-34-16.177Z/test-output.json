@@ -1,0 +1,13 @@
+{
+  "result": {
+    "stdout": "\n+ ***** Construct Transmission :  <http://hyperdata.it/transmissions/envy>\n| Create processor :s10 of type :EnvLoader\n| Create processor :s20 of type :WhiteboardToMessage\n| Create processor :SM of type :ShowMessage\n  > Connect #0 [s10] => [s20]\nTransmission.connect from http://hyperdata.it/transmissions/s10 to http://hyperdata.it/transmissions/s10\nConnector.connect this.fromName = http://hyperdata.it/transmissions/s10 this.toName =  http://hyperdata.it/transmissions/s20\n  > Connect #1 [s20] => [SM]\nTransmission.connect from http://hyperdata.it/transmissions/s20 to http://hyperdata.it/transmissions/s20\nConnector.connect this.fromName = http://hyperdata.it/transmissions/s20 this.toName =  http://hyperdata.it/transmissions/SM\n\n+ ***** Execute Transmission :  <http://hyperdata.it/transmissions/envy>\n| Running : http://hyperdata.it/transmissions/s10 a EnvLoader\n| Running >>> :  (s10) s20 a WhiteboardToMessage\nWhiteboardToMessage at (s10.s20) s20\nTypeError: (intermediate value).handle is not a function\n    at WhiteboardToMessage.process (file:///home/danny/github-danny/transmissions/src/processors/util/WhiteboardToMessage.js:28:22)\n    at WhiteboardToMessage.executeQueue (file:///home/danny/github-danny/transmissions/src/processors/base/Processor.js:187:24)\n    at WhiteboardToMessage.enqueue (file:///home/danny/github-danny/transmissions/src/processors/base/Processor.js:156:18)\n    at WhiteboardToMessage.receive (file:///home/danny/github-danny/transmissions/src/processors/base/Processor.js:145:20)\n    at EnvLoader.<anonymous> (file:///home/danny/github-danny/transmissions/src/engine/Connector.js:32:25)\n    at EnvLoader.emit (node:events:518:28)\n    at EnvLoader.emit (file:///home/danny/github-danny/transmissions/src/processors/base/Processor.js:246:15)\n    at EnvLoader.process (file:///home/danny/github-danny/transmissions/src/processors/system/EnvLoader.js:41:21)\n    at EnvLoader.executeQueue (file:///home/danny/github-danny/transmissions/src/processors/base/Processor.js:187:24)\n    at EnvLoader.enqueue (file:///home/danny/github-danny/transmissions/src/processors/base/Processor.js:156:18)\n0\n",
+    "stderr": "",
+    "code": 0,
+    "signal": null,
+    "success": false,
+    "duration": "0.708"
+  },
+  "config": {
+    "name": "test_env-loader"
+  }
+}

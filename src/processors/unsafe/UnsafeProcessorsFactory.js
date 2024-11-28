@@ -1,19 +1,18 @@
-import logger from '../../utils/Logger.js'
+// import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
 
 
-import ProcessorTemplate from './RunCommand.js'
+import RunCommand from './RunCommand.js'
 
-// ref needed in transmissions/src/processors/base/AbstractProcessorFactory.js
 
-class ProcessorsFactoryTemplate {
+class UnsafeProcessorsFactory {
     static createProcessor(type, config) {
 
-        if (type.equals(ns.t.ProcessorTemplate)) {
-            return new ProcessorTemplate(config)
+        if (type.equals(ns.t.RunCommand)) {
+            return new RunCommand(config)
         }
 
         return false
     }
 }
-export default ProcessorsFactoryTemplate
+export default UnsafeProcessorsFactory

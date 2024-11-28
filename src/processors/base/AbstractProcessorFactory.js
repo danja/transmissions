@@ -16,6 +16,12 @@ import StagingProcessorsFactory from '../staging/StagingProcessorsFactory.js'
 import GitHubProcessorsFactory from '../github/GitHubProcessorsFactory.js'
 import JSONProcessorsFactory from '../json/JSONProcessorsFactory.js'
 
+// added 2024-11-28
+import UnsafeProcessorsFactory from '../unsafe/UnsafeProcessorsFactory.js'
+import HttpProcessorsFactory from '../http/HttpProcessorsFactory.js'
+import McpProcessorsFactory from '../mcp/McpProcessorsFactory.js'
+import XmppProcessorsFactory from '../xmpp/XmppProcessorsFactory.js'
+
 class AbstractProcessorFactory {
 
     // looks until it finds
@@ -23,10 +29,17 @@ class AbstractProcessorFactory {
 
     static createProcessor(type, config) {
         //   logger.debug("ProcessorFactory.createProcessor : " + type.value)
+        var processor = UnsafeProcessorsFactory.createProcessor(type, config)
+        if (processor) return processor
+        var processor = HttpProcessorsFactory.createProcessor(type, config)
+        if (processor) return processor
+        var processor = McpProcessorsFactory.createProcessor(type, config)
+        if (processor) return processor
+        var processor = XmppProcessorsFactory.createProcessor(type, config)
+        if (processor) return processor
 
         var processor = TestProcessorsFactory.createProcessor(type, config)
         if (processor) return processor
-
         var processor = UtilProcessorsFactory.createProcessor(type, config)
         if (processor) return processor
 

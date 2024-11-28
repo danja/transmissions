@@ -11,7 +11,7 @@ import Processor from '../base/Processor.js' // maybe more specific
  * #### __*Output*__
  * **message.OUTPUT**
  */
-class ProcessorExample extends Processor {
+class HttpServer extends Processor {
 
     /**
      * Constructs a new ProcessorExample instance.
@@ -30,9 +30,7 @@ class ProcessorExample extends Processor {
 
         // processing goes here
         return this.emit('message', message)
-    } catch(err) {
-        logger.error("ProcessorExample.execute error : " + err.message)
     }
 }
 
-export default ProcessorExample
+export default HttpServer

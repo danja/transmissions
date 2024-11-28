@@ -10,7 +10,7 @@ import Processor from '../base/Processor.js' // maybe more specific
  * FileReader class that extends xxxxxProcessor.
  * DESCRIPTION
  * #### __*Input*__
- * **message.INPUT** 
+ * **message.INPUT**
  * #### __*Output*__
  * **message.OUTPUT**
  *
@@ -33,17 +33,12 @@ class EnvLoader extends Processor {
      * @param {Object} message - The message object.
      */
     async process(message) {
-        logger.setLogLevel('debug')
+        //   logger.setLogLevel('debug')
         // console.log(process.env)
 
         this.config.whiteboard.env = process.env
 
-        // this.emit('message', message)
-
-        return super.handle(message)
-
-    } catch(err) {
-        logger.error("EnvLoader.execute error : " + err.message)
+        return this.emit("message", message)
     }
 }
 

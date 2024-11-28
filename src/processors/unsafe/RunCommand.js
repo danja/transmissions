@@ -1,17 +1,15 @@
-import { readFile } from 'node:fs/promises' // whatever else
-
-import logger from '../../utils/Logger.js' // path will likely change
-import Processor from '../base/Processor.js' // maybe more specific
+import logger from '../../utils/Logger.js'
+import Processor from '../base/Processor.js'
 
 /**
  * FileReader class that extends xxxxxProcessor.
  * DESCRIPTION
  * #### __*Input*__
- * **message.INPUT** 
+ * **message.INPUT**
  * #### __*Output*__
  * **message.OUTPUT**
  */
-class ProcessorExample extends Processor {
+class RunCommand extends Processor {
 
     /**
      * Constructs a new ProcessorExample instance.
@@ -30,9 +28,7 @@ class ProcessorExample extends Processor {
 
         // processing goes here
         return this.emit('message', message)
-    } catch(err) {
-        logger.error("ProcessorExample.execute error : " + err.message)
     }
 }
 
-export default ProcessorExample
+export default RunCommand

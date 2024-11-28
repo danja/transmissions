@@ -1,5 +1,3 @@
-import { readFile } from 'node:fs/promises' // whatever else
-
 import logger from '../../utils/Logger.js' // path will likely change
 import Processor from '../base/Processor.js' // maybe more specific
 
@@ -11,7 +9,7 @@ import Processor from '../base/Processor.js' // maybe more specific
  * #### __*Output*__
  * **message.OUTPUT**
  */
-class ProcessorExample extends Processor {
+class HttpProxy extends Processor {
 
     /**
      * Constructs a new ProcessorExample instance.
@@ -30,9 +28,7 @@ class ProcessorExample extends Processor {
 
         // processing goes here
         return this.emit('message', message)
-    } catch(err) {
-        logger.error("ProcessorExample.execute error : " + err.message)
     }
 }
 
-export default ProcessorExample
+export default HttpProxy

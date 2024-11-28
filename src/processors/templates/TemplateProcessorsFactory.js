@@ -1,7 +1,7 @@
 import logger from "../../utils/Logger.js";
 import ns from "../../utils/ns.js";
 
-import ProcessorTemplate from "./ProcessorTemplate.js";
+import ProcessorTemplate from "./_Processor.js";
 
 // ref needed in transmissions/src/processors/base/AbstractProcessorFactory.js
 
