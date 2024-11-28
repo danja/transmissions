@@ -115,7 +115,7 @@ class TransmissionBuilder {
   }
 
   async createProcessor(type, config) {
-    logger.setLogLevel('debug')
+    //  logger.setLogLevel('debug')
     // try {
     const coreProcessor = AbstractProcessorFactory.createProcessor(type, config)
     if (coreProcessor) {

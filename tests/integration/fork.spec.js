@@ -12,7 +12,7 @@ describe('fork test', function () {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000
 
     it('should create correct number of message paths', (done) => {
-        exec('node run.js test_fork', async (error, stdout, stderr) => {
+        exec('node src/api/cli/run.js test_fork', async (error, stdout, stderr) => {
             if (error) {
                 console.error('Exec error:', error)
                 done(error)

@@ -14,7 +14,7 @@ class FrontPagePrep extends Processor {
 
 
   async process(message) {
-    logger.setLogLevel('debug')
+    //  logger.setLogLevel('debug')
 
     if (message.targetPath) {
       message.templateFilename = path.join(message.targetPath, message.indexPage.templateFilename)

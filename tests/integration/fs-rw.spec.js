@@ -52,7 +52,7 @@ describe('fs-rw test', function () {
 
     it('should process files correctly', (done) => {
         console.log('Running transmission...')
-        exec('node run.js test_fs-rw', async (error, stdout, stderr) => {
+        exec('node src/api/cli/run.js test_fs-rw', async (error, stdout, stderr) => {
             if (error) {
                 console.error('Exec error:', error)
                 done(error)

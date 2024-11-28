@@ -26,7 +26,7 @@ class ModuleLoader {
     }
 
     async loadModule(moduleName) {
-        logger.setLogLevel('debug')
+        // logger.setLogLevel('debug')
         logger.debug(`\n\nModuleLoader.loadModule, moduleName = ${moduleName}`)
         logger.debug(`ModuleLoader.loadModule looking for module in classpath ${this.classpath} `)
 

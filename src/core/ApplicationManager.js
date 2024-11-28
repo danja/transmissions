@@ -45,7 +45,7 @@ class ApplicationManager {
 
 
     async start(message) {
-        logger.setLogLevel('debug')
+        logger.setLogLevel('info')
         logger.debug(`\nApplicationManager.start 
     transmissionsFile : ${this.transmissionsFile}, 
     processorsConfigFile : ${this.processorsConfigFile}

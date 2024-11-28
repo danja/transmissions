@@ -1,3 +1,5 @@
-it originally ran from
+# DirWalker
 
-transmission.process('../../data/mail-archive-sample')
+```sh
+./trans test_dirwalker
+```

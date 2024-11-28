@@ -45,7 +45,7 @@ class FileRemove extends Processor {
      */
     async process(message) {
 
-        logger.setLogLevel('debug')
+        //  logger.setLogLevel('debug')
 
         this.ignoreDotfiles = true // default, simplify ".gitinclude"
 

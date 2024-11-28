@@ -55,6 +55,10 @@ class DirWalker extends Processor {
         message.slugs = []
         message.done = false // maybe insert earlier
 
+        if (!message.sourceDir) {
+            message.sourceDir = "."
+        }
+
         let dirPath
         if (message.targetPath) {
             dirPath = join(message.targetPath, message.sourceDir)

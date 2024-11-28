@@ -1,16 +1,21 @@
 {
-    "compilerOptions": {
-      "target": "ES6",
-      "module": "commonjs",
-      "allowSyntheticDefaultImports": true,
-      "baseUrl": "./",
-      "paths": {
-        "*": ["node_modules/*", "types/*"]
-      }
-    },
-    "include": ["src/**/*", "run.js", "../trans-apps/applications/git-apps/github_", "src-old/CommandUtils copy.js"],
-    "exclude": ["node_modules", "**/node_modules/*"],
-    "typeAcquisition": {
-      "include": ["@rdfjs/types", "grapoi"]
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "commonjs",
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
+    "paths": {
+      "*": ["node_modules/*", "types/*"]
     }
+  },
+  "include": [
+    "src/**/*",
+    "src/api/cli/run.js",
+    "../trans-apps/applications/git-apps/github_",
+    "src-old/CommandUtils copy.js"
+  ],
+  "exclude": ["node_modules", "**/node_modules/*"],
+  "typeAcquisition": {
+    "include": ["@rdfjs/types", "grapoi"]
   }
+}

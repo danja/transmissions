@@ -41,7 +41,7 @@ class ConfigMap extends Processor {
    * @todo Refactor for better generalization and maintainability
    */
   async process(message) {
-    logger.setLogLevel('debug')
+    //  logger.setLogLevel('debug')
 
     logger.debug(`ConfigMap, Using configKey ${this.configKey.value}`)
 

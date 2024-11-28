@@ -1,4 +1,5 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix trm: <http://purl.org/stuff/transmission/> .
 @prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances
 
@@ -6,16 +7,16 @@
 # insert into pipe for debugging
 :DE a :DeadEnd . # ends the current pipe quietly
 :H  a :Halt . # kills everything 
+:SC a :ShowConfig . # verbose report, continues pipe
 :SM a :ShowMessage . # verbose report, continues pipe
 :N  a :NOP . # no operation (except for showing stage in pipe)
 :UF a :Unfork . # collapses all pipes but one 
 #############################################################
 
-:dirwalkpipe a trm:Transmission ;
-    trm:pipe (:SM :s1 :s2 :s3) .
+:mini a trm:Transmission ;
+    trm:pipe (:p10 :p20) .
 
-:s1 a :DirWalker .
-#    trm:configKey :dirwalker . # specify in config.ttl
+:p10 a :SetMessage ;
+     trm:configKey :setDemo .
 
-:s2 a :AppendProcess .
-:s3 a :StringSink .
+:p20 a :ShowMessage .

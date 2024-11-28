@@ -3,6 +3,6 @@
 # @prefix fs: <http://purl.org/stuff/filesystem/> .
 @prefix t: <http://hyperdata.it/transmissions/> . # for custom terms & instances
 
-t:FilePipelineMap a trm:DataMap ;
-    trm:sourceFile "input.txt" ;
-    trm:destinationFile "output.txt" .
+t:DirWalkerConfig a trm:ServiceConfig ;
+    trm:key t:dirwalker ;
+    trm:sourceDir "." .  # subdirectory path

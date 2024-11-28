@@ -38,7 +38,7 @@ class FileWriter extends Processor {
      * @param {Object} message - The execution message.
      */
     async process(message) {
-        logger.setLogLevel('info')
+        //  logger.setLogLevel('debug')
         this.preProcess()
 
         if (message.dump) {
