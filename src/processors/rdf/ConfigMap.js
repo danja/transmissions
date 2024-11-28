@@ -5,7 +5,7 @@
  * @classdesc
  * **a Transmissions Processor**
  * 
- * Maps RDF dataset contents to key-value pairs in the message object based on processors-config.ttl 
+ * Maps RDF dataset contents to key-value pairs in the message object based on config.ttl 
  * 
  * ### Signature
  * 
