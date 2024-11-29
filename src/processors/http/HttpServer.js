@@ -1,36 +1,76 @@
-import { readFile } from 'node:fs/promises' // whatever else
+import path from 'path';
+import { Worker } from 'worker_threads';
+import logger from '../../utils/Logger.js';
+import Processor from '../base/Processor.js';
+import ns from '../../utils/ns.js';
 
-import logger from '../../utils/Logger.js' // path will likely change
-import Processor from '../base/Processor.js' // maybe more specific
-
-/**
- * FileReader class that extends xxxxxProcessor.
- * DESCRIPTION
- * #### __*Input*__
- * **message.INPUT** 
- * #### __*Output*__
- * **message.OUTPUT**
- */
 class HttpServer extends Processor {
-
-    /**
-     * Constructs a new ProcessorExample instance.
-     * @param {Object} config - The configuration object.
-     */
     constructor(config) {
-        super(config)
+        super(config);
+        this.worker = null;
+        this.serverConfig = {
+            port: this.getPropertyFromMyConfig(ns.trm.port) || 4000,
+            basePath: this.getPropertyFromMyConfig(ns.trm.basePath) || '/transmissions/test/',
+            staticPath: this.getPropertyFromMyConfig(ns.trm.staticPath),
+            cors: this.getPropertyFromMyConfig(ns.trm.cors) || false,
+            timeout: this.getPropertyFromMyConfig(ns.trm.timeout) || 30000,
+            maxRequestSize: this.getPropertyFromMyConfig(ns.trm.maxRequestSize) || '1mb',
+            rateLimit: {
+                windowMs: 15 * 60 * 1000,
+                max: 100
+            }
+        };
     }
 
-    /**
-     * Does something with the message and emits a 'message' event with the processed message.
-     * @param {Object} message - The message object.
-     */
     async process(message) {
-        logger.setLogLevel('debug')
+        try {
+            this.worker = new Worker(
+                path.join(process.cwd(), 'src/processors/http/HttpServerWorker.js')
+            );
 
-        // processing goes here
-        return this.emit('message', message)
+            this.worker.on('message', (msg) => {
+                switch (msg.type) {
+                    case 'status':
+                        if (msg.status === 'running') {
+                            logger.info(`Server running on port ${msg.port}`);
+                        } else if (msg.status === 'stopped') {
+                            this.emit('message', { ...message, serverStopped: true });
+                        }
+                        break;
+                    case 'error':
+                        logger.error(`Server error: ${msg.error}`);
+                        this.emit('error', new Error(msg.error));
+                        break;
+                }
+            });
+
+            this.worker.on('error', (error) => {
+                logger.error(`Worker error: ${error}`);
+                this.emit('error', error);
+            });
+
+            this.worker.postMessage({
+                type: 'start',
+                config: this.serverConfig
+            });
+
+            return new Promise((resolve) => {
+                this.worker.on('exit', () => {
+                    resolve(message);
+                });
+            });
+
+        } catch (error) {
+            logger.error(`Failed to start server: ${error}`);
+            throw error;
+        }
+    }
+
+    async shutdown() {
+        if (this.worker) {
+            this.worker.postMessage({ type: 'stop' });
+        }
     }
 }
 
-export default HttpServer
+export default HttpServer;

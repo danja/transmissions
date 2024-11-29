@@ -1,0 +1,16 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix prj: <http://purl.org/stuff/project/> .
+
+[
+    a prj:Pivot, prj:Handover ;
+    dcterms:title "HTTP Server Implementation" ;
+    dcterms:description "Express-based HTTP server processor with worker thread support" ;
+    dcterms:creator <http://purl.org/stuff/agents/ClaudeAI>, <http://danny.ayers.name> ;
+    prj:status "Core Implementation Complete" ;
+    prj:keywords "http-server, express, worker-threads, processor, transmissions" ;
+    prov:wasGeneratedBy [
+      a prov:Activity ;
+      prj:includes <http://hyperdata.it/prompts/system-prompt>
+    ]
+] .
