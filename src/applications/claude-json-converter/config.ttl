@@ -8,6 +8,7 @@ t:bContent a trm:ServiceConfig ;
     rdfs:label "Root node in JSON object for blanker" ;
     trm:configKey t:blankContent  ;
     trm:pointer "content"  .
+    trm:preserve "content.payload.test.third" .
 
 t:setDump a trm:ServiceConfig ;
     trm:setValue (t:sv0)  . # consider using blank nodes
@@ -30,7 +31,7 @@ t:ConversationsWalker a trm:ServiceConfig ;
 
 
 t:retreeConvs a trm:ServiceConfig ;
-    trm:rename (t:pp100 t:pp101 t:pp102  t:pp103) . 
+    trm:rename (t:pp100 t:pp101 t:pp102  t:pp103) .
     t:pp100     trm:pre     "content.uuid" ;
                 trm:post    "meta.conv_uuid"  .
     t:pp101     trm:pre     "content.name" ;
@@ -46,14 +47,14 @@ t:MessagesWalker a trm:ServiceConfig ;
 
 # unused
 t:retreeMsgs a trm:ServiceConfig ;
-    trm:rename (t:pp200 t:pp201 t:pp202) . 
+    trm:rename (t:pp200 t:pp201 t:pp202) .
 
     t:pp200     trm:pre     "content.item.chat_messages" ;
                 trm:post    "channel"  .
 
     t:pp201     trm:pre     "content.item.uuid" ;
                 trm:post    "filename"  .
-            
+
     t:pp202     trm:pre     "content.item.name" ;
                 trm:post    "title"  .
 

@@ -1,0 +1,13 @@
+{
+  "result": {
+    "stdout": "\n+ ***** Construct Transmission :  <http://hyperdata.it/transmissions/mini>\n| Create processor :server of type :HttpServer\n| Create processor :SM of type :ShowMessage\n  > Connect #0 [server] => [SM]\nTransmission.connect from http://hyperdata.it/transmissions/server to http://hyperdata.it/transmissions/server\nConnector.connect this.fromName = http://hyperdata.it/transmissions/server this.toName =  http://hyperdata.it/transmissions/SM\n\n+ ***** Execute Transmission :  <http://hyperdata.it/transmissions/mini>\n| Running : http://hyperdata.it/transmissions/server a HttpServer\nError: listen EADDRINUSE: address already in use :::4000\n    at Server.setupListenHandle [as _listen2] (node:net:1872:16)\n    at listenInCluster (node:net:1920:12)\n    at Server.listen (node:net:2008:7)\n    at Function.listen (/home/danny/github-danny/transmissions/node_modules/express/lib/application.js:635:24)\n    at ServerWorker.start (file:///home/danny/github-danny/transmissions/src/processors/http/HttpServerWorker.js:42:36)\n    at MessagePort.<anonymous> (file:///home/danny/github-danny/transmissions/src/processors/http/HttpServerWorker.js:18:26)\n    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:826:20)\n    at exports.emitMessage (node:internal/per_context/messageport:23:28) {\n  code: 'EADDRINUSE',\n  errno: -98,\n  syscall: 'listen',\n  address: '::',\n  port: 4000\n}\n0\n",
+    "stderr": "",
+    "code": 0,
+    "signal": null,
+    "success": false,
+    "duration": "0.898"
+  },
+  "config": {
+    "name": "test_http-server"
+  }
+}

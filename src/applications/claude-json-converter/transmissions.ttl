@@ -1,4 +1,5 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix trm: <http://purl.org/stuff/transmission/> .
 @prefix : <http://hyperdata.it/transmissions/> .
 
@@ -13,44 +14,57 @@
 :N  a :NOP . # no operation (except for showing stage in pipe)
 :UF a :Unfork . # collapses all pipes but one
 
-# testing only - FileWriter will save message
-:SD a :SetMessage ;
-     trm:configKey :setDump .
-:FW a :FileWriter .
+####  testing only
+:nop a trm:Transmission ;
+    rdfs:label "nop" ;
+    rdfs:comment "NOP for testing" ;
+trm:pipe (:n10) .
 
-:BLK a :Blanker ; # clear values
+:n10 a :NOP .
+
+# testing only - FileWriter will save message
+:cb a trm:Transmission ;
+     rdfs:label "cb" ;
+     rdfs:comment "Claude blanker" ;
+     trm:pipe (:ccc10   :cb10 :cb20 :cb30) .
+
+:cb10 a :SetMessage ;
+     trm:configKey :setDump .
+
+:cb20 a :FileWriter .
+
+:cb30 a :Blanker ; # clear values
      trm:configKey :blankContent .
 
-# :UF :SD :FW :DE
-####################################
+#####################################
+####### The thing
 
-:blanko a trm:Transmission ;
-trm:pipe (:SD :p10 :BLK :FW) .
-
-:cjc a trm:Transmission ;
-trm:pipe (:p10 :p20 :p30 :p40 :p50  :p60) .
+:ccc a trm:Transmission ;
+     rdfs:label "ccc" ;
+     rdfs:comment "Claude conversations.json converter" ;
+     trm:pipe (:ccc10 :ccc20 :ccc30 :ccc40 :ccc50  :ccc60) .
 
 # Start
 
-:p10 a :FileReader ; # Claude conversations.json
+:ccc10 a :FileReader ; # Claude conversations.json
        trm:configKey :readFile .
 
 # Separates into conversations
-:p20 a :JSONWalker ;
+:ccc20 a :JSONWalker ;
      trm:configKey :conversationsConfig .
 
 
-:p30 a :Restructure ;
+:ccc30 a :Restructure ;
      trm:configKey :retreeConvs .
 
 # Separates into messages
-:p40 a :JSONWalker ;
+:ccc40 a :JSONWalker ;
      trm:configKey :messagesConfig .
 
 #:p50 a :Restructure ;
  #    trm:configKey :retreeMsgs .
 
-:p50 a :MarkdownFormatter .
+:ccc50 a :MarkdownFormatter .
 
-:p60 a :FileWriter .
+:ccc60 a :FileWriter .
 
