@@ -8,17 +8,37 @@ class Blanker extends Processor {
         this.blankValue = config.blankValue || ''
     }
 
-    blankValues(obj) {
+    shouldPreserve(path, preservePath) {
+        if (!preservePath) return false
+        const pathParts = path.split('.')
+        const preserveParts = preservePath.split('.')
+
+        if (pathParts.length < preserveParts.length) return false
+
+        for (let i = 0; i < preserveParts.length; i++) {
+            if (pathParts[i] !== preserveParts[i]) return false
+        }
+        return true
+    }
+
+    blankValues(obj, currentPath = '', preservePath = '') {
         if (Array.isArray(obj)) {
-            return obj.map(item => this.blankValues(item))
+            return obj.map((item, index) =>
+                this.blankValues(item, `${currentPath}[${index}]`, preservePath)
+            )
         } else if (typeof obj === 'object' && obj !== null) {
             const result = {}
             for (const [key, value] of Object.entries(obj)) {
-                result[key] = this.blankValues(value)
+                const newPath = currentPath ? `${currentPath}.${key}` : key
+                if (this.shouldPreserve(newPath, preservePath)) {
+                    result[key] = value
+                } else {
+                    result[key] = this.blankValues(value, newPath, preservePath)
+                }
             }
             return result
         } else if (typeof obj === 'string') {
-            return ''
+            return this.shouldPreserve(currentPath, preservePath) ? obj : ''
         }
         return obj
     }
@@ -26,25 +46,22 @@ class Blanker extends Processor {
     async process(message) {
         try {
             const pointer = this.getPropertyFromMyConfig(ns.trm.pointer)
+            const preservePath = this.getPropertyFromMyConfig(ns.trm.preserve)
 
             if (!pointer) {
-                // Blank entire message if no pointer specified
-                message = this.blankValues(message)
+                message = this.blankValues(message, '', preservePath)
             } else {
-                // Get the nested object using the pointer
                 const parts = pointer.toString().split('.')
                 let target = message
 
-                // Navigate to the target object
                 for (let i = 0; i < parts.length - 1; i++) {
                     target = target[parts[i]]
                     if (!target) break
                 }
 
-                // Blank values in the target object
                 if (target && target[parts[parts.length - 1]]) {
                     target[parts[parts.length - 1]] =
-                        this.blankValues(target[parts[parts.length - 1]])
+                        this.blankValues(target[parts[parts.length - 1]], parts.join('.'), preservePath)
                 }
             }
 

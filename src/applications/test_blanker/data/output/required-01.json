@@ -8,6 +8,11 @@
                 "two": ""
             },
             "third": [
+                "keep1",
+                "keep2",
+                "keep3"
+            ],
+            "fourth": [
                 "",
                 "",
                 ""

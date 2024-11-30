@@ -8,6 +8,11 @@
                 "two": "twotwo"
             },
             "third": [
+                "keep1",
+                "keep2",
+                "keep3"
+            ],
+            "fourth": [
                 "31",
                 "32",
                 "33"

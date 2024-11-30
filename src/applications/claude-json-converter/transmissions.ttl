@@ -5,13 +5,13 @@
 #############################################################
 # insert into pipe for debugging
 :DE a :DeadEnd . # ends the current pipe quietly
-:H  a :Halt . # kills everything 
+:H  a :Halt . # kills everything
 :SC a :ShowConfig . # verbose report, continues pipe
 :SM a :ShowMessage . # verbose report, continues pipe
 :SM1 a :ShowMessage . # verbose report, continues pipe
 :SM2 a :ShowMessage . # verbose report, continues pipe
 :N  a :NOP . # no operation (except for showing stage in pipe)
-:UF a :Unfork . # collapses all pipes but one 
+:UF a :Unfork . # collapses all pipes but one
 
 # testing only - FileWriter will save message
 :SD a :SetMessage ;
@@ -21,20 +21,23 @@
 :BLK a :Blanker ; # clear values
      trm:configKey :blankContent .
 
-# :UF :SD :FW :DE 
+# :UF :SD :FW :DE
 ####################################
+
+:blanko a trm:Transmission ;
+trm:pipe (:SD :p10 :BLK :FW) .
 
 :cjc a trm:Transmission ;
 trm:pipe (:p10 :p20 :p30 :p40 :p50  :p60) .
 
-# Start 
+# Start
 
 :p10 a :FileReader ; # Claude conversations.json
        trm:configKey :readFile .
 
 # Separates into conversations
 :p20 a :JSONWalker ;
-     trm:configKey :conversationsConfig . 
+     trm:configKey :conversationsConfig .
 
 
 :p30 a :Restructure ;
@@ -42,7 +45,7 @@ trm:pipe (:p10 :p20 :p30 :p40 :p50  :p60) .
 
 # Separates into messages
 :p40 a :JSONWalker ;
-     trm:configKey :messagesConfig . 
+     trm:configKey :messagesConfig .
 
 #:p50 a :Restructure ;
  #    trm:configKey :retreeMsgs .

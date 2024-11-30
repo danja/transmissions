@@ -10,12 +10,14 @@ t:r a trm:ServiceConfig ;
     trm:sourceFile "input/input-01.json" ;
     trm:mediaType "application/json" .
 
-t:pointy a trm:ServiceConfig ;
+t:blanko a trm:ServiceConfig ;
     rdfs:label "Root node in JSON object" ;
     trm:configKey t:blankin ;
-    trm:pointer "content.payload.test"  .
+    trm:pointer "content.payload.test"  ; # "Root node in JSON object" ;
+    trm:preserve "content.payload.test.third" .
 
 t:w a trm:ServiceConfig ;
     rdfs:label "Write file" ;
     trm:configKey t:writeFile ;
     trm:destinationFile "output/output-01.json"  .
+

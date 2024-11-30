@@ -1,1 +1,22 @@
-{"notpayload":"keep","payload":{"nottest":"also keep","test":{"first":"","second":{"two":""},"third":["","",""]}}}
+{
+    "notpayload": "keep",
+    "payload": {
+        "nottest": "also keep",
+        "test": {
+            "first": "",
+            "second": {
+                "two": ""
+            },
+            "third": [
+                "keep1",
+                "keep2",
+                "keep3"
+            ],
+            "fourth": [
+                "",
+                "",
+                ""
+            ]
+        }
+    }
+}
