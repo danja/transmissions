@@ -1,0 +1,28 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix trm: <http://purl.org/stuff/transmission/> .
+@prefix t: <http://hyperdata.it/transmissions/> .
+
+t:readFile a trm:ServiceConfig ;
+    rdfs:label "Read file" ;
+    trm:configKey t:readConfig ;
+    trm:sourceFile "input/input-01.txt" ;
+    trm:mediaType "text/plain" .
+
+t:mapperConfig a trm:ServiceConfig ;
+    rdfs:label "Filename mapper config" ;
+    trm:configKey t:filenameConfig ;
+    trm:extensions (t:ext1 t:ext2) .
+
+t:ext1 
+    trm:format "html" ;
+    trm:extension ".mm.html" .
+
+t:ext2
+    trm:format "svg" ;
+    trm:extension ".mm.svg" .
+
+t:writeFile a trm:ServiceConfig ;
+    rdfs:label "Write file" ;
+    trm:configKey t:writeConfig ;
+    trm:destinationFile "output/output-01.txt" .

@@ -1,0 +1,113 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Transmissions Application Definition",
+  "type": "object",
+  "required": ["appName", "purpose", "technicalContext", "processingRequirements", "components", "testing"],
+  "properties": {
+    "appName": {
+      "type": "string",
+      "description": "Short name for the application"
+    },
+    "purpose": {
+      "type": "object",
+      "required": ["primaryGoal", "inputs", "outputs", "behavior"],
+      "properties": {
+        "primaryGoal": { "type": "string" },
+        "inputs": { "type": "array", "items": { "type": "string" }},
+        "outputs": { "type": "array", "items": { "type": "string" }},
+        "behavior": { "type": "string" }
+      }
+    },
+    "technicalContext": {
+      "type": "object",
+      "required": ["transmissionsPath", "applicationsPath"],
+      "properties": {
+        "transmissionsPath": { "type": "string" },
+        "applicationsPath": { "type": "string" }
+      }
+    },
+    "processingRequirements": {
+      "type": "object",
+      "required": ["input", "steps", "output"],
+      "properties": {
+        "input": {
+          "type": "object",
+          "properties": {
+            "messageStructure": { "type": "object" },
+            "fileFormats": { "type": "array", "items": { "type": "string" }},
+            "requiredFields": { "type": "array", "items": { "type": "string" }}
+          }
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "processor": { "type": "string" },
+              "config": { "type": "object" }
+            }
+          }
+        },
+        "output": {
+          "type": "object",
+          "properties": {
+            "messageStructure": { "type": "object" },
+            "fileFormats": { "type": "array", "items": { "type": "string" }},
+            "requiredFields": { "type": "array", "items": { "type": "string" }}
+          }
+        }
+      }
+    },
+    "components": {
+      "type": "object",
+      "required": ["newProcessors", "configFiles", "existingProcessors"],
+      "properties": {
+        "newProcessors": { 
+          "type": "array", 
+          "items": { "type": "string" }
+        },
+        "configFiles": { 
+          "type": "array", 
+          "items": { "type": "string" }
+        },
+        "existingProcessors": { 
+          "type": "array", 
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "testing": {
+      "type": "object",
+      "required": ["unitTests", "integrationTests"],
+      "properties": {
+        "unitTests": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "component": { "type": "string" },
+              "cases": { 
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          }
+        },
+        "integrationTests": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "scenario": { "type": "string" },
+              "steps": { 
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

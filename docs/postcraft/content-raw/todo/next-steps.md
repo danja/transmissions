@@ -1,13 +1,59 @@
 # Transmissions : Next Steps
 
+* **add** alternative to `configKey'
+`
+* packer
+* squirt
+* watch Processor (after the worker thread bits sorted)
+
+* mcp ns - make callers for Ollama, Grok, Mistral, Claude, OpenAI
+Please make a turtle rdf representation of the schemas attached.  
+
 * look into fs `watch` and git messaging to pull recent changes into #:postcraft
 * quick overview doc (enough for ClaudioB)
 * fix modules/trans-apps
 * transmissions/todo/sub-trans.md
 * sort out refactoring todos
 
+
 the `processors/postcraft` need un-hardcoding
 
+claude json artifacts
+
+#:todo write #:semtag 'spec' and make processor
+
+* FilenameMap : Integrate
+* MarkMap : Integrate
+
+* HttpServer : Integrate - refactor workers handling
+* Ping : Integrate - needs tests
+* signatures (in NS) : Integrate
+
+#:um term #:integrate - `um:Integration rdf:subClassOf um:Phase .`
+
+* first pass at an aggregator - current dev techniques, gather data on dev process
+
+### App Gen : Integrate
+
+**vocab : configKey**
+
+tests/helpers/FileTestHelper.js
+
+tests/helpers/TestDataGenerator.js
+
+tests/examples/generate-test-data.js
+
+### App Gen : Integrate
+
+/home/danny/github-danny/transmissions/staging
+https://claude.ai/chat/ebf4dd53-7801-49ea-9841-0de9ae2cb394
+
+### Find latest files
+
+* `fs/Stat.js`
+* `json/Sort.js`
+
+### Streaming : Integrate
 
 SORT OUT
 ```javascript

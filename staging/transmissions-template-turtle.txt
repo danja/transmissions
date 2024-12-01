@@ -1,0 +1,73 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix trm: <http://purl.org/stuff/transmission/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix prj: <http://purl.org/stuff/project/> .
+@prefix app: <http://example.org/app/> .
+
+app:Application a trm:ApplicationDefinition ;
+    dcterms:title "Application Name" ;
+    dcterms:description "Primary goal description" ;
+    trm:basePath "/path/to/application" ;
+    trm:hasRequirement app:ProcessingRequirements ;
+    trm:hasComponent app:Components ;
+    trm:hasTesting app:Testing .
+
+app:ProcessingRequirements a trm:Requirements ;
+    trm:input [
+        a trm:InputRequirement ;
+        trm:messageStructure "JSON structure" ;
+        trm:fileFormat "format specification" ;
+        trm:requiredField "field1", "field2"
+    ] ;
+    trm:processing [
+        a trm:ProcessingStep ;
+        trm:order 1 ;
+        trm:processor "ProcessorName" ;
+        trm:configuration app:ProcessorConfig
+    ] ;
+    trm:output [
+        a trm:OutputRequirement ;
+        trm:messageStructure "JSON structure" ;
+        trm:fileFormat "format specification" ;
+        trm:requiredField "field1", "field2"
+    ] .
+
+app:Components a trm:ComponentList ;
+    trm:newProcessor [
+        a trm:Processor ;
+        dcterms:title "Processor Name" ;
+        trm:class "ProcessorClass" ;
+        trm:sourcePath "/path/to/source"
+    ] ;
+    trm:configFile [
+        a trm:Configuration ;
+        dcterms:title "Config Name" ;
+        trm:format "Turtle" ;
+        trm:path "/path/to/config"
+    ] ;
+    trm:existingProcessor [
+        a trm:Processor ;
+        dcterms:title "Existing Processor" ;
+        trm:class "ProcessorClass"
+    ] .
+
+app:Testing a trm:TestingRequirements ;
+    trm:unitTest [
+        a trm:UnitTest ;
+        dcterms:title "Test Name" ;
+        trm:component "ComponentName" ;
+        trm:testCase "test description"
+    ] ;
+    trm:integrationTest [
+        a trm:IntegrationTest ;
+        dcterms:title "Test Scenario" ;
+        trm:step "step description" ;
+        trm:expectedResult "expected outcome"
+    ] ;
+    trm:testData [
+        a trm:TestData ;
+        trm:input "/path/to/test/input" ;
+        trm:expected "/path/to/test/output"
+    ] .

@@ -6,6 +6,7 @@ import FileReader from './FileReader.js'
 import FileWriter from './FileWriter.js'
 import FileCopy from './FileCopy.js'
 import FileRemove from './FileRemove.js'
+import FilenameMapper from './FilenameMapper.js'
 
 class FsProcessorsFactory {
     static createProcessor(type, config) {
@@ -23,6 +24,9 @@ class FsProcessorsFactory {
         }
         if (type.equals(ns.t.FileRemove)) {
             return new FileRemove(config)
+        }
+        if (type.equals(ns.t.FilenameMapper)) {
+            return new FilenameMapper(config)
         }
         return false
     }

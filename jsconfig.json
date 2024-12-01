@@ -12,7 +12,8 @@
     "src/**/*",
     "src/api/cli/run.js",
     "../trans-apps/applications/git-apps/github_",
-    "src-old/CommandUtils copy.js"
+    "src-old/CommandUtils copy.js",
+    "../trans-apps/applications/markmap"
   ],
   "exclude": ["node_modules", "**/node_modules/*"],
   "typeAcquisition": {
