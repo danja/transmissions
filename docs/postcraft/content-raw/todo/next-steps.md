@@ -15,6 +15,9 @@ Please make a turtle rdf representation of the schemas attached.
 * transmissions/todo/sub-trans.md
 * sort out refactoring todos
 
+* mcp ns/Processors
+* clients for Ollama, Grok, Mistral, Claude, OpenAI...
+* update librechat
 
 the `processors/postcraft` need un-hardcoding
 
@@ -22,12 +25,17 @@ claude json artifacts
 
 #:todo write #:semtag 'spec' and make processor
 
-* FilenameMap : Integrate
-* MarkMap : Integrate
-
 * HttpServer : Integrate - refactor workers handling
 * Ping : Integrate - needs tests
 * signatures (in NS) : Integrate
+
+* Stat
+* Sort
+* FilenameMap : Integrate
+* MarkMap : Integrate
+
+
+
 
 #:um term #:integrate - `um:Integration rdf:subClassOf um:Phase .`
 

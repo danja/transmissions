@@ -1,6 +1,6 @@
 {
     "output": {
-        "filePath": "./repopack-transmissions-small.txt",
+        "filePath": "./repomix-transmissions-small.txt",
         "format": "text",
         "headerText": "Transmissions source code",
         "removeComments": true
