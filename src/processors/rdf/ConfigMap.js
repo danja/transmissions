@@ -4,22 +4,22 @@
  * @extends Processor
  * @classdesc
  * **a Transmissions Processor**
- * 
- * Maps RDF dataset contents to key-value pairs in the message object based on config.ttl 
- * 
+ *
+ * Maps RDF dataset contents to key-value pairs in the message object based on config.ttl
+ *
  * ### Signature
- * 
+ *
  * #### __*Input*__
  * * **`message.dataset`** - RDF dataset containing configuration
- * 
+ *
  * #### __*Output*__
  * * **`message`** - Updated with mapped key-value pairs based on the dataset content
- * 
+ *
  * #### __*Behavior*__
  * * Processes the RDF dataset in the message
  * * Identifies and processes different content groups (PostContent, PostPages, IndexPage)
  * * Maps relevant information to specific message properties
- * 
+ *
  * #### __Tests__
  * * TODO: Add test information
  */
@@ -86,6 +86,9 @@ class ConfigMap extends Processor {
       case ns.t.IndexPage.value:
         await this.indexPage(message, contentGroupID)
         break
+      case ns.t.AtomFeed.value:
+        await this.atomFeed(message, contentGroupID)
+        break
       default:
         logger.log('Group not found in dataset: ' + contentGroupID.value)
     }
@@ -137,6 +140,21 @@ class ConfigMap extends Processor {
     const groupPoi = rdf.grapoi({ dataset: postcraftConfig, term: contentGroupID })
 
     message.indexPage = {
+      filepath: groupPoi.out(ns.fs.filepath).term.value,
+      templateFilename: groupPoi.out(ns.pc.template).term.value
+    }
+  }
+
+  /**
+ * Processes feed page
+ * @param {Object} message - The message object
+ * @param {Object} contentGroupID - The ID of the content group
+ */
+  async atomFeed(message, contentGroupID) {
+    const postcraftConfig = message.dataset
+    const groupPoi = rdf.grapoi({ dataset: postcraftConfig, term: contentGroupID })
+
+    message.atomFeed = {
       filepath: groupPoi.out(ns.fs.filepath).term.value,
       templateFilename: groupPoi.out(ns.pc.template).term.value
     }

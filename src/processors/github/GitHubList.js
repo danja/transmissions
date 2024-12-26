@@ -14,6 +14,7 @@ class GitHubList extends Processor {
     }
 
     async process(message) {
+        logger.setLogLevel('debug')
         logger.debug('GitHubList process method called')
 
         try {
@@ -25,7 +26,8 @@ class GitHubList extends Processor {
                 message.payload.github = {}
             }
 
-            const username = message.payload.github.name
+            //     const username = message.payload.github.name
+            const username = message.github.name
             logger.debug(`Processing for username: ${username}`)
 
             logger.debug('Calling GitHub API with pagination')

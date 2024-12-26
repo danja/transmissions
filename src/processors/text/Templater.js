@@ -4,22 +4,22 @@
  * @extends Processor
  * @classdesc
  * **a Transmissions Processor**
- * 
+ *
  * Provides templating functionality using Nunjucks.
- * 
+ *
  * #### __*Input*__
  * * **`message.templateFilename`** - Path to the template file (optional)
  * * **`message.template`** - Template string (used if templateFilename is not provided)
  * * **`message.contentBlocks`** - Object with properties for template rendering (e.g., title, body)
- * 
+ *
  * #### __*Output*__
  * * **`message.content`** - The rendered template content
- * 
+ *
  * #### __*Behavior*__
  * * Uses Nunjucks to render templates
  * * Can render from a template file or a template string
  * * Applies content from message.contentBlocks to the template
- * 
+ *
  * #### __Tests__
  * * TODO: Add test information
  */
@@ -38,7 +38,7 @@ class Templater extends Processor {
      * @param {Object} message - The message object containing template and content information
      */
     async process(message) {
-        // logger.setLogLevel('debug')
+        logger.setLogLevel('debug')
         if (message.templateFilename) {
             logger.debug(`Templater, message.templateFilename = ${message.templateFilename}`)
 

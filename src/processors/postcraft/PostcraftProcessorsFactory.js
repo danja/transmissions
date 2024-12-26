@@ -6,6 +6,7 @@ import PostcraftDispatcher from './PostcraftDispatcher.js'
 import PostcraftPrep from './PostcraftPrep.js'
 import EntryContentToPagePrep from './EntryContentToPagePrep.js'
 import FrontPagePrep from './FrontPagePrep.js'
+import AtomFeedPrep from './AtomFeedPrep.js'
 
 class PostcraftProcessorsFactory {
     static createProcessor(type, config) {
@@ -21,7 +22,9 @@ class PostcraftProcessorsFactory {
         if (type.equals(ns.t.FrontPagePrep)) {
             return new FrontPagePrep(config)
         }
-
+        if (type.equals(ns.t.AtomFeedPrep)) {
+            return new AtomFeedPrep(config)
+        }
         return false
     }
 }

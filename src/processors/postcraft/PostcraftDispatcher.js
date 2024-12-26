@@ -34,9 +34,11 @@ class PostcraftDispatcher extends Processor {
    * @param {Object} message - The message object.
    */
   async process(message) {
+    logger.setLogLevel('debug')
     const postcraftConfig = message.dataset
     message.template = data.toString()
-    logger.log('PostcraftDispatcherPostcraftDispatcherPostcraftDispatcher ' + data)
+    logger.debug('PostcraftDispatcherPostcraftDispatcherPostcraftDispatcher ' + data)
+    process.exit(0)
     const poi = grapoi({ dataset: postcraftConfig })
 
     for (const q of poi.out(ns.rdf.type).quads()) {

@@ -22,7 +22,7 @@ class FrontPagePrep extends Processor {
       message.templateFilename = path.join(message.rootDir, message.indexPage.templateFilename)
     }
 
-    logger.debug('Template = ' + message.templateFilename)
+    logger.debug('FrontPagePrep, Template = ' + message.templateFilename)
 
     const rawEntryPaths = this.resolveRawEntryPaths(message)
     message.content = ''

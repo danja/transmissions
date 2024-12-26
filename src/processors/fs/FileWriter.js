@@ -9,15 +9,15 @@ import Processor from '../base/Processor.js'
 /**
  * FileWriter class that extends Processor
  * Write data to a file.
- * 
+ *
  * First checks `message.targetFilepath` and if not set, uses the value from `processors.ttl` using `configKey` for this processor instance.
- * 
+ *
  * #### __*Input*__
- * * message.filepath 
+ * * message.filepath
  * * message.content
  * #### __*Output*__
  * * as Input
- * 
+ *
  * if message.loadContext is set, that is used as a name in the message for the file content
  */
 class FileWriter extends Processor {
@@ -38,7 +38,7 @@ class FileWriter extends Processor {
      * @param {Object} message - The execution message.
      */
     async process(message) {
-        //  logger.setLogLevel('debug')
+        logger.setLogLevel('info')
         this.preProcess()
 
         if (message.dump) {
