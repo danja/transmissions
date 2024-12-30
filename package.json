@@ -4,7 +4,7 @@
   "description": "Transmissions",
   "name": "transmissions",
   "scripts": {
-    "test": "jasmine --config=jasmine.json --reporter=tests/helpers/reporter.js",
+    "test": "jasmine --config=jasmine.json --reporter=spec/helpers/reporter.js",
     "cov": "nyc -a --include=src --reporter=lcov npm run test",
     "docs": "jsdoc -c jsdoc.json",
     "build": "webpack --mode=production --node-env=production",
