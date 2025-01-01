@@ -7,3 +7,5 @@ First analyse this goal thoroughly with reference to project knowledge. Then cre
 ```prompt
 I would like you to generate a prompt template that I can give to an LLM to build new transmissions apps. Please review what we have been doing here and consider how my requests could have been stated in a better manner for you, for you to carry out the necessary tasks with the minimum effort.
 ```
+
+/home/danny/github-danny/transmissions/src/processors/fs/FilenameMapper.js
