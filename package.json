@@ -10,7 +10,7 @@
     "build": "webpack --mode=production --node-env=production",
     "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production --node-env=production",
-    "rp": "repomix -c repomix.config-small.json . && repomix -c repomix.config-large.json . ",
+    "rp": "node --no-warnings $(which repomix) -c repomix.config-small.json . && node --no-warnings $(which repomix) -c repomix.config-large.json .",
     "watch": "webpack --watch",
     "serve": "webpack serve"
   },
@@ -50,6 +50,7 @@
     "axios": "^1.6.8",
     "cheerio": "^1.0.0-rc.12",
     "d3": "^7.9.0",
+    "ignore": "^7.0.0",
     "jsdom": "^25.0.0",
     "lodash": "^4.17.21",
     "marked": "^12.0.1",
@@ -64,6 +65,7 @@
     "queue": "^7.0.0",
     "rdf-ext": "^2.5.2",
     "rdf-utils-fs": "^3.0.0",
+    "repomix": "^0.2.12",
     "yargs": "^17.7.2"
   }
 }

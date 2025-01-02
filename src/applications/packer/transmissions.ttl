@@ -1,0 +1,21 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix trm: <http://purl.org/stuff/transmission/> .
+@prefix : <http://hyperdata.it/transmissions/> .
+
+:packer a trm:Transmission ;
+    rdfs:label "Repository Packer" ;
+    trm:pipe (:p10 :p15 :p20 :p30 :p40) .
+
+:p10 a :DirWalker ;
+    trm:configKey :dirwalker .
+
+:p15 a :StringFilter ;
+    trm:configKey :gitignore .
+
+:p20 a :FileReader .
+
+:p30 a :FileContainer .
+
+:p40 a :FileWriter ;
+    trm:configKey :writer .

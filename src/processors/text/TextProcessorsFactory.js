@@ -23,6 +23,10 @@ class TextProcessorsFactory {
             return new StringMerger(config)
         }
 
+        //     if (type.equals(ns.t.CommentStripper)) {
+        //       return new CommentStripper(config)
+        // }
+
         return false
     }
 }

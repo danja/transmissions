@@ -15,6 +15,8 @@ import FlowProcessorsFactory from '../flow/FlowProcessorsFactory.js'
 import StagingProcessorsFactory from '../staging/StagingProcessorsFactory.js'
 import GitHubProcessorsFactory from '../github/GitHubProcessorsFactory.js'
 import JSONProcessorsFactory from '../json/JSONProcessorsFactory.js'
+import PackerProcessorsFactory from '../packer/PackerProcessorsFactory.js' // 2025-01-01
+
 
 // added 2024-11-28
 import UnsafeProcessorsFactory from '../unsafe/UnsafeProcessorsFactory.js'
@@ -25,7 +27,7 @@ import XmppProcessorsFactory from '../xmpp/XmppProcessorsFactory.js'
 class AbstractProcessorFactory {
 
     // looks until it finds
-    // good enough for now 
+    // good enough for now
 
     static createProcessor(type, config) {
         //   logger.debug("ProcessorFactory.createProcessor : " + type.value)
@@ -74,6 +76,9 @@ class AbstractProcessorFactory {
         if (processor) return processor
 
         processor = JSONProcessorsFactory.createProcessor(type, config)
+        if (processor) return processor
+
+        processor = PackerProcessorsFactory.createProcessor(type, config)
         if (processor) return processor
 
         //   throw new Error("Unknown processor type: " + type.value)

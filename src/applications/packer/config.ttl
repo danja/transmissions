@@ -1,0 +1,19 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix trm: <http://purl.org/stuff/transmission/> .
+@prefix t: <http://hyperdata.it/transmissions/> .
+
+t:DirWalkerConfig a trm:ServiceConfig ;
+    rdfs:label "Directory walker config" ;
+    trm:configKey t:dirwalker ;
+    trm:sourceDir "." .
+
+t:GitignoreConfig a trm:ServiceConfig ;
+    rdfs:label "Gitignore filter config" ;
+    trm:configKey t:gitignore ;
+    trm:excludeFile ".gitignore" .
+
+t:FileWriterConfig a trm:ServiceConfig ;
+    rdfs:label "File writer config" ;
+    trm:configKey t:writer ;
+    trm:destinationFile "packer-output.txt" .
