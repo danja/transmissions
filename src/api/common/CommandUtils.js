@@ -15,12 +15,12 @@ class CommandUtils {
     }
 
     async begin(application, target, message = {}) {
-        logger.setLogLevel('debug') // TODO check default
-        logger.debug('\nCommandUtils.run()')
-        logger.debug('CommandUtils.run, process.cwd() = ' + process.cwd())
-        logger.debug('CommandUtils.run, application = ' + application)
-        logger.debug('CommandUtils.run, target = ' + target)
-        logger.debug(`CommandUtils.run, message = ${message}`)
+        logger.setLogLevel('info') // TODO check default
+        logger.debug('\nCommandUtils.begin()')
+        logger.debug('CommandUtils.begin, process.cwd() = ' + process.cwd())
+        logger.debug('CommandUtils.begin, application = ' + application)
+        logger.debug('CommandUtils.begin, target = ' + target)
+        logger.debug(`CommandUtils.begin, message = ${message}`)
 
         // dir containing manifest
         if (target && !target.startsWith('/')) {
@@ -31,7 +31,7 @@ class CommandUtils {
         // short name or path (TODO or URL)
 
         logger.debug(`\n
-    CommandUtils.run,
+    after split :
     appName = ${appName}
     appPath = ${appPath}
     subtask = ${subtask}

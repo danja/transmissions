@@ -13,7 +13,7 @@ import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const packageJson = JSON.parse(readFileSync(join(__dirname, '../../../package.json')));
-const buildInfo = process.env.BUILD_INFO || 'development';
+const buildInfo = process.env.BUILD_INFO || 'dev';
 const version = `${packageJson.version} (${buildInfo})`;
 const banner = `
   _____
@@ -78,7 +78,7 @@ async function main() {
                 yargsInstance.showHelp()
                 return
             }
-
+            console.log(`In run.js :\napplication : ${argv.application}\ntarget : ${argv.target}\nmessage : ${argv.message}`)
             await commandUtils.begin(argv.application, argv.target, argv.message)
         })
         .help('h')

@@ -36,6 +36,7 @@ class ApplicationManager {
             appPath: appPath,
             subtask: subtask,
         }
+
         if (target) {
             this.app.manifestFilename = path.join(target, this.manifestFilename)
             this.app.dataset = await this.loadManifest(this.app.manifestFilename)
@@ -46,8 +47,8 @@ class ApplicationManager {
 
     async start(message) {
         logger.setLogLevel('info')
-        logger.debug(`\nApplicationManager.start 
-    transmissionsFile : ${this.transmissionsFile}, 
+        logger.debug(`\nApplicationManager.start
+    transmissionsFile : ${this.transmissionsFile},
     processorsConfigFile : ${this.processorsConfigFile}
     subtask : ${this.app.subtask}`)
 
@@ -78,14 +79,23 @@ class ApplicationManager {
         }
 
         return { success: true }
-
     }
 
     async loadManifest(manifestFilename) { // TODO generalise, add URLs
-        logger.debug(`ApplicationManager.loadManifest, loading : ${manifestFilename}`)
-        const stream = fromFile(manifestFilename)
-        const dataset = await rdf.dataset().import(stream)
-        return dataset
+        logger.debug(`ApplicationManager.loadManifest, try loading : ${manifestFilename}`)
+        try {
+            //   const mfStat = await fs.stat(manifestFilename)
+            // logger.debug('HERE')
+            //  if (mfStat.isFile()) {
+            const stream = fromFile(manifestFilename)
+            return await rdf.dataset().import(stream)
+            //}
+            //else if (mfStat.isDirectory()) {
+
+        } catch (err) {
+            logger.debug(`ApplicationManager.loadManifest, ${manifestFilename} non-existent, creating empty dataset`)
+            return rdf.dataset()
+        }
     }
 
     async listApplications() {
