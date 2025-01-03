@@ -7,16 +7,20 @@ import logger from '../../utils/Logger.js'
 import ApplicationManager from '../../core/ApplicationManager.js'
 
 class CommandUtils {
+
+    #appManager
+
     constructor() {
-        // this.applicationLocator = applicationLocator
+        this.#appManager = new ApplicationManager();
     }
 
     async begin(application, target, message = {}) {
-        logger.setLogLevel('info') // TODO check default
+        logger.setLogLevel('debug') // TODO check default
         logger.debug('\nCommandUtils.run()')
         logger.debug('CommandUtils.run, process.cwd() = ' + process.cwd())
         logger.debug('CommandUtils.run, application = ' + application)
         logger.debug('CommandUtils.run, target = ' + target)
+        logger.debug(`CommandUtils.run, message = ${message}`)
 
         // dir containing manifest
         if (target && !target.startsWith('/')) {
@@ -27,17 +31,17 @@ class CommandUtils {
         // short name or path (TODO or URL)
 
         logger.debug(`\n
-    CommandUtils.run, 
+    CommandUtils.run,
     appName = ${appName}
     appPath = ${appPath}
     subtask = ${subtask}
     target = ${target}`)
 
 
-        const appManager = new ApplicationManager()
-        await appManager.initialize(appName, appPath, subtask, target)
 
-        return await appManager.start(message)
+        await this.#appManager.initialize(appName, appPath, subtask, target)
+
+        return await this.#appManager.start(message)
     }
 
     static splitName(fullPath) {
@@ -63,7 +67,7 @@ class CommandUtils {
     }
 
     async listApplications() {
-        return await this.appManager.listApplications()
+        return await this.#appManager.listApplications()
     }
 
     static async parseOrLoadContext(contextArg) { // TODO rename context -> message
