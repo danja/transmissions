@@ -1,47 +1,68 @@
-// run.js
-
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 import CommandUtils from '../common/CommandUtils.js'
 import WebRunner from '../http/WebRunner.js'
+import chalk from 'chalk'
 
 const defaultApplicationsDir = 'src/applications'
 const commandUtils = new CommandUtils(defaultApplicationsDir)
 
+import { readFileSync } from 'fs';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const packageJson = JSON.parse(readFileSync(join(__dirname, '../../../package.json')));
+const buildInfo = process.env.BUILD_INFO || 'development';
+const version = `${packageJson.version} (${buildInfo})`;
+const banner = `
+  _____
+ |_   _| __ __ _ _ __  ___
+   | || '__/ _\` | '_ \\/ __|
+   | || | | (_| | | | \\__ \\
+   |_||_|  \\__,_|_| |_|___/
+             ${version.padStart(10).padEnd(20)}
+         ${new Date().toISOString().split('T')[0]}
+`;
+
 async function main() {
-    await yargs(hideBin(process.argv))
-        .usage('Usage: ./trans <application>[.subtask] [options] [target]')
+    console.log(chalk.cyan(banner))
+    const yargsInstance = yargs(hideBin(process.argv))
+        .usage(chalk.cyan('Usage: ./trans [application][.subtask] [options] [target]\n  Run without arguments to list available applications.'))
+        .option('verbose', {
+            alias: 'v',
+            describe: chalk.yellow('Enable verbose output'),
+            type: 'boolean'
+        })
+        .option('silent', {
+            alias: 's',
+            describe: chalk.yellow('Suppress all output'),
+            type: 'boolean'
+        })
         .option('message', {
             alias: 'm',
-            describe: 'Input message as JSON',
+            describe: chalk.yellow('Input message as JSON'),
             type: 'string',
             coerce: JSON.parse
         })
-        /*
-        .option('payload', {
-            alias: 'P',
-            describe: 'message.payload as a JSON string or a path to a JSON file',
-            type: 'string',
-        })
-            */
         .option('web', {
             alias: 'w',
-            describe: 'Start web interface',
+            describe: chalk.yellow('Start web interface'),
             type: 'boolean',
         })
         .option('port', {
             alias: 'p',
-            describe: 'Port for web interface',
+            describe: chalk.yellow('Port for web interface'),
             type: 'number',
             default: 3000
         })
-        .command('$0 [application] [target]', 'runs the specified application', (yargs) => {
+        .command('$0 [application] [target]', chalk.green('runs the specified application\n\nExample: ./trans process.convert -m \'{"text": "hello"}\'\n'), (yargs) => {
             return yargs
                 .positional('application', {
-                    describe: 'the application to run'
+                    describe: chalk.yellow('the application to run')
                 })
                 .positional('target', {
-                    describe: 'the target of the application'
+                    describe: chalk.yellow('the target of the application')
                 })
         }, async (argv) => {
             if (argv.web) {
@@ -51,26 +72,19 @@ async function main() {
             }
 
             if (!argv.application) {
-                console.log('Available applications:')
+                console.log(chalk.cyan('Available applications:'))
                 const apps = await commandUtils.listApplications()
-                console.log(apps.join('\n'))
+                console.log(chalk.green(apps.join('\n')))
+                yargsInstance.showHelp()
                 return
             }
-            //   if (argv.message) {
-            //     message = await CommandUtils.parseOrLoadContext(argv.payload)
-            //}
 
-            //let message = {}
-            /*
-            if (argv.payload) {
-                message = await CommandUtils.parseOrLoadContext(argv.payload)
-            }
-*/
             await commandUtils.begin(argv.application, argv.target, argv.message)
         })
         .help('h')
         .alias('h', 'help')
-        .argv
+
+    await yargsInstance.argv
 }
 
 main().catch(console.error)

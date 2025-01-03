@@ -70,6 +70,7 @@ class CommandUtils {
         return await this.#appManager.listApplications()
     }
 
+    // TODO appears to be unused
     static async parseOrLoadContext(contextArg) { // TODO rename context -> message
         logger.debug(`CommandUtils.parseOrLoadContext(), contextArg = ${contextArg}`)
         let message = {}
