@@ -1,54 +1,91 @@
-import { readFileSync } from 'fs';
-import ignore from 'ignore';
+import fs from 'fs/promises';
 import path from 'path';
-import logger from '../../utils/Logger.js';
 import Processor from '../base/Processor.js';
+import logger from '../../utils/Logger.js';
 import ns from '../../utils/ns.js';
 
 class StringFilter extends Processor {
     constructor(config) {
         super(config);
-        this.ig = ignore();
-        this.loadGitignore(config);
+        this.gitignorePatterns = [];
+        this.initialized = false;
+        this.initialize();
     }
 
-    loadGitignore(config) {
+    async initialize() {
+        if (this.initialized) return;
+
         try {
-            const gitignorePath = this.getPropertyFromMyConfig(ns.trm.excludeFile) || '.gitignore';
-            const gitignoreContent = readFileSync(gitignorePath, 'utf8');
-            this.ig.add(gitignoreContent.split('\n').filter(line => line.trim() && !line.startsWith('#')));
+            // Get include/exclude patterns from config
+            if (this.configKey) {
+                this.includePatterns = this.getPropertyFromMyConfig(ns.trm.include)?.split(',') || [];
+                this.excludePatterns = this.getPropertyFromMyConfig(ns.trm.exclude)?.split(',') || [];
+            } else {
+                this.includePatterns = this.config.include?.split(',') || [];
+                this.excludePatterns = this.config.exclude?.split(',') || [];
+            }
+
+            // Try to load gitignore if path provided
+            const gitignorePath = this.config.gitignorePath;
+            if (gitignorePath) {
+                try {
+                    const gitignoreContent = await fs.readFile(gitignorePath, 'utf8');
+                    this.gitignorePatterns = gitignoreContent
+                        .split('\n')
+                        .map(line => line.trim())
+                        .filter(line => line && !line.startsWith('#'));
+                } catch (err) {
+                    logger.warn(`Could not load gitignore from ${gitignorePath}: ${err.message}`);
+                }
+            }
         } catch (err) {
-            logger.debug(`No ${gitignorePath} file found or unable to read it`);
+            logger.error('Error initializing StringFilter:', err);
         }
+
+        this.initialized = true;
     }
 
     async process(message) {
-        if (!message.filepath || message.done) {
-            return this.emit('message', message);
+        await this.initialize();
+
+        if (!message.filepath) {
+            logger.warn('StringFilter: No filepath provided');
+            return;
         }
 
-        /*
-        const relativePath = path.relative(message.rootDir, message.filepath);
+        const relativePath = message.filepath;
+        logger.debug(`StringFilter, relative path = ${relativePath}`);
 
-        logger.log('StringFilter, relative path = ' + relativePath)
-        if (!this.ig.ignores(relativePath)) {
-            return this.emit('message', message);
+        // Check gitignore patterns
+        if (this.gitignorePatterns.some(pattern => this.matchPattern(relativePath, pattern))) {
+            return;
         }
-*/
 
-        // #:todo recognising about.md for an application got broken
-
-        const cleanPath = path.normalize(
-            path.relative(message.rootDir, path.resolve(message.rootDir, message.filepath))
-        );
-
-        logger.log('StringFilter, relative path = ' + cleanPath);
-
-
-        if (!this.ig.ignores(cleanPath)) {
-            return this.emit('message', message);
+        // Check exclude patterns
+        if (this.excludePatterns.some(pattern => this.matchPattern(relativePath, pattern))) {
+            return;
         }
-        logger.debug(`Filtered out: ${relativePath}`);
+
+        // Check include patterns
+        if (this.includePatterns.length > 0 &&
+            !this.includePatterns.some(pattern => this.matchPattern(relativePath, pattern))) {
+            return;
+        }
+
+        return this.emit('message', message);
+    }
+
+    matchPattern(filePath, pattern) {
+        // Convert glob pattern to regex
+        const regexPattern = pattern
+            .replace(/\./g, '\\.')
+            .replace(/\*/g, '.*')
+            .replace(/\?/g, '.');
+        const regex = new RegExp(`^${regexPattern}$`);
+
+        // Get filename for matching
+        const filename = path.basename(filePath);
+        return regex.test(filename) || regex.test(filePath);
     }
 }
 

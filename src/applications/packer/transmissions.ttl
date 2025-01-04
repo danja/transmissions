@@ -12,20 +12,26 @@
 :N  a :NOP . # no operation (except for showing stage in pipe)
 :UF a :Unfork . # collapses all pipes but one
 #############################################################
-
 :packer a trm:Transmission ;
     rdfs:label "Repository Packer" ;
-    trm:pipe (:p10 :p15 :p20 :p30 :p40) .
+    trm:pipe (:p10 :p20 :p30 :p40 :p50 :p60 :p70 :SM :p80) .
 
-:p10 a :DirWalker ;
-    trm:configKey :dirwalker .
+:p10 a :DirWalker .
 
-:p15 a :StringFilter ;
-    trm:configKey :gitignore .
+:p20 a :StringFilter ;
+    trm:configKey :filterConfig .
 
-:p20 a :FileReader .
+:p30 a :FileReader ;
+    trm:configKey :readConfig .
 
-:p30 a :FileContainer .
+:p40 a :FileContainer ;
+    trm:configKey :containerConfig .
 
-:p40 a :FileWriter ;
-    trm:configKey :writer .
+:p50 a :CaptureAll .
+
+:p60 a :WhiteboardToMessage .
+
+:p70 a :Unfork .
+
+:p80 a :FileWriter ;
+    trm:configKey :writeConfig .

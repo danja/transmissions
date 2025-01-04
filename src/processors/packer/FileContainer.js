@@ -1,132 +1,50 @@
-import path from 'path';
-import logger from '../../utils/Logger.js';
 import Processor from '../base/Processor.js';
-import { commentStripper } from './CommentStripper.js';
+import logger from '../../utils/Logger.js';
+import ns from '../../utils/ns.js';
+import path from 'path';
 
 class FileContainer extends Processor {
     constructor(config) {
         super(config);
-        this.files = [];
-        this.structure = [];
-        this.totalSize = 0;
-        this.fileCount = 0;
-        this.stats = {};
+        this.container = {
+            files: {},
+            summary: {
+                totalFiles: 0,
+                fileTypes: {},
+                timestamp: new Date().toISOString()
+            }
+        };
     }
 
     async process(message) {
         if (message.done) {
-            await this.generateOutput(message);
+            message.content = JSON.stringify(this.container, null, 2);
+            message.filepath = this.getPropertyFromMyConfig(ns.trm.destination);
             return this.emit('message', message);
         }
 
-        if (message.filepath) {
-            const stripped = this.shouldStripComments(message.filepath) ?
-                commentStripper(message.content, message.filepath) :
-                message.content;
-
-            this.files.push({
-                path: message.filepath,
-                content: stripped,
-                size: stripped.length
-            });
-
-            this.updateStats(message.filepath, stripped.length);
-            this.updateStructure(message.filepath);
+        if (!message.filepath || !message.content) {
+            logger.warn('FileContainer: Missing filepath or content');
+            return;
         }
+
+        // Store relative path from target directory
+        const targetDir = message.targetPath || message.rootDir;
+        const relativePath = path.relative(targetDir, message.filepath);
+
+        // Add file to container
+        this.container.files[relativePath] = {
+            content: message.content,
+            type: path.extname(message.filepath),
+            timestamp: new Date().toISOString()
+        };
+
+        // Update summary
+        this.container.summary.totalFiles++;
+        const fileType = path.extname(message.filepath) || 'unknown';
+        this.container.summary.fileTypes[fileType] = (this.container.summary.fileTypes[fileType] || 0) + 1;
 
         return this.emit('message', message);
-    }
-
-    shouldStripComments(filepath) {
-        const ext = path.extname(filepath).toLowerCase();
-        return ['.js', '.jsx', '.ts', '.tsx', '.java', '.py', '.cpp', '.c', '.h'].includes(ext);
-    }
-
-    updateStats(filepath, size) {
-        this.totalSize += size;
-        this.fileCount++;
-
-        const ext = path.extname(filepath).toLowerCase() || 'no_extension';
-        if (!this.stats[ext]) {
-            this.stats[ext] = { count: 0, size: 0 };
-        }
-        this.stats[ext].count++;
-        this.stats[ext].size += size;
-    }
-
-    updateStructure(filepath) {
-        const parts = filepath.split(path.sep);
-        let current = this.structure;
-
-        parts.forEach((part, index) => {
-            let existing = current.find(item => item.name === part);
-            if (!existing) {
-                existing = {
-                    name: part,
-                    children: []
-                };
-                current.push(existing);
-            }
-            current = existing.children;
-        });
-    }
-
-    formatStructure(node = this.structure, depth = 0) {
-        let output = '';
-        node.forEach(item => {
-            output += ' '.repeat(depth * 2) + item.name + '\n';
-            if (item.children.length > 0) {
-                output += this.formatStructure(item.children, depth + 1);
-            }
-        });
-        return output;
-    }
-
-    formatStats() {
-        const lines = [];
-        lines.push('File Statistics:');
-        lines.push(`Total Files: ${this.fileCount}`);
-        lines.push(`Total Size: ${this.formatBytes(this.totalSize)}\n`);
-        lines.push('By Extension:');
-
-        Object.entries(this.stats)
-            .sort((a, b) => b[1].size - a[1].size)
-            .forEach(([ext, stat]) => {
-                lines.push(`${ext}: ${stat.count} files, ${this.formatBytes(stat.size)}`);
-            });
-
-        return lines.join('\n');
-    }
-
-    formatBytes(bytes) {
-        if (bytes === 0) return '0 Bytes';
-        const k = 1024;
-        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-    }
-
-    async generateOutput(message) {
-        let output = 'This file is a merged representation of the entire codebase.\n\n';
-        output += '================================================================\n';
-        output += this.formatStats();
-        output += '\n\n================================================================\n';
-        output += 'Repository Structure\n';
-        output += '================================================================\n';
-        output += this.formatStructure();
-        output += '\n================================================================\n';
-        output += 'Repository Files\n';
-        output += '================================================================\n\n';
-
-        for (const file of this.files) {
-            output += '================\n';
-            output += `File: ${file.path}\n`;
-            output += '================\n';
-            output += file.content + '\n\n';
-        }
-
-        message.content = output;
-        message.filepath = 'packer-output.txt';
     }
 }
 

@@ -78,9 +78,8 @@ class AbstractProcessorFactory {
         processor = JSONProcessorsFactory.createProcessor(type, config)
         if (processor) return processor
 
-        processor = PackerProcessorsFactory.createProcessor(type, config)
-        if (processor) return processor
-
+        var processor = PackerProcessorsFactory.createProcessor(type, config);
+        if (processor) return processor;
         //   throw new Error("Unknown processor type: " + type.value)
     }
 }

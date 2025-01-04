@@ -1,5 +1,6 @@
 import { readdir } from 'fs/promises';
-import { join, extname, relative, resolve, isAbsolute } from 'path';
+import { join, extname, relative } from 'path';
+import grapoi from 'grapoi';
 import logger from '../../utils/Logger.js';
 import Processor from '../base/Processor.js';
 
@@ -11,19 +12,24 @@ class DirWalker extends Processor {
     }
 
     async process(message) {
-        logger.debug('DirWalker.process start');
-
-        // Initialize message state
+        logger.debug('DirWalker.process');
         message.counter = 0;
         message.slugs = [];
         message.done = false;
 
-        // Resolve the root directory to scan
-        let rootDir = message.targetPath || message.rootDir;
-        rootDir = isAbsolute(rootDir) ? rootDir : resolve(process.cwd(), rootDir);
+        if (!message.sourceDir) {
+            message.sourceDir = ".";
+        }
 
-        logger.debug(`DirWalker root directory: ${rootDir}`);
-        await this.walkDirectory(rootDir, message);
+        let dirPath;
+        if (message.targetPath) {
+            dirPath = join(message.targetPath, message.sourceDir);
+        } else {
+            dirPath = join(message.rootDir, message.sourceDir);
+        }
+        logger.debug('DirWalker, dirPath = ' + dirPath);
+
+        await this.walkDirectory(dirPath, message);
 
         // Send final done message
         const finalMessage = structuredClone(message);
@@ -49,16 +55,12 @@ class DirWalker extends Processor {
 
                         const message = structuredClone(baseMessage);
                         message.filename = entry.name;
-                        message.fullPath = fullPath; // Absolute path
-                        message.filepath = relative(baseMessage.targetPath || baseMessage.rootDir, fullPath); // Relative path
+                        message.filepath = fullPath;
+                        message.relativePath = relative(message.targetPath || message.rootDir, fullPath);
                         message.done = false;
                         message.counter++;
 
-                        logger.debug(`DirWalker emitting file:
-                            filename: ${message.filename}
-                            fullPath: ${message.fullPath}
-                            filepath: ${message.filepath}`);
-
+                        logger.debug(`DirWalker emitting file: ${message.filepath}`);
                         this.emit('message', message);
                     }
                 }
