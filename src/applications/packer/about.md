@@ -6,4 +6,6 @@ _repopack/repomix equiv_
 ./trans packer path/to/repo
 
 ./trans packer ./
+
+./trans packer
 ```

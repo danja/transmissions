@@ -11,13 +11,13 @@ TODO add handling for paths given in processors.ttl, see FileCopy
 /**
  * Represents a directory walker processor that traverses a directory and emits messages for files with desired extensions.
  * @extends Processor
- * 
+ *
  * #### __*Input*__
- * * message.rootDir 
+ * * message.rootDir
  * * message.sourceDir
  * #### __*Output*__
  * * message.filename (multi)
- * 
+ *
  */
 class DirWalker extends Processor {
 
@@ -51,6 +51,10 @@ class DirWalker extends Processor {
     }
 
     async emitThem(message) {
+        logger.debug('DirWalker.emitThem')
+        logger.debug('message ----------------')
+        logger.reveal(message)
+        logger.debug('------------------------')
         message.counter = 0
         message.slugs = []
         message.done = false // maybe insert earlier
