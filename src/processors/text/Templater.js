@@ -38,7 +38,7 @@ class Templater extends Processor {
      * @param {Object} message - The message object containing template and content information
      */
     async process(message) {
-        logger.setLogLevel('info')
+        logger.setLogLevel('debug')
         if (message.templateFilename) {
             logger.debug(`Templater, message.templateFilename = ${message.templateFilename}`)
 
@@ -61,6 +61,7 @@ class Templater extends Processor {
             // Configure Nunjucks for string templates
             nunjucks.configure({ autoescape: false })
 
+            logger.reveal(message)
             // Render the template string
             message.content = nunjucks.renderString(message.template, message.contentBlocks)
         }

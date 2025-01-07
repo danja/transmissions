@@ -1,3 +1,3 @@
 npm test -- tests/unit/RunCommand.spec.js
 
-npm test -- spec/integration/configmap.spec.js
+npm test -- tests/integration/configmap.spec.js

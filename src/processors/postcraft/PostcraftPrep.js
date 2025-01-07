@@ -41,12 +41,20 @@ class PostcraftPrep extends Processor {
   }
 
   extractTargetFilename(message) {
+    logger.reveal(message)
+
+    /*
     if (message.targetPath) {
       return path.join(message.targetPath, message.entryContentMeta.targetDir, this.extractSlug(message) + '.html')
     } else {
       return path.join(message.rootDir, message.entryContentMeta.targetDir, this.extractSlug(message) + '.html')
     }
-
+*/
+    if (message.targetPath) {
+      return path.join(message.targetPath, message.targetDir, this.extractSlug(message) + '.html')
+    } else {
+      return path.join(message.rootDir, message.targetDir, this.extractSlug(message) + '.html')
+    }
   }
 
   extractRelURL(message) { // TODO refactor
@@ -66,7 +74,7 @@ class PostcraftPrep extends Processor {
     return dates
   }
 
-  // first heading in the markdown 
+  // first heading in the markdown
   // or formatted from filename
   // or raw filename
   extractTitle(message) {

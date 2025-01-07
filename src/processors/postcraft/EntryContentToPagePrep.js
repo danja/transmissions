@@ -20,29 +20,28 @@ class EntryContentToPagePrep extends Processor {
     }
     logger.setLogLevel('debug')
 
-    //   "applicationRootDir": "../postcraft/danny.ayers.name",
+    logger.reveal(message)
 
-
-    // TODO path.join
-    // message.templateFilename = message.rootDir + '/' + message.entryContentToPage.templateFilename
-    if (message.targetPath) {
-      message.templateFilename = path.join(message.targetPath, message.entryContentToPage.templateFilename)
-    } else {
-      message.templateFilename = path.join(message.rootDir, message.entryContentToPage.templateFilename)
-    }
-    logger.log("################ message.templateFilename = " + message.templateFilename)
-
-    message.template = false
-
+    /*
+        if (message.targetPath) {
+          message.templateFilename = path.join(message.targetPath, message.entryContentToPage.templateFilename)
+        } else {
+          message.templateFilename = path.join(message.rootDir, message.entryContentToPage.templateFilename)
+        }
+    
+        logger.log("################ message.templateFilename = " + message.templateFilename)
+    
+        message.template = false // ???????????
+    */
     message.contentBlocks.content = message.content
-
-    if (message.entryContentToPage.targetDir.startsWith('/')) { // TODO unhacky!!
-      message.filepath = path.join(message.entryContentToPage.targetDir, message.slug + '.html')
+    logger.reveal(message)
+    if (path.isAbsolute(message.targetDir)) {
+      message.filepath = path.join(message.targetDir, message.slug + '.html')
     } else {
       if (message.targetPath) {
-        message.filepath = path.join(message.targetPath, message.entryContentToPage.targetDir, message.slug + '.html')
+        message.filepath = path.join(message.targetPath, message.targetDir, message.slug + '.html')
       } else {
-        message.filepath = path.join(message.rootDir, message.entryContentToPage.targetDir, message.slug + '.html')
+        message.filepath = path.join(message.rootDir, message.targetDir, message.slug + '.html')
       }
 
     }

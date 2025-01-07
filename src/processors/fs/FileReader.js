@@ -13,7 +13,7 @@ class FileReader extends Processor {
     async process(message) {
         logger.setLogLevel('debug')
         //    logger.setLogLevel('info')
-        logger.debug(`\n\nFileReader.process(), message.fullPath =  ${message.fullPath}`);
+        logger.debug(`\n\n1 FileReader.process(), message.fullPath =  ${message.fullPath}`);
         logger.debug(`FileReader.process(), message.filepath = ${message.filepath}`);
         logger.debug(`FileReader.process(), message.targetPath = ${message.targetPath}`);
 
@@ -25,18 +25,20 @@ class FileReader extends Processor {
                        }
 
            */
-            var filePath = message.fullPath
-            if (!filePath) {
-                if (message.targetPath) {
-                    logger.debug(`FileReader.process(), message.filepath = ${message.filepath}`);
+            var filePath
+            if (!message.fullPath) {
+                if (message.targetPath && !path.isAbsolute(message.filepath)) { // TODO clunky!
+                    logger.debug(`\n\n2 FileReader.process(), message.filepath = ${message.filepath}`);
                     logger.debug(`FileReader.process(), message.targetPath = ${message.targetPath}`);
                     filePath = path.join(message.targetPath, message.filepath)
                 } else {
-                    filePath = message.filePath
+                    filePath = message.filepath
                 }
+            } else {
+                filePath = message.fullPath
             }
 
-            logger.debug(`FileReader.process(), reading file: ${filePath}`);
+            logger.debug(`\n\n3 FileReader.process(), reading file: ${filePath}`);
             logger.debug(`FileReader.process(), process.cwd() = ${process.cwd()}`)
             // Check file accessibility
             await new Promise((resolve, reject) => {
