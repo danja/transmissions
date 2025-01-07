@@ -4,7 +4,7 @@
   "description": "Transmissions",
   "name": "transmissions",
   "scripts": {
-    "test": "jasmine --config=jasmine.json --reporter=spec/helpers/reporter.js",
+    "test": "jasmine --config=jasmine.json --reporter=tests/helpers/reporter.js",
     "cov": "nyc -a --include=src --reporter=lcov npm run test",
     "docs": "jsdoc -c jsdoc.json",
     "build": "webpack --mode=production --node-env=production",
@@ -47,6 +47,7 @@
   "dependencies": {
     "@dotenvx/dotenvx": "^1.14.2",
     "@rdfjs/formats": "^4.0.0",
+    "@rdfjs/parser-n3": "^2.0.2",
     "axios": "^1.6.8",
     "cheerio": "^1.0.0-rc.12",
     "d3": "^7.9.0",
@@ -66,6 +67,7 @@
     "rdf-ext": "^2.5.2",
     "rdf-utils-fs": "^3.0.0",
     "repomix": "^0.2.12",
+    "string-to-stream": "^3.0.1",
     "yargs": "^17.7.2"
   }
 }

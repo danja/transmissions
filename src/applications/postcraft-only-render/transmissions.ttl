@@ -2,19 +2,17 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
 @prefix trm: <http://purl.org/stuff/transmission/> . # TODO make plural
-@prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances - TODO make one @services s: 
+@prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances - TODO make one @services s:
 @prefix pc: <http://purl.org/stuff/postcraft/> .
 
 #############################################################
 # insert into pipe for debugging - one instance only like this
 :DE a :DeadEnd . # ends the current pipe quietly
-:H  a :Halt . # kills everything 
+:H  a :Halt . # kills everything
 :SC a :ShowConfig . # verbose report, continues pipe
-:SM1 a :ShowMessage . # verbose report, continues pipe
-:SM2 a :ShowMessage . # verbose report, continues pipe
-:SM3 a :ShowMessage . # verbose report, continues pipe
-:N  a :NOP . # no operation (except for showing stage in pipe) 
-:UF a :Unfork . # collapses all pipes but one 
+:SM a :ShowMessage . # verbose report, continues pipe
+:N  a :NOP . # no operation (except for showing stage in pipe)
+:UF a :Unfork . # collapses all pipes but one
 #############################################################
 
 
@@ -23,19 +21,19 @@
 :render a trm:Transmission ;
     rdfs:label "render" ;
     rdfs:comment "render the pages" ;
-   trm:pipe (:s20  :s30 :s40  :s50 :s60 :s70   :s80 :s90  :s100 
+   trm:pipe (:s20 :s30 :s40 :SM :SC :s50  :s60 :s70   :s80 :s90  :s100
               :s110  :s120  :s130 :s140 :s150 :s160 :s170 :s180) .
- #  trm:pipe (:s10 :SM :s20 :SM2 :DE  :s30 :s40  :s50 :s60 :s70 :s80 :s90 :s100 
+ #  trm:pipe (:s10 :SM :s20 :SM2 :DE  :s30 :s40  :s50 :s60 :s70 :s80 :s90 :s100
   #               :s110 :s120 :s130 :s140 :s150  :s160 :s170 :s180) .
 
-:s10 a :DatasetReader . # read the manifest NO done in system
+# :s10 a :DatasetReader . # read the manifest NO done in system
 # trm:configKey trm:describe .
 
 :s20 a :ConfigMap ;
     trm:configKey :postcraftMap .
 
-:s30 a :FileReader ; # the template for raw entry content
-    trm:describe trm:all .
+:s30 a :FileReader . # the template for raw entry content
+   # trm:describe trm:all .
 
 :s40 a :Restructure ;
     trm:configKey :walkPrep .
@@ -46,7 +44,7 @@
 
 :s70 a :PostcraftPrep . # set up title, filenames etc
 
-:s80 a :MarkdownToHTML . 
+:s80 a :MarkdownToHTML .
 
 :s90 a :Restructure ;
    trm:configKey :entryRawPrep .
@@ -67,7 +65,7 @@
 #######################
 :s150  a :Unfork .
 
-:s160 a :FrontPagePrep . 
+:s160 a :FrontPagePrep .
 
 :s170 a :Templater .
 

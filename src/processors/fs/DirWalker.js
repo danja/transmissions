@@ -6,11 +6,13 @@ import Processor from '../base/Processor.js';
 class DirWalker extends Processor {
     constructor(config) {
         super(config);
-        this.includeExtensions = ['.md', '.js', '.json', '.txt', '.html', '.css'];
+        this.includeExtensions = ['.md'];
+        //    this.includeExtensions = ['.md', '.js', '.json', '.txt', '.html', '.css'];
         this.excludePrefixes = ['_', '.'];
     }
 
     async process(message) {
+        logger.setLogLevel('debug')
         logger.debug('DirWalker.process start');
 
         // Initialize message state
@@ -23,6 +25,9 @@ class DirWalker extends Processor {
         rootDir = isAbsolute(rootDir) ? rootDir : resolve(process.cwd(), rootDir);
 
         logger.debug(`DirWalker root directory: ${rootDir}`);
+
+        // process.exit() ////////////////////////////////////////////////////////////////////////
+
         await this.walkDirectory(rootDir, message);
 
         // Send final done message

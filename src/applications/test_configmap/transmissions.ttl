@@ -1,0 +1,15 @@
+// src/applications/test_configmap/transmissions.ttl
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix trm: <http://purl.org/stuff/transmission/> .
+@prefix t: <http://hyperdata.it/transmissions/> .
+
+:configtest a trm:Transmission ;
+    trm:pipe (:s10 :s20 :s30) .
+
+:s10 a :DatasetReader ;
+    trm:configKey t:readDataset .
+
+:s20 a :ConfigMap ;
+    trm:configKey t:configMapper .
+
+:s30 a :ShowMessage .

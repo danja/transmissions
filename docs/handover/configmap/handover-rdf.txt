@@ -1,0 +1,29 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix prj: <http://purl.org/stuff/project/> .
+
+[] a prj:Pivot, prj:Handover ;
+    dcterms:title "Transmissions Path Resolution Update" ;
+    dcterms:description "ConfigMap and RDFConfig implementation with path handling fixes" ;
+    dcterms:creator <http://purl.org/stuff/agents/ClaudeAI>, <http://danny.ayers.name> ;
+    prj:status "In Progress" ;
+    prj:keywords "path resolution, config map, rdf config, validation, testing" ;
+    prov:wasGeneratedBy [
+        a prov:Activity ;
+        prj:includes <http://hyperdata.it/prompts/system-prompt>
+    ] .
+
+[] a prj:Status ;
+    dcterms:title "Path Resolution Update" ;
+    prj:component "ConfigMap" ;
+    prj:status "Updated" ;
+    prj:requires "Testing", "Integration" ;
+    prj:priority "High" .
+
+[] a prj:Status ;
+    dcterms:title "RDF Config System" ;
+    prj:component "RDFConfig" ;
+    prj:status "Initial Implementation" ;
+    prj:requires "Integration", "Documentation" ;
+    prj:priority "Medium" .
