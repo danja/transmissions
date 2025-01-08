@@ -4,27 +4,28 @@
  * @extends Processor
  * @classdesc
  * **a Transmissions Processor**
- * 
+ *
  * Replaces all occurrences of a specified substring in the content with a replacement string.
- * 
+ *
  * ### Signature
- * 
+ *
  * #### __*Input*__
  * * **`message.content`** - The original string content
  * * **`message.match`** - The substring to be replaced
  * * **`message.replace`** - The replacement string
- * 
+ *
  * #### __*Output*__
  * * **`message.content`** - The modified string with replacements
- * 
+ *
  * #### __*Behavior*__
  * * Replaces every exact occurrence of `message.match` in `message.content` with `message.replace`
  * * If `message.match` is not found, the content remains unchanged
- * 
+ *
  * #### __Tests__
  * * TODO: Add test information
  */
 
+import ns from '../../utils/ns.js'
 import logger from '../../utils/Logger.js'
 import Processor from '../base/Processor.js'
 
@@ -38,17 +39,29 @@ class StringReplace extends Processor {
      * @param {Object} message - The message object containing content, match, and replace strings
      */
     async process(message) {
-        logger.setLogLevel('info')
-        logger.debug('StringReplace input: ' + message.content)
+        logger.setLogLevel('debug')
+        const inputField = this.getProperty(ns.trm.inputField)
+        const outputField = this.getProperty(ns.trm.outputField)
 
-        if (message.content && message.match && message.replace) {
-            // Perform global replacement
-            message.content = message.content.split(message.match).join(message.replace)
-        } else {
-            logger.warn('StringReplace: Missing required properties in message')
+        var match = message.match ? message.match : this.getProperty(ns.trm.match)
+        var replace = message.replace ? message.replace : this.getProperty(ns.trm.replace)
+
+        var input = message.input ? message.input : message[inputField]
+        if (!input) {
+            input = message.content
         }
 
-        logger.debug('StringReplace output: ' + message.content)
+        logger.debug('StringReplace.process input = ' + input)
+
+        // global s & r
+        const output = input.split(match).join(replace)
+
+        logger.debug('StringReplace output: ' + output)
+        try {
+            message[outputField] = output
+        } catch {
+            message.content = output
+        }
         return this.emit('message', message)
     }
 }

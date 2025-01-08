@@ -30,25 +30,18 @@ class FileWriter extends Processor {
         super(config)
     }
 
-    getInputKeys() { // TODO move out of here
-        return ['filepath, content']
-    }
     /**
      * Executes the write operation.
      * @param {Object} message - The execution message.
      */
     async process(message) {
-        logger.setLogLevel('info')
-        this.preProcess()
 
         if (message.dump) {
             // TODO make optional (on done?) - is a pain for multi
             //    const filename = `message_${new Date().toISOString()}.json`
-
             const filename = 'message.json'
             const f = path.join(message.dataDir, filename)
             const content = JSON.stringify(message)
-
             // Check if the file is readable.
             access(f, constants.W_OK, (err) => {
                 if (err) {
@@ -56,19 +49,21 @@ class FileWriter extends Processor {
                     logger.reveal(message)
                 }
             })
-
             return this.doWrite(f, content, message)
         }
 
         logger.debug("Filewriter, message.filepath = " + message.filepath)
 
-        var filepath = message.filepath
-
+        var filepath = this.getProperty(ns.trm.destinationFile)
 
         if (!filepath) {
-            filepath = this.getPropertyFromMyConfig(ns.trm.destinationFile)
-            logger.log(' - filepath from config : ' + filepath)
+
+
+            ///filepath = this.getPropertyFromMyConfig(ns.trm.destinationFile)
+            ///logger.log(' - filepath from config : ' + filepath)
         }
+        logger.reveal(message)
+        process.exit()
 
         var f
         if (filepath.startsWith('/')) { // TODO unhackify

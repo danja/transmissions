@@ -21,11 +21,26 @@
 :render1 a trm:Transmission ;
     rdfs:label "render1" ;
     rdfs:comment "render raw entry pages" ;
-   trm:pipe (:r10) .
+   trm:pipe (:r10 :r20 :r30 :r40 :SM) .
 
 :r10 a :DirWalker ; # automatically forks
     trm:config :dirWalker .
 
+:r20 a :FileReader . # the markdown content
+
+:r30 a :MarkdownToHTML .
+
+:r40 a :StringReplace ;
+    trm:config :filesRename .
+
+:r50 a :FileWriter ;
+    trm:config :fileWriter .
+
+
+
+
+
+#######################################################
 # :s10 a :DatasetReader . # read the manifest NO done in system
 
 :q10 a :ConfigMap ;

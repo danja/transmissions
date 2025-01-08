@@ -1,5 +1,6 @@
 import { readdir } from 'fs/promises';
 import { join, extname, relative, resolve, isAbsolute } from 'path';
+import ns from '../../utils/ns.js'
 import logger from '../../utils/Logger.js';
 import Processor from '../base/Processor.js';
 
@@ -12,7 +13,7 @@ class DirWalker extends Processor {
     }
 
     async process(message) {
-        //  logger.setLogLevel('debug')
+        logger.setLogLevel('debug')
         logger.debug('\nDirWalker.process');
 
         // Initialize message state
@@ -20,6 +21,8 @@ class DirWalker extends Processor {
         message.slugs = [];
         message.done = false;
 
+        var sourceDir = this.getProperty(ns.trm.sourceDir)
+        logger.log(sourceDir)
         /*
         var this.getPropertyFromMyConfig(ns.trm.source)
         this.getPropertyFromMyConfig(n)
@@ -33,27 +36,27 @@ class DirWalker extends Processor {
 
         logger.debug(`DirWalker root directory: ${rootDir}`);
 */
-        if (!message.sourceDir) {
-            message.sourceDir = "."
-        }
+        //  if (!message.sourceDir) {
+        //    message.sourceDir = "."
+        // }
         //    logger.reveal(message)
         logger.debug('\n\nDirWalker, message.targetPath = ' + message.targetPath)
         logger.debug('DirWalker, message.rootDir = ' + message.rootDir)
         logger.debug('DirWalker, message.sourceDir = ' + message.sourceDir)
 
         let dirPath
-        if (isAbsolute(message.sourceDir)) {
-            dirPath = message.sourceDir
+        if (isAbsolute(sourceDir)) {
+            dirPath = sourceDir
         } else {
             if (message.targetPath) {
-                dirPath = join(message.targetPath, message.sourceDir)
+                dirPath = join(message.targetPath, sourceDir)
             } else {
-                dirPath = join(message.rootDir, message.sourceDir)
+                dirPath = join(message.rootDir, sourceDir)
             }
         }
         logger.debug('DirWalker, dirPath = ' + dirPath)
 
-        process.exit() ////////////////////////////////////////////////////////////////////////
+        //  process.exit() ////////////////////////////////////////////////////////////////////////
 
         await this.walkDirectory(dirPath, message);
 
@@ -64,40 +67,40 @@ class DirWalker extends Processor {
     }
 
     async walkDirectory(dir, baseMessage) {
-        try {
-            const entries = await readdir(dir, { withFileTypes: true });
+        // try {
+        const entries = await readdir(dir, { withFileTypes: true });
 
-            for (const entry of entries) {
-                const fullPath = join(dir, entry.name);
+        for (const entry of entries) {
+            const fullPath = join(dir, entry.name);
 
-                if (entry.isDirectory() && !this.excludePrefixes.includes(entry.name[0])) {
-                    await this.walkDirectory(fullPath, baseMessage);
-                } else if (entry.isFile()) {
-                    const extension = extname(entry.name);
-                    const prefix = entry.name[0];
+            if (entry.isDirectory() && !this.excludePrefixes.includes(entry.name[0])) {
+                await this.walkDirectory(fullPath, baseMessage);
+            } else if (entry.isFile()) {
+                const extension = extname(entry.name);
+                const prefix = entry.name[0];
 
-                    if (!this.excludePrefixes.includes(prefix) &&
-                        this.includeExtensions.includes(extension)) {
+                if (!this.excludePrefixes.includes(prefix) &&
+                    this.includeExtensions.includes(extension)) {
 
-                        const message = structuredClone(baseMessage);
-                        message.filename = entry.name;
-                        message.fullPath = fullPath; // Absolute path
-                        message.filepath = relative(baseMessage.targetPath || baseMessage.rootDir, fullPath); // Relative path
-                        message.done = false;
-                        message.counter++;
+                    const message = structuredClone(baseMessage);
+                    message.filename = entry.name;
+                    message.fullPath = fullPath; // Absolute path
+                    message.filepath = relative(baseMessage.targetPath || baseMessage.rootDir, fullPath); // Relative path
+                    message.done = false;
+                    message.counter++;
 
-                        logger.debug(`DirWalker emitting file:
+                    logger.debug(`DirWalker emitting file:
                             filename: ${message.filename}
                             fullPath: ${message.fullPath}
                             filepath: ${message.filepath}`);
 
-                        this.emit('message', message);
-                    }
+                    this.emit('message', message);
                 }
             }
-        } catch (err) {
-            logger.error(`Error walking directory ${dir}:`, err);
         }
+        //   } catch (err) {
+        //     logger.error(`Error walking directory ${dir}:`, err);
+        // }
     }
 }
 

@@ -5,11 +5,16 @@
 @prefix pc: <http://purl.org/stuff/postcraft/> .
 
 t:dirWalker a trm:ConfigSet ;
-  trm:sourceDir "entries" .
+  trm:sourceDir "content-raw/entries" .
 
-#
- #   trm:targetDir "public/entries" .
+t:filesRename a trm:ConfigSet ;
+  trm:inputField "filename" ;
+  trm:outputField "filename" ;
+  trm:match ".md";
+  trm:replace ".html".
 
+t:fileWriter a trm:ConfigSet ;
+  trm:targetDir "cache" .
 
 
 

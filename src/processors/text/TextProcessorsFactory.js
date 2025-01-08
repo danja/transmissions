@@ -3,6 +3,7 @@ import ns from '../../utils/ns.js'
 import LineReader from './LineReader.js'
 import StringFilter from './StringFilter.js'
 import StringMerger from './StringMerger.js'
+import StringReplace from './StringReplace.js'
 import Templater from './Templater.js'
 
 class TextProcessorsFactory {
@@ -21,6 +22,10 @@ class TextProcessorsFactory {
 
         if (type.equals(ns.t.StringMerger)) {
             return new StringMerger(config)
+        }
+
+        if (type.equals(ns.t.StringReplace)) {
+            return new StringReplace(config)
         }
 
         //     if (type.equals(ns.t.CommentStripper)) {

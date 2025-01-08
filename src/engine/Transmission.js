@@ -33,9 +33,7 @@ class Transmission {
     let processor = this.get(processorName)
     if (processor) {
       logger.log("| Running : " + processorName + " a " + processor.constructor.name)
-      await processor.preProcess(message)
       await processor.receive(message)
-      await processor.postProcess(message)
     } else {
       logger.error("No valid processor found to execute")
     }

@@ -26,7 +26,7 @@ class Processor extends EventEmitter {
 
     async preProcess(message) {
         logger.debug("Processor.preProcess")
-        return message
+        return
         /* NOPE
         if (message.done) {
             this.emit('message', message)
@@ -49,7 +49,7 @@ class Processor extends EventEmitter {
 
     async postProcess(message) {
         logger.debug("Processor.postProcess")
-        return message
+        return
     }
 
     describe() {
@@ -85,6 +85,14 @@ class Processor extends EventEmitter {
  * Locates the configuration node in processors.ttl for the processor.
  * @returns {Object} - The configuration node.
  */
+
+    getProperty(property) {
+        const shortName = ns.getShortname(property)
+        if (this.message.shortName) return this.message.shortName
+        // MANIFEST IS WHERE?
+        return this.getPropertyFromMyConfig(property)
+    }
+
     // is this duplicating?
     getMyConfigNode() {
         const dataset = this.config
@@ -190,7 +198,10 @@ class Processor extends EventEmitter {
             // structuredClone(message, {transfer:[dataset]}) failed too
             this.addTag(message)
 
+            await this.preProcess(message)
+            // logger.log('HERE')
             await this.process(message)
+            await this.postProcess(message)
         }
         this.processing = false
     }
