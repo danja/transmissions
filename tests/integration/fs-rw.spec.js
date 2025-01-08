@@ -1,75 +1,72 @@
-// tests/integration/fs-rw.spec.js
-import footpath from '../../src/utils/footpath.js'
-import path from 'path'
-import { fileURLToPath } from 'url'
-import { expect } from 'chai'
-import { exec } from 'child_process'
-import fs from 'fs/promises'
+import { expect } from 'chai';
+import rdf from 'rdf-ext';
+import ConfigMap from '../../src/processors/rdf/ConfigMap.js';
+import ns from '../../src/utils/ns.js';
 
-describe('fs-rw test', function () {
-    const __filename = fileURLToPath(import.meta.url)
-    const __dirname = path.dirname(__filename)
-    const dataDir = path.join(__dirname, '../../src/applications/test_fs-rw/data')
+describe('ConfigMap Integration Tests', () => {
+    let configMap;
+    let message;
+    const testBasePath = '/test/base';
 
-    // Set timeout for the entire suite
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000
+    beforeEach(() => {
+        configMap = new ConfigMap({});
+        message = {
+            rootDir: testBasePath,
+            dataset: rdf.dataset()
+        };
+    });
 
-    async function clearOutputFiles() {
-        console.log('Clearing output files...')
-        const outputDir = path.join(dataDir, 'output')
-        const files = await fs.readdir(outputDir)
-        for (const file of files) {
-            if (file.startsWith('output-')) {
-                await fs.unlink(path.join(outputDir, file))
-                console.log(`Deleted ${file}`)
-            }
+    function addTestData(predicates) {
+        const subject = rdf.namedNode('http://hyperdata.it/transmissions/Content');
+        message.dataset.add(rdf.quad(
+            subject,
+            ns.rdf.type,
+            ns.pc.ConfigSet
+        ));
+
+        for (const [pred, obj] of Object.entries(predicates)) {
+            message.dataset.add(rdf.quad(
+                subject,
+                ns.fs[pred],
+                rdf.literal(obj)
+            ));
         }
     }
 
-    async function compareFiles(index) {
-        const outputFile = path.join(dataDir, 'output', `output-${index}.md`)
-        const requiredFile = path.join(dataDir, 'output', `required-${index}.md`)
+    it('should resolve paths from ContentGroup', async () => {
+        addTestData({
+            sourceDirectory: 'content/src',
+            targetDirectory: 'content/out'
+        });
 
-        console.log(`Comparing files:`)
-        console.log(`Output: ${outputFile}`)
-        console.log(`Required: ${requiredFile}`)
+        await configMap.process(message);
+        expect(message.contentGroup?.Content?.sourceDir).to.equal('/test/base/content/src');
+        expect(message.contentGroup?.Content?.targetDir).to.equal('/test/base/content/out');
+    });
 
-        const output = await fs.readFile(outputFile, 'utf8')
-        const required = await fs.readFile(requiredFile, 'utf8')
+    it('should preserve absolute paths', async () => {
+        addTestData({
+            sourceDirectory: '/abs/path/src',
+            targetDirectory: '/abs/path/out'
+        });
 
-        if (output.trim() !== required.trim()) {
-            console.log('Files differ:')
-            console.log('Output:', output)
-            console.log('Required:', required)
-        }
+        await configMap.process(message);
+        expect(message.contentGroup?.Content?.sourceDir).to.equal('/abs/path/src');
+        expect(message.contentGroup?.Content?.targetDir).to.equal('/abs/path/out');
+    });
 
-        return output.trim() === required.trim()
-    }
+    it('should handle missing paths', async () => {
+        addTestData({});
+        await configMap.process(message);
+        expect(message.contentGroup?.Content?.sourceDir).to.be.undefined;
+        expect(message.contentGroup?.Content?.targetDir).to.be.undefined;
+    });
 
-    beforeEach(async () => {
-        await clearOutputFiles()
-    })
-
-    it('should process files correctly', (done) => {
-        console.log('Running transmission...')
-        exec('node src/api/cli/run.js test_fs-rw', async (error, stdout, stderr) => {
-            if (error) {
-                console.error('Exec error:', error)
-                done(error)
-                return
-            }
-
-            try {
-                console.log('Transmission output:', stdout)
-                if (stderr) console.error('Stderr:', stderr)
-
-                const matched = await compareFiles('01')
-                expect(matched).to.be.true
-                done()
-            } catch (err) {
-                console.error('Test error:', err)
-                done(err)
-            }
-        })
-    })
-})
+    it('should normalize paths', async () => {
+        addTestData({
+            sourceDirectory: 'content/../src'
+        });
+        await configMap.process(message);
+        expect(message.contentGroup?.Content?.sourceDir).to.equal('/test/base/src');
+    });
+});
