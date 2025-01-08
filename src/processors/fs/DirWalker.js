@@ -12,13 +12,19 @@ class DirWalker extends Processor {
     }
 
     async process(message) {
-        logger.setLogLevel('debug')
-        logger.debug('DirWalker.process start');
+        //  logger.setLogLevel('debug')
+        logger.debug('\nDirWalker.process');
 
         // Initialize message state
         message.counter = 0;
         message.slugs = [];
         message.done = false;
+
+        /*
+        var this.getPropertyFromMyConfig(ns.trm.source)
+        this.getPropertyFromMyConfig(n)
+        this.showMyConfig()
+*/
 
         /*
         // Resolve the root directory to scan
@@ -30,7 +36,7 @@ class DirWalker extends Processor {
         if (!message.sourceDir) {
             message.sourceDir = "."
         }
-        logger.reveal(message)
+        //    logger.reveal(message)
         logger.debug('\n\nDirWalker, message.targetPath = ' + message.targetPath)
         logger.debug('DirWalker, message.rootDir = ' + message.rootDir)
         logger.debug('DirWalker, message.sourceDir = ' + message.sourceDir)
@@ -47,7 +53,7 @@ class DirWalker extends Processor {
         }
         logger.debug('DirWalker, dirPath = ' + dirPath)
 
-        // process.exit() ////////////////////////////////////////////////////////////////////////
+        process.exit() ////////////////////////////////////////////////////////////////////////
 
         await this.walkDirectory(dirPath, message);
 

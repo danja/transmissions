@@ -21,7 +21,7 @@ class ApplicationManager {
     }
 
     async initialize(appName, appPath, subtask, target) {
-        logger.setLogLevel('info')
+        // logger.setLogLevel('info')
         logger.debug(`\n\nApplicationManager.initialize appPath =  ${appPath} `)
         this.appPath = this.resolveApplicationPath(appPath) // TODO tidy with object below
 

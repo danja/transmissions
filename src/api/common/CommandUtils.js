@@ -14,10 +14,14 @@ class CommandUtils {
         this.#appManager = new ApplicationManager();
     }
 
-    async begin(application, target, message = {}) {
-        logger.setLogLevel('info') // TODO check default
+    async begin(application, target, message = {}, verbose, silent) {
+
+        var debugLevel = verbose ? "debug" : "info"
+        logger.setLogLevel(debugLevel)
+
         logger.debug('\nCommandUtils.begin()')
         logger.debug('CommandUtils.begin, process.cwd() = ' + process.cwd())
+        logger.debug('CommandUtils.begin, debugLevel = ' + debugLevel)
         logger.debug('CommandUtils.begin, application = ' + application)
         logger.debug('CommandUtils.begin, target = ' + target)
         logger.debug(`CommandUtils.begin, message = ${message}`)

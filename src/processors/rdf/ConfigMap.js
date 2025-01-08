@@ -11,11 +11,16 @@ class ConfigMap extends Processor {
   }
 
   async process(message) {
-    logger.setLogLevel('debug')
-    if (!message.dataset) {
-      logger.warn('No dataset provided')
-      return this.emit('message', message)
-    }
+    // logger.setLogLevel('debug')
+
+    /*
+     if (!message.dataset) {
+       logger.warn('No dataset provided')
+       return this.emit('message', message)
+     }
+ */
+    logger.debug(`ConfigMap.process`)
+    this.showMyConfig()
 
     const basePath = message.targetPath || message.rootDir
     logger.debug(`ConfigMap using base path: ${basePath}`)
@@ -23,8 +28,8 @@ class ConfigMap extends Processor {
     const dataset = message.dataset
     const poi = grapoi({ dataset })
 
-    // Find ContentGroup instances
-    for (const quad of poi.out(ns.rdf.type, ns.pc.ContentGroup).quads()) {
+    // Find ConfigSet instances
+    for (const quad of poi.out(ns.rdf.type, ns.pc.ConfigSet).quads()) {
       const groupID = quad.subject
 
       let groupName = ns.getShortname(groupID.value)

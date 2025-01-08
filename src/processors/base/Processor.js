@@ -24,8 +24,9 @@ class Processor extends EventEmitter {
         this.outputs = []
     }
 
-    preProcess(message) {
-        return
+    async preProcess(message) {
+        logger.debug("Processor.preProcess")
+        return message
         /* NOPE
         if (message.done) {
             this.emit('message', message)
@@ -46,6 +47,11 @@ class Processor extends EventEmitter {
 
     }
 
+    async postProcess(message) {
+        logger.debug("Processor.postProcess")
+        return message
+    }
+
     describe() {
         logger.log('describe')
         const inputs = this.getInputKeys()
@@ -62,11 +68,11 @@ class Processor extends EventEmitter {
 
     /**
      * TODO refactor
-     * 
+     *
      * Locates the configuration node in processors.ttl for the processor.
      * @returns {Object} - The configuration node.
      */
-    // is this duplicating? getMyConfig() 
+    // is this duplicating? getMyConfig()
     /*
         getMyConfig() {
             const dataset = this.config
@@ -79,7 +85,7 @@ class Processor extends EventEmitter {
  * Locates the configuration node in processors.ttl for the processor.
  * @returns {Object} - The configuration node.
  */
-    // is this duplicating? 
+    // is this duplicating?
     getMyConfigNode() {
         const dataset = this.config
         const configNode = grapoi({ dataset, term: this.configKey }).in()
@@ -181,7 +187,7 @@ class Processor extends EventEmitter {
             // message = structuredClone(message) // TODO make optional
             // message.dataset = dataset
             // no idea why this ^^ was necessary, without it the dataset wasn't usable
-            // structuredClone(message, {transfer:[dataset]}) failed too 
+            // structuredClone(message, {transfer:[dataset]}) failed too
             this.addTag(message)
 
             await this.process(message)
