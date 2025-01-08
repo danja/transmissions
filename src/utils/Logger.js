@@ -87,7 +87,7 @@ logger.reveal = function (instance) {
     }
     const props = JSON.stringify(serialized, null, 2)
     if (!instance) {
-        throw new Error(` no instance defined`)
+        logger.log(` no instance defined`)
         return
     }
     logger.log(`Instance of ${instance.constructor.name} with properties - \n${props}`)

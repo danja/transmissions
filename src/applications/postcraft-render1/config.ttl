@@ -9,7 +9,7 @@ t:dirWalker a trm:ConfigSet ;
 
 t:filesRename a trm:ConfigSet ;
   trm:inputField "filename" ;
-  trm:outputField "filename" ;
+  trm:outputField "filepath" ;
   trm:match ".md";
   trm:replace ".html".
 

@@ -126,7 +126,8 @@ class Processor extends EventEmitter {
 
     getPropertyFromMyConfig(property) {
         if (this.config.simples) {
-            const shortName = property.value.split('/').pop()
+            //  const shortName = property.value.split('/').pop()
+            const shortName = ns.getShortname(property)
             logger.debug(`Processor (simples), property = ${shortName}`)
             const value = this.config[shortName]
             logger.debug(`Processor (simples), value = ${value}`)
@@ -137,7 +138,8 @@ class Processor extends EventEmitter {
             return poi.out(property).term.value
         } catch (err) {
             logger.debug('* Warn : Processor.getPropertyFromMyConfig(), property not defined : ' + property)
-            return rdf.literal('undefined')
+            //  return rdf.literal('undefined')
+            return undefined
         }
     }
 

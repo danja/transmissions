@@ -54,54 +54,47 @@ class FileWriter extends Processor {
 
         logger.debug("Filewriter, message.filepath = " + message.filepath)
 
-        var filepath = this.getProperty(ns.trm.destinationFile)
+        var destinationFile = this.getProperty(ns.trm.destinationFile)
+        var filepath = message.filepath
 
-        if (!filepath) {
+        //   logger.reveal(filePath)
 
+        if (!destinationFile) { // TODO fix, do other cases, refactor
+            var targetDir = message.targetDir ?
+                message.targetDir : this.getProperty(ns.trm.targetDir)
+            targetDir = targetDir ? targetDir : '.'
 
-            ///filepath = this.getPropertyFromMyConfig(ns.trm.destinationFile)
-            ///logger.log(' - filepath from config : ' + filepath)
+            filepath = path.join(targetDir, message.filepath)
         }
-        logger.reveal(message)
-        process.exit()
-
-        var f
-        if (filepath.startsWith('/')) { // TODO unhackify
-            f = filepath
-        } else {
-
-            if (message.targetPath) {
-                f = path.join(message.targetPath, filepath)
-            } else {
-                f = path.join(message.dataDir, filepath)
-            }
+        logger.debug(`Filewriter, 1 filepath = ${filepath}`)
+        if (!path.isAbsolute(filepath)) {
+            filepath = path.join(message.targetPath, filepath)
         }
 
-
-
-
-        const dirName = dirname(f)
+        logger.debug(`Filewriter, filepath = ${filepath}`)
+        const dirName = dirname(filepath)
         logger.debug("Filewriter, dirName = " + dirName)
 
-        var contentPath = this.getPropertyFromMyConfig(ns.trm.contentPath)
+        /*
+                var contentPath = this.getPropertyFromMyConfig(ns.trm.contentPath)
 
-        if (typeof contentPath === 'undefined' || contentPath === 'undefined' || contentPath.value === 'undefined') {
-            contentPath = 'content'
-        }
+                if (typeof contentPath === 'undefined' || contentPath === 'undefined' || contentPath.value === 'undefined') {
+                    contentPath = 'content'
+                }
 
-        // logger.debug("Filewriter, contentPath = " + contentPath)
-        var content = message[contentPath.toString()] // TODO generalise.it
-        if (typeof content === 'object') {
-            content = JSON.stringify(content)
-        }
-
+                // logger.debug("Filewriter, contentPath = " + contentPath)
+                var content = message[contentPath.toString()] // TODO generalise.it
+                if (typeof content === 'object') {
+                    content = JSON.stringify(content)
+                }
+        */
+        var content = message.content // TODO generalise, see above
         logger.debug("Filewriter, content = " + content)
         logger.debug("Filewriter, typeof content = " + typeof content)
 
-
         this.mkdirs(dirName) // sync - see below
 
-        return await this.doWrite(f, content, message)
+        return await this.doWrite(filepath, content, message)
     }
 
     async doWrite(f, content, message) {
