@@ -34,7 +34,7 @@ class PostcraftDispatcher extends Processor {
    * @param {Object} message - The message object.
    */
   async process(message) {
-    logger.setLogLevel('debug')
+    //  logger.setLogLevel('debug')
     const postcraftConfig = message.dataset
     message.template = data.toString()
     logger.debug('PostcraftDispatcherPostcraftDispatcherPostcraftDispatcher ' + data)

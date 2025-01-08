@@ -12,7 +12,9 @@ class PostcraftPrep extends Processor {
   async process(message) {
     logger.setLogLevel("debug")
 
-
+    if (message.done) {
+      return this.emit('message', message)
+    }
     message.slug = this.extractSlug(message)
     message.targetFilename = this.extractTargetFilename(message)
     message.contentBlocks = {}
@@ -34,6 +36,7 @@ class PostcraftPrep extends Processor {
   extractSlug(message) { // TODO move this into a utils file - is also in DirWalker
 
     var slug = message.filename
+    // logger.reveal(message)
     if (slug.includes('.')) {
       slug = slug.substr(0, slug.lastIndexOf("."))
     }
@@ -41,7 +44,7 @@ class PostcraftPrep extends Processor {
   }
 
   extractTargetFilename(message) {
-    logger.reveal(message)
+
 
     /*
     if (message.targetPath) {
@@ -50,11 +53,16 @@ class PostcraftPrep extends Processor {
       return path.join(message.rootDir, message.entryContentMeta.targetDir, this.extractSlug(message) + '.html')
     }
 */
+    logger.reveal(message)
+
+    /*
     if (message.targetPath) {
       return path.join(message.targetPath, message.targetDir, this.extractSlug(message) + '.html')
     } else {
       return path.join(message.rootDir, message.targetDir, this.extractSlug(message) + '.html')
     }
+      */
+    return path.join(message.contentGroup.PostPages.targetDir, this.extractSlug(message) + '.html')
   }
 
   extractRelURL(message) { // TODO refactor

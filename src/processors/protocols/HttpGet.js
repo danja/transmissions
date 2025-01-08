@@ -45,7 +45,7 @@ class HttpGet extends Processor {
      * @emits message - Emits retrieved content and enriched message
      */
     async process(url, message) {
-        logger.setLogLevel('debug')
+        //   logger.setLogLevel('debug')
         logger.debug('HttpGet, url = ' + url)
         if (url === '~~done~~') {
             logger.log('HG DONE*****************')

@@ -11,6 +11,7 @@ class ConfigMap extends Processor {
   }
 
   async process(message) {
+    logger.setLogLevel('debug')
     if (!message.dataset) {
       logger.warn('No dataset provided')
       return this.emit('message', message)
@@ -24,36 +25,58 @@ class ConfigMap extends Processor {
 
     // Find ContentGroup instances
     for (const quad of poi.out(ns.rdf.type, ns.pc.ContentGroup).quads()) {
-      const groupId = quad.subject
-      const groupPoi = grapoi({ dataset, term: groupId })
+      const groupID = quad.subject
 
+      let groupName = ns.getShortname(groupID.value)
+      //   let type = ns.getShortname(processorType.value)
+      logger.debug(`*** groupName = ${groupName} `)
+      // *** groupID.value = http://hyperdata.it/transmissions/AtomFeed
+
+      const groupPoi = grapoi({ dataset, term: groupID })
+
+      if (!message.contentGroup) message.contentGroup = {}
       // Extract paths
       if (groupPoi.out(ns.fs.sourceDirectory).term) {
-        message.sourceDir = this.resolvePath(
+        let sourceDir = this.resolvePath(
           basePath,
-          groupPoi.out(ns.fs.sourceDirectory).term.value
-        )
+          groupPoi.out(ns.fs.sourceDirectory).term.value)
+
+        if (!message.contentGroup[groupName]) message.contentGroup[groupName] = {}
+        message.contentGroup[groupName].sourceDir = sourceDir
       }
 
       if (groupPoi.out(ns.fs.targetDirectory).term) {
-        message.targetDir = this.resolvePath(
+        let targetDir = this.resolvePath(
           basePath,
           groupPoi.out(ns.fs.targetDirectory).term.value
         )
+        if (!message.contentGroup[groupName]) message.contentGroup[groupName] = {}
+        message.contentGroup[groupName].targetDir = targetDir
       }
 
       if (groupPoi.out(ns.pc.template).term) {
-        message.filepath = this.resolvePath(
+        let templateFile = this.resolvePath(
           basePath,
           groupPoi.out(ns.pc.template).term.value
         )
+        if (!message.contentGroup[groupName]) message.contentGroup[groupName] = {}
+        message.contentGroup[groupName].templateFile = templateFile
       }
 
-      logger.debug(`Resolved paths:
-        sourceDir: ${message.sourceDir}
-        targetDir: ${message.targetDir}
-        filepath: ${message.filepath}`)
+      /*
+logger.debug(`Resolved :
+  groupName: ${groupName}
+  sourceDir: ${sourceDir}
+  targetDir: ${targetDir}
+  templateFile: ${templateFile}`)
+
+
+message.contentGroup[groupName] =
+{ "sourceDir": sourceDir, "targetDir": targetDir, "templateFile": templateFile }
+*/
+      //  logger.reveal(message)
     }
+    // process.exit()
 
     return this.emit('message', message)
   }

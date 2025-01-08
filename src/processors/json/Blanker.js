@@ -5,7 +5,7 @@ import ns from '../../utils/ns.js'
 class Blanker extends Processor {
     constructor(config) {
         super(config)
-        logger.setLogLevel('debug')
+        //    logger.setLogLevel('debug')
         logger.debug(config.blankValue)
         this.blankValue = config.blankValue || ''
     }

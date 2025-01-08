@@ -9,65 +9,12 @@ t:PostcraftMap a trm:ServiceConfig ;
     trm:key t:postcraftMap ;
     trm:group pc:ContentGroup .
 
-### clean 
-
-t:cacheRemove a trm:ServiceConfig ;
-    trm:key t:removeCache ;
-    trm:target "cache/" .
-
-t:articlesRemove a trm:ServiceConfig ;
-    trm:key t:removeArticles ;
-    trm:target "public/home/articles" .
-
-t:entriesRemove a trm:ServiceConfig ;
-    trm:key t:removeEntries ;
-    trm:target "public/home/entries" .
-
-t:journalRemove a trm:ServiceConfig ;
-    trm:key t:removeJournal ;
-    trm:target "public/home/journal" .
-
-t:todoRemove a trm:ServiceConfig ;
-    trm:key t:removeTodo ;
-    trm:target "public/home/todo" .
-
-t:indexRemove a trm:ServiceConfig ;
-    trm:key t:removeIndex ;
-    trm:target "public/home/index.html" .
-
-### copy #####################################
-
-t:copyStatic a trm:ServiceConfig ;
-    trm:key t:staticCopy ;
-    trm:source "content-static" ;
-    trm:destination "public/home/static" .
-
-t:copyMedia a trm:ServiceConfig ;
-    trm:key t:mediaCopy ;
-    trm:source "media" ;
-    trm:destination "public/home/media" .
-    
-t:copyCSS a trm:ServiceConfig ;
-    trm:key t:cssCopy ;
-    trm:source "layouts/mediocre/css" ;
-    trm:destination "public/home/css" .
-
-t:copyFonts a trm:ServiceConfig ;
-    trm:key t:fontsCopy ;
-    trm:source "layouts/mediocre/fonts" ;
-    trm:destination "public/home/fonts" .
-
-t:copyJS a trm:ServiceConfig ;
-    trm:key t:jsCopy ;
-    trm:source "layouts/mediocre/js" ;
-    trm:destination "public/home/js" .
-
 ### render ##################################
 
-trm:Describe  a trm:ServiceConfig ; 
+trm:Describe  a trm:ServiceConfig ;
  trm:key trm:describe .
 
-t:phaseOne a trm:ServiceConfig ; 
+t:phaseOne a trm:ServiceConfig ;
     trm:key t:markdownToRawPosts ;
     trm:marker "Phase One" .
 
@@ -77,20 +24,22 @@ t:walkPrep a trm:ReMap ;
     trm:rename (t:pp1 t:pp2) . # consider using blank nodes
     t:pp1   trm:pre     "content" ;
             trm:post    "template"  .
-    t:pp2   trm:pre     "entryContentMeta.sourceDir" ;
+    t:pp2   trm:pre     "contentGroup.PostContent.sourceDir" ;
             trm:post    "sourceDir" .
   #  t:pp2   trm:pre     "filename" ;
    #         trm:post    "filename"  .
- 
+
 t:entryRawPrep a trm:ReMap ;
-    trm:rename (t:er1 t:er3) . 
+    trm:rename (t:er1 t:er2 t:er3) .
    t:er1   trm:pre     "targetFilename" ;
-            trm:post    "filepath" . 
-    t:er3   trm:pre     "content" ;
+            trm:post    "filepath" .
+    t:er2   trm:pre     "content" ;
             trm:post    "contentBlocks.content" .
+    t:er3   trm:pre     "contentGroup.PostContent.templateFile" ;
+            trm:post    "templateFilename" .
 
 t:entryPagePrep a trm:ReMap ;
-    trm:rename (t:ppp1) . 
+    trm:rename (t:ppp1) .
     t:ppp1   trm:pre     "content" ;
             trm:post    "contentBlocks.content" .
 

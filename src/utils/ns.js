@@ -17,8 +17,9 @@ const ns = {
 //}
 
 ns.getShortname = function (url) {
-    // const url = uri.toString()
+
     if (!url) return
+    url = url.toString()
     const lastSlashIndex = url.lastIndexOf('/');
     const lastHashIndex = url.lastIndexOf('#');
     const path = url.slice(lastSlashIndex + 1);

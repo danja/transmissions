@@ -5,7 +5,7 @@ import Processor from '../base/Processor.js' // maybe more specific
  * FileReader class that extends xxxxxProcessor.
  * DESCRIPTION
  * #### __*Input*__
- * **message.INPUT** 
+ * **message.INPUT**
  * #### __*Output*__
  * **message.OUTPUT**
  */
@@ -24,7 +24,7 @@ class HttpClient extends Processor {
      * @param {Object} message - The message object.
      */
     async process(message) {
-        logger.setLogLevel('debug')
+        //   logger.setLogLevel('debug')
 
         // processing goes here
         return this.emit('message', message)

@@ -20,15 +20,36 @@ class DirWalker extends Processor {
         message.slugs = [];
         message.done = false;
 
+        /*
         // Resolve the root directory to scan
         let rootDir = message.targetPath || message.rootDir;
         rootDir = isAbsolute(rootDir) ? rootDir : resolve(process.cwd(), rootDir);
 
         logger.debug(`DirWalker root directory: ${rootDir}`);
+*/
+        if (!message.sourceDir) {
+            message.sourceDir = "."
+        }
+        logger.reveal(message)
+        logger.debug('\n\nDirWalker, message.targetPath = ' + message.targetPath)
+        logger.debug('DirWalker, message.rootDir = ' + message.rootDir)
+        logger.debug('DirWalker, message.sourceDir = ' + message.sourceDir)
+
+        let dirPath
+        if (isAbsolute(message.sourceDir)) {
+            dirPath = message.sourceDir
+        } else {
+            if (message.targetPath) {
+                dirPath = join(message.targetPath, message.sourceDir)
+            } else {
+                dirPath = join(message.rootDir, message.sourceDir)
+            }
+        }
+        logger.debug('DirWalker, dirPath = ' + dirPath)
 
         // process.exit() ////////////////////////////////////////////////////////////////////////
 
-        await this.walkDirectory(rootDir, message);
+        await this.walkDirectory(dirPath, message);
 
         // Send final done message
         const finalMessage = structuredClone(message);

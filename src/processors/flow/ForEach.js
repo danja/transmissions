@@ -7,7 +7,7 @@ class ForEach extends Processor {
     }
 
     async process(message) {
-        logger.setLogLevel('debug')
+        //   logger.setLogLevel('debug')
         logger.debug('ForEach execute method called')
 
         if (!message.foreach || !Array.isArray(message.foreach)) {

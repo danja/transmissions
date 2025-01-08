@@ -14,8 +14,8 @@ class FrontPagePrep extends Processor {
 
 
   async process(message) {
-    //  logger.setLogLevel('debug')
-
+    logger.setLogLevel('debug')
+    //logger.reveal(message)
     if (message.targetPath) {
       message.templateFilename = path.join(message.targetPath, message.indexPage.templateFilename)
     } else {
@@ -23,6 +23,7 @@ class FrontPagePrep extends Processor {
     }
 
     logger.debug('FrontPagePrep, Template = ' + message.templateFilename)
+    // process.exit()
 
     const rawEntryPaths = this.resolveRawEntryPaths(message)
     message.content = ''

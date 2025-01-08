@@ -9,7 +9,7 @@ class AtomFeedPrep extends Processor {
     }
 
     async process(message) {
-        logger.setLogLevel('debug')
+        //  logger.setLogLevel('debug')
         const entries = message.slugs || [];
         const siteUrl = message.site?.url || 'https://danny.ayers.name';
 

@@ -20,7 +20,7 @@ class EntryContentToPagePrep extends Processor {
     }
     logger.setLogLevel('debug')
 
-    logger.reveal(message)
+    // logger.reveal(message)
 
     /*
         if (message.targetPath) {
@@ -28,13 +28,15 @@ class EntryContentToPagePrep extends Processor {
         } else {
           message.templateFilename = path.join(message.rootDir, message.entryContentToPage.templateFilename)
         }
-    
+
         logger.log("################ message.templateFilename = " + message.templateFilename)
-    
+
         message.template = false // ???????????
     */
     message.contentBlocks.content = message.content
-    logger.reveal(message)
+    //logger.reveal(message)
+
+    /*
     if (path.isAbsolute(message.targetDir)) {
       message.filepath = path.join(message.targetDir, message.slug + '.html')
     } else {
@@ -43,8 +45,9 @@ class EntryContentToPagePrep extends Processor {
       } else {
         message.filepath = path.join(message.rootDir, message.targetDir, message.slug + '.html')
       }
-
     }
+      */
+    message.filepath = path.join(message.contentGroup.PostPages.targetDir, message.slug + '.html')
     logger.debug('EntryContentToPagePrep, message.filepath = ' + message.filepath)
 
     this.emit('message', message)

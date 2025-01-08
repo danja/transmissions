@@ -11,7 +11,13 @@ class FileReader extends Processor {
     }
 
     async process(message) {
+        /*
+        if (message.done) { // TODO shouldn't get this far
+            return this.emit('message', message)
+        }
+            */
         logger.setLogLevel('debug')
+        logger.debug(`\n\nFileReader.process(), this.getTag() =  ${this.getTag()}`);
         //    logger.setLogLevel('info')
         logger.debug(`\n\n1 FileReader.process(), message.fullPath =  ${message.fullPath}`);
         logger.debug(`FileReader.process(), message.filepath = ${message.filepath}`);
@@ -26,7 +32,10 @@ class FileReader extends Processor {
 
            */
             var filePath
+            //logger.reveal(message)
+
             if (!message.fullPath) {
+                if (!message.filepath) return /////////////////////
                 if (message.targetPath && !path.isAbsolute(message.filepath)) { // TODO clunky!
                     logger.debug(`\n\n2 FileReader.process(), message.filepath = ${message.filepath}`);
                     logger.debug(`FileReader.process(), message.targetPath = ${message.targetPath}`);
