@@ -5,7 +5,7 @@
 @prefix pc: <http://purl.org/stuff/postcraft/> .
 
 t:dirWalker a trm:ConfigSet ;
-  trm:sourceDir "content-raw/entries" .
+  trm:sourceDir "content-raw" .
 
 t:filesRename a trm:ConfigSet ;
   trm:inputField "filename" ;

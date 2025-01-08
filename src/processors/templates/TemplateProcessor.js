@@ -23,7 +23,7 @@ class TemplateProcessor extends Processor {
    * @param {Object} message - The message object.
    */
   async process(message) {
-    logger.setLogLevel("debug");
+   // logger.setLogLevel("debug");
 
     // processing goes here
     return this.emit("message", message);

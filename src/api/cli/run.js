@@ -78,7 +78,7 @@ async function main() {
                 yargsInstance.showHelp()
                 return
             }
-            console.log(`In run.js :\napplication : ${argv.application}\ntarget : ${argv.target}\nmessage : ${argv.message}`)
+            //  console.log(`In run.js :\napplication : ${argv.application}\ntarget : ${argv.target}\nmessage : ${argv.message}`)
             await commandUtils.begin(argv.application, argv.target, argv.message, argv.verbose)
         })
         .help('h')

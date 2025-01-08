@@ -39,7 +39,7 @@ class StringReplace extends Processor {
      * @param {Object} message - The message object containing content, match, and replace strings
      */
     async process(message) {
-        logger.setLogLevel('debug')
+        // logger.setLogLevel('debug')
         const inputField = this.getProperty(ns.trm.inputField)
         const outputField = this.getProperty(ns.trm.outputField)
 

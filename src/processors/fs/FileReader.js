@@ -16,7 +16,7 @@ class FileReader extends Processor {
             return this.emit('message', message)
         }
             */
-        logger.setLogLevel('debug')
+        //   logger.setLogLevel('debug')
         logger.debug(`\n\nFileReader.process(), this.getTag() =  ${this.getTag()}`);
         //    logger.setLogLevel('info')
         logger.debug(`\n\n1 FileReader.process(), message.fullPath =  ${message.fullPath}`);

@@ -1,5 +1,6 @@
 import { readdir } from 'fs/promises';
-import { join, extname, relative, resolve, isAbsolute } from 'path';
+// import { join, extname, relative, resolve, isAbsolute } from 'path';
+import path from 'path';
 import ns from '../../utils/ns.js'
 import logger from '../../utils/Logger.js';
 import Processor from '../base/Processor.js';
@@ -13,7 +14,7 @@ class DirWalker extends Processor {
     }
 
     async process(message) {
-        logger.setLogLevel('debug')
+        //  logger.setLogLevel('debug')
         logger.debug('\nDirWalker.process');
 
         // Initialize message state
@@ -21,8 +22,13 @@ class DirWalker extends Processor {
         message.slugs = [];
         message.done = false;
 
-        var sourceDir = this.getProperty(ns.trm.sourceDir)
+        const sourceDirProperty = this.getProperty(ns.trm.sourceDir)
+        var sourceDir = sourceDirProperty
+
+        // hacky, but need it later
+        if (!message.sourceDir) message.sourceDir = sourceDir
         logger.log(sourceDir)
+
         /*
         var this.getPropertyFromMyConfig(ns.trm.source)
         this.getPropertyFromMyConfig(n)
@@ -45,19 +51,22 @@ class DirWalker extends Processor {
         logger.debug('DirWalker, message.sourceDir = ' + message.sourceDir)
 
         let dirPath
-        if (isAbsolute(sourceDir)) {
+        if (path.isAbsolute(sourceDir)) {
             dirPath = sourceDir
         } else {
             if (message.targetPath) {
-                dirPath = join(message.targetPath, sourceDir)
+                dirPath = path.join(message.targetPath, sourceDir)
             } else {
-                dirPath = join(message.rootDir, sourceDir)
+                dirPath = path.join(message.rootDir, sourceDir)
             }
         }
         logger.debug('DirWalker, dirPath = ' + dirPath)
 
         //  process.exit() ////////////////////////////////////////////////////////////////////////
 
+        if (!message.sourceDir) {
+            message.sourceDir = sourceDirProperty
+        }
         await this.walkDirectory(dirPath, message);
 
         // Send final done message
@@ -68,15 +77,16 @@ class DirWalker extends Processor {
 
     async walkDirectory(dir, baseMessage) {
         // try {
+
         const entries = await readdir(dir, { withFileTypes: true });
 
         for (const entry of entries) {
-            const fullPath = join(dir, entry.name);
+            const fullPath = path.join(dir, entry.name);
 
             if (entry.isDirectory() && !this.excludePrefixes.includes(entry.name[0])) {
                 await this.walkDirectory(fullPath, baseMessage);
             } else if (entry.isFile()) {
-                const extension = extname(entry.name);
+                const extension = path.extname(entry.name);
                 const prefix = entry.name[0];
 
                 if (!this.excludePrefixes.includes(prefix) &&
@@ -84,8 +94,16 @@ class DirWalker extends Processor {
 
                     const message = structuredClone(baseMessage);
                     message.filename = entry.name;
+
+                    // sooo hacky
+                    //  message.subDir = dir.replace(message.targetPath, '')
+                    // message.subDir = message.subDir.replace(message.sourceDir, '')
+                    // message.subDir = message.subDir.substring(2)
+                    message.subdir = path.dirname(path.relative(message.targetPath, fullPath)).split(path.sep)[1];
+
+
                     message.fullPath = fullPath; // Absolute path
-                    message.filepath = relative(baseMessage.targetPath || baseMessage.rootDir, fullPath); // Relative path
+                    message.filepath = path.relative(baseMessage.targetPath || baseMessage.rootDir, fullPath); // Relative path
                     message.done = false;
                     message.counter++;
 

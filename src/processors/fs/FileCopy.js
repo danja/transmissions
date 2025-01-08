@@ -50,7 +50,7 @@ class FileCopy extends Processor {
      * @param {Object} message - The input message
      */
     async process(message) {
-        logger.setLogLevel("info")
+        //  logger.setLogLevel("info")
 
         logger.debug("message.rootDir = " + message.rootDir)
         var source, destination
