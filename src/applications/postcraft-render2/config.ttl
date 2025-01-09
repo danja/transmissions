@@ -4,17 +4,13 @@
 @prefix t: <http://hyperdata.it/transmissions/> . # for custom terms & instances
 @prefix pc: <http://purl.org/stuff/postcraft/> .
 
-t:dirWalker a trm:ConfigSet ;
-  trm:sourceDir "content-raw" .
+t:cacheWalker a trm:ConfigSet ;
+  trm:sourceDir "cache" .
 
-t:templatePrep a trm:ReMap ;
-    trm:rename (t:tp1 ).
-    t:tp1   trm:pre     "content" ;
-            trm:post    "contentBlocks.content" .
+:pageTemplater a trm:ConfigSet ;
+  trm:templateFilename "cache" .
 
-
-t:contentTemplater a trm:ConfigSet ;
-  trm:templateFilename "layouts/middlin/templates/entry-content_template.njk" .
+  ################
 
 t:filesRename a trm:ConfigSet ;
   trm:inputField "filename" ;

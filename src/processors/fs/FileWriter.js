@@ -35,7 +35,7 @@ class FileWriter extends Processor {
      * @param {Object} message - The execution message.
      */
     async process(message) {
-        logger.setLogLevel('debug')
+        //   logger.setLogLevel('debug')
         if (message.dump) {
             // TODO make optional (on done?) - is a pain for multi
             //    const filename = `message_${new Date().toISOString()}.json`

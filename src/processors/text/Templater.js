@@ -26,7 +26,9 @@
 
 import Processor from '../base/Processor.js'
 import nunjucks from 'nunjucks'
+import path from 'path'
 import logger from '../../utils/Logger.js'
+import ns from '../../utils/ns.js'
 
 class Templater extends Processor {
     constructor(config) {
@@ -38,30 +40,40 @@ class Templater extends Processor {
      * @param {Object} message - The message object containing template and content information
      */
     async process(message) {
-        //  logger.setLogLevel('debug')
-        if (message.templateFilename) {
-            logger.debug(`Templater, message.templateFilename = ${message.templateFilename}`)
+        // logger.setLogLevel('debug')
+
+        var templateFilename = this.getProperty(ns.trm.templateFilename)
+
+        if (templateFilename) {
+            logger.debug(`\nTemplater.process, templateFilename = ${templateFilename}`)
 
             // Extract path and filename from templateFilename
-            const path = message.templateFilename.substr(0, message.templateFilename.lastIndexOf("/"))
-            const filename = message.templateFilename.substr(message.templateFilename.lastIndexOf("/") + 1)
+            var targetPath = templateFilename.substr(0, templateFilename.lastIndexOf("/"))
+            const filename = templateFilename.substr(templateFilename.lastIndexOf("/") + 1)
 
-            // Configure Nunjucks with the template path
-            nunjucks.configure(path, { autoescape: false })
+            if (!path.isAbsolute(targetPath)) {
+                targetPath = path.join(this.getProperty(ns.trm.targetPath, message.rootDir), targetPath)
+            }
 
-            logger.debug('Templater, path = ' + path)
+            logger.debug('\nTemplater, targetPath = ' + targetPath)
             logger.debug('Templater, filename = ' + filename)
 
+            // Configure Nunjucks with the template path
+            nunjucks.configure(targetPath, { autoescape: false })
+
+            //   logger.debug(`content PRE = ${message.content}`)
             // Render the template file
             message.content = nunjucks.render(filename, message.contentBlocks)
 
-            //   logger.debug('======')
-            // logger.reveal(message.contentBlocks)
-        } else {
-            // Configure Nunjucks for string templates
+            logger.debug(`content POST = ${message.content}`)
+
+
+        } else {   // Configure Nunjucks for string templates
+            // TODO priorities
+
             nunjucks.configure({ autoescape: false })
 
-            logger.reveal(message)
+            //    logger.reveal(message)
             // Render the template string
             message.content = nunjucks.renderString(message.template, message.contentBlocks)
         }

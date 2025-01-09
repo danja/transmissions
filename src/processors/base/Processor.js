@@ -86,11 +86,14 @@ class Processor extends EventEmitter {
  * @returns {Object} - The configuration node.
  */
 
-    getProperty(property) {
+    getProperty(property, fallback) {
         const shortName = ns.getShortname(property)
-        if (this.message.shortName) return this.message.shortName
+        if (this.message[shortName]) return this.message[shortName]
+
         // MANIFEST IS WHERE?
-        return this.getPropertyFromMyConfig(property)
+        const maybe = this.getPropertyFromMyConfig(property)
+        if (maybe) return maybe
+        return fallback
     }
 
     // is this duplicating?

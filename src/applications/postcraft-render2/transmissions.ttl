@@ -18,29 +18,18 @@
 
 ## ###############################################################
 
-:render1 a trm:Transmission ;
-    rdfs:label "render1" ;
-    rdfs:comment "render raw entry pages" ;
-   trm:pipe (:r110 :r120 :r130 :r140 :r150 :r160 :r170) .
+:render2 a trm:Transmission ;
+    rdfs:label "render2" ;
+    rdfs:comment "template entry html to pages" ;
+   trm:pipe (:r210 :r220 :SM) .
 
-:r110 a :DirWalker ; # automatically forks
-    trm:config :dirWalker .
+:r210 a :DirWalker ; # automatically forks
+    trm:config :cacheWalker .
 
-:r120 a :FileReader . # the markdown content
+:r220 a :Templater .
+    trm:config :pageTemplater .
 
-:r130 a :MarkdownToHTML .
-
-:r140 a :Restructure ; # moves content into  contentBlocks
-   trm:configKey :templatePrep .
-
-:r150 a :Templater ; # section wrapper
-    trm:config :contentTemplater .
-
-:r160 a :StringReplace ; # *.md -> *.html
-    trm:config :filesRename .
-
-:r170 a :FileWriter ;
-    trm:config :fileWriter .
+:r230 a :FileWriter .
 
 
 
@@ -71,12 +60,7 @@
 
 :s110 a :FileWriter .
 
-############### entryContentToEntryPage
-:s120 a :EntryContentToPagePrep .
 
-:s130 a :Templater .
-
-:s140 a :FileWriter .
 
 #######################
 :s150  a :Unfork .

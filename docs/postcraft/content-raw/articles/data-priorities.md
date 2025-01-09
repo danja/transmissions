@@ -13,14 +13,15 @@ Properties in the :
 
 Right now I need it in `DirWalker`. It appears I've used `message.sourceDir` there before. Not ideal naming, but I get why - "sourceDir" will make sense in lots of other processors.
 
-I have the following in node:
-```javascript
-{
-"targetPath": "/home/danny/github-danny/postcraft/test-site",
-"sourceDir": "content-raw",
-"filename": "2025-01-08_hello-again.md",
-"fullPath": "/home/danny/github-danny/postcraft/test-site/content-raw/entries/2025-01-08_hello-again.md",
-```
- What's the best way to pull out the subdir path `entries`
 
- Ok, I believe I have this first part working.
+```javascript
+import ns from '../../utils/ns.js'
+...
+
+var templateFilename = this.getProperty(ns.trm.templateFilename)
+```
+
+need to check :
+```
+"targetPath": "/home/danny/github-danny/postcraft/test-site",
+```
