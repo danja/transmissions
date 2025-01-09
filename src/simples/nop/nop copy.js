@@ -1,7 +1,7 @@
 import logger from '../../utils/Logger.js'
 // import EnvLoader from '../../processors/system/EnvLoader.js'
 // import WhiteboardToMessage from '../../processors/util/WhiteboardToMessage.js'
-import NOP from '../../processors/util/NOP.js'
+import NOP from '../../processors/flow/NOP.js'
 logger.log('NOP simple')
 
 const config = {
