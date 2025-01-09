@@ -29,7 +29,7 @@ class Unfork extends Processor {
 
         logger.debug('Unfork ----')
         if (message.done) {
-            logger.debug(' - Unfork passing message')
+            logger.debug(' - Unfork passing message >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
             message.done = false // in case it's needed later
 
             /*

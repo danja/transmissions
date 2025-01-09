@@ -40,12 +40,16 @@ class Templater extends Processor {
      * @param {Object} message - The message object containing template and content information
      */
     async process(message) {
-        //  logger.setLogLevel('debug')
-
+        logger.setLogLevel('debug')
+        //   logger.log(this.getPropertyFromMyConfig(ns.trm.templateFilename))
+        //    this.addPropertyToMyConfig(ns.trm.templateFilename, 'poo')
+        //   this.showMyConfig()
         var templateFilename = this.getProperty(ns.trm.templateFilename)
 
+        logger.debug(`\nTemplater.process, templateFilename = ${templateFilename}`)
+        //   process.exit()
         if (templateFilename) {
-            logger.debug(`\nTemplater.process, templateFilename = ${templateFilename}`)
+            //       logger.debug(`\nTemplater.process, templateFilename = ${templateFilename}`)
 
             // Extract path and filename from templateFilename
             var targetPath = templateFilename.substr(0, templateFilename.lastIndexOf("/"))

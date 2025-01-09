@@ -8,15 +8,16 @@ t:cacheWalker a trm:ConfigSet ;
   trm:sourceDir "cache" ;
   trm:includeExtensions "['.html', '.md', '.ttl', '.js', '.json', '.txt',  '.css']" .
 
-t:templatePrep a trm:ReMap ;
+t:templatePrep a trm:ConfigSet  ;
     trm:rename (t:tp1 ).
     t:tp1   trm:pre     "content" ;
             trm:post    "contentBlocks.content" .
 
 t:pageTemplater a trm:ConfigSet ;
+trm:configKey t:pTemplater ;
   trm:templateFilename "layouts/middlin/templates/entry-page_template.njk" .
 
-t:writePrep a trm:ReMap ;
+t:writePrep a trm:ConfigSet  ;
     trm:rename (t:wp1 ).
     t:wp1   trm:pre     "filename" ;
             trm:post    "filepath" .
@@ -25,6 +26,10 @@ t:fileWriter a trm:ConfigSet ;
   trm:targetDir "public" .
 
   ################
+
+t:indexTemplater a trm:ConfigSet ;
+
+  trm:templateFilename "layouts/middlin/templates/index-page_template.njk" .
 
 t:filesRename a trm:ConfigSet ;
   trm:inputField "filename" ;

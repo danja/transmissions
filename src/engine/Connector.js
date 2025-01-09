@@ -33,6 +33,8 @@ class Connector extends EventEmitter {
             toProcessor.receive(message)
         })
             */
+
+        // previous lacked async
         fromProcessor.on('message', async (message) => {
             var tags = fromProcessor.message?.tags ? ` [${fromProcessor.message.tags}] ` : ''
             toProcessor.tags = tags

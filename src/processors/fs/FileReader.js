@@ -12,11 +12,11 @@ class FileReader extends Processor {
 
     async process(message) {
 
-        /*
+
         if (message.done) { // TODO shouldn't get this far
             return this.emit('message', message)
         }
-            */
+
         //   logger.setLogLevel('debug')
         logger.debug(`\n\nFileReader.process(), this.getTag() =  ${this.getTag()}`);
         //    logger.setLogLevel('info')
@@ -24,53 +24,50 @@ class FileReader extends Processor {
         logger.debug(`FileReader.process(), message.filepath = ${message.filepath}`);
         logger.debug(`FileReader.process(), message.targetPath = ${message.targetPath}`);
 
-        try {
-            /*             const filePath = message.fullPath || message.filepath;
-                       if (!filePath) {
-                           logger.warn('FileReader: No file path provided');
-                           return;
-                       }
 
-           */
-            var filePath
-            //logger.reveal(message)
+        /*             const filePath = message.fullPath || message.filepath;
+                   if (!filePath) {
+                       logger.warn('FileReader: No file path provided');
+                       return;
+                   }
 
-            if (!message.fullPath) {
-                if (!message.filepath) return /////////////////////
-                if (message.targetPath && !path.isAbsolute(message.filepath)) { // TODO clunky!
-                    logger.debug(`\n\n2 FileReader.process(), message.filepath = ${message.filepath}`);
-                    logger.debug(`FileReader.process(), message.targetPath = ${message.targetPath}`);
-                    filePath = path.join(message.targetPath, message.filepath)
-                } else {
-                    filePath = message.filepath
-                }
+       */
+        var filePath
+        //logger.reveal(message)
+
+        if (!message.fullPath) {
+            if (!message.filepath) return /////////////////////
+            if (message.targetPath && !path.isAbsolute(message.filepath)) { // TODO clunky!
+                logger.debug(`\n\n2 FileReader.process(), message.filepath = ${message.filepath}`);
+                logger.debug(`FileReader.process(), message.targetPath = ${message.targetPath}`);
+                filePath = path.join(message.targetPath, message.filepath)
             } else {
-                filePath = message.fullPath
+                filePath = message.filepath
             }
-
-            logger.debug(`\n\n3 FileReader.process(), reading file: ${filePath}`);
-            logger.debug(`FileReader.process(), process.cwd() = ${process.cwd()}`)
-            // Check file accessibility
-            await new Promise((resolve, reject) => {
-                access(filePath, constants.R_OK, (err) => {
-                    if (err) {
-                        reject(new Error(`File ${filePath} is not readable: ${err.message}`));
-                    }
-                    resolve();
-                });
-            });
-
-            // Read file content
-            const content = await readFile(filePath, 'utf8');
-            message.content = content;
-
-            logger.debug(`FileReader successfully read file: ${filePath}`);
-            return this.emit('message', message);
-
-        } catch (err) {
-            logger.error('FileReader error:', err);
-            throw err;
+        } else {
+            filePath = message.fullPath
         }
+
+        logger.debug(`\n\n3 FileReader.process(), reading file: ${filePath}`);
+        logger.debug(`FileReader.process(), process.cwd() = ${process.cwd()}`)
+        // Check file accessibility
+        await new Promise((resolve, reject) => {
+            access(filePath, constants.R_OK, (err) => {
+                if (err) {
+                    reject(new Error(`File ${filePath} is not readable: ${err.message}`));
+                }
+                resolve();
+            });
+        });
+
+        // Read file content
+        const content = await readFile(filePath, 'utf8');
+        message.content = content;
+
+        logger.debug(`FileReader successfully read file: ${filePath}`);
+        return this.emit('message', message);
+
+
     }
 }
 

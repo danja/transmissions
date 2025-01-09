@@ -91,18 +91,52 @@ class Processor extends EventEmitter {
  */
 
     getProperty(property, fallback) {
+        logger.log(`IDDDDDDDDDDD ${this.id}`)
+        logger.log(`getMyConfigNode() = ${this.getMyConfigNode()}`)
+        const poi = this.getMyPoi()
+        logger.log(`PPPPPPPPPPPPPP ${poi.out(property).term}`)
+        logger.log(`PROPERTY = ${property}`)
+
+
         const shortName = ns.getShortname(property)
+
+        this.showMyConfig()
         if (this.message[shortName]) return this.message[shortName]
 
         // MANIFEST IS WHERE?
         const maybe = this.getPropertyFromMyConfig(property)
+        //  this.showMyConfig()
+        logger.log(`maybe = ${maybe}`)
         if (maybe) return maybe
         return fallback
+    }
+
+    getPropertyFromMyConfig(property) {
+        if (this.config.simples) {
+            //  const shortName = property.value.split('/').pop()
+            const shortName = ns.getShortname(property)
+            logger.debug(`Processor (simples), property = ${shortName}`)
+            const value = this.config[shortName]
+            logger.debug(`Processor (simples), value = ${value}`)
+            return value
+        }
+
+        const poi = this.getMyPoi()
+        try {
+            return poi.out(property).term.value
+        } catch (err) {
+            const id = ns.shortName(this.id)
+            const type = ns.shortName(this.type.value)
+            logger.debug(`\n* Warn : Processor.getPropertyFromMyConfig() for ${type} ${id}, property ${property} not defined *\n`)
+            //  return rdf.literal('undefined')
+            return undefined
+        }
     }
 
     // is this duplicating?
     getMyConfigNode() {
         const dataset = this.config
+        //    const configNode = grapoi({ dataset, term: this.configKey }).in()
         const configNode = grapoi({ dataset, term: this.configKey }).in()
         return configNode.term
     }
@@ -131,24 +165,7 @@ class Processor extends EventEmitter {
         logger.poi(poi)
     }
 
-    getPropertyFromMyConfig(property) {
-        if (this.config.simples) {
-            //  const shortName = property.value.split('/').pop()
-            const shortName = ns.getShortname(property)
-            logger.debug(`Processor (simples), property = ${shortName}`)
-            const value = this.config[shortName]
-            logger.debug(`Processor (simples), value = ${value}`)
-            return value
-        }
-        const poi = this.getMyPoi()
-        try {
-            return poi.out(property).term.value
-        } catch (err) {
-            logger.debug('* Warn : Processor.getPropertyFromMyConfig(), property not defined : ' + property)
-            //  return rdf.literal('undefined')
-            return undefined
-        }
-    }
+
 
     async deletePropertyFromMyConfig(predicate, value) {
         const myConfigNode = this.getMyConfigNode()
@@ -180,17 +197,16 @@ class Processor extends EventEmitter {
         }
     }
 
-    /*
+
     cloneContext(baseContext) {
         const message = structuredClone(baseContext)
         if (baseContext.dataset) {
-            //   var dataset = baseContext.dataset
-            //            message.dataset = dataset
+
             message.dataset = baseContext.dataset
         }
         return message
     }
-        */
+
 
 
     /**
@@ -203,9 +219,11 @@ class Processor extends EventEmitter {
 
             logger.log('HERE')
 
+            message = this.cloneContext(message)// TODO make optional
+            this.message = message // IS OK? needed where?
             // totes decoupling - is needed?
-            message = structuredClone(message)
-            this.message = structuredClone(message)
+            //   message = structuredClone(message)
+            // this.message = structuredClone(message)
 
             this.addTag(message)
 
@@ -225,7 +243,7 @@ this.message = message // IS OK? needed where?
             // message.done = false
 
             await this.preProcess(message)
-            // logger.log('HERE')
+            logger.log(`HERE in ${this.type.value} ${this.id}`)
             await this.process(message)
             await this.postProcess(message)
 
@@ -299,8 +317,9 @@ this.message = message // IS OK? needed where?
     }
 
 
+    // previous
     /*
-        emit(event, message) {
+       emit(event, message) {
             super.emit(event, message)
             return message
         }
@@ -308,6 +327,7 @@ this.message = message // IS OK? needed where?
 
     getOutputs() {
         const results = this.outputs
+
         this.outputs = []
         return results
     }
