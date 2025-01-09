@@ -8,7 +8,7 @@ class WhiteboardToMessage extends Processor {
     }
     async process(message) {
 
-        logger.log('WhiteboardToMessage at (' + message.tags + ') ' + this.getTag())
+        logger.log('WhiteboardToMessage at [' + message.tags + '] ' + this.getTag())
 
         const originalArray = this.config.whiteboard
 

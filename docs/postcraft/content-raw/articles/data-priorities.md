@@ -15,6 +15,7 @@ Right now I need it in `DirWalker`. It appears I've used `message.sourceDir` the
 
 
 ```javascript
+import path from 'path'
 import ns from '../../utils/ns.js'
 ...
 
@@ -24,4 +25,9 @@ var templateFilename = this.getProperty(ns.trm.templateFilename)
 need to check :
 ```
 "targetPath": "/home/danny/github-danny/postcraft/test-site",
+```
+
+for future ref, this is the funny replace I needed in `DirWalker` to get a subdirectory :
+```javascript
+      message.subdir = path.dirname(path.relative(message.targetPath, fullPath)).split(path.sep)[1];
 ```

@@ -23,7 +23,7 @@ class Connector extends EventEmitter {
         fromProcessor.on('message', (message) => { //  = {}
             var tags = ''
             //     if (toProcessor.message) {
-            tags = ' (' + fromProcessor.message.tags + ') '
+            tags = ' [' + fromProcessor.message.tags + '] '
             toProcessor.tags = tags // TODO tidy
             //   }
             const thisTag = footpath.urlLastPart(this.toName)

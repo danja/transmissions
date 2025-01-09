@@ -16,7 +16,7 @@ class CaptureAll extends Processor {
     }
 
     async process(message) {
-        logger.log('CaptureAll at (' + message.tags + ') ' + this.getTag())
+        logger.log('CaptureAll at [' + message.tags + '] ' + this.getTag())
         this.config.whiteboard.push(message)
         return this.emit('message', message)
     }

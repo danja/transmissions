@@ -5,10 +5,24 @@
 @prefix pc: <http://purl.org/stuff/postcraft/> .
 
 t:cacheWalker a trm:ConfigSet ;
-  trm:sourceDir "cache" .
+  trm:sourceDir "cache" ;
+  trm:includeExtensions "['.html', '.md', '.ttl', '.js', '.json', '.txt',  '.css']" .
 
-:pageTemplater a trm:ConfigSet ;
-  trm:templateFilename "cache" .
+t:templatePrep a trm:ReMap ;
+    trm:rename (t:tp1 ).
+    t:tp1   trm:pre     "content" ;
+            trm:post    "contentBlocks.content" .
+
+t:pageTemplater a trm:ConfigSet ;
+  trm:templateFilename "layouts/middlin/templates/entry-page_template.njk" .
+
+t:writePrep a trm:ReMap ;
+    trm:rename (t:wp1 ).
+    t:wp1   trm:pre     "filename" ;
+            trm:post    "filepath" .
+
+t:fileWriter a trm:ConfigSet ;
+  trm:targetDir "public" .
 
   ################
 
@@ -17,9 +31,5 @@ t:filesRename a trm:ConfigSet ;
   trm:outputField "filepath" ;
   trm:match ".md";
   trm:replace ".html".
-
-t:fileWriter a trm:ConfigSet ;
-  trm:targetDir "cache" .
-
 
 

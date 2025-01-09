@@ -40,7 +40,7 @@ class Templater extends Processor {
      * @param {Object} message - The message object containing template and content information
      */
     async process(message) {
-        // logger.setLogLevel('debug')
+        //  logger.setLogLevel('debug')
 
         var templateFilename = this.getProperty(ns.trm.templateFilename)
 

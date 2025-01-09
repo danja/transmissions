@@ -14,7 +14,7 @@ class DirWalker extends Processor {
     }
 
     async process(message) {
-        //  logger.setLogLevel('debug')
+        // logger.setLogLevel('debug')
         logger.debug('\nDirWalker.process');
 
         // Initialize message state
@@ -25,6 +25,14 @@ class DirWalker extends Processor {
         const sourceDirProperty = this.getProperty(ns.trm.sourceDir)
         var sourceDir = sourceDirProperty
 
+        var includeExtensions = this.getProperty(ns.trm.includeExtensions)
+        if (includeExtensions) {
+            logger.debug(`includeExtensions = ${includeExtensions}`)
+            includeExtensions = includeExtensions.replaceAll('\'', '"')
+            logger.debug(`includeExtensions = ${includeExtensions}`)
+            this.includeExtensions = JSON.parse(includeExtensions);
+        }
+        // process.exit()
         // hacky, but need it later
         if (!message.sourceDir) message.sourceDir = sourceDir
         logger.log(sourceDir)
@@ -76,13 +84,13 @@ class DirWalker extends Processor {
     }
 
     async walkDirectory(dir, baseMessage) {
-        // try {
+        logger.debug(`DirWalker.walkDirectory, dir = ${dir}`)
 
         const entries = await readdir(dir, { withFileTypes: true });
 
         for (const entry of entries) {
             const fullPath = path.join(dir, entry.name);
-
+            logger.debug(`DirWalker.walkDirectory, fullPath = ${fullPath}`)
             if (entry.isDirectory() && !this.excludePrefixes.includes(entry.name[0])) {
                 await this.walkDirectory(fullPath, baseMessage);
             } else if (entry.isFile()) {

@@ -21,48 +21,27 @@
 :render2 a trm:Transmission ;
     rdfs:label "render2" ;
     rdfs:comment "template entry html to pages" ;
-   trm:pipe (:r210 :r220 :SM) .
+   trm:pipe (:r210 :r220 :r230 :r240 :r250 :r260
+     :N   :DE  :s150 :s160 :s170 :s180 :s190 :s200 :s210 ) .
 
 :r210 a :DirWalker ; # automatically forks
     trm:config :cacheWalker .
 
-:r220 a :Templater .
+:r220 a :FileReader . # the markdown content
+
+:r230 a :Restructure ; # moves content into  contentBlocks
+   trm:configKey :templatePrep .
+
+:r240 a :Templater ; # for individual post pages
     trm:config :pageTemplater .
 
-:r230 a :FileWriter .
+:r250 a :Restructure ; # moves content into  contentBlocks
+   trm:configKey :writePrep .
 
+:r260 a :FileWriter ;
+    trm:config :fileWriter .
 
-
-
-
-#######################################################
-# :s10 a :DatasetReader . # read the manifest NO done in system
-
-:q10 a :ConfigMap ;
-    trm:config :renderEntries .
-
-:rq20 a :Restructure ;
-    trm:configKey :walkPrep .
-
-#######################################
-:s50 a :DirWalker . # automatically forks
-
-:s60 a :FileReader . # the markdown content
-
-:s70 a :PostcraftPrep . # set up title, filenames etc
-
-:s80 a :MarkdownToHTML .
-
-:s90 a :Restructure ;
-   trm:configKey :entryRawPrep .
-
-:s100 a :Templater .
-
-:s110 a :FileWriter .
-
-
-
-#######################
+####################### index.html
 :s150  a :Unfork .
 
 :s160 a :FrontPagePrep .
@@ -70,3 +49,12 @@
 :s170 a :Templater .
 
 :s180 a :FileWriter .
+
+###################### index.xml
+
+:s190 a :AtomFeedPrep .
+
+:s200 a :Templater .
+ #   trm:configKey :atomTemplate .
+
+:s210 a :FileWriter .

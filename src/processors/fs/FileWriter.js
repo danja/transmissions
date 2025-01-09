@@ -35,7 +35,13 @@ class FileWriter extends Processor {
      * @param {Object} message - The execution message.
      */
     async process(message) {
-        //   logger.setLogLevel('debug')
+        logger.setLogLevel('debug')
+        logger.debug(`\n\nFileWriter.process, message.done = ${message.done}`)
+        if (message.done) {
+            message.done = false
+            return this.emit('message', message)
+        }
+
         if (message.dump) {
             // TODO make optional (on done?) - is a pain for multi
             //    const filename = `message_${new Date().toISOString()}.json`
@@ -60,7 +66,7 @@ class FileWriter extends Processor {
             filepath = path.join(message.subdir, filepath)
         }
         //path.join(message.sourceDir, message.filepath)
-
+        logger.debug(`Filewriter, 1 filepath = ${filepath}`)
         //   logger.reveal(filePath)
 
         if (!destinationFile) { // TODO fix, do other cases, refactor
@@ -70,7 +76,7 @@ class FileWriter extends Processor {
 
             filepath = path.join(targetDir, filepath)
         }
-        logger.debug(`Filewriter, 1 filepath = ${filepath}`)
+
         if (!path.isAbsolute(filepath)) {
             filepath = path.join(message.targetPath, filepath)
         }
@@ -93,8 +99,8 @@ class FileWriter extends Processor {
                 }
         */
         var content = message.content // TODO generalise, see above
-        logger.debug("Filewriter, content = " + content)
-        logger.debug("Filewriter, typeof content = " + typeof content)
+        //   logger.debug("Filewriter, content = " + content)
+        // logger.debug("Filewriter, typeof content = " + typeof content)
 
         this.mkdirs(dirName) // sync - see below
 

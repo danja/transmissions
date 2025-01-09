@@ -4,8 +4,8 @@ import Processor from '../base/Processor.js'
 class DeadEnd extends Processor {
 
     async process(message) {
-        logger.log('DeadEnd  at (' + message.tags + ') ' + this.getTag())
+        logger.log('DeadEnd at [' + message.tags + '] ' + this.getTag())
     }
 
 }
-export default DeadEnd 
+export default DeadEnd
