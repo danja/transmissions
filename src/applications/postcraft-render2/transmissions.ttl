@@ -35,7 +35,7 @@
 
 :r240 a :Templater ; # for individual post pages
     trm:configKey :pTemplater . ###########################################################################
-
+######### configKey -> settings <ConfigSet>
 :r250 a :Restructure ; # moves content into  contentBlocks
    trm:config :writePrep . # CONFIGKEY?
 
