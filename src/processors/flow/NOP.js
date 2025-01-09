@@ -9,7 +9,7 @@ class NOP extends Processor {
     }
 
     async process(message) {
-        const done = message.done ? `DONE` : `not done...`
+        const done = message.done ? `DONE` : `NOT DONE`
         logger.log(`\nNOP at [${message.tags}] ${this.getTag()} (${done})`)
 
         return this.emit('message', message)

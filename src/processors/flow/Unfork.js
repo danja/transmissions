@@ -32,9 +32,8 @@ class Unfork extends Processor {
             return this.emit('message', message)
         } else {
             logger.debug(' - Unfork terminating pipe')
+            return
         }
     }
-
 }
-
 export default Unfork
