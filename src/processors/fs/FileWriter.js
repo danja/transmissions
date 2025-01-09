@@ -38,7 +38,7 @@ class FileWriter extends Processor {
         logger.setLogLevel('debug')
         logger.debug(`\n\nFileWriter.process, message.done = ${message.done}`)
         if (message.done) {
-            message.done = false
+            //   message.done = false
             return this.emit('message', message)
         }
 

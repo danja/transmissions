@@ -66,6 +66,10 @@ class Processor extends EventEmitter {
         }
     }
 
+    toString() {
+        return this.constructor.name
+    }
+
     /**
      * TODO refactor
      *
@@ -176,6 +180,7 @@ class Processor extends EventEmitter {
         }
     }
 
+    /*
     cloneContext(baseContext) {
         const message = structuredClone(baseContext)
         if (baseContext.dataset) {
@@ -185,6 +190,7 @@ class Processor extends EventEmitter {
         }
         return message
     }
+        */
 
 
     /**
@@ -195,18 +201,36 @@ class Processor extends EventEmitter {
         while (this.messageQueue.length > 0) {
             let { message } = this.messageQueue.shift()
 
-            message = this.cloneContext(message)// TODO make optional
-            this.message = message // IS OK? needed where?
+            logger.log('HERE')
+
+            // totes decoupling - is needed?
+            message = structuredClone(message)
+            this.message = structuredClone(message)
+
+            this.addTag(message)
+
+            /* PREVIOUS VERSION
+message = this.cloneContext(message)// TODO make optional
+this.message = message // IS OK? needed where?
+*/
+
+
             // message = structuredClone(message) // TODO make optional
             // message.dataset = dataset
             // no idea why this ^^ was necessary, without it the dataset wasn't usable
             // structuredClone(message, {transfer:[dataset]}) failed too
-            this.addTag(message)
+
+            // Preserve done status through processing chain
+            //const isDone = message.done
+            // message.done = false
 
             await this.preProcess(message)
             // logger.log('HERE')
             await this.process(message)
             await this.postProcess(message)
+
+            // Restore done status after processing
+            //  message.done = isDone
         }
         this.processing = false
     }
@@ -242,7 +266,7 @@ class Processor extends EventEmitter {
      * @param {*} message - The message for emitting.
      */
     async doEmit(message) {
-        this.emit(message)
+        await this.emit(message)
     }
 
     /////////////////////// for simples
@@ -261,15 +285,26 @@ class Processor extends EventEmitter {
         return this.getOutputs()
     }
 */
-    emit(event, message) {
-        //   if (event === 'message') {
-        //     this.outputs.push(message)
-        // }
-        super.emit(event, message)
+
+    // Claude suggested :
+
+    async emit(event, message) {
+        logger.log(`Processor.emit called with ${message.done}`)
+        await new Promise(resolve => {
+            super.emit(event, message)
+            resolve()
+            logger.log(`after resolve has ${message.done}`)
+        })
         return message
-        //  return this.getOutputs()
-        // TODO in NOP,   return this.emit('message', message) - why?
     }
+
+
+    /*
+        emit(event, message) {
+            super.emit(event, message)
+            return message
+        }
+    */
 
     getOutputs() {
         const results = this.outputs

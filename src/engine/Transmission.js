@@ -1,5 +1,6 @@
 import logger from '../utils/Logger.js'
 import Connector from './Connector.js'
+import ns from '../utils/ns.js'
 
 class Transmission {
   constructor() {
@@ -49,14 +50,24 @@ class Transmission {
 
     // Describe processors
     description += 'Processors:\n'
-    Object.keys(this.processors).forEach(processorName => {
-      description += `  - ${processorName}\n`
+    Object.keys(this.processors).forEach((processorName) => {
+      //     description += `${processor}`
+
+      description += `  - ${ns.shortName(processorName)} a ${this.processors[processorName]} \n`
+      //  description += `  - ${ns.shortName(processorName)}\n`
     })
+
+    /*
+      let name = ns.getShortname(processorName)
+              let type = ns.getShortname(processorType.value)
+
+              logger.log("| Create processor :" + name + " of type :" + type)
+              */
 
     // Describe connectors
     description += 'Connectors:\n'
     this.connectors.forEach((connector, index) => {
-      description += `  - Connector ${index + 1}: ${connector.fromName} -> ${connector.toName}\n`
+      description += `  - Connector ${index + 1}: ${ns.shortName(connector.fromName)} -> ${ns.shortName(connector.toName)}\n`
     })
 
     return description

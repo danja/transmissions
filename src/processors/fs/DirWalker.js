@@ -75,18 +75,25 @@ class DirWalker extends Processor {
         if (!message.sourceDir) {
             message.sourceDir = sourceDirProperty
         }
+
         await this.walkDirectory(dirPath, message);
+
+        // maybe    await new Promise(resolve => setTimeout(resolve, 0));
 
         // Send final done message
         const finalMessage = structuredClone(message);
         finalMessage.done = true;
+        logger.debug("DirWalker emitting final done=true message");
         return this.emit('message', finalMessage);
     }
 
     async walkDirectory(dir, baseMessage) {
+
         logger.debug(`DirWalker.walkDirectory, dir = ${dir}`)
 
         const entries = await readdir(dir, { withFileTypes: true });
+
+        //   const processingPromises = [];
 
         for (const entry of entries) {
             const fullPath = path.join(dir, entry.name);
@@ -102,14 +109,7 @@ class DirWalker extends Processor {
 
                     const message = structuredClone(baseMessage);
                     message.filename = entry.name;
-
-                    // sooo hacky
-                    //  message.subDir = dir.replace(message.targetPath, '')
-                    // message.subDir = message.subDir.replace(message.sourceDir, '')
-                    // message.subDir = message.subDir.substring(2)
                     message.subdir = path.dirname(path.relative(message.targetPath, fullPath)).split(path.sep)[1];
-
-
                     message.fullPath = fullPath; // Absolute path
                     message.filepath = path.relative(baseMessage.targetPath || baseMessage.rootDir, fullPath); // Relative path
                     message.done = false;
@@ -120,10 +120,12 @@ class DirWalker extends Processor {
                             fullPath: ${message.fullPath}
                             filepath: ${message.filepath}`);
 
+                    //              processingPromises.push(this.emit('message', message));
                     this.emit('message', message);
                 }
             }
         }
+        //     await Promise.all(processingPromises);
         //   } catch (err) {
         //     logger.error(`Error walking directory ${dir}:`, err);
         // }

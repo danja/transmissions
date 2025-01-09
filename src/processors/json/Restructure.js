@@ -30,7 +30,7 @@ class Restructure extends Processor {
     async process(message) {
         logger.setLogLevel('info')
         //  logger.debug('Restructure this.configKey = ' + this.configKey.value)
-        // Extract mappings array from config 
+        // Extract mappings array from config
         var renames
         if (this.config.simples) {
             renames = this.config.rename

@@ -16,7 +16,7 @@ const ns = {
 //  return Object.keys(nsObj)[0];
 //}
 
-ns.getShortname = function (url) {
+ns.shortName = ns.getShortname = function (url) { // I keep mixing up the name
 
     if (!url) return
     url = url.toString()

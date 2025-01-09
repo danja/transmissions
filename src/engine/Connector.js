@@ -20,6 +20,7 @@ class Connector extends EventEmitter {
             throw new Error(`\nMissing processor : ${this.fromName}, going to ${this.toName} \n(check for typos in transmissions.ttl)\n`)
         }
 
+        /*
         fromProcessor.on('message', (message) => { //  = {}
             var tags = ''
             //     if (toProcessor.message) {
@@ -30,6 +31,13 @@ class Connector extends EventEmitter {
             logger.log("| Running >>> : " + tags + thisTag + " a " + toProcessor.constructor.name)
 
             toProcessor.receive(message)
+        })
+            */
+        fromProcessor.on('message', async (message) => {
+            var tags = fromProcessor.message?.tags ? ` [${fromProcessor.message.tags}] ` : ''
+            toProcessor.tags = tags
+            logger.log(`Running >>> : ${tags} ${toProcessor.constructor.name}`)
+            await toProcessor.receive(message)
         })
 
     }

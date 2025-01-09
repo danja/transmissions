@@ -13,6 +13,7 @@
 :SM a :ShowMessage . # verbose report, continues pipe
 :N  a :NOP . # no operation (except for showing stage in pipe)
 :UF a :Unfork . # collapses all pipes but one
+:ST a :ShowTransmission .
 #############################################################
 
 
@@ -21,8 +22,8 @@
 :render2 a trm:Transmission ;
     rdfs:label "render2" ;
     rdfs:comment "template entry html to pages" ;
-   trm:pipe (:r210 :r220 :r230 :r240 :r250 :r260
-     :N   :DE  :s150 :s160 :s170 :s180 :s190 :s200 :s210 ) .
+   trm:pipe (:r210 :r220 :r230 :r240 :r250 :r260 :ST
+    :s150 :N :s160 :s170 :s180 :s190 :s200 :s210 ) .
 
 :r210 a :DirWalker ; # automatically forks
     trm:config :cacheWalker .
@@ -40,6 +41,7 @@
 
 :r260 a :FileWriter ;
     trm:config :fileWriter .
+
 
 ####################### index.html
 :s150  a :Unfork .
