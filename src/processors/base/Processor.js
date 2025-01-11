@@ -4,6 +4,7 @@ import rdf from 'rdf-ext'
 import grapoi from 'grapoi'
 import ns from '../../utils/ns.js'
 import footpath from '../../utils/footpath.js'
+import ProcessorSettings from './ProcessorSettings'
 
 /**
  * Base class for processors.
