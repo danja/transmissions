@@ -1,18 +1,24 @@
 import log from 'loglevel';
 import fs from 'fs';
+import chalk from 'chalk';
 
 const logger = {};
 
-// Map internal log levels to loglevel's levels
+// Map log levels to chalk styles
+const LOG_STYLES = {
+    "trace": chalk.yellow,
+    "debug": chalk.red,
+    "info": chalk.white,
+    "warn": chalk.red.italic,
+    "error": chalk.red.bold
+};
 const LOG_LEVELS = ["trace", "debug", "info", "warn", "error"];
 
 logger.logfile = 'latest.log';
-logger.currentLogLevel = "warn"; // Default level
+logger.currentLogLevel = "warn";
 
-// Initialize loglevel
 log.setLevel(logger.currentLogLevel);
 
-// Expose core loglevel functionality
 logger.getLevel = () => log.getLevel();
 logger.enableAll = () => log.enableAll();
 logger.disableAll = () => log.disableAll();
@@ -21,32 +27,38 @@ logger.getLogger = (name) => {
     const namedLogger = log.getLogger(name);
     return wrapLogger(namedLogger, name);
 };
+
 logger.methodFactory = log.methodFactory;
+
 logger.noConflict = () => log.noConflict();
 
-// Helper to wrap loglevel loggers with file logging
 function wrapLogger(baseLogger, name = 'root') {
     const wrapped = {};
 
-    wrapped.log = function (msg, level = "debug") {
-        const logMessage = `[${logger.timestampISO()}] [${level.toUpperCase()}] [${name}] - ${msg}`;
-        baseLogger[level](msg);
-        logger.appendLogToFile(logMessage);
+    wrapped.log = function (msg, level = "info") {  // Changed default to info
+        const timestamp = chalk.dim(`[${logger.timestampISO()}]`);
+        const levelStyle = LOG_STYLES[level] || LOG_STYLES["info"];  // Fallback to info style
+        const levelTag = levelStyle(`[${level.toUpperCase()}]`);
+        const nameTag = chalk.green(`[${name}]`);
+        const message = levelStyle(msg);
+
+        //   const consoleMessage = `${timestamp} ${levelTag} ${nameTag} - ${message}`;
+        const consoleMessage = `${message}`;
+        const fileMessage = `[${logger.timestampISO()}] [${level.toUpperCase()}] [${name}] - ${msg}`;
+
+        baseLogger[level](consoleMessage);
+        logger.appendLogToFile(fileMessage);
     };
 
-    // Add convenience methods
     LOG_LEVELS.forEach(level => {
         wrapped[level] = (msg) => wrapped.log(msg, level);
     });
 
-    // Pass through loglevel methods
     wrapped.getLevel = () => baseLogger.getLevel();
     wrapped.setLevel = (level, persist) => baseLogger.setLevel(level, persist);
     wrapped.setDefaultLevel = (level) => baseLogger.setDefaultLevel(level);
     wrapped.enableAll = () => baseLogger.enableAll();
     wrapped.disableAll = () => baseLogger.disableAll();
-
-    // Add plugin support
     wrapped.methodFactory = baseLogger.methodFactory;
     wrapped.setMethodFactory = function (factory) {
         baseLogger.methodFactory = factory;
@@ -71,10 +83,13 @@ logger.timestampISO = function () {
     return new Date().toISOString();
 }
 
-logger.log = function (msg, level = "debug") {
-    const logMessage = `[${logger.timestampISO()}] [${level.toUpperCase()}] [root] - ${msg}`;
-    log[level](msg);
-    logger.appendLogToFile(logMessage);
+logger.log = function (msg, level = "info") {
+    const levelStyle = LOG_STYLES[level] || LOG_STYLES["info"];
+    const message = levelStyle(msg);
+    const consoleMessage = `${message}`;
+    const fileMessage = `[${logger.timestampISO()}] [${level.toUpperCase()}] [root] - ${msg}`;
+    log[level](consoleMessage);
+    logger.appendLogToFile(fileMessage);
 }
 
 logger.reveal = function (instance) {
@@ -85,6 +100,8 @@ logger.reveal = function (instance) {
 
     const serialized = {};
     logger.log('***    hidden keys :  ', 'debug');
+    const loglevel = logger.getLevel()
+    logger.setLogLevel('trace')
 
     for (const key in instance) {
         if (key === 'dataset') {
@@ -118,28 +135,27 @@ logger.reveal = function (instance) {
     }
 
     const props = JSON.stringify(serialized, null, 2);
-    logger.log(`Instance of ${instance.constructor.name} with properties - \n${props}`, 'debug');
+    logger.log(`Instance of ${chalk.bold(instance.constructor.name)} with properties - \n${props}`, 'trace');
+    logger.setLogLevel(loglevel)
 }
 
-// Convenience methods mapping to loglevel
 LOG_LEVELS.forEach(level => {
     logger[level] = (msg) => logger.log(msg, level);
 });
 
 logger.poi = function exploreGrapoi(grapoi, predicates, objects, subjects) {
-    console.log('Properties of the Grapoi object:');
+    console.log(chalk.bold('Properties of the Grapoi object:'));
     for (const prop in grapoi) {
-        console.log(`\t${prop}: ${grapoi[prop]}`);
+        console.log(chalk.cyan(`\t${prop}: ${grapoi[prop]}`));
     }
 
-    console.log('\nPath:');
+    console.log(chalk.bold('\nPath:'));
     const path = grapoi.out(predicates, objects).in(predicates, subjects);
     for (const quad of path.quads()) {
-        console.log(`\t${quad.predicate.value}: ${quad.object.value}`);
+        console.log(chalk.cyan(`\t${quad.predicate.value}: ${quad.object.value}`));
     }
 }
 
-// Process cleanup handlers
 function handleExit(options, exitCode) {
     if (options.cleanup) {
         // Perform cleanup
@@ -153,5 +169,13 @@ process.on('SIGINT', handleExit.bind(null, { exit: true }));
 process.on('SIGUSR1', handleExit.bind(null, { exit: true }));
 process.on('SIGUSR2', handleExit.bind(null, { exit: true }));
 process.on('uncaughtException', handleExit.bind(null, { exit: true }));
+
+// TESTING
+// logger.setLogLevel('info')
+// logger.log('a log() message on info - show yellow, concise')
+// logger.debug('a debug() message on info -  dont show')
+// logger.setLogLevel('debug')
+// logger.log('a log() message on debug - show yellow, with prefix')
+// logger.debug('a debug() message on debug - show red, with prefix')
 
 export default logger;
