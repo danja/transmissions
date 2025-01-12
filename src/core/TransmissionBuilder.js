@@ -38,7 +38,7 @@ class TransmissionBuilder {
       if (q.object.equals(ns.trm.Transmission)) {
         const transmissionID = q.subject
         //    transmissions.push(await this.constructTransmission(transmissionConfig, transmissionID, processorsConfig));
-        transmissions.push(await this.constructTransmission(transmissionConfig, transmissionID, processorsConfig)) // was await 
+        transmissions.push(await this.constructTransmission(transmissionConfig, transmissionID, processorsConfig)) // was await
       }
     }
     return transmissions
@@ -85,6 +85,7 @@ class TransmissionBuilder {
 
           logger.log("| Create processor :" + name + " of type :" + type)
           let processor = await this.createProcessor(processorType, processorsConfig) // was await
+          processor.node = node
           processor.id = processorName
           processor.type = processorType
           processor.transmission = transmission
@@ -115,15 +116,15 @@ class TransmissionBuilder {
   }
 
   async createProcessor(type, config) {
-    //  logger.setLogLevel('debug')
-    // try {
+    logger.setLogLevel('debug')
+    logger.debug(`TransmissionBuilder.createProcessor, config = ${config}`)
+
     const coreProcessor = AbstractProcessorFactory.createProcessor(type, config)
     if (coreProcessor) {
       return coreProcessor
     }
-    //   } catch (error) {
+
     logger.debug(`TransmissionBuilder, core processor not found for ${type.value}. Trying remote module loader...`)
-    //  }
 
     try {
       const shortName = type.value.split('/').pop()
@@ -134,14 +135,13 @@ class TransmissionBuilder {
       logger.debug(`Module loaded successfully: ${shortName}`)
       return new ProcessorClass.default(config)
     } catch (error) {
-      //   throw new Error(`Failed to load processor ${type.value}: ${error.message}`)
-      logger.error(`TransmissionBuilder, failed to load processor ${type.value}`)
+      logger.error(`TransmissionBuilder.createProcessor, failed to load ${type.value} : ${error.message}`)
       process.exit(1)
     }
   }
 
   //  logger.error(`Failed to load processor ${type.value}: ${error.message}`)
-  //   throw new Error (`Failed to load processor ${type.value}: ${error.mesage}`) 
+  //   throw new Error (`Failed to load processor ${type.value}: ${error.mesage}`)
   //process.exit(1)
   // throw error
 
@@ -159,4 +159,4 @@ class TransmissionBuilder {
 
 }
 // export { ModuleLoader, ModuleLoaderFactory, TransmissionBuilder }
-export default TransmissionBuilder 
+export default TransmissionBuilder

@@ -1,7 +1,7 @@
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
 
-import DirWalker from './DirWalker-gather.js'
+import DirWalker from './DirWalker.js'
 import FileReader from './FileReader.js'
 import FileWriter from './FileWriter.js'
 import FileCopy from './FileCopy.js'

@@ -1,5 +1,4 @@
-
-// TODO move
+import logger from '../../utils/Logger.js'
 
 // Import processor groups
 import SystemProcessorsFactory from '../system/SystemProcessorsFactory.js'
@@ -30,7 +29,8 @@ class AbstractProcessorFactory {
     // good enough for now
 
     static createProcessor(type, config) {
-        //   logger.debug("ProcessorFactory.createProcessor : " + type.value)
+        logger.debug(`\nAbstractProcessorFactory.createProcessor : type.value = ${type.value}`)
+        logger.debug(`AbstractProcessorFactory.createProcessor : config = ${config}`)
         var processor = UnsafeProcessorsFactory.createProcessor(type, config)
         if (processor) return processor
         var processor = HttpProcessorsFactory.createProcessor(type, config)
@@ -80,7 +80,6 @@ class AbstractProcessorFactory {
 
         var processor = PackerProcessorsFactory.createProcessor(type, config);
         if (processor) return processor;
-        //   throw new Error("Unknown processor type: " + type.value)
     }
 }
 

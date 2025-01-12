@@ -1,143 +1,157 @@
-// VanillaJS Logger
+import log from 'loglevel';
+import fs from 'fs';
 
-// TODO make better use of console.*
+const logger = {};
 
-import fs from 'fs'
+// Map internal log levels to loglevel's levels
+const LOG_LEVELS = ["trace", "debug", "info", "warn", "error"];
 
-// NOTE: You probably shouldn't use this in production... you've been warned.
-let logger = {}
+logger.logfile = 'latest.log';
+logger.currentLogLevel = "warn"; // Default level
 
-logger.logfile = 'latest.log'
+// Initialize loglevel
+log.setLevel(logger.currentLogLevel);
 
-// Log levels
-// debug=0, info=1, log=2, warn=3, error=4
-const LOG_LEVELS = [
-    "debug",
-    "info",
-    "log",
-    "warn",
-    "error",
-]
-const logComponent = "api.logger"
+// Expose core loglevel functionality
+logger.getLevel = () => log.getLevel();
+logger.enableAll = () => log.enableAll();
+logger.disableAll = () => log.disableAll();
+logger.setDefaultLevel = (level) => log.setDefaultLevel(level);
+logger.getLogger = (name) => {
+    const namedLogger = log.getLogger(name);
+    return wrapLogger(namedLogger, name);
+};
+logger.methodFactory = log.methodFactory;
+logger.noConflict = () => log.noConflict();
+
+// Helper to wrap loglevel loggers with file logging
+function wrapLogger(baseLogger, name = 'root') {
+    const wrapped = {};
+
+    wrapped.log = function (msg, level = "debug") {
+        const logMessage = `[${logger.timestampISO()}] [${level.toUpperCase()}] [${name}] - ${msg}`;
+        baseLogger[level](msg);
+        logger.appendLogToFile(logMessage);
+    };
+
+    // Add convenience methods
+    LOG_LEVELS.forEach(level => {
+        wrapped[level] = (msg) => wrapped.log(msg, level);
+    });
+
+    // Pass through loglevel methods
+    wrapped.getLevel = () => baseLogger.getLevel();
+    wrapped.setLevel = (level, persist) => baseLogger.setLevel(level, persist);
+    wrapped.setDefaultLevel = (level) => baseLogger.setDefaultLevel(level);
+    wrapped.enableAll = () => baseLogger.enableAll();
+    wrapped.disableAll = () => baseLogger.disableAll();
+
+    // Add plugin support
+    wrapped.methodFactory = baseLogger.methodFactory;
+    wrapped.setMethodFactory = function (factory) {
+        baseLogger.methodFactory = factory;
+        baseLogger.rebuild();
+    };
+
+    return wrapped;
+}
 
 logger.appendLogToFile = function (message) {
     if (logger.logfile) {
-        fs.appendFileSync(logger.logfile, message + '\n', 'utf8')
+        fs.appendFileSync(logger.logfile, message + '\n', 'utf8');
     }
 }
 
-logger.setLogLevel = function (logLevel = "warn") {
-    // console[logLevel]("[%s] log level: %s", logComponent, logLevel);
-    // console[logLevel]('', logComponent, logLevel)
-    logger.currentLogLevel = logLevel
+logger.setLogLevel = function (logLevel = "warn", persist = true) {
+    logger.currentLogLevel = logLevel;
+    log.setLevel(logLevel, persist);
 }
 
 logger.timestampISO = function () {
-    let now = new Date()
-    return now.toISOString()
+    return new Date().toISOString();
 }
 
-logger.log = function (msg, level = "log") {
-    const currentLevelIndex = LOG_LEVELS.indexOf(logger.currentLogLevel)
-    const messageLevelIndex = LOG_LEVELS.indexOf(level)
-
-    if (messageLevelIndex >= currentLevelIndex) {
-        console[level](msg)
-        const logMessage = `[${logger.timestampISO()}] [${level.toUpperCase()}] - ${msg}`
-        logger.appendLogToFile(logMessage)
-    }
+logger.log = function (msg, level = "debug") {
+    const logMessage = `[${logger.timestampISO()}] [${level.toUpperCase()}] [root] - ${msg}`;
+    log[level](msg);
+    logger.appendLogToFile(logMessage);
 }
 
 logger.reveal = function (instance) {
-    const serialized = {}
+    if (!instance) {
+        logger.log('no instance defined', 'warn');
+        return;
+    }
 
-    logger.log('***    hidden keys :  ')
+    const serialized = {};
+    logger.log('***    hidden keys :  ', 'debug');
+
     for (const key in instance) {
         if (key === 'dataset') {
-            logger.log('[[dataset found, skipping]]')
-            continue
+            logger.log('[[dataset found, skipping]]', 'debug');
+            continue;
         }
-        if (key.startsWith('_')) { // special case, RDF
-            //    serialized[key] = instance[key].toString(); // TODO make useful
-            // DatasetExt
-            logger.log(`       ${key}`)
-            continue
-        } else {
-            if (instance.hasOwnProperty(key)) {
-                let kiki = instance[key]
-                //   logger.debug('OOOO ' + Object.prototype.toString.call(kiki))
-                if (kiki) {
-                    if (Buffer.isBuffer(kiki)) {
-                        kiki = kiki.toString()
 
-                    }
-                    if (kiki.length > 100) {
-                        try {
-                            kiki = kiki.substring(0, 100) + '...'
-                        } catch (e) {
-                            kiki = kiki.slice(0, 99)
-                        }
-                    }
-                    serialized[key] = kiki
-                } else {
-                    serialized[key] = '[no key]'
+        if (key.startsWith('_')) {
+            logger.log(`       ${key}`, 'debug');
+            continue;
+        }
+
+        if (instance.hasOwnProperty(key)) {
+            let value = instance[key];
+            if (value) {
+                if (Buffer.isBuffer(value)) {
+                    value = value.toString();
                 }
+                if (value.length > 100) {
+                    try {
+                        value = value.substring(0, 100) + '...';
+                    } catch (e) {
+                        value = value.slice(0, 99);
+                    }
+                }
+                serialized[key] = value;
+            } else {
+                serialized[key] = '[no key]';
             }
         }
     }
-    const props = JSON.stringify(serialized, null, 2)
-    if (!instance) {
-        logger.log(` no instance defined`)
-        return
-    }
-    logger.log(`Instance of ${instance.constructor.name} with properties - \n${props}`)
 
+    const props = JSON.stringify(serialized, null, 2);
+    logger.log(`Instance of ${instance.constructor.name} with properties - \n${props}`, 'debug');
 }
 
-logger.debug = function (msg) {
-    logger.log(msg, "debug")
-}
-
-logger.info = function (msg) {
-    logger.log(msg, "info")
-}
-
-logger.warn = function (msg) {
-    logger.log(msg, "warn")
-}
-
-logger.error = function (msg) {
-    logger.log(msg, "error")
-}
+// Convenience methods mapping to loglevel
+LOG_LEVELS.forEach(level => {
+    logger[level] = (msg) => logger.log(msg, level);
+});
 
 logger.poi = function exploreGrapoi(grapoi, predicates, objects, subjects) {
-    // Print the properties of the Grapoi object
-    console.log('Properties of the Grapoi object:')
+    console.log('Properties of the Grapoi object:');
     for (const prop in grapoi) {
-        console.log(`\t${prop}: ${grapoi[prop]}`)
+        console.log(`\t${prop}: ${grapoi[prop]}`);
     }
 
-    // Define the path and print the quads
-    console.log('\nPath:')
-    const path = grapoi.out(predicates, objects).in(predicates, subjects)
+    console.log('\nPath:');
+    const path = grapoi.out(predicates, objects).in(predicates, subjects);
     for (const quad of path.quads()) {
-        console.log(`\t${quad.predicate.value}: ${quad.object.value}`)
+        console.log(`\t${quad.predicate.value}: ${quad.object.value}`);
     }
 }
 
+// Process cleanup handlers
 function handleExit(options, exitCode) {
     if (options.cleanup) {
         // Perform cleanup
     }
-    if (exitCode || exitCode === 0) console.log(exitCode)
-    if (options.exit) process.exit()
+    if (exitCode || exitCode === 0) console.log(exitCode);
+    if (options.exit) process.exit();
 }
 
-// Cleanup listener for the process
-process.on('exit', handleExit.bind(null, { cleanup: true }))
-process.on('SIGINT', handleExit.bind(null, { exit: true })) // Catches ctrl+c event
-process.on('SIGUSR1', handleExit.bind(null, { exit: true })) // Catches "kill pid" (for example: nodemon restart)
-process.on('SIGUSR2', handleExit.bind(null, { exit: true })) // Catches "kill pid" (for example: nodemon restart)
-process.on('uncaughtException', handleExit.bind(null, { exit: true }))
+process.on('exit', handleExit.bind(null, { cleanup: true }));
+process.on('SIGINT', handleExit.bind(null, { exit: true }));
+process.on('SIGUSR1', handleExit.bind(null, { exit: true }));
+process.on('SIGUSR2', handleExit.bind(null, { exit: true }));
+process.on('uncaughtException', handleExit.bind(null, { exit: true }));
 
-export default logger
+export default logger;

@@ -14,7 +14,7 @@ class DirWalker extends Processor {
     }
 
     async process(message) {
-        // logger.setLogLevel('debug')
+        logger.setLogLevel('debug')
         logger.debug('\nDirWalker.process');
 
         // Initialize message state

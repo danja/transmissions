@@ -21,7 +21,7 @@
 :render1 a trm:Transmission ;
     rdfs:label "render1" ;
     rdfs:comment "render raw entry pages" ;
-   trm:pipe (:r110 :r120 :r130 :r140 :r150 :r160 :r170) .
+   trm:pipe (:r110 :r120 :SM :r130 :r140 :r150 :r160 :r170) .
 
 :r110 a :DirWalker ; # automatically forks
     trm:config :dirWalker .

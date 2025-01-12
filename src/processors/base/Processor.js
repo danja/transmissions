@@ -4,7 +4,7 @@ import rdf from 'rdf-ext'
 import grapoi from 'grapoi'
 import ns from '../../utils/ns.js'
 import footpath from '../../utils/footpath.js'
-import ProcessorSettings from './ProcessorSettings'
+import ProcessorSettings from './ProcessorSettings.js'
 
 /**
  * Base class for processors.
@@ -19,6 +19,7 @@ class Processor extends EventEmitter {
     constructor(config) {
         super()
         this.config = config
+        this.settings = new ProcessorSettings(config)
         this.messageQueue = []
         this.processing = false
         this.done = false
@@ -91,11 +92,26 @@ class Processor extends EventEmitter {
  * @returns {Object} - The configuration node.
  */
 
+    getMyPoi() {
+        const dataset = this.config
+        /*
+        const myConfigNode = this.getMyConfigNode()
+        const poi = grapoi({ dataset: dataset, term: myConfigNode })
+        */
+        const poi = grapoi({ dataset: this.config, term: this.node })
+        // rdf.grapoi({ dataset, term: 'Gregory' }).in().trim()
+        return poi
+    }
+
     getProperty(property, fallback) {
+        //     return this.settings.getValue(property, fallback)
+
         logger.log(`IDDDDDDDDDDD ${this.id}`)
         logger.log(`getMyConfigNode() = ${this.getMyConfigNode()}`)
+
+
         const poi = this.getMyPoi()
-        logger.log(`PPPPPPPPPPPPPP ${poi.out(property).term}`)
+        // logger.log(`PPPPPPPPPPPPPP ${poi.out(property).term}`)
         logger.log(`PROPERTY = ${property}`)
 
 
@@ -110,6 +126,7 @@ class Processor extends EventEmitter {
         logger.log(`maybe = ${maybe}`)
         if (maybe) return maybe
         return fallback
+
     }
 
     getPropertyFromMyConfig(property) {
@@ -122,9 +139,13 @@ class Processor extends EventEmitter {
             return value
         }
 
-        const poi = this.getMyPoi()
+        const poi = grapoi({ dataset: this.config, term: this.node })
+        // const poi = this.getMyPoi()
+        logger.log(`LOOKING FOR ${property}`)
+        logger.log(poi)
         try {
             return poi.out(property).term.value
+
         } catch (err) {
             const id = ns.shortName(this.id)
             const type = ns.shortName(this.type.value)
@@ -134,20 +155,19 @@ class Processor extends EventEmitter {
         }
     }
 
+    getMyConfigNode() {
+        return this.node
+    }
     // is this duplicating?
+    /*
     getMyConfigNode() {
         const dataset = this.config
         //    const configNode = grapoi({ dataset, term: this.configKey }).in()
         const configNode = grapoi({ dataset, term: this.configKey }).in()
         return configNode.term
     }
+*/
 
-    getMyPoi() {
-        const dataset = this.config
-        const myConfigNode = this.getMyConfigNode()
-        const poi = grapoi({ dataset: dataset, term: myConfigNode })
-        return poi
-    }
 
     async addPropertyToMyConfig(predicate, value) {
         logger.log('addPropertyToMyConfig predicate = ' + predicate)
@@ -199,16 +219,6 @@ class Processor extends EventEmitter {
     }
 
 
-    cloneContext(baseContext) {
-        const message = structuredClone(baseContext)
-        if (baseContext.dataset) {
-
-            message.dataset = baseContext.dataset
-        }
-        return message
-    }
-
-
 
     /**
      * Executes the message queue.
@@ -218,14 +228,14 @@ class Processor extends EventEmitter {
         while (this.messageQueue.length > 0) {
             let { message } = this.messageQueue.shift()
 
-            logger.log('HERE')
+            logger.log('\n\nHERE')
+            //     logger.log(message.dataset)
+            //     logger.reveal(message.dataset)
 
-            message = this.cloneContext(message)// TODO make optional
-            this.message = message // IS OK? needed where?
             // totes decoupling - is needed?
-            //   message = structuredClone(message)
-            // this.message = structuredClone(message)
-
+            //    const dataset = structuredClone(message.dataset)
+            message = structuredClone(message)
+            // message.dataset = dataset
             this.addTag(message)
 
             /* PREVIOUS VERSION
