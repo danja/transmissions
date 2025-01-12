@@ -2,11 +2,11 @@
 @prefix trn: <http://purl.org/stuff/transmissions/> .
 @prefix trn: <http://purl.org/stuff/transmissions/> .
 
-trn:readDataset a trn:ServiceConfig ;
+trn:readDataset a trn:ConfigSet ;
     trn:configKey trn:readDataset ;
     trn:datasetFile "manifest.ttl" .
 
-trn:configMapper a trn:ServiceConfig ;
+trn:configMapper a trn:ConfigSet ;
     trn:configKey trn:configMapper ;
     trn:pathMappings (
         trn:postContent

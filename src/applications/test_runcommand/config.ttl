@@ -3,7 +3,7 @@
 @prefix trn: <http://purl.org/stuff/transmissions/> .
 @prefix trn: <http://purl.org/stuff/transmissions/> .
 
-trn:runCommandConfig a trn:ServiceConfig ;
+trn:runCommandConfig a trn:ConfigSet ;
     rdfs:label "Run test command" ;
     trn:configKey trn:runCommand ;
     trn:command "echo 'Hello from RunCommand!'" ;

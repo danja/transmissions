@@ -4,20 +4,20 @@
 @prefix trn: <http://purl.org/stuff/transmissions/> .
 
 ##################### only for testing
-trn:bContent a trn:ServiceConfig ;
+trn:bContent a trn:ConfigSet ;
     rdfs:label "Root node in JSON object for blanker" ;
     trn:configKey trn:blankContent  ;
     trn:pointer "content"  .
     trn:preserve "content.payload.test.third" .
 
-trn:setDump a trn:ServiceConfig ;
+trn:setDump a trn:ConfigSet ;
     trn:setValue (trn:sv0)  . # consider using blank nodes
     trn:sv0   trn:key    "dump" ;
             trn:value  "true"  .
 #########################################################################
 
 # should really be in a manifest.ttl
-trn:ReadFile a trn:ServiceConfig ;
+trn:ReadFile a trn:ConfigSet ;
     rdfs:label "Read file" ;
     trn:configKey trn:readFile ;
     trn:sourceFile "input/conversations.json" ;
@@ -25,12 +25,12 @@ trn:ReadFile a trn:ServiceConfig ;
     trn:mediaType "application/json" .
 
 
-trn:ConversationsWalker a trn:ServiceConfig ;
+trn:ConversationsWalker a trn:ConfigSet ;
     trn:key trn:conversationsConfig ;
     trn:pointer "content" .
 
 
-trn:retreeConvs a trn:ServiceConfig ;
+trn:retreeConvs a trn:ConfigSet ;
     trn:rename (trn:pp100 trn:pp101 trn:pp102  trn:pp103) .
     trn:pp100     trn:pre     "content.uuid" ;
                 trn:post    "meta.conv_uuid"  .
@@ -41,12 +41,12 @@ trn:retreeConvs a trn:ServiceConfig ;
     trn:pp103     trn:pre     "content.chat_messages" ;
                 trn:post    "content"  .
 
-trn:MessagesWalker a trn:ServiceConfig ;
+trn:MessagesWalker a trn:ConfigSet ;
     trn:key trn:messagesConfig ;
     trn:pointer "content" .
 
 # unused
-trn:retreeMsgs a trn:ServiceConfig ;
+trn:retreeMsgs a trn:ConfigSet ;
     trn:rename (trn:pp200 trn:pp201 trn:pp202) .
 
     trn:pp200     trn:pre     "content.item.chat_messages" ;
@@ -61,7 +61,7 @@ trn:retreeMsgs a trn:ServiceConfig ;
 #      filepath = this.getPropertyFromMyConfig(ns.trm.destinationFile)
 
 # unused
-trn:Writer a trn:ServiceConfig ;
+trn:Writer a trn:ConfigSet ;
     trn:key trn:writer ;
     trn:destinationFile "DESTINATION" .
 

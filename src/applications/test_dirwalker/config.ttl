@@ -3,5 +3,5 @@
 # @prefix trn: <http://purl.org/stuff/transmissions/> .
 @prefix trn: <http://purl.org/stuff/transmissions/> . # for custom terms & instances
 
-trn:dirwalker a trn:ServiceConfig ;
+trn:dirwalker a trn:ConfigSet ;
     trn:sourceDir "." .  # subdirectory path

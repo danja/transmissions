@@ -3,22 +3,22 @@
 @prefix trn: <http://purl.org/stuff/transmissions/> .
 @prefix trn: <http://purl.org/stuff/transmissions/> .
 
-trn:readConfig a trn:ServiceConfig ;
+trn:readConfig a trn:ConfigSet ;
     rdfs:label "Read file" ;
     trn:configKey trn:readConfig ;
     trn:mediaType "text/plain" .
 
-trn:filterConfig a trn:ServiceConfig ;
+trn:filterConfig a trn:ConfigSet ;
     rdfs:label "File filter config" ;
     trn:configKey trn:filterConfig ;
     trn:include "*.txt,*.md,*.js,*.jsx,*.ts,*.tsx,*.json,*.html,*.css" ;
     trn:exclude "node_modules/*,dist/*,build/*,.git/*,.DS_Store,.env,*.log,coverage/*,tmp/*,*.min.js,*.map,.cache/*,__pycache__/*,*.pyc,*.pyo,*.pyd,test-failures/*,yarn.lock,package-lock.json" .
 
-trn:containerConfig a trn:ServiceConfig ;
+trn:containerConfig a trn:ConfigSet ;
     trn:configKey trn:containerConfig ;
     trn:destination "repomix.json" .
 
-trn:writeConfig a trn:ServiceConfig ;
+trn:writeConfig a trn:ConfigSet ;
     rdfs:label "Write file" ;
     trn:configKey trn:writeConfig ;
     trn:destinationFile "repomix.json" .

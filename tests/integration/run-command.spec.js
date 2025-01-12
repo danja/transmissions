@@ -15,15 +15,15 @@ describe('run-command test', function () {
     beforeAll(async function () {
         try {
             await fs.mkdir(testDir, { recursive: true })
-            
+
             const configTtl = `@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix trm: <http://purl.org/stuff/transmission/> .
 @prefix t: <http://hyperdata.it/transmissions/> .
 
-t:RunCommandConfig a trm:ServiceConfig ;
+t:RunCommandConfig a trm:ConfigSet ;
     trm:configKey t:runCommand ;
     trm:command "echo \\"test\\"" .`
-            
+
             await fs.writeFile(path.join(testDir, 'config.ttl'), configTtl)
 
             const transmissionsTtl = `@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .

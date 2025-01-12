@@ -3,13 +3,13 @@
 @prefix trn: <http://purl.org/stuff/transmissions/> .
 @prefix trn: <http://purl.org/stuff/transmissions/> .
 
-trn:readFile a trn:ServiceConfig ;
+trn:readFile a trn:ConfigSet ;
     rdfs:label "Read file" ;
     trn:configKey trn:readConfig ;
     trn:sourceFile "input/input-01.txt" ;
     trn:mediaType "text/plain" .
 
-trn:mapperConfig a trn:ServiceConfig ;
+trn:mapperConfig a trn:ConfigSet ;
     rdfs:label "Filename mapper config" ;
     trn:configKey trn:filenameConfig ;
     trn:extensions (trn:ext1 trn:ext2) .
@@ -22,7 +22,7 @@ trn:ext2
     trn:format "svg" ;
     trn:extension ".mm.svg" .
 
-trn:writeFile a trn:ServiceConfig ;
+trn:writeFile a trn:ConfigSet ;
     rdfs:label "Write file" ;
     trn:configKey trn:writeConfig ;
     trn:destinationFile "output/output-01.txt" .

@@ -5,70 +5,70 @@
 @prefix trn: <http://purl.org/stuff/transmissions/> .
 
 ### ConfigMap
-trn:PostcraftMap a trn:ServiceConfig ;
+trn:PostcraftMap a trn:ConfigSet ;
     trn:key trn:postcraftMap ;
     trn:group trn:ContentGroup .
 
 ### clean
 
-trn:cacheRemove a trn:ServiceConfig ;
+trn:cacheRemove a trn:ConfigSet ;
     trn:key trn:removeCache ;
     trn:target "cache/" .
 
-trn:articlesRemove a trn:ServiceConfig ;
+trn:articlesRemove a trn:ConfigSet ;
     trn:key trn:removeArticles ;
     trn:target "public/home/articles" .
 
-trn:entriesRemove a trn:ServiceConfig ;
+trn:entriesRemove a trn:ConfigSet ;
     trn:key trn:removeEntries ;
     trn:target "public/home/entries" .
 
-trn:journalRemove a trn:ServiceConfig ;
+trn:journalRemove a trn:ConfigSet ;
     trn:key trn:removeJournal ;
     trn:target "public/home/journal" .
 
-trn:todoRemove a trn:ServiceConfig ;
+trn:todoRemove a trn:ConfigSet ;
     trn:key trn:removeTodo ;
     trn:target "public/home/todo" .
 
-trn:indexRemove a trn:ServiceConfig ;
+trn:indexRemove a trn:ConfigSet ;
     trn:key trn:removeIndex ;
     trn:target "public/home/index.html" .
 
 ### copy #####################################
 
-trn:copyStatic a trn:ServiceConfig ;
+trn:copyStatic a trn:ConfigSet ;
     trn:key trn:staticCopy ;
     trn:source "content-static" ;
     trn:destination "public/home/static" .
     # trn:destination "../../danny.ayers.name/static" .
 
-trn:copyMedia a trn:ServiceConfig ;
+trn:copyMedia a trn:ConfigSet ;
     trn:key trn:mediaCopy ;
     trn:source "media" ;
     trn:destination "public/home/media" .
 
-trn:copyCSS a trn:ServiceConfig ;
+trn:copyCSS a trn:ConfigSet ;
     trn:key trn:cssCopy ;
     trn:source "layouts/middlin/css" ;
     trn:destination "public/home/css" .
 
-trn:copyFonts a trn:ServiceConfig ;
+trn:copyFonts a trn:ConfigSet ;
     trn:key trn:fontsCopy ;
     trn:source "layouts/middlin/fonts" ;
     trn:destination "public/home/fonts" .
 
-trn:copyJS a trn:ServiceConfig ;
+trn:copyJS a trn:ConfigSet ;
     trn:key trn:jsCopy ;
     trn:source "layouts/middlin/js" ;
     trn:destination "public/home/js" .
 
 ### render ##################################
 
-trn:Describe  a trn:ServiceConfig ;
+trn:Describe  a trn:ConfigSet ;
  trn:key trn:describe .
 
-trn:phaseOne a trn:ServiceConfig ;
+trn:phaseOne a trn:ConfigSet ;
     trn:key trn:markdownToRawPosts ;
     trn:marker "Phase One" .
 

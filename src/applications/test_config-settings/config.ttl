@@ -3,12 +3,12 @@
 @prefix trn: <http://purl.org/stuff/transmissions/> .
 @prefix trn: <http://purl.org/stuff/transmissions/> . # for custom terms & instances
 
-trn:set1 a trn:ServiceConfig ;
+trn:set1 a trn:ConfigSet ;
     trn:setValue (trn:sv0)  . # consider using blank nodes
     trn:sv0   trn:key    "demo" ;
             trn:value    "uses trn:configKey, deprecated"  .
 
-trn:set2 a trn:ServiceConfig ;
+trn:set2 a trn:ConfigSet ;
     trn:setValue (trn:setter1)  . # consider using blank nodes
     trn:setter1   trn:key    "demo2" ;
             trn:value    "uses trn:"  .

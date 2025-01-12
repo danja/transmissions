@@ -3,7 +3,7 @@
 @prefix trn: <http://purl.org/stuff/transmissions/> .
 @prefix trn: <http://purl.org/stuff/transmissions/> .
 
-trn:setDemo a trn:ServiceConfig ;
+trn:setDemo a trn:ConfigSet ;
     rdfs:label "HTTP Server configuration" ;
     trn:configKey trn:httpServer ;
     trn:port 4000 ;

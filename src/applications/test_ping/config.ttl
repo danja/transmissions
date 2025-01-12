@@ -2,7 +2,7 @@
 @prefix trn: <http://purl.org/stuff/transmissions/> .
 @prefix trn: <http://purl.org/stuff/transmissions/> .
 
-trn:pingConfig a trn:ServiceConfig ;
+trn:pingConfig a trn:ConfigSet ;
     trn:interval 2000 ;         # Ping every 2 seconds
     trn:count 5 ;               # Stop after 5 pings
     trn:payload "HEARTBEAT" ;   # Custom payload
@@ -10,7 +10,7 @@ trn:pingConfig a trn:ServiceConfig ;
     trn:retryAttempts 3 ;       # Number of retry attempts on error
     trn:retryDelay 1000 .      # Delay between retries in ms
 
-trn:killConfig a trn:ServiceConfig ;
+trn:killConfig a trn:ConfigSet ;
     trn:setValue (trn:sv0) ;
     trn:sv0 trn:key "kill" ;
           trn:value "STOP" .

@@ -28,6 +28,7 @@ class Processor extends EventEmitter {
 
     async preProcess(message) {
         logger.debug("Processor.preProcess")
+        this.message = message
         return
         /* NOPE
         if (message.done) {
@@ -162,8 +163,9 @@ class Processor extends EventEmitter {
         const dataset = this.config
         const myPoi = grapoi({ dataset, term: this.node })
         logger.debug(`myPoi = ${myPoi}`)
-        logger.reveal(myPoi)
+        //    logger.reveal(myPoi)
         //.out(ns.trn.configKey)
+        return this.node
     }
     /*
 getMyConfigNode() {

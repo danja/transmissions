@@ -3,7 +3,7 @@
 # @prefix trn: <http://purl.org/stuff/transmissions/> .
 @prefix trn: <http://purl.org/stuff/transmissions/> . # for custom terms & instances
 
-trn:dirWalkerPosts a trn:ServiceConfig ;
+trn:dirWalkerPosts a trn:ConfigSet ;
     trn:key trn:files .
 
 trn:postTemplateMap a trn:ReMap ;

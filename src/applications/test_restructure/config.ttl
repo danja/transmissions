@@ -7,7 +7,7 @@ trn:jsonFileIn a trn:Config ;
     trn:sourceFile "input/input-01.json" ;
     trn:mediaType "application/json" .
 
-trn:retree a trn:ServiceConfig ;
+trn:retree a trn:ConfigSet ;
     trn:rename (trn:pp1 trn:pp2 trn:pp3) . # consider using blank nodes
     trn:pp1   trn:pre     "content.item.chat_messages" ;
             trn:post    "content.channel"  .
