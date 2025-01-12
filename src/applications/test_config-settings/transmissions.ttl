@@ -14,7 +14,7 @@
 #############################################################
 
 :mini a trn:Transmission ;
-    trn:pipe (:p10 :p20 ) .
+    trn:pipe (:SC :p10 :p20 :p30 :p40 ) .
 
 :p10 a :SetMessage ;
      trn:settings :set1 .

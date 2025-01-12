@@ -1,5 +1,4 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix trn: <http://purl.org/stuff/transmissions/> .
 @prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances
 
 #############################################################
@@ -11,10 +10,10 @@
 :UF a :Unfork . # collapses all pipes but one
 #############################################################
 
-:dirwalk a trn:Transmission ;
-    trn:pipe (:s1 :s2 :SM) .
+:dirwalk a :Transmission ;
+    :pipe (:s1 :s2 :SM) .
 
 :s1 a :DirWalker ;
- trn:settings :dirwalker . # specify in config.ttl
+ :settings :dirWalker . # specify in config.ttl
 
 :s2 a :NOP .

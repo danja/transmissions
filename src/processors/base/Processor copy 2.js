@@ -34,14 +34,11 @@ class Processor extends EventEmitter {
     }
 
     getPropertyFromSettings(property) {
-        logger.log(`Processor.getPropertyFromSettings, property = ${property}`)
         if (!this.config || !this.node) {
             logger.debug('Config or node missing')
             return undefined
         }
 
-        //////////////////// ITS NOT ON s1 it's on dirWalker
-        // NEED TO MAKE A SIMPLER TEST
         try {
             const dataset = this.config
             const ptr = grapoi({ dataset, term: this.node })

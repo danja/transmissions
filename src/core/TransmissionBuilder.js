@@ -77,8 +77,9 @@ class TransmissionBuilder {
       if (!transmission.get(processorName)) {
         let np = rdf.grapoi({ dataset: transmissionConfig, term: node })
         let processorType = np.out(ns.rdf.type).term
-        let processorConfig = np.out(ns.trn.settings)
-        // .term #########################################################
+        let processorConfig = np.out(ns.trn.settings).term
+        //
+        //  #########################################################
 
         try {
           let name = ns.getShortname(processorName)
