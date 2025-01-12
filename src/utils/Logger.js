@@ -88,8 +88,16 @@ logger.log = function (msg, level = "info") {
     const message = levelStyle(msg);
     const consoleMessage = `${message}`;
     const fileMessage = `[${logger.timestampISO()}] [${level.toUpperCase()}] [root] - ${msg}`;
-    log[level](consoleMessage);
-    logger.appendLogToFile(fileMessage);
+    try {
+        //   console.log(`level = ${level}`)
+        // console.log(`consoleMessage = ${consoleMessage}`)
+
+        log[level](consoleMessage);
+        logger.appendLogToFile(fileMessage);
+    } catch (err) {
+        console.log(`wtf? ${err.message}`)
+    }
+
 }
 
 logger.reveal = function (instance) {
@@ -135,7 +143,8 @@ logger.reveal = function (instance) {
     }
 
     const props = JSON.stringify(serialized, null, 2);
-    logger.log(`Instance of ${chalk.bold(instance.constructor.name)} with properties - \n${props}`, 'trace');
+    //  logger.log(`Instance of ${chalk.bold(instance.constructor.name)} with properties - \n${props}`, 'trace');
+    logger.log(`Instance of ${chalk.yellow(chalk.bold(instance.constructor.name))} with properties - \n${chalk.yellow(props)})`);
     logger.setLogLevel(loglevel)
 }
 
