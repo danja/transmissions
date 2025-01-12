@@ -7,10 +7,10 @@
  *
  * #### __*Input*__
  * * message.applicationRootDir (optional) - The root directory of the application
- * * message.target (if no configKey) - The path of the file or directory to remove
+ * * message.target (if no settings) - The path of the file or directory to remove
  *
  * #### __*Configuration*__
- * If a configKey is provided in the transmission:
+ * If a settings is provided in the transmission:
  * * ns.trn.target - The target path relative to applicationRootDir
  *
  * #### __*Output*__
@@ -55,7 +55,7 @@ class FileRemove extends Processor {
 
         // Determine target path
         if (this.settings === 'undefined') {
-            logger.debug('FileRemove no configKey from transmission, using message.target')
+            logger.debug('FileRemove no settings from transmission, using message.target')
             target = message.target
         } else {
             logger.debug('FileRemove this.settings = ' + this.settings.value)

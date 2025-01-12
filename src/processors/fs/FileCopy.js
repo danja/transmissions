@@ -8,15 +8,15 @@
  * Copies files or entire directories on the local filesystem.
  *
  * #### __*Configuration*__
- * If a `configKey` is provided in the transmission:
+ * If a `settings` is provided in the transmission:
  * * **`ns.trn.source`** - The source path relative to `applicationRootDir`
  * * **`ns.trn.destination`** - The destination path relative to `applicationRootDir`
  *
  * #### __*Input*__
  * * **`message.rootDir`** (optional) - The root directory of the operation
  * * **`message.applicationRootDir`** (optional) - The root directory of the application, fallback `rootDir`
- * * **`message.source`** (if no `configKey`) - The source path of the file or directory to copy
- * * **`message.destination`** (if no `configKey`) - The destination path for the copied file or directory
+ * * **`message.source`** (if no `settings`) - The source path of the file or directory to copy
+ * * **`message.destination`** (if no `settings`) - The destination path for the copied file or directory
  *
  * #### __*Output*__
  * * **`message`** - unmodified
@@ -61,7 +61,7 @@ class FileCopy extends Processor {
             source = message.source
             destination = message.destination
         } else {
-            logger.debug(`FileCopy: using configKey ${this.settings.value}`)
+            logger.debug(`FileCopy: using settings ${this.settings.value}`)
             source = this.getPropertyFromMyConfig(ns.trn.source)
             destination = this.getPropertyFromMyConfig(ns.trn.destination)
             if (message.targetPath) {

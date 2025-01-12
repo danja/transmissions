@@ -21,7 +21,7 @@ describe('run-command test', function () {
 @prefix t: <http://hyperdata.it/transmissions/> .
 
 t:RunCommandConfig a trm:ConfigSet ;
-    trm:configKey t:runCommand ;
+    trm:settings t:runCommand ;
     trm:command "echo \\"test\\"" .`
 
             await fs.writeFile(path.join(testDir, 'config.ttl'), configTtl)
@@ -34,7 +34,7 @@ t:RunCommandConfig a trm:ConfigSet ;
     trm:pipe (:p10 :p20) .
 
 :p10 a :RunCommand ;
-    trm:configKey :runCommand .
+    trm:settings :runCommand .
 
 :p20 a :ShowMessage .`
 

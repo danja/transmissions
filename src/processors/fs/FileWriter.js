@@ -10,7 +10,7 @@ import Processor from '../base/Processor.js'
  * FileWriter class that extends Processor
  * Write data to a file.
  *
- * First checks `message.targetFilepath` and if not set, uses the value from `processors.ttl` using `configKey` for this processor instance.
+ * First checks `message.targetFilepath` and if not set, uses the value from `processors.ttl` using `settings` for this processor instance.
  *
  * #### __*Input*__
  * * message.filepath

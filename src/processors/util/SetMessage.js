@@ -12,6 +12,7 @@ class SetMessage extends Processor {
     }
 
     async process(message) {
+        logger.setLogLevel('debug')
         const setters = await this.getSetters(this.config, this.settings, ns.trn.setValue)
         for (let i = 0; i < setters.length; i++) {
             message[setters[i].key] = setters[i].value
@@ -19,11 +20,11 @@ class SetMessage extends Processor {
         return this.emit('message', message)
     }
 
-    async getSetters(config, configKey, term) { // TODO refactor - is same in RestructureJSON
-        //    logger.log(`***** config = ${config}`)
-        //  logger.log(`***** configKey = ${configKey}`)
-        // logger.log(`***** term = ${term}`)
-        const settersRDF = GrapoiHelpers.listToArray(config, configKey, term)
+    async getSetters(config, settings, term) { // TODO refactor - is same in RestructureJSON
+        logger.debug(`***** config = ${config}`)
+        logger.debug(`***** settings.value = ${settings.value}`)
+        logger.debug(`***** term = ${term}`)
+        const settersRDF = GrapoiHelpers.listToArray(config, settings, term)
         const dataset = this.config
         var setters = []
         for (let i = 0; i < settersRDF.length; i++) {

@@ -10,11 +10,11 @@ class Restructure extends Processor {
         super(config)
     }
 
-    async getRenames(config, configKey, term) {
+    async getRenames(config, settings, term) {
         //logger.log(`***** config = ${config}`)
-        //logger.log(`***** configKey = ${configKey}`)
+        //logger.log(`***** settings = ${settings}`)
         //logger.log(`***** term = ${term}`)
-        const renamesRDF = GrapoiHelpers.listToArray(config, configKey, term)
+        const renamesRDF = GrapoiHelpers.listToArray(config, settings, term)
         const dataset = this.config
         var renames = []
         for (let i = 0; i < renamesRDF.length; i++) {

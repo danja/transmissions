@@ -114,12 +114,12 @@ class Processor extends EventEmitter {
 
         const poi = this.getMyPoi()
         // logger.log(`PPPPPPPPPPPPPP ${poi.out(property).term}`)
-        logger.debug(`PROPERTY = ${property}`)
+        // logger.debug(`PROPERTY = ${property}`)
 
 
         const shortName = ns.getShortname(property)
 
-        logger.debug(`PROPERTY = ${property}`)
+        //  logger.debug(`PROPERTY = ${property}`)
         //this.showMyConfig()
 
         if (this.message[shortName]) return this.message[shortName]
