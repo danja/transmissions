@@ -11,10 +11,10 @@ import TurtleFormatter from './TurtleFormatter.js'
 class StagingProcessorsFactory {
     static createProcessor(type, config) {
 
-        if (type.equals(ns.t.MarkdownFormatter)) {
+        if (type.equals(ns.trn.MarkdownFormatter)) {
             return new MarkdownFormatter(config)
         }
-        if (type.equals(ns.t.TurtleFormatter)) {
+        if (type.equals(ns.trn.TurtleFormatter)) {
             return new TurtleFormatter(config)
         }
         return false

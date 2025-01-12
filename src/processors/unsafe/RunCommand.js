@@ -14,10 +14,10 @@ class RunCommand extends Processor {
 
     async initializeSecurity() {
         if (this.configKey) {
-            const allowed = await this.getPropertyFromMyConfig(ns.trm.allowedCommands);
+            const allowed = await this.getPropertyFromMyConfig(ns.trn.allowedCommands);
             this.allowedCommands = allowed ? allowed.split(',') : [];
 
-            const blocked = await this.getPropertyFromMyConfig(ns.trm.blockedPatterns);
+            const blocked = await this.getPropertyFromMyConfig(ns.trn.blockedPatterns);
             this.blockedPatterns = blocked ? blocked.split(',') : [];
         }
     }
@@ -46,7 +46,7 @@ class RunCommand extends Processor {
     async process(message) {
         let command = message.command;
         if (!command) {
-            command = this.getPropertyFromMyConfig(ns.trm.command);
+            command = this.getPropertyFromMyConfig(ns.trn.command);
         }
 
         try {

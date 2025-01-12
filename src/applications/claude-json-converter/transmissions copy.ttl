@@ -1,7 +1,7 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix trm: <http://purl.org/stuff/transmission/> .
-@prefix : <http://hyperdata.it/transmissions/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix : <http://purl.org/stuff/transmissions/> .
 
 #############################################################
 # insert into pipe for debugging
@@ -15,55 +15,55 @@
 :UF a :Unfork . # collapses all pipes but one
 
 # testing only - FileWriter will save message
-:cb a trm:Transmission ;
+:cb a trn:Transmission ;
      rdfs:label "cb" ;
      rdfs:comment "Claude blanker" ;
-     trm:pipe (:cb10 :cb20 :cb30) .
+     trn:pipe (:cb10 :cb20 :cb30) .
 
 :cb10 a :SetMessage ;
-     trm:configKey :setDump .
+     trn:configKey :setDump .
 
 :cb20 a :FileWriter .
 
 :cb30 a :Blanker ; # clear values
-     trm:configKey :blankContent .
+     trn:configKey :blankContent .
 
 # :UF :SD :FW :DE
 ####################################
 
-:nop a trm:Transmission ;
+:nop a trn:Transmission ;
     rdfs:label "nop" ;
     rdfs:comment "NOP for testing" ;
-trm:pipe (:n10) .
+trn:pipe (:n10) .
 
 :n10 a :NOP .
 
 ####### The thing
 
-:ccc a trm:Transmission ;
+:ccc a trn:Transmission ;
     rdfs:label "ccc" ;
     rdfs:comment "Claude conversations.json converter" ;
-     trm:pipe (:ccc10 :ccc20 :ccc30 :ccc40 :ccc50  :ccc60) .
+     trn:pipe (:ccc10 :ccc20 :ccc30 :ccc40 :ccc50  :ccc60) .
 
 # Start
 
 :ccc10 a :FileReader ; # Claude conversations.json
-       trm:configKey :readFile .
+       trn:configKey :readFile .
 
 # Separates into conversations
 :ccc20 a :JSONWalker ;
-     trm:configKey :conversationsConfig .
+     trn:configKey :conversationsConfig .
 
 
 :ccc30 a :Restructure ;
-     trm:configKey :retreeConvs .
+     trn:configKey :retreeConvs .
 
 # Separates into messages
 :ccc40 a :JSONWalker ;
-     trm:configKey :messagesConfig .
+     trn:configKey :messagesConfig .
 
 #:p50 a :Restructure ;
- #    trm:configKey :retreeMsgs .
+ #    trn:configKey :retreeMsgs .
 
 :ccc50 a :MarkdownFormatter .
 

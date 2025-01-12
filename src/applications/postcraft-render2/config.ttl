@@ -1,40 +1,40 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix trm: <http://purl.org/stuff/transmission/> .
-# @prefix fs: <http://purl.org/stuff/filesystem/> .
-@prefix t: <http://hyperdata.it/transmissions/> . # for custom terms & instances
-@prefix pc: <http://purl.org/stuff/postcraft/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> .
+# @prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> . # for custom terms & instances
+@prefix trn: <http://purl.org/stuff/transmissions/> .
 
-t:cacheWalker a trm:ConfigSet ;
-  trm:sourceDir "cache" ;
-  trm:includeExtensions "['.html', '.md', '.ttl', '.js', '.json', '.txt',  '.css']" .
+trn:cacheWalker a trn:ConfigSet ;
+  trn:sourceDir "cache" ;
+  trn:includeExtensions "['.html', '.md', '.ttl', '.js', '.json', '.txt',  '.css']" .
 
-t:templatePrep a trm:ConfigSet  ;
-    trm:rename (t:tp1 ).
-    t:tp1   trm:pre     "content" ;
-            trm:post    "contentBlocks.content" .
+trn:templatePrep a trn:ConfigSet  ;
+    trn:rename (trn:tp1 ).
+    trn:tp1   trn:pre     "content" ;
+            trn:post    "contentBlocks.content" .
 
-t:pageTemplater a trm:ConfigSet ;
-trm:configKey t:pTemplater ;
-  trm:templateFilename "layouts/middlin/templates/entry-page_template.njk" .
+trn:pageTemplater a trn:ConfigSet ;
+trn:configKey trn:pTemplater ;
+  trn:templateFilename "layouts/middlin/templates/entry-page_template.njk" .
 
-t:writePrep a trm:ConfigSet  ;
-    trm:rename (t:wp1 ).
-    t:wp1   trm:pre     "filename" ;
-            trm:post    "filepath" .
+trn:writePrep a trn:ConfigSet  ;
+    trn:rename (trn:wp1 ).
+    trn:wp1   trn:pre     "filename" ;
+            trn:post    "filepath" .
 
-t:fileWriter a trm:ConfigSet ;
-  trm:targetDir "public" .
+trn:fileWriter a trn:ConfigSet ;
+  trn:targetDir "public" .
 
   ################
 
-t:indexTemplater a trm:ConfigSet ;
+trn:indexTemplater a trn:ConfigSet ;
 
-  trm:templateFilename "layouts/middlin/templates/index-page_template.njk" .
+  trn:templateFilename "layouts/middlin/templates/index-page_template.njk" .
 
-t:filesRename a trm:ConfigSet ;
-  trm:inputField "filename" ;
-  trm:outputField "filepath" ;
-  trm:match ".md";
-  trm:replace ".html".
+trn:filesRename a trn:ConfigSet ;
+  trn:inputField "filename" ;
+  trn:outputField "filepath" ;
+  trn:match ".md";
+  trn:replace ".html".
 
 

@@ -45,7 +45,7 @@ class ConfigMap extends Processor {
 
     logger.debug(`ConfigMap, Using configKey ${this.configKey.value}`)
 
-    const group = this.getPropertyFromMyConfig(ns.trm.group)
+    const group = this.getPropertyFromMyConfig(ns.trn.group)
     const targetGroup = rdf.namedNode(group)
     logger.debug(`ConfigMap, group =  ${targetGroup}`)
 
@@ -61,7 +61,7 @@ class ConfigMap extends Processor {
       //   logger.debug('type = ' + type.value)
       // logger.debug('targetGroup = ' + targetGroup)
       if (type.equals(targetGroup)) {
-        //          if (type.equals(ns.pc.ContentGroup)) {
+        //          if (type.equals(ns.trn.ContentGroup)) {
         await this.processContentGroup(message, q.subject)
       }
     }
@@ -77,16 +77,16 @@ class ConfigMap extends Processor {
   async processContentGroup(message, contentGroupID) {
     logger.debug('contentGroupID = ' + contentGroupID.value)
     switch (contentGroupID.value) {
-      case ns.t.PostContent.value:
+      case ns.trn.PostContent.value:
         await this.markdownToEntryContent(message, contentGroupID)
         break
-      case ns.t.PostPages.value:
+      case ns.trn.PostPages.value:
         await this.entryContentToPostPage(message, contentGroupID)
         break
-      case ns.t.IndexPage.value:
+      case ns.trn.IndexPage.value:
         await this.indexPage(message, contentGroupID)
         break
-      case ns.t.AtomFeed.value:
+      case ns.trn.AtomFeed.value:
         await this.atomFeed(message, contentGroupID)
         break
       default:
@@ -103,15 +103,15 @@ class ConfigMap extends Processor {
     const postcraftConfig = message.dataset
     const groupPoi = rdf.grapoi({ dataset: postcraftConfig, term: contentGroupID })
 
-    // message.location = groupPoi.out(ns.pc.location).term.value
-    // message.subdir = groupPoi.out(ns.pc.subdir).term.value
-    message.filepath = groupPoi.out(ns.pc.template).term.value
+    // message.location = groupPoi.out(ns.trn.location).term.value
+    // message.subdir = groupPoi.out(ns.trn.subdir).term.value
+    message.filepath = groupPoi.out(ns.trn.template).term.value
     message.template = '§§§ placeholer for debugging §§§'
 
     message.entryContentMeta = {
-      sourceDir: groupPoi.out(ns.fs.sourceDirectory).term.value,
-      targetDir: groupPoi.out(ns.fs.targetDirectory).term.value,
-      templateFilename: groupPoi.out(ns.pc.template).term.value
+      sourceDir: groupPoi.out(ns.trn.sourceDirectory).term.value,
+      targetDir: groupPoi.out(ns.trn.targetDirectory).term.value,
+      templateFilename: groupPoi.out(ns.trn.template).term.value
     }
   }
 
@@ -125,8 +125,8 @@ class ConfigMap extends Processor {
     const groupPoi = rdf.grapoi({ dataset: postcraftConfig, term: contentGroupID })
 
     message.entryContentToPage = {
-      targetDir: groupPoi.out(ns.fs.targetDirectory).term.value,
-      templateFilename: groupPoi.out(ns.pc.template).term.value
+      targetDir: groupPoi.out(ns.trn.targetDirectory).term.value,
+      templateFilename: groupPoi.out(ns.trn.template).term.value
     }
   }
 
@@ -140,8 +140,8 @@ class ConfigMap extends Processor {
     const groupPoi = rdf.grapoi({ dataset: postcraftConfig, term: contentGroupID })
 
     message.indexPage = {
-      filepath: groupPoi.out(ns.fs.filepath).term.value,
-      templateFilename: groupPoi.out(ns.pc.template).term.value
+      filepath: groupPoi.out(ns.trn.filepath).term.value,
+      templateFilename: groupPoi.out(ns.trn.template).term.value
     }
   }
 
@@ -155,8 +155,8 @@ class ConfigMap extends Processor {
     const groupPoi = rdf.grapoi({ dataset: postcraftConfig, term: contentGroupID })
 
     message.atomFeed = {
-      filepath: groupPoi.out(ns.fs.filepath).term.value,
-      templateFilename: groupPoi.out(ns.pc.template).term.value
+      filepath: groupPoi.out(ns.trn.filepath).term.value,
+      templateFilename: groupPoi.out(ns.trn.template).term.value
     }
   }
 }

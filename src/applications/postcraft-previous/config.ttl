@@ -1,97 +1,97 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix trm: <http://purl.org/stuff/transmission/> .
-# @prefix fs: <http://purl.org/stuff/filesystem/> .
-@prefix t: <http://hyperdata.it/transmissions/> . # for custom terms & instances
-@prefix pc: <http://purl.org/stuff/postcraft/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> .
+# @prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> . # for custom terms & instances
+@prefix trn: <http://purl.org/stuff/transmissions/> .
 
 ### ConfigMap
-t:PostcraftMap a trm:ServiceConfig ;
-    trm:key t:postcraftMap ;
-    trm:group pc:ContentGroup .
+trn:PostcraftMap a trn:ServiceConfig ;
+    trn:key trn:postcraftMap ;
+    trn:group trn:ContentGroup .
 
 ### clean
 
-t:cacheRemove a trm:ServiceConfig ;
-    trm:key t:removeCache ;
-    trm:target "cache/" .
+trn:cacheRemove a trn:ServiceConfig ;
+    trn:key trn:removeCache ;
+    trn:target "cache/" .
 
-t:articlesRemove a trm:ServiceConfig ;
-    trm:key t:removeArticles ;
-    trm:target "public/home/articles" .
+trn:articlesRemove a trn:ServiceConfig ;
+    trn:key trn:removeArticles ;
+    trn:target "public/home/articles" .
 
-t:entriesRemove a trm:ServiceConfig ;
-    trm:key t:removeEntries ;
-    trm:target "public/home/entries" .
+trn:entriesRemove a trn:ServiceConfig ;
+    trn:key trn:removeEntries ;
+    trn:target "public/home/entries" .
 
-t:journalRemove a trm:ServiceConfig ;
-    trm:key t:removeJournal ;
-    trm:target "public/home/journal" .
+trn:journalRemove a trn:ServiceConfig ;
+    trn:key trn:removeJournal ;
+    trn:target "public/home/journal" .
 
-t:todoRemove a trm:ServiceConfig ;
-    trm:key t:removeTodo ;
-    trm:target "public/home/todo" .
+trn:todoRemove a trn:ServiceConfig ;
+    trn:key trn:removeTodo ;
+    trn:target "public/home/todo" .
 
-t:indexRemove a trm:ServiceConfig ;
-    trm:key t:removeIndex ;
-    trm:target "public/home/index.html" .
+trn:indexRemove a trn:ServiceConfig ;
+    trn:key trn:removeIndex ;
+    trn:target "public/home/index.html" .
 
 ### copy #####################################
 
-t:copyStatic a trm:ServiceConfig ;
-    trm:key t:staticCopy ;
-    trm:source "content-static" ;
-    trm:destination "public/home/static" .
-    # trm:destination "../../danny.ayers.name/static" .
+trn:copyStatic a trn:ServiceConfig ;
+    trn:key trn:staticCopy ;
+    trn:source "content-static" ;
+    trn:destination "public/home/static" .
+    # trn:destination "../../danny.ayers.name/static" .
 
-t:copyMedia a trm:ServiceConfig ;
-    trm:key t:mediaCopy ;
-    trm:source "media" ;
-    trm:destination "public/home/media" .
+trn:copyMedia a trn:ServiceConfig ;
+    trn:key trn:mediaCopy ;
+    trn:source "media" ;
+    trn:destination "public/home/media" .
 
-t:copyCSS a trm:ServiceConfig ;
-    trm:key t:cssCopy ;
-    trm:source "layouts/middlin/css" ;
-    trm:destination "public/home/css" .
+trn:copyCSS a trn:ServiceConfig ;
+    trn:key trn:cssCopy ;
+    trn:source "layouts/middlin/css" ;
+    trn:destination "public/home/css" .
 
-t:copyFonts a trm:ServiceConfig ;
-    trm:key t:fontsCopy ;
-    trm:source "layouts/middlin/fonts" ;
-    trm:destination "public/home/fonts" .
+trn:copyFonts a trn:ServiceConfig ;
+    trn:key trn:fontsCopy ;
+    trn:source "layouts/middlin/fonts" ;
+    trn:destination "public/home/fonts" .
 
-t:copyJS a trm:ServiceConfig ;
-    trm:key t:jsCopy ;
-    trm:source "layouts/middlin/js" ;
-    trm:destination "public/home/js" .
+trn:copyJS a trn:ServiceConfig ;
+    trn:key trn:jsCopy ;
+    trn:source "layouts/middlin/js" ;
+    trn:destination "public/home/js" .
 
 ### render ##################################
 
-trm:Describe  a trm:ServiceConfig ;
- trm:key trm:describe .
+trn:Describe  a trn:ServiceConfig ;
+ trn:key trn:describe .
 
-t:phaseOne a trm:ServiceConfig ;
-    trm:key t:markdownToRawPosts ;
-    trm:marker "Phase One" .
+trn:phaseOne a trn:ServiceConfig ;
+    trn:key trn:markdownToRawPosts ;
+    trn:marker "Phase One" .
 
 # TODO IS COPY, not rename!!
 
-t:walkPrep a trm:ReMap ;
-    trm:rename (t:pp1 t:pp2) . # consider using blank nodes
-    t:pp1   trm:pre     "content" ;
-            trm:post    "template"  .
-    t:pp2   trm:pre     "entryContentMeta.sourceDir" ;
-            trm:post    "sourceDir" .
-  #  t:pp2   trm:pre     "filename" ;
-   #         trm:post    "filename"  .
+trn:walkPrep a trn:ReMap ;
+    trn:rename (trn:pp1 trn:pp2) . # consider using blank nodes
+    trn:pp1   trn:pre     "content" ;
+            trn:post    "template"  .
+    trn:pp2   trn:pre     "entryContentMeta.sourceDir" ;
+            trn:post    "sourceDir" .
+  #  trn:pp2   trn:pre     "filename" ;
+   #         trn:post    "filename"  .
 
-t:entryRawPrep a trm:ReMap ;
-    trm:rename (t:er1 t:er3) .
-   t:er1   trm:pre     "targetFilename" ;
-            trm:post    "filepath" .
-    t:er3   trm:pre     "content" ;
-            trm:post    "contentBlocks.content" .
+trn:entryRawPrep a trn:ReMap ;
+    trn:rename (trn:er1 trn:er3) .
+   trn:er1   trn:pre     "targetFilename" ;
+            trn:post    "filepath" .
+    trn:er3   trn:pre     "content" ;
+            trn:post    "contentBlocks.content" .
 
-t:entryPagePrep a trm:ReMap ;
-    trm:rename (t:ppp1) .
-    t:ppp1   trm:pre     "content" ;
-            trm:post    "contentBlocks.content" .
+trn:entryPagePrep a trn:ReMap ;
+    trn:rename (trn:ppp1) .
+    trn:ppp1   trn:pre     "content" ;
+            trn:post    "contentBlocks.content" .
 

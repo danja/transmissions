@@ -1,24 +1,24 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix trm: <http://purl.org/stuff/transmission/> .
-@prefix t: <http://hyperdata.it/transmissions/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> .
 
-t:readConfig a trm:ServiceConfig ;
+trn:readConfig a trn:ServiceConfig ;
     rdfs:label "Read file" ;
-    trm:configKey t:readConfig ;
-    trm:mediaType "text/plain" .
+    trn:configKey trn:readConfig ;
+    trn:mediaType "text/plain" .
 
-t:filterConfig a trm:ServiceConfig ;
+trn:filterConfig a trn:ServiceConfig ;
     rdfs:label "File filter config" ;
-    trm:configKey t:filterConfig ;
-    trm:include "*.txt,*.md,*.js,*.jsx,*.ts,*.tsx,*.json,*.html,*.css" ;
-    trm:exclude "node_modules/*,dist/*,build/*,.git/*,.DS_Store,.env,*.log,coverage/*,tmp/*,*.min.js,*.map,.cache/*,__pycache__/*,*.pyc,*.pyo,*.pyd,test-failures/*,yarn.lock,package-lock.json" .
+    trn:configKey trn:filterConfig ;
+    trn:include "*.txt,*.md,*.js,*.jsx,*.ts,*.tsx,*.json,*.html,*.css" ;
+    trn:exclude "node_modules/*,dist/*,build/*,.git/*,.DS_Store,.env,*.log,coverage/*,tmp/*,*.min.js,*.map,.cache/*,__pycache__/*,*.pyc,*.pyo,*.pyd,test-failures/*,yarn.lock,package-lock.json" .
 
-t:containerConfig a trm:ServiceConfig ;
-    trm:configKey t:containerConfig ;
-    trm:destination "repomix.json" .
+trn:containerConfig a trn:ServiceConfig ;
+    trn:configKey trn:containerConfig ;
+    trn:destination "repomix.json" .
 
-t:writeConfig a trm:ServiceConfig ;
+trn:writeConfig a trn:ServiceConfig ;
     rdfs:label "Write file" ;
-    trm:configKey t:writeConfig ;
-    trm:destinationFile "repomix.json" .
+    trn:configKey trn:writeConfig ;
+    trn:destinationFile "repomix.json" .

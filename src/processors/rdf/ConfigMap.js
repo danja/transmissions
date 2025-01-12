@@ -29,7 +29,7 @@ class ConfigMap extends Processor {
     const poi = grapoi({ dataset })
 
     // Find ConfigSet instances
-    for (const quad of poi.out(ns.rdf.type, ns.pc.ConfigSet).quads()) {
+    for (const quad of poi.out(ns.rdf.type, ns.trn.ConfigSet).quads()) {
       const groupID = quad.subject
 
       let groupName = ns.getShortname(groupID.value)
@@ -41,28 +41,28 @@ class ConfigMap extends Processor {
 
       if (!message.contentGroup) message.contentGroup = {}
       // Extract paths
-      if (groupPoi.out(ns.fs.sourceDirectory).term) {
+      if (groupPoi.out(ns.trn.sourceDirectory).term) {
         let sourceDir = this.resolvePath(
           basePath,
-          groupPoi.out(ns.fs.sourceDirectory).term.value)
+          groupPoi.out(ns.trn.sourceDirectory).term.value)
 
         if (!message.contentGroup[groupName]) message.contentGroup[groupName] = {}
         message.contentGroup[groupName].sourceDir = sourceDir
       }
 
-      if (groupPoi.out(ns.fs.targetDirectory).term) {
+      if (groupPoi.out(ns.trn.targetDirectory).term) {
         let targetDir = this.resolvePath(
           basePath,
-          groupPoi.out(ns.fs.targetDirectory).term.value
+          groupPoi.out(ns.trn.targetDirectory).term.value
         )
         if (!message.contentGroup[groupName]) message.contentGroup[groupName] = {}
         message.contentGroup[groupName].targetDir = targetDir
       }
 
-      if (groupPoi.out(ns.pc.template).term) {
+      if (groupPoi.out(ns.trn.template).term) {
         let templateFile = this.resolvePath(
           basePath,
-          groupPoi.out(ns.pc.template).term.value
+          groupPoi.out(ns.trn.template).term.value
         )
         if (!message.contentGroup[groupName]) message.contentGroup[groupName] = {}
         message.contentGroup[groupName].templateFile = templateFile

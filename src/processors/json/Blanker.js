@@ -11,8 +11,8 @@ class Blanker extends Processor {
     }
 
     async process(message) {
-        const pointer = this.getPropertyFromMyConfig(ns.trm.pointer)
-        const preserve = this.getPropertyFromMyConfig(ns.trm.preserve)
+        const pointer = this.getPropertyFromMyConfig(ns.trn.pointer)
+        const preserve = this.getPropertyFromMyConfig(ns.trn.preserve)
 
         var preservePath = preserve.value ? preserve.value : 'nonono'
 

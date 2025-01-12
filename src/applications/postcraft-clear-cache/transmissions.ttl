@@ -1,9 +1,9 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
-@prefix trm: <http://purl.org/stuff/transmission/> . # TODO make plural
-@prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances - TODO make one @services s:
-@prefix pc: <http://purl.org/stuff/postcraft/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> . # TODO make plural
+@prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances - TODO make one @services s:
+@prefix trn: <http://purl.org/stuff/transmissions/> .
 
 #############################################################
 # insert into pipe for debugging - one instance only like this
@@ -19,10 +19,10 @@
 
 ## POSTCRAFT.CLEAN ##########################################
 
-:clearCache a trm:Transmission ;
+:clearCache a trn:Transmission ;
     rdfs:label "clear cache" ;
     rdfs:comment "directory cleaner" ;
-    trm:pipe (:r10) .
+    trn:pipe (:r10) .
 
 :r10 a :FileRemove ;
-    trm:configKey :removeCache .
+    trn:configKey :removeCache .

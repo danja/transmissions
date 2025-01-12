@@ -19,7 +19,7 @@ class FileContainer extends Processor {
     async process(message) {
         if (message.done) {
             message.content = JSON.stringify(this.container, null, 2);
-            message.filepath = this.getPropertyFromMyConfig(ns.trm.destination);
+            message.filepath = this.getPropertyFromMyConfig(ns.trn.destination);
             return this.emit('message', message);
         }
 

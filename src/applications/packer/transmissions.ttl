@@ -1,7 +1,7 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix trm: <http://purl.org/stuff/transmission/> .
-@prefix : <http://hyperdata.it/transmissions/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix : <http://purl.org/stuff/transmissions/> .
 
 #############################################################
 # insert into pipe for debugging
@@ -12,20 +12,20 @@
 :N  a :NOP . # no operation (except for showing stage in pipe)
 :UF a :Unfork . # collapses all pipes but one
 #############################################################
-:packer a trm:Transmission ;
+:packer a trn:Transmission ;
     rdfs:label "Repository Packer" ;
-    trm:pipe (:p10 :p20 :p30 :p40 :p50 :p60 :p70 :SM :p80) .
+    trn:pipe (:p10 :p20 :p30 :p40 :p50 :p60 :p70 :SM :p80) .
 
 :p10 a :DirWalker .
 
 :p20 a :StringFilter ;
-    trm:configKey :filterConfig .
+    trn:configKey :filterConfig .
 
 :p30 a :FileReader ;
-    trm:configKey :readConfig .
+    trn:configKey :readConfig .
 
 :p40 a :FileContainer ;
-    trm:configKey :containerConfig .
+    trn:configKey :containerConfig .
 
 :p50 a :CaptureAll .
 
@@ -34,4 +34,4 @@
 :p70 a :Unfork .
 
 :p80 a :FileWriter ;
-    trm:configKey :writeConfig .
+    trn:configKey :writeConfig .

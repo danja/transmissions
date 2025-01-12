@@ -7,13 +7,13 @@ import MarkdownToHTML from './MarkdownToHTML.js'
 
 class MarkupProcessorsFactory {
     static createProcessor(type, config) {
-        if (type.equals(ns.t.MetadataExtractor)) {
+        if (type.equals(ns.trn.MetadataExtractor)) {
             return new MetadataExtractor(config)
         }
-        if (type.equals(ns.t.MarkdownToHTML)) {
+        if (type.equals(ns.trn.MarkdownToHTML)) {
             return new MarkdownToHTML(config)
         }
-        if (type.equals(ns.t.LinkFinder)) {
+        if (type.equals(ns.trn.LinkFinder)) {
             return new LinkFinder(config)
         }
         return false

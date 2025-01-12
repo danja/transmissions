@@ -1,14 +1,14 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix trm: <http://purl.org/stuff/transmission/> .
-@prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances
+@prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances
 
-:linklister a trm:Transmission ;
-    trm:pipe (:s1 :s2 :s3 :s4 :s5 :s6 :s7 :s8) .
+:linklister a trn:Transmission ;
+    trn:pipe (:s1 :s2 :s3 :s4 :s5 :s6 :s7 :s8) .
 
 :s1 a :FileReader ;
-    trm:configKey :sourceFile .
-    
+    trn:configKey :sourceFile .
+
 :s2 a :LineReader .
 :s3 a :HttpGet .
 
@@ -17,19 +17,19 @@
 :s5 a :StringMerger .
 
 :s6 a :FileWriter ;
-    trm:configKey :linkFile .
+    trn:configKey :linkFile .
 # :s6 a :NOP .
 :s7 a :MarkdownToHTML .
 
 :s8 a :FileWriter ;
-    trm:configKey :htmlFile .
+    trn:configKey :htmlFile .
 
 #:s8 a :StringFilter .
 #:s9 a :StringMerger .
-#:s10 a :FileWriter 
-#        trm:configKey :linkFile .
+#:s10 a :FileWriter
+#        trn:configKey :linkFile .
 # :s4 a :NOP .
 # :s4 a :FileWriter ;
-#     trm:configKey :gotFile .
+#     trn:configKey :gotFile .
 
 # :s5 a :NOP .

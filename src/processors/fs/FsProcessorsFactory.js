@@ -10,22 +10,22 @@ import FilenameMapper from './FilenameMapper.js'
 
 class FsProcessorsFactory {
     static createProcessor(type, config) {
-        if (type.equals(ns.t.DirWalker)) {
+        if (type.equals(ns.trn.DirWalker)) {
             return new DirWalker(config)
         }
-        if (type.equals(ns.t.FileReader)) {
+        if (type.equals(ns.trn.FileReader)) {
             return new FileReader(config)
         }
-        if (type.equals(ns.t.FileWriter)) {
+        if (type.equals(ns.trn.FileWriter)) {
             return new FileWriter(config)
         }
-        if (type.equals(ns.t.FileCopy)) {
+        if (type.equals(ns.trn.FileCopy)) {
             return new FileCopy(config)
         }
-        if (type.equals(ns.t.FileRemove)) {
+        if (type.equals(ns.trn.FileRemove)) {
             return new FileRemove(config)
         }
-        if (type.equals(ns.t.FilenameMapper)) {
+        if (type.equals(ns.trn.FilenameMapper)) {
             return new FilenameMapper(config)
         }
         return false

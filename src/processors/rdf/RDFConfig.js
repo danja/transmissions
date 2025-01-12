@@ -19,7 +19,7 @@ class RDFConfig extends Processor {
     const poi = grapoi({ dataset })
 
     // Find all ConfigGroup instances
-    for (const configGroup of poi.out(ns.rdf.type, ns.trm.ConfigGroup).terms) {
+    for (const configGroup of poi.out(ns.rdf.type, ns.trn.ConfigGroup).terms) {
       const groupPoi = grapoi({ dataset, term: configGroup })
 
       // Extract property mappings

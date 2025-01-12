@@ -52,10 +52,10 @@ class DirWalker extends Processor {
         message.slugs = [];
         message.done = false;
 
-        const sourceDirProperty = this.getProperty(ns.trm.sourceDir);
+        const sourceDirProperty = this.getProperty(ns.trn.sourceDir);
         let sourceDir = sourceDirProperty;
 
-        let includeExtensions = this.getProperty(ns.trm.includeExtensions);
+        let includeExtensions = this.getProperty(ns.trn.includeExtensions);
         if (includeExtensions) {
             includeExtensions = includeExtensions.replaceAll('\'', '"');
             this.includeExtensions = JSON.parse(includeExtensions);

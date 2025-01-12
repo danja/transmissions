@@ -11,22 +11,22 @@ import SetMessage from './SetMessage.js'
 class UtilProcessorsFactory {
     static createProcessor(type, config) {
 
-        if (type.equals(ns.t.ShowMessage)) {
+        if (type.equals(ns.trn.ShowMessage)) {
             return new ShowMessage(config)
         }
-        if (type.equals(ns.t.ShowTransmission)) {
+        if (type.equals(ns.trn.ShowTransmission)) {
             return new ShowTransmission(config)
         }
-        if (type.equals(ns.t.CaptureAll)) {
+        if (type.equals(ns.trn.CaptureAll)) {
             return new CaptureAll(config)
         }
-        if (type.equals(ns.t.ShowConfig)) {
+        if (type.equals(ns.trn.ShowConfig)) {
             return new ShowConfig(config)
         }
-        if (type.equals(ns.t.WhiteboardToMessage)) {
+        if (type.equals(ns.trn.WhiteboardToMessage)) {
             return new WhiteboardToMessage(config)
         }
-        if (type.equals(ns.t.SetMessage)) {
+        if (type.equals(ns.trn.SetMessage)) {
             return new SetMessage(config)
         }
 

@@ -9,26 +9,26 @@ import Templater from './Templater.js'
 class TextProcessorsFactory {
     static createProcessor(type, config) {
 
-        if (type.equals(ns.t.Templater)) {
+        if (type.equals(ns.trn.Templater)) {
             return new Templater(config)
         }
-        if (type.equals(ns.t.LineReader)) {
+        if (type.equals(ns.trn.LineReader)) {
             return new LineReader(config)
         }
 
-        if (type.equals(ns.t.StringFilter)) {
+        if (type.equals(ns.trn.StringFilter)) {
             return new StringFilter(config)
         }
 
-        if (type.equals(ns.t.StringMerger)) {
+        if (type.equals(ns.trn.StringMerger)) {
             return new StringMerger(config)
         }
 
-        if (type.equals(ns.t.StringReplace)) {
+        if (type.equals(ns.trn.StringReplace)) {
             return new StringReplace(config)
         }
 
-        //     if (type.equals(ns.t.CommentStripper)) {
+        //     if (type.equals(ns.trn.CommentStripper)) {
         //       return new CommentStripper(config)
         // }
 

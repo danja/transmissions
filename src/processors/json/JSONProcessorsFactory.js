@@ -8,16 +8,16 @@ import Blanker from './Blanker.js'
 
 class JSONProcessorsFactory {
     static createProcessor(type, config) {
-        if (type.equals(ns.t.Restructure)) {
+        if (type.equals(ns.trn.Restructure)) {
             return new Restructure(config)
         }
-        if (type.equals(ns.t.JSONWalker)) {
+        if (type.equals(ns.trn.JSONWalker)) {
             return new JSONWalker(config)
         }
-        if (type.equals(ns.t.ValueConcat)) {
+        if (type.equals(ns.trn.ValueConcat)) {
             return new ValueConcat(config)
         }
-        if (type.equals(ns.t.Blanker)) {
+        if (type.equals(ns.trn.Blanker)) {
             return new Blanker(config)
         }
         return false

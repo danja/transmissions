@@ -1,20 +1,20 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix trm: <http://purl.org/stuff/transmission/> .
-# @prefix fs: <http://purl.org/stuff/filesystem/> .
-@prefix t: <http://hyperdata.it/transmissions/> . # for custom terms & instances
+@prefix trn: <http://purl.org/stuff/transmissions/> .
+# @prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> . # for custom terms & instances
 
-t:dirWalkerPosts a trm:ServiceConfig ;
-    trm:key t:files .
+trn:dirWalkerPosts a trn:ServiceConfig ;
+    trn:key trn:files .
 
-t:postTemplateMap a trm:ReMap ;
-   trm:rename (t:rn1) . # consider using blank nodes
-     t:rn1    trm:pre     "content" ;
-            trm:post    "template"  .
+trn:postTemplateMap a trn:ReMap ;
+   trn:rename (trn:rn1) . # consider using blank nodes
+     trn:rn1    trn:pre     "content" ;
+            trn:post    "template"  .
 
-t:postSaver a trm:ReMap ;
-    trm:rename (t:rn2) . 
-    t:rn2   trm:pre     "targetFilename" ;
-            trm:post    "filename" .
- 
- 
+trn:postSaver a trn:ReMap ;
+    trn:rename (trn:rn2) .
+    trn:rn2   trn:pre     "targetFilename" ;
+            trn:post    "filename" .
+
+
 

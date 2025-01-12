@@ -1,33 +1,33 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix trm: <http://purl.org/stuff/transmission/> .
-@prefix : <http://hyperdata.it/transmissions/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix : <http://purl.org/stuff/transmissions/> .
 
 #############################################################
 # insert into pipe for debugging
 :DE a :DeadEnd . # ends the current pipe quietly
-:H  a :Halt . # kills everything 
+:H  a :Halt . # kills everything
 :SM a :ShowMessage . # verbose report, continues pipe
 :N  a :NOP . # no operation (except for showing stage in pipe)
-:UF a :Unfork . # collapses all pipes but one 
+:UF a :Unfork . # collapses all pipes but one
 #############################################################
 
-:file_copy_remove_test a trm:Transmission ;
-    trm:pipe (:s1 :s2 :s3 :s4 :s5 :s6) .
+:file_copy_remove_test a trn:Transmission ;
+    trn:pipe (:s1 :s2 :s3 :s4 :s5 :s6) .
 
 :s1 a :FileCopy ;
-    trm:configKey :copyOneToSingleEmpty .
+    trn:configKey :copyOneToSingleEmpty .
 
 :s2 a :FileCopy ;
-    trm:configKey :copySingleEmptyToSingleFull .
+    trn:configKey :copySingleEmptyToSingleFull .
 
 :s3 a :FileRemove ;
-    trm:configKey :removeSingleEmpty .
+    trn:configKey :removeSingleEmpty .
 
 :s4 a :FileCopy ;
-    trm:configKey :copyStartToSeveralEmpty .
+    trn:configKey :copyStartToSeveralEmpty .
 
 :s5 a :FileCopy ;
-    trm:configKey :copySeveralEmptyToSeveralFull .
+    trn:configKey :copySeveralEmptyToSeveralFull .
 
 :s6 a :FileRemove ;
-    trm:configKey :removeSeveralEmpty .
+    trn:configKey :removeSeveralEmpty .

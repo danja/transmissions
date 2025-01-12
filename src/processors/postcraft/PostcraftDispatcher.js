@@ -42,7 +42,7 @@ class PostcraftDispatcher extends Processor {
     const poi = grapoi({ dataset: postcraftConfig })
 
     for (const q of poi.out(ns.rdf.type).quads()) {
-      if (q.object.equals(ns.pc.ContentGroup)) {
+      if (q.object.equals(ns.trn.ContentGroup)) {
         await this.processContentGroup(message, q.subject)
       }
     }
@@ -56,9 +56,9 @@ class PostcraftDispatcher extends Processor {
   async processContentGroup(message, contentGroupID) {
     const postcraftConfig = message.dataset
     const groupPoi = rdf.grapoi({ dataset: postcraftConfig, term: contentGroupID })
-    const sourceDir = groupPoi.out(ns.fs.sourceDirectory).term.value
-    const targetDir = groupPoi.out(ns.fs.targetDirectory).term.value
-    const templateFilename = groupPoi.out(ns.pc.template).term.value
+    const sourceDir = groupPoi.out(ns.trn.sourceDirectory).term.value
+    const targetDir = groupPoi.out(ns.trn.targetDirectory).term.value
+    const templateFilename = groupPoi.out(ns.trn.template).term.value
 
     // logger.log('sourceDir = ' + sourceDir)
     // logger.log('targetDir = ' + targetDir)

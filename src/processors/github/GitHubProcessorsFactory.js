@@ -5,7 +5,7 @@ import GitHubList from './GitHubList.js';
 
 class GitHubProcessorsFactory {
     static createProcessor(type, config) {
-        if (type.equals(ns.t.GitHubList)) {
+        if (type.equals(ns.trn.GitHubList)) {
             return new GitHubList(config);
         }
         return false;

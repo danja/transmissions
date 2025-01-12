@@ -1,9 +1,9 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix trm: <http://purl.org/stuff/transmission/> .
-@prefix : <http://hyperdata.it/transmissions/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix : <http://purl.org/stuff/transmissions/> .
 
-:foreach_test a trm:Transmission ;
-    trm:pipe (:s1 :s2 :s3) .
+:foreach_test a trn:Transmission ;
+    trn:pipe (:s1 :s2 :s3) .
 
 :s1 a :ForEach .
 :s2 a :ShowMessage .

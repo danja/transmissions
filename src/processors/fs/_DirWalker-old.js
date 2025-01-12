@@ -93,7 +93,7 @@ class DirWalker extends Processor {
                     const slug = this.extractSlug(message.filename)
                     message.slugs.push(slug)
                     // globalish
-                    //    this.addPropertyToMyConfig(ns.trm.postPath, rdf.literal(message.filename))
+                    //    this.addPropertyToMyConfig(ns.trn.postPath, rdf.literal(message.filename))
                     //  logger.log('CONFIG : ' + this.config)
 
                     //   this.showMyConfig()

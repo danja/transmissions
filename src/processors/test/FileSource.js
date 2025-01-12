@@ -18,7 +18,7 @@ class FileSource extends Processor {
         super(config)
         const dataset = this.config
         const poi = grapoi({ dataset })
-        this.sourceFile = poi.out(ns.trm.sourceFile).value
+        this.sourceFile = poi.out(ns.trn.sourceFile).value
     }
 
     // In FileSource.js

@@ -1,23 +1,23 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix trm: <http://purl.org/stuff/transmission/> .
-@prefix t: <http://hyperdata.it/transmissions/> . # for custom terms & instances
+@prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> . # for custom terms & instances
 
 
-t:r a trm:ServiceConfig ;
+trn:r a trn:ServiceConfig ;
     rdfs:label "Read file" ;
-    trm:configKey t:readFile ;
-    trm:sourceFile "input/input-01.json" ;
-    trm:mediaType "application/json" .
+    trn:configKey trn:readFile ;
+    trn:sourceFile "input/input-01.json" ;
+    trn:mediaType "application/json" .
 
-t:blanko a trm:ServiceConfig ;
+trn:blanko a trn:ServiceConfig ;
     rdfs:label "Root node in JSON object" ;
-    trm:configKey t:blankin ;
-    trm:pointer "content.payload.test"  ; # "Root node in JSON object" ;
-    trm:preserve "content.payload.test.third" .
+    trn:configKey trn:blankin ;
+    trn:pointer "content.payload.test"  ; # "Root node in JSON object" ;
+    trn:preserve "content.payload.test.third" .
 
-t:w a trm:ServiceConfig ;
+trn:w a trn:ServiceConfig ;
     rdfs:label "Write file" ;
-    trm:configKey t:writeFile ;
-    trm:destinationFile "output/output-01.json"  .
+    trn:configKey trn:writeFile ;
+    trn:destinationFile "output/output-01.json"  .
 

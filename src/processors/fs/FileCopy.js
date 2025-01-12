@@ -9,8 +9,8 @@
  *
  * #### __*Configuration*__
  * If a `configKey` is provided in the transmission:
- * * **`ns.trm.source`** - The source path relative to `applicationRootDir`
- * * **`ns.trm.destination`** - The destination path relative to `applicationRootDir`
+ * * **`ns.trn.source`** - The source path relative to `applicationRootDir`
+ * * **`ns.trn.destination`** - The destination path relative to `applicationRootDir`
  *
  * #### __*Input*__
  * * **`message.rootDir`** (optional) - The root directory of the operation
@@ -62,8 +62,8 @@ class FileCopy extends Processor {
             destination = message.destination
         } else {
             logger.debug(`FileCopy: using configKey ${this.configKey.value}`)
-            source = this.getPropertyFromMyConfig(ns.trm.source)
-            destination = this.getPropertyFromMyConfig(ns.trm.destination)
+            source = this.getPropertyFromMyConfig(ns.trn.source)
+            destination = this.getPropertyFromMyConfig(ns.trn.destination)
             if (message.targetPath) {
                 source = path.join(message.targetPath, source)
                 destination = path.join(message.targetPath, destination)

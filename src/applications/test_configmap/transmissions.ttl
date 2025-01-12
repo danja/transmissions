@@ -1,15 +1,15 @@
 # src/applications/test_configmap/transmissions.ttl
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix trm: <http://purl.org/stuff/transmission/> . # TODO make plural
-@prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances - TODO make one @services s:
+@prefix trn: <http://purl.org/stuff/transmissions/> . # TODO make plural
+@prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances - TODO make one @services s:
 
-:configtest a trm:Transmission ;
-    trm:pipe (:s10 :s20 :s30) .
+:configtest a trn:Transmission ;
+    trn:pipe (:s10 :s20 :s30) .
 
 :s10 a :DatasetReader ;
-    trm:configKey :readDataset .
+    trn:configKey :readDataset .
 
 :s20 a :ConfigMap ;
-    trm:configKey :configMapper .
+    trn:configKey :configMapper .
 
 :s30 a :ShowMessage .

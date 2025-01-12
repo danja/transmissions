@@ -8,7 +8,7 @@ import HttpGet from './HttpGet.js'
 
 class ProtocolsProcessorsFactory {
     static createProcessor(type, config) {
-        if (type.equals(ns.t.HttpGet)) {
+        if (type.equals(ns.trn.HttpGet)) {
             return new HttpGet(config)
         }
 

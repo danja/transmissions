@@ -1,36 +1,36 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix trm: <http://purl.org/stuff/transmission/> .
-@prefix t: <http://hyperdata.it/transmissions/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> .
 
-#t:copyOneToSingleEmpty a trm:ServiceConfig ;
- #   trm:key t:copyOneToSingleEmpty ;
-  #  trm:source "data/start/one.txt" ;
-   # trm:destination "data/single-empty/one.txt" .
+#trn:copyOneToSingleEmpty a trn:ServiceConfig ;
+ #   trn:key trn:copyOneToSingleEmpty ;
+  #  trn:source "data/start/one.txt" ;
+   # trn:destination "data/single-empty/one.txt" .
 
-t:copyOneToSingleEmpty a trm:ServiceConfig ;
-    trm:key t:copyOneToSingleEmpty ;
-    trm:source "data/start/one.txt" ;
-    trm:destination "data/single-empty/one.txt" .
+trn:copyOneToSingleEmpty a trn:ServiceConfig ;
+    trn:key trn:copyOneToSingleEmpty ;
+    trn:source "data/start/one.txt" ;
+    trn:destination "data/single-empty/one.txt" .
 
-t:copySingleEmptyToSingleFull a trm:ServiceConfig ;
-    trm:key t:copySingleEmptyToSingleFull ;
-    trm:source "data/single-empty/one.txt" ;
-    trm:destination "data/single-full/one.txt" .
+trn:copySingleEmptyToSingleFull a trn:ServiceConfig ;
+    trn:key trn:copySingleEmptyToSingleFull ;
+    trn:source "data/single-empty/one.txt" ;
+    trn:destination "data/single-full/one.txt" .
 
-t:removeSingleEmpty a trm:ServiceConfig ;
-    trm:key t:removeSingleEmpty ;
-    trm:target "data/single-empty/one.txt" .
+trn:removeSingleEmpty a trn:ServiceConfig ;
+    trn:key trn:removeSingleEmpty ;
+    trn:target "data/single-empty/one.txt" .
 
-t:copyStartToSeveralEmpty a trm:ServiceConfig ;
-    trm:key t:copyStartToSeveralEmpty ;
-    trm:source "data/start" ;
-    trm:destination "data/several-empty" .
+trn:copyStartToSeveralEmpty a trn:ServiceConfig ;
+    trn:key trn:copyStartToSeveralEmpty ;
+    trn:source "data/start" ;
+    trn:destination "data/several-empty" .
 
-t:copySeveralEmptyToSeveralFull a trm:ServiceConfig ;
-    trm:key t:copySeveralEmptyToSeveralFull ;
-    trm:source "data/several-empty" ;
-    trm:destination "data/several-full" .
+trn:copySeveralEmptyToSeveralFull a trn:ServiceConfig ;
+    trn:key trn:copySeveralEmptyToSeveralFull ;
+    trn:source "data/several-empty" ;
+    trn:destination "data/several-full" .
 
-t:removeSeveralEmpty a trm:ServiceConfig ;
-    trm:key t:removeSeveralEmpty ;
-    trm:target "data/several-empty" .
+trn:removeSeveralEmpty a trn:ServiceConfig ;
+    trn:key trn:removeSeveralEmpty ;
+    trn:target "data/several-empty" .

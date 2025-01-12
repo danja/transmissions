@@ -8,7 +8,7 @@ import EnvLoader from './EnvLoader.js'
 
 class SystemsProcessorsFactory {
     static createProcessor(type, config) {
-        if (type.equals(ns.t.EnvLoader)) {
+        if (type.equals(ns.trn.EnvLoader)) {
             return new EnvLoader(config)
         }
         return false

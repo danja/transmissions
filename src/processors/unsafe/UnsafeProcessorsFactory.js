@@ -8,7 +8,7 @@ import RunCommand from './RunCommand.js'
 class UnsafeProcessorsFactory {
     static createProcessor(type, config) {
 
-        if (type.equals(ns.t.RunCommand)) {
+        if (type.equals(ns.trn.RunCommand)) {
             return new RunCommand(config)
         }
 

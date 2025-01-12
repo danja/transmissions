@@ -10,7 +10,7 @@
 * ### Processor Signature
 *
 * #### ***Configuration***
-* ***`ns.trm.targetDir`** - Target directory path relative to current working directory
+* ***`ns.trn.targetDir`** - Target directory path relative to current working directory
 *
 * #### ***Input***
 * ***`message.payload`** - JSON object to process
@@ -48,7 +48,7 @@ class JSONWalker extends Processor {
     async process(message) {
         try {
             message.done = false
-            var pointer = this.getPropertyFromMyConfig(ns.trm.pointer)
+            var pointer = this.getPropertyFromMyConfig(ns.trn.pointer)
 
             logger.debug(`JSONWalker pointer =  ${pointer}`)
 

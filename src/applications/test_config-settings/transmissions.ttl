@@ -1,7 +1,7 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix trm: <http://purl.org/stuff/transmission/> .
-@prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances
+@prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances
 
 #############################################################
 # insert into pipe for debugging
@@ -13,16 +13,16 @@
 :UF a :Unfork . # collapses all pipes but one
 #############################################################
 
-:mini a trm:Transmission ;
-    trm:pipe (:p10 :p20 :p30 :p40) .
+:mini a trn:Transmission ;
+    trn:pipe (:p10 :p20 :p30 :p40) .
 
 :p10 a :SetMessage ;
-     trm:configKey :set1 .
+     trn:configKey :set1 .
 
 :p20 a :ShowMessage .
 
 :p30 a :SetMessage ;
-    trm:config :set2 .
+    trn:configKey :set2 .
 
 
 :p40 a :ShowMessage .

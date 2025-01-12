@@ -9,12 +9,12 @@ class Ping extends Processor {
         super(config);
         this.worker = null;
         this.pingConfig = {
-            interval: this.getPropertyFromMyConfig(ns.trm.interval) || 5000,
-            count: this.getPropertyFromMyConfig(ns.trm.count) || 0,
-            payload: this.getPropertyFromMyConfig(ns.trm.payload) || 'ping',
-            killSignal: this.getPropertyFromMyConfig(ns.trm.killSignal) || 'STOP',
-            retryAttempts: this.getPropertyFromMyConfig(ns.trm.retryAttempts) || 3,
-            retryDelay: this.getPropertyFromMyConfig(ns.trm.retryDelay) || 1000
+            interval: this.getPropertyFromMyConfig(ns.trn.interval) || 5000,
+            count: this.getPropertyFromMyConfig(ns.trn.count) || 0,
+            payload: this.getPropertyFromMyConfig(ns.trn.payload) || 'ping',
+            killSignal: this.getPropertyFromMyConfig(ns.trn.killSignal) || 'STOP',
+            retryAttempts: this.getPropertyFromMyConfig(ns.trn.retryAttempts) || 3,
+            retryDelay: this.getPropertyFromMyConfig(ns.trn.retryDelay) || 1000
         };
     }
 
@@ -23,8 +23,8 @@ class Ping extends Processor {
             // Check for kill signal in incoming message
             if (message.kill === this.pingConfig.killSignal) {
                 await this.shutdown();
-                return this.emit('message', { 
-                    ...message, 
+                return this.emit('message', {
+                    ...message,
                     pingStatus: 'stopped',
                     timestamp: Date.now()
                 });
@@ -56,8 +56,8 @@ class Ping extends Processor {
                                 });
                                 break;
                             case 'complete':
-                                this.emit('message', { 
-                                    ...message, 
+                                this.emit('message', {
+                                    ...message,
                                     pingComplete: true,
                                     timestamp: Date.now()
                                 });
@@ -109,7 +109,7 @@ class Ping extends Processor {
 
     async handleWorkerError(error, retryFn, retryCount) {
         logger.error(`Ping worker error: ${error}`);
-        
+
         if (retryCount < this.pingConfig.retryAttempts) {
             retryCount++;
             logger.info(`Retrying ping worker (attempt ${retryCount}/${this.pingConfig.retryAttempts})`);

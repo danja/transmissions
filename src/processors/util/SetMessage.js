@@ -12,7 +12,7 @@ class SetMessage extends Processor {
     }
 
     async process(message) {
-        const setters = await this.getSetters(this.config, this.configKey, ns.trm.setValue)
+        const setters = await this.getSetters(this.config, this.configKey, ns.trn.setValue)
         for (let i = 0; i < setters.length; i++) {
             message[setters[i].key] = setters[i].value
         }
@@ -29,8 +29,8 @@ class SetMessage extends Processor {
         for (let i = 0; i < settersRDF.length; i++) {
             let setter = settersRDF[i]
             let poi = rdf.grapoi({ dataset: dataset, term: setter })
-            let key = poi.out(ns.trm.key).value
-            let value = poi.out(ns.trm.value).value
+            let key = poi.out(ns.trn.key).value
+            let value = poi.out(ns.trn.value).value
             setters.push({ "key": key, "value": value })
         }
         return setters

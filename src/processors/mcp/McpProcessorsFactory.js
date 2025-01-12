@@ -7,7 +7,7 @@ import ProcessorTemplate from "./McpClient.js";
 
 class ProcessorsFactoryTemplate {
   static createProcessor(type, config) {
-    if (type.equals(ns.t.ProcessorTemplate)) {
+    if (type.equals(ns.trn.ProcessorTemplate)) {
       return new ProcessorTemplate(config);
     }
 

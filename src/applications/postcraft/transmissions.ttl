@@ -1,9 +1,9 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
-@prefix trm: <http://purl.org/stuff/transmission/> . # TODO make plural
-@prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances - TODO make one @services s:
-@prefix pc: <http://purl.org/stuff/postcraft/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> . # TODO make plural
+@prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances - TODO make one @services s:
+@prefix trn: <http://purl.org/stuff/transmissions/> .
 
 #############################################################
 # insert into pipe for debugging - one instance only like this
@@ -19,76 +19,76 @@
 
 ## POSTCRAFT.CLEAN ##########################################
 
-:clean a trm:Transmission ;
+:clean a trn:Transmission ;
     rdfs:label "clean" ;
     rdfs:comment "directory cleaner" ;
-    trm:pipe (:r10 :r20 :r30 :r40 :r50 :r60) .
+    trn:pipe (:r10 :r20 :r30 :r40 :r50 :r60) .
 
 :r10 a :FileRemove ;
-    trm:configKey :removeCache .
+    trn:configKey :removeCache .
 
 :r20 a :FileRemove ;
-    trm:configKey  :removeArticles .
+    trn:configKey  :removeArticles .
 
 :r30 a :FileRemove ;
-    trm:configKey  :removeJournal .
+    trn:configKey  :removeJournal .
 
 :r40 a :FileRemove ;
-    trm:configKey  :removeEntries .
+    trn:configKey  :removeEntries .
 
 :r50 a :FileRemove ;
-    trm:configKey  :removeTodo .
+    trn:configKey  :removeTodo .
 
 :r60 a :FileRemove ;
-    trm:configKey  :removeIndex .
+    trn:configKey  :removeIndex .
 
 ## POSTCRAFT.COPY ##################################################################
 
-#:copy a trm:Transmission ;
+#:copy a trn:Transmission ;
  #   rdfs:label "copy" ;
   #  rdfs:comment "dir/file copier" ;
-   # trm:pipe (:cp10 :cp20 :cp30 :cp40 :cp50) .
+   # trn:pipe (:cp10 :cp20 :cp30 :cp40 :cp50) .
 
 ### static dirs
 :cp10 a :FileCopy ;
-    trm:configKey :staticCopy .
+    trn:configKey :staticCopy .
 
 ### media dirs
 :cp20 a :FileCopy ;
-    trm:configKey :mediaCopy .
+    trn:configKey :mediaCopy .
 
 ### layout dirs
 :cp30 a :FileCopy ;
-    trm:configKey :cssCopy .
+    trn:configKey :cssCopy .
 
 :cp40 a :FileCopy ;
-    trm:configKey :jsCopy .
+    trn:configKey :jsCopy .
 
 :cp50 a :FileCopy ;
-    trm:configKey :fontsCopy .
+    trn:configKey :fontsCopy .
 
 #####################
 
 ## POSTCRAFT.RENDER ###############################################################
 
-:render a trm:Transmission ;
+:render a trn:Transmission ;
     rdfs:label "render" ;
     rdfs:comment "render the pages" ;
-                 trm:pipe (:s20 :s30 :s40  :s50 :s60 :s70   :s80 :s90  :s100
+                 trn:pipe (:s20 :s30 :s40  :s50 :s60 :s70   :s80 :s90  :s100
               :s110  :s120  :s130 :s140 :s150 :s160 :s170 :s180 :s190 :s200 :s210) .
 
 
 # :s10 a :DatasetReader . # read the manifest NO done in system
-# trm:configKey trm:describe .
+# trn:configKey trn:describe .
 
 :s20 a :ConfigMap ;
-    trm:configKey :postcraftMap .
+    trn:configKey :postcraftMap .
 
 :s30 a :FileReader ; # the template for raw entry content
-    trm:describe trm:all .
+    trn:describe trn:all .
 
 :s40 a :Restructure ;
-    trm:configKey :walkPrep .
+    trn:configKey :walkPrep .
 
 :s50 a :DirWalker . # automatically forks
 
@@ -99,7 +99,7 @@
 :s80 a :MarkdownToHTML .
 
 :s90 a :Restructure ;
-   trm:configKey :entryRawPrep .
+   trn:configKey :entryRawPrep .
 
 :s100 a :Templater .
 
@@ -108,7 +108,7 @@
 ############### entryContentToEntryPage
 :s120 a :EntryContentToPagePrep .
 #:s12 a :Restructure ;
- #  trm:configKey :entryPagePrep .
+ #  trn:configKey :entryPagePrep .
 
 :s130 a :Templater .
 
@@ -128,7 +128,7 @@
 :s190 a :AtomFeedPrep .
 
 :s200 a :Templater .
- #   trm:configKey :atomTemplate .
+ #   trn:configKey :atomTemplate .
 
 :s210 a :FileWriter .
 

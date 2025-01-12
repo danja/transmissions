@@ -14,21 +14,21 @@ class TestProcessorsFactory {
 
         // for e2e tests
         // String
-        if (type.equals(ns.t.StringSource)) {
+        if (type.equals(ns.trn.StringSource)) {
             return new StringSource(config)
         }
-        if (type.equals(ns.t.StringSink)) {
+        if (type.equals(ns.trn.StringSink)) {
             return new StringSink(config)
         }
-        if (type.equals(ns.t.AppendProcess)) {
+        if (type.equals(ns.trn.AppendProcess)) {
             return new AppendProcess(config)
         }
 
         // simple file
-        if (type.equals(ns.t.FileSource)) {
+        if (type.equals(ns.trn.FileSource)) {
             return new FileSource(config)
         }
-        if (type.equals(ns.t.FileSink)) {
+        if (type.equals(ns.trn.FileSink)) {
             return new FileSink(config)
         }
 

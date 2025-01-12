@@ -20,8 +20,8 @@ class Restructure extends Processor {
         for (let i = 0; i < renamesRDF.length; i++) {
             let rename = renamesRDF[i]
             let poi = rdf.grapoi({ dataset: dataset, term: rename })
-            let pre = poi.out(ns.trm.pre).value
-            let post = poi.out(ns.trm.post).value
+            let pre = poi.out(ns.trn.pre).value
+            let post = poi.out(ns.trn.post).value
             renames.push({ "pre": pre, "post": post })
         }
         return renames
@@ -35,7 +35,7 @@ class Restructure extends Processor {
         if (this.config.simples) {
             renames = this.config.rename
         } else {
-            renames = await this.getRenames(this.config, this.configKey, ns.trm.rename)
+            renames = await this.getRenames(this.config, this.configKey, ns.trn.rename)
         }
 
         //  logger.log('Renames :')

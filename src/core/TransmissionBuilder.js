@@ -35,7 +35,7 @@ class TransmissionBuilder {
     const transmissions = []
 
     for (const q of poi.out(ns.rdf.type).quads()) {
-      if (q.object.equals(ns.trm.Transmission)) {
+      if (q.object.equals(ns.trn.Transmission)) {
         const transmissionID = q.subject
         //    transmissions.push(await this.constructTransmission(transmissionConfig, transmissionID, processorsConfig));
         transmissions.push(await this.constructTransmission(transmissionConfig, transmissionID, processorsConfig)) // was await
@@ -62,7 +62,7 @@ class TransmissionBuilder {
     let previousName = "nothing"
 
     // grapoi probably has a built-in for all this
-    const pipenodes = GrapoiHelpers.listToArray(transmissionConfig, transmissionID, ns.trm.pipe)
+    const pipenodes = GrapoiHelpers.listToArray(transmissionConfig, transmissionID, ns.trn.pipe)
     await this.createNodes(transmission, pipenodes, transmissionConfig, processorsConfig) // was await, bad Claude
     //    this.createNodes(transmission, pipenodes, transmissionConfig, processorsConfig); // was await, bad Claude
     this.connectNodes(transmission, pipenodes)
@@ -77,7 +77,7 @@ class TransmissionBuilder {
       if (!transmission.get(processorName)) {
         let np = rdf.grapoi({ dataset: transmissionConfig, term: node })
         let processorType = np.out(ns.rdf.type).term
-        let processorConfig = np.out(ns.trm.configKey).term
+        let processorConfig = np.out(ns.trn.configKey).term
 
         try {
           let name = ns.getShortname(processorName)

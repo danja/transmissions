@@ -9,12 +9,12 @@ class HttpServer extends Processor {
         super(config);
         this.worker = null;
         this.serverConfig = {
-            port: this.getPropertyFromMyConfig(ns.trm.port) || 4000,
-            basePath: this.getPropertyFromMyConfig(ns.trm.basePath) || '/transmissions/test/',
-            staticPath: this.getPropertyFromMyConfig(ns.trm.staticPath),
-            cors: this.getPropertyFromMyConfig(ns.trm.cors) || false,
-            timeout: this.getPropertyFromMyConfig(ns.trm.timeout) || 30000,
-            maxRequestSize: this.getPropertyFromMyConfig(ns.trm.maxRequestSize) || '1mb',
+            port: this.getPropertyFromMyConfig(ns.trn.port) || 4000,
+            basePath: this.getPropertyFromMyConfig(ns.trn.basePath) || '/transmissions/test/',
+            staticPath: this.getPropertyFromMyConfig(ns.trn.staticPath),
+            cors: this.getPropertyFromMyConfig(ns.trn.cors) || false,
+            timeout: this.getPropertyFromMyConfig(ns.trn.timeout) || 30000,
+            maxRequestSize: this.getPropertyFromMyConfig(ns.trn.maxRequestSize) || '1mb',
             rateLimit: {
                 windowMs: 15 * 60 * 1000,
                 max: 100

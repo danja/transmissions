@@ -10,27 +10,27 @@ import Fork from '../flow/Fork.js'
 
 class FlowProcessorsFactory {
     static createProcessor(type, config) {
-        if (type.equals(ns.t.ForEach)) {
+        if (type.equals(ns.trn.ForEach)) {
             logger.debug('FlowProcessorsFactory: Creating ForEach processor')
             return new ForEach(config)
         }
-        if (type.equals(ns.t.Ping)) {
+        if (type.equals(ns.trn.Ping)) {
             logger.debug('FlowProcessorsFactory: Creating Ping processor')
             return new Ping(config)
         }
-        if (type.equals(ns.t.NOP)) {
+        if (type.equals(ns.trn.NOP)) {
             return new NOP(config)
         }
-        if (type.equals(ns.t.DeadEnd)) {
+        if (type.equals(ns.trn.DeadEnd)) {
             return new DeadEnd(config)
         }
-        if (type.equals(ns.t.Halt)) {
+        if (type.equals(ns.trn.Halt)) {
             return new Halt(config)
         }
-        if (type.equals(ns.t.Fork)) {
+        if (type.equals(ns.trn.Fork)) {
             return new Fork(config)
         }
-        if (type.equals(ns.t.Unfork)) {
+        if (type.equals(ns.trn.Unfork)) {
             return new Unfork(config)
         }
         return false

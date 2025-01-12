@@ -3,18 +3,18 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 
 @prefix tsm: <http://purl.org/stuff/transmissions/> .
-@prefix : <http://hyperdata.it/transmissions/> .
+@prefix : <http://purl.org/stuff/transmissions/> .
 
 <http://purl.org/stuff/transmissions/> rdf:type owl:Ontology ;
    rdfs:comment "Transmissions Framework Vocabulary" ;
    rdfs:label "Transmissions" .
 
-trm:Message a rdfs:Class, owl:Class .
+trn:Message a rdfs:Class, owl:Class .
 
-trm:Processor a rdfs:Class, owl:Class .
+trn:Processor a rdfs:Class, owl:Class .
 
-trm:thingy a rdfs:Class, owl:Class ;
-   rdfs:subClassOf trm:thingy ;
+trn:thingy a rdfs:Class, owl:Class ;
+   rdfs:subClassOf trn:thingy ;
    rdfs:comment "thingy" ;
    rdfs:isDefinedBy <http://purl.org/stuff/transmissions/> ;
    rdfs:label "thingy" .

@@ -1,31 +1,31 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix trm: <http://purl.org/stuff/transmission/> . # TODO make plural
-@prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances - TODO make one @services s: 
+@prefix trn: <http://purl.org/stuff/transmissions/> . # TODO make plural
+@prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances - TODO make one @services s:
 
-:postcraft a trm:Transmission ;
-    trm:pipe (:s1 :s2 :s3 :s4 :s5 :s6) . #  :s6  :s10 :s11 :s12 :s13
+:postcraft a trn:Transmission ;
+    trn:pipe (:s1 :s2 :s3 :s4 :s5 :s6) . #  :s6  :s10 :s11 :s12 :s13
 
 :s1 a :DatasetReader . # the manifest
-:s2 a :ConfigMap . 
+:s2 a :ConfigMap .
 
 ### use services.ttl? - defer to Restructure as possible
 
 # :s3 a :FileReader . # the template for main page
 # :s4 a :Restructure ;
-#    trm:configKey :mainTemplateDirMap .
+#    trn:configKey :mainTemplateDirMap .
 
 :s3 a :FileReader . # the template for posts
 
 :s4 a :Restructure ;
-    trm:configKey :postTemplateMap .
+    trn:configKey :postTemplateMap .
 # context.content -> context.template ## Remaps should go here????
 #
 :s5 a :DirWalker ;
-    trm:configKey :files .
+    trn:configKey :files .
 
  #:s6 a :ShowMessage .
 
-# process forks here 
+# process forks here
 
 :s6 a :FileReader . # the markdown content
 
@@ -35,13 +35,13 @@
 :s9 a :Templater .
 
 :s10 a :Restructure ;
-   trm:configKey :postSaver .
+   trn:configKey :postSaver .
 
 # :s11 a :NOP .
 :s11 a :FileWriter .
 
 :s12 a :NOP .
 #:s12 a :Unfork ;
- #   trm:configKey :combinePosts .
+ #   trn:configKey :combinePosts .
 
 :s13 a :ShowMessage .

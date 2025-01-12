@@ -18,8 +18,8 @@ class StringFilter extends Processor {
         try {
             // Get include/exclude patterns from config
             if (this.configKey) {
-                this.includePatterns = this.getPropertyFromMyConfig(ns.trm.include)?.split(',') || [];
-                this.excludePatterns = this.getPropertyFromMyConfig(ns.trm.exclude)?.split(',') || [];
+                this.includePatterns = this.getPropertyFromMyConfig(ns.trn.include)?.split(',') || [];
+                this.excludePatterns = this.getPropertyFromMyConfig(ns.trn.exclude)?.split(',') || [];
             } else {
                 this.includePatterns = this.config.include?.split(',') || [];
                 this.excludePatterns = this.config.exclude?.split(',') || [];

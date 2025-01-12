@@ -22,10 +22,10 @@ class DirWalker extends Processor {
         message.slugs = [];
         message.done = false;
 
-        const sourceDirProperty = this.getProperty(ns.trm.sourceDir)
+        const sourceDirProperty = this.getProperty(ns.trn.sourceDir)
         var sourceDir = sourceDirProperty
 
-        var includeExtensions = this.getProperty(ns.trm.includeExtensions)
+        var includeExtensions = this.getProperty(ns.trn.includeExtensions)
         if (includeExtensions) {
             logger.debug(`includeExtensions = ${includeExtensions}`)
             includeExtensions = includeExtensions.replaceAll('\'', '"')
@@ -38,7 +38,7 @@ class DirWalker extends Processor {
         logger.log(sourceDir)
 
         /*
-        var this.getPropertyFromMyConfig(ns.trm.source)
+        var this.getPropertyFromMyConfig(ns.trn.source)
         this.getPropertyFromMyConfig(n)
         this.showMyConfig()
 */

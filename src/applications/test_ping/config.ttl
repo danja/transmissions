@@ -1,16 +1,16 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix trm: <http://purl.org/stuff/transmission/> .
-@prefix t: <http://hyperdata.it/transmissions/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> .
 
-t:pingConfig a trm:ServiceConfig ;
-    trm:interval 2000 ;         # Ping every 2 seconds
-    trm:count 5 ;               # Stop after 5 pings
-    trm:payload "HEARTBEAT" ;   # Custom payload
-    trm:killSignal "STOP" ;     # Kill signal value
-    trm:retryAttempts 3 ;       # Number of retry attempts on error
-    trm:retryDelay 1000 .      # Delay between retries in ms
+trn:pingConfig a trn:ServiceConfig ;
+    trn:interval 2000 ;         # Ping every 2 seconds
+    trn:count 5 ;               # Stop after 5 pings
+    trn:payload "HEARTBEAT" ;   # Custom payload
+    trn:killSignal "STOP" ;     # Kill signal value
+    trn:retryAttempts 3 ;       # Number of retry attempts on error
+    trn:retryDelay 1000 .      # Delay between retries in ms
 
-t:killConfig a trm:ServiceConfig ;
-    trm:setValue (t:sv0) ;
-    t:sv0 trm:key "kill" ;
-          trm:value "STOP" .
+trn:killConfig a trn:ServiceConfig ;
+    trn:setValue (trn:sv0) ;
+    trn:sv0 trn:key "kill" ;
+          trn:value "STOP" .

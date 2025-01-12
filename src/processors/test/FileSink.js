@@ -14,7 +14,7 @@ class FileSink extends Processor {
         super(config)
         const dataset = this.config
         const poi = grapoi({ dataset })
-        this.destinationFile = poi.out(ns.trm.destinationFile).value
+        this.destinationFile = poi.out(ns.trn.destinationFile).value
     }
 
     // In FileSink.js

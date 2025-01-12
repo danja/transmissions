@@ -1,14 +1,14 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix trm: <http://purl.org/stuff/transmission/> .
-@prefix : <http://hyperdata.it/transmissions/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix : <http://purl.org/stuff/transmissions/> .
 
-:test_ping a trm:Transmission ;
-    trm:pipe (:p10 :p20 :p30) .
+:test_ping a trn:Transmission ;
+    trn:pipe (:p10 :p20 :p30) .
 
 :p10 a :Ping ;
-    trm:configKey :pingConfig .
+    trn:configKey :pingConfig .
 
 :p20 a :ShowMessage .
 
 :p30 a :SetMessage ;
-    trm:configKey :killConfig .
+    trn:configKey :killConfig .

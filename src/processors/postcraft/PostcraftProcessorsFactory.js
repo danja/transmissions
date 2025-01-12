@@ -10,19 +10,19 @@ import AtomFeedPrep from './AtomFeedPrep.js'
 
 class PostcraftProcessorsFactory {
     static createProcessor(type, config) {
-        if (type.equals(ns.t.PostcraftDispatcher)) {
+        if (type.equals(ns.trn.PostcraftDispatcher)) {
             return new PostcraftDispatcher(config)
         }
-        if (type.equals(ns.t.PostcraftPrep)) {
+        if (type.equals(ns.trn.PostcraftPrep)) {
             return new PostcraftPrep(config)
         }
-        if (type.equals(ns.t.EntryContentToPagePrep)) {
+        if (type.equals(ns.trn.EntryContentToPagePrep)) {
             return new EntryContentToPagePrep(config)
         }
-        if (type.equals(ns.t.FrontPagePrep)) {
+        if (type.equals(ns.trn.FrontPagePrep)) {
             return new FrontPagePrep(config)
         }
-        if (type.equals(ns.t.AtomFeedPrep)) {
+        if (type.equals(ns.trn.AtomFeedPrep)) {
             return new AtomFeedPrep(config)
         }
         return false

@@ -21,13 +21,13 @@ describe('ConfigMap Integration Tests', () => {
     message.dataset.add(rdf.quad(
       subject,
       ns.rdf.type,
-      ns.pc.ConfigSet
+      ns.trn.ConfigSet
     ));
 
     for (const [pred, obj] of Object.entries(predicates)) {
       message.dataset.add(rdf.quad(
         subject,
-        ns.fs[pred],
+        ns.trn[pred],
         rdf.literal(obj)
       ));
     }

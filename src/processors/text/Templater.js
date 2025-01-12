@@ -41,10 +41,10 @@ class Templater extends Processor {
      */
     async process(message) {
         logger.setLogLevel('debug')
-        //   logger.log(this.getPropertyFromMyConfig(ns.trm.templateFilename))
-        //    this.addPropertyToMyConfig(ns.trm.templateFilename, 'poo')
+        //   logger.log(this.getPropertyFromMyConfig(ns.trn.templateFilename))
+        //    this.addPropertyToMyConfig(ns.trn.templateFilename, 'poo')
         //   this.showMyConfig()
-        var templateFilename = this.getProperty(ns.trm.templateFilename)
+        var templateFilename = this.getProperty(ns.trn.templateFilename)
 
         logger.debug(`\nTemplater.process, templateFilename = ${templateFilename}`)
         //   process.exit()
@@ -56,7 +56,7 @@ class Templater extends Processor {
             const filename = templateFilename.substr(templateFilename.lastIndexOf("/") + 1)
 
             if (!path.isAbsolute(targetPath)) {
-                targetPath = path.join(this.getProperty(ns.trm.targetPath, message.rootDir), targetPath)
+                targetPath = path.join(this.getProperty(ns.trn.targetPath, message.rootDir), targetPath)
             }
 
             logger.debug('\nTemplater, targetPath = ' + targetPath)

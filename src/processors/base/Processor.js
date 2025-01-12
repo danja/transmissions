@@ -41,7 +41,7 @@ class Processor extends EventEmitter {
         //   logger.poi(processorPoi)
 
         // logger.log('describe Desc')
-        if (this.configKey.value === ns.trm.describe.value) {
+        if (this.configKey.value === ns.trn.describe.value) {
             this.describe()
         }
         // nowe get the bits
@@ -83,7 +83,7 @@ class Processor extends EventEmitter {
         getMyConfig() {
             const dataset = this.config
             const poi = grapoi({ dataset, term: this.configKey }).in()
-            const configNode = poi.out(ns.trm.value)
+            const configNode = poi.out(ns.trn.value)
             return configNode
         }
     */
@@ -106,18 +106,21 @@ class Processor extends EventEmitter {
     getProperty(property, fallback) {
         //     return this.settings.getValue(property, fallback)
 
-        logger.log(`IDDDDDDDDDDD ${this.id}`)
-        logger.log(`getMyConfigNode() = ${this.getMyConfigNode()}`)
+        logger.debug(`Processor.getProperty, this.id = ${this.id}`)
+        logger.debug(`this.node.value = ${this.node.value}`)
+        logger.debug(`getMyConfigNode().value = ${this.getMyConfigNode().value}`)
 
 
         const poi = this.getMyPoi()
         // logger.log(`PPPPPPPPPPPPPP ${poi.out(property).term}`)
-        logger.log(`PROPERTY = ${property}`)
+        logger.debug(`PROPERTY = ${property}`)
 
 
         const shortName = ns.getShortname(property)
 
+        logger.debug(`PROPERTY = ${property}`)
         this.showMyConfig()
+
         if (this.message[shortName]) return this.message[shortName]
 
         // MANIFEST IS WHERE?
@@ -156,16 +159,19 @@ class Processor extends EventEmitter {
     }
 
     getMyConfigNode() {
-        return this.node
-    }
-    // is this duplicating?
-    /*
-    getMyConfigNode() {
         const dataset = this.config
-        //    const configNode = grapoi({ dataset, term: this.configKey }).in()
-        const configNode = grapoi({ dataset, term: this.configKey }).in()
-        return configNode.term
+        const myPoi = grapoi({ dataset, term: this.node })
+        logger.debug(`myPoi = ${myPoi}`)
+        logger.reveal(myPoi)
+        //.out(ns.trn.configKey)
     }
+    /*
+getMyConfigNode() {
+    const dataset = this.config
+    //    const configNode = grapoi({ dataset, term: this.configKey }).in()
+    const configNode = grapoi({ dataset, term: this.configKey }).in()
+    return configNode.term
+}
 */
 
 

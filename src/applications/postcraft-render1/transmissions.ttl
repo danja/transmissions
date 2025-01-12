@@ -1,9 +1,9 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
-@prefix trm: <http://purl.org/stuff/transmission/> . # TODO make plural
-@prefix : <http://hyperdata.it/transmissions/> . # for custom terms & instances - TODO make one @services s:
-@prefix pc: <http://purl.org/stuff/postcraft/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> . # TODO make plural
+@prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances - TODO make one @services s:
+@prefix trn: <http://purl.org/stuff/transmissions/> .
 
 #############################################################
 # insert into pipe for debugging - one instance only like this
@@ -18,29 +18,29 @@
 
 ## ###############################################################
 
-:render1 a trm:Transmission ;
+:render1 a trn:Transmission ;
     rdfs:label "render1" ;
     rdfs:comment "render raw entry pages" ;
-   trm:pipe (:r110 :r120 :SM :r130 :r140 :r150 :r160 :r170) .
+   trn:pipe (:r110 :r120 :SM :r130 :r140 :r150 :r160 :r170) .
 
 :r110 a :DirWalker ; # automatically forks
-    trm:config :dirWalker .
+    trn:configKey :dirWalker .
 
 :r120 a :FileReader . # the markdown content
 
 :r130 a :MarkdownToHTML .
 
 :r140 a :Restructure ; # moves content into  contentBlocks
-   trm:configKey :templatePrep .
+   trn:configKey :templatePrep .
 
 :r150 a :Templater ; # section wrapper
-    trm:config :contentTemplater .
+    trn:configKey :contentTemplater .
 
 :r160 a :StringReplace ; # *.md -> *.html
-    trm:config :filesRename .
+    trn:configKey :filesRename .
 
 :r170 a :FileWriter ;
-    trm:config :fileWriter .
+    trn:configKey :fileWriter .
 
 
 
@@ -50,10 +50,10 @@
 # :s10 a :DatasetReader . # read the manifest NO done in system
 
 :q10 a :ConfigMap ;
-    trm:config :renderEntries .
+    trn:config :renderEntries .
 
 :rq20 a :Restructure ;
-    trm:configKey :walkPrep .
+    trn:configKey :walkPrep .
 
 #######################################
 :s50 a :DirWalker . # automatically forks
@@ -65,7 +65,7 @@
 :s80 a :MarkdownToHTML .
 
 :s90 a :Restructure ;
-   trm:configKey :entryRawPrep .
+   trn:configKey :entryRawPrep .
 
 :s100 a :Templater .
 

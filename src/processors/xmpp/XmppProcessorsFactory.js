@@ -7,7 +7,7 @@ import ProcessorTemplate from "./XmppClient.js";
 
 class XmppProcessorsFactory {
   static createProcessor(type, config) {
-    if (type.equals(ns.t.XmppClient)) {
+    if (type.equals(ns.trn.XmppClient)) {
       return new XmppClient(config)
     }
     return false

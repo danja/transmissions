@@ -1,11 +1,11 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix trm: <http://purl.org/stuff/transmission/> .
-# @prefix fs: <http://purl.org/stuff/filesystem/> .
-@prefix t: <http://hyperdata.it/transmissions/> . # for custom terms & instances
+@prefix trn: <http://purl.org/stuff/transmissions/> .
+# @prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> . # for custom terms & instances
 
-t:walkPrep a trm:ReMap ;
-    trm:rename (t:pp1 t:pp2) . # consider using blank nodes
-    t:pp1   trm:pre     "content" ;
-            trm:post    "template"  .
-    t:pp2   trm:pre     "entryContentMeta.sourceDir" ;
-            trm:post    "sourceDir" .
+trn:walkPrep a trn:ReMap ;
+    trn:rename (trn:pp1 trn:pp2) . # consider using blank nodes
+    trn:pp1   trn:pre     "content" ;
+            trn:post    "template"  .
+    trn:pp2   trn:pre     "entryContentMeta.sourceDir" ;
+            trn:post    "sourceDir" .

@@ -1,13 +1,13 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix trm: <http://purl.org/stuff/transmission/> .
-@prefix t: <http://hyperdata.it/transmissions/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> .
 
-t:readDataset a trm:ServiceConfig ;
-    trm:configKey t:readDataset ;
-    trm:datasetFile "manifest.ttl" .
+trn:readDataset a trn:ServiceConfig ;
+    trn:configKey trn:readDataset ;
+    trn:datasetFile "manifest.ttl" .
 
-t:configMapper a trm:ServiceConfig ;
-    trm:configKey t:configMapper ;
-    trm:pathMappings (
-        t:postContent
+trn:configMapper a trn:ServiceConfig ;
+    trn:configKey trn:configMapper ;
+    trn:pathMappings (
+        trn:postContent
     ) .

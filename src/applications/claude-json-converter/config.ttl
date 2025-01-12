@@ -1,68 +1,68 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix trm: <http://purl.org/stuff/transmission/> .
-@prefix t: <http://hyperdata.it/transmissions/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> .
 
 ##################### only for testing
-t:bContent a trm:ServiceConfig ;
+trn:bContent a trn:ServiceConfig ;
     rdfs:label "Root node in JSON object for blanker" ;
-    trm:configKey t:blankContent  ;
-    trm:pointer "content"  .
-    trm:preserve "content.payload.test.third" .
+    trn:configKey trn:blankContent  ;
+    trn:pointer "content"  .
+    trn:preserve "content.payload.test.third" .
 
-t:setDump a trm:ServiceConfig ;
-    trm:setValue (t:sv0)  . # consider using blank nodes
-    t:sv0   trm:key    "dump" ;
-            trm:value  "true"  .
+trn:setDump a trn:ServiceConfig ;
+    trn:setValue (trn:sv0)  . # consider using blank nodes
+    trn:sv0   trn:key    "dump" ;
+            trn:value  "true"  .
 #########################################################################
 
 # should really be in a manifest.ttl
-t:ReadFile a trm:ServiceConfig ;
+trn:ReadFile a trn:ServiceConfig ;
     rdfs:label "Read file" ;
-    trm:configKey t:readFile ;
-    trm:sourceFile "input/conversations.json" ;
-  #  trm:sourceFile "input/input-01.json" ;
-    trm:mediaType "application/json" .
+    trn:configKey trn:readFile ;
+    trn:sourceFile "input/conversations.json" ;
+  #  trn:sourceFile "input/input-01.json" ;
+    trn:mediaType "application/json" .
 
 
-t:ConversationsWalker a trm:ServiceConfig ;
-    trm:key t:conversationsConfig ;
-    trm:pointer "content" .
+trn:ConversationsWalker a trn:ServiceConfig ;
+    trn:key trn:conversationsConfig ;
+    trn:pointer "content" .
 
 
-t:retreeConvs a trm:ServiceConfig ;
-    trm:rename (t:pp100 t:pp101 t:pp102  t:pp103) .
-    t:pp100     trm:pre     "content.uuid" ;
-                trm:post    "meta.conv_uuid"  .
-    t:pp101     trm:pre     "content.name" ;
-                trm:post    "meta.conv_name"  .
-    t:pp102     trm:pre     "content.updated_at" ;
-                trm:post    "meta.updated_at"  .
-    t:pp103     trm:pre     "content.chat_messages" ;
-                trm:post    "content"  .
+trn:retreeConvs a trn:ServiceConfig ;
+    trn:rename (trn:pp100 trn:pp101 trn:pp102  trn:pp103) .
+    trn:pp100     trn:pre     "content.uuid" ;
+                trn:post    "meta.conv_uuid"  .
+    trn:pp101     trn:pre     "content.name" ;
+                trn:post    "meta.conv_name"  .
+    trn:pp102     trn:pre     "content.updated_at" ;
+                trn:post    "meta.updated_at"  .
+    trn:pp103     trn:pre     "content.chat_messages" ;
+                trn:post    "content"  .
 
-t:MessagesWalker a trm:ServiceConfig ;
-    trm:key t:messagesConfig ;
-    trm:pointer "content" .
+trn:MessagesWalker a trn:ServiceConfig ;
+    trn:key trn:messagesConfig ;
+    trn:pointer "content" .
 
 # unused
-t:retreeMsgs a trm:ServiceConfig ;
-    trm:rename (t:pp200 t:pp201 t:pp202) .
+trn:retreeMsgs a trn:ServiceConfig ;
+    trn:rename (trn:pp200 trn:pp201 trn:pp202) .
 
-    t:pp200     trm:pre     "content.item.chat_messages" ;
-                trm:post    "channel"  .
+    trn:pp200     trn:pre     "content.item.chat_messages" ;
+                trn:post    "channel"  .
 
-    t:pp201     trm:pre     "content.item.uuid" ;
-                trm:post    "filename"  .
+    trn:pp201     trn:pre     "content.item.uuid" ;
+                trn:post    "filename"  .
 
-    t:pp202     trm:pre     "content.item.name" ;
-                trm:post    "title"  .
+    trn:pp202     trn:pre     "content.item.name" ;
+                trn:post    "title"  .
 
 #      filepath = this.getPropertyFromMyConfig(ns.trm.destinationFile)
 
 # unused
-t:Writer a trm:ServiceConfig ;
-    trm:key t:writer ;
-    trm:destinationFile "DESTINATION" .
+trn:Writer a trn:ServiceConfig ;
+    trn:key trn:writer ;
+    trn:destinationFile "DESTINATION" .
 
 

@@ -80,7 +80,7 @@ class TemplateGenerator {
 
         const content = templates[format]();
         const fileExt = format === 'turtle' ? 'ttl' : format;
-        
+
         await fs.writeFile(
             path.join(outputDir, `app-definition.${fileExt}`),
             content
@@ -122,13 +122,13 @@ class TemplateGenerator {
 
         writer.addQuad(
             app,
-            ns.trm('title'),
+            ns.trn('title'),
             rdf.literal(name)
         );
 
         writer.addQuad(
             app,
-            ns.trm('primaryGoal'),
+            ns.trn('primaryGoal'),
             rdf.literal(answers.primaryGoal)
         );
 
@@ -136,7 +136,7 @@ class TemplateGenerator {
             const proc = ns.app(p);
             writer.addQuad(
                 app,
-                ns.trm('hasProcessor'),
+                ns.trn('hasProcessor'),
                 proc
             );
         });

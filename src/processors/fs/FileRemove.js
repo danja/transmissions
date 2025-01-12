@@ -1,31 +1,31 @@
 // src/processors/fs/FileRemove.js
 /**
  * FileRemove Processor
- * 
+ *
  * Removes files or directory contents on the local filesystem.
  * @extends Processor
- * 
+ *
  * #### __*Input*__
  * * message.applicationRootDir (optional) - The root directory of the application
  * * message.target (if no configKey) - The path of the file or directory to remove
- * 
+ *
  * #### __*Configuration*__
  * If a configKey is provided in the transmission:
- * * ns.trm.target - The target path relative to applicationRootDir
- * 
+ * * ns.trn.target - The target path relative to applicationRootDir
+ *
  * #### __*Output*__
  * * Removes the specified file or directory contents
  * * message (unmodified) - The input message is passed through
- * 
+ *
  * #### __*Behavior*__
  * * Removes individual files directly
  * * Recursively removes directory contents
  * * Logs debug information about the removal process
- * 
+ *
  * #### __Tests__
  * `./run file-copy-remove-test`
  * `npm test -- tests/integration/file-copy-remove-test.spec.js`
- * 
+ *
  */
 
 import { unlink, readdir, stat, rm } from 'node:fs/promises'
@@ -59,7 +59,7 @@ class FileRemove extends Processor {
             target = message.target
         } else {
             logger.debug('FileRemove this.configKey = ' + this.configKey.value)
-            target = this.getPropertyFromMyConfig(ns.trm.target)
+            target = this.getPropertyFromMyConfig(ns.trn.target)
 
             target = path.join(message.rootDir, target)
         }

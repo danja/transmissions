@@ -8,13 +8,13 @@ import HttpProxy from './HttpProxy.js'
 class HttpProcessorsFactory {
     static createProcessor(type, config) {
 
-        if (type.equals(ns.t.HttpServer)) {
+        if (type.equals(ns.trn.HttpServer)) {
             return new HttpServer(config)
         }
-        if (type.equals(ns.t.HttpClient)) {
+        if (type.equals(ns.trn.HttpClient)) {
             return new HttpClient(config)
         }
-        if (type.equals(ns.t.HttpProxy)) {
+        if (type.equals(ns.trn.HttpProxy)) {
             return new HttpProxy(config)
         }
 
