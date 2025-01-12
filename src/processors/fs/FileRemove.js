@@ -54,11 +54,11 @@ class FileRemove extends Processor {
         // TODO add check for  ignoreDotfiles = false
 
         // Determine target path
-        if (this.configKey === 'undefined') {
+        if (this.settings === 'undefined') {
             logger.debug('FileRemove no configKey from transmission, using message.target')
             target = message.target
         } else {
-            logger.debug('FileRemove this.configKey = ' + this.configKey.value)
+            logger.debug('FileRemove this.settings = ' + this.settings.value)
             target = this.getPropertyFromMyConfig(ns.trn.target)
 
             target = path.join(message.rootDir, target)

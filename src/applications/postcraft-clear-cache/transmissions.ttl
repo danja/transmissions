@@ -25,4 +25,4 @@
     trn:pipe (:r10) .
 
 :r10 a :FileRemove ;
-    trn:configKey :removeCache .
+    trn:settings :removeCache .

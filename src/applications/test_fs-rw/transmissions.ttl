@@ -18,9 +18,9 @@
 trn:pipe (:SM :read :write ) .
 
 :read a :FileReader ;
-     trn:configKey :input .
+     trn:settings :input .
 
 :write a :FileWriter ;
-     trn:configKey :output .
+     trn:settings :output .
 
 

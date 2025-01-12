@@ -15,19 +15,19 @@
     trn:pipe (:s1 :s2 :s3 :s4 :s5 :s6) .
 
 :s1 a :FileCopy ;
-    trn:configKey :copyOneToSingleEmpty .
+    trn:settings :copyOneToSingleEmpty .
 
 :s2 a :FileCopy ;
-    trn:configKey :copySingleEmptyToSingleFull .
+    trn:settings :copySingleEmptyToSingleFull .
 
 :s3 a :FileRemove ;
-    trn:configKey :removeSingleEmpty .
+    trn:settings :removeSingleEmpty .
 
 :s4 a :FileCopy ;
-    trn:configKey :copyStartToSeveralEmpty .
+    trn:settings :copyStartToSeveralEmpty .
 
 :s5 a :FileCopy ;
-    trn:configKey :copySeveralEmptyToSeveralFull .
+    trn:settings :copySeveralEmptyToSeveralFull .
 
 :s6 a :FileRemove ;
-    trn:configKey :removeSeveralEmpty .
+    trn:settings :removeSeveralEmpty .

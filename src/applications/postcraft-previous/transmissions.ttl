@@ -25,22 +25,22 @@
     trn:pipe (:r10 :r20 :r30 :r40 :r50 :r60) .
 
 :r10 a :FileRemove ;
-    trn:configKey :removeCache .
+    trn:settings :removeCache .
 
 :r20 a :FileRemove ;
-    trn:configKey  :removeArticles .
+    trn:settings  :removeArticles .
 
 :r30 a :FileRemove ;
-    trn:configKey  :removeJournal .
+    trn:settings  :removeJournal .
 
 :r40 a :FileRemove ;
-    trn:configKey  :removeEntries .
+    trn:settings  :removeEntries .
 
 :r50 a :FileRemove ;
-    trn:configKey  :removeTodo .
+    trn:settings  :removeTodo .
 
 :r60 a :FileRemove ;
-    trn:configKey  :removeIndex .
+    trn:settings  :removeIndex .
 
 ## POSTCRAFT.COPY ##################################################################
 
@@ -51,21 +51,21 @@
 
 ### static dirs
 :cp10 a :FileCopy ;
-    trn:configKey :staticCopy .
+    trn:settings :staticCopy .
 
 ### media dirs
 :cp20 a :FileCopy ;
-    trn:configKey :mediaCopy .
+    trn:settings :mediaCopy .
 
 ### layout dirs
 :cp30 a :FileCopy ;
-    trn:configKey :cssCopy .
+    trn:settings :cssCopy .
 
 :cp40 a :FileCopy ;
-    trn:configKey :jsCopy .
+    trn:settings :jsCopy .
 
 :cp50 a :FileCopy ;
-    trn:configKey :fontsCopy .
+    trn:settings :fontsCopy .
 
 #####################
 
@@ -80,16 +80,16 @@
   #               :s110 :s120 :s130 :s140 :s150  :s160 :s170 :s180) .
 
 :s10 a :DatasetReader . # read the manifest NO done in system
-# trn:configKey trn:describe .
+# trn:settings trn:describe .
 
 :s20 a :ConfigMap ;
-    trn:configKey :postcraftMap .
+    trn:settings :postcraftMap .
 
 :s30 a :FileReader ; # the template for raw entry content
     trn:describe trn:all .
 
 :s40 a :Restructure ;
-    trn:configKey :walkPrep .
+    trn:settings :walkPrep .
 
 :s50 a :DirWalker . # automatically forks
 
@@ -100,7 +100,7 @@
 :s80 a :MarkdownToHTML .
 
 :s90 a :Restructure ;
-   trn:configKey :entryRawPrep .
+   trn:settings :entryRawPrep .
 
 :s100 a :Templater .
 
@@ -109,7 +109,7 @@
 ############### entryContentToEntryPage
 :s120 a :EntryContentToPagePrep .
 #:s12 a :Restructure ;
- #  trn:configKey :entryPagePrep .
+ #  trn:settings :entryPagePrep .
 
 :s130 a :Templater .
 

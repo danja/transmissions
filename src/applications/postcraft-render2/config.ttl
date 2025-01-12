@@ -14,7 +14,7 @@ trn:templatePrep a trn:ConfigSet  ;
             trn:post    "contentBlocks.content" .
 
 trn:pageTemplater a trn:ConfigSet ;
-trn:configKey trn:pTemplater ;
+trn:settings trn:pTemplater ;
   trn:templateFilename "layouts/middlin/templates/entry-page_template.njk" .
 
 trn:writePrep a trn:ConfigSet  ;

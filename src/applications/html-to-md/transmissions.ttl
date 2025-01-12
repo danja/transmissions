@@ -16,7 +16,7 @@
     trn:pipe (:s10 :s20 :s30 :s40 :SM) .
 
 #:s40 a :Restructure ;
- #   trn:configKey :walkPrep .
+ #   trn:settings :walkPrep .
 
 :s10 a :FileReader .
 :s20 a :CaptureAll . # pushes all messages into config.whiteboard

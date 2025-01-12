@@ -12,10 +12,9 @@
 #############################################################
 
 :dirwalk a trn:Transmission ;
-    trn:pipe (:SM :s1 :s2 :s3) .
+    trn:pipe (:s1 :s2 :SM) .
 
 :s1 a :DirWalker ;
- trn:configKey :dirwalker . # specify in config.ttl
+ trn:settings :dirwalker . # specify in config.ttl
 
-:s2 a :AppendProcess .
-:s3 a :StringSink .
+:s2 a :NOP .

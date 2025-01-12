@@ -6,9 +6,9 @@
     trn:pipe (:p10 :p20 :p30) .
 
 :p10 a :Ping ;
-    trn:configKey :pingConfig .
+    trn:settings :pingConfig .
 
 :p20 a :ShowMessage .
 
 :p30 a :SetMessage ;
-    trn:configKey :killConfig .
+    trn:settings :killConfig .

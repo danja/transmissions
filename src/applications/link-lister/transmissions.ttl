@@ -7,7 +7,7 @@
     trn:pipe (:s1 :s2 :s3 :s4 :s5 :s6 :s7 :s8) .
 
 :s1 a :FileReader ;
-    trn:configKey :sourceFile .
+    trn:settings :sourceFile .
 
 :s2 a :LineReader .
 :s3 a :HttpGet .
@@ -17,19 +17,19 @@
 :s5 a :StringMerger .
 
 :s6 a :FileWriter ;
-    trn:configKey :linkFile .
+    trn:settings :linkFile .
 # :s6 a :NOP .
 :s7 a :MarkdownToHTML .
 
 :s8 a :FileWriter ;
-    trn:configKey :htmlFile .
+    trn:settings :htmlFile .
 
 #:s8 a :StringFilter .
 #:s9 a :StringMerger .
 #:s10 a :FileWriter
-#        trn:configKey :linkFile .
+#        trn:settings :linkFile .
 # :s4 a :NOP .
 # :s4 a :FileWriter ;
-#     trn:configKey :gotFile .
+#     trn:settings :gotFile .
 
 # :s5 a :NOP .

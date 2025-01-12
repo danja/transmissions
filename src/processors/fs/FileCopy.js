@@ -56,12 +56,12 @@ class FileCopy extends Processor {
         var source, destination
 
         // Determine source and destination paths
-        if (this.configKey === 'undefined') {
+        if (this.settings === 'undefined') {
             logger.debug('FileCopy: using message.source and message.destination')
             source = message.source
             destination = message.destination
         } else {
-            logger.debug(`FileCopy: using configKey ${this.configKey.value}`)
+            logger.debug(`FileCopy: using configKey ${this.settings.value}`)
             source = this.getPropertyFromMyConfig(ns.trn.source)
             destination = this.getPropertyFromMyConfig(ns.trn.destination)
             if (message.targetPath) {

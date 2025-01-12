@@ -17,6 +17,6 @@
     trn:pipe (:p10 :p20) .
 
 :p10 a :SetMessage ;
-     trn:configKey :setDemo .
+     trn:settings :setDemo .
 
 :p20 a :ShowMessage .

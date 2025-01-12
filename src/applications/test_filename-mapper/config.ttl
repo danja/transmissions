@@ -5,13 +5,13 @@
 
 trn:readFile a trn:ConfigSet ;
     rdfs:label "Read file" ;
-    trn:configKey trn:readConfig ;
+    trn:settings trn:readConfig ;
     trn:sourceFile "input/input-01.txt" ;
     trn:mediaType "text/plain" .
 
 trn:mapperConfig a trn:ConfigSet ;
     rdfs:label "Filename mapper config" ;
-    trn:configKey trn:filenameConfig ;
+    trn:settings trn:filenameConfig ;
     trn:extensions (trn:ext1 trn:ext2) .
 
 trn:ext1
@@ -24,5 +24,5 @@ trn:ext2
 
 trn:writeFile a trn:ConfigSet ;
     rdfs:label "Write file" ;
-    trn:configKey trn:writeConfig ;
+    trn:settings trn:writeConfig ;
     trn:destinationFile "output/output-01.txt" .

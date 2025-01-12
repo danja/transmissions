@@ -5,7 +5,7 @@
 
 trn:setDemo a trn:ConfigSet ;
     rdfs:label "HTTP Server configuration" ;
-    trn:configKey trn:httpServer ;
+    trn:settings trn:httpServer ;
     trn:port 4000 ;
     trn:basePath "/transmissions/test/" ;
     trn:staticPath "src/applications/test_http-server/data/input" .

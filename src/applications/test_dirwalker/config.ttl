@@ -1,7 +1,7 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix trn: <http://purl.org/stuff/transmissions/> .
-# @prefix trn: <http://purl.org/stuff/transmissions/> .
-@prefix trn: <http://purl.org/stuff/transmissions/> . # for custom terms & instances
+
+
 
 trn:dirwalker a trn:ConfigSet ;
-    trn:sourceDir "." .  # subdirectory path
+    trn:sourceDir "./data" .  # subdirectory path

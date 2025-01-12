@@ -7,6 +7,6 @@
     trn:pipe (:server :SM) .
 
 :server a :HttpServer ;
-    trn:configKey :httpServer .
+    trn:settings :httpServer .
 
 :SM a :ShowMessage .

@@ -16,10 +16,10 @@
     trn:pipe (:p10 :p20 :p30 ) .
 
 :p10 a :FileReader ; # JSON test file
-       trn:configKey :readFile .
+       trn:settings :readFile .
 
 :p20 a :Blanker ; # clear values
-     trn:configKey :blankin .
+     trn:settings :blankin .
 
 :p30 a :FileWriter ; # save result
-       trn:configKey :writeFile .
+       trn:settings :writeFile .

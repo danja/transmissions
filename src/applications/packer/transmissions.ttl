@@ -19,13 +19,13 @@
 :p10 a :DirWalker .
 
 :p20 a :StringFilter ;
-    trn:configKey :filterConfig .
+    trn:settings :filterConfig .
 
 :p30 a :FileReader ;
-    trn:configKey :readConfig .
+    trn:settings :readConfig .
 
 :p40 a :FileContainer ;
-    trn:configKey :containerConfig .
+    trn:settings :containerConfig .
 
 :p50 a :CaptureAll .
 
@@ -34,4 +34,4 @@
 :p70 a :Unfork .
 
 :p80 a :FileWriter ;
-    trn:configKey :writeConfig .
+    trn:settings :writeConfig .

@@ -29,13 +29,13 @@ class Restructure extends Processor {
 
     async process(message) {
         logger.setLogLevel('info')
-        //  logger.debug('Restructure this.configKey = ' + this.configKey.value)
+        //  logger.debug('Restructure this.settings = ' + this.settings.value)
         // Extract mappings array from config
         var renames
         if (this.config.simples) {
             renames = this.config.rename
         } else {
-            renames = await this.getRenames(this.config, this.configKey, ns.trn.rename)
+            renames = await this.getRenames(this.config, this.settings, ns.trn.rename)
         }
 
         //  logger.log('Renames :')

@@ -16,10 +16,10 @@
     trn:pipe (:p10 :SM :p20 :p30) .
 
 :p10 a :FileReader ;
-    trn:configKey :readConfig .
+    trn:settings :readConfig .
 
 :p20 a :FilenameMapper ;
-    trn:configKey :filenameConfig .
+    trn:settings :filenameConfig .
 
 :p30 a :FileWriter ;
-    trn:configKey :writeConfig .
+    trn:settings :writeConfig .

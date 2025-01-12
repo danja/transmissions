@@ -43,7 +43,7 @@ class ConfigMap extends Processor {
   async process(message) {
     //  logger.setLogLevel('debug')
 
-    logger.debug(`ConfigMap, Using configKey ${this.configKey.value}`)
+    logger.debug(`ConfigMap, Using configKey ${this.settings.value}`)
 
     const group = this.getPropertyFromMyConfig(ns.trn.group)
     const targetGroup = rdf.namedNode(group)

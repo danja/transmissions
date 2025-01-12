@@ -7,9 +7,9 @@
     trn:pipe (:s10 :s20 :s30) .
 
 :s10 a :DatasetReader ;
-    trn:configKey :readDataset .
+    trn:settings :readDataset .
 
 :s20 a :ConfigMap ;
-    trn:configKey :configMapper .
+    trn:settings :configMapper .
 
 :s30 a :ShowMessage .

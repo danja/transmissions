@@ -13,7 +13,7 @@ class RunCommand extends Processor {
     }
 
     async initializeSecurity() {
-        if (this.configKey) {
+        if (this.settings) {
             const allowed = await this.getPropertyFromMyConfig(ns.trn.allowedCommands);
             this.allowedCommands = allowed ? allowed.split(',') : [];
 

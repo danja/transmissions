@@ -34,7 +34,7 @@
    trn:config :templatePrep .
 
 :r240 a :Templater ; # for individual post pages
-    trn:configKey :pTemplater . ###########################################################################
+    trn:settings :pTemplater . ###########################################################################
 ######### configKey -> settings <ConfigSet>
 :r250 a :Restructure ; # moves content into  contentBlocks
    trn:config :writePrep . # CONFIGKEY?
@@ -58,6 +58,6 @@
 :r340 a :AtomFeedPrep .
 
 :r350 a :Templater .
- #   trn:configKey :atomTemplate .
+ #   trn:settings :atomTemplate .
 
 :r360 a :FileWriter .

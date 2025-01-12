@@ -20,10 +20,10 @@
 trn:pipe (:read :retree1 :SM :writer) .
 
 :read a :FileReader ;
-     trn:configKey :reader .
+     trn:settings :reader .
 
 :retree1 a :Restructure ;
-     trn:configKey :retree .
+     trn:settings :retree .
 
 :writer a :FileWriter ;
-     trn:configKey :writer .
+     trn:settings :writer .

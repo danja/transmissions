@@ -6,18 +6,18 @@
 
 trn:r a trn:ConfigSet ;
     rdfs:label "Read file" ;
-    trn:configKey trn:readFile ;
+    trn:settings trn:readFile ;
     trn:sourceFile "input/input-01.json" ;
     trn:mediaType "application/json" .
 
 trn:blanko a trn:ConfigSet ;
     rdfs:label "Root node in JSON object" ;
-    trn:configKey trn:blankin ;
+    trn:settings trn:blankin ;
     trn:pointer "content.payload.test"  ; # "Root node in JSON object" ;
     trn:preserve "content.payload.test.third" .
 
 trn:w a trn:ConfigSet ;
     rdfs:label "Write file" ;
-    trn:configKey trn:writeFile ;
+    trn:settings trn:writeFile ;
     trn:destinationFile "output/output-01.json"  .
 

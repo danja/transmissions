@@ -12,16 +12,16 @@
 
 # :s3 a :FileReader . # the template for main page
 # :s4 a :Restructure ;
-#    trn:configKey :mainTemplateDirMap .
+#    trn:settings :mainTemplateDirMap .
 
 :s3 a :FileReader . # the template for posts
 
 :s4 a :Restructure ;
-    trn:configKey :postTemplateMap .
+    trn:settings :postTemplateMap .
 # context.content -> context.template ## Remaps should go here????
 #
 :s5 a :DirWalker ;
-    trn:configKey :files .
+    trn:settings :files .
 
  #:s6 a :ShowMessage .
 
@@ -35,13 +35,13 @@
 :s9 a :Templater .
 
 :s10 a :Restructure ;
-   trn:configKey :postSaver .
+   trn:settings :postSaver .
 
 # :s11 a :NOP .
 :s11 a :FileWriter .
 
 :s12 a :NOP .
 #:s12 a :Unfork ;
- #   trn:configKey :combinePosts .
+ #   trn:settings :combinePosts .
 
 :s13 a :ShowMessage .

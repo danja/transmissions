@@ -24,23 +24,23 @@
    trn:pipe (:r110 :r120 :SM :r130 :r140 :r150 :r160 :r170) .
 
 :r110 a :DirWalker ; # automatically forks
-    trn:configKey :dirWalker .
+    trn:settings :dirWalker .
 
 :r120 a :FileReader . # the markdown content
 
 :r130 a :MarkdownToHTML .
 
 :r140 a :Restructure ; # moves content into  contentBlocks
-   trn:configKey :templatePrep .
+   trn:settings :templatePrep .
 
 :r150 a :Templater ; # section wrapper
-    trn:configKey :contentTemplater .
+    trn:settings :contentTemplater .
 
 :r160 a :StringReplace ; # *.md -> *.html
-    trn:configKey :filesRename .
+    trn:settings :filesRename .
 
 :r170 a :FileWriter ;
-    trn:configKey :fileWriter .
+    trn:settings :fileWriter .
 
 
 
@@ -53,7 +53,7 @@
     trn:config :renderEntries .
 
 :rq20 a :Restructure ;
-    trn:configKey :walkPrep .
+    trn:settings :walkPrep .
 
 #######################################
 :s50 a :DirWalker . # automatically forks
@@ -65,7 +65,7 @@
 :s80 a :MarkdownToHTML .
 
 :s90 a :Restructure ;
-   trn:configKey :entryRawPrep .
+   trn:settings :entryRawPrep .
 
 :s100 a :Templater .
 

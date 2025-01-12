@@ -6,7 +6,7 @@
 ##################### only for testing
 trn:bContent a trn:ConfigSet ;
     rdfs:label "Root node in JSON object for blanker" ;
-    trn:configKey trn:blankContent  ;
+    trn:settings trn:blankContent  ;
     trn:pointer "content"  .
     trn:preserve "content.payload.test.third" .
 
@@ -19,7 +19,7 @@ trn:setDump a trn:ConfigSet ;
 # should really be in a manifest.ttl
 trn:ReadFile a trn:ConfigSet ;
     rdfs:label "Read file" ;
-    trn:configKey trn:readFile ;
+    trn:settings trn:readFile ;
     trn:sourceFile "input/conversations.json" ;
   #  trn:sourceFile "input/input-01.json" ;
     trn:mediaType "application/json" .

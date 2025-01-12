@@ -29,12 +29,12 @@ trn:pipe (:n10) .
      trn:pipe (:ccc10   :cb10 :cb20 :cb30) .
 
 :cb10 a :SetMessage ;
-     trn:configKey :setDump .
+     trn:settings :setDump .
 
 :cb20 a :FileWriter .
 
 :cb30 a :Blanker ; # clear values
-     trn:configKey :blankContent .
+     trn:settings :blankContent .
 
 #####################################
 ####### The thing
@@ -47,22 +47,22 @@ trn:pipe (:n10) .
 # Start
 
 :ccc10 a :FileReader ; # Claude conversations.json
-       trn:configKey :readFile .
+       trn:settings :readFile .
 
 # Separates into conversations
 :ccc20 a :JSONWalker ;
-     trn:configKey :conversationsConfig .
+     trn:settings :conversationsConfig .
 
 
 :ccc30 a :Restructure ;
-     trn:configKey :retreeConvs .
+     trn:settings :retreeConvs .
 
 # Separates into messages
 :ccc40 a :JSONWalker ;
-     trn:configKey :messagesConfig .
+     trn:settings :messagesConfig .
 
 #:p50 a :Restructure ;
- #    trn:configKey :retreeMsgs .
+ #    trn:settings :retreeMsgs .
 
 :ccc50 a :MarkdownFormatter .
 

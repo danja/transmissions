@@ -5,7 +5,7 @@
 
 trn:runCommandConfig a trn:ConfigSet ;
     rdfs:label "Run test command" ;
-    trn:configKey trn:runCommand ;
+    trn:settings trn:runCommand ;
     trn:command "echo 'Hello from RunCommand!'" ;
     trn:allowedCommands ( "echo" "ls" ) ;
     trn:blockedPatterns ( "rm" ">" "|" ";" ) ;

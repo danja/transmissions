@@ -6,7 +6,7 @@
     trn:pipe (:cmd :write) .
 
 :cmd a :RunCommand ;
-    trn:configKey :runCommand .
+    trn:settings :runCommand .
 
 :write a :FileWriter ;
-    trn:configKey :runCommand .
+    trn:settings :runCommand .

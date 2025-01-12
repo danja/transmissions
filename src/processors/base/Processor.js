@@ -37,12 +37,12 @@ class Processor extends EventEmitter {
         }
         return false
         */
-        const processorPoi = rdf.grapoi({ dataset: this.config, term: this.configKey })
-        //    logger.log('this.configKey = ' + this.configKey.value)
+        const processorPoi = rdf.grapoi({ dataset: this.config, term: this.settings })
+        //    logger.log('this.settings = ' + this.settings.value)
         //   logger.poi(processorPoi)
 
         // logger.log('describe Desc')
-        if (this.configKey.value === ns.trn.describe.value) {
+        if (this.settings.value === ns.trn.describe.value) {
             this.describe()
         }
         // nowe get the bits
@@ -83,7 +83,7 @@ class Processor extends EventEmitter {
     /*
         getMyConfig() {
             const dataset = this.config
-            const poi = grapoi({ dataset, term: this.configKey }).in()
+            const poi = grapoi({ dataset, term: this.settings }).in()
             const configNode = poi.out(ns.trn.value)
             return configNode
         }
@@ -120,7 +120,7 @@ class Processor extends EventEmitter {
         const shortName = ns.getShortname(property)
 
         logger.debug(`PROPERTY = ${property}`)
-        this.showMyConfig()
+        //this.showMyConfig()
 
         if (this.message[shortName]) return this.message[shortName]
 
@@ -134,21 +134,26 @@ class Processor extends EventEmitter {
     }
 
     getPropertyFromMyConfig(property) {
-        if (this.config.simples) {
-            //  const shortName = property.value.split('/').pop()
-            const shortName = ns.getShortname(property)
-            logger.debug(`Processor (simples), property = ${shortName}`)
-            const value = this.config[shortName]
-            logger.debug(`Processor (simples), value = ${value}`)
-            return value
+        logger.log(`LOOKING FOR ${property}`)
+        logger.debug(`typeof property = ${typeof property}`)
+        if (this.config.simples) return this.getSimplesProperty(property)
+
+        const dataset = this.config
+        // const dataset = rdf.dataset(this.config({ factory: rdf }))
+        logger.log(`dataset.size = ${dataset.size}`)
+
+        const poi = grapoi({ dataset, term: this.node })
+
+        for (const quad of poi.out().trim().quads()) {
+            logger.log(`**** LOOKING FOR ${property}`)
+            logger.log(`\t${quad.predicate.value}: ${quad.object.value}`)
         }
 
-        const poi = grapoi({ dataset: this.config, term: this.node })
-        // const poi = this.getMyPoi()
-        logger.log(`LOOKING FOR ${property}`)
-        logger.log(poi)
+
+        logger.debug(`poi.out(property) = ${poi.out(property)}`)
+        //  logger.reveal(poi.out(property))
         try {
-            return poi.out(property).term.value
+            return poi.out(property).term
 
         } catch (err) {
             const id = ns.shortName(this.id)
@@ -164,18 +169,25 @@ class Processor extends EventEmitter {
         const myPoi = grapoi({ dataset, term: this.node })
         logger.debug(`myPoi = ${myPoi}`)
         //    logger.reveal(myPoi)
-        //.out(ns.trn.configKey)
+        //.out(ns.trn.settings)
         return this.node
     }
     /*
 getMyConfigNode() {
     const dataset = this.config
-    //    const configNode = grapoi({ dataset, term: this.configKey }).in()
-    const configNode = grapoi({ dataset, term: this.configKey }).in()
+    //    const configNode = grapoi({ dataset, term: this.settings }).in()
+    const configNode = grapoi({ dataset, term: this.settings }).in()
     return configNode.term
 }
 */
 
+    getSimplesProperty(property) {
+        const shortName = ns.getShortname(property)
+        logger.debug(`Processor (simples), property = ${shortName} `)
+        const value = this.config[shortName]
+        logger.debug(`Processor(simples), value = ${value} `)
+        return value
+    }
 
     async addPropertyToMyConfig(predicate, value) {
         logger.log('addPropertyToMyConfig predicate = ' + predicate)
@@ -262,7 +274,7 @@ this.message = message // IS OK? needed where?
             // message.done = false
 
             await this.preProcess(message)
-            logger.log(`HERE in ${this.type.value} ${this.id}`)
+            logger.log(`HERE in ${this.type.value} ${this.id} `)
             await this.process(message)
             await this.postProcess(message)
 
@@ -326,11 +338,11 @@ this.message = message // IS OK? needed where?
     // Claude suggested :
 
     async emit(event, message) {
-        logger.log(`Processor.emit called with ${message.done}`)
+        logger.log(`Processor.emit called with ${message.done} `)
         await new Promise(resolve => {
             super.emit(event, message)
             resolve()
-            logger.log(`after resolve has ${message.done}`)
+            logger.log(`after resolve has ${message.done} `)
         })
         return message
     }

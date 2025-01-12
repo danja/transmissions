@@ -17,12 +17,12 @@
     trn:pipe (:p10 :p20 :p30 :p40) .
 
 :p10 a :SetMessage ;
-     trn:configKey :set1 .
+     trn:settings :set1 .
 
 :p20 a :ShowMessage .
 
 :p30 a :SetMessage ;
-    trn:configKey :set2 .
+    trn:settings :set2 .
 
 
 :p40 a :ShowMessage .
