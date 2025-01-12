@@ -76,9 +76,9 @@
     rdfs:comment "render the pages" ;
                  trn:pipe (:s20 :s30 :s40  :s50 :s60 :s70   :s80 :s90  :s100
               :s110  :s120  :s130 :s140 :s150 :s160 :s170 :s180 :s190 :s200 :s210) .
+tweak
 
-
-# :s10 a :DatasetReader . # read the manifest NO done in system
+#:s10 a :DatasetReader ; # read the manifest NO done in system
 # trn:settings trn:describe .
 
 :s20 a :ConfigMap ;

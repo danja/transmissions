@@ -59,8 +59,8 @@ class FileRemove extends Processor {
             target = message.target
         } else {
             logger.debug('FileRemove this.settings = ' + this.settings.value)
-            target = this.getPropertyFromMyConfig(ns.trn.target)
-
+            target = this.getProperty(ns.trn.target)
+            //       target = this.getPropertyFromMyConfig(ns.trn.target)
             target = path.join(message.rootDir, target)
         }
 
