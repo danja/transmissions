@@ -1,5 +1,7 @@
 # Test Fork/Unfork
 
+## ./trans test_fork-unfork
+
 ```
 ./run test_fork | grep 's2 a NOP'
 ```

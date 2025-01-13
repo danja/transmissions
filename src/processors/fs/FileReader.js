@@ -12,7 +12,6 @@ class FileReader extends Processor {
 
     async process(message) {
 
-
         if (message.done) { // TODO shouldn't get this far
             return this.emit('message', message)
         }

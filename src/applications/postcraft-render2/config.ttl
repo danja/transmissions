@@ -1,40 +1,36 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix trn: <http://purl.org/stuff/transmissions/> .
-# @prefix trn: <http://purl.org/stuff/transmissions/> .
-@prefix trn: <http://purl.org/stuff/transmissions/> . # for custom terms & instances
-@prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix : <http://purl.org/stuff/transmissions/> .
 
-trn:cacheWalker a trn:ConfigSet ;
-  trn:sourceDir "cache" ;
-  trn:includeExtensions "['.html', '.md', '.ttl', '.js', '.json', '.txt',  '.css']" .
 
-trn:templatePrep a trn:ConfigSet  ;
-    trn:rename (trn:tp1 ).
-    trn:tp1   trn:pre     "content" ;
-            trn:post    "contentBlocks.content" .
+:cacheWalker a :ConfigSet ;
+  :sourceDir "cache" ;
+  :includeExtensions "['.html', '.md', '.ttl', '.js', '.json', '.txt',  '.css']" .
 
-trn:pageTemplater a trn:ConfigSet ;
-trn:settings trn:pTemplater ;
-  trn:templateFilename "layouts/middlin/templates/entry-page_template.njk" .
+:templatePrep a :ConfigSet  ;
+    :rename (:tp1 ).
+    :tp1   :pre     "content" ;
+            :post    "contentBlocks.content" .
 
-trn:writePrep a trn:ConfigSet  ;
-    trn:rename (trn:wp1 ).
-    trn:wp1   trn:pre     "filename" ;
-            trn:post    "filepath" .
+:pageTemplater a :ConfigSet ;
+  :templateFilename "layouts/middlin/templates/entry-page_template.njk" .
 
-trn:fileWriter a trn:ConfigSet ;
-  trn:targetDir "public" .
+:writePrep a :ConfigSet  ;
+    :rename (:wp1 ).
+    :wp1   :pre     "filename" ;
+            :post    "filepath" .
+
+:fileWriter a :ConfigSet ;
+  :targetDir "public" .
 
   ################
 
-trn:indexTemplater a trn:ConfigSet ;
+:indexTemplater a :ConfigSet ;
+  :templateFilename "layouts/middlin/templates/index-page_template.njk" .
 
-  trn:templateFilename "layouts/middlin/templates/index-page_template.njk" .
-
-trn:filesRename a trn:ConfigSet ;
-  trn:inputField "filename" ;
-  trn:outputField "filepath" ;
-  trn:match ".md";
-  trn:replace ".html".
+:filesRename a :ConfigSet ;
+  :inputField "filename" ;
+  :outputField "filepath" ;
+  :match ".md";
+  :replace ".html".
 
 

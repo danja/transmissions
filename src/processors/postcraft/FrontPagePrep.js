@@ -29,7 +29,7 @@ class FrontPagePrep extends Processor {
     const rawEntryPaths = this.resolveRawEntryPaths(message)
     message.content = ''
 
-    // TODO tidy up
+    // TODO tidy up //
     const entryCount = Math.min(5, rawEntryPaths.length) // Limit to 5 entries or less
     logger.debug('FrontPagePrep, entryCount = ' + entryCount)
 
@@ -57,6 +57,7 @@ class FrontPagePrep extends Processor {
 
   }
 
+  //
   resolveRawEntryPaths(message) {
     const paths = []
     const slugs = message.slugs || []
@@ -67,11 +68,14 @@ class FrontPagePrep extends Processor {
       if (slug) {
         //   const path = message.rootDir + '/' + message.entryContentMeta.targetDir + '/' + slug + '.html'
         let filePath
+        /*
         if (message.targetPath) {
           filePath = path.join(message.targetPath, message.entryContentMeta.targetDir, slug + '.html')
         } else {
           filePath = path.join(message.rootDir, message.entryContentMeta.targetDir, slug + '.html')
         }
+          */
+        filePath = path.join(message.targetPath, slug + '.html')
         paths.push(filePath)
       }
     }

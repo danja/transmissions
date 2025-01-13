@@ -9,6 +9,7 @@ class DirWalker extends Processor {
         super(config);
         this.includeExtensions = ['.md'];
         this.excludePrefixes = ['_', '.'];
+        this.fileCount = 0
     }
 
     async process(message) {
@@ -34,6 +35,10 @@ class DirWalker extends Processor {
         if (!message.sourceDir) {
             message.sourceDir = sourceDir;
         }
+
+        logger.debug('\n\nDirWalker, message.targetPath = ' + message.targetPath)
+        logger.debug('DirWalker, message.rootDir = ' + message.rootDir)
+        logger.debug('DirWalker, message.sourceDir = ' + message.sourceDir)
 
         let dirPath;
         if (path.isAbsolute(sourceDir)) {
@@ -72,21 +77,24 @@ class DirWalker extends Processor {
                     this.includeExtensions.includes(extension)) {
                     const message = structuredClone(baseMessage);
                     message.filename = entry.name;
-
-                    logger.error(`message.targetPath = ${message.targetPath}`)
-                    logger.error(`fullPath = ${fullPath}`)
                     message.subdir = path.dirname(path.relative(message.targetPath, fullPath)).split(path.sep)[1];
-
                     message.fullPath = fullPath;
                     message.filepath = path.relative(baseMessage.targetPath || baseMessage.rootDir, fullPath);
                     message.done = false;
                     message.counter++;
 
-                    logger.debug(`DirWalker emitting file:
-                        filename: ${message.filename}
-                        fullPath: ${message.fullPath}
-                        filepath: ${message.filepath}`);
+                    const slug = message.filename.split('.')[0]
+                    message.slugs.push(slug)
 
+                    logger.debug(`DirWalker emitting :
+                        message.targetPath: ${message.targetPath}
+                        message.filename: ${message.filename}
+                        message.fullPath: ${message.fullPath}
+                        message.subdir: ${message.subdir}
+                        message.filepath: ${message.filepath}
+                        message.slugs: ${message.slugs}`);
+                    //        process.exit()
+                    message.fileCount++
                     this.emit('message', message);
                 }
             }

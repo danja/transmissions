@@ -33,13 +33,13 @@ class Unfork extends Processor {
             message.done = false // in case it's needed later
 
             /*
-            await new Promise(resolve => {
-                //    super.emit(event, message)
-                return this.emit('message', message)
-                resolve()
-                logger.log(`after resolve has ${message.done}`)
-            })
-                */
+                        await new Promise(resolve => {
+                            //    super.emit(event, message)
+                            return this.emit('message', message)
+                            resolve()
+                            logger.log(`after resolve has ${message.done}`)
+                        })
+            */
             return this.emit('message', message)
         } else {
             logger.debug(' - Unfork terminating pipe')

@@ -2,7 +2,7 @@
 @prefix trn: <http://purl.org/stuff/transmissions/> .
 @prefix trn: <http://purl.org/stuff/transmissions/> .
 
-trn:jsonFileIn a trn:Config ;
+trn:jsonFileIn a trn:settings ;
     trn:key trn:reader ;
     trn:sourceFile "input/input-01.json" ;
     trn:mediaType "application/json" .
@@ -17,7 +17,7 @@ trn:retree a trn:ConfigSet ;
             trn:post    "content.title"  .
 
 
-trn:jsonFileOut a trn:Config ;
+trn:jsonFileOut a trn:settings ;
     trn:key trn:writer ;
     trn:destinationFile "output/output-01.json" .
 

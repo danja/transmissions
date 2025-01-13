@@ -13,9 +13,9 @@
 #############################################################
 
 :test_fork_unfork a :Transmission ;
-   trn:contains :pipeA .
-
-:pipeA a trn:Transmission ;
+#   trn:contains :pipeA .
+# TODO
+#:pipeA a trn:Transmission ;
 trn:pipe (:p10 :p20 :p30 :p40) .
 
 :p10 a :Fork .

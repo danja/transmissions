@@ -47,7 +47,8 @@ class Templater extends Processor {
         var templateFilename = this.getProperty(ns.trn.templateFilename)
 
         logger.debug(`\nTemplater.process, templateFilename = ${templateFilename}`)
-        //   process.exit()
+        // process.exit()
+
         if (templateFilename) {
             //       logger.debug(`\nTemplater.process, templateFilename = ${templateFilename}`)
 

@@ -21,7 +21,7 @@
 :render1 a trn:Transmission ;
     rdfs:label "render1" ;
     rdfs:comment "render raw entry pages" ;
-   trn:pipe (:r110 :r120 :SM :r130 :r140 :r150 :r160 :r170) .
+   trn:pipe (:r110 :r120 :r130 :r140 :r150 :r160 :r170) .
 
 :r110 a :DirWalker ; # automatically forks
     trn:settings :dirWalker .
@@ -50,7 +50,7 @@
 # :s10 a :DatasetReader . # read the manifest NO done in system
 
 :q10 a :ConfigMap ;
-    trn:config :renderEntries .
+    trn:settings :renderEntries .
 
 :rq20 a :Restructure ;
     trn:settings :walkPrep .
