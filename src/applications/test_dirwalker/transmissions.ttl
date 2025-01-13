@@ -6,12 +6,14 @@
 :DE a :DeadEnd . # ends the current pipe quietly
 :H  a :Halt . # kills everything
 :SM a :ShowMessage . # verbose report, continues pipe
+:SM1 a :ShowMessage .
+:SM2 a :ShowMessage .
 :N  a :NOP . # no operation (except for showing stage in pipe)
 :UF a :Unfork . # collapses all pipes but one
 #############################################################
 
 :dirwalk a :Transmission ;
-    :pipe (:s1 :s2 :SM) .
+    :pipe (:SM1 :s1 :s2 :SM2) .
 
 :s1 a :DirWalker ;
  :settings :dirWalker . # specify in config.ttl

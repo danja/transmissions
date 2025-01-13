@@ -72,7 +72,11 @@ class DirWalker extends Processor {
                     this.includeExtensions.includes(extension)) {
                     const message = structuredClone(baseMessage);
                     message.filename = entry.name;
+
+                    logger.error(`message.targetPath = ${message.targetPath}`)
+                    logger.error(`fullPath = ${fullPath}`)
                     message.subdir = path.dirname(path.relative(message.targetPath, fullPath)).split(path.sep)[1];
+
                     message.fullPath = fullPath;
                     message.filepath = path.relative(baseMessage.targetPath || baseMessage.rootDir, fullPath);
                     message.done = false;

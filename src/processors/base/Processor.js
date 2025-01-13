@@ -57,30 +57,7 @@ class Processor extends EventEmitter {
         // Debug full path
         //     logger.debug(`Dataset: ${[...dataset].map(q => `${q.subject.value} ${q.predicate.value} ${q.object.value}`).join('\n')}`)
 
-        logger.log('-----vvvv------------------------------------------')
-        /*
-           const terms =
-               [...dataset].map(function (q) {
-                   const s = q.subject
-                   const p = q.property
-                   const o = q.object
-               });
-           */
-        const terms =
-            [...dataset].map(function (q) {
-                const s = q.subject.value
-                logger.log(`q.subject.value = ${q.subject.value}`)
-                const p = q.property.value
-                const o = q.object.value
-            });
 
-        logger.log(`terms = ${terms}`)
-        //           logger.log(`${ ns.shortName(s) } ${ ns.shortName(p) } ${ ns.shortName(o) }`)
-        for (var term in terms) {
-            logger.log(`term = ${term.s}`)
-        }
-        //logger.reveal(terms)
-        logger.log('-----^^^^------------------------------------------')
 
         const settings = ptr.out(ns.trn.settings)
         logger.debug(`Settings query result: ${settings?.terms?.length} terms`)
