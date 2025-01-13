@@ -1,14 +1,28 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix trn: <http://purl.org/stuff/transmissions/> .
-@prefix trn: <http://purl.org/stuff/transmissions/> . # for custom terms & instances
+@prefix : <http://purl.org/stuff/transmissions/> .
+@base <http://purl.org/stuff/path/> .
 
-trn:set1 a trn:ConfigSet ;
-    trn:setValue (trn:sv0)  . # consider using blank nodes
-    trn:sv0   trn:key    "demo" ;
-            trn:value    "uses trn:settings"  .
+:settings1 a :ConfigSet ;
+    :name "Alice" .  # string literal
 
-trn:set2 a trn:ConfigSet ;
-    trn:setValue (trn:setter1)  . # consider using blank nodes
-    trn:setter1   trn:key    "demo2" ;
-            trn:value    "uses trn:"  .
+:settings2 a :ConfigSet ;
+    :path <dirA> .  # subdirectory path
+
+:settings3 a :ConfigSet ;
+    :name "Bob" ;
+    :path <dirB> .
+
+:settings4 a :ConfigSet ;
+    :setters (:setter1)  . # consider using blank nodes
+        :setter1    :key    "s4s1" ;
+                    :value  "value4"  .
+
+:settings5 a :ConfigSet ;
+    :name "Constantine" ;
+    :path <dirC> ;
+    :setters (:setter2 :setter3)  . # consider using blank nodes
+        :setter2    :key    "s5s2" ;
+                    :value   "value52"  .
+        :setter3    :key    "s5s3" ;
+                    :value    "value53"  .

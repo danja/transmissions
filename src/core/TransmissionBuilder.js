@@ -86,14 +86,15 @@ class TransmissionBuilder {
           let type = ns.getShortname(processorType.value)
 
           logger.log("| Create processor :" + name + " of type :" + type)
-          let processor = await this.createProcessor(processorType, processorsConfig) // was await
-          processor.node = node
+          let processor = await this.createProcessor(processorType, processorsConfig)
+
           processor.id = processorName
           processor.type = processorType
+
+          processor.transmissionNode = node
           processor.transmission = transmission
 
-          //    logger.log("| processorConfig :" + processorConfig)
-          //  logger.reveal(processorConfig)
+          processor.settingsNode = processorConfig
 
           if (processorConfig) {
             processor.settings = processorConfig
@@ -121,7 +122,9 @@ class TransmissionBuilder {
   async createProcessor(type, config) {
     logger.setLogLevel('debug')
     // logger.setLogLevel('info')
-    logger.debug(`TransmissionBuilder.createProcessor, config = ${config}`)
+    // logger.debug(`\n\nTransmissionBuilder.createProcessor, config = ${config}`)
+
+
 
     const coreProcessor = AbstractProcessorFactory.createProcessor(type, config)
     if (coreProcessor) {

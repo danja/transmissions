@@ -15,7 +15,7 @@ class Processor extends EventEmitter {
 
     getProperty(property, fallback) {
         logger.debug(`Processor.getProperty looking for ${property}`)
-        logger.debug(`Processor.getProperty, this.node.value = ${this.node.value}`)
+        logger.debug(`Processor.getProperty, this.transmissionNode.value = ${this.transmissionNode.value}`)
 
         const shortName = ns.getShortname(property)
         if (this.message && this.message[shortName]) {
@@ -35,58 +35,83 @@ class Processor extends EventEmitter {
 
     getPropertyFromSettings(property) {
         logger.log(`Processor.getPropertyFromSettings, property = ${property}`)
-        if (!this.config || !this.node) {
+        if (!this.config || !this.settingsNode) {
             logger.debug('Config or node missing')
             return undefined
         }
 
         //////////////////// ITS NOT ON s1 it's on dirWalker
         // NEED TO MAKE A SIMPLER TEST
-        try {
-            const dataset = this.config
-            const ptr = grapoi({ dataset, term: this.node })
+        // try {
+        const dataset = this.config
+        const ptr = grapoi({ dataset, term: this.settingsNode })
 
-            logger.debug(`Checking property ${property} on node ${this.node.value}`)
-            let values = ptr.out(property)
-            if (values.terms.length > 0) {
-                logger.debug(`Found direct property value: ${values.term.value}`)
-                return values.term
-            }
-            logger.debug('No direct property found')
-
-            // Debug full path
-            logger.debug(`Full dataset: ${[...dataset].map(q => `${q.subject.value} ${q.predicate.value} ${q.object.value}`).join('\n')}`)
-
-            const settings = ptr.out(ns.trn.settings)
-            logger.debug(`Settings query result: ${settings?.terms?.length} terms`)
-            if (settings.terms.length > 0) {
-                const settingsId = settings.term
-                logger.debug(`Found settings reference: ${settingsId.value}`)
-
-                const settingsPtr = grapoi({ dataset, term: settingsId })
-                const settingsValues = settingsPtr.out(property)
-                if (settingsValues.terms.length > 0) {
-                    logger.debug(`Found settings property value: ${settingsValues.term.value}`)
-                    return settingsValues.term
-                }
-                logger.debug('No property found in settings')
-            }
-            logger.debug('No settings reference found')
-            return undefined
-
-        } catch (err) {
-            logger.debug(`Error getting property ${property}: ${err}`)
-            return undefined
+        logger.log(`Checking property ${property} on node ${this.settingsNode.value}`)
+        let values = ptr.out(property)
+        if (values.terms.length > 0) {
+            logger.debug(`Found direct property value: ${values.term.value}`)
+            return values.term
         }
+        logger.debug('No direct property found')
+
+        // Debug full path
+        //     logger.debug(`Dataset: ${[...dataset].map(q => `${q.subject.value} ${q.predicate.value} ${q.object.value}`).join('\n')}`)
+
+        logger.log('-----vvvv------------------------------------------')
+        /*
+           const terms =
+               [...dataset].map(function (q) {
+                   const s = q.subject
+                   const p = q.property
+                   const o = q.object
+               });
+           */
+        const terms =
+            [...dataset].map(function (q) {
+                const s = q.subject.value
+                logger.log(`q.subject.value = ${q.subject.value}`)
+                const p = q.property.value
+                const o = q.object.value
+            });
+
+        logger.log(`terms = ${terms}`)
+        //           logger.log(`${ ns.shortName(s) } ${ ns.shortName(p) } ${ ns.shortName(o) }`)
+        for (var term in terms) {
+            logger.log(`term = ${term.s}`)
+        }
+        //logger.reveal(terms)
+        logger.log('-----^^^^------------------------------------------')
+
+        const settings = ptr.out(ns.trn.settings)
+        logger.debug(`Settings query result: ${settings?.terms?.length} terms`)
+        if (settings.terms.length > 0) {
+            const settingsId = settings.term
+            logger.debug(`Found settings reference: ${settingsId.value}`)
+
+            const settingsPtr = grapoi({ dataset, term: settingsId })
+            const settingsValues = settingsPtr.out(property)
+            if (settingsValues.terms.length > 0) {
+                logger.debug(`Found settings property value: ${settingsValues.term.value}`)
+                return settingsValues.term
+            }
+            logger.debug('No property found in settings')
+        }
+        logger.debug('No settings reference found')
+        return undefined
+
+        //        } catch (err) {
+        //          logger.debug(`Error getting property ${property}: ${err}`)
+        //      return undefined
+        //    }
     }
 
     async preProcess(message) {
-        this.message = message
-        logger.debug("Processor.preProcess")
+        this.message = message // TODO duplicated elsewhere?
+        logger.trace("Processor.preProcess")
     }
 
     async postProcess(message) {
-        logger.debug("Processor.postProcess")
+        logger.trace("Processor.postProcess")
     }
 
     async receive(message) {

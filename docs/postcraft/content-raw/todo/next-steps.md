@@ -2,6 +2,8 @@
 
 * **add** alternative to `configKey'
 `
+https://opentelemetry.io/docs/languages/js/
+
 * packer
 * squirt
 * watch Processor (after the worker thread bits sorted)

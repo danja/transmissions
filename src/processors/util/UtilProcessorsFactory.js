@@ -7,6 +7,8 @@ import CaptureAll from './CaptureAll.js'
 import ShowConfig from './ShowConfig.js'
 import WhiteboardToMessage from './WhiteboardToMessage.js'
 import SetMessage from './SetMessage.js'
+import ShowSettings from './ShowSettings.js'
+ShowSettings
 
 class UtilProcessorsFactory {
     static createProcessor(type, config) {
@@ -29,7 +31,9 @@ class UtilProcessorsFactory {
         if (type.equals(ns.trn.SetMessage)) {
             return new SetMessage(config)
         }
-
+        if (type.equals(ns.trn.ShowSettings)) {
+            return new ShowSettings(config)
+        }
         return false
     }
 }

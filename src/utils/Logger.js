@@ -4,11 +4,14 @@ import chalk from 'chalk';
 
 const logger = {};
 
+//  logger.log(`\n\nconfig dataset: ${[...config].map(q => `${q.subject.value} ${q.predicate.value} ${q.object.value}`).join('\n')}`)
+
+
 // Map log levels to chalk styles
 const LOG_STYLES = {
-    "trace": chalk.yellow,
-    "debug": chalk.red,
-    "info": chalk.white,
+    "trace": chalk.greenBright,
+    "debug": chalk.white,
+    "info": chalk.yellow,
     "warn": chalk.red.italic,
     "error": chalk.red.bold
 };

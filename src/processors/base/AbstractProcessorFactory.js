@@ -29,8 +29,8 @@ class AbstractProcessorFactory {
     // good enough for now
 
     static createProcessor(type, config) {
-        logger.debug(`\nAbstractProcessorFactory.createProcessor : type.value = ${type.value}`)
-        logger.debug(`AbstractProcessorFactory.createProcessor : config = ${config}`)
+        logger.trace(`\nAbstractProcessorFactory.createProcessor : type.value = ${type.value}`)
+        //  logger.debug(`AbstractProcessorFactory.createProcessor : config = ${config}`)
         var processor = UnsafeProcessorsFactory.createProcessor(type, config)
         if (processor) return processor
         var processor = HttpProcessorsFactory.createProcessor(type, config)

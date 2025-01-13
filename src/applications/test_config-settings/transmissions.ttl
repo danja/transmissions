@@ -1,6 +1,6 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix : <http://purl.org/stuff/transmissions/> .
 @prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances
 
 #############################################################
@@ -13,15 +13,19 @@
 :UF a :Unfork . # collapses all pipes but one
 #############################################################
 
-:mini a trn:Transmission ;
-    trn:pipe (:SC :p10 :p20 :p30 :p40 ) .
+:testConfig a :Transmission ;
+    :pipe (:tc10) .
 
+:tc10 a :ShowSettings ;
+     :settings :settings1 .
+
+###############################
 :p10 a :SetMessage ;
-     trn:settings :set1 .
+     :settings :set1 .
 
 :p20 a :ShowMessage .
 
 :p30 a :SetMessage ;
-    trn:settings :set2 .
+    :settings :set2 .
 
 :p40 a :ShowMessage .
