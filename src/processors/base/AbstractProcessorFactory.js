@@ -23,6 +23,9 @@ import HttpProcessorsFactory from '../http/HttpProcessorsFactory.js'
 import McpProcessorsFactory from '../mcp/McpProcessorsFactory.js'
 import XmppProcessorsFactory from '../xmpp/XmppProcessorsFactory.js'
 
+// added 2025-01-14 : Happy Birthday to me!
+import ExampleProcessorsFactory from '../example-group/ExampleProcessorsFactory.js'
+
 class AbstractProcessorFactory {
 
     // looks until it finds
@@ -31,6 +34,10 @@ class AbstractProcessorFactory {
     static createProcessor(type, config) {
         logger.trace(`\nAbstractProcessorFactory.createProcessor : type.value = ${type.value}`)
         //  logger.debug(`AbstractProcessorFactory.createProcessor : config = ${config}`)
+
+        var processor = ExampleProcessorsFactory.createProcessor(type, config)
+        if (processor) return processor
+
         var processor = UnsafeProcessorsFactory.createProcessor(type, config)
         if (processor) return processor
         var processor = HttpProcessorsFactory.createProcessor(type, config)

@@ -3,11 +3,14 @@ import grapoi from 'grapoi'
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
 import footpath from '../../utils/footpath.js'
+import ProcessorSettings from './ProcessorSettings.js'
 
 class Processor extends EventEmitter {
     constructor(config) {
         super()
+
         this.config = config
+        this.settings = new ProcessorSettings(config)
         this.messageQueue = []
         this.processing = false
         this.outputs = []
@@ -29,7 +32,7 @@ class Processor extends EventEmitter {
             return settingsValue.value
         }
 
-        logger.debug(`Using fallback: ${fallback}`)
+        logger.debug(`Using fallback: \n\t${fallback}`)
         return fallback
     }
 
@@ -40,9 +43,7 @@ class Processor extends EventEmitter {
             return undefined
         }
 
-        //////////////////// ITS NOT ON s1 it's on dirWalker
-        // NEED TO MAKE A SIMPLER TEST
-        // try {
+        // TODO GET PROPERTY FROM DATASET
         const dataset = this.config
         const ptr = grapoi({ dataset, term: this.settingsNode })
 
@@ -56,8 +57,6 @@ class Processor extends EventEmitter {
 
         // Debug full path
         //     logger.debug(`Dataset: ${[...dataset].map(q => `${q.subject.value} ${q.predicate.value} ${q.object.value}`).join('\n')}`)
-
-
 
         const settings = ptr.out(ns.trn.settings)
         logger.debug(`Settings query result: ${settings?.terms?.length} terms`)
@@ -75,11 +74,6 @@ class Processor extends EventEmitter {
         }
         logger.debug('No settings reference found')
         return undefined
-
-        //        } catch (err) {
-        //          logger.debug(`Error getting property ${property}: ${err}`)
-        //      return undefined
-        //    }
     }
 
     async preProcess(message) {

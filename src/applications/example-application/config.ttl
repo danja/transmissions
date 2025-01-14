@@ -1,0 +1,12 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+@prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances
+
+:exampleSettings1 a :ConfigSet ;
+    :me "exampleSettings1" ;
+    :something "something from config" .
+
+:exampleSettings2 a :ConfigSet ;
+    :me "exampleSettings2" ;
+    :addedStuff "added stuff from config" .
