@@ -15,25 +15,28 @@ class ExampleProcessor extends Processor {
     async process(message) {
         logger.debug(`\n\nExampleProcessor.process`)
 
-        if (message.done) { // may be needed if preceded by a spawning processor, eg. fs/DirWalker
+        // may be needed if preceded by a spawning processor, eg. fs/DirWalker
+        if (message.done) {
             return this.emit('message', message)
         }
 
-        //   const me = this.getProperty(ns.trn.me)
-        // logger.log(`\nI am ${me}`)
-
-        // property values pulled from message | config settings | fallback with
-        // message.something = this.getProperty(ns.trn.something)
-
-        var addedStuff = this.getProperty(ns.trn.addedStuff, '')
-
-        // message.notFound = this.getProperty(ns.trn.nonExistent, 'fallback when property not found')
-
         // message is processed here
 
-        message.addedStuff = message.addedStuff + addedStuff
+        // property values pulled from message | config settings | fallback
+        const me = this.getProperty(ns.trn.me)
+        logger.log(`\nI am ${me}`)
 
-        // and forwarded
+        message.common = this.getProperty(ns.trn.common)
+        message.something1 = this.getProperty(ns.trn.something1)
+
+        message.something2 = this.getProperty(ns.trn.something2)
+
+        var added = this.getProperty(ns.trn.added, '')
+        message.something1 = message.something1 + added
+
+        message.notavalue = this.getProperty(ns.trn.notavalue, 'fallback value')
+
+        // message forwarded
         return this.emit('message', message);
     }
 }

@@ -17,7 +17,7 @@ class Processor extends EventEmitter {
     }
 
     getProperty(property, fallback) {
-        logger.debug(`Processor.getProperty looking for ${property}`)
+        logger.debug(`\nProcessor.getProperty looking for ${property}`)
         logger.debug(`Processor.getProperty, this.transmissionNode.value = ${this.transmissionNode.value}`)
 
         const shortName = ns.getShortname(property)
