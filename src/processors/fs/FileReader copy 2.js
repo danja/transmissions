@@ -33,38 +33,33 @@ class FileReader extends Processor {
     }
 
     async process(message) {
+        logger.setLogLevel('debug')
         if (message.done) {
             return this.emit('message', message);
         }
 
-        let filePath;
 
-        // First try deriving path from message properties
-        if (message.fullPath) {
-            filePath = message.fullPath;
-        } else if (message.filepath) {
+        logger.debug(`\n\nFileReader.process(), this.getTag() = ${this.getTag()}`);
+        logger.debug(`\n\n1 FileReader.process(), message.fullPath = ${message.fullPath}`);
+        logger.debug(`FileReader.process(), message.filepath = ${message.filepath}`);
+        logger.debug(`FileReader.process(), message.targetPath = ${message.targetPath}`);
+
+        let filePath;
+        if (!message.fullPath) {
+            if (!message.filepath) return;
             if (message.targetPath && !path.isAbsolute(message.filepath)) {
                 filePath = path.join(message.targetPath, message.filepath);
             } else {
                 filePath = message.filepath;
             }
         } else {
-            // Fall back to getting path from config
-            filePath = this.getProperty(ns.trn.sourceFile);
-            if (!filePath) {
-                throw new Error('No file path provided in message or config');
-            }
-
-            // Resolve relative to targetPath or rootDir
-            if (!path.isAbsolute(filePath)) {
-                filePath = path.join(message.targetPath || message.rootDir, filePath);
-            }
+            filePath = message.fullPath;
         }
 
-        logger.debug(`FileReader.process(), reading file: ${filePath}`);
+        logger.debug(`\n\n3 FileReader.process(), reading file: ${filePath}`);
         logger.debug(`FileReader.process(), process.cwd() = ${process.cwd()}`);
 
-        // Verify file is readable
+        // Check file accessibility
         await new Promise((resolve, reject) => {
             access(filePath, constants.R_OK, (err) => {
                 if (err) {
@@ -74,17 +69,19 @@ class FileReader extends Processor {
             });
         });
 
-        // Handle metadata if requested
+        // Get metadata
         const metaField = this.getProperty(ns.trn.metaField);
         if (metaField) {
             const metadata = this.getFileMetadata(filePath);
             message[metaField] = metadata;
         }
 
-        // Read and return file content
+        // Read file content
         const content = await readFile(filePath, 'utf8');
         message.content = content;
-
+        logger.log('--------------------------------------------')
+        logger.reveal(message)
+        logger.log('--------------------------------------------')
         logger.debug(`FileReader successfully read file: ${filePath}`);
         return this.emit('message', message);
     }

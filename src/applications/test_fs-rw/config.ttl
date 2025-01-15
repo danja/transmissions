@@ -3,11 +3,11 @@
 @prefix trn: <http://purl.org/stuff/transmissions/> .
 
 
-trn:inputFile a trn:settings ;
+trn:inputFile a trn:ConfigSet ; ;
     trn:key trn:input ;
     trn:sourceFile  "input/input-01.md" .
 
-trn:outputFile a trn:settings ;
+trn:outputFile a trn:ConfigSet ; ;
     trn:key trn:output ;
     trn:destinationFile "output/output-01.md" .
 

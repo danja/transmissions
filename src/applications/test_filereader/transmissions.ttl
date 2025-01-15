@@ -1,0 +1,24 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+#############################################################
+# insert into pipe for debugging
+:DE a :DeadEnd . # ends the current pipe quietly
+:H  a :Halt . # kills everything
+:SC a :ShowConfig . # verbose report, continues pipe
+:SM a :ShowMessage . # verbose report, continues pipe
+:SM1 a :ShowMessage . # verbose report, continues pipe
+:SM2 a :ShowMessage . # verbose report, continues pipe
+:N  a :NOP . # no operation (except for showing stage in pipe)
+:UF a :Unfork . # collapses all pipes but one
+#############################################################
+
+:test_filereader a trn:Transmission ;
+trn:pipe (:SM :p10 :SM1) .
+
+:p10 a :FileReader ;
+     trn:settings :readerSet .
+
+
+

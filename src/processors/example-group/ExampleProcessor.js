@@ -1,3 +1,33 @@
+// src/processors/fs/FileRemove.js
+/**
+ * FileRemove Processor
+ *
+ * Removes files or directory contents on the local filesystem.
+ * @extends Processor
+ *
+ * #### __*Input*__
+ * * message.applicationRootDir (optional) - The root directory of the application
+ * * message.target (if no settings) - The path of the file or directory to remove
+ *
+ * #### __*Configuration*__
+ * If a settings is provided in the transmission:
+ * * ns.trn.target - The target path relative to applicationRootDir
+ *
+ * #### __*Output*__
+ * * Removes the specified file or directory contents
+ * * message (unmodified) - The input message is passed through
+ *
+ * #### __*Behavior*__
+ * * Removes individual files directly
+ * * Recursively removes directory contents
+ * * Logs debug information about the removal process
+ *
+ * #### __Tests__
+ * `./run file-copy-remove-test`
+ * `npm test -- tests/integration/file-copy-remove-test.spec.js`
+ *
+ */
+
 import { readFile } from 'node:fs/promises';
 import { access, constants } from 'node:fs';
 import path from 'path';
@@ -5,7 +35,6 @@ import logger from '../../utils/Logger.js';
 import ns from '../../utils/ns.js';
 import Processor from '../base/Processor.js';
 
-/* SIGNATURE FOR JSDOC GOES HERE */
 
 class ExampleProcessor extends Processor {
     constructor(config) {

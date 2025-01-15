@@ -4,7 +4,7 @@
 
 ```sh
 cd ~/github-danny/transmissions # my local path
-./trans example-application
+./trans test_filereader
 ```
 
 ## Description
