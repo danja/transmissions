@@ -36,7 +36,7 @@ class ApplicationManager {
             appPath: appPath,
             subtask: subtask,
         }
-
+        logger.debug(`ApplicationManager.initialize, target = {target}`)
         if (target) {
             this.app.manifestFilename = path.join(target, this.manifestFilename)
             this.app.dataset = await this.loadManifest(this.app.manifestFilename)
@@ -51,6 +51,7 @@ class ApplicationManager {
     transmissionsFile : ${this.transmissionsFile},
     processorsConfigFile : ${this.processorsConfigFile}
     subtask : ${this.app.subtask}`)
+
 
 
         const transmissions = await TransmissionBuilder.build(
@@ -71,7 +72,9 @@ class ApplicationManager {
             message.dataDir = path.join(this.appPath, this.dataSubDir)
         }
         // TODO figure out when to use rootDir and when targetPath - rename to be clearer?
-
+        if (!this.app.targetPath && !message.targetPath) {
+            message.targetPath = message.dataDir
+        }
         for (const transmission of transmissions) {
             if (!this.app.subtask || this.app.subtask === transmission.label) {
                 await transmission.process(message)

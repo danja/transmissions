@@ -62,7 +62,7 @@ class DirWalker extends Processor {
 
     async walkDirectory(dir, baseMessage) {
         logger.debug(`DirWalker.walkDirectory, dir = ${dir}`);
-
+        logger.reveal(this.message)
         const entries = await readdir(dir, { withFileTypes: true });
 
         for (const entry of entries) {

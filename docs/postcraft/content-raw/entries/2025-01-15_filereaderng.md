@@ -2,7 +2,7 @@
 
 #:todo move to prompts
 
-Attached is `src/processors/fs/FileReader.js`. I'd like you to extend this to capture file metadata and added as a field in the message object. The target field will be obtained with `message[this.getProperty(ns.trn.metaField)]`. So you might have something like eg.
+Attached is `src/processors/fs/FileReader.js`. I'd like you to extend this to capture file metadata and added as a field in the message object. The target field will be obtained with `message[this.getProperty(ns.trn.metaField)]`. So with a target field of `meta` you might have something like eg.
 
 message
 ```json
@@ -13,8 +13,8 @@ message
   }
   ...
 }
-
-
+```
+Please create an artifact with the complete source code.
 
 
 `src/processors/example-group/ExampleProcessor.js`
