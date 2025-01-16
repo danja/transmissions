@@ -1,11 +1,13 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix schema: <http://schema.org/> .
 @prefix trn: <http://purl.org/stuff/transmissions/> .
 # @prefix trn: <http://purl.org/stuff/transmissions/> .
 @prefix trn: <http://purl.org/stuff/transmissions/> . # for custom terms & instances
 @prefix trn: <http://purl.org/stuff/transmissions/> .
 
 trn:dirWalker a trn:ConfigSet ;
-  trn:sourceDir "content-raw" .
+  trn:sourceDir "content-raw" ;
+  trn:messageType schema:BlogPosting .
 
 trn:templatePrep a trn:ReMap ;
     trn:rename (trn:tp1 ).

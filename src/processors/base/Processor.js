@@ -77,6 +77,14 @@ class Processor extends EventEmitter {
     }
 
     async preProcess(message) {
+        const messageType = this.getPropertyFromSettings(ns.trn.messageType)
+        if (messageType) {
+            if (messageType.value) { // named node
+                message.messageType = messageType.value
+            } else { // probably a string
+                message.messageType = messageType
+            }
+        }
         this.message = message // TODO duplicated elsewhere?
         logger.trace("Processor.preProcess")
     }
