@@ -41,10 +41,6 @@ class ExampleProcessor extends Processor {
         super(config);
     }
 
-    /**
-      * Does something with the message and emits a 'message' event with the processed message.
-      * @param {Object} message - The message object.
-      */
     async process(message) {
         logger.debug(`\n\nExampleProcessor.process`)
 

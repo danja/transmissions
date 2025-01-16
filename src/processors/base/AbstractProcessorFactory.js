@@ -16,7 +16,6 @@ import GitHubProcessorsFactory from '../github/GitHubProcessorsFactory.js'
 import JSONProcessorsFactory from '../json/JSONProcessorsFactory.js'
 import PackerProcessorsFactory from '../packer/PackerProcessorsFactory.js' // 2025-01-01
 
-
 // added 2024-11-28
 import UnsafeProcessorsFactory from '../unsafe/UnsafeProcessorsFactory.js'
 import HttpProcessorsFactory from '../http/HttpProcessorsFactory.js'
@@ -25,6 +24,9 @@ import XmppProcessorsFactory from '../xmpp/XmppProcessorsFactory.js'
 
 // added 2025-01-14 : Happy Birthday to me!
 import ExampleProcessorsFactory from '../example-group/ExampleProcessorsFactory.js'
+
+// 2025-01-16 : finally getting around to it
+import SPARQLProcessorsFactory from '../sparql/SPARQLProcessorsFactory.js'
 
 class AbstractProcessorFactory {
 
@@ -87,6 +89,10 @@ class AbstractProcessorFactory {
 
         var processor = PackerProcessorsFactory.createProcessor(type, config);
         if (processor) return processor;
+
+        var processor = SPARQLProcessorsFactory.createProcessor(type, config);
+        if (processor) return processor
+
     }
 }
 

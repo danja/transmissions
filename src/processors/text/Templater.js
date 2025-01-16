@@ -21,7 +21,11 @@
  * * Applies content from message.contentBlocks to the template
  *
  * #### __Tests__
- * * TODO: Add test information
+ * *
+ *
+  * #### __TODO__
+ * * Add test information here
+ * * Cache templates - cache in utils?
  */
 
 import Processor from '../base/Processor.js'
