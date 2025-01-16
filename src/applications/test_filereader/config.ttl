@@ -4,5 +4,5 @@
 @prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances
 
 :readerSet a :ConfigSet ;
-    :sourceFile  "data/input/input.md" ;
+    :sourceFile  "input/input.md" ;
     :metaField "meta" .

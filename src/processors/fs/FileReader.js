@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { access, constants, statSync } from 'node:fs';
 import path from 'path';
+import mime from 'node-mime-types'
 import logger from '../../utils/Logger.js';
 import ns from '../../utils/ns.js';
 import Processor from '../base/Processor.js';
@@ -13,8 +14,10 @@ class FileReader extends Processor {
     getFileMetadata(filePath) {
         try {
             const stats = statSync(filePath);
+            const filename = path.basename(filePath)
             return {
-                filename: path.basename(filePath),
+                filename: filename,
+                mediaType: mime.getMIMEType(filename),
                 filepath: filePath,
                 size: stats.size,
                 created: stats.birthtime,
