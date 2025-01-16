@@ -44,12 +44,14 @@ class ExampleProcessor extends Processor {
     async process(message) {
         logger.debug(`\n\nExampleProcessor.process`)
 
+        // TODO figure this out better
         // may be needed if preceded by a spawning processor, eg. fs/DirWalker
         if (message.done) {
             return this.emit('message', message)
+            // or simply return
         }
 
-        // message is processed here
+        // message is processed here :
 
         // property values pulled from message | config settings | fallback
         const me = this.getProperty(ns.trn.me)

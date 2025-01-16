@@ -12,7 +12,15 @@ class MarkdownToHTML extends Processor {
 
 
     async process(message) {
-        const input = message.content
+        logger.debug(`\n\nMarkdownToHTML.process`)
+        logger.reveal(message)
+        var input
+        if (message.contentBlocks) { // using templating
+            input = message.contentBlocks.content
+        } else { // default
+            input = message.content
+        }
+
 
         // new Marked()
         message.content = await
@@ -30,4 +38,4 @@ class MarkdownToHTML extends Processor {
     }
 }
 
-export default MarkdownToHTML 
+export default MarkdownToHTML

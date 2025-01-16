@@ -37,7 +37,7 @@ class Processor extends EventEmitter {
     }
 
     getPropertyFromSettings(property) {
-        logger.log(`Processor.getPropertyFromSettings, property = ${property}`)
+        logger.debug(`Processor.getPropertyFromSettings, property = ${property}`)
         if (!this.config || !this.settingsNode) {
             logger.debug('Config or node missing')
             return undefined

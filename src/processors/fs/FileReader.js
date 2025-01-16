@@ -37,7 +37,8 @@ class FileReader extends Processor {
 
     async process(message) {
         if (message.done) {
-            return this.emit('message', message);
+            return
+            // this.emit('message', message);
         }
 
         let filePath;
