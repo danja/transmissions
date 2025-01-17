@@ -1,31 +1,29 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix schema: <http://schema.org/> .
-@prefix trn: <http://purl.org/stuff/transmissions/> .
-# @prefix trn: <http://purl.org/stuff/transmissions/> .
-@prefix trn: <http://purl.org/stuff/transmissions/> . # for custom terms & instances
-@prefix trn: <http://purl.org/stuff/transmissions/> .
 
-trn:dirWalker a trn:ConfigSet ;
-  trn:sourceDir "content-raw" ;
-  trn:messageType schema:BlogPosting .
+@prefix : <http://purl.org/stuff/transmissions/> .
 
-trn:templatePrep a trn:ReMap ;
-    trn:rename (trn:tp1 ).
-    trn:tp1   trn:pre     "content" ;
-            trn:post    "contentBlocks.content" .
+:dirWalker a :ConfigSet ;
+  :sourceDir "content-raw" ;
+  :messageType schema:BlogPosting .
+
+:templatePrep a :ReMap ;
+    :rename (:tp1 ).
+    :tp1   :pre     "content" ;
+            :post    "contentBlocks.content" .
 
 
-trn:contentTemplater a trn:ConfigSet ;
-  trn:templateFilename "layouts/middlin/templates/entry-content_template.njk" .
+:contentTemplater a :ConfigSet ;
+  :templateFilename "layouts/middlin/templates/entry-content_template.njk" .
 
-trn:filesRename a trn:ConfigSet ;
-  trn:inputField "filename" ;
-  trn:outputField "filepath" ;
-  trn:match ".md";
-  trn:replace ".html".
+:filesRename a :ConfigSet ;
+  :inputField "filename" ;
+  :outputField "filepath" ;
+  :match ".md";
+  :replace ".html".
 
-trn:fileWriter a trn:ConfigSet ;
-  trn:targetDir "cache" .
+:fileWriter a :ConfigSet ;
+  :targetDir "cache" .
 
 
 

@@ -1,0 +1,73 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix prj: <http://purl.org/stuff/project/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix code: <http://purl.org/stuff/code/> .
+
+# Project Component Description
+trn:SPARQLIntegration a prj:Component ;
+    dcterms:title "SPARQL Integration for Transmissions" ;
+    dcterms:description "SPARQL query and update processors with test application" ;
+    dcterms:created "2024-01-16"^^xsd:date ;
+    prj:status "Testing" ;
+    prj:version "1.0.0" ;
+    prj:maintainer <http://danny.ayers.name> ;
+    prj:documentation trn:SPARQLDocs .
+
+# Documentation
+trn:SPARQLDocs a prj:Documentation ;
+    prj:hasSection trn:ProcessorDocs, trn:TestAppDocs, trn:ConfigDocs .
+
+trn:ProcessorDocs a prj:DocumentationSection ;
+    dcterms:title "SPARQL Processors" ;
+    prj:covers trn:SPARQLSelect, trn:SPARQLUpdate ;
+    prj:location "/src/processors/sparql/" .
+
+# Components
+trn:SPARQLSelect a code:Processor ;
+    dcterms:title "SPARQL Select Processor" ;
+    code:implements trn:QueryExecution ;
+    code:dependsOn trn:EndpointConfig ;
+    code:hasTest trn:SelectTests .
+
+trn:SPARQLUpdate a code:Processor ;
+    dcterms:title "SPARQL Update Processor" ;
+    code:implements trn:UpdateExecution ;
+    code:dependsOn trn:EndpointConfig ;
+    code:hasTest trn:UpdateTests .
+
+# Test Application
+trn:TestApp a code:Application ;
+    dcterms:title "SPARQL Store Test" ;
+    code:location "/src/applications/test_file-to-sparqlstore/" ;
+    code:uses trn:SPARQLSelect, trn:SPARQLUpdate ;
+    code:hasConfig trn:EndpointConfig .
+
+# Configuration
+trn:EndpointConfig a code:Configuration ;
+    dcterms:title "SPARQL Endpoint Configuration" ;
+    code:format "JSON" ;
+    code:location "endpoint.json" ;
+    code:template [
+        code:field "type" ;
+        code:required true ;
+        code:allowedValues "query", "update"
+    ], [
+        code:field "url" ;
+        code:required true ;
+        rdfs:comment "SPARQL endpoint URL"
+    ] .
+
+# Known Issues
+trn:Issues a prj:IssueList ;
+    prj:hasIssue [
+        a prj:TODO ;
+        dcterms:title "Template Caching" ;
+        prj:priority "Medium"
+    ], [
+        a prj:TODO ;
+        dcterms:title "Transaction Support" ;
+        prj:priority "High"
+    ] .

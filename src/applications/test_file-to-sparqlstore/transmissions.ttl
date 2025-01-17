@@ -1,5 +1,6 @@
+# src/applications/test_file-to-sparqlstore/transmissions.ttl
+
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix trn: <http://purl.org/stuff/transmissions/> .
 @prefix : <http://purl.org/stuff/transmissions/> .
 
 #############################################################
@@ -14,12 +15,17 @@
 :UF a :Unfork . # collapses all pipes but one
 #############################################################
 
-:test_filereader a trn:Transmission ;
-trn:pipe (:SM :p10 :SM1) .
+:test_filereader a :Transmission ;
+:pipe (:p10 :p20 :p30 :SM) .
 
 :p10 a :FileReader ;
-     trn:settings :readerSet .
+     :settings :readerSet .
 
-:p20 a :
+:p20 a :SPARQLUpdate ;
+     :settings :sparqlUpdate .
+
+:p30 a :SPARQLSelect ;
+     :settings :sparqlSelect .
+
 
 

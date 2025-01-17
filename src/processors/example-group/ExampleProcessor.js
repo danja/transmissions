@@ -1,31 +1,32 @@
-// src/processors/fs/FileRemove.js
+// src/processors/example-group/ExampleProcessor.js
 /**
- * FileRemove Processor
- *
- * Removes files or directory contents on the local filesystem.
+ * @class ExampleProcessor
  * @extends Processor
+ * @classdesc
+ * **a Basic Transmissions Processor**
+ *
+ * Provides a template for creating new processors, demonstrates use of config settings.
  *
  * #### __*Input*__
- * * message.applicationRootDir (optional) - The root directory of the application
- * * message.target (if no settings) - The path of the file or directory to remove
- *
- * #### __*Configuration*__
- * If a settings is provided in the transmission:
- * * ns.trn.target - The target path relative to applicationRootDir
+ * * **`message.common`** - addressed by all instances of this ExampleProcessor (optional, default undefined)
+ * * **`message.something1`** - Template string (used if templateFilename is not provided)
+ * * **`message.something2`** - Object with properties for template rendering (e.g., title, body)
+ * * **`message.notavalue`** - Object with properties for template rendering (e.g., title, body)
  *
  * #### __*Output*__
- * * Removes the specified file or directory contents
- * * message (unmodified) - The input message is passed through
+ * * **`message.content`** - The rendered template content
  *
  * #### __*Behavior*__
- * * Removes individual files directly
- * * Recursively removes directory contents
- * * Logs debug information about the removal process
+ * * Uses Nunjucks to render templates
+ * * Can render from a template file or a template string
+ * * Applies content from message.contentBlocks to the template
  *
  * #### __Tests__
- * `./run file-copy-remove-test`
- * `npm test -- tests/integration/file-copy-remove-test.spec.js`
+ * *
  *
+  * #### __TODO__
+ * * Add test information here
+ * * Cache templates - cache in utils?
  */
 
 import { readFile } from 'node:fs/promises';

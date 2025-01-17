@@ -1,3 +1,5 @@
+`src/applications/example-application/about.md`
+
 # Example Application `about.md`
 
 ## Runner
