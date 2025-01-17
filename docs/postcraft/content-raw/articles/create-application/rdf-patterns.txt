@@ -1,0 +1,29 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix trm: <http://purl.org/stuff/transmissions/> .
+@prefix : <http://example.org/config#> .
+
+# Simple processor settings
+:processorConfig a trm:ConfigSet ;
+    trm:key "uniqueKey" ;
+    trm:value "value" .
+
+# File paths
+:pathConfig a trm:ConfigSet ;
+    trm:sourceFile "input/data.txt" ;
+    trm:targetFile "output/result.txt" .
+
+# Multiple values
+:multiConfig a trm:ConfigSet ; 
+    trm:settings (:setting1 :setting2) .
+    :setting1 trm:key "key1" ;
+             trm:value "value1" .
+    :setting2 trm:key "key2" ;  
+             trm:value "value2" .
+
+# Pipeline definition
+:pipeline a trm:Pipeline ;
+    trm:pipe (:proc1 :proc2) .
+
+:proc1 a :Processor ;
+    trm:settings :processorConfig .
