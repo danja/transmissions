@@ -30,9 +30,10 @@ class SPARQLUpdate extends Processor {
             content: message.content,
             published: now,
             modified: now,
-            author: {
-                name: 'System User',
-                email: 'system@example.com'
+            author: { // default to me!!
+                name: 'Danny',
+                email: 'danny.ayers@gmail.com',
+                url: 'https://danny.ayers.name'
             },
             ...message
         };

@@ -16,7 +16,7 @@
 #############################################################
 
 :test_filereader a :Transmission ;
-:pipe (:p10 :p20 :p30 :SM) .
+:pipe (:p10 :SM1 :p20 :p30 :SM2) .
 
 :p10 a :FileReader ;
      :settings :readerSet .
