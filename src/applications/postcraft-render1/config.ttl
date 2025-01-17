@@ -9,9 +9,8 @@
 
 :templatePrep a :ReMap ;
     :rename (:tp1 ).
-    :tp1   :pre     "content" ;
-            :post    "contentBlocks.content" .
-
+    :tp1  :pre     "content" ;
+          :post    "contentBlocks.content" .
 
 :contentTemplater a :ConfigSet ;
   :templateFilename "layouts/middlin/templates/entry-content_template.njk" .
@@ -24,6 +23,15 @@
 
 :fileWriter a :ConfigSet ;
   :targetDir "cache" .
+
+########################
+:sparqlUpdate a :ConfigSet ;
+    :templateFilename "diamonds/update-blogposting.njk" ;
+    :endpointSettings "endpoint.json" .
+
+:sparqlSelect a :ConfigSet ;
+    :templateFilename "diamonds/select-blogposting.njk" ;
+    :endpointSettings "endpoint.json" .
 
 
 

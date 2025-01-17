@@ -33,4 +33,12 @@
   :match ".md";
   :replace ".html".
 
+#####################
+########################
+:sparqlUpdate a :ConfigSet ;
+    :templateFilename "diamonds/update-blogposting.njk" ;
+    :endpointSettings "endpoint.json" .
 
+:sparqlSelect a :ConfigSet ;
+    :templateFilename "diamonds/select-blogposting.njk" ;
+    :endpointSettings "endpoint.json" .
