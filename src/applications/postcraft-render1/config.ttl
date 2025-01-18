@@ -26,12 +26,12 @@
 
 ########################
 :sparqlUpdate a :ConfigSet ;
-    :templateFilename "diamonds/update-blogposting.njk" ;
-    :endpointSettings "endpoint.json" .
+    :templateFilename "sparql/diamonds/update-blogposting.njk" ;
+    :endpointSettings "sparql/endpoint.json" .
 
 :sparqlSelect a :ConfigSet ;
-    :templateFilename "diamonds/select-blogposting.njk" ;
-    :endpointSettings "endpoint.json" .
+    :templateFilename "sparql/diamonds/select-blogposting.njk" ;
+    :endpointSettings "sparql/endpoint.json" .
 
 
 
