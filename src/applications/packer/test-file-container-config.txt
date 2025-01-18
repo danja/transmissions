@@ -8,17 +8,11 @@ trn:readConfig a trn:ConfigSet ;
     trn:settings trn:readConfig ;
     trn:mediaType "text/plain" .
 
-trn:filterConfig a trn:ConfigSet ;
-    rdfs:label "File filter config" ;
-    trn:settings trn:filterConfig ;
-    trn:include "*.txt,*.md,*.js,*.jsx,*.ts,*.tsx,*.json,*.html,*.css" ;
-    trn:exclude "node_modules/*,dist/*,build/*,.git/*,.DS_Store,.env,*.log,coverage/*,tmp/*,*.min.js,*.map,.cache/*,__pycache__/*,*.pyc,*.pyo,*.pyd,test-failures/*,yarn.lock,package-lock.json" .
-
 trn:containerConfig a trn:ConfigSet ;
     trn:settings trn:containerConfig ;
-    trn:destination "repomix.json" .
+    trn:destination "container-output.json" .
 
 trn:writeConfig a trn:ConfigSet ;
     rdfs:label "Write file" ;
     trn:settings trn:writeConfig ;
-    trn:destinationFile "repomix-output.txt" .
+    trn:destinationFile "output/container-output.json" .

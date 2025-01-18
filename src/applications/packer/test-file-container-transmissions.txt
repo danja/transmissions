@@ -1,0 +1,19 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+:test_file-container a trn:Transmission ;
+    rdfs:label "FileContainer Test" ;
+    trn:pipe (:p10 :p20 :p30 :p40 :SM) .
+
+:p10 a :FileReader ;
+    trn:settings :readConfig .
+
+:p20 a :FileContainer ;
+    trn:settings :containerConfig .
+
+:p30 a :FileWriter ;
+    trn:settings :writeConfig .
+
+:p40 a :ShowMessage .
