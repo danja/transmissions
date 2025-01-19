@@ -1,24 +1,21 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix trn: <http://purl.org/stuff/transmissions/> .
-@prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix : <http://purl.org/stuff/transmissions/> .
 
-trn:readConfig a trn:ConfigSet ;
-    rdfs:label "Read file" ;
-    trn:settings trn:readConfig ;
-    trn:mediaType "text/plain" .
+:dirWalker a :ConfigSet ;
+    :sourceDir "." ;
+    :includeExtensions "['.md','.js','.ttl']" .
 
-trn:filterConfig a trn:ConfigSet ;
-    rdfs:label "File filter config" ;
-    trn:settings trn:filterConfig ;
-    trn:include "*.txt,*.md,*.js,*.jsx,*.ts,*.tsx,*.json,*.html,*.css" ;
-    trn:exclude "node_modules/*,dist/*,build/*,.git/*,.DS_Store,.env,*.log,coverage/*,tmp/*,*.min.js,*.map,.cache/*,__pycache__/*,*.pyc,*.pyo,*.pyd,test-failures/*,yarn.lock,package-lock.json" .
+:filterConfig a :ConfigSet ;
+    :settings :filterDefaults ;
+    :includePatterns "*.txt,*.md,*.js,*.jsx,*.ts,*.tsx,*.json,*.html,*.css" ;
+    :excludePatterns "node_modules/*,dist/*,build/*,.git/*" .
 
-trn:containerConfig a trn:ConfigSet ;
-    trn:settings trn:containerConfig ;
-    trn:destination "repomix.json" .
+:readConfig a :ConfigSet ;
+    :mediaType "text/plain" .
 
-trn:writeConfig a trn:ConfigSet ;
-    rdfs:label "Write file" ;
-    trn:settings trn:writeConfig ;
-    trn:destinationFile "repomix-output.txt" .
+:containerConfig a :ConfigSet ;
+    :destination "packer.config.json" .
+
+:writeConfig a :ConfigSet ;
+    :destinationFile "packer-output.txt" .

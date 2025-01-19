@@ -7,83 +7,87 @@ import ns from '../../utils/ns.js';
 class StringFilter extends Processor {
     constructor(config) {
         super(config);
-        this.gitignorePatterns = [];
         this.initialized = false;
-        this.initialize();
+        this.includePatterns = [];
+        this.excludePatterns = [];
+    }
+
+    async process(message) {
+        logger.log(`StringFilter.process, done=${message.done}`)
+        if (message.done) return this.emit('message', message);
+
+        await this.initialize();
+
+        // TODO path handling needs updating
+        if (!message.filepath) {
+            logger.warn('StringFilter: No filepath provided, terminating pipe');
+            return;
+        }
+
+        const relativePath = message.filepath;
+        logger.debug(`StringFilter checking path = ${relativePath}`);
+
+        if (this.isAccepted(relativePath)) {
+            return this.emit('message', message);
+        }
     }
 
     async initialize() {
         if (this.initialized) return;
 
         try {
-            // Get include/exclude patterns from config
             if (this.settings) {
-                this.includePatterns = this.getPropertyFromMyConfig(ns.trn.include)?.split(',') || [];
-                this.excludePatterns = this.getPropertyFromMyConfig(ns.trn.exclude)?.split(',') || [];
-            } else {
-                this.includePatterns = this.config.include?.split(',') || [];
-                this.excludePatterns = this.config.exclude?.split(',') || [];
+                const includeStr = this.getProperty(ns.trn.includePatterns);
+                const excludeStr = this.getProperty(ns.trn.excludePatterns);
+
+                this.includePatterns = includeStr ? includeStr.split(',').map(p => p.trim()) : [];
+                this.excludePatterns = excludeStr ? excludeStr.split(',').map(p => p.trim()) : [];
             }
 
-            // Try to load gitignore if path provided
-            const gitignorePath = this.config.gitignorePath;
-            if (gitignorePath) {
-                try {
-                    const gitignoreContent = await fs.readFile(gitignorePath, 'utf8');
-                    this.gitignorePatterns = gitignoreContent
-                        .split('\n')
-                        .map(line => line.trim())
-                        .filter(line => line && !line.startsWith('#'));
-                } catch (err) {
-                    logger.warn(`Could not load gitignore from ${gitignorePath}: ${err.message}`);
-                }
-            }
+            logger.debug(`StringFilter initialized with:
+                Include patterns: ${this.includePatterns}
+                Exclude patterns: ${this.excludePatterns}`);
+
         } catch (err) {
             logger.error('Error initializing StringFilter:', err);
+            throw err;
         }
 
         this.initialized = true;
     }
 
-    async process(message) {
-        await this.initialize();
 
-        if (!message.filepath) {
-            logger.warn('StringFilter: No filepath provided');
-            return;
+
+    isAccepted(filePath) {
+        // If no patterns defined, accept all
+        if (this.includePatterns.length === 0 && this.excludePatterns.length === 0) {
+            return true;
         }
 
-        const relativePath = message.filepath;
-        logger.debug(`StringFilter, relative path = ${relativePath}`);
-
-        // Check gitignore patterns
-        if (this.gitignorePatterns.some(pattern => this.matchPattern(relativePath, pattern))) {
-            return;
+        // Check exclude patterns first
+        if (this.matchesAnyPattern(filePath, this.excludePatterns)) {
+            return false;
         }
 
-        // Check exclude patterns
-        if (this.excludePatterns.some(pattern => this.matchPattern(relativePath, pattern))) {
-            return;
+        // If include patterns exist, file must match at least one
+        if (this.includePatterns.length > 0) {
+            return this.matchesAnyPattern(filePath, this.includePatterns);
         }
 
-        // Check include patterns
-        if (this.includePatterns.length > 0 &&
-            !this.includePatterns.some(pattern => this.matchPattern(relativePath, pattern))) {
-            return;
-        }
+        return true;
+    }
 
-        return this.emit('message', message);
+    matchesAnyPattern(filePath, patterns) {
+        return patterns.some(pattern => this.matchPattern(filePath, pattern));
     }
 
     matchPattern(filePath, pattern) {
-        // Convert glob pattern to regex
         const regexPattern = pattern
             .replace(/\./g, '\\.')
             .replace(/\*/g, '.*')
             .replace(/\?/g, '.');
         const regex = new RegExp(`^${regexPattern}$`);
 
-        // Get filename for matching
         const filename = path.basename(filePath);
         return regex.test(filename) || regex.test(filePath);
     }

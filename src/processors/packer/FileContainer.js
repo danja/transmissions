@@ -17,15 +17,22 @@ class FileContainer extends Processor {
     }
 
     async process(message) {
+        message.filepath = this.getProperty(ns.trn.destination);
         if (message.done) {
+
+            // TODO FIX ME
+            message.filepath = message.filepath + '_done.txt'
+
             message.content = JSON.stringify(this.container, null, 2);
-            message.filepath = this.getPropertyFromMyConfig(ns.trn.destination);
+            //   message.filepath = this.getPropertyFromMyConfig(ns.trn.destination);
+
             return this.emit('message', message);
         }
 
         if (!message.filepath || !message.content) {
             logger.warn('FileContainer: Missing filepath or content');
-            return;
+            // this.emit('message', message);
+            return
         }
 
         // Store relative path from target directory

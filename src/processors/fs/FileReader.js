@@ -36,7 +36,9 @@ class FileReader extends Processor {
     }
 
     async process(message) {
-        if (message.done) return
+        logger.log(`FileReader.process, done=${message.done}`)
+
+        if (message.done) return this.emit('message', message);
 
         let filePath;
 
