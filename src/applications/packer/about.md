@@ -3,6 +3,8 @@
 _repopack/repomix equiv_
 
 ```sh
+cd ~/github-danny/transmissions # my local dir
+
 ./trans packer path/to/repo
 
 ./trans packer ./

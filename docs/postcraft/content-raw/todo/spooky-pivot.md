@@ -10,6 +10,7 @@
 
 
 * CLI - add help to ` ./trans`
+* [Tawny OWL IDE](https://github.com/phillord/tawny-owl) #:todo autogenerate/insert dc:descriptions
 
 
 ```
