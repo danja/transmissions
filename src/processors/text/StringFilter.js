@@ -1,7 +1,6 @@
-import fs from 'fs/promises';
 import path from 'path';
-import Processor from '../base/Processor.js';
 import logger from '../../utils/Logger.js';
+import Processor from '../base/Processor.js';
 import ns from '../../utils/ns.js';
 
 class StringFilter extends Processor {
@@ -12,84 +11,82 @@ class StringFilter extends Processor {
         this.excludePatterns = [];
     }
 
-    async process(message) {
-        logger.log(`StringFilter.process, done=${message.done}`)
-        if (message.done) return this.emit('message', message);
-
-        await this.initialize();
-
-        // TODO path handling needs updating
-        if (!message.filepath) {
-            logger.warn('StringFilter: No filepath provided, terminating pipe');
-            return;
-        }
-
-        const relativePath = message.filepath;
-        logger.debug(`StringFilter checking path = ${relativePath}`);
-
-        if (this.isAccepted(relativePath)) {
-            return this.emit('message', message);
-        }
-    }
-
     async initialize() {
         if (this.initialized) return;
 
         try {
-            if (this.settings) {
-                const includeStr = this.getProperty(ns.trn.includePatterns);
-                const excludeStr = this.getProperty(ns.trn.excludePatterns);
+            this.includePatterns = this.getValues(ns.trn.includePattern);
+            this.excludePatterns = this.getValues(ns.trn.excludePattern);
 
-                this.includePatterns = includeStr ? includeStr.split(',').map(p => p.trim()) : [];
-                this.excludePatterns = excludeStr ? excludeStr.split(',').map(p => p.trim()) : [];
-            }
+            logger.debug('Initialized patterns:', {
+                include: this.includePatterns,
+                exclude: this.excludePatterns
+            });
 
-            logger.debug(`StringFilter initialized with:
-                Include patterns: ${this.includePatterns}
-                Exclude patterns: ${this.excludePatterns}`);
-
-        } catch (err) {
-            logger.error('Error initializing StringFilter:', err);
-            throw err;
+            this.initialized = true;
+        } catch (error) {
+            logger.error('StringFilter initialization failed:', error);
+            throw error;
         }
-
-        this.initialized = true;
     }
 
-
+    matchPattern(filePath, pattern) {
+        try {
+            const regexPattern = pattern
+                .replace(/\./g, '\\.')
+                .replace(/\*/g, '.*')
+                .replace(/\?/g, '.');
+            const regex = new RegExp(`^${regexPattern}$`);
+            const filename = path.basename(filePath);
+            return regex.test(filename);
+        } catch (error) {
+            logger.error('Pattern matching error:', { pattern, error });
+            return false;
+        }
+    }
 
     isAccepted(filePath) {
-        // If no patterns defined, accept all
-        if (this.includePatterns.length === 0 && this.excludePatterns.length === 0) {
+        if (!filePath) return false;
+
+        if (this.excludePatterns.length === 0 && this.includePatterns.length === 0) {
             return true;
         }
 
-        // Check exclude patterns first
-        if (this.matchesAnyPattern(filePath, this.excludePatterns)) {
-            return false;
+        for (const pattern of this.excludePatterns) {
+            if (this.matchPattern(filePath, pattern)) {
+                logger.debug(`File ${filePath} excluded by pattern ${pattern}`);
+                return false;
+            }
         }
 
-        // If include patterns exist, file must match at least one
         if (this.includePatterns.length > 0) {
-            return this.matchesAnyPattern(filePath, this.includePatterns);
+            for (const pattern of this.includePatterns) {
+                if (this.matchPattern(filePath, pattern)) {
+                    logger.debug(`File ${filePath} included by pattern ${pattern}`);
+                    return true;
+                }
+            }
+            return false;
         }
 
         return true;
     }
 
-    matchesAnyPattern(filePath, patterns) {
-        return patterns.some(pattern => this.matchPattern(filePath, pattern));
-    }
+    async process(message) {
+        if (message.done) {
+            return this.emit('message', message);
+        }
 
-    matchPattern(filePath, pattern) {
-        const regexPattern = pattern
-            .replace(/\./g, '\\.')
-            .replace(/\*/g, '.*')
-            .replace(/\?/g, '.');
-        const regex = new RegExp(`^${regexPattern}$`);
+        await this.initialize();
 
-        const filename = path.basename(filePath);
-        return regex.test(filename) || regex.test(filePath);
+        if (!message.filepath) {
+            logger.warn('StringFilter: No filepath provided');
+            return;
+        }
+
+        if (this.isAccepted(message.filepath)) {
+            return this.emit('message', message);
+        }
     }
 }
 

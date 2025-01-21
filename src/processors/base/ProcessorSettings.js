@@ -1,48 +1,81 @@
-import logger from '../../utils/Logger.js'
-import { EventEmitter } from 'events'
-import rdf from 'rdf-ext'
-import grapoi from 'grapoi'
-import ns from '../../utils/ns.js'
-import footpath from '../../utils/footpath.js'
+import { log } from 'console';
+import logger from '../../utils/Logger.js';
+import ns from '../../utils/ns.js';
 
 class ProcessorSettings {
-
     constructor(config) {
-        this.config = config
+        this.config = config;
+        //   this.settingsNode = null;
     }
 
-    getProperty(property, fallback) {
-        logger.debug(`ProcessorSettings.getProperty looking for ${property}`)
-        logger.debug(`ProcessorSettings.getProperty, processor.transmissionNode.value = ${processor.transmissionNode.value}`)
-
-        const shortName = ns.getShortname(property)
-        if (message && message[shortName]) {
-            logger.debug(`Found in message: ${message[shortName]}`)
-            return message[shortName]
+    /*
+    async getValues(property, fallback = undefined) {
+        if (!this.config?.dataset || !this.settingsNode) {
+            return fallback ? [fallback] : [];
         }
 
-        const settingsValue = processor.getPropertyFromSettings(property)
-        if (settingsValue) {
-            logger.debug(`Found in settings: ${settingsValue.value}`)
-            return settingsValue.value
+        const values = [];
+        const dataset = this.config.dataset;
+
+
+        /*
+        // Check plural form (e.g., excludePatterns)
+        const pluralProperty = property.value.replace('Pattern', 'Patterns');
+        const pluralNode = ns.trn[pluralProperty];
+
+        for (const quad of dataset.match(this.settingsNode, pluralNode)) {
+            const patterns = quad.object.value.split(',').map(p => p.trim()).filter(p => p);
+            values.push(...patterns);
         }
 
-        logger.debug(`Using fallback: \n\t${fallback}`)
-        return fallback
+        if (values.length > 0) {
+            return values;
+        }
+
+        // Check singular form (e.g., excludePattern)
+        for (const quad of dataset.match(this.settingsNode, property)) {
+            values.push(quad.object.value);
+        }
+
+        if (values.length > 0) {
+            return values;
+        }
+
+        // Check referenced settings
+        for (const settingsQuad of dataset.match(this.settingsNode, ns.trn.settings)) {
+            const settingsId = settingsQuad.object;
+            for (const quad of dataset.match(settingsId, property)) {
+                values.push(quad.object.value);
+            }
+            if (values.length > 0) {
+                break;
+            }
+        }
+
+        return values.length > 0 ? values : (fallback ? [fallback] : []);
+    }
+*/
+    async getValues(property, fallback = undefined) {
+        return this.getPropertyFromSettings(property) || (fallback ? [fallback] : []);
     }
 
     getPropertyFromSettings(property) {
-        logger.log(`ProcessorSettings.getPropertyFromSettings, property = ${property}`)
-        if (!processor.config || !processor.settingsNode) {
-            logger.debug('Config or node missing')
+        logger.debug(`ProcessorSettings.getPropertyFromSettings, property = ${property}`)
+        logger.debug(`ProcessorSettings.getPropertyFromSettings, this.settingsNode = ${this.settingsNode}`)
+        if (!this.config) {
+            logger.debug('--- this.config missing ---')
+            return undefined
+        }
+        if (!this.settingsNode) {
+            logger.debug('this.settingsNode missing')
             return undefined
         }
 
         // TODO GET PROPERTY FROM DATASET
-        const dataset = processor.config
-        const ptr = grapoi({ dataset, term: processor.settingsNode })
+        const dataset = this.config
+        const ptr = grapoi({ dataset, term: this.settingsNode })
 
-        logger.log(`Checking property ${property} on node ${processor.settingsNode.value}`)
+        logger.log(`Checking property ${property} on node ${this.settingsNode.value}`)
         let values = ptr.out(property)
         if (values.terms.length > 0) {
             logger.debug(`Found direct property value: ${values.term.value}`)
@@ -71,5 +104,17 @@ class ProcessorSettings {
         return undefined
     }
 
+    async getValue(property, fallback = undefined) {
+        const values = await this.getValues(property, fallback);
+        logger.log(`ProcessorSettings.getValue, values = ${values}`);
+        return values.length > 0 ? values[0] : fallback;
+    }
+
+    toString() {
+        const settingsNodeValue = this.settingsNode ? this.settingsNode.value : 'none';
+        logger.reveal(this.settingsNode);
+        return `ProcessorSettings, settingsNode = ${settingsNodeValue}`;
+    }
 }
-export default ProcessorSettings
+
+export default ProcessorSettings;

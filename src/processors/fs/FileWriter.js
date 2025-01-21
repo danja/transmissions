@@ -60,7 +60,7 @@ class FileWriter extends Processor {
 
         logger.debug("Filewriter, message.filepath = " + message.filepath)
 
-        var destinationFile = this.getProperty(ns.trn.destinationFile)
+        var destinationFile = await this.getProperty(ns.trn.destinationFile)
         var filepath = message.filepath
         if (message.subdir) {
             filepath = path.join(message.subdir, filepath)
@@ -71,7 +71,7 @@ class FileWriter extends Processor {
 
         if (!destinationFile) { // TODO fix, do other cases, refactor
             var targetDir = message.targetDir ?
-                message.targetDir : this.getProperty(ns.trn.targetDir)
+                message.targetDir : await this.getProperty(ns.trn.targetDir)
             targetDir = targetDir ? targetDir : '.'
 
             filepath = path.join(targetDir, filepath)

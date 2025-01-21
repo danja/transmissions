@@ -59,18 +59,18 @@ class ExampleProcessor extends Processor {
         // message is processed here :
 
         // property values pulled from message | config settings | fallback
-        const me = this.getProperty(ns.trn.me)
+        const me = await this.getProperty(ns.trn.me)
         logger.log(`\nI am ${me}`)
 
-        message.common = this.getProperty(ns.trn.common)
-        message.something1 = this.getProperty(ns.trn.something1)
+        message.common = await this.getProperty(ns.trn.common)
+        message.something1 = await this.getProperty(ns.trn.something1)
 
-        message.something2 = this.getProperty(ns.trn.something2)
+        message.something2 = await this.getProperty(ns.trn.something2)
 
-        var added = this.getProperty(ns.trn.added, '')
+        var added = await this.getProperty(ns.trn.added, '')
         message.something1 = message.something1 + added
 
-        message.notavalue = this.getProperty(ns.trn.notavalue, 'fallback value')
+        message.notavalue = await this.getProperty(ns.trn.notavalue, 'fallback value')
 
         // message forwarded
         return this.emit('message', message);

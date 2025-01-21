@@ -15,20 +15,21 @@ class DirWalker extends Processor {
     async process(message) {
         logger.setLogLevel('debug')
         logger.debug('\nDirWalker.process');
-
+        logger.debug(`\nDirWalker.process, this = ${this}`);
         message.counter = 0;
         message.slugs = [];
         message.done = false;
 
-        const sourceDir = this.getProperty(ns.trn.sourceDir);
+        const sourceDir = await this.getProperty(ns.trn.sourceDir);
         logger.debug(`DirWalker sourceDir from config = ${sourceDir}`);
 
         if (!sourceDir) {
             throw new Error('sourceDir property not found in configuration');
         }
 
-        var includeExtensions = this.getProperty(ns.trn.includeExtensions);
+        var includeExtensions = await this.getProperty(ns.trn.includeExtensions);
         if (includeExtensions) {
+            logger.reveal(includeExtensions);
             includeExtensions = includeExtensions.replaceAll('\'', '"');
             this.includeExtensions = JSON.parse(includeExtensions);
         }

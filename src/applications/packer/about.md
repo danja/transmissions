@@ -9,6 +9,8 @@ cd ~/github-danny/transmissions # my local dir
 
 ./trans packer ./
 
+./trans packer ./src/applications/packer/data
+
 ./trans packer
 ```
 

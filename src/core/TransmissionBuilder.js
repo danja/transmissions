@@ -78,6 +78,10 @@ class TransmissionBuilder {
         let np = rdf.grapoi({ dataset: transmissionConfig, term: node })
         let processorType = np.out(ns.rdf.type).term
         let processorConfig = np.out(ns.trn.settings).term
+        logger.log(`\n\nTransmisionBuilder.createNodes, processorType = ${processorType.value}`)
+        if (processorConfig) {
+          logger.log(`TransmisionBuilder.createNodes, processorConfig = ${processorConfig.value}`)
+        }
         //
         //  #########################################################
 
@@ -94,6 +98,9 @@ class TransmissionBuilder {
           processor.transmissionNode = node
           processor.transmission = transmission
 
+          if (processorConfig) {
+            logger.log(`22222TransmisionBuilder.createNodes, processorConfig = ${processorConfig.value}`)
+          }
           processor.settingsNode = processorConfig
 
           if (processorConfig) {

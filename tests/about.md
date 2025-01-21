@@ -1,3 +1,12 @@
-npm test -- tests/unit/RunCommand.spec.js
+```sh
+cd ~/github-danny/transmissions # my local dir
 
-npm test -- tests/integration/configmap.spec.js
+npm test -- tests/unit/ProcessorSettings.spec.js
+
+npm test -- tests/integration/string-filter.spec.js
+
+
+
+
+
+```

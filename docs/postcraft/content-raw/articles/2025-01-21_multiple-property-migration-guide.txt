@@ -1,0 +1,150 @@
+# Migration Guide: Multiple Property Values Support
+
+## Overview
+The Processor base class now supports multiple property values through the new `getValues()` method. This guide explains how to update existing processors to use the new functionality.
+
+## Key Changes
+1. `ProcessorSettings` now handles all property access
+2. `getValues()` returns array of strings
+3. Support for both comma-separated and multiple property patterns
+4. `getProperty()` remains for backward compatibility
+
+## Migration Steps
+
+### 1. Update Property Access
+```javascript
+// Before
+const pattern = this.getProperty(ns.trn.excludePattern);
+
+// After
+const patterns = this.getValues(ns.trn.excludePattern);
+```
+
+### 2. Handle Multiple Values
+```javascript
+// Before
+if (this.getProperty(ns.trn.excludePattern) === pattern) {
+    return false;
+}
+
+// After
+if (this.getValues(ns.trn.excludePattern).includes(pattern)) {
+    return false;
+}
+```
+
+### 3. Configuration Updates
+Your TTL configurations can now use either style:
+```turtle
+# Style 1: Comma-separated
+:config a :ConfigSet ;
+    :excludePatterns "pattern1,pattern2,pattern3" .
+
+# Style 2: Multiple properties
+:config a :ConfigSet ;
+    :excludePattern "pattern1" ;
+    :excludePattern "pattern2" ;
+    :excludePattern "pattern3" .
+```
+
+### 4. TypeScript Support
+If using TypeScript, update your imports:
+```typescript
+import { IProcessor, ProcessorMessage } from '../types/processor';
+
+class MyProcessor implements IProcessor {
+    async process(message: ProcessorMessage): Promise<void> {
+        const values = this.getValues(ns.trn.myProperty);
+        // values is string[]
+    }
+}
+```
+
+## Common Patterns
+
+### Array Operations
+```javascript
+// Filtering
+const patterns = this.getValues(ns.trn.pattern)
+    .filter(pattern => pattern.startsWith('*'));
+
+// Mapping
+const transformed = this.getValues(ns.trn.pattern)
+    .map(pattern => pattern.toLowerCase());
+
+// Reduction
+const combined = this.getValues(ns.trn.pattern)
+    .reduce((acc, pattern) => acc + pattern, '');
+```
+
+### Conditional Logic
+```javascript
+// Check existence
+const hasPattern = this.getValues(ns.trn.pattern).length > 0;
+
+// Any match
+const matches = this.getValues(ns.trn.pattern)
+    .some(pattern => pattern === value);
+
+// All match
+const allMatch = this.getValues(ns.trn.pattern)
+    .every(pattern => pattern.includes('*'));
+```
+
+### Default Values
+```javascript
+// Single default
+const [pattern = 'default'] = this.getValues(ns.trn.pattern);
+
+// Multiple defaults
+const patterns = this.getValues(ns.trn.pattern);
+if (patterns.length === 0) {
+    patterns.push('default1', 'default2');
+}
+```
+
+## Testing Updates
+
+### Unit Tests
+```javascript
+describe('MyProcessor', () => {
+    it('should handle multiple values', () => {
+        const values = processor.getValues(ns.trn.property);
+        expect(values).to.be.an('array');
+        expect(values).to.include('value1');
+        expect(values).to.include('value2');
+    });
+});
+```
+
+### Integration Tests
+```javascript
+describe('MyProcessor Integration', () => {
+    it('should process configuration patterns', async () => {
+        const { dataset, subject } = createTestConfig({
+            patterns: ['pattern1', 'pattern2']
+        });
+        processor.settingsNode = subject;
+        await processor.process(message);
+        // Test results
+    });
+});
+```
+
+## Troubleshooting
+
+### Common Issues
+1. Empty arrays instead of undefined
+2. Order of pattern matching
+3. Performance with large pattern sets
+
+### Solutions
+1. Use fallback parameter in getValues()
+2. Consider pattern priority
+3. Implement caching if needed
+
+## Performance Considerations
+1. Cache initialized patterns
+2. Minimize pattern compilation
+3. Use Set for large pattern lists
+4. Batch process when possible

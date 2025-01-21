@@ -53,7 +53,7 @@ class FileReader extends Processor {
             }
         } else {
             // Fall back to getting path from config
-            filePath = this.getProperty(ns.trn.sourceFile);
+            filePath = await this.getProperty(ns.trn.sourceFile);
             if (!filePath) {
                 throw new Error('No file path provided in message or config');
             }
@@ -78,7 +78,7 @@ class FileReader extends Processor {
         });
 
         // Handle metadata if requested
-        const metaField = this.getProperty(ns.trn.metaField);
+        const metaField = await this.getProperty(ns.trn.metaField);
         if (metaField) {
             const metadata = this.getFileMetadata(filePath);
             message[metaField] = metadata;

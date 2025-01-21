@@ -17,7 +17,7 @@ class FileContainer extends Processor {
     }
 
     async process(message) {
-        message.filepath = this.getProperty(ns.trn.destination);
+        message.filepath = await this.getProperty(ns.trn.destination);
         if (message.done) {
 
             // TODO FIX ME

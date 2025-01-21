@@ -20,7 +20,7 @@ class SPARQLUpdate extends Processor {
         const endpoint = this.env.getUpdateEndpoint();
         const template = await this.env.getTemplate(
             message.rootDir,
-            this.getProperty(ns.trn.templateFilename)
+            await this.getProperty(ns.trn.templateFilename)
         );
 
         const now = new Date().toISOString();

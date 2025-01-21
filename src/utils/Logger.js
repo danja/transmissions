@@ -103,7 +103,9 @@ logger.log = function (msg, level = "info") {
 
 }
 
+// have this return a string
 logger.reveal = function (instance) {
+
     if (!instance) {
         logger.log('no instance defined', 'warn');
         return;

@@ -1,153 +1,131 @@
-import { EventEmitter } from 'events'
-import grapoi from 'grapoi'
-import logger from '../../utils/Logger.js'
-import ns from '../../utils/ns.js'
-import footpath from '../../utils/footpath.js'
-import ProcessorSettings from './ProcessorSettings.js'
+import { EventEmitter } from 'events';
+import logger from '../../utils/Logger.js';
+import ns from '../../utils/ns.js';
+import ProcessorSettings from './ProcessorSettings.js';
 
 class Processor extends EventEmitter {
     constructor(config) {
-        super()
-
-        this.config = config
-        this.settings = new ProcessorSettings(config)
-        this.messageQueue = []
-        this.processing = false
-        this.outputs = []
+        super();
+        this.config = config;
+        this.settee = new ProcessorSettings(this.config);
+        //  this.settee = null;
+        this.messageQueue = [];
+        this.processing = false;
+        this.outputs = [];
     }
 
-    getProperty(property, fallback) {
-        logger.debug(`\nProcessor.getProperty looking for ${property}`)
-        logger.debug(`Processor.getProperty, this.transmissionNode.value = ${this.transmissionNode.value}`)
+    async initializeSettings() { // probably redundant
+        //  this.settee = new ProcessorSettings(this.config);
+    }
 
-        const shortName = ns.getShortname(property)
+    async getValues(property, fallback) {
+        logger.debug(`Processor.getValues looking for ${property}`);
+        if (!this.settee) {
+            await this.initializeSettings();
+        }
+        const shortName = ns.getShortname(property);
         if (this.message && this.message[shortName]) {
-            logger.debug(`Found in message: ${this.message[shortName]}`)
-            return this.message[shortName]
+            return [this.message[shortName]];
         }
 
-        const settingsValue = this.getPropertyFromSettings(property)
-        if (settingsValue) {
-            logger.debug(`Found in settings: ${settingsValue.value}`)
-            return settingsValue.value
-        }
-
-        logger.debug(`Using fallback: \n\t${fallback}`)
-        return fallback
+        this.settee.settingsNode = this.settingsNode;
+        return this.settee.getValues(property, fallback);
     }
 
-    getPropertyFromSettings(property) {
-        logger.debug(`Processor.getPropertyFromSettings, property = ${property}`)
-        if (!this.config || !this.settingsNode) {
-            logger.debug('Config or node missing')
-            return undefined
+    async getProperty(property, fallback = undefined) {
+        if (!this.settee) {
+            await this.initializeSettings();
         }
-
-        // TODO GET PROPERTY FROM DATASET
-        const dataset = this.config
-        const ptr = grapoi({ dataset, term: this.settingsNode })
-
-        logger.log(`Checking property ${property} on node ${this.settingsNode.value}`)
-        let values = ptr.out(property)
-        if (values.terms.length > 0) {
-            logger.debug(`Found direct property value: ${values.term.value}`)
-            return values.term
-        }
-        logger.debug('No direct property found')
-
-        // Debug full path
-        //     logger.debug(`Dataset: ${[...dataset].map(q => `${q.subject.value} ${q.predicate.value} ${q.object.value}`).join('\n')}`)
-
-        const settings = ptr.out(ns.trn.settings)
-        logger.debug(`Settings query result: ${settings?.terms?.length} terms`)
-        if (settings.terms.length > 0) {
-            const settingsId = settings.term
-            logger.debug(`Found settings reference: ${settingsId.value}`)
-
-            const settingsPtr = grapoi({ dataset, term: settingsId })
-            const settingsValues = settingsPtr.out(property)
-            if (settingsValues.terms.length > 0) {
-                logger.debug(`Found settings property value: ${settingsValues.term.value}`)
-                return settingsValues.term
-            }
-            logger.debug('No property found in settings')
-        }
-        logger.debug('No settings reference found')
-        return undefined
+        logger.log(`Processor.getProperty, property = ${property}`);
+        //  logger.log(`Processor.getProperty, this.settee = ${this.settee}`);
+        // logger.reveal(this.settee);
+        //  logger.log(`Processor.getProperty, this.settee.config = ${this.settee.config}`);
+        return this.settee.getValue(property, fallback);
     }
 
     async preProcess(message) {
-        const messageType = this.getPropertyFromSettings(ns.trn.messageType)
+        const messageType = await await this.getProperty(ns.trn.messageType);
         if (messageType) {
-            if (messageType.value) { // named node
-                message.messageType = messageType.value
-            } else { // probably a string
-                message.messageType = messageType
+            if (messageType.value) {
+                message.messageType = messageType.value;
+            } else {
+                message.messageType = messageType;
             }
         }
-        this.message = message // TODO duplicated elsewhere?
-        logger.trace("Processor.preProcess")
+        this.message = message;
     }
 
-    async postProcess(message) {
-        logger.trace("Processor.postProcess")
-    }
+    async postProcess(message) { }
 
     async receive(message) {
-        await this.enqueue(message)
+        await this.enqueue(message);
     }
 
     async enqueue(message) {
-        this.messageQueue.push({ message })
+        this.messageQueue.push({ message });
         if (!this.processing) {
-            this.executeQueue()
+            this.executeQueue();
         }
     }
 
     async executeQueue() {
-        this.processing = true
+        this.processing = true;
         while (this.messageQueue.length > 0) {
-            let { message } = this.messageQueue.shift()
-            message = structuredClone(message)
-            this.addTag(message)
+            let { message } = this.messageQueue.shift();
+            message = structuredClone(message);
+            this.addTag(message);
 
-            await this.preProcess(message)
-            await this.process(message)
-            await this.postProcess(message)
+            await this.preProcess(message);
+            await this.process(message);
+            await this.postProcess(message);
         }
-        this.processing = false
+        this.processing = false;
     }
 
     async process(message) {
-        throw new Error('process method not implemented')
+        throw new Error('process method not implemented');
     }
 
     addTag(message) {
-        const tag = this.getTag()
+        const tag = this.getTag();
         if (!message.tags) {
-            message.tags = tag
-            return
+            message.tags = tag;
+            return;
         }
-        message.tags = message.tags + '.' + tag
+        message.tags = message.tags + '.' + tag;
     }
 
     getTag() {
-        return footpath.urlLastPart(this.id)
+        return ns.shortName(this.id);
     }
 
     async emit(event, message) {
         await new Promise(resolve => {
-            super.emit(event, message)
-            resolve()
-        })
-        return message
+            super.emit(event, message);
+            resolve();
+        });
+        return message;
     }
 
     getOutputs() {
-        const results = this.outputs
-        this.outputs = []
-        return results
+        const results = this.outputs;
+        this.outputs = [];
+        return results;
+    }
+
+    toString() {
+        logger.reveal(this.settings);
+        const settingsNodeValue = this.settingsNode ? this.settingsNode.value : 'none';
+        return `
+        *** Processor ${this.constructor.name}
+                id = ${this.id}
+                label = ${this.label}
+                type = ${this.type}
+                description = ${this.description}
+                settingsNodeValue = ${settingsNodeValue}
+                settings = ${this.settings}
+       `
     }
 }
 
-export default Processor
+export default Processor;

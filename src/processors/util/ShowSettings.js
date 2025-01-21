@@ -17,7 +17,7 @@ class ShowSettings extends Processor {
 
         logger.debug(`ShowSettings.process, property = ${property}`)
 
-        const value = this.getProperty(property)
+        const value = await this.getProperty(property)
 
         logger.debug(`ShowSettings.process, value  = ${value}`)
 

@@ -40,11 +40,11 @@ class StringReplace extends Processor {
      */
     async process(message) {
         // logger.setLogLevel('debug')
-        const inputField = this.getProperty(ns.trn.inputField)
-        const outputField = this.getProperty(ns.trn.outputField)
+        const inputField = await this.getProperty(ns.trn.inputField)
+        const outputField = await this.getProperty(ns.trn.outputField)
 
-        var match = message.match ? message.match : this.getProperty(ns.trn.match)
-        var replace = message.replace ? message.replace : this.getProperty(ns.trn.replace)
+        var match = message.match ? message.match : await this.getProperty(ns.trn.match)
+        var replace = message.replace ? message.replace : await this.getProperty(ns.trn.replace)
 
         var input = message.input ? message.input : message[inputField]
         if (!input) {
