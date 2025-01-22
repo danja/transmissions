@@ -1,0 +1,47 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix trn: <http://purl.org/stuff/transmissions#> .
+
+# Ontology metadata
+<http://purl.org/stuff/transmissions>
+    a owl:Ontology ;
+    dcterms:title "Transmission Ontology"@en ;
+    dcterms:description "An ontology for describing transmissions and related concepts"@en ;
+    vann:preferredNamespacePrefix "trn" ;
+    vann:preferredNamespaceUri "http://purl.org/stuff/transmissions#" ;
+    owl:versionInfo "1.0.0" .
+
+# Path Class definition
+trn:Path
+    a owl:Class ;
+    rdfs:label "Path"@en ;
+    rdfs:comment "A path that can be represented either as a string or a URI reference"@en ;
+    owl:unionOf (
+        [ a rdfs:Datatype ;
+          owl:onDatatype xsd:string ;
+          rdfs:comment "String representation of a path"@en
+        ]
+        [ a owl:Class ;
+          owl:equivalentClass owl:Thing ;
+          rdfs:comment "URI reference representation of a path"@en
+        ]
+    ) .
+
+# path property definition
+trn:path
+    a owl:ObjectProperty ;
+    rdfs:label "path"@en ;
+    rdfs:comment "Specifies a path that can be either a string value or a URI reference"@en ;
+    rdfs:domain owl:Thing ;  # Can be used with any resource
+    rdfs:range trn:Path ;    # Uses the Path class as its range
+    rdfs:isDefinedBy <http://purl.org/stuff/transmissions> ;
+    owl:versionInfo "1.0.0" .
+
+# Example of usage (commented out)
+# :example
+#     trn:path "/some/file/path" ;
+#     trn:path <http://example.org/some/path> .

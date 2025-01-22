@@ -1,0 +1,321 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Core Classes
+
+trn:Transmission a rdfs:Class ;
+    rdfs:label "Transmission" ;
+    rdfs:comment "A complete data processing pipeline definition" ;
+    trn:implementation "src/engine/Transmission.js" .
+
+trn:Processor a rdfs:Class ;
+    rdfs:label "Processor" ;
+    rdfs:comment "Base class for all data processing components" ;
+    trn:implementation "src/processors/base/Processor.js" .
+
+trn:ProcessorSettings a rdfs:Class ;
+    rdfs:label "ProcessorSettings" ;
+    rdfs:comment "Configuration settings for processors" ;
+    trn:implementation "src/processors/base/ProcessorSettings.js" .
+
+trn:ConfigSet a rdfs:Class ;
+    rdfs:label "ConfigSet" ;
+    rdfs:comment "A collection of configuration settings for a processor" .
+
+# File System Processors
+
+trn:FileReader a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "FileReader" ;
+    rdfs:comment "Reads content from filesystem files" ;
+    trn:implementation "src/processors/fs/FileReader.js" .
+
+trn:FileWriter a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "FileWriter" ;
+    rdfs:comment "Writes content to filesystem files" ;
+    trn:implementation "src/processors/fs/FileWriter.js" .
+
+trn:DirWalker a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "DirWalker" ;
+    rdfs:comment "Recursively walks directory structures" ;
+    trn:implementation "src/processors/fs/DirWalker.js" .
+
+trn:FileCopy a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "FileCopy" ;
+    rdfs:comment "Copies files or directories" ;
+    trn:implementation "src/processors/fs/FileCopy.js" .
+
+trn:FileRemove a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "FileRemove" ;
+    rdfs:comment "Removes files or directories" ;
+    trn:implementation "src/processors/fs/FileRemove.js" .
+
+trn:FilenameMapper a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "FilenameMapper" ;
+    rdfs:comment "Maps filenames according to rules" ;
+    trn:implementation "src/processors/fs/FilenameMapper.js" .
+
+# Flow Control Processors
+
+trn:Fork a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "Fork" ;
+    rdfs:comment "Splits processing into multiple parallel paths" ;
+    trn:implementation "src/processors/flow/Fork.js" .
+
+trn:Unfork a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "Unfork" ;
+    rdfs:comment "Merges parallel processing paths back into single path" ;
+    trn:implementation "src/processors/flow/Unfork.js" .
+
+trn:DeadEnd a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "DeadEnd" ;
+    rdfs:comment "Terminates a processing path" ;
+    trn:implementation "src/processors/flow/DeadEnd.js" .
+
+trn:Halt a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "Halt" ;
+    rdfs:comment "Halts all processing" ;
+    trn:implementation "src/processors/flow/Halt.js" .
+
+trn:NOP a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "NOP" ;
+    rdfs:comment "No operation processor, useful for testing" ;
+    trn:implementation "src/processors/flow/NOP.js" .
+
+trn:Ping a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "Ping" ;
+    rdfs:comment "Sends periodic ping messages" ;
+    trn:implementation "src/processors/flow/Ping.js" .
+
+# JSON Processing
+
+trn:JSONWalker a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "JSONWalker" ;
+    rdfs:comment "Traverses JSON structures" ;
+    trn:implementation "src/processors/json/JSONWalker.js" .
+
+trn:Restructure a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "Restructure" ;
+    rdfs:comment "Transforms JSON structure based on mapping rules" ;
+    trn:implementation "src/processors/json/Restructure.js" .
+
+trn:Blanker a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "Blanker" ;
+    rdfs:comment "Clears values in JSON structures while preserving structure" ;
+    trn:implementation "src/processors/json/Blanker.js" .
+
+trn:ValueConcat a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "ValueConcat" ;
+    rdfs:comment "Concatenates JSON values" ;
+    trn:implementation "src/processors/json/ValueConcat.js" .
+
+# Markup Processing
+
+trn:MarkdownToHTML a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "MarkdownToHTML" ;
+    rdfs:comment "Converts Markdown to HTML" ;
+    trn:implementation "src/processors/markup/MarkdownToHTML.js" .
+
+trn:LinkFinder a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "LinkFinder" ;
+    rdfs:comment "Extracts links from HTML content" ;
+    trn:implementation "src/processors/markup/LinkFinder.js" .
+
+trn:MetadataExtractor a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "MetadataExtractor" ;
+    rdfs:comment "Extracts metadata from markup documents" ;
+    trn:implementation "src/processors/markup/MetadataExtractor.js" .
+
+# Text Processing
+
+trn:StringFilter a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "StringFilter" ;
+    rdfs:comment "Filters text content based on patterns" ;
+    trn:implementation "src/processors/text/StringFilter.js" .
+
+trn:StringReplace a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "StringReplace" ;
+    rdfs:comment "Performs string replacement operations" ;
+    trn:implementation "src/processors/text/StringReplace.js" .
+
+trn:LineReader a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "LineReader" ;
+    rdfs:comment "Reads content line by line" ;
+    trn:implementation "src/processors/text/LineReader.js" .
+
+trn:StringMerger a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "StringMerger" ;
+    rdfs:comment "Merges multiple strings" ;
+    trn:implementation "src/processors/text/StringMerger.js" .
+
+trn:Templater a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "Templater" ;
+    rdfs:comment "Applies template transformations" ;
+    trn:implementation "src/processors/text/Templater.js" .
+
+# HTTP Components
+
+trn:HttpServer a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "HttpServer" ;
+    rdfs:comment "Serves HTTP requests and static files" ;
+    trn:implementation "src/processors/http/HttpServer.js" .
+
+trn:HttpClient a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "HttpClient" ;
+    rdfs:comment "Makes HTTP requests to external services" ;
+    trn:implementation "src/processors/http/HttpClient.js" .
+
+trn:HttpProxy a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "HttpProxy" ;
+    rdfs:comment "Proxies HTTP requests" ;
+    trn:implementation "src/processors/http/HttpProxy.js" .
+
+# Packer Components
+
+trn:FileContainer a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "FileContainer" ;
+    rdfs:comment "Containers for file content and metadata" ;
+    trn:implementation "src/processors/packer/FileContainer.js" .
+
+trn:CommentStripper a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "CommentStripper" ;
+    rdfs:comment "Removes comments from source code" ;
+    trn:implementation "src/processors/packer/CommentStripper.js" .
+
+# SPARQL Components
+
+trn:SPARQLSelect a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "SPARQLSelect" ;
+    rdfs:comment "Executes SPARQL SELECT queries" ;
+    trn:implementation "src/processors/sparql/SPARQLSelect.js" .
+
+trn:SPARQLUpdate a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "SPARQLUpdate" ;
+    rdfs:comment "Executes SPARQL UPDATE operations" ;
+    trn:implementation "src/processors/sparql/SPARQLUpdate.js" .
+
+# Utility Processors
+
+trn:ShowMessage a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "ShowMessage" ;
+    rdfs:comment "Displays message content for debugging" ;
+    trn:implementation "src/processors/util/ShowMessage.js" .
+
+trn:SetMessage a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "SetMessage" ;
+    rdfs:comment "Sets message content or properties" ;
+    trn:implementation "src/processors/util/SetMessage.js" .
+
+trn:CaptureAll a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "CaptureAll" ;
+    rdfs:comment "Captures all messages in a whiteboard collection" ;
+    trn:implementation "src/processors/util/CaptureAll.js" .
+
+trn:WhiteboardToMessage a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "WhiteboardToMessage" ;
+    rdfs:comment "Converts whiteboard content to message format" ;
+    trn:implementation "src/processors/util/WhiteboardToMessage.js" .
+
+trn:ShowConfig a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "ShowConfig" ;
+    rdfs:comment "Displays processor configuration for debugging" ;
+    trn:implementation "src/processors/util/ShowConfig.js" .
+
+# System Processors
+
+trn:EnvLoader a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "EnvLoader" ;
+    rdfs:comment "Loads environment variables" ;
+    trn:implementation "src/processors/system/EnvLoader.js" .
+
+trn:RunCommand a rdfs:Class ;
+    rdfs:subClassOf trn:Processor ;
+    rdfs:label "RunCommand" ;
+    rdfs:comment "Executes system commands" ;
+    trn:implementation "src/processors/unsafe/RunCommand.js" .
+
+# Properties
+
+trn:pipe a rdf:Property ;
+    rdfs:label "pipe" ;
+    rdfs:comment "Links a transmission to its ordered sequence of processors" .
+
+trn:settings a rdf:Property ;
+    rdfs:label "settings" ;
+    rdfs:comment "Links a processor to its configuration settings" .
+
+trn:sourceFile a rdf:Property ;
+    rdfs:label "sourceFile" ;
+    rdfs:comment "Specifies input file path for file operations" .
+
+trn:destinationFile a rdf:Property ;
+    rdfs:label "destinationFile" ;
+    rdfs:comment "Specifies output file path for file operations" .
+
+trn:mediaType a rdf:Property ;
+    rdfs:label "mediaType" ;
+    rdfs:comment "MIME type for content handling" .
+
+trn:port a rdf:Property ;
+    rdfs:label "port" ;
+    rdfs:comment "Port number for network services" .
+
+trn:basePath a rdf:Property ;
+    rdfs:label "basePath" ;
+    rdfs:comment "Base URL path for web services" .
+
+trn:staticPath a rdf:Property ;
+    rdfs:label "staticPath" ;
+    rdfs:comment "Directory path for static web files" .
+
+trn:endpointSettings a rdf:Property ;
+    rdfs:label "endpointSettings" ;
+    rdfs:comment "Configuration for SPARQL endpoints" .
+
+trn:templateFilename a rdf:Property ;
+    rdfs:label "templateFilename" ;
+    rdfs:comment "Template file path for processors that use templates" .
+
+trn:implementation a rdf:Property ;
+    rdfs:label "implementation" ;
+    rdfs:comment "Links a concept to its implementing source file" .
