@@ -14,7 +14,7 @@ class FrontPagePrep extends Processor {
 
 
   async process(message) {
-    logger.setLogLevel('debug')
+    //  logger.setLogLevel('debug')
     //   logger.reveal(message)
     /*
     if (message.targetPath) {

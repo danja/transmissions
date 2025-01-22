@@ -10,7 +10,7 @@ class ShowSettings extends Processor {
     }
 
     async process(message) {
-        logger.setLogLevel('debug')
+        //  logger.setLogLevel('debug')
         logger.debug(`ShowSettings.process`)
 
         const property = ns.trn.name

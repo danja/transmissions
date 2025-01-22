@@ -1,0 +1,37 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix : <http://example.org/config/> .
+
+# Direct values
+:SingleValue a trn:ConfigSet ;
+    trn:key "single" ;
+    trn:value "value1" .
+
+:MultiValue a trn:ConfigSet ;
+    trn:key "multi1", "multi2", "multi3" ;
+    trn:value "valueA", "valueB", "valueC" .
+
+# Settings reference
+:SettingsRef a trn:ConfigSet ;
+    trn:settings :RefTarget .
+
+:RefTarget a trn:ConfigSet ;
+    trn:key "refKey1", "refKey2" ;
+    trn:value "refValue1", "refValue2" .
+
+# Comma patterns
+:CommaPatterns a trn:ConfigSet ;
+    trn:excludePatterns "*.txt,*.md,*.json" ;
+    trn:includePatterns "src/*,lib/*" .
+
+# Mixed patterns
+:MixedConfig a trn:ConfigSet ;
+    trn:key "mixed1" ;
+    trn:value "mixedValue1" ;
+    trn:settings :MixedRef ;
+    trn:excludePatterns "test/*,temp/*" .
+
+:MixedRef a trn:ConfigSet ;
+    trn:key "mixedRef1" ;
+    trn:value "mixedRefValue1" .

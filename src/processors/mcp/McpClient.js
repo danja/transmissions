@@ -1,5 +1,5 @@
-import logger from "../../utils/Logger.js"; // path will likely change
-import Processor from "../base/Processor.js"; // maybe more specific
+import logger from "../../utils/Logger.js" // path will likely change
+import Processor from "../base/Processor.js" // maybe more specific
 
 /**
  * FileReader class that extends xxxxxProcessor.
@@ -23,7 +23,7 @@ class McpClient extends Processor {
    * @param {Object} message - The message object.
    */
   async process(message) {
-    logger.setLogLevel("debug")
+    // logger.setLogLevel("debug")
 
     // processing goes here
     return this.emit("message", message)

@@ -28,7 +28,7 @@ class Restructure extends Processor {
     }
 
     async process(message) {
-        logger.setLogLevel('info')
+        //  logger.setLogLevel('info')
         //  logger.debug('Restructure this.settings = ' + this.settings.value)
         // Extract mappings array from config
         var renames

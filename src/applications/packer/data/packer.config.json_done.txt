@@ -1,0 +1,16 @@
+{
+  "files": {
+    "../../../../packer.config.json": {
+      "content": "this is src/applications/packer/data/input/subdir/subby.md\n",
+      "type": ".json",
+      "timestamp": "2025-01-22T18:37:22.264Z"
+    }
+  },
+  "summary": {
+    "totalFiles": 3,
+    "fileTypes": {
+      ".json": 3
+    },
+    "timestamp": "2025-01-22T18:37:22.225Z"
+  }
+}

@@ -19,21 +19,18 @@ class Transmission {
   }
 
   connect(fromProcessorName, toProcessorName) {
-    logger.log(`Transmission.connect from ${fromProcessorName} to ${fromProcessorName}`)
+    logger.trace(`Transmission.connect from ${fromProcessorName} to ${fromProcessorName}`)
     let connector = new Connector(fromProcessorName, toProcessorName)
     this.connectors.push(connector)
     connector.connect(this.processors)
   }
 
-
-  // In src/engine/Transmission.js
-
   async process(message) {
-    logger.log('\n+ ***** Execute Transmission : ' + this.label + ' <' + this.id + '>')
+    logger.log(`\n+ Run Transmission : ${this.label} <${this.id}>`)
     const processorName = this.connectors[0]?.fromName || Object.keys(this.processors)[0]
     let processor = this.get(processorName)
     if (processor) {
-      logger.log("| Running : " + processorName + " a " + processor.constructor.name)
+      logger.log(`|-> ${ns.shortName(processorName)} a ${processor.constructor.name}`)
       await processor.receive(message)
     } else {
       logger.error("No valid processor found to execute")
@@ -51,10 +48,10 @@ class Transmission {
     // Describe processors
     description += 'Processors:\n'
     Object.keys(this.processors).forEach((processorName) => {
-      //     description += `${processor}`
+      //     description += `${ processor }`
 
       description += `  - ${ns.shortName(processorName)} a ${this.processors[processorName]} \n`
-      //  description += `  - ${ns.shortName(processorName)}\n`
+      //  description += `  - ${ ns.shortName(processorName) }\n`
     })
 
     /*
@@ -67,7 +64,7 @@ class Transmission {
     // Describe connectors
     description += 'Connectors:\n'
     this.connectors.forEach((connector, index) => {
-      description += `  - Connector ${index + 1}: ${ns.shortName(connector.fromName)} -> ${ns.shortName(connector.toName)}\n`
+      description += `  - Connector ${index + 1}: ${ns.shortName(connector.fromName)} -> ${ns.shortName(connector.toName)} \n`
     })
 
     return description

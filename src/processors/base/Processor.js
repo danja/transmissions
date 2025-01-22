@@ -14,7 +14,7 @@ class Processor extends EventEmitter {
         this.outputs = []
     }
 
-    async getValues(property, fallback) {
+    getValues(property, fallback) {
         logger.debug(`Processor.getValues looking for ${property}`)
 
         const shortName = ns.getShortname(property)
@@ -23,15 +23,16 @@ class Processor extends EventEmitter {
         }
 
         this.settee.settingsNode = this.settingsNode ////////////////////////////////////////
-        return this.settee.getValues(property, fallback)
+        const values = this.settee.getValues(property, fallback)
+        logger.debug(`Processor.getValues values = ${values}`)
+        return values
     }
 
     getProperty(property, fallback = undefined) {
 
-        logger.log(`Processor.getProperty, property = ${property}`)
-        //  logger.log(`Processor.getProperty, this.settee = ${this.settee}`);
-        // logger.reveal(this.settee);
-        logger.log(`Processor.getProperty, this.settee.config = ${this.settee.config}`)
+        logger.debug(`Processor.getProperty, property = ${property}`)
+
+        //   logger.debug(`Processor.getProperty, this.settee.config = ${this.settee.config}`)
         this.settee.settingsNode = this.settingsNode ////////////////////////////////////////////
         return this.settee.getValue(property, fallback)
     }

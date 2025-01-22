@@ -18,7 +18,7 @@ class EntryContentToPagePrep extends Processor {
       return this.emit('message', message)
       return
     }
-    logger.setLogLevel('debug')
+    //  logger.setLogLevel('debug')
 
     // logger.reveal(message)
 

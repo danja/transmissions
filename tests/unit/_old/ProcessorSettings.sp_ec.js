@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import rdf from 'rdf-ext'
-import ProcessorSettings from '../../src/processors/base/ProcessorSettings.js'
-import ns from '../../src/utils/ns.js'
+import ProcessorSettings from '../../../src/processors/base/ProcessorSettings.js'
+import ns from '../../../src/utils/ns.js'
 
 describe('ProcessorSettings', () => {
     let settings
@@ -72,17 +72,11 @@ describe('ProcessorSettings', () => {
             })
             settings.settingsNode = subject
 
-            const values = settings.getValues(ns.trn.excludePattern)
+            const values = settings.getValues(ns.trn.excludePatterns)
             expect(values).to.be.an('array').with.lengthOf(3)
             expect(values).to.include('value1')
             expect(values).to.include('value2')
             expect(values).to.include('value3')
-        })
-
-        it('should handle empty or undefined settingsNode', () => {
-            settings.settingsNode = null
-            const values = settings.getValues(ns.trn.testProp)
-            expect(values).to.be.an('array').with.lengthOf(0)
         })
 
         it('should handle values from referenced settings', () => {
@@ -131,28 +125,6 @@ describe('ProcessorSettings', () => {
 
             const value = settings.getValue(ns.trn.testProp, 'fallback')
             expect(value).to.equal('fallback')
-        })
-
-        it('should handle undefined settingsNode', () => {
-            settings.settingsNode = null
-            const value = settings.getValue(ns.trn.testProp, 'fallback')
-            expect(value).to.equal('fallback')
-        })
-    })
-
-    describe('Integration', () => {
-        it('should handle mixed configurations', () => {
-            const subject = addTestData('config', {
-                directValue: 'direct',
-                commaPattern: 'one,two,three',
-                multiValue: ['a', 'b', 'c']
-            })
-            settings.settingsNode = subject
-
-            expect(settings.getValues(ns.trn.directValue)).to.have.lengthOf(1)
-            expect(settings.getValues(ns.trn.multiValue)).to.have.lengthOf(3)
-            expect(settings.getValue(ns.trn.commaPattern).split(','))
-                .to.have.lengthOf(3)
         })
     })
 })

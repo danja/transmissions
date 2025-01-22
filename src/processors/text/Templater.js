@@ -44,7 +44,7 @@ class Templater extends Processor {
      * @param {Object} message - The message object containing template and content information
      */
     async process(message) {
-        logger.setLogLevel('debug')
+        //    logger.setLogLevel('debug')
         //   logger.log(this.getPropertyFromMyConfig(ns.trn.templateFilename))
         //    this.addPropertyToMyConfig(ns.trn.templateFilename, 'poo')
         //   this.showMyConfig()

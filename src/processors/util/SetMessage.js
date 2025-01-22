@@ -12,7 +12,7 @@ class SetMessage extends Processor {
     }
 
     async process(message) {
-        logger.setLogLevel('debug')
+        //   logger.setLogLevel('debug')
         const setters = await this.getSetters(this.config, this.settings, ns.trn.setValue)
         for (let i = 0; i < setters.length; i++) {
             message[setters[i].key] = setters[i].value

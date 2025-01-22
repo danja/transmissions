@@ -24,8 +24,8 @@ class Unfork extends Processor {
     }
 
     async process(message) {
-        logger.setLogLevel("debug")
-        logger.debug(`Unfork got message with done=${message.done}, tags=${message.tags}`);
+        //     logger.setLogLevel("debug")
+        logger.debug(`Unfork got message with done=${message.done}, tags=${message.tags}`)
 
         logger.debug('Unfork ----')
         if (message.done) {

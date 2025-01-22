@@ -5,7 +5,7 @@ class CaptureAll extends Processor {
     constructor(config) {
         // Ensure whiteboard is initialized as an array
         if (!config.whiteboard || !Array.isArray(config.whiteboard)) {
-            config.whiteboard = [];
+            config.whiteboard = []
         }
         super(config)
 
@@ -16,7 +16,7 @@ class CaptureAll extends Processor {
     }
 
     async process(message) {
-        logger.log(`CaptureAll at [${message.tags}] ${this.getTag()}, done=${message.done}`)
+        logger.debug(`CaptureAll at [${message.tags}] ${this.getTag()}, done=${message.done}`)
         this.config.whiteboard.push(message)
         return this.emit('message', message)
     }

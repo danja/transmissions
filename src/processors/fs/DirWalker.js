@@ -3,6 +3,7 @@ import path from 'path'
 import ns from '../../utils/ns.js'
 import logger from '../../utils/Logger.js'
 import Processor from '../base/Processor.js'
+import StringUtils from '../../utils/StringUtils.js'
 
 class DirWalker extends Processor {
     constructor(config) {
@@ -13,7 +14,7 @@ class DirWalker extends Processor {
     }
 
     async process(message) {
-        logger.setLogLevel('debug')
+        //   logger.setLogLevel('debug')
         logger.debug('\nDirWalker.process')
         logger.debug(`\nDirWalker.process, this = ${this}`)
         message.counter = 0
@@ -27,8 +28,8 @@ class DirWalker extends Processor {
             throw new Error('sourceDir property not found in configuration')
         }
 
-        const includePatterns = this.getProperty(ns.trn.includePattern, ['*.md'])
-        const excludePatterns = this.getProperty(ns.trn.excludePattern, ['*.'])
+        this.includePatterns = this.getProperty(ns.trn.includePattern, ['*.md', '*.js', '*.json', '*.ttl'])
+        this.excludePatterns = this.getProperty(ns.trn.excludePattern, ['*.', '.git', 'node_modules'])
 
         if (!message.sourceDir) {
             message.sourceDir = sourceDir
@@ -60,12 +61,24 @@ class DirWalker extends Processor {
 
     // move to util.js ?
     // const markdownFiles = files.filter(file => matchesPattern(file, '*.md'));
+
+    matchPatterns(str, patterns) {
+        return StringUtils.matchPatterns(str, patterns)
+
+        const matches = patterns.filter(pattern => this.matchesPattern(str, pattern))
+        if (matches.length > 0) {
+            return matches
+        }
+        return false
+    }
+
     matchesPattern(str, pattern) {
+        return StringUtils.matchesPattern(str, pattern)
+
         // Convert glob pattern to regex
         const regexPattern = pattern
             .replace(/\./g, '\\.')   // Escape dots
             .replace(/\*/g, '.*')   // Convert * to .*
-
         const regex = new RegExp(`^${regexPattern}$`)
         return regex.test(str)
     }
@@ -77,19 +90,21 @@ class DirWalker extends Processor {
 
         for (const entry of entries) {
             const fullPath = path.join(dir, entry.name)
-            //// needs regex
-            if (entry.isDirectory() && !this.excludePatterns.includes(entry.name[0])) {
 
+            //   if (entry.isDirectory() && !this.excludePatterns.includes(entry.name[0])) {
 
-
-
+            // should be dir? what about added includes?
+            if (entry.isDirectory() && !this.matchPatterns(fullPath, this.excludePatterns)) {
                 await this.walkDirectory(fullPath, baseMessage)
             } else if (entry.isFile()) {
-                const extension = path.extname(entry.name)
-                const prefix = entry.name[0]
+                //   const extension = path.extname(entry.name)
+                // const prefix = entry.name[0]
 
-                if (!this.excludePatterns.includes(prefix) &&
-                    this.includePatterns.includes(extension)) {
+                if (!this.matchPatterns(fullPath, this.excludePatterns) &&
+                    this.matchPatterns(fullPath, this.includePatterns)) {
+
+                    //   if (!this.excludePatterns.includes(prefix) &&
+                    //     this.includePatterns.includes(extension)) {
                     const message = structuredClone(baseMessage)
                     message.filename = entry.name
                     message.subdir = path.dirname(path.relative(message.targetPath, fullPath)).split(path.sep)[1]

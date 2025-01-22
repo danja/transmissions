@@ -35,7 +35,7 @@ class FileWriter extends Processor {
      * @param {Object} message - The execution message.
      */
     async process(message) {
-        logger.setLogLevel('debug')
+        //   logger.setLogLevel('debug')
         logger.debug(`\n\nFileWriter.process, message.done = ${message.done}`)
         if (message.done) {
             //   message.done = false

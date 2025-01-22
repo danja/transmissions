@@ -10,7 +10,7 @@ class PostcraftPrep extends Processor {
   }
 
   async process(message) {
-    logger.setLogLevel("debug")
+    //  logger.setLogLevel("debug")
 
     if (message.done) {
       return this.emit('message', message)

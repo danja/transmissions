@@ -81,13 +81,6 @@ class TransmissionBuilder {
 
         let processorType = np.out(ns.rdf.type).term
         let processorConfig = np.out(ns.trn.settings).term
-        logger.log(`\n\nTransmisionBuilder.createNodes, processorType = ${processorType.value}`)
-
-        if (processorConfig) {
-          logger.log(`TransmisionBuilder.createNodes, processorConfig = ${processorConfig.value}`)
-        }
-        //
-        //  #########################################################
 
         try {
           let name = ns.getShortname(processorName)
@@ -98,22 +91,12 @@ class TransmissionBuilder {
 
           processor.id = processorName
           processor.type = processorType
-
           processor.transmissionNode = node
           processor.transmission = transmission
-
-          if (processorConfig) {
-            logger.log(`22222TransmisionBuilder.createNodes, processorConfig = ${processorConfig.value}`)
-          }
-          //  processor.settingsNode = processorConfig
-
-
-          //  processor.setSettingsNode(processorConfig)
-          //   if (processorConfig) {
-          //   processor.settings = processorConfig
-          // }
-          transmission.register(processorName, processor)
           processor.settingsNode = processorConfig
+
+          transmission.register(processorName, processor)
+
         } catch (err) {
           logger.error('-> Can\'t resolve ' + processorName + ' (check transmission.ttl for typos!)\n')
           logger.error(err)

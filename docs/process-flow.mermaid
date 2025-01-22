@@ -1,0 +1,62 @@
+flowchart TD
+    p10[DirWalker]
+    p20_1[StringFilter]
+    p20_2[StringFilter]
+    p20_3[StringFilter]
+    p20_4[StringFilter]
+    p30_1[FileReader]
+    p30_2[FileReader]
+    p30_3[FileReader]
+    p30_4[FileReader]
+    p40_1[FileContainer]
+    p40_2[FileContainer]
+    p40_3[FileContainer]
+    p40_4[FileContainer]
+    p50_1[CaptureAll]
+    p50_2[CaptureAll]
+    p50_3[CaptureAll]
+    p50_4[CaptureAll]
+    p60_1[WhiteboardToMessage]
+    p60_2[WhiteboardToMessage]
+    p60_3[WhiteboardToMessage]
+    p60_4[WhiteboardToMessage]
+    p70_1[Unfork]
+    p70_2[Unfork]
+    p70_3[Unfork]
+    p70_4[Unfork]
+    p80[FileWriter]
+
+    p10 --> p20_1
+    p10 --> p20_2
+    p10 --> p20_3
+    p10 --> p20_4
+    
+    p20_1 --> p30_1
+    p20_2 --> p30_2
+    p20_3 --> p30_3
+    p20_4 --> p30_4
+    
+    p30_1 --> p40_1
+    p30_2 --> p40_2
+    p30_3 --> p40_3
+    p30_4 --> p40_4
+    
+    p40_1 --> p50_1
+    p40_2 --> p50_2
+    p40_3 --> p50_3
+    p40_4 --> p50_4
+    
+    p50_1 --> p60_1
+    p50_2 --> p60_2
+    p50_3 --> p60_3
+    p50_4 --> p60_4
+    
+    p60_1 --> p70_1
+    p60_2 --> p70_2
+    p60_3 --> p70_3
+    p60_4 --> p70_4
+    
+    p70_1 --> p80
+    p70_2 --> p80
+    p70_3 --> p80
+    p70_4 --> p80

@@ -87,13 +87,10 @@ class ApplicationManager {
     async loadManifest(manifestFilename) { // TODO generalise, add URLs
         logger.debug(`ApplicationManager.loadManifest, try loading : ${manifestFilename}`)
         try {
-            //   const mfStat = await fs.stat(manifestFilename)
-            // logger.debug('HERE')
-            //  if (mfStat.isFile()) {
+
             const stream = fromFile(manifestFilename)
             return await rdf.dataset().import(stream)
-            //}
-            //else if (mfStat.isDirectory()) {
+
 
         } catch (err) {
             logger.debug(`ApplicationManager.loadManifest, ${manifestFilename} non-existent, creating empty dataset`)

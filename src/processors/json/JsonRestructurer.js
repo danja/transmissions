@@ -4,7 +4,7 @@ import logger from '../../utils/Logger.js'
 
 class JsonRestructurer {
     constructor(mappings) {
-        logger.setLogLevel('info')
+        //   logger.setLogLevel('info')
         if (!mappings?.mappings || !Array.isArray(mappings.mappings)) {
             throw new Error('Invalid mapping structure')
         }
