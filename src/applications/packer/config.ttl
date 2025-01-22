@@ -4,12 +4,17 @@
 
 :dirWalker a :ConfigSet ;
     :sourceDir "." ;
-    :includeExtensions "['.md','.js','.ttl']" .
+    :includeExtension ( ".md" ".js" ".ttl" ) .
 
 :filterConfig a :ConfigSet ;
     :settings :filterDefaults ;
-    :includePatterns "*.txt,*.md,*.js,*.jsx,*.ts,*.tsx,*.json,*.html,*.css" ;
-    :excludePatterns "node_modules/*,dist/*,build/*,.git/*" .
+    :includePattern ("*.txt" "*.md" "*.js" "*.jsx" "*.ts" "*.tsx" "*.json" "*.html" "*.css" );
+    :excludePattern (
+        "node_modules/*"
+        "dist/*"
+        "build/*"
+        ".git/*"
+    ).
 
 :readConfig a :ConfigSet ;
     :mediaType "text/plain" .

@@ -1,89 +1,102 @@
-import { readdir } from 'fs/promises';
-import path from 'path';
-import ns from '../../utils/ns.js';
-import logger from '../../utils/Logger.js';
-import Processor from '../base/Processor.js';
+import { readdir } from 'fs/promises'
+import path from 'path'
+import ns from '../../utils/ns.js'
+import logger from '../../utils/Logger.js'
+import Processor from '../base/Processor.js'
 
 class DirWalker extends Processor {
     constructor(config) {
-        super(config);
-        this.includeExtensions = ['.md'];
-        this.excludePrefixes = ['_', '.'];
+        super(config)
+        //    this.includePatterns = ['.md']
+        //  this.excludePrefixes = ['_', '.']
         this.fileCount = 0
     }
 
     async process(message) {
         logger.setLogLevel('debug')
-        logger.debug('\nDirWalker.process');
-        logger.debug(`\nDirWalker.process, this = ${this}`);
-        message.counter = 0;
-        message.slugs = [];
-        message.done = false;
+        logger.debug('\nDirWalker.process')
+        logger.debug(`\nDirWalker.process, this = ${this}`)
+        message.counter = 0
+        message.slugs = []
+        message.done = false
 
-        const sourceDir = await this.getProperty(ns.trn.sourceDir);
-        logger.debug(`DirWalker sourceDir from config = ${sourceDir}`);
+        const sourceDir = this.getProperty(ns.trn.sourceDir)
+        logger.debug(`DirWalker sourceDir from config = ${sourceDir}`)
 
         if (!sourceDir) {
-            throw new Error('sourceDir property not found in configuration');
+            throw new Error('sourceDir property not found in configuration')
         }
 
-        var includeExtensions = await this.getProperty(ns.trn.includeExtensions);
-        if (includeExtensions) {
-            logger.reveal(includeExtensions);
-            includeExtensions = includeExtensions.replaceAll('\'', '"');
-            this.includeExtensions = JSON.parse(includeExtensions);
-        }
+        const includePatterns = this.getProperty(ns.trn.includePattern, ['*.md'])
+        const excludePatterns = this.getProperty(ns.trn.excludePattern, ['*.'])
 
         if (!message.sourceDir) {
-            message.sourceDir = sourceDir;
+            message.sourceDir = sourceDir
         }
 
         logger.debug('\n\nDirWalker, message.targetPath = ' + message.targetPath)
         logger.debug('DirWalker, message.rootDir = ' + message.rootDir)
         logger.debug('DirWalker, message.sourceDir = ' + message.sourceDir)
 
-        let dirPath;
+        let dirPath
         if (path.isAbsolute(sourceDir)) {
-            dirPath = sourceDir;
+            dirPath = sourceDir
         } else {
             if (message.targetPath) {
-                dirPath = path.join(message.targetPath, sourceDir);
+                dirPath = path.join(message.targetPath, sourceDir)
             } else {
-                dirPath = path.join(message.rootDir, sourceDir);
+                dirPath = path.join(message.rootDir, sourceDir)
             }
         }
-        logger.debug(`DirWalker resolved dirPath = ${dirPath}`);
+        logger.debug(`DirWalker resolved dirPath = ${dirPath}`)
 
-        await this.walkDirectory(dirPath, message);
+        await this.walkDirectory(dirPath, message)
 
-        const finalMessage = structuredClone(message);
-        finalMessage.done = true;
-        logger.debug("DirWalker emitting final done=true message");
-        return this.emit('message', finalMessage);
+        const finalMessage = structuredClone(message)
+        finalMessage.done = true
+        logger.debug("DirWalker emitting final done=true message")
+        return this.emit('message', finalMessage)
+    }
+
+    // move to util.js ?
+    // const markdownFiles = files.filter(file => matchesPattern(file, '*.md'));
+    matchesPattern(str, pattern) {
+        // Convert glob pattern to regex
+        const regexPattern = pattern
+            .replace(/\./g, '\\.')   // Escape dots
+            .replace(/\*/g, '.*')   // Convert * to .*
+
+        const regex = new RegExp(`^${regexPattern}$`)
+        return regex.test(str)
     }
 
     async walkDirectory(dir, baseMessage) {
-        logger.debug(`DirWalker.walkDirectory, dir = ${dir}`);
+        logger.debug(`DirWalker.walkDirectory, dir = ${dir}`)
         //   logger.reveal(this.message)
-        const entries = await readdir(dir, { withFileTypes: true });
+        const entries = await readdir(dir, { withFileTypes: true })
 
         for (const entry of entries) {
-            const fullPath = path.join(dir, entry.name);
-            if (entry.isDirectory() && !this.excludePrefixes.includes(entry.name[0])) {
-                await this.walkDirectory(fullPath, baseMessage);
-            } else if (entry.isFile()) {
-                const extension = path.extname(entry.name);
-                const prefix = entry.name[0];
+            const fullPath = path.join(dir, entry.name)
+            //// needs regex
+            if (entry.isDirectory() && !this.excludePatterns.includes(entry.name[0])) {
 
-                if (!this.excludePrefixes.includes(prefix) &&
-                    this.includeExtensions.includes(extension)) {
-                    const message = structuredClone(baseMessage);
-                    message.filename = entry.name;
-                    message.subdir = path.dirname(path.relative(message.targetPath, fullPath)).split(path.sep)[1];
-                    message.fullPath = fullPath;
-                    message.filepath = path.relative(baseMessage.targetPath || baseMessage.rootDir, fullPath);
-                    message.done = false;
-                    message.counter++;
+
+
+
+                await this.walkDirectory(fullPath, baseMessage)
+            } else if (entry.isFile()) {
+                const extension = path.extname(entry.name)
+                const prefix = entry.name[0]
+
+                if (!this.excludePatterns.includes(prefix) &&
+                    this.includePatterns.includes(extension)) {
+                    const message = structuredClone(baseMessage)
+                    message.filename = entry.name
+                    message.subdir = path.dirname(path.relative(message.targetPath, fullPath)).split(path.sep)[1]
+                    message.fullPath = fullPath
+                    message.filepath = path.relative(baseMessage.targetPath || baseMessage.rootDir, fullPath)
+                    message.done = false
+                    message.counter++
 
                     const slug = message.filename.split('.')[0]
                     message.slugs.push(slug)
@@ -94,14 +107,14 @@ class DirWalker extends Processor {
                         message.fullPath: ${message.fullPath}
                         message.subdir: ${message.subdir}
                         message.filepath: ${message.filepath}
-                        message.slugs: ${message.slugs}`);
+                        message.slugs: ${message.slugs}`)
                     //        process.exit()
                     message.fileCount++
-                    this.emit('message', message);
+                    this.emit('message', message)
                 }
             }
         }
     }
 }
 
-export default DirWalker;
+export default DirWalker
