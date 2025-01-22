@@ -5,11 +5,13 @@ _repopack/repomix equiv_
 ```sh
 cd ~/github-danny/transmissions # my local dir
 
+./trans packer ./src/applications/packer/data
+
+
 ./trans packer path/to/repo
 
 ./trans packer ./
 
-./trans packer ./src/applications/packer/data
 
 ./trans packer
 ```

@@ -73,12 +73,16 @@ class TransmissionBuilder {
     for (let i = 0; i < pipenodes.length; i++) {
       let node = pipenodes[i]
       let processorName = node.value
-
+      // if (transmissionConfig) {
+      // logger.log(`TransmisionBuilder.createNodes, transmissionConfig = ${transmissionConfig}`)
+      // }
       if (!transmission.get(processorName)) {
         let np = rdf.grapoi({ dataset: transmissionConfig, term: node })
+
         let processorType = np.out(ns.rdf.type).term
         let processorConfig = np.out(ns.trn.settings).term
         logger.log(`\n\nTransmisionBuilder.createNodes, processorType = ${processorType.value}`)
+
         if (processorConfig) {
           logger.log(`TransmisionBuilder.createNodes, processorConfig = ${processorConfig.value}`)
         }
@@ -101,12 +105,15 @@ class TransmissionBuilder {
           if (processorConfig) {
             logger.log(`22222TransmisionBuilder.createNodes, processorConfig = ${processorConfig.value}`)
           }
-          processor.settingsNode = processorConfig
+          //  processor.settingsNode = processorConfig
 
-          if (processorConfig) {
-            processor.settings = processorConfig
-          }
+
+          //  processor.setSettingsNode(processorConfig)
+          //   if (processorConfig) {
+          //   processor.settings = processorConfig
+          // }
           transmission.register(processorName, processor)
+          processor.settingsNode = processorConfig
         } catch (err) {
           logger.error('-> Can\'t resolve ' + processorName + ' (check transmission.ttl for typos!)\n')
           logger.error(err)

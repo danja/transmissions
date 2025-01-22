@@ -1,15 +1,15 @@
-import { log } from 'console';
-import logger from '../../utils/Logger.js';
-import ns from '../../utils/ns.js';
+import grapoi from 'grapoi'
+import logger from '../../utils/Logger.js'
+import ns from '../../utils/ns.js'
 
 class ProcessorSettings {
     constructor(config) {
-        this.config = config;
+        this.config = config
         //   this.settingsNode = null;
     }
 
     /*
-    async getValues(property, fallback = undefined) {
+     getValues(property, fallback = undefined) {
         if (!this.config?.dataset || !this.settingsNode) {
             return fallback ? [fallback] : [];
         }
@@ -55,31 +55,33 @@ class ProcessorSettings {
         return values.length > 0 ? values : (fallback ? [fallback] : []);
     }
 */
-    async getValues(property, fallback = undefined) {
-        return this.getPropertyFromSettings(property) || (fallback ? [fallback] : []);
+    getValues(property, fallback = undefined) {
+        logger.debug(`ProcessorSettings.getValues, this.settingsNode = ${this.settingsNode.value}`)
+        return this.getPropertyFromSettings(property) || (fallback ? [fallback] : [])
     }
 
     getPropertyFromSettings(property) {
-        logger.debug(`ProcessorSettings.getPropertyFromSettings, property = ${property}`)
+        logger.debug(`ProcessorSettings.getPropertyFromSettings, property = ${property.value}`)
         logger.debug(`ProcessorSettings.getPropertyFromSettings, this.settingsNode = ${this.settingsNode}`)
         if (!this.config) {
             logger.debug('--- this.config missing ---')
             return undefined
         }
         if (!this.settingsNode) {
-            logger.debug('this.settingsNode missing')
+            logger.debug(`**this.settingsNode missing**`)
             return undefined
         }
 
         // TODO GET PROPERTY FROM DATASET
         const dataset = this.config
+        // logger.debug(`dataset = \n ${[...dataset].map(q => `${q.subject.value} ${q.predicate.value} ${q.object.value}`).join('\n')}`)
         const ptr = grapoi({ dataset, term: this.settingsNode })
 
         logger.log(`Checking property ${property} on node ${this.settingsNode.value}`)
         let values = ptr.out(property)
         if (values.terms.length > 0) {
             logger.debug(`Found direct property value: ${values.term.value}`)
-            return values.term
+            return values.term.value
         }
         logger.debug('No direct property found')
 
@@ -104,17 +106,18 @@ class ProcessorSettings {
         return undefined
     }
 
-    async getValue(property, fallback = undefined) {
-        const values = await this.getValues(property, fallback);
-        logger.log(`ProcessorSettings.getValue, values = ${values}`);
-        return values.length > 0 ? values[0] : fallback;
+    getValue(property, fallback = undefined) {
+        logger.debug(`ProcessorSettings.getValue, this.settingsNode = ${this.settingsNode.value}`)
+        const values = this.getValues(property, fallback)
+        logger.log(`ProcessorSettings.getValue, values = ${values}`)
+        return values.length > 0 ? values[0] : fallback
     }
 
     toString() {
-        const settingsNodeValue = this.settingsNode ? this.settingsNode.value : 'none';
-        logger.reveal(this.settingsNode);
-        return `ProcessorSettings, settingsNode = ${settingsNodeValue}`;
+        const settingsNodeValue = this.settingsNode ? this.settingsNode.value : 'none'
+        logger.reveal(this.settingsNode)
+        return `ProcessorSettings, settingsNode = ${settingsNodeValue}`
     }
 }
 
-export default ProcessorSettings;
+export default ProcessorSettings
