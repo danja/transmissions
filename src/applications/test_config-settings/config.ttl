@@ -3,26 +3,37 @@
 @prefix : <http://purl.org/stuff/transmissions/> .
 @base <http://purl.org/stuff/path/> .
 
-:settings1 a :ConfigSet ;
+:settingsUseMessage a :ConfigSet ;
+    :me ":settingsUseMessage" .
+
+:settingsSingle a :ConfigSet ;
+    :me ":settingsSingle" ;
     :name "Alice" .  # string literal
 
-:settings2 a :ConfigSet ;
+:settingsURI a :ConfigSet ;
+    :me ":settingsURI" ;
+    :uri <http://example.org> .  # regular URI
+
+[] :todo "need to check ontology for this" .
+# #:todo needs something like :path a :Path .
+:settingsPath a :ConfigSet ;
+    :me ":settingsPath" ;
     :path <dirA> .  # subdirectory path
 
-:settings3 a :ConfigSet ;
+:settingsMulti a :ConfigSet ;
+    :me ":settingsMulti" ;
     :name "Bob" ;
-    :path <dirB> .
+    :uri <dirB> .
 
-:settings4 a :ConfigSet ;
+:settingsLists a :ConfigSet ;
+  # :loglevel 'debug' ; TODO #:todo MOVE TO TRANSMISSION
+    :me ":settingsLists" ;
+    :aSetting  "settingA1", "settingA2", "settingA3" ;
+    :bSetting  "settingB1", "settingB2", "settingB3" .
+
+:settingsKeyValue a :ConfigSet ;
+    :me ":settingsKeyValue" ;
     :setters (:setter1)  . # consider using blank nodes
-        :setter1    :key    "s4s1" ;
-                    :value  "value4"  .
+        :setter1    :key    "myKey" ;
+                    :value  "myValue"  .
 
-:settings5 a :ConfigSet ;
-    :name "Constantine" ;
-    :path <dirC> ;
-    :setters (:setter2 :setter3)  . # consider using blank nodes
-        :setter2    :key    "s5s2" ;
-                    :value   "value52"  .
-        :setter3    :key    "s5s3" ;
-                    :value    "value53"  .

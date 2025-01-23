@@ -4,4 +4,4 @@ Need :
 
 * comment #:signatures
 
-each with corresponding #:terrys (Terry Packer) 
+each with corresponding #:terrapacks (Terry Packer) 

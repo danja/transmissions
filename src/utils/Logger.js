@@ -9,9 +9,9 @@ const logger = {}
 
 // Map log levels to chalk styles
 const LOG_STYLES = {
-    "trace": chalk.greenBright,
-    "debug": chalk.white,
-    "info": chalk.yellow,
+    "trace": chalk.bgGray.greenBright,
+    "debug": chalk.bgCyanBright.black,
+    "info": chalk.white,
     "warn": chalk.red.italic,
     "error": chalk.red.bold
 }

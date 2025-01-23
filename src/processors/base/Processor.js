@@ -29,15 +29,32 @@ class Processor extends EventEmitter {
     }
 
     getProperty(property, fallback = undefined) {
-
+        // logger.setLogLevel('debug')
+        logger.debug(`Processor.getProperty looking for ${property}`)
+        const shortName = ns.getShortname(property)
+        if (this.message && this.message[shortName]) {
+            logger.debug(`Found in message: ${this.message[shortName]}`)
+            return this.message[shortName]
+        }
         logger.debug(`Processor.getProperty, property = ${property}`)
 
         //   logger.debug(`Processor.getProperty, this.settee.config = ${this.settee.config}`)
         this.settee.settingsNode = this.settingsNode ////////////////////////////////////////////
-        return this.settee.getValue(property, fallback)
+        const value = this.settee.getValue(property, fallback)
+        logger.debug(`Processor.getProperty, value = ${value}`)
+        return value
     }
 
     async preProcess(message) {
+        this.previousLogLevel = logger.getLevel()
+        /*
+        logger.setLogLevel('debug')
+        const loglevel = this.getProperty(ns.trn.loglevel)
+        logger.debug(`loglevel = ${loglevel}`)
+        if (loglevel) {
+            logger.setLogLevel(loglevel)
+        }
+            */
         const messageType = this.getProperty(ns.trn.messageType)
         if (messageType) {
             if (messageType.value) {
@@ -49,7 +66,10 @@ class Processor extends EventEmitter {
         this.message = message
     }
 
-    async postProcess(message) { }
+    async postProcess(message) {
+        logger.setLogLevel(this.previousLogLevel)
+        this.previousLogLevel = null
+    }
 
     async receive(message) {
         await this.enqueue(message)

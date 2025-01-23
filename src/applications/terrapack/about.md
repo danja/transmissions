@@ -1,5 +1,7 @@
 # terrapack Application
 
+**Packs sets of text/code content into a single file to provide grounding for AI**
+
 _repopack/repomix equiv_
 
 ```sh
