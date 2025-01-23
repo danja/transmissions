@@ -1,8 +1,9 @@
-# Packer Pipeline Flow
+# terrapack Pipeline Flow
 
 ## Command Processing
-1. `./trans packer ./src` initiates with:
-   - application = "packer" 
+
+1. `./trans terrapack ./src` initiates with:
+   - application = "terrapack"
    - target = "./src"
    - Command utils resolves target to absolute path
    - Sets targetPath in message object
@@ -10,8 +11,9 @@
 ## Pipeline Components
 
 ### 1. DirWalker (p10)
+
 - Input: message with targetPath = resolved "./src" path
-- Config: 
+- Config:
   ```turtle
   trn:dirWalker a trn:ConfigSet ;
     trn:sourceDir "." ;
@@ -31,6 +33,7 @@
     ```
 
 ### 2. StringFilter (p20)
+
 - Input: individual file messages from DirWalker
 - Config:
   ```turtle
@@ -44,6 +47,7 @@
   - Drops non-matching files
 
 ### 3. FileReader (p30)
+
 - Input: filtered file messages
 - Config:
   ```turtle
@@ -56,8 +60,9 @@
   - Preserves file metadata
 
 ### 4. FileContainer (p40)
+
 - Input: messages with file content
-- Config: 
+- Config:
   ```turtle
   trn:containerConfig a trn:ConfigSet ;
     trn:destination "repomix.json"
@@ -82,18 +87,22 @@
     ```
 
 ### 5. CaptureAll (p50)
+
 - Stores all messages in whiteboard array
 - Preserves message flow
 
 ### 6. WhiteboardToMessage (p60)
+
 - Transforms whiteboard array into structured message
 - Groups similar properties
 
 ### 7. Unfork (p70)
+
 - Collapses forked message paths
 - Ensures single output path
 
 ### 8. FileWriter (p80)
+
 - Input: final container message
 - Config:
   ```turtle
@@ -105,6 +114,7 @@
   - Returns success message
 
 ## Expected Output
+
 - repomix-output.txt containing:
   - Directory structure of src/
   - File contents
@@ -112,10 +122,11 @@
   - Summary statistics
 
 ## Key Message Properties Throughout Pipeline
+
 ```javascript
 {
   targetPath: "/absolute/path/to/src",
-  rootDir: "/path/to/packer/app",
+  rootDir: "/path/to/terrapack/app",
   filepath: "relative/path/to/file",
   content: "file contents",
   done: boolean // indicates completion
@@ -123,13 +134,15 @@
 ```
 
 ## Error Handling
+
 1. DirWalker handles missing/invalid directories
 2. StringFilter validates patterns before use
 3. FileReader checks file accessibility
-4. FileContainer validates content structure 
+4. FileContainer validates content structure
 5. FileWriter ensures directory exists
 
 ## Debug Points
+
 - Check message.targetPath in DirWalker
 - Verify pattern loading in StringFilter
 - Monitor content preservation in FileReader

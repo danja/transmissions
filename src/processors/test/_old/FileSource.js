@@ -3,14 +3,14 @@ import { fileURLToPath } from 'url'
 
 import { readFile } from 'node:fs/promises'
 
-import footpath from '../../utils/footpath.js'
+import footpath from '../../../utils/footpath.js'
 import rdf from 'rdf-ext'
 
 import grapoi from 'grapoi'
-import ns from '../../utils/ns.js'
+import ns from '../../../utils/ns.js'
 
-import logger from '../../utils/Logger.js'
-import Processor from '../base/Processor.js'
+import logger from '../../../utils/Logger.js'
+import Processor from '../../base/Processor.js'
 
 class FileSource extends Processor {
 

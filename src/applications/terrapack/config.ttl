@@ -20,7 +20,7 @@
     :mediaType "text/plain" .
 
 :containerConfig a :ConfigSet ;
-    :destination "packer.config.json" .
+    :destination "terrapack.config.json" .
 
 :writeConfig a :ConfigSet ;
-    :destinationFile "packer-output.txt" .
+    :destinationFile "terrapack-output.txt" .

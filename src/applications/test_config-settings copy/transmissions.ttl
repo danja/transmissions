@@ -1,0 +1,31 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix : <http://purl.org/stuff/transmissions/> .
+@prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances
+
+#############################################################
+# insert into pipe for debugging
+:DE a :DeadEnd . # ends the current pipe quietly
+:H  a :Halt . # kills everything
+:SC a :ShowConfig . # verbose report, continues pipe
+:SM a :ShowMessage . # verbose report, continues pipe
+:N  a :NOP . # no operation (except for showing stage in pipe)
+:UF a :Unfork . # collapses all pipes but one
+#############################################################
+
+:testConfig a :Transmission ;
+    :pipe (:tc10) .
+
+:tc10 a :ShowSettings ;
+     :settings :settings1 .
+
+###############################
+:p10 a :SetMessage ;
+     :settings :set1 .
+
+:p20 a :ShowMessage .
+
+:p30 a :SetMessage ;
+    :settings :set2 .
+
+:p40 a :ShowMessage .

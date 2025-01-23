@@ -1,33 +1,33 @@
-# Packer Application
+# terrapack Application
 
 _repopack/repomix equiv_
 
 ```sh
 cd ~/github-danny/transmissions # my local dir
 
-./trans packer ./src/applications/packer/data
+./trans terrapack ./src/applications/terrapack/data
 
 
-./trans packer path/to/repo
+./trans terrapack path/to/repo
 
-./trans packer ./
+./trans terrapack ./
 
 
-./trans packer
+./trans terrapack
 ```
 
 from Claude
 
-# Packer Application
+# terrapack Application
 
 _repopack/repomix equiv_
 
 ```sh
-./trans packer path/to/repo
+./trans terrapack path/to/repo
 
-./trans packer ./
+./trans terrapack ./
 
-./trans packer
+./trans terrapack
 ```
 
 Walks repository directory according to configured patterns, combines files into single AI-friendly document with:

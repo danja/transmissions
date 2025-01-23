@@ -2,11 +2,11 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import { writeFile } from 'node:fs/promises'
-import footpath from '../../utils/footpath.js'
+import footpath from '../../../utils/footpath.js'
 import grapoi from 'grapoi'
-import ns from '../../utils/ns.js'
-import logger from '../../utils/Logger.js'
-import Processor from '../base/Processor.js'
+import ns from '../../../utils/ns.js'
+import logger from '../../../utils/Logger.js'
+import Processor from '../../base/Processor.js'
 
 class FileSink extends Processor {
 

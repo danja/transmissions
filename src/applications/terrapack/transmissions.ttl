@@ -13,8 +13,8 @@
 :UF a :Unfork . # collapses all pipes but one
 #############################################################
 
-:packer a trn:Transmission ;
-    rdfs:label "Repository Packer" ;
+:terrapack a trn:Transmission ;
+    rdfs:label "Repository terrapack" ;
     trn:pipe (:p10 :p20 :p30 :p40 :p50 :p60 :p70 :p80) .
 
 :p10 a :DirWalker ;

@@ -1,6 +1,6 @@
-// src/processors/example-group/ExampleProcessor.js
+// src/processors/example-group/TestConfig.js
 /**
- * @class ExampleProcessor
+ * @class TestConfig
  * @extends Processor
  * @classdesc
  * **a Basic Transmissions Processor**
@@ -8,7 +8,7 @@
  * Provides a template for creating new processors, demonstrates use of config settings.
  *
  * #### __*Input*__
- * * **`message.common`** - addressed by all instances of this ExampleProcessor (optional, default undefined)
+ * * **`message.common`** - addressed by all instances of this TestConfig (optional, default undefined)
  * * **`message.something1`** - Template string (used if templateFilename is not provided)
  * * **`message.something2`** - Object with properties for template rendering (e.g., title, body)
  * * **`message.notavalue`** - Object with properties for template rendering (e.g., title, body)
@@ -37,7 +37,7 @@ import ns from '../../utils/ns.js'
 import Processor from '../base/Processor.js'
 
 
-class ExampleProcessor extends Processor {
+class TestConfig extends Processor {
     constructor(config) {
         super(config)
     }
@@ -47,7 +47,7 @@ class ExampleProcessor extends Processor {
       * @param {Object} message - The message object.
       */
     async process(message) {
-        logger.debug(`\n\nExampleProcessor.process`)
+        logger.debug(`\n\nTestConfig.process`)
 
         // TODO figure this out better
         // may be needed if preceded by a spawning processor, eg. fs/DirWalker
@@ -76,4 +76,4 @@ class ExampleProcessor extends Processor {
         return this.emit('message', message)
     }
 }
-export default ExampleProcessor
+export default TestConfig

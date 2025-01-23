@@ -1,4 +1,4 @@
-# Packer Application Source Files
+# terrapack Application Source Files
 
 ## Core Processing
 
@@ -17,7 +17,7 @@ src/core/ModuleLoaderFactory.js             # Processor module instantiation
 src/processors/fs/DirWalker.js              # Directory traversal
 src/processors/text/StringFilter.js         # File pattern matching
 src/processors/fs/FileReader.js             # File content loading
-src/processors/packer/FileContainer.js      # Content aggregation
+src/processors/terrapack/FileContainer.js      # Content aggregation
 src/processors/util/CaptureAll.js           # Message capture
 src/processors/util/WhiteboardToMessage.js  # Message transformation
 src/processors/flow/Unfork.js               # Pipeline convergence
@@ -27,9 +27,9 @@ src/processors/fs/FileWriter.js             # Output generation
 ## Configuration
 
 ```
-src/applications/packer/transmissions.ttl   # Pipeline definition
-src/applications/packer/config.ttl          # Processor configuration
-src/applications/packer/about.md            # Application documentation
+src/applications/terrapack/transmissions.ttl   # Pipeline definition
+src/applications/terrapack/config.ttl          # Processor configuration
+src/applications/terrapack/about.md            # Application documentation
 ```
 
 ## Base Classes & Support
@@ -45,7 +45,7 @@ src/processors/base/ProcessorSettings.js    # Configuration management
 ```
 src/processors/fs/FsProcessorsFactory.js           # File system processors
 src/processors/text/TextProcessorsFactory.js       # Text processing
-src/processors/packer/PackerProcessorsFactory.js   # Packer-specific processors
+src/processors/terrapack/PackerProcessorsFactory.js   # terrapack-specific processors
 src/processors/util/UtilProcessorsFactory.js       # Utility processors
 src/processors/flow/FlowProcessorsFactory.js       # Flow control processors
 ```

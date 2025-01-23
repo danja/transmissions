@@ -14,7 +14,7 @@ import FlowProcessorsFactory from '../flow/FlowProcessorsFactory.js'
 import StagingProcessorsFactory from '../staging/StagingProcessorsFactory.js'
 import GitHubProcessorsFactory from '../github/GitHubProcessorsFactory.js'
 import JSONProcessorsFactory from '../json/JSONProcessorsFactory.js'
-import PackerProcessorsFactory from '../packer/PackerProcessorsFactory.js' // 2025-01-01
+import TerrapackProcessorsFactory from '../terrapack/TerrapackProcessorsFactory.js' // 2025-01-01
 
 // added 2024-11-28
 import UnsafeProcessorsFactory from '../unsafe/UnsafeProcessorsFactory.js'
@@ -87,10 +87,10 @@ class AbstractProcessorFactory {
         processor = JSONProcessorsFactory.createProcessor(type, config)
         if (processor) return processor
 
-        var processor = PackerProcessorsFactory.createProcessor(type, config);
-        if (processor) return processor;
+        var processor = TerrapackProcessorsFactory.createProcessor(type, config)
+        if (processor) return processor
 
-        var processor = SPARQLProcessorsFactory.createProcessor(type, config);
+        var processor = SPARQLProcessorsFactory.createProcessor(type, config)
         if (processor) return processor
 
     }

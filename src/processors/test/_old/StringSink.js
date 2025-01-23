@@ -1,5 +1,5 @@
-import logger from '../../utils/Logger.js'
-import Processor from '../base/Processor.js'
+import logger from '../../../utils/Logger.js'
+import Processor from '../../base/Processor.js'
 
 class StringSink extends Processor {
 
@@ -8,4 +8,4 @@ class StringSink extends Processor {
     }
 }
 
-export default StringSink 
+export default StringSink
