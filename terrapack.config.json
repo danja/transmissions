@@ -1,6 +1,6 @@
 {
   "output": {
-    "filePath": "packer-output.txt",
+    "filePath": "terrapack-transmissions.json",
     "format": "text/plain",
     "removeComments": true,
     "summary": true

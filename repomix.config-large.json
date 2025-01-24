@@ -1,6 +1,6 @@
 {
     "output": {
-        "filePath": "./repomix-transmissions-large.txt",
+        "filePath": "./repomix-transmissions-large.md",
         "headerText": "Transmissions source code",
         "removeComments": true
     },
