@@ -1,0 +1,17 @@
+# src/applications/test_stuff-to-sparql/config.ttl
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances
+
+:dirWalker a :ConfigSet ;
+#  :sourceDir "content-raw" ;
+  :messageType schema:Article .
+
+:sparqlUpdate a :ConfigSet ;
+    :endpointSettings "sparql/endpoint.json" .
+
+:sparqlSelect a :ConfigSet ;
+    :templateFilename "sparql/diamonds/select-blogposting.njk" ;
+    :endpointSettings "sparql/endpoint.json" .

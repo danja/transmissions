@@ -47,6 +47,9 @@ class ProcessorSettings {
     getValue(property, fallback) {
         const values = this.getValues(property, fallback)
         logger.debug(`All values2: ${values}`)
+        if (values.length == 0) {
+            return undefined
+        }
         return values.length == 1 ? values[0] : values // TODO DEPRECATED
     }
 }

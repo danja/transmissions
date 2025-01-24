@@ -21,24 +21,28 @@ class DirWalker extends Processor {
         message.slugs = []
         message.done = false
 
-        const sourceDir = this.getProperty(ns.trn.sourceDir)
+        var sourceDir = this.getProperty(ns.trn.sourceDir)
         logger.debug(`DirWalker sourceDir from config = ${sourceDir}`)
+        if (!message.sourceDir) {
+            message.sourceDir = sourceDir
+        }
 
         if (!sourceDir) {
-            throw new Error('sourceDir property not found in configuration')
+            sourceDir = message.dataDir
         }
+
 
         this.includePatterns = this.getProperty(ns.trn.includePattern, ['*.md', '*.js', '*.json', '*.ttl'])
         this.excludePatterns = this.getProperty(ns.trn.excludePattern, ['*.', '.git', 'node_modules'])
 
-        if (!message.sourceDir) {
-            message.sourceDir = sourceDir
-        }
+
 
         logger.debug('\n\nDirWalker, message.targetPath = ' + message.targetPath)
         logger.debug('DirWalker, message.rootDir = ' + message.rootDir)
         logger.debug('DirWalker, message.sourceDir = ' + message.sourceDir)
 
+        //    logger.log(`DirWalker.sourceDir = ${sourceDir}`)
+        //  logger.reveal(sourceDir)
         let dirPath
         if (path.isAbsolute(sourceDir)) {
             dirPath = sourceDir

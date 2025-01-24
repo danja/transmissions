@@ -1,29 +1,34 @@
-import axios from 'axios';
-import nunjucks from 'nunjucks';
-import crypto from 'crypto';
-import logger from '../../utils/Logger.js';
-import Processor from '../base/Processor.js';
-import ns from '../../utils/ns.js';
-import SessionEnvironment from './SessionEnvironment.js';
+import axios from 'axios'
+import nunjucks from 'nunjucks'
+import crypto from 'crypto'
+import logger from '../../utils/Logger.js'
+import Processor from '../base/Processor.js'
+import ns from '../../utils/ns.js'
+import SessionEnvironment from './SessionEnvironment.js'
 
 class SPARQLUpdate extends Processor {
     constructor(config) {
-        super(config);
-        this.env = new SessionEnvironment(this);
+        super(config)
+        this.env = new SessionEnvironment(this)
     }
 
     async process(message) {
-        if (!this.env.endpoints) {
-            await this.env.loadEndpoints(message.rootDir);
-        }
+        logger.setLogLevel('debug')
+        logger.debug(`\nSPARQLUpdate.process`)
 
-        const endpoint = this.env.getUpdateEndpoint();
+        logger.debug(`AHERE`)
+        if (!this.env.endpoints) {
+            await this.env.loadEndpoints(message.rootDir)
+        }
+        logger.debug(`HERE`)
+
+        const endpoint = this.env.getUpdateEndpoint()
         const template = await this.env.getTemplate(
             message.rootDir,
             await this.getProperty(ns.trn.templateFilename)
-        );
+        )
 
-        const now = new Date().toISOString();
+        const now = new Date().toISOString()
         const updateData = {
             id: crypto.randomUUID(),
             title: message.meta?.title || 'Untitled Post',
@@ -36,9 +41,12 @@ class SPARQLUpdate extends Processor {
                 url: 'https://danny.ayers.name'
             },
             ...message
-        };
+        }
+        logger.setLogLevel('debug')
 
-        const update = nunjucks.renderString(template, updateData);
+        logger.debug(`renderString(template = ${template}
+            updateData = ${updateData})`)
+        const update = nunjucks.renderString(template, updateData)
 
         try {
             const response = await axios.post(endpoint.url, update, {
@@ -46,17 +54,17 @@ class SPARQLUpdate extends Processor {
                     'Content-Type': 'application/sparql-update',
                     'Authorization': this.env.getBasicAuthHeader(endpoint)
                 }
-            });
+            })
 
-            message.updateStatus = response.status === 200 ? 'success' : 'error';
-            message.updateResponse = response.data;
+            message.updateStatus = response.status === 200 ? 'success' : 'error'
+            message.updateResponse = response.data
 
-            return this.emit('message', message);
+            return this.emit('message', message)
         } catch (error) {
-            logger.error('SPARQL update error:', error);
-            throw error;
+            logger.error('SPARQL update error:', error)
+            throw error
         }
     }
 }
 
-export default SPARQLUpdate;
+export default SPARQLUpdate
