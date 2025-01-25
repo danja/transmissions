@@ -1,0 +1,13 @@
+@prefix : <http://example.org/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+:currentDirectory a foaf:Document ;
+    dcterms:title "Current Directory" ;
+    dcterms:hasPart :aboutTTL .
+
+:aboutTTL a foaf:Document ;
+    dcterms:title "about.ttl" ;
+    dcterms:format "text/turtle" ;
+    dcterms:creator "Danny" ;
+    dcterms:created "2023-10-05" .

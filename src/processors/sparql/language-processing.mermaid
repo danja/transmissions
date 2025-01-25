@@ -1,0 +1,22 @@
+flowchart LR
+    Input[Input String] --> HasLang{Has Language?}
+    HasLang --> |Yes| ValidLang{Valid BCP47?}
+    HasLang --> |No| DefLang{Default Language?}
+    
+    ValidLang --> |Yes| AddTag[Add Language Tag]
+    ValidLang --> |No| Error[Language Error]
+    
+    DefLang --> |Yes| NonLangField{Non-Language Field?}
+    DefLang --> |No| Plain[Plain Literal]
+    
+    NonLangField --> |Yes| Plain
+    NonLangField --> |No| AddDefTag[Add Default Tag]
+    
+    AddTag --> Escape[Escape String]
+    AddDefTag --> Escape
+    Plain --> Escape
+    
+    Escape --> Output[RDF Literal]
+    
+    class Input,Output borderbox
+    class Error emphasis

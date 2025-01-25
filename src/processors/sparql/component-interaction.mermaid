@@ -1,0 +1,25 @@
+sequenceDiagram
+    participant C as Client
+    participant V as Validator
+    participant T as Template Engine
+    participant U as TextUtils
+    participant L as LanguageConfig
+    
+    C->>V: validate(message)
+    activate V
+    V->>L: checkLanguageTags()
+    V->>U: validateURLs()
+    V-->>C: ValidationResult
+    deactivate V
+    
+    alt validation passed
+        C->>T: render(message)
+        activate T
+        T->>U: escapeStringLiteral()
+        T->>L: getLanguageConfig()
+        T->>U: escapeIRI()
+        T-->>C: turtleRDF
+        deactivate T
+    else validation failed
+        C->>C: handleError()
+    end

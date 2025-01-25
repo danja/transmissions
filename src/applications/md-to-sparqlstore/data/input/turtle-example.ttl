@@ -1,0 +1,9 @@
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+:md-to-sparqlstore
+a :Application ;
+:runner [
+:description "Should default to `data` dir" ;
+:path "~/github-danny/transmissions"
+]
+.

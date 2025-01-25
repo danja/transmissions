@@ -16,17 +16,19 @@ class SPARQLUpdate extends Processor {
         logger.setLogLevel('debug')
         logger.debug(`\nSPARQLUpdate.process`)
 
-        logger.debug(`AHERE`)
+
         if (!this.env.endpoints) {
             await this.env.loadEndpoints(message.rootDir)
         }
-        logger.debug(`HERE`)
+
 
         const endpoint = this.env.getUpdateEndpoint()
+        logger.debug(`SPARQLUpdate.process endpoint = ${endpoint}`)
         const template = await this.env.getTemplate(
             message.rootDir,
             await this.getProperty(ns.trn.templateFilename)
         )
+        logger.debug(`SPARQLUpdate.process template = ${template}`)
 
         const now = new Date().toISOString()
         const updateData = {

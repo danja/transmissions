@@ -10,8 +10,9 @@
   :messageType schema:Article .
 
 :sparqlUpdate a :ConfigSet ;
+    :templateFilename "sparql/diamonds/update-article.njk" ;
     :endpointSettings "sparql/endpoint.json" .
 
 :sparqlSelect a :ConfigSet ;
-    :templateFilename "sparql/diamonds/select-blogposting.njk" ;
+    :templateFilename "sparql/diamonds/select-article.njk" ;
     :endpointSettings "sparql/endpoint.json" .

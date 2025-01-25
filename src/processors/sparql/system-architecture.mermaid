@@ -1,0 +1,43 @@
+graph TB
+    subgraph Core Components
+        TE[Template Engine]
+        TU[TextUtils]
+        VAL[Validator]
+    end
+    
+    subgraph Configuration
+        CONF[Config]
+        LANG[Language Config]
+        PRED[Custom Predicates]
+    end
+    
+    subgraph Input Processing
+        MSG[Message]
+        VAL_RES[Validation Result]
+        RDF[RDF Output]
+    end
+    
+    MSG --> VAL
+    VAL --> VAL_RES
+    VAL_RES --> TE
+    TE --> RDF
+    
+    CONF --> TE
+    CONF --> VAL
+    
+    LANG --> TE
+    LANG --> VAL
+    
+    PRED --> VAL
+    PRED --> TE
+    
+    TU --> TE
+    TU --> VAL
+    
+    classDef core fill:#f9f,stroke:#333,stroke-width:2px
+    classDef config fill:#bbf,stroke:#333,stroke-width:2px
+    classDef process fill:#bfb,stroke:#333,stroke-width:2px
+    
+    class TE,TU,VAL core
+    class CONF,LANG,PRED config
+    class MSG,VAL_RES,RDF process

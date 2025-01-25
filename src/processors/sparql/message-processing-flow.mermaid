@@ -1,0 +1,22 @@
+flowchart TB
+    Input[Message Input] --> Validate{Validate}
+    Validate --> |Invalid| Error[Validation Error]
+    Validate --> |Valid| Transform[Transform to RDF]
+    
+    subgraph Validation
+        V1[Check Required Fields] --> V2[Validate Types]
+        V2 --> V3[Check Language Tags]
+        V3 --> V4[Validate URLs]
+        V4 --> V5[Custom Predicates]
+    end
+    
+    subgraph Transform
+        T1[Load Template] --> T2[Process Message]
+        T2 --> T3[Generate Triples]
+        T3 --> T4[Format Output]
+    end
+    
+    Transform --> Output[Turtle RDF]
+    
+    class Input,Output,Error borderbox
+    class Validation,Transform subdomain
