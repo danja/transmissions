@@ -1,68 +1,63 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix trn: <http://purl.org/stuff/transmissions/> .
-@prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix : <http://purl.org/stuff/transmissions/> .
 
-##################### only for testing
-trn:bContent a trn:ConfigSet ;
-    rdfs:label "Root node in JSON object for blanker" ;
-    trn:settings trn:blankContent  ;
-    trn:pointer "content"  .
-    trn:preserve "content.payload.test.third" .
 
-trn:setDump a trn:ConfigSet ;
-    trn:setValue (trn:sv0)  . # consider using blank nodes
-    trn:sv0   trn:key    "dump" ;
-            trn:value  "true"  .
-#########################################################################
+
 
 # should really be in a manifest.ttl
-trn:ReadFile a trn:ConfigSet ;
+:ReadFile a :ConfigSet ;
     rdfs:label "Read file" ;
-    trn:settings trn:readFile ;
-    trn:sourceFile "input/conversations.json" ;
-  #  trn:sourceFile "input/input-01.json" ;
-    trn:mediaType "application/json" .
+    :settings :readFile ;
+    :sourceFile "input/conversations.json" ;
+  #  :sourceFile "input/input-01.json" ;
+    :mediaType "application/json" .
 
 
-trn:ConversationsWalker a trn:ConfigSet ;
-    trn:key trn:conversationsConfig ;
-    trn:pointer "content" .
+:ConversationsWalker a :ConfigSet ;
+# :die "true" ;
+    :pointer "content" .
 
 
-trn:retreeConvs a trn:ConfigSet ;
-    trn:rename (trn:pp100 trn:pp101 trn:pp102  trn:pp103) .
-    trn:pp100     trn:pre     "content.uuid" ;
-                trn:post    "meta.conv_uuid"  .
-    trn:pp101     trn:pre     "content.name" ;
-                trn:post    "meta.conv_name"  .
-    trn:pp102     trn:pre     "content.updated_at" ;
-                trn:post    "meta.updated_at"  .
-    trn:pp103     trn:pre     "content.chat_messages" ;
-                trn:post    "content"  .
+:retreeConvsssssssnot a :ConfigSet ;
+    :rename (:pp100 :pp101 :pp102  :pp103) .
+    :pp100     :pre     "content.uuid" ;
+                :post    "meta.conv_uuid"  .
+    :pp101     :pre     "content.name" ;
+                :post    "meta.conv_name"  .
+    :pp102     :pre     "content.updated_at" ;
+                :post    "meta.updated_at"  .
+    :pp103     :pre     "content.chat_messages" ;
+                :post    "content"  .
 
-trn:MessagesWalker a trn:ConfigSet ;
-    trn:key trn:messagesConfig ;
-    trn:pointer "content" .
+:retreeConvs a :ConfigSet ;
+    :rename (:pp100 :pp101 :pp102  :pp103) .
+    :pp100     :pre     "content.uuid" ;
+                :post    "meta.conv_uuid"  .
+    :pp101     :pre     "content.name" ;
+                :post    "meta.conv_name"  .
+    :pp102     :pre     "content.updated_at" ;
+                :post    "meta.updated_at"  .
+    :pp103     :pre     "content.chat_messages" ;
+                :post    "content"  .
 
-# unused
-trn:retreeMsgs a trn:ConfigSet ;
-    trn:rename (trn:pp200 trn:pp201 trn:pp202) .
-
-    trn:pp200     trn:pre     "content.item.chat_messages" ;
-                trn:post    "channel"  .
-
-    trn:pp201     trn:pre     "content.item.uuid" ;
-                trn:post    "filename"  .
-
-    trn:pp202     trn:pre     "content.item.name" ;
-                trn:post    "title"  .
-
-#      filepath = this.getPropertyFromMyConfig(ns.trm.destinationFile)
+  :MessagesWalker a :ConfigSet ;
+      :pointer "content" .
 
 # unused
-trn:Writer a trn:ConfigSet ;
-    trn:key trn:writer ;
-    trn:destinationFile "DESTINATION" .
+:retreeMsgs a :ConfigSet ;
+    :rename (:pp200 :pp201 :pp202) .
+
+    :pp200     :pre     "content.item.chat_messages" ;
+                :post    "channel"  .
+
+    :pp201     :pre     "content.item.uuid" ;
+                :post    "filename"  .
+
+    :pp202     :pre     "content.item.name" ;
+                :post    "title"  .
+
+:Writer a :ConfigSet ;
+    :destinationFile "DESTINATION" .
 
 

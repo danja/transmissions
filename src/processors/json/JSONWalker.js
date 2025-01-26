@@ -46,43 +46,52 @@ class JSONWalker extends Processor {
      * @emits message - For each item and completion
      */
     async process(message) {
-        try {
-            message.done = false
-            var pointer = this.getPropertyFromMyConfig(ns.trn.pointer)
 
-            logger.debug(`JSONWalker pointer =  ${pointer}`)
+        message.done = false
+        var pointer = this.getProperty(ns.trn.pointer)
 
-            const content = structuredClone(message.content)
-            message.content = {} // TODO option in config
+        logger.debug(`JSONWalker pointer =  ${pointer}`)
 
-            //  for (const item of Object.values(content)) {
-            for (var i = 0; i < content.length; i++) {
-                const newMessage = structuredClone(message)
-                newMessage.content = content[i]
-                this.emit('message', newMessage)
-            }
-
-            var finalMessage = structuredClone(message)
-            finalMessage.content = content[content.length - 1]
-
-            /* this is for values - dict
-            for (const item of Object.values(content)) {
-                const newMessage = structuredClone(message)
-                newMessage.content = {}
-                newMessage.content.items = []
-                newMessage.content.items.push[item]
-                //   message.item = item  // TODO refactor, it's just to grab the last
-                finalMessage = newMessage
-                this.emit('message', newMessage)
-            }
-                */
-
-            finalMessage.done = true
-            this.emit('message', finalMessage)
-        } catch (err) {
-            logger.error("JSONWalker.process error: " + err.message)
-            throw err
+        //   process.exit(1)
+        var content = structuredClone(message.content)
+        if (typeof content === 'string') {
+            logger.debug(`content is a string, parsing to JSON`)
+            content = JSON.parse(content)
         }
+        message.content = {} // TODO option in config
+        logger.debug(`content.length  = ${content.length}`)
+        var die = this.getProperty(ns.trn.die)
+        logger.debug(`die = ${die}`)
+        if (die == "true") {
+            //    logger.debug(`content.slice(0, 10) = ${content.slice(0, 10)}`)
+            //  logger.reveal(content.slice(0, 10))
+            process.exit(1)
+        }
+        //  for (const item of Object.values(content)) {
+        for (var i = 0; i < content.length; i++) {
+            const newMessage = structuredClone(message)
+            newMessage.content = content[i]
+            this.emit('message', newMessage)
+        }
+
+        var finalMessage = structuredClone(message)
+        finalMessage.content = content[content.length - 1]
+
+        /* this is for values - dict
+        for (const item of Object.values(content)) {
+            const newMessage = structuredClone(message)
+            newMessage.content = {}
+            newMessage.content.items = []
+            newMessage.content.items.push[item]
+            //   message.item = item  // TODO refactor, it's just to grab the last
+            finalMessage = newMessage
+            this.emit('message', newMessage)
+        }
+            */
+
+        finalMessage.done = true
+        this.emit('message', finalMessage)
+
     }
 }
 

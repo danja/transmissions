@@ -14,35 +14,13 @@
 :N  a :NOP . # no operation (except for showing stage in pipe)
 :UF a :Unfork . # collapses all pipes but one
 
-####  testing only
-:nop a trn:Transmission ;
-    rdfs:label "nop" ;
-    rdfs:comment "NOP for testing" ;
-trn:pipe (:n10) .
 
-:n10 a :NOP .
-
-# testing only - FileWriter will save message
-:cb a trn:Transmission ;
-     rdfs:label "cb" ;
-     rdfs:comment "Claude blanker" ;
-     trn:pipe (:ccc10   :cb10 :cb20 :cb30) .
-
-:cb10 a :SetMessage ;
-     trn:settings :setDump .
-
-:cb20 a :FileWriter .
-
-:cb30 a :Blanker ; # clear values
-     trn:settings :blankContent .
-
-#####################################
 ####### The thing
 
 :ccc a trn:Transmission ;
      rdfs:label "ccc" ;
      rdfs:comment "Claude conversations.json converter" ;
-     trn:pipe (:ccc10 :ccc20 :ccc30 :ccc40 :ccc50  :ccc60) .
+     trn:pipe (:ccc10 :ccc20 :ccc30 :ccc40 :ccc50 :ccc60) .
 
 # Start
 
@@ -51,20 +29,20 @@ trn:pipe (:n10) .
 
 # Separates into conversations
 :ccc20 a :JSONWalker ;
-     trn:settings :conversationsConfig .
+     trn:settings :ConversationsWalker .
 
 
 :ccc30 a :Restructure ;
      trn:settings :retreeConvs .
 
 # Separates into messages
-:ccc40 a :JSONWalker ;
-     trn:settings :messagesConfig .
+  :ccc40 a :JSONWalker ;
+       trn:settings :MessagesWalker .
 
 #:p50 a :Restructure ;
  #    trn:settings :retreeMsgs .
 
 :ccc50 a :MarkdownFormatter .
 
-:ccc60 a :FileWriter .
-
+:ccc60 a :FileWriter ;
+     trn:settings :Writer .

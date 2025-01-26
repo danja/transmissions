@@ -1,7 +1,40 @@
 # Transmissions : Next Steps
 
-* **add** alternative to `configKey'
-`
+allow reading of transmission + config as one file etc.
+
+allow direct properties on processors in transmissions -
+
+instead of having to use config, ie :
+```
+var die = this.getProperty(ns.trn.die)
+logger.log(`die = ${die}`)
+if (die == "true") {
+    process.exit(1)
+}
+```
+
+fix all applications with `:key` in their config
+
+```turtle
+:ccc40 a :JSONWalker ;
+     trn:settings :messagesConfig .
+
+
+:MessagesWalker a :ConfigSet ;
+    :key :messagesConfig ;
+    :pointer "content" .
+  ```
+```
+  :ccc40 a :JSONWalker ;
+       trn:settings :MessagesWalker .
+
+
+  :MessagesWalker a :ConfigSet ;
+      :pointer "content" .
+    ```
+
+
+
 https://opentelemetry.io/docs/languages/js/
 
 * packer
