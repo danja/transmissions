@@ -1,5 +1,8 @@
 # Transmissions : Next Steps
 
+move claude dumps out of the way!
+
+
 allow reading of transmission + config as one file etc.
 
 allow direct properties on processors in transmissions -
