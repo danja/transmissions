@@ -1,0 +1,121 @@
+openapi: 3.0.0
+info:
+  title: Transmissions API
+  version: '1.0.0'
+  description: API for running Transmissions applications
+
+servers:
+  - url: http://localhost:4200/api
+    description: Local development server
+
+paths:
+  /:
+    get:
+      summary: Get server status
+      responses:
+        '200':
+          description: Server status information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  service:
+                    type: string
+                    example: 'Transmissions API'
+                  version:
+                    type: string
+                    example: '1.0.0'
+                  status:
+                    type: string
+                    example: 'running'
+
+  /applications:
+    get:
+      summary: List available applications
+      responses:
+        '200':
+          description: List of available applications
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  applications:
+                    type: array
+                    items:
+                      type: string
+                example:
+                  success: true
+                  applications: ['system/echo', 'test/example']
+        '500':
+          $ref: '#/components/responses/Error'
+
+  /{application}:
+    post:
+      summary: Run a Transmissions application
+      parameters:
+        - name: application
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Application identifier
+          example: 'system/echo'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Application-specific message payload
+      responses:
+        '200':
+          description: Successful application execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    description: Application-specific response data
+                example:
+                  success: true
+                  data:
+                    message: "Echo response"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: 'Invalid JSON payload'
+        '500':
+          $ref: '#/components/responses/Error'
+
+components:
+  responses:
+    Error:
+      description: Server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+                example: 'Internal server error'
