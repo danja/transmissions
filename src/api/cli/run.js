@@ -53,7 +53,7 @@ async function main() {
             alias: 'p',
             describe: chalk.yellow('Port for web interface'),
             type: 'number',
-            default: 4000
+            default: 4200
         })
 
     yargsInstance.command('$0 [application] [target]', chalk.green('runs the specified application\n'), (yargs) => {
