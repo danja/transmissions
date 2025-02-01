@@ -5,15 +5,15 @@ import ApplicationManager from '../../../core/ApplicationManager.js'
 import logger from '../../../utils/Logger.js'
 
 class WebRunner {
-    constructor(port = 4000, basePath = '/api') {
-        this.appManager = new ApplicationManager()
+    constructor(appManager, port = 4000, basePath = '/api') {
+        this.appManager = appManager
         this.app = express()
         this.port = port
         this.basePath = basePath
         this.setupMiddleware()
         this.setupRoutes()
         this.requestCount = 0
-        logger.setLogLevel('debug')
+        // logger.setLogLevel('debug')
     }
 
     setupMiddleware() {

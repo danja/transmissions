@@ -44,6 +44,12 @@ async function main() {
             type: 'string',
             coerce: JSON.parse
         })
+        .option('test', {
+            alias: 't',
+            describe: chalk.yellow('Run in test mode'),
+            type: 'boolean',
+            default: false
+        })
         .option('web', {
             alias: 'w',
             describe: chalk.yellow('Start web interface'),
@@ -65,11 +71,7 @@ async function main() {
                 describe: chalk.yellow('the target of the application')
             })
     }, async (argv) => {
-        if (argv.web) {
-            const webRunner = new WebRunner(argv.port)
-            await webRunner.start()
-            return
-        }
+
 
         if (!argv.application) {
             console.log(chalk.cyan('Available applications:'))
@@ -78,8 +80,8 @@ async function main() {
             yargsInstance.showHelp()
             return
         }
-
-        await commandUtils.begin(argv.application, argv.target, argv.message, argv.verbose)
+        const flags = { "port": argv.port, "verbose": argv.verbose, "silent": argv.silent, "test": argv.test }
+        await commandUtils.begin(argv.application, argv.target, argv.message, flags)
     })
 
     await yargsInstance.argv

@@ -5,23 +5,29 @@ import fs from 'fs/promises'
 import logger from '../../utils/Logger.js'
 
 import ApplicationManager from '../../core/ApplicationManager.js'
+import WebRunner from '../http/server/WebRunner.js'
 
 class CommandUtils {
 
     #appManager
 
     constructor() {
-        this.#appManager = new ApplicationManager();
+        this.#appManager = new ApplicationManager()
     }
 
-    async begin(application, target, message = {}, verbose, silent) {
+    // argv.application, argv.target, argv.message, flags
 
-        var debugLevel = verbose ? "debug" : "info"
+    async begin(application, target, message = {}, flags = {}) {
+
+        //    { verbose: argv.verbose, silent: argv.silent, test: argv.test }
+
+        var debugLevel = (flags.verbose || flags.test) ? "debug" : "info"
+        if (!flags.verbose) logger.silent = flags.silent
         logger.setLogLevel(debugLevel)
 
         logger.debug('\nCommandUtils.begin()')
         logger.debug('CommandUtils.begin, process.cwd() = ' + process.cwd())
-        logger.debug('CommandUtils.begin, debugLevel = ' + debugLevel)
+        logger.debug('CommandUtils.begin, flags = ' + flags)
         logger.debug('CommandUtils.begin, application = ' + application)
         logger.debug('CommandUtils.begin, target = ' + target)
         logger.debug(`CommandUtils.begin, message = ${message}`)
@@ -41,9 +47,13 @@ class CommandUtils {
     subtask = ${subtask}
     target = ${target}`)
 
+        this.#appManager = await this.#appManager.initialize(appName, appPath, subtask, target, flags)
 
-
-        await this.#appManager.initialize(appName, appPath, subtask, target)
+        if (flags.web) {
+            const webRunner = new WebRunner(this.#appManager, flags.port)
+            await webRunner.start()
+            return
+        }
 
         return await this.#appManager.start(message)
     }

@@ -7,6 +7,7 @@ import rdf from 'rdf-ext'
 import { fromFile } from 'rdf-utils-fs'
 
 import logger from '../utils/Logger.js'
+import MockApplicationManager from '../utils/MockApplicationManager.js'
 import TransmissionBuilder from './TransmissionBuilder.js'
 import ModuleLoaderFactory from './ModuleLoaderFactory.js'
 
@@ -20,7 +21,12 @@ class ApplicationManager {
         this.manifestFilename = 'manifest.ttl'
     }
 
-    async initialize(appName, appPath, subtask, target) {
+    async initialize(appName, appPath, subtask, target, flags) {
+        if (flags.test) {
+            const mock = new MockApplicationManager()
+            mock.initialize(appName, appPath, subtask, target, flags)
+            return mock
+        }
         // logger.setLogLevel('info')
         logger.debug(`\n\nApplicationManager.initialize appPath =  ${appPath} `)
         this.appPath = this.resolveApplicationPath(appPath) // TODO tidy with object below
@@ -42,6 +48,7 @@ class ApplicationManager {
             this.app.dataset = await this.loadManifest(this.app.manifestFilename)
             this.app.targetPath = target
         }
+        return this
     }
 
 
