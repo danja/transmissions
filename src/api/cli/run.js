@@ -80,7 +80,7 @@ async function main() {
             yargsInstance.showHelp()
             return
         }
-        const flags = { "port": argv.port, "verbose": argv.verbose, "silent": argv.silent, "test": argv.test }
+        const flags = { "web": argv.web, "port": argv.port, "verbose": argv.verbose, "silent": argv.silent, "test": argv.test }
         await commandUtils.begin(argv.application, argv.target, argv.message, flags)
     })
 

@@ -28,6 +28,7 @@ class CommandUtils {
         logger.debug('\nCommandUtils.begin()')
         logger.debug('CommandUtils.begin, process.cwd() = ' + process.cwd())
         logger.debug('CommandUtils.begin, flags = ' + flags)
+        logger.reveal(flags)
         logger.debug('CommandUtils.begin, application = ' + application)
         logger.debug('CommandUtils.begin, target = ' + target)
         logger.debug(`CommandUtils.begin, message = ${message}`)
