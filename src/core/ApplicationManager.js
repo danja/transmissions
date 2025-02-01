@@ -22,7 +22,15 @@ class ApplicationManager {
     }
 
     async initialize(appName, appPath, subtask, target, flags) {
-        if (flags.test) {
+        logger.debug(`ApplicationManager.initialize,
+            appName = ${appName}
+              appPath = ${appPath}
+                subtask = ${subtask}
+                  target = ${target}
+                    flags = ${flags}
+            `)
+        logger.setLogLevel('debug')
+        if (flags && flags.test) {
             const mock = new MockApplicationManager()
             mock.initialize(appName, appPath, subtask, target, flags)
             return mock
@@ -42,7 +50,7 @@ class ApplicationManager {
             appPath: appPath,
             subtask: subtask,
         }
-        logger.debug(`ApplicationManager.initialize, target = {target}`)
+        logger.debug(`ApplicationManager.initialize, target = ${target}`)
         if (target) {
             this.app.manifestFilename = path.join(target, this.manifestFilename)
             this.app.dataset = await this.loadManifest(this.app.manifestFilename)
@@ -55,12 +63,11 @@ class ApplicationManager {
     async start(message) {
         //   logger.setLogLevel('info')
         logger.debug(`\nApplicationManager.start
-    transmissionsFile : ${this.transmissionsFile},
-    processorsConfigFile : ${this.processorsConfigFile}
-    subtask : ${this.app.subtask}`)
+            transmissionsFile : ${this.transmissionsFile},
+         processorsConfigFile : ${this.processorsConfigFile}
+                      subtask : ${this.app.subtask}`)
 
-
-
+        logger.reveal(message)
         const transmissions = await TransmissionBuilder.build(
             this.transmissionsFile,
             this.processorsConfigFile,

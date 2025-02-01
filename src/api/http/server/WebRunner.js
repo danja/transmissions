@@ -13,123 +13,100 @@ class WebRunner {
         this.setupMiddleware()
         this.setupRoutes()
         this.requestCount = 0
-        // logger.setLogLevel('debug')
     }
 
     setupMiddleware() {
+        // CORS setup
         const corsOptions = {
             origin: (origin, callback) => {
-                if (!origin) return callback(null, true)
-                if (origin.match(/^https?:\/\/localhost(:[0-9]+)?$/) ||
-                    origin.match(/^https?:\/\/192\.168\.[0-9]+\.[0-9]+(:[0-9]+)?$/)) {
-                    return callback(null, true)
+                if (!origin || origin.startsWith('http://localhost')) {
+                    callback(null, true)
+                } else {
+                    callback(new Error('Not allowed by CORS'))
                 }
-                callback(new Error('Origin not allowed'))
             },
             methods: ['GET', 'POST', 'OPTIONS'],
-            allowedHeaders: ['Content-Type', 'Authorization'],
-            credentials: true,
-            preflightContinue: false,
-            optionsSuccessStatus: 204
+            allowedHeaders: ['Content-Type'],
+            credentials: true
         }
         this.app.use(cors(corsOptions))
-        this.app.use(express.json())
 
-        // Request logging
-        this.app.use((req, res, next) => {
-            this.requestCount++
-            logger.info(`[${this.requestCount}] ${req.method} ${req.path}`)
-            const start = Date.now()
-            res.on('finish', () => {
-                const duration = Date.now() - start
-                logger.info(`[${this.requestCount}] ${res.statusCode} - ${duration}ms`)
-            })
-            next()
-        })
-
-        // JSON error handling
-        this.app.use((err, req, res, next) => {
-            if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
-                logger.error(`Invalid JSON payload: ${err.message}`)
-                return res.status(400).json({
-                    success: false,
-                    error: 'Invalid JSON payload',
-                    details: err.message
-                })
+        // JSON body parsing
+        this.app.use(express.json({
+            limit: '10mb',
+            strict: false,
+            verify: (req, res, buf) => {
+                try {
+                    JSON.parse(buf)
+                } catch (e) {
+                    logger.error('Invalid JSON:', e)
+                }
             }
-            next(err)
-        })
+        }))
     }
 
     setupRoutes() {
-        this.app.get('/favicon.ico', (req, res) => res.status(204).end())
-
         const router = express.Router()
 
-        router.get('/', (req, res) => {
-            try {
-                res.json({
-                    service: 'Transmissions API',
-                    version: '1.0.0',
-                    status: 'running',
-                    uptime: process.uptime(),
-                    requests: this.requestCount
-                })
-            } catch (error) {
-                logger.error('Error in status endpoint:', error)
-                res.status(500).json({
-                    success: false,
-                    error: 'Internal server error'
-                })
-            }
-        })
-
-        router.get('/applications', async (req, res) => {
-            try {
-                const apps = await this.appManager.listApplications()
-                logger.info(`Listed ${apps.length} applications`)
-                res.json({
-                    success: true,
-                    applications: apps
-                })
-            } catch (error) {
-                logger.error('Error listing applications:', error)
-                res.status(500).json({
-                    success: false,
-                    error: error.message,
-                    details: error.stack
-                })
-            }
-        })
-
         router.post('/:application', async (req, res) => {
+            logger.log(`AAAA`)
+            const requestId = Math.random().toString(36).substring(7)
             const { application } = req.params
             const message = req.body || {}
 
-            logger.info(`Running application: ${application}`)
-            logger.debug('Message payload:', message)
+            logger.info(`[${requestId}] Running application: ${application}`)
+            logger.debug(`[${requestId}] Message payload:`, message)
 
             try {
+                logger.log(`BBBB`)
+                if (!this.appManager) {
+                    throw new Error('Application manager not initialized')
+                }
+                logger.log(`CCCC`)
+                logger.debug(`[${requestId}] Initializing application ${application}`)
                 await this.appManager.initialize(application)
+                logger.log(`DDDD`)
+                message.requestId = requestId
+                logger.debug(`[${requestId}] Starting application with message:`, message)
                 const result = await this.appManager.start(message)
-
+                logger.log(`EEEE`)
+                if (!result) {
+                    throw new Error('Application returned no result')
+                }
+                logger.log(`FFFF`)
+                logger.debug(`[${requestId}] Application result:`, result)
                 const response = {
                     success: true,
+                    requestId: requestId,
                     data: result.whiteboard ?
                         result.whiteboard[result.whiteboard.length - 1] :
-                        { message: "Transmission completed" }
+                        { message: "Echo response" }
                 }
-
-                logger.info(`Application ${application} completed successfully`)
+                logger.log(`GGGG`)
+                logger.info(`[${requestId}] Application ${application} completed successfully`)
                 res.json(response)
+
             } catch (error) {
-                logger.error(`Error running application ${application}:`, error)
-                res.status(500).json({
+                const errorResponse = {
                     success: false,
+                    requestId: requestId,
                     error: error.message,
                     details: error.stack,
                     application: application
+                }
+                logger.log(`error = `)
+                logger.reveal(error)
+                logger.log(`errorResponse = `)
+                logger.reveal(errorResponse)
+                logger.error(`[${requestId}] Error running application ${application}:`, error)
+                logger.error(`[${requestId}] Stack:`, error.stack)
+                logger.debug(`[${requestId}] Context:`, {
+                    application,
+                    message,
+                    headers: req.headers
                 })
+
+                res.status(500).json(errorResponse)
             }
         })
 

@@ -2,7 +2,6 @@ import TransmissionsClient from './TransmissionsClient.js'
 
 class TestClientUI {
     constructor() {
-        this.client = null
         this.elements = {
             baseUrl: document.getElementById('baseUrl'),
             application: document.getElementById('application'),
@@ -13,37 +12,47 @@ class TestClientUI {
             metrics: document.getElementById('metrics')
         }
 
+        // Ensure baseUrl has a value
+        if (!this.elements.baseUrl.value) {
+            this.elements.baseUrl.value = 'http://localhost:4200/api'
+        }
+
         this.initialize()
         this.bindEvents()
     }
 
     initialize() {
-        this.client = new TransmissionsClient(this.elements.baseUrl.value)
-        this.client.setStatusCallback(this.updateStatus.bind(this))
-        this.client.setErrorCallback(this.handleError.bind(this))
-        this.client.startServerCheck()
-
-        setInterval(() => this.updateMetrics(), 1000)
+        try {
+            this.client = new TransmissionsClient(this.elements.baseUrl.value)
+            this.updateStatus(true)
+            this.startMetricsUpdate()
+        } catch (err) {
+            console.error('Initialization error:', err)
+            this.handleError(err)
+        }
     }
 
     bindEvents() {
         this.elements.sendButton.addEventListener('click', () => this.sendRequest())
         this.elements.baseUrl.addEventListener('change', () => {
-            this.client.setBaseUrl(this.elements.baseUrl.value)
-            this.client.checkServer()
+            try {
+                this.client.setBaseUrl(this.elements.baseUrl.value)
+                this.updateStatus(true)
+            } catch (err) {
+                this.handleError(err)
+            }
         })
     }
 
-    updateStatus(status) {
+    updateStatus(isOnline) {
         const { status: statusEl, sendButton } = this.elements
-
-        if (status.available) {
+        if (isOnline) {
             statusEl.className = 'status success'
-            statusEl.textContent = `Server online - ${status.serverInfo.version}`
+            statusEl.textContent = 'Server online'
             sendButton.disabled = false
         } else {
             statusEl.className = 'status error'
-            statusEl.textContent = 'Server offline or unreachable'
+            statusEl.textContent = 'Server offline'
             sendButton.disabled = true
         }
     }
@@ -52,12 +61,21 @@ class TestClientUI {
         const { status: statusEl } = this.elements
         statusEl.className = 'status error'
         statusEl.textContent = `Error: ${error.message}`
-
         console.error('Client error:', error)
     }
 
-    updateMetrics() {
-        const metrics = this.client.getMetrics()
+    startMetricsUpdate() {
+        setInterval(() => {
+            if (this.client) {
+                const metrics = this.client.getMetrics()
+                this.updateMetricsDisplay(metrics)
+            }
+        }, 1000)
+    }
+
+    updateMetricsDisplay(metrics) {
+        if (!metrics) return
+
         this.elements.metrics.innerHTML = `
             <div class="metric-card">
                 <div>Requests</div>
@@ -78,7 +96,12 @@ class TestClientUI {
         const { application, message, response: responseEl, status: statusEl, sendButton } = this.elements
 
         try {
-            const messageData = JSON.parse(message.value)
+            let messageData
+            try {
+                messageData = JSON.parse(message.value)
+            } catch (err) {
+                throw new Error('Invalid JSON in message field')
+            }
 
             statusEl.className = 'status info'
             statusEl.textContent = 'Sending request...'
@@ -88,33 +111,31 @@ class TestClientUI {
 
             if (result.success) {
                 statusEl.className = 'status success'
-                statusEl.textContent = `Request successful (${result.duration}ms)`
+                statusEl.textContent = 'Request successful'
                 responseEl.textContent = JSON.stringify(result.data, null, 2)
             } else {
-                throw new Error(result.error.message)
+                throw new Error(result.error || 'Request failed')
             }
         } catch (err) {
             statusEl.className = 'status error'
             statusEl.textContent = `Error: ${err.message}`
             responseEl.textContent = ''
+            console.error('Request error:', err)
         } finally {
             sendButton.disabled = false
         }
     }
 }
 
-// Initialize the UI
+// Initialize the UI when the page loads
+const ui = new TestClientUI()
+
 // Handle global errors
 window.addEventListener('unhandledrejection', event => {
     console.error('Unhandled promise rejection:', event.reason)
-    const ui = window.ui
     if (ui) {
         ui.handleError({
-            message: 'Unhandled error: ' + event.reason.message,
-            context: 'Global error handler',
-            timestamp: new Date().toISOString()
+            message: 'Unhandled error: ' + event.reason.message
         })
     }
 })
-
-const ui = new TestClientUI()
