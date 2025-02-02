@@ -29,7 +29,8 @@ class Application {
 
     async initialize(appName, appPath, subtask, target, flags = {}) {
         this.appName = appName
-        this.appPath = this.resolveApplicationPath(appPath)
+        //    this.appPath = this.resolveApplicationPath(appPath)
+        this.appPath = this.resolveApplicationPath(appName)
         this.subtask = subtask
         this.targetPath = target
 

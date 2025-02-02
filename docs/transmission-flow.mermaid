@@ -1,0 +1,46 @@
+flowchart TB
+    subgraph Input
+        CLI[CLI Interface]
+        Config[Configuration Files]
+        Data[Input Data]
+    end
+
+    subgraph Core["Core Engine"]
+        AM[ApplicationManager]
+        TB[TransmissionBuilder]
+        ML[ModuleLoader]
+        Trans[Transmission]
+    end
+
+    subgraph Processing["Processing Pipeline"]
+        PP[Processor Pool]
+        PS[ProcessorSettings]
+        WB[Whiteboard]
+        Queue[Message Queue]
+    end
+
+    subgraph Output
+        FileOut[File Output]
+        APIOut[API Output]
+        Log[Logging]
+    end
+
+    CLI --> AM
+    Config --> TB
+    Data --> PP
+    
+    AM --> TB
+    TB --> ML
+    ML --> Trans
+    Trans --> PP
+    
+    PP <--> PS
+    PP <--> WB
+    PP <--> Queue
+    
+    PP --> FileOut
+    PP --> APIOut
+    PP --> Log
+
+    class Core emphasis
+    class Processing accent

@@ -2,6 +2,8 @@
 cd ~/github-danny/transmissions/
 ./trans --verbose --web --port 4200 echo
 
+./trans -v -w -p 4200 echo
+
 ./trans -v -w -t -p 4200 echo
 ```
 

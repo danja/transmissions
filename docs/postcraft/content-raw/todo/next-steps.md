@@ -2,6 +2,12 @@
 
 move claude dumps out of the way!
 
+<echo> a :Application .
+
+<this> a :ApplicationSession ;
+    :application <echo> ;
+    :config <config> .
+
 
 allow reading of transmission + config as one file etc.
 
