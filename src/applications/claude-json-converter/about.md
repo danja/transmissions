@@ -1,7 +1,7 @@
 ```sh
 cd ~/github-danny/transmissions/
 
-./trans -v claude-json-converter -m '{"sourceFile":"/home/danny/github-danny/hyperdata/docs/chat-archives/data-2025-01-26-21-27-52/conversations.json"}'
+./trans -v claude-json-converter -m '{"sourceFile":"/home/danny/github-danny/hyperdata/docs/chat-archives/data-2025-02-02-12-23-16/conversations.json"}'
 
 ./trans claude-json-converter
 ```

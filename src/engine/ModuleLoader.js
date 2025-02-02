@@ -6,20 +6,6 @@ import logger from '../utils/Logger.js'
 class ModuleLoader {
     constructor(classpath) {
         this.classpath = classpath
-        /*
- if (!Array.isArray(classpath)) {
-     throw new TypeError('Classpath must be an array')
- }
-
- // Ensure all paths are strings and normalize them
- 
- this.classpath = classpath.map(p => {
-     if (typeof p !== 'string') {
-         throw new TypeError('All classpath entries must be strings')
-     }
-     return path.normalize(p)
- })
-*/
 
         this.moduleCache = new Map()
         logger.debug(`ModuleLoader initialized with paths :\n${this.classpath}`)

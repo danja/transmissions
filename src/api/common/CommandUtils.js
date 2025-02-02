@@ -4,7 +4,7 @@ import path from 'path'
 import fs from 'fs/promises'
 import logger from '../../utils/Logger.js'
 
-import ApplicationManager from '../../core/ApplicationManager.js'
+import ApplicationManager from '../../engine/ApplicationManager.js'
 import WebRunner from '../http/server/WebRunner.js'
 
 class CommandUtils {

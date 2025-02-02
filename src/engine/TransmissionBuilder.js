@@ -1,6 +1,3 @@
-//import path from 'path';
-//import { fileURLToPath } from 'url';
-
 import rdf from 'rdf-ext'
 import grapoi from 'grapoi'
 import { fromFile, toFile } from 'rdf-utils-fs'
@@ -9,10 +6,8 @@ import ns from '../utils/ns.js'
 import GrapoiHelpers from '../utils/GrapoiHelpers.js'
 import logger from '../utils/Logger.js'
 
-// import ModuleLoader from './ModuleLoader.js'
 import AbstractProcessorFactory from "../processors/base/AbstractProcessorFactory.js"
-import Transmission from '../engine/Transmission.js'
-// import ModuleLoaderFactory from './ModuleLoaderFactory.js'
+import Transmission from '../model/Transmission.js'
 
 // TODO it looks like multiple copies of the config are being created - should be a singleton object
 
@@ -159,5 +154,4 @@ class TransmissionBuilder {
 
 
 }
-// export { ModuleLoader, ModuleLoaderFactory, TransmissionBuilder }
 export default TransmissionBuilder
