@@ -12,6 +12,15 @@ class Processor extends EventEmitter {
         this.messageQueue = []
         this.processing = false
         this.outputs = []
+
+        this.app = null // Will be set from message
+    }
+
+    getAppPath(relativePath) {
+        if (!this.app?.rootDir) {
+            throw new Error('Application context not available')
+        }
+        return path.join(this.app.rootDir, relativePath)
     }
 
     getValues(property, fallback) {
@@ -46,6 +55,13 @@ class Processor extends EventEmitter {
     }
 
     async preProcess(message) {
+        this.app = message.app
+        this.config.app = this.app
+
+        if (message.onProcess) { // Claude
+            message.onProcess(this, message)
+        }
+
         this.previousLogLevel = logger.getLevel()
         /*
         logger.setLogLevel('debug')
@@ -65,6 +81,16 @@ class Processor extends EventEmitter {
         }
         this.message = message
     }
+
+    // cLAUDE
+    async process(message) {
+        if (message.onProcess) {
+            message.onProcess(this, message)
+        }
+        await this.emit('message', message)
+    }
+
+
 
     async postProcess(message) {
         logger.setLogLevel(this.previousLogLevel)

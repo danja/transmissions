@@ -9,19 +9,24 @@ import logger from '../utils/Logger.js'
 import AbstractProcessorFactory from "../processors/base/AbstractProcessorFactory.js"
 import Transmission from '../model/Transmission.js'
 
-// TODO it looks like multiple copies of the config are being created - should be a singleton object
 
 class TransmissionBuilder {
-
-  constructor(moduleLoader) {
+  constructor(moduleLoader, app) { // Add app param
     this.moduleLoader = moduleLoader
+    this.app = app
   }
 
-  static async build(transmissionConfigFile, processorsConfigFile, moduleLoader) {
+  static async build(transmissionConfigFile, processorsConfigFile, moduleLoader, app) {
+    const builder = new TransmissionBuilder(moduleLoader, app)
     const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile)
     const processorsConfig = await TransmissionBuilder.readDataset(processorsConfigFile)
 
-    const builder = new TransmissionBuilder(moduleLoader)
+    // Merge with app dataset
+    for (const quad of app.dataset) {
+      transmissionConfig.add(quad)
+      processorsConfig.add(quad)
+    }
+
     return builder.buildTransmissions(transmissionConfig, processorsConfig)
   }
 
@@ -40,10 +45,12 @@ class TransmissionBuilder {
   }
 
   async constructTransmission(transmissionConfig, transmissionID, processorsConfig) {
-    processorsConfig.whiteboard = {}
-
     const transmission = new Transmission()
     transmission.id = transmissionID.value
+    transmission.app = this.app
+
+    processorsConfig.whiteboard = {}
+
     transmission.label = ''
 
     const transPoi = grapoi({ dataset: transmissionConfig, term: transmissionID })
@@ -112,8 +119,7 @@ class TransmissionBuilder {
   }
 
   async createProcessor(type, config) {
-    //  logger.setLogLevel('debug')
-    // logger.debug(`\n\nTransmissionBuilder.createProcessor, config = ${config}`)
+    logger.debug(`\n\nTransmissionBuilder.createProcessor, config = ${config}`)
 
     const coreProcessor = AbstractProcessorFactory.createProcessor(type, config)
     if (coreProcessor) {
@@ -135,11 +141,6 @@ class TransmissionBuilder {
       process.exit(1)
     }
   }
-
-  //  logger.error(`Failed to load processor ${type.value}: ${error.message}`)
-  //   throw new Error (`Failed to load processor ${type.value}: ${error.mesage}`)
-  //process.exit(1)
-  // throw error
 
   // file utils
   static async readDataset(filename) {

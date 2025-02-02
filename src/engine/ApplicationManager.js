@@ -1,7 +1,9 @@
+// ApplicationManager.js
+import rdf from 'rdf-ext'
+import ns from '../utils/ns.js'
 import path from 'path'
 import fs from 'fs/promises'
 import _ from 'lodash'
-
 import logger from '../utils/Logger.js'
 import MockApplicationManager from '../utils/MockApplicationManager.js'
 import TransmissionBuilder from './TransmissionBuilder.js'
@@ -12,6 +14,7 @@ class ApplicationManager {
     constructor() {
         this.app = new Application()
         this.moduleLoader = null
+        this.dataset = rdf.dataset()
     }
 
     async initialize(appName, appPath, subtask, target, flags) {
@@ -26,8 +29,34 @@ class ApplicationManager {
         await this.app.initialize(appName, appPath, subtask, target)
         this.moduleLoader = ModuleLoaderFactory.createApplicationLoader(this.app.getModulePath())
 
+        const appNode = rdf.namedNode(`http://purl.org/stuff/transmissions/${appName}`)
+        const sessionNode = rdf.blankNode()
+
+        this.dataset.add(rdf.quad(
+            appNode,
+            ns.rdf.type,
+            ns.trn.Application
+        ))
+
+        this.dataset.add(rdf.quad(
+            sessionNode,
+            ns.rdf.type,
+            ns.trn.ApplicationSession
+        ))
+
+        this.dataset.add(rdf.quad(
+            sessionNode,
+            ns.trn.application,
+            appNode
+        ))
+
+        // Add to config before building transmissions
+        this.app.dataset = this.dataset
+        this.app.sessionNode = sessionNode
+
         return this
     }
+
 
     async start(message = {}) {
         logger.debug(`ApplicationManager.start, transmissionsFile=${this.app.getTransmissionsPath()}, configFile=${this.app.getConfigPath()}, subtask=${this.app.subtask}`)
@@ -35,13 +64,27 @@ class ApplicationManager {
         const transmissions = await TransmissionBuilder.build(
             this.app.getTransmissionsPath(),
             this.app.getConfigPath(),
-            this.moduleLoader
+            this.moduleLoader,
+            this.app // Pass app reference
         )
 
-        // Merge application context into message
-        message = _.merge({}, message, this.app.toMessage())
+        // Get application context
+        const contextMessage = this.app.toMessage()
 
-        // Process each transmission
+        // Modify the input message in place
+        _.merge(message, contextMessage)
+
+        logger.debug('Message with merged context:', message)
+
+        for (const transmission of transmissions) {
+            if (!this.app.subtask || this.app.subtask === transmission.label) {
+                await transmission.process(message)
+            }
+        }
+
+        message.app = this.app
+        message.sessionNode = this.app.sessionNode
+
         for (const transmission of transmissions) {
             if (!this.app.subtask || this.app.subtask === transmission.label) {
                 await transmission.process(message)
