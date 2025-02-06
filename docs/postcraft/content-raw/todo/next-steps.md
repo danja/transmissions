@@ -2,12 +2,14 @@
 
 **2025-02-06**
 
-* subtransmissions
+
 * terrapacks
 * clients
 * duckduckgo
 
+* toRDF()
 
+* subtransmissions - test
 
 **2025-02-04**
 
