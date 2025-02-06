@@ -28,9 +28,15 @@ class Application {
     }
 
     async initialize(appName, appPath, subtask, target, flags = {}) {
+        logger.debug(`Application.initialize,
+            appName : ${appName}
+            appPath : ${appPath}
+            subtask : ${subtask}
+            target : ${target}`)
         this.appName = appName
-        //    this.appPath = this.resolveApplicationPath(appPath)
-        this.appPath = this.resolveApplicationPath(appName)
+        this.appPath = this.resolveApplicationPath(appPath)
+        // this.appPath = appPath
+        //this.resolveApplicationPath(appName)
         this.subtask = subtask
         this.targetPath = target
 
@@ -42,6 +48,7 @@ class Application {
         return this
     }
 
+    //////////////////// not used
     resolveApplicationPath(appName) {
         if (!appName) {
             throw new Error('Application name is required')
@@ -80,6 +87,7 @@ class Application {
     }
 
     getModulePath() {
+        logger.debug(`Application.getModulePath,\nthis.appPath : ${this.appPath}\nthis.moduleSubDir : ${this.moduleSubDir}`)
         return path.join(this.appPath, this.moduleSubDir)
     }
 

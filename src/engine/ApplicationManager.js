@@ -57,16 +57,31 @@ class ApplicationManager {
         return this
     }
 
+    async buildTransmissions(transmissionConfigFile, processorsConfigFile, moduleLoader, app) {
+        logger.debug(`\nApplicationManager.build ****************************************`)
+
+        const builder = new TransmissionBuilder(this.moduleLoader, this.app)
+        const transmissionConfig = await TransmissionBuilder.readDataset(this.app.getTransmissionsPath())
+        const processorsConfig = await TransmissionBuilder.readDataset(this.app.getConfigPath())
+
+        // Merge with app dataset
+        /*
+            for (const quad of app.dataset) {
+              transmissionConfig.add(quad)
+              processorsConfig.add(quad)
+            }
+        */
+        return await builder.buildTransmissions(transmissionConfig, processorsConfig)
+    }
 
     async start(message = {}) {
-        logger.debug(`ApplicationManager.start, transmissionsFile=${this.app.getTransmissionsPath()}, configFile=${this.app.getConfigPath()}, subtask=${this.app.subtask}`)
+        logger.debug(`\nApplicationManager.start`)
+        logger.debug(`
+            transmissionsFile=${this.app.getTransmissionsPath()}
+            configFile=${this.app.getConfigPath()}
+            subtask=${this.app.subtask}`)
 
-        const transmissions = await TransmissionBuilder.build(
-            this.app.getTransmissionsPath(),
-            this.app.getConfigPath(),
-            this.moduleLoader,
-            this.app // Pass app reference
-        )
+        const transmissions = await this.buildTransmissions()
 
         // Get application context
         const contextMessage = this.app.toMessage()
@@ -76,16 +91,18 @@ class ApplicationManager {
 
         logger.debug('Message with merged context:', message)
 
+        /*
         for (const transmission of transmissions) {
             if (!this.app.subtask || this.app.subtask === transmission.label) {
                 await transmission.process(message)
             }
         }
-
-        message.app = this.app
+*/
+        //       message.app = this.app
         message.sessionNode = this.app.sessionNode
 
         for (const transmission of transmissions) {
+            logger.debug(`transmission = \n${transmission}`)
             if (!this.app.subtask || this.app.subtask === transmission.label) {
                 await transmission.process(message)
             }

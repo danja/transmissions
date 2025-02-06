@@ -1,5 +1,15 @@
 # Transmissions : Next Steps
 
+**2025-02-04**
+
+* remote modules loading again
+* subtransmissions
+* terrapacks
+* clients
+* duckduckgo
+
+---
+
 move claude dumps out of the way!
 
 <echo> a :Application .

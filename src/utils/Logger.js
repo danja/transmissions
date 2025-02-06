@@ -10,7 +10,7 @@ const logger = {}
 // Map log levels to chalk styles
 const LOG_STYLES = {
     "trace": chalk.bgGray.greenBright,
-    "debug": chalk.bgCyanBright.black,
+    "debug": chalk.cyanBright,
     "info": chalk.white,
     "warn": chalk.red.italic,
     "error": chalk.red.bold
@@ -133,7 +133,8 @@ logger.reveal = function (instance) {
         }
 
         if (instance.hasOwnProperty(key)) {
-            let value = instance[key]
+            var value = instance[key]
+
             if (value) {
                 if (Buffer.isBuffer(value)) {
                     value = value.toString()
@@ -145,7 +146,9 @@ logger.reveal = function (instance) {
                         value = value.slice(0, 99)
                     }
                 }
+
                 serialized[key] = value
+
             } else {
                 serialized[key] = '[no key]'
             }

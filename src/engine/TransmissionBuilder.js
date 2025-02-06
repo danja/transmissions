@@ -16,27 +16,18 @@ class TransmissionBuilder {
     this.app = app
   }
 
-  static async build(transmissionConfigFile, processorsConfigFile, moduleLoader, app) {
-    const builder = new TransmissionBuilder(moduleLoader, app)
-    const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile)
-    const processorsConfig = await TransmissionBuilder.readDataset(processorsConfigFile)
-
-    // Merge with app dataset
-    for (const quad of app.dataset) {
-      transmissionConfig.add(quad)
-      processorsConfig.add(quad)
-    }
-
-    return builder.buildTransmissions(transmissionConfig, processorsConfig)
-  }
-
   async buildTransmissions(transmissionConfig, processorsConfig) {
+    logger.debug(`\nTransmissionBuilder.buildTransmissions`)
+    logger.debug(`**************************transmissionConfig = ${transmissionConfig}`)
     const poi = grapoi({ dataset: transmissionConfig })
     const transmissions = []
 
     for (const q of poi.out(ns.rdf.type).quads()) {
+      logger.debug(`\nQ = ${q}`)
+      // logger.reveal(q)
       if (q.object.equals(ns.trn.Transmission)) {
         const transmissionID = q.subject
+        logger.debug(`\ntransmissionID = ${transmissionID}`)
         //    transmissions.push(await this.constructTransmission(transmissionConfig, transmissionID, processorsConfig));
         transmissions.push(await this.constructTransmission(transmissionConfig, transmissionID, processorsConfig)) // was await
       }
@@ -45,6 +36,7 @@ class TransmissionBuilder {
   }
 
   async constructTransmission(transmissionConfig, transmissionID, processorsConfig) {
+    logger.debug(`\nTransmissionBuilder.constructTransmission`)
     const transmission = new Transmission()
     transmission.id = transmissionID.value
     transmission.app = this.app
@@ -119,7 +111,7 @@ class TransmissionBuilder {
   }
 
   async createProcessor(type, config) {
-    logger.debug(`\n\nTransmissionBuilder.createProcessor, config = ${config}`)
+    logger.trace(`\n\nTransmissionBuilder.createProcessor, config = ${config}`)
 
     const coreProcessor = AbstractProcessorFactory.createProcessor(type, config)
     if (coreProcessor) {
@@ -138,6 +130,7 @@ class TransmissionBuilder {
       return new ProcessorClass.default(config)
     } catch (error) {
       logger.error(`TransmissionBuilder.createProcessor, failed to load ${type.value} : ${error.message}`)
+      // logger.debug(`TransmissionBuilder.createProcessor, failed to load ${type.value} : ${error.message}`)
       process.exit(1)
     }
   }

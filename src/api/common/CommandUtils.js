@@ -25,7 +25,7 @@ class CommandUtils {
         if (!flags.verbose) logger.silent = flags.silent
         logger.setLogLevel(debugLevel)
 
-        logger.debug('\nCommandUtils.begin()')
+        logger.debug('\nCommandUtils.begin')
         logger.debug('CommandUtils.begin, process.cwd() = ' + process.cwd())
         logger.debug('CommandUtils.begin, flags = ' + flags)
         logger.reveal(flags)
