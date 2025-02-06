@@ -90,7 +90,7 @@ class ApplicationManager {
         // Modify the input message in place
         _.merge(message, contextMessage)
 
-        logger.debug('Message with merged context:', message)
+        logger.trace('Message with merged context:', message)
 
         /*
         for (const transmission of transmissions) {
