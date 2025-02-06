@@ -1,7 +1,7 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
 import logger from '../utils/Logger.js'
-import ModuleLoader from './_ModuleLoader.js'
+import ModuleLoader from './ModuleLoader.js'
 
 class ModuleLoaderFactory {
     static instance = null;

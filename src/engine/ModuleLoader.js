@@ -36,8 +36,6 @@ class ModuleLoader {
         }
 
         const errorMsg = `Failed to load module '${moduleName}' from paths:\n${errors.join('\n')}`
-        logger.error(errorMsg)
-        logger.debug(errorMsg)
         throw new Error(errorMsg)
     }
 
