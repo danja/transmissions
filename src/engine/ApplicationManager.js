@@ -75,7 +75,7 @@ class ApplicationManager {
     }
 
     async start(message = {}) {
-        logger.debug(`\nApplicationManager.start`)
+        logger.debug(`\n||| ApplicationManager.start`)
         logger.debug(`
             transmissionsFile=${this.app.getTransmissionsPath()}
             configFile=${this.app.getConfigPath()}
@@ -83,6 +83,7 @@ class ApplicationManager {
 
         const transmissions = await this.buildTransmissions()
 
+        logger.debug(`Transmissions has length ${transmissions.length}`)
         // Get application context
         const contextMessage = this.app.toMessage()
 

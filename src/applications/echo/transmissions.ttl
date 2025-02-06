@@ -7,15 +7,16 @@
 
 #############################################################
 # insert into pipe for debugging
-:DE a :DeadEnd . # ends the current pipe quietly
-:H  a :Halt . # kills everything
-:SC a :ShowConfig . # verbose report, continues pipe
-:SM a :ShowMessage . # verbose report, continues pipe
-:N  a :NOP . # no operation (except for showing stage in pipe)
-:UF a :Unfork . # collapses all pipes but one
+# :DE a :DeadEnd . # ends the current pipe quietly
+# :H  a :Halt . # kills everything
+# :SC a :ShowConfig . # verbose report, continues pipe
+# :SM a :ShowMessage . # verbose report, continues pipe
+# :N  a :NOP . # no operation (except for showing stage in pipe)
+# :UF a :Unfork . # collapses all pipes but one
 #############################################################
 
 :echo a :Transmission ;
-    :pipe (:N :p10) .
+    :pipe (:p10 :p20) .
 
-:p10 a :ShowMessage .
+:p10  a :NOP .
+:p20 a :ShowMessage .
