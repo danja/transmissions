@@ -29,6 +29,7 @@ class Transmission {
       error.transmissionStack.push(this.id)
       throw error
     }
+    return message
   }
 
   register(processorName, instance) {

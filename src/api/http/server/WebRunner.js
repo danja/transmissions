@@ -78,9 +78,12 @@ class WebRunner {
                 const response = {
                     success: true,
                     requestId: requestId,
-                    data: result.whiteboard ?
+
+                    data: result
+                    /*result.whiteboard ?
                         result.whiteboard[result.whiteboard.length - 1] :
                         { message: "Echo response" }
+                */
                 }
                 logger.log(`GGGG`)
                 logger.info(`[${requestId}] Application ${application} completed successfully`)

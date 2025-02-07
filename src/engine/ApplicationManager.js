@@ -105,11 +105,13 @@ class ApplicationManager {
         for (const transmission of transmissions) {
             logger.debug(`transmission = \n${transmission}`)
             if (!this.app.subtask || this.app.subtask === transmission.label) {
-                await transmission.process(message)
+                //     await transmission.process(message)
+                message = await transmission.process(message)
             }
         }
-
-        return { success: true }
+        message.success = true
+        logger.reveal(message)
+        return message //{ success: true }
     }
 
     async listApplications() {

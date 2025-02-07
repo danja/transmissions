@@ -34,7 +34,7 @@ class Application {
             subtask : ${subtask}
             target : ${target}`)
         this.appName = appName
-        this.appPath = this.resolveApplicationPath(appPath)
+        this.appPath = this.resolveApplicationPath(appName)
         // this.appPath = appPath
         //this.resolveApplicationPath(appName)
         this.subtask = subtask
@@ -48,7 +48,7 @@ class Application {
         return this
     }
 
-    //////////////////// not used
+    //////////////////// ?
     resolveApplicationPath(appName) {
         if (!appName) {
             throw new Error('Application name is required')
