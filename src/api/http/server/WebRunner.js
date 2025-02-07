@@ -49,7 +49,6 @@ class WebRunner {
         const router = express.Router()
 
         router.post('/:application', async (req, res) => {
-            logger.log(`AAAA`)
             const requestId = Math.random().toString(36).substring(7)
             const { application } = req.params
             const message = req.body || {}
@@ -58,22 +57,17 @@ class WebRunner {
             logger.debug(`[${requestId}] Message payload:`, message)
 
             try {
-                logger.log(`BBBB`)
                 if (!this.appManager) {
                     throw new Error('Application manager not initialized')
                 }
-                logger.log(`CCCC`)
                 logger.debug(`[${requestId}] Initializing application ${application}`)
                 await this.appManager.initialize(application)
-                logger.log(`DDDD`)
                 message.requestId = requestId
                 logger.debug(`[${requestId}] Starting application with message:`, message)
                 const result = await this.appManager.start(message)
-                logger.log(`EEEE`)
                 if (!result) {
                     throw new Error('Application returned no result')
                 }
-                logger.log(`FFFF`)
                 logger.debug(`[${requestId}] Application result:`, result)
                 const response = {
                     success: true,
@@ -85,7 +79,6 @@ class WebRunner {
                         { message: "Echo response" }
                 */
                 }
-                logger.log(`GGGG`)
                 logger.info(`[${requestId}] Application ${application} completed successfully`)
                 res.json(response)
 
