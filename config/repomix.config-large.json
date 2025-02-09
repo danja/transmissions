@@ -1,0 +1,28 @@
+{
+    "output": {
+        "filePath": "./docs/terrapacks/repomix-transmissions-large.md",
+        "headerText": "Transmissions source code",
+        "removeComments": false
+    },
+    "include": [
+        "**/*"
+    ],
+    "ignore": {
+        "useGitignore": true,
+        "useDefaultPatterns": true,
+        "customPatterns": [
+            "**/_*/**",
+            "**/.env",
+            "**/old",
+            "docs",
+            "**/*repopack*",
+            "**/*repomix*",
+            ".git",
+            "node_modules",
+            "*.log",
+            "**/data/*",
+            "**/*copy.js",
+            "**/conversations.json"
+        ]
+    }
+}

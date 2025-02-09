@@ -1,0 +1,31 @@
+{
+  "output": {
+    "filePath": "./docs/terrapacks/terrapack-transmissions.json",
+    "format": "text/plain",
+    "removeComments": true,
+    "summary": true
+  },
+  "filters": {
+    "include": [
+      "*.js",
+      "*.jsx",
+      "*.ts",
+      "*.tsx",
+      "*.md",
+      "*.ttl",
+      "*.json"
+    ],
+    "exclude": [
+      "node_modules",
+      ".git",
+      "dist",
+      "build",
+      "coverage",
+      "**/test/*",
+      "**/*.test.*",
+      "**/*.spec.*",
+      "**/*copy*",
+      "**/_*"
+    ]
+  }
+}

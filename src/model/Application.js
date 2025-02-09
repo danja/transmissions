@@ -33,10 +33,9 @@ class Application {
             appPath : ${appPath}
             subtask : ${subtask}
             target : ${target}`)
+
         this.appName = appName
-        this.appPath = this.resolveApplicationPath(appName)
-        // this.appPath = appPath
-        //this.resolveApplicationPath(appName)
+        this.appPath = await this.resolveApplicationPath(appName)
         this.subtask = subtask
         this.targetPath = target
 
@@ -48,21 +47,31 @@ class Application {
         return this
     }
 
-    //////////////////// ?
-    resolveApplicationPath(appName) {
+    async resolveApplicationPath(appName) {
         if (!appName) {
             throw new Error('Application name is required')
         }
 
-        if (appName.startsWith('/')) {
-            return appName
+        // Try in _pending directory first
+        let possiblePaths = [
+            path.join(process.cwd(), this.appsDir, '_pending', appName),
+            path.join(process.cwd(), this.appsDir, appName)
+        ]
+
+        for (const testPath of possiblePaths) {
+            try {
+                logger.debug(`Testing path: ${testPath}`)
+                const transmissionsPath = path.join(testPath, this.transmissionFilename)
+                await fromFile(transmissionsPath).read() // Test if file exists and is readable
+                logger.debug(`Found valid application at: ${testPath}`)
+                return testPath
+            } catch (err) {
+                logger.debug(`No valid application at: ${testPath}`)
+                continue
+            }
         }
 
-        if (appName.startsWith('..')) {
-            return path.resolve(process.cwd(), appName)
-        }
-
-        return path.join(process.cwd(), this.appsDir, appName)
+        throw new Error(`Could not find application ${appName} in any expected location`)
     }
 
     async loadManifest() {

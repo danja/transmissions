@@ -76,7 +76,8 @@ async function main() {
         if (!argv.application) {
             console.log(chalk.cyan('Available applications:'))
             const apps = await commandUtils.listApplications()
-            console.log(chalk.green(apps.join('\n')))
+            console.log(chalk.green(`\t${apps.join('\n\t')}\n`))
+
             yargsInstance.showHelp()
             return
         }

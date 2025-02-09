@@ -1,0 +1,38 @@
+{
+    "output": {
+        "filePath": "./docs/terrapacks/repomix-transmissions-docs.md",
+        "format": "markdown",
+        "headerText": "Transmissions docs",
+        "removeComments": true
+    },
+    "ignore": {
+        "useDefaultPatterns": true,
+        "customPatterns": [
+            ".env",
+            ".git",
+            "**/_*",
+            "node_modules",
+            "*.log",
+            "**/*repopack*.txt",
+            "**/*.html",
+            "**/data/*",
+            "**/*copy.js",
+            "**/conversations.json"
+        ]
+    },
+    "include": [
+        "**/*.md",
+        "**/*.ttl"
+    ],
+    "exclude": [
+        "**/node_modules/**",
+        "**/*.spec.js",
+        "**/test/**",
+        "**/__tests__/**",
+        "**/coverage/**",
+        "**/docs/**",
+        "**/*.md",
+        "**/*.log",
+        "**/dist/**"
+    ]
+}

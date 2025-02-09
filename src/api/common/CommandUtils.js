@@ -15,11 +15,7 @@ class CommandUtils {
         this.#appManager = new ApplicationManager()
     }
 
-    // argv.application, argv.target, argv.message, flags
-
     async begin(application, target, message = {}, flags = {}) {
-
-        //    { verbose: argv.verbose, silent: argv.silent, test: argv.test }
 
         var debugLevel = (flags.verbose || flags.test) ? "debug" : "info"
         if (!flags.verbose) logger.silent = flags.silent
