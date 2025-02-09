@@ -60,7 +60,7 @@
     "marked-code-format": "^1.1.6",
     "marked-custom-heading-id": "^2.0.10",
     "marked-footnote": "^1.2.4",
-    "markmap-lib": "^0.17.0",
+    "markmap-lib": "^0.18.9",
     "markmap-render": "^0.17.0",
     "markmap-toolbar": "^0.17.0",
     "markmap-view": "^0.17.0",
