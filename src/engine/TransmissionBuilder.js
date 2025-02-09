@@ -9,9 +9,8 @@ import logger from '../utils/Logger.js'
 import AbstractProcessorFactory from "../processors/base/AbstractProcessorFactory.js"
 import Transmission from '../model/Transmission.js'
 
-
 class TransmissionBuilder {
-  constructor(moduleLoader, app) { // Add app param
+  constructor(moduleLoader, app) {
     this.moduleLoader = moduleLoader
     this.app = app
     this.transmissionCache = new Map()
@@ -26,11 +25,9 @@ class TransmissionBuilder {
     const transmissions = []
 
     for (const q of poi.out(ns.rdf.type).quads()) {
-
-      // logger.reveal(q)
       if (q.object.equals(ns.trn.Transmission)) {
         const transmissionID = q.subject
-        logger.debug(`\ntransmissionID = ${transmissionID}`)
+        logger.debug(`\ntransmissionID = ${transmissionID.value}`)
 
         const transmission = await this.constructTransmission(
           transmissionConfig,
@@ -38,8 +35,6 @@ class TransmissionBuilder {
           processorsConfig
         )
         transmissions.push(transmission)
-
-        //        transmissions.push(await this.constructTransmission(transmissionConfig, transmissionID, processorsConfig)) // was await
       }
     }
     return transmissions
@@ -61,42 +56,40 @@ class TransmissionBuilder {
     transmission.app = this.app
 
     processorsConfig.whiteboard = {}
-
     transmission.label = ''
 
     const transPoi = grapoi({ dataset: transmissionConfig, term: transmissionID })
-    // grapoi probably has a built-in for all this
     const pipenodes = GrapoiHelpers.listToArray(transmissionConfig, transmissionID, ns.trn.pipe)
 
-    // TODO has grapoi got a first/single property method?
     for (const quad of transPoi.out(ns.rdfs.label).quads()) {
       transmission.label = quad.object.value
     }
     logger.log('\n+ ***** Construct Transmission : ' + transmission.label + ' <' + transmission.id + '>')
 
-    let previousName = "nothing"
-
     await this.createNodes(transmission, pipenodes, transmissionConfig, processorsConfig)
     this.connectNodes(transmission, pipenodes)
 
-    this.currentDepth-- // ??
+    this.currentDepth--
     return transmission
   }
 
   async createNodes(transmission, pipenodes, transmissionConfig, processorsConfig) {
-    //  for (let i = 0; i < pipenodes.length; i++) {
-    //   let node = pipenodes[i]
-
     for (const node of pipenodes) {
+      //  node.value is either the name of a processor or a nested transmission
 
-      let processorName = node.value
-
-      if (!transmission.get(processorName)) {
-
+      if (!transmission.get(node.value)) {
         const np = rdf.grapoi({ dataset: transmissionConfig, term: node })
-
         const processorType = np.out(ns.rdf.type).term
 
+        const settingsNode = np.out(ns.trn.settings).term
+        const settingsNodeName = settingsNode ? settingsNode : undefined
+
+        logger.debug(`Creating processor:
+          Node: ${node.value}
+          Type: ${processorType?.value}
+          SettingsNode: ${settingsNodeName}
+        `)
+        //    Config: \n${processorsConfig}
         // Check if node is a nested transmission
         if (processorType && this.isTransmissionReference(processorType)) {
           const nestedTransmission = await this.constructTransmission(
@@ -110,34 +103,13 @@ class TransmissionBuilder {
           const processor = await this.createProcessor(processorType, processorsConfig)
           processor.id = node.value
           processor.type = processorType
+          if (settingsNode) {
+            processor.settingsNode = settingsNode
+          }
           processor.transmission = transmission
+
           transmission.register(node.value, processor)
         }
-
-
-        /*
-      let processorConfig = np.out(ns.trn.settings).term
-
-      try {
-        let name = ns.getShortname(processorName)
-        let type = ns.getShortname(processorType.value)
-
-        logger.log("| Create processor :" + name + " of type :" + type)
-        let processor = await this.createProcessor(processorType, processorsConfig)
-
-        processor.id = processorName
-        processor.type = processorType
-        processor.transmissionNode = node
-        processor.transmission = transmission
-        processor.settingsNode = processorConfig
-
-        transmission.register(processorName, processor)
-
-      } catch (err) {
-        logger.error('-> Can\'t resolve ' + processorName + ' (check transmission.ttl for typos!)\n')
-        logger.error(err)
-      }
-        */
       }
     }
   }
@@ -151,8 +123,6 @@ class TransmissionBuilder {
     const transPoi = grapoi({ dataset: transmissionConfig, term: transmissionID })
     return transPoi.out(ns.trn.pipe).terms
   }
-
-
 
   async connectNodes(transmission, pipenodes) {
     for (let i = 0; i < pipenodes.length - 1; i++) {
@@ -173,24 +143,21 @@ class TransmissionBuilder {
       return coreProcessor
     }
 
-    logger.debug(`TransmissionBuilder, core processor not found for ${type.value}. Trying remote module loader...`)
+    logger.debug(`TransmissionBuilder, core processor not found for ${type?.value}. Trying remote module loader...`)
 
     try {
       const shortName = type.value.split('/').pop()
       logger.debug(`TransmissionBuilder, loading module: ${shortName}`)
-      logger.log(this.moduleLoader)
       const ProcessorClass = await this.moduleLoader.loadModule(shortName)
 
       logger.debug(`Module loaded successfully: ${shortName}`)
       return new ProcessorClass.default(config)
     } catch (error) {
-      logger.error(`TransmissionBuilder.createProcessor, failed to load ${type.value} : ${error.message}`)
-      // logger.debug(`TransmissionBuilder.createProcessor, failed to load ${type.value} : ${error.message}`)
+      logger.error(`TransmissionBuilder.createProcessor, failed to load ${type?.value} : ${error.message}`)
       process.exit(1)
     }
   }
 
-  // file utils
   static async readDataset(filename) {
     const stream = fromFile(filename)
     const dataset = await rdf.dataset().import(stream)
@@ -200,7 +167,6 @@ class TransmissionBuilder {
   static async writeDataset(dataset, filename) {
     await toFile(dataset.toStream(), filename)
   }
-
-
 }
+
 export default TransmissionBuilder

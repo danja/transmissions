@@ -9,19 +9,26 @@ class ProcessorSettings {
     }
 
     getValues(property, fallback) {
-        logger.debug(`\n\nProcessorSettings.getValues, property = ${property.value}`)
-
+        logger.debug(`\n\nProcessorSettings.getValues,
+            property = ${property.value}`)
+        if (this.settingsNode) {
+            logger.debug(`    settingsNode = ${this.settingsNode.value}`)
+        }
         if (!this.settingsNode || !this.config) {
             return fallback ? [fallback] : []
         }
 
         const dataset = this.config
+        //  logger.log(dataset)
         const ptr = grapoi({ dataset, term: this.settingsNode })
 
         // Get all values and make them unique using distinct()
-        logger.debug(`get all matches to ${this.settingsNode.value} ${property} ?value`)
-        const values = ptr.out([property]).distinct()
-        logger.debug(`Values found: ${values.terms.length}`)
+        logger.debug(`get all match to \n<${this.settingsNode.value}> <${property}> ?value`)
+        // const values = ptr.out([property]).distinct()
+        const values = ptr.out(property).distinct()
+        // logger.debug(`Values found: ${values}`)
+        // logger.reveal(values)
+        // logger.debug(`Values found: ${values.terms.length}`)
 
         if (values.terms.length > 0) {
             const all = values.terms.map(term => term.value)
@@ -46,7 +53,7 @@ class ProcessorSettings {
 
     getValue(property, fallback) {
         const values = this.getValues(property, fallback)
-        logger.debug(`All values2: ${values}`)
+        logger.trace(`All values2: ${values}`)
         if (values.length == 0) {
             return undefined
         }

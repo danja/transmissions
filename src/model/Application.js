@@ -1,5 +1,6 @@
 import path from 'path'
 import { fromFile } from 'rdf-utils-fs'
+import fs from 'fs/promises'
 import rdf from 'rdf-ext'
 import logger from '../utils/Logger.js'
 
@@ -47,31 +48,52 @@ class Application {
         return this
     }
 
+    async findInDirectory(dir, targetName, depth = 0) {
+        if (depth > 3) return null
+
+        try {
+            const entries = await fs.readdir(dir, { withFileTypes: true })
+
+            for (const entry of entries) {
+                if (!entry.isDirectory()) continue
+
+                const fullPath = path.join(dir, entry.name)
+
+                // Check if this directory matches
+                if (entry.name === targetName) {
+                    const transmissionsFile = path.join(fullPath, this.transmissionFilename)
+                    try {
+                        await fs.access(transmissionsFile)
+                        return fullPath
+                    } catch {
+                        // Has matching name but no transmissions.ttl
+                    }
+                }
+
+                // Recurse into subdirectories
+                const found = await this.findInDirectory(fullPath, targetName, depth + 1)
+                if (found) return found
+            }
+        } catch (err) {
+            logger.debug(`Error scanning directory ${dir}: ${err.message}`)
+        }
+
+        return null
+    }
+
     async resolveApplicationPath(appName) {
         if (!appName) {
             throw new Error('Application name is required')
         }
 
-        // Try in _pending directory first
-        let possiblePaths = [
-            path.join(process.cwd(), this.appsDir, '_pending', appName),
-            path.join(process.cwd(), this.appsDir, appName)
-        ]
+        const baseDir = path.join(process.cwd(), this.appsDir)
+        const appPath = await this.findInDirectory(baseDir, appName)
 
-        for (const testPath of possiblePaths) {
-            try {
-                logger.debug(`Testing path: ${testPath}`)
-                const transmissionsPath = path.join(testPath, this.transmissionFilename)
-                await fromFile(transmissionsPath).read() // Test if file exists and is readable
-                logger.debug(`Found valid application at: ${testPath}`)
-                return testPath
-            } catch (err) {
-                logger.debug(`No valid application at: ${testPath}`)
-                continue
-            }
+        if (!appPath) {
+            throw new Error(`Could not find application ${appName} with transmissions.ttl in any subdirectory`)
         }
 
-        throw new Error(`Could not find application ${appName} in any expected location`)
+        return appPath
     }
 
     async loadManifest() {

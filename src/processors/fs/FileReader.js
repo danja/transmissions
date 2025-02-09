@@ -32,12 +32,15 @@ class FileReader extends Processor {
             // Fall back to getting path from config
             filePath = await this.getProperty(ns.trn.sourceFile)
             if (!filePath) {
-                throw new Error('No file path provided in message or config')
+                throw new Error('No source file path provided in message or config')
             }
 
+            logger.debug(`filePath = ${filePath}`)
             // Resolve relative to targetPath or rootDir
+
             if (!path.isAbsolute(filePath)) {
-                filePath = path.join(message.targetPath || message.rootDir, filePath)
+                //     filePath = path.join(message.targetPath || message.rootDir, filePath)
+                filePath = path.join(message.targetPath || message.dataDir, filePath)
             }
         }
 

@@ -1,6 +1,6 @@
-`src/applications/test_file-to-sparqlstore/about.md`
+`src/applications/test/file-to-sparqlstore/about.md`
 
-# Application 'test_file-to-sparqlstore'
+# Application 'file-to-sparqlstore'
 
 **Checks interaction with SPARQL store**
 

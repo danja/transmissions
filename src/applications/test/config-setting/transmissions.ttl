@@ -13,29 +13,8 @@
 :UF a :Unfork . # collapses all pipes but one
 #############################################################
 
-:testSettings a :Transmission ;
-    :pipe (:SC :ts0 :ts10 :ts20 :ts30 :ts40 :ts50 :ts60 :ts70 :SM) .
+:testSetting a :Transmission ;
+    :pipe (:ts10) .
 
-
-:ts0 a :TestSettings  .
-
-:ts10 a :TestSettings ;
-     :settings :settingsNotAValue .
-
-:ts20 a :TestSettings ;
-     :settings :settingsUseMessage .
-
-:ts30 a :TestSettings ;
-     :settings :settingsSingle .
-
-:ts40 a :TestSettings ;
-     :settings :settingsURI .
-
-:ts50 a :TestSettings ;
-     :settings :settingsMulti .
-
-:ts60 a :TestSettings ;
-     :settings :settingsLists .
-
-:ts70 a :SetMessage ;
-     :settings :settingsKeyValue .
+:ts10 a :TestSetting ;
+     :settings :theSettingsNode .

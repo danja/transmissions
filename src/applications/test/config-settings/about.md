@@ -1,5 +1,7 @@
 # App Template
 
+./trans filereader --verbose --message '{"sourceFile": "test.txt"}'
+
 ## Runner
 
 ```sh

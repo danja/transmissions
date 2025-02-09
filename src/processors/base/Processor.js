@@ -24,7 +24,8 @@ class Processor extends EventEmitter {
     }
 
     getValues(property, fallback) {
-        logger.debug(`Processor.getValues looking for ${property}`)
+        logger.debug(`Processor.getValues,
+            looking for ${property}`)
 
         const shortName = ns.getShortname(property)
         if (this.message && this.message[shortName]) {
@@ -38,14 +39,14 @@ class Processor extends EventEmitter {
     }
 
     getProperty(property, fallback = undefined) {
-        // logger.setLogLevel('debug')
-        logger.debug(`Processor.getProperty looking for ${property}`)
+        logger.debug(`\nProcessor.getProperty looking for ${property}`)
         const shortName = ns.getShortname(property)
         if (this.message && this.message[shortName]) {
             logger.debug(`Found in message: ${this.message[shortName]}`)
             return this.message[shortName]
         }
-        logger.debug(`Processor.getProperty, property = ${property}`)
+
+        if (this.settingsNode) logger.debug(`this.settingsNode = ${this.settingsNode.value}`)
 
         //   logger.debug(`Processor.getProperty, this.settee.config = ${this.settee.config}`)
         this.settee.settingsNode = this.settingsNode ////////////////////////////////////////////
@@ -63,14 +64,8 @@ class Processor extends EventEmitter {
         }
 
         this.previousLogLevel = logger.getLevel()
-        /*
-        logger.setLogLevel('debug')
-        const loglevel = this.getProperty(ns.trn.loglevel)
-        logger.debug(`loglevel = ${loglevel}`)
-        if (loglevel) {
-            logger.setLogLevel(loglevel)
-        }
-            */
+
+        /* TODO uncomment after config sorted
         const messageType = this.getProperty(ns.trn.messageType)
         if (messageType) {
             if (messageType.value) {
@@ -79,6 +74,7 @@ class Processor extends EventEmitter {
                 message.messageType = messageType
             }
         }
+            */
         this.message = message
     }
 
