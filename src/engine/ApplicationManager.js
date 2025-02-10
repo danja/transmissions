@@ -110,7 +110,7 @@ class ApplicationManager {
             }
         }
         message.success = true
-        logger.reveal(message)
+        //     logger.reveal(message)
         return message //{ success: true }
     }
 

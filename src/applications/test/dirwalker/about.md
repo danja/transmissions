@@ -5,7 +5,18 @@
 ```sh
 cd ~/hyperdata/transmissions  # my local path
 
-./trans test_dirwalker
+./trans dirwalker
+```
+
+Defaults to `dataDir`, which defaults to `src/applications/test/dirwalker/data`
+
+```sh
+ ./trans -v dirwalker |grep message.filepath
+                        message.filepath: about.md
+                        message.filepath: config.ttl
+                        message.filepath: data/about-data.md
+                        message.filepath: data/subdir/about-subdir.md
+                        message.filepath: transmissions.ttl
 ```
 
 ## Description

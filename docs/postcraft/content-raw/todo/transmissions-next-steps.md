@@ -2,6 +2,7 @@
 
 **2025-02-06**
 
+improve reveal()
 
 * terrapacks
 * clients

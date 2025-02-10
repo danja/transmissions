@@ -94,24 +94,21 @@ class DirWalker extends Processor {
 
         for (const entry of entries) {
             const fullPath = path.join(dir, entry.name)
-
+            const targetPath = super.getProperty(ns.trn.targetPath, this.message.dataDir)
             //   if (entry.isDirectory() && !this.excludePatterns.includes(entry.name[0])) {
 
             // should be dir? what about added includes?
             if (entry.isDirectory() && !this.matchPatterns(fullPath, this.excludePatterns)) {
                 await this.walkDirectory(fullPath, baseMessage)
             } else if (entry.isFile()) {
-                //   const extension = path.extname(entry.name)
-                // const prefix = entry.name[0]
 
                 if (!this.matchPatterns(fullPath, this.excludePatterns) &&
                     this.matchPatterns(fullPath, this.includePatterns)) {
 
-                    //   if (!this.excludePatterns.includes(prefix) &&
-                    //     this.includePatterns.includes(extension)) {
                     const message = structuredClone(baseMessage)
                     message.filename = entry.name
-                    message.subdir = path.dirname(path.relative(message.targetPath, fullPath)).split(path.sep)[1]
+                    message.subdir = path.dirname(path.relative(targetPath, fullPath)).split(path.sep)[1]
+                    //     message.subdir = path.dirname(path.relative(message.targetPath, fullPath)).split(path.sep)[1]
                     message.fullPath = fullPath
                     message.filepath = path.relative(baseMessage.targetPath || baseMessage.rootDir, fullPath)
                     message.done = false
