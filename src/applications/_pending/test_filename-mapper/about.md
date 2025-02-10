@@ -3,7 +3,7 @@
 ## Runner
 
 ```sh
-cd ~/github-danny/transmissions # my local path
+cd ~/hyperdata/transmissions # my local path
 ./trans test_filename-mapper
 
 npm test -- tests/unit/filename-mapper.spec.js

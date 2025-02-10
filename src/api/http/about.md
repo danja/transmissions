@@ -1,5 +1,5 @@
 ```sh
-cd ~/github-danny/transmissions/
+cd ~/hyperdata/transmissions/
 ./trans --verbose --web --port 4200 echo
 
 ./trans -v -w -p 4200 echo

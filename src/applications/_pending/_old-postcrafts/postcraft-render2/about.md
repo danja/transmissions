@@ -3,7 +3,7 @@
 walk cache dirs for `.html`, template to post pages
 
 ```sh
-cd ~/github-danny/transmissions
+cd ~/hyperdata/transmissions
 
 ./trans postcraft-render2 ../postcraft/test-site
 

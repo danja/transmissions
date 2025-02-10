@@ -1,7 +1,7 @@
 # Application : test_fs-rw
 
 ```sh
-cd ~/github-danny/transmissions/ # my local path
+cd ~/hyperdata/transmissions/ # my local path
 
 # run as application
 ./trans test_fs-rw
@@ -28,7 +28,7 @@ src/applications/test_fs-rw/data/output/required-01.md
 ```
 
 ```sh
-cd ~/github-danny/transmissions/ # my local path
+cd ~/hyperdata/transmissions/ # my local path
 
 # run as application
 ./trans test_fs-rw
@@ -48,7 +48,7 @@ npm test -- --filter="fs-rw simple test"
 ---
 
 ```sh
-cd ~/github-danny/transmissions/
+cd ~/hyperdata/transmissions/
 ./trans test_restructure -P ./src/applications/test_restructure/input/input-01.json
 ```
 

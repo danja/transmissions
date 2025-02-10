@@ -7,7 +7,7 @@ src/applications/system/echo
 ## Runner
 
 ```sh
-cd ~/github-danny/transmissions # my local path
+cd ~/hyperdata/transmissions # my local path
 ./trans system/echo -m '{"message":"Hello, World!"}'
 ```
 

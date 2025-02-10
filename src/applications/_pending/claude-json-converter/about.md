@@ -1,5 +1,5 @@
 ```sh
-cd ~/github-danny/transmissions/
+cd ~/hyperdata/transmissions/
 
 ./trans -v claude-json-converter -m '{"sourceFile":"/home/danny/github-danny/hyperdata/docs/chat-archives/data-2025-02-02-12-23-16/conversations.json"}'
 

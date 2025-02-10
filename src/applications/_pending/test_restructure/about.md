@@ -3,7 +3,7 @@
 Run with :
 
 ```sh
-cd ~/github-danny/transmissions/ # local path of repo
+cd ~/hyperdata/transmissions/ # local path of repo
 ./trans test_restructure
 ```
 
@@ -31,7 +31,7 @@ src/applications/test_restructure/data/output/required-01.json
 ```
 
 ```sh
-cd ~/github-danny/transmissions/ # my local path
+cd ~/hyperdata/transmissions/ # my local path
 
 # run as application
 ./trans test_restructure
@@ -51,7 +51,7 @@ npm test -- --filter="restructure_simple test"
 ---
 
 ```sh
-cd ~/github-danny/transmissions/
+cd ~/hyperdata/transmissions/
 ./trans test_restructure -P ./src/applications/test_restructure/input/input-01.json
 ```
 

@@ -3,7 +3,7 @@
 walk source dirs for `.md`, render to `.html` in cache
 
 ```sh
-cd ~/github-danny/transmissions
+cd ~/hyperdata/transmissions
 
 ./trans postcraft-render1 ../postcraft/test-site
 

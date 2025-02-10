@@ -1,5 +1,5 @@
 ```sh
-cd ~/github-danny/transmissions # my local dir
+cd ~/hyperdata/transmissions # my local dir
 
 npm test -- tests/unit/ProcessorSettings.spec.js
 

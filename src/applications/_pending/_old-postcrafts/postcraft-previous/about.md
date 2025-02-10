@@ -1,5 +1,5 @@
 ```sh
-cd ~/github-danny/transmissions
+cd ~/hyperdata/transmissions
 
 ./trans postcraft ../postcraft/danny.ayers.name
 ```

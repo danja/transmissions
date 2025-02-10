@@ -5,7 +5,7 @@
 _repopack/repomix equiv_
 
 ```sh
-cd ~/github-danny/transmissions # my local dir
+cd ~/hyperdata/transmissions # my local dir
 
 ./trans terrapack ./src/applications/terrapack/data
 

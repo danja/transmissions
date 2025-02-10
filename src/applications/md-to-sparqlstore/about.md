@@ -1,14 +1,12 @@
-`src/applications/test/file-to-sparqlstore/about.md`
+`src/applications/md-to-sparqlstore/about.md`
 
-# Application 'file-to-sparqlstore'
-
-**Checks interaction with SPARQL store**
+# Application 'md-to-sparqlstore'
 
 ## Runner
 
 ```sh
 cd ~/hyperdata/transmissions # my local path
-./trans test_file-to-sparqlstore
+./trans md-to-sparqlstore
 ```
 
 ## Description

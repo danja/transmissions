@@ -6,7 +6,7 @@ I made a start on the refactoring as described below, got distracted, but have d
 
 I'd forgotten where I was up to with this part, so asked Claude.
 
-```prompt
+````prompt
 There was talk of adding support for one transmission loading another like a subroutine to help things be more modular, encapsulated. These would be declared in a `transmissions.tll` for example as :
 
 ```turtle
@@ -24,7 +24,7 @@ There was talk of adding support for one transmission loading another like a sub
 
 :c10 a :NOP .
 :c20 a :NOP .
-```
+````
 
 With this, the system would use `src/engine/ApplicationManager.js` to create an `src/model/Application.js` containing two instances of `src/model/Transmission.js` with `src/engine/TransmissionBuilder.js`, these would be connected together by instances of `src/model/Connector.js`. When run the message flow would be equivalent to :
 
@@ -34,7 +34,8 @@ With this, the system would use `src/engine/ApplicationManager.js` to create an 
 ```
 
 There may be some kind of support for this already in place, otherwise how would you suggest implementing this feature?
-```
+
+````
 
 
 
@@ -78,7 +79,7 @@ At the moment only a single `transmissions.ttl` and `processors-config.ttl` is u
 * tests
 * a channel for receiving messages from the logger - preemptively asking AI for solutions, fixing when it can
 
-Commander has target **state** but might not know how to achieve it - leave space for AI  
+Commander has target **state** but might not know how to achieve it - leave space for AI
 
 The CommandUtils class handles application resolution and could support sub-transmission loading
 
@@ -98,7 +99,7 @@ q4: Would you like an example of using dependent transmissions in postcraft?
 ---
 
 ```sh
-danny@danny-desktop:~/github-danny/transmissions$ ./trans -h
+danny@danny-desktop:~/hyperdata/transmissions$ ./trans -h
 Usage: ./trans <application>[.subtask] [options] [target]
 
 Positionals:
@@ -112,7 +113,7 @@ Options:
   -w, --web      Start web interface                                   [boolean]
   -p, --port     Port for web interface                 [number] [default: 3000]
   -h, --help     Show help                                             [boolean]
-```
+````
 
 ./trans postcraft ../postcraft/danny.ayers.name
 

@@ -1,4 +1,4 @@
 ```sh
-cd ~/github-danny/transmissions
+cd ~/hyperdata/transmissions
 ./trans env-loader-test
 ```

@@ -1,0 +1,18 @@
+# src/applications/test_file-to-sparqlstore/config.ttl
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+@prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances
+
+:readerSet a :ConfigSet ;
+    :sourceFile  "input/input.md" ;
+    :metaField "meta" .
+
+:sparqlUpdate a :ConfigSet ;
+    :templateFilename "diamonds/update-blogposting.njk" ;
+    :endpointSettings "endpoint.json" .
+
+:sparqlSelect a :ConfigSet ;
+    :templateFilename "diamonds/select-blogposting.njk" ;
+    :endpointSettings "endpoint.json" .

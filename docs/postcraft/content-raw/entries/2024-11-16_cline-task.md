@@ -1,13 +1,14 @@
 **User:**
 
 <task>
-~/github-danny/transmissions$
+~/hyperdata/transmissions$
 </task>
 <environment_details>
 # VSCode Visible Files
 ../trans-apps/applications/module-load-test/about.md
 
 # VSCode Open Tabs
+
 ../trans-apps/applications/module-load-test/about.md
 src/engine/TransmissionBuilder.js
 ../trans-apps/applications/module-load-test/transmissions.ttl
@@ -15,6 +16,7 @@ src/engine/TransmissionBuilder.js
 ../trans-apps/applications/module-load-test/manifest.ttl
 
 # Current Working Directory (/home/danny/github-danny/transmissions) Files
+
 _links.md
 .babelrc
 .gitignore
@@ -35,10 +37,10 @@ run.js
 trans
 users.json
 webpack.config.js
-_file-copy-remove-test/
-_file-copy-remove-test/data/
-_file-copy-remove-test/data/single-empty/
-_file-copy-remove-test/data/single-full/
+\_file-copy-remove-test/
+\_file-copy-remove-test/data/
+\_file-copy-remove-test/data/single-empty/
+\_file-copy-remove-test/data/single-full/
 docs/
 docs/The Ordered List Ontology Specification.html
 docs/handover/
@@ -55,7 +57,7 @@ docs/jsdoc/FileReader.html
 docs/jsdoc/FileRemove.html
 docs/jsdoc/FileWriter.html
 docs/jsdoc/index.html
-docs/jsdoc/mill_Transmission.js.html
+docs/jsdoc/mill*Transmission.js.html
 docs/jsdoc/PostcraftDispatcher.html
 docs/jsdoc/Processor.html
 docs/jsdoc/ProcessorExample.html
@@ -113,14 +115,14 @@ docs/postcraft/media/
 docs/postcraft/public/
 docs/references/
 docs/references/CG-DRAFT-N3-20240515.html
-docs/references/Ordered data in RDF_ About Arrays, Lists, Collections, Sequences and Pagination.mhtml
+docs/references/Ordered data in RDF* About Arrays, Lists, Collections, Sequences and Pagination.mhtml
 docs/references/RDF Surfaces Primer.html
 docs/references/The Ordered List Ontology Specification.html
 docs/references/RDF Surfaces Primer_files/
 output/
 output/output-01.md
 raw-src/
-raw-src/_index.html
+raw-src/\_index.html
 raw-src/containsAny.js
 raw-src/crawl-fs.js
 raw-src/grapoi-bits.js
@@ -247,7 +249,7 @@ Then it should apply the values passed in the message to an instance of `Concat'
 
 Here the values are passed from the command line :
 
-Running from `~/github-danny/transmissions` :
+Running from `~/hyperdata/transmissions` :
 
 ```sh
 ./trans ../trans-apps/applications/module-load-test -m {"first":"one","second":"two"}
@@ -265,12 +267,14 @@ But this fails right away :
   path: 'second:two/manifest.ttl'
 }
 ```
+
 </answer>
 <environment_details>
 # VSCode Visible Files
 ../trans-apps/applications/module-load-test/about.md
 
 # VSCode Open Tabs
+
 ../trans-apps/applications/module-load-test/about.md
 src/engine/TransmissionBuilder.js
 ../trans-apps/applications/module-load-test/transmissions.ttl
@@ -285,6 +289,7 @@ src/engine/TransmissionBuilder.js
 Based on the user's response, the task is to enable the `transmissions` application to load modules from remote locations. Specifically, the application should be able to read a manifest file from a URL passed in the command line arguments and use the values from this manifest to configure an instance of the `Concat` processor.
 
 The user has provided the following files:
+
 - `../trans-apps/applications/module-load-test/about.md` (not relevant for the task)
 - `src/engine/TransmissionBuilder.js` (not relevant for the task)
 - `../trans-apps/applications/module-load-test/transmissions.ttl` (the transmission definition)
@@ -292,9 +297,11 @@ The user has provided the following files:
 - `../trans-applications/applications/module-load-test/manifest.ttl` (the manifest file)
 
 The user has also mentioned that the application fails to open the manifest file when running the transmission with the command:
+
 ```sh
 ./trans ../trans-apps/applications/module-load-test -m {"first":"one","second":"two"}
 ```
+
 The error message indicates that the file `second:two/manifest.ttl` does not exist, which is incorrect since the manifest file is located at `../trans-applications/applications/module-load-test/manifest.ttl`.
 
 To fix this issue, we need to ensure that the `TransmissionBuilder` correctly handles the manifest file path and loads the manifest file from the correct location. The manifest file should be loaded from the URL passed in the command line arguments.
@@ -330,23 +337,24 @@ import ModuleLoaderFactory from '../api/ModuleLoaderFactory.js'
 
 class TransmissionBuilder {
 
-  constructor(moduleLoader) {
-    this.moduleLoader = moduleLoader
-  }
+constructor(moduleLoader) {
+this.moduleLoader = moduleLoader
+}
 
-  static async build(transmissionConfigFile, processorsConfigFile, appPath) {
-    const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile)
-    const processorsConfig = await TransmissionBuilder.readDataset(processorsConfigFile)
+static async build(transmissionConfigFile, processorsConfigFile, appPath) {
+const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile)
+const processorsConfig = await TransmissionBuilder.readDataset(processorsConfigFile)
 
     //const moduleLoader =
     // ModuleLoaderFactory.createApplicationLoader(appPath)
     const builder = new TransmissionBuilder(this.moduleLoader)
     return builder.buildTransmissions(transmissionConfig, processorsConfig)
-  }
 
-  async buildTransmissions(transmissionConfig, processorsConfig) {
-    const poi = grapoi({ dataset: transmissionConfig })
-    const transmissions = []
+}
+
+async buildTransmissions(transmissionConfig, processorsConfig) {
+const poi = grapoi({ dataset: transmissionConfig })
+const transmissions = []
 
     for (const q of poi.out(ns.rdf.type).quads()) {
       if (q.object.equals(ns.trm.Pipeline)) {
@@ -356,10 +364,11 @@ class TransmissionBuilder {
       }
     }
     return transmissions
-  }
 
-  async constructTransmission(transmissionConfig, pipelineID, processorsConfig) {
-    processorsConfig.whiteboard = {}
+}
+
+async constructTransmission(transmissionConfig, pipelineID, processorsConfig) {
+processorsConfig.whiteboard = {}
 
     const transmission = new Transmission()
     transmission.id = pipelineID.value
@@ -381,12 +390,13 @@ class TransmissionBuilder {
     //    this.createNodes(transmission, pipenodes, transmissionConfig, processorsConfig); // was await, bad Claude
     this.connectNodes(transmission, pipenodes)
     return transmission
-  }
 
-  async createNodes(transmission, pipenodes, transmissionConfig, processorsConfig) {
-    for (let i = 0; i < pipenodes.length; i++) {
-      let node = pipenodes[i]
-      let processorName = node.value
+}
+
+async createNodes(transmission, pipenodes, transmissionConfig, processorsConfig) {
+for (let i = 0; i < pipenodes.length; i++) {
+let node = pipenodes[i]
+let processorName = node.value
 
       if (!transmission.get(processorName)) {
         let np = rdf.grapoi({ dataset: transmissionConfig, term: node })
@@ -415,28 +425,29 @@ class TransmissionBuilder {
         }
       }
     }
-  }
 
-  async connectNodes(transmission, pipenodes) {
-    for (let i = 0; i < pipenodes.length - 1; i++) {
-      let leftNode = pipenodes[i]
-      let leftProcessorName = leftNode.value
-      let rightNode = pipenodes[i + 1]
-      let rightProcessorName = rightNode.value
-      logger.log("  > Connect #" + i + " [" + ns.getShortname(leftProcessorName) + "] => [" + ns.getShortname(rightProcessorName) + "]")
-      transmission.connect(leftProcessorName, rightProcessorName)
-    }
-  }
+}
 
-  async createProcessor(type, config) {
-    try {
-      const coreProcessor = AbstractProcessorFactory.createProcessor(type, config)
-      if (coreProcessor) {
-        return coreProcessor
-      }
-    } catch (error) {
-      logger.debug(`TransmissionBuilder, core processor not found for ${type.value}. Trying remote module loader...`)
-    }
+async connectNodes(transmission, pipenodes) {
+for (let i = 0; i < pipenodes.length - 1; i++) {
+let leftNode = pipenodes[i]
+let leftProcessorName = leftNode.value
+let rightNode = pipenodes[i + 1]
+let rightProcessorName = rightNode.value
+logger.log(" > Connect #" + i + " [" + ns.getShortname(leftProcessorName) + "] => [" + ns.getShortname(rightProcessorName) + "]")
+transmission.connect(leftProcessorName, rightProcessorName)
+}
+}
+
+async createProcessor(type, config) {
+try {
+const coreProcessor = AbstractProcessorFactory.createProcessor(type, config)
+if (coreProcessor) {
+return coreProcessor
+}
+} catch (error) {
+logger.debug(`TransmissionBuilder, core processor not found for ${type.value}. Trying remote module loader...`)
+}
 
     try {
       const shortName = type.value.split('/').pop()
@@ -449,28 +460,31 @@ class TransmissionBuilder {
       logger.error(`TransmissionBuilder, failed to load processor ${type.value}`)
       //process.exit(1)
     }
-  }
 
-  // file utils
-  static async readDataset(filename) {
-    const stream = fromFile(filename)
-    const dataset = await rdf.dataset().import(stream)
-    return dataset
-  }
+}
 
-  static async writeDataset(dataset, filename) {
-    await toFile(dataset.toStream(), filename)
-  }
+// file utils
+static async readDataset(filename) {
+const stream = fromFile(filename)
+const dataset = await rdf.dataset().import(stream)
+return dataset
+}
 
+static async writeDataset(dataset, filename) {
+await toFile(dataset.toStream(), filename)
+}
 
 }
 // export { ModuleLoader, ModuleLoaderFactory, TransmissionBuilder }
 export default TransmissionBuilder
 <environment_details>
+
 # VSCode Visible Files
+
 ../trans-apps/applications/module-load-test/about.md
 
 # VSCode Open Tabs
+
 ../trans-apps/applications/module-load-test/about.md
 src/engine/TransmissionBuilder.js
 ../trans-apps/applications/module-load-test/transmissions.ttl
@@ -522,23 +536,24 @@ import ModuleLoaderFactory from '../api/ModuleLoaderFactory.js'
 
 class TransmissionBuilder {
 
-  constructor(moduleLoader) {
-    this.moduleLoader = moduleLoader
-  }
+constructor(moduleLoader) {
+this.moduleLoader = moduleLoader
+}
 
-  static async build(transmissionConfigFile, processorsConfigFile, appPath) {
-    const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile)
-    const processorsConfig = await TransmissionBuilder.readDataset(processorsConfigFile)
+static async build(transmissionConfigFile, processorsConfigFile, appPath) {
+const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile)
+const processorsConfig = await TransmissionBuilder.readDataset(processorsConfigFile)
 
     //const moduleLoader =
     // ModuleLoaderFactory.createApplicationLoader(appPath)
     const builder = new TransmissionBuilder(this.moduleLoader)
     return builder.buildTransmissions(transmissionConfig, processorsConfig)
-  }
 
-  async buildTransmissions(transmissionConfig, processorsConfig) {
-    const poi = grapoi({ dataset: transmissionConfig })
-    const transmissions = []
+}
+
+async buildTransmissions(transmissionConfig, processorsConfig) {
+const poi = grapoi({ dataset: transmissionConfig })
+const transmissions = []
 
     for (const q of poi.out(ns.rdf.type).quads()) {
       if (q.object.equals(ns.trm.Pipeline)) {
@@ -548,10 +563,11 @@ class TransmissionBuilder {
       }
     }
     return transmissions
-  }
 
-  async constructTransmission(transmissionConfig, pipelineID, processorsConfig) {
-    processorsConfig.whiteboard = {}
+}
+
+async constructTransmission(transmissionConfig, pipelineID, processorsConfig) {
+processorsConfig.whiteboard = {}
 
     const transmission = new Transmission()
     transmission.id = pipelineID.value
@@ -573,12 +589,13 @@ class TransmissionBuilder {
     //    this.createNodes(transmission, pipenodes, transmissionConfig, processorsConfig); // was await, bad Claude
     this.connectNodes(transmission, pipenodes)
     return transmission
-  }
 
-  async createNodes(transmission, pipenodes, transmissionConfig, processorsConfig) {
-    for (let i = 0; i < pipenodes.length; i++) {
-      let node = pipenodes[i]
-      let processorName = node.value
+}
+
+async createNodes(transmission, pipenodes, transmissionConfig, processorsConfig) {
+for (let i = 0; i < pipenodes.length; i++) {
+let node = pipenodes[i]
+let processorName = node.value
 
       if (!transmission.get(processorName)) {
         let np = rdf.grapoi({ dataset: transmissionConfig, term: node })
@@ -607,28 +624,29 @@ class TransmissionBuilder {
         }
       }
     }
-  }
 
-  async connectNodes(transmission, pipenodes) {
-    for (let i = 0; i < pipenodes.length - 1; i++) {
-      let leftNode = pipenodes[i]
-      let leftProcessorName = leftNode.value
-      let rightNode = pipenodes[i + 1]
-      let rightProcessorName = rightNode.value
-      logger.log("  > Connect #" + i + " [" + ns.getShortname(leftProcessorName) + "] => [" + ns.getShortname(rightProcessorName) + "]")
-      transmission.connect(leftProcessorName, rightProcessorName)
-    }
-  }
+}
 
-  async createProcessor(type, config) {
-    try {
-      const coreProcessor = AbstractProcessorFactory.createProcessor(type, config)
-      if (coreProcessor) {
-        return coreProcessor
-      }
-    } catch (error) {
-      logger.debug(`TransmissionBuilder, core processor not found for ${type.value}. Trying remote module loader...`)
-    }
+async connectNodes(transmission, pipenodes) {
+for (let i = 0; i < pipenodes.length - 1; i++) {
+let leftNode = pipenodes[i]
+let leftProcessorName = leftNode.value
+let rightNode = pipenodes[i + 1]
+let rightProcessorName = rightNode.value
+logger.log(" > Connect #" + i + " [" + ns.getShortname(leftProcessorName) + "] => [" + ns.getShortname(rightProcessorName) + "]")
+transmission.connect(leftProcessorName, rightProcessorName)
+}
+}
+
+async createProcessor(type, config) {
+try {
+const coreProcessor = AbstractProcessorFactory.createProcessor(type, config)
+if (coreProcessor) {
+return coreProcessor
+}
+} catch (error) {
+logger.debug(`TransmissionBuilder, core processor not found for ${type.value}. Trying remote module loader...`)
+}
 
     try {
       const shortName = type.value.split('/').pop()
@@ -641,28 +659,31 @@ class TransmissionBuilder {
       logger.error(`TransmissionBuilder, failed to load processor ${type.value}`)
       //process.exit(1)
     }
-  }
 
-  // file utils
-  static async readDataset(filename) {
-    const stream = fromFile(filename)
-    const dataset = await rdf.dataset().import(stream)
-    return dataset
-  }
+}
 
-  static async writeDataset(dataset, filename) {
-    await toFile(dataset.toStream(), filename)
-  }
+// file utils
+static async readDataset(filename) {
+const stream = fromFile(filename)
+const dataset = await rdf.dataset().import(stream)
+return dataset
+}
 
+static async writeDataset(dataset, filename) {
+await toFile(dataset.toStream(), filename)
+}
 
 }
 // export { ModuleLoader, ModuleLoaderFactory, TransmissionBuilder }
 export default TransmissionBuilder
 <environment_details>
+
 # VSCode Visible Files
+
 ../trans-apps/applications/module-load-test/about.md
 
 # VSCode Open Tabs
+
 ../trans-apps/applications/module-load-test/about.md
 src/engine/TransmissionBuilder.js
 ../trans-apps/applications/module-load-test/transmissions.ttl
@@ -712,23 +733,24 @@ import ModuleLoaderFactory from '../api/ModuleLoaderFactory.js'
 
 class TransmissionBuilder {
 
-  constructor(moduleLoader) {
-    this.moduleLoader = moduleLoader
-  }
+constructor(moduleLoader) {
+this.moduleLoader = moduleLoader
+}
 
-  static async build(transmissionConfigFile, processorsConfigFile, appPath) {
-    const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile)
-    const processorsConfig = await TransmissionBuilder.readDataset(processorsConfigFile)
+static async build(transmissionConfigFile, processorsConfigFile, appPath) {
+const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile)
+const processorsConfig = await TransmissionBuilder.readDataset(processorsConfigFile)
 
     //const moduleLoader =
     // ModuleLoaderFactory.createApplicationLoader(appPath)
     const builder = new TransmissionBuilder(this.moduleLoader)
     return builder.buildTransmissions(transmissionConfig, processorsConfig)
-  }
 
-  async buildTransmissions(transmissionConfig, processorsConfig) {
-    const poi = grapoi({ dataset: transmissionConfig })
-    const transmissions = []
+}
+
+async buildTransmissions(transmissionConfig, processorsConfig) {
+const poi = grapoi({ dataset: transmissionConfig })
+const transmissions = []
 
     for (const q of poi.out(ns.rdf.type).quads()) {
       if (q.object.equals(ns.trm.Pipeline)) {
@@ -738,10 +760,11 @@ class TransmissionBuilder {
       }
     }
     return transmissions
-  }
 
-  async constructTransmission(transmissionConfig, pipelineID, processorsConfig) {
-    processorsConfig.whiteboard = {}
+}
+
+async constructTransmission(transmissionConfig, pipelineID, processorsConfig) {
+processorsConfig.whiteboard = {}
 
     const transmission = new Transmission()
     transmission.id = pipelineID.value
@@ -763,12 +786,13 @@ class TransmissionBuilder {
     //    this.createNodes(transmission, pipenodes, transmissionConfig, processorsConfig); // was await, bad Claude
     this.connectNodes(transmission, pipenodes)
     return transmission
-  }
 
-  async createNodes(transmission, pipenodes, transmissionConfig, processorsConfig) {
-    for (let i = 0; i < pipenodes.length; i++) {
-      let node = pipenodes[i]
-      let processorName = node.value
+}
+
+async createNodes(transmission, pipenodes, transmissionConfig, processorsConfig) {
+for (let i = 0; i < pipenodes.length; i++) {
+let node = pipenodes[i]
+let processorName = node.value
 
       if (!transmission.get(processorName)) {
         let np = rdf.grapoi({ dataset: transmissionConfig, term: node })
@@ -797,28 +821,29 @@ class TransmissionBuilder {
         }
       }
     }
-  }
 
-  async connectNodes(transmission, pipenodes) {
-    for (let i = 0; i < pipenodes.length - 1; i++) {
-      let leftNode = pipenodes[i]
-      let leftProcessorName = leftNode.value
-      let rightNode = pipenodes[i + 1]
-      let rightProcessorName = rightNode.value
-      logger.log("  > Connect #" + i + " [" + ns.getShortname(leftProcessorName) + "] => [" + ns.getShortname(rightProcessorName) + "]")
-      transmission.connect(leftProcessorName, rightProcessorName)
-    }
-  }
+}
 
-  async createProcessor(type, config) {
-    try {
-      const coreProcessor = AbstractProcessorFactory.createProcessor(type, config)
-      if (coreProcessor) {
-        return coreProcessor
-      }
-    } catch (error) {
-      logger.debug(`TransmissionBuilder, core processor not found for ${type.value}. Trying remote module loader...`)
-    }
+async connectNodes(transmission, pipenodes) {
+for (let i = 0; i < pipenodes.length - 1; i++) {
+let leftNode = pipenodes[i]
+let leftProcessorName = leftNode.value
+let rightNode = pipenodes[i + 1]
+let rightProcessorName = rightNode.value
+logger.log(" > Connect #" + i + " [" + ns.getShortname(leftProcessorName) + "] => [" + ns.getShortname(rightProcessorName) + "]")
+transmission.connect(leftProcessorName, rightProcessorName)
+}
+}
+
+async createProcessor(type, config) {
+try {
+const coreProcessor = AbstractProcessorFactory.createProcessor(type, config)
+if (coreProcessor) {
+return coreProcessor
+}
+} catch (error) {
+logger.debug(`TransmissionBuilder, core processor not found for ${type.value}. Trying remote module loader...`)
+}
 
     try {
       const shortName = type.value.split('/').pop()
@@ -831,28 +856,31 @@ class TransmissionBuilder {
       logger.error(`TransmissionBuilder, failed to load processor ${type.value}`)
       //process.exit(1)
     }
-  }
 
-  // file utils
-  static async readDataset(filename) {
-    const stream = fromFile(filename)
-    const dataset = await rdf.dataset().import(stream)
-    return dataset
-  }
+}
 
-  static async writeDataset(dataset, filename) {
-    await toFile(dataset.toStream(), filename)
-  }
+// file utils
+static async readDataset(filename) {
+const stream = fromFile(filename)
+const dataset = await rdf.dataset().import(stream)
+return dataset
+}
 
+static async writeDataset(dataset, filename) {
+await toFile(dataset.toStream(), filename)
+}
 
 }
 // export { ModuleLoader, ModuleLoaderFactory, TransmissionBuilder }
 export default TransmissionBuilder
 <environment_details>
+
 # VSCode Visible Files
+
 ../trans-apps/applications/module-load-test/about.md
 
 # VSCode Open Tabs
+
 ../trans-apps/applications/module-load-test/about.md
 src/engine/TransmissionBuilder.js
 ../trans-apps/applications/module-load-test/transmissions.ttl
@@ -902,23 +930,24 @@ import ModuleLoaderFactory from '../api/ModuleLoaderFactory.js'
 
 class TransmissionBuilder {
 
-  constructor(moduleLoader) {
-    this.moduleLoader = moduleLoader
-  }
+constructor(moduleLoader) {
+this.moduleLoader = moduleLoader
+}
 
-  static async build(transmissionConfigFile, processorsConfigFile, appPath) {
-    const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile)
-    const processorsConfig = await TransmissionBuilder.readDataset(processorsConfigFile)
+static async build(transmissionConfigFile, processorsConfigFile, appPath) {
+const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile)
+const processorsConfig = await TransmissionBuilder.readDataset(processorsConfigFile)
 
     //const moduleLoader =
     // ModuleLoaderFactory.createApplicationLoader(appPath)
     const builder = new TransmissionBuilder(this.moduleLoader)
     return builder.buildTransmissions(transmissionConfig, processorsConfig)
-  }
 
-  async buildTransmissions(transmissionConfig, processorsConfig) {
-    const poi = grapoi({ dataset: transmissionConfig })
-    const transmissions = []
+}
+
+async buildTransmissions(transmissionConfig, processorsConfig) {
+const poi = grapoi({ dataset: transmissionConfig })
+const transmissions = []
 
     for (const q of poi.out(ns.rdf.type).quads()) {
       if (q.object.equals(ns.trm.Pipeline)) {
@@ -928,10 +957,11 @@ class TransmissionBuilder {
       }
     }
     return transmissions
-  }
 
-  async constructTransmission(transmissionConfig, pipelineID, processorsConfig) {
-    processorsConfig.whiteboard = {}
+}
+
+async constructTransmission(transmissionConfig, pipelineID, processorsConfig) {
+processorsConfig.whiteboard = {}
 
     const transmission = new Transmission()
     transmission.id = pipelineID.value
@@ -953,12 +983,13 @@ class TransmissionBuilder {
     //    this.createNodes(transmission, pipenodes, transmissionConfig, processorsConfig); // was await, bad Claude
     this.connectNodes(transmission, pipenodes)
     return transmission
-  }
 
-  async createNodes(transmission, pipenodes, transmissionConfig, processorsConfig) {
-    for (let i = 0; i < pipenodes.length; i++) {
-      let node = pipenodes[i]
-      let processorName = node.value
+}
+
+async createNodes(transmission, pipenodes, transmissionConfig, processorsConfig) {
+for (let i = 0; i < pipenodes.length; i++) {
+let node = pipenodes[i]
+let processorName = node.value
 
       if (!transmission.get(processorName)) {
         let np = rdf.grapoi({ dataset: transmissionConfig, term: node })
@@ -987,28 +1018,29 @@ class TransmissionBuilder {
         }
       }
     }
-  }
 
-  async connectNodes(transmission, pipenodes) {
-    for (let i = 0; i < pipenodes.length - 1; i++) {
-      let leftNode = pipenodes[i]
-      let leftProcessorName = leftNode.value
-      let rightNode = pipenodes[i + 1]
-      let rightProcessorName = rightNode.value
-      logger.log("  > Connect #" + i + " [" + ns.getShortname(leftProcessorName) + "] => [" + ns.getShortname(rightProcessorName) + "]")
-      transmission.connect(leftProcessorName, rightProcessorName)
-    }
-  }
+}
 
-  async createProcessor(type, config) {
-    try {
-      const coreProcessor = AbstractProcessorFactory.createProcessor(type, config)
-      if (coreProcessor) {
-        return coreProcessor
-      }
-    } catch (error) {
-      logger.debug(`TransmissionBuilder, core processor not found for ${type.value}. Trying remote module loader...`)
-    }
+async connectNodes(transmission, pipenodes) {
+for (let i = 0; i < pipenodes.length - 1; i++) {
+let leftNode = pipenodes[i]
+let leftProcessorName = leftNode.value
+let rightNode = pipenodes[i + 1]
+let rightProcessorName = rightNode.value
+logger.log(" > Connect #" + i + " [" + ns.getShortname(leftProcessorName) + "] => [" + ns.getShortname(rightProcessorName) + "]")
+transmission.connect(leftProcessorName, rightProcessorName)
+}
+}
+
+async createProcessor(type, config) {
+try {
+const coreProcessor = AbstractProcessorFactory.createProcessor(type, config)
+if (coreProcessor) {
+return coreProcessor
+}
+} catch (error) {
+logger.debug(`TransmissionBuilder, core processor not found for ${type.value}. Trying remote module loader...`)
+}
 
     try {
       const shortName = type.value.split('/').pop()
@@ -1021,28 +1053,31 @@ class TransmissionBuilder {
       logger.error(`TransmissionBuilder, failed to load processor ${type.value}`)
       //process.exit(1)
     }
-  }
 
-  // file utils
-  static async readDataset(filename) {
-    const stream = fromFile(filename)
-    const dataset = await rdf.dataset().import(stream)
-    return dataset
-  }
+}
 
-  static async writeDataset(dataset, filename) {
-    await toFile(dataset.toStream(), filename)
-  }
+// file utils
+static async readDataset(filename) {
+const stream = fromFile(filename)
+const dataset = await rdf.dataset().import(stream)
+return dataset
+}
 
+static async writeDataset(dataset, filename) {
+await toFile(dataset.toStream(), filename)
+}
 
 }
 // export { ModuleLoader, ModuleLoaderFactory, TransmissionBuilder }
 export default TransmissionBuilder
 <environment_details>
+
 # VSCode Visible Files
+
 ../trans-apps/applications/module-load-test/about.md
 
 # VSCode Open Tabs
+
 ../trans-apps/applications/module-load-test/about.md
 src/engine/TransmissionBuilder.js
 ../trans-apps/applications/module-load-test/transmissions.ttl
@@ -1090,23 +1125,24 @@ import ModuleLoaderFactory from '../api/ModuleLoaderFactory.js'
 
 class TransmissionBuilder {
 
-  constructor(moduleLoader) {
-    this.moduleLoader = moduleLoader
-  }
+constructor(moduleLoader) {
+this.moduleLoader = moduleLoader
+}
 
-  static async build(transmissionConfigFile, processorsConfigFile, appPath) {
-    const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile)
-    const processorsConfig = await TransmissionBuilder.readDataset(processorsConfigFile)
+static async build(transmissionConfigFile, processorsConfigFile, appPath) {
+const transmissionConfig = await TransmissionBuilder.readDataset(transmissionConfigFile)
+const processorsConfig = await TransmissionBuilder.readDataset(processorsConfigFile)
 
     //const moduleLoader =
     // ModuleLoaderFactory.createApplicationLoader(appPath)
     const builder = new TransmissionBuilder(this.moduleLoader)
     return builder.buildTransmissions(transmissionConfig, processorsConfig)
-  }
 
-  async buildTransmissions(transmissionConfig, processorsConfig) {
-    const poi = grapoi({ dataset: transmissionConfig })
-    const transmissions = []
+}
+
+async buildTransmissions(transmissionConfig, processorsConfig) {
+const poi = grapoi({ dataset: transmissionConfig })
+const transmissions = []
 
     for (const q of poi.out(ns.rdf.type).quads()) {
       if (q.object.equals(ns.trm.Pipeline)) {
@@ -1116,10 +1152,11 @@ class TransmissionBuilder {
       }
     }
     return transmissions
-  }
 
-  async constructTransmission(transmissionConfig, pipelineID, processorsConfig) {
-    processorsConfig.whiteboard = {}
+}
+
+async constructTransmission(transmissionConfig, pipelineID, processorsConfig) {
+processorsConfig.whiteboard = {}
 
     const transmission = new Transmission()
     transmission.id = pipelineID.value
@@ -1141,12 +1178,13 @@ class TransmissionBuilder {
     //    this.createNodes(transmission, pipenodes, transmissionConfig, processorsConfig); // was await, bad Claude
     this.connectNodes(transmission, pipenodes)
     return transmission
-  }
 
-  async createNodes(transmission, pipenodes, transmissionConfig, processorsConfig) {
-    for (let i = 0; i < pipenodes.length; i++) {
-      let node = pipenodes[i]
-      let processorName = node.value
+}
+
+async createNodes(transmission, pipenodes, transmissionConfig, processorsConfig) {
+for (let i = 0; i < pipenodes.length; i++) {
+let node = pipenodes[i]
+let processorName = node.value
 
       if (!transmission.get(processorName)) {
         let np = rdf.grapoi({ dataset: transmissionConfig, term: node })
@@ -1175,28 +1213,29 @@ class TransmissionBuilder {
         }
       }
     }
-  }
 
-  async connectNodes(transmission, pipenodes) {
-    for (let i = 0; i < pipenodes.length - 1; i++) {
-      let leftNode = pipenodes[i]
-      let leftProcessorName = leftNode.value
-      let rightNode = pipenodes[i + 1]
-      let rightProcessorName = rightNode.value
-      logger.log("  > Connect #" + i + " [" + ns.getShortname(leftProcessorName) + "] => [" + ns.getShortname(rightProcessorName) + "]")
-      transmission.connect(leftProcessorName, rightProcessorName)
-    }
-  }
+}
 
-  async createProcessor(type, config) {
-    try {
-      const coreProcessor = AbstractProcessorFactory.createProcessor(type, config)
-      if (coreProcessor) {
-        return coreProcessor
-      }
-    } catch (error) {
-      logger.debug(`TransmissionBuilder, core processor not found for ${type.value}. Trying remote module loader...`)
-    }
+async connectNodes(transmission, pipenodes) {
+for (let i = 0; i < pipenodes.length - 1; i++) {
+let leftNode = pipenodes[i]
+let leftProcessorName = leftNode.value
+let rightNode = pipenodes[i + 1]
+let rightProcessorName = rightNode.value
+logger.log(" > Connect #" + i + " [" + ns.getShortname(leftProcessorName) + "] => [" + ns.getShortname(rightProcessorName) + "]")
+transmission.connect(leftProcessorName, rightProcessorName)
+}
+}
+
+async createProcessor(type, config) {
+try {
+const coreProcessor = AbstractProcessorFactory.createProcessor(type, config)
+if (coreProcessor) {
+return coreProcessor
+}
+} catch (error) {
+logger.debug(`TransmissionBuilder, core processor not found for ${type.value}. Trying remote module loader...`)
+}
 
     try {
       const shortName = type.value.split('/').pop()
@@ -1209,28 +1248,31 @@ class TransmissionBuilder {
       logger.error(`TransmissionBuilder, failed to load processor ${type.value}`)
       //process.exit(1)
     }
-  }
 
-  // file utils
-  static async readDataset(filename) {
-    const stream = fromFile(filename)
-    const dataset = await rdf.dataset().import(stream)
-    return dataset
-  }
+}
 
-  static async writeDataset(dataset, filename) {
-    await toFile(dataset.toStream(), filename)
-  }
+// file utils
+static async readDataset(filename) {
+const stream = fromFile(filename)
+const dataset = await rdf.dataset().import(stream)
+return dataset
+}
 
+static async writeDataset(dataset, filename) {
+await toFile(dataset.toStream(), filename)
+}
 
 }
 // export { ModuleLoader, ModuleLoaderFactory, TransmissionBuilder }
 export default TransmissionBuilder
 <environment_details>
+
 # VSCode Visible Files
+
 ../trans-apps/applications/module-load-test/about.md
 
 # VSCode Open Tabs
+
 ../trans-apps/applications/module-load-test/about.md
 src/engine/TransmissionBuilder.js
 ../trans-apps/applications/module-load-test/transmissions.ttl
@@ -1260,7 +1302,6 @@ Let's modify the code accordingly:
 
 ```javascript
 class TransmissionBuilder {
-
   // ... (rest of the class remains unchanged)
 
   async buildTransmissions(transmissionConfig, processorsConfig) {
@@ -1271,18 +1312,28 @@ class TransmissionBuilder {
       if (q.object.equals(ns.trm.Pipeline)) {
         const pipelineID = q.subject
         //    transmissions.push(await this.constructTransmission(transmissionConfig, pipelineID, processorsConfig));
-        transmissions.push(await this.constructTransmission(transmissionConfig, pipelineID, processorsConfig)) // was await
+        transmissions.push(
+          await this.constructTransmission(
+            transmissionConfig,
+            pipelineID,
+            processorsConfig
+          )
+        ) // was await
       }
     }
     return transmissions
   }
 
-  async constructTransmission(transmissionConfig, pipelineID, processorsConfig) {
+  async constructTransmission(
+    transmissionConfig,
+    pipelineID,
+    processorsConfig
+  ) {
     processorsConfig.whiteboard = {}
 
     const transmission = new Transmission()
     transmission.id = pipelineID.value
-    transmission.label = ''
+    transmission.label = ""
 
     const transPoi = grapoi({ dataset: transmissionConfig, term: pipelineID })
 
@@ -1290,19 +1341,39 @@ class TransmissionBuilder {
     for (const quad of transPoi.out(ns.rdfs.label).quads()) {
       transmission.label = quad.object.value
     }
-    logger.log('\n+ ***** Construct Transmission : ' + transmission.label + ' <' + transmission.id + '>')
+    logger.log(
+      "\n+ ***** Construct Transmission : " +
+        transmission.label +
+        " <" +
+        transmission.id +
+        ">"
+    )
 
     let previousName = "nothing"
 
     // grapoi probably has a built-in for all this
-    const pipenodes = GrapoiHelpers.listToArray(transmissionConfig, pipelineID, ns.trm.pipe)
-    await this.createNodes(transmission, pipenodes, transmissionConfig, processorsConfig) // was await, bad Claude
+    const pipenodes = GrapoiHelpers.listToArray(
+      transmissionConfig,
+      pipelineID,
+      ns.trm.pipe
+    )
+    await this.createNodes(
+      transmission,
+      pipenodes,
+      transmissionConfig,
+      processorsConfig
+    ) // was await, bad Claude
     //    this.createNodes(transmission, pipenodes, transmissionConfig, processorsConfig); // was await, bad Claude
     this.connectNodes(transmission, pipenodes)
     return transmission
   }
 
-  async createNodes(transmission, pipenodes, transmissionConfig, processorsConfig) {
+  async createNodes(
+    transmission,
+    pipenodes,
+    transmissionConfig,
+    processorsConfig
+  ) {
     for (let i = 0; i < pipenodes.length; i++) {
       let node = pipenodes[i]
       let processorName = node.value
@@ -1317,7 +1388,10 @@ class TransmissionBuilder {
           let type = ns.getShortname(processorType.value)
 
           logger.log("| Create processor :" + name + " of type :" + type)
-          let processor = await this.createProcessor(processorType, processorsConfig) // was await
+          let processor = await this.createProcessor(
+            processorType,
+            processorsConfig
+          ) // was await
           processor.id = processorName
           processor.type = processorType
           processor.transmission = transmission
@@ -1329,7 +1403,11 @@ class TransmissionBuilder {
           }
           transmission.register(processorName, processor)
         } catch (err) {
-          logger.error('-> Can\'t resolve ' + processorName + ' (check transmission.ttl for typos!)\n')
+          logger.error(
+            "-> Can't resolve " +
+              processorName +
+              " (check transmission.ttl for typos!)\n"
+          )
           logger.error(err)
         }
       }
@@ -1342,30 +1420,45 @@ class TransmissionBuilder {
       let leftProcessorName = leftNode.value
       let rightNode = pipenodes[i + 1]
       let rightProcessorName = rightNode.value
-      logger.log("  > Connect #" + i + " [" + ns.getShortname(leftProcessorName) + "] => [" + ns.getShortname(rightProcessorName) + "]")
+      logger.log(
+        "  > Connect #" +
+          i +
+          " [" +
+          ns.getShortname(leftProcessorName) +
+          "] => [" +
+          ns.getShortname(rightProcessorName) +
+          "]"
+      )
       transmission.connect(leftProcessorName, rightProcessorName)
     }
   }
 
   async createProcessor(type, config) {
     try {
-      const coreProcessor = AbstractProcessorFactory.createProcessor(type, config)
+      const coreProcessor = AbstractProcessorFactory.createProcessor(
+        type,
+        config
+      )
       if (coreProcessor) {
         return coreProcessor
       }
     } catch (error) {
-      logger.debug(`TransmissionBuilder, core processor not found for ${type.value}. Trying remote module loader...`)
+      logger.debug(
+        `TransmissionBuilder, core processor not found for ${type.value}. Trying remote module loader...`
+      )
     }
 
     try {
-      const shortName = type.value.split('/').pop()
+      const shortName = type.value.split("/").pop()
       logger.debug(`Loading module: ${shortName}`)
       const ProcessorClass = await this.moduleLoader.loadModule(shortName)
       logger.debug(`Module loaded successfully: ${shortName}`)
       return new ProcessorClass.default(config)
     } catch (error) {
       //   throw new Error(`Failed to load processor ${type.value}: ${error.message}`)
-      logger.error(`TransmissionBuilder, failed to load processor ${type.value}`)
+      logger.error(
+        `TransmissionBuilder, failed to load processor ${type.value}`
+      )
       //process.exit(1)
     }
   }
@@ -1380,8 +1473,6 @@ class TransmissionBuilder {
   static async writeDataset(dataset, filename) {
     await toFile(dataset.toStream(), filename)
   }
-
-
 }
 // export { ModuleLoader, ModuleLoaderFactory, TransmissionBuilder }
 export default TransmissionBuilder
@@ -1422,10 +1513,13 @@ If you require additional information from the user, use the ask_followup_questi
 Otherwise, if you have not completed the task and do not need additional information, then proceed with the next step of the task.
 (This is an automated message, so do not respond to it conversationally.)
 <environment_details>
+
 # VSCode Visible Files
+
 ../trans-apps/applications/module-load-test/about.md
 
 # VSCode Open Tabs
+
 ../trans-apps/applications/module-load-test/about.md
 src/engine/TransmissionBuilder.js
 ../trans-apps/applications/module-load-test/transmissions.ttl

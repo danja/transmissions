@@ -45,7 +45,7 @@ TODO create a skeleton application template
 Within #transmissions there's an app I was working on recently, hadn't got very far, `src/applications/globbo`. I'll copy that over to the other repo so :
 
 ```bash
-danny@danny-desktop:~/github-danny/trans-apps$ tree applications/test-grok-api/
+danny@danny-desktop:~/hyperdata/trans-apps$ tree applications/test-grok-api/
 ...
 applications/test-grok-api/
 ├── about.md
@@ -218,9 +218,9 @@ The responses appear more useful after I suggested using Java's command-line -cl
 22:26, enough.
 
 ```javascript
-const Groq = require("groq-sdk");
+const Groq = require("groq-sdk")
 
-const groq = new Groq();
+const groq = new Groq()
 async function main() {
   const chatCompletion = await groq.chat.completions.create({
     messages: [
@@ -241,12 +241,12 @@ async function main() {
     top_p: 1,
     stream: true,
     stop: null,
-  });
+  })
 
   for await (const chunk of chatCompletion) {
-    process.stdout.write(chunk.choices[0]?.delta?.content || "");
+    process.stdout.write(chunk.choices[0]?.delta?.content || "")
   }
 }
 
-main();
+main()
 ```
