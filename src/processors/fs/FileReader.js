@@ -67,9 +67,11 @@ class FileReader extends Processor {
 
         // Read and return file content
         const content = await readFile(filePath, 'utf8')
+        logger.debug(`FileReader successfully read file: ${filePath}`)
+
+        message.filePath = filePath
         message.content = content
 
-        logger.debug(`FileReader successfully read file: ${filePath}`)
         return this.emit('message', message)
     }
 

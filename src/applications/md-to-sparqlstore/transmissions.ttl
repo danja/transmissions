@@ -34,4 +34,6 @@
 
 
 :make-entry a :Transmission ;
-     :pipe (:p20 :SM :DE :p30) .
+     :pipe (:p20 :SM :me30) .
+
+:me30 a :MakeEntry .
