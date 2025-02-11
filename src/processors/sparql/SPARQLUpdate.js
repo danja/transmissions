@@ -13,9 +13,7 @@ class SPARQLUpdate extends Processor {
     }
 
     async process(message) {
-        logger.setLogLevel('debug')
         logger.debug(`\nSPARQLUpdate.process`)
-
 
         if (!this.env.endpoints) {
             await this.env.loadEndpoints(message.rootDir)

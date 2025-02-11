@@ -9,8 +9,8 @@ import Processor from '../base/Processor.js'
 class FileReader extends Processor {
     constructor(config) {
         super(config)
+        this.defaultFilePath = 'input/input.md'
     }
-
 
     async process(message) {
         logger.debug(`FileReader.process, done=${message.done}`)
@@ -32,7 +32,8 @@ class FileReader extends Processor {
             // Fall back to getting path from config
             filePath = await this.getProperty(ns.trn.sourceFile)
             if (!filePath) {
-                throw new Error('No source file path provided in message or config')
+                logger.warn(`No source file path provided, defaulting to ${this.defaultFilePath}`)
+                filePath = this.defaultFilePath
             }
 
             logger.debug(`filePath = ${filePath}`)

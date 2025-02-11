@@ -1,6 +1,6 @@
-`src/applications/md-to-sparqlstore/data/input/input.md`
+`src/applications/md-to-sparqlstore/data/input/input2.md`
 
-# Test Blog Post
+# Second Test Blog Post
 
 This is a test blog post that will be converted to RDF and stored in the SPARQL database.
 

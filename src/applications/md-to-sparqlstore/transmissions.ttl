@@ -3,22 +3,22 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix : <http://purl.org/stuff/transmissions/> .
 
-####################################################################
-# Utility Processors : insert into pipe for debugging              #
-#                                                                  #
+##################################################################
+# Utility Processors : insert into pipe for debugging            #
+#                                                                #
 :DE a :DeadEnd . # ends the current pipe quietly                 #
 :H  a :Halt . # kills everything                                 #
 :SC a :ShowConfig . # verbose report, continues pipe             #
 :SM a :ShowMessage . # verbose report, continues pipe            #
 :N  a :NOP . # no operation (except for showing stage in pipe)   #
 :UF a :Unfork . # collapses all pipes but one                    #
-####################################################################
+##################################################################
 
 :SM1 a :ShowMessage .
 :SM2 a :ShowMessage .
 
 :md-to-sparqlstore a :Transmission ;
-:pipe (:p10 :DE :p20 :p30) .
+     :pipe (:p10 :p20 :SM :DE :p30) .
 
 :p10 a :DirWalker ; # where is the default dir?
     :settings :dirWalker .
@@ -33,4 +33,5 @@
      :settings :sparqlSelect .
 
 
-
+:make-entry a :Transmission ;
+     :pipe (:p20 :SM :DE :p30) .

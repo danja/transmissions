@@ -1,5 +1,9 @@
 # Transmissions : Next Steps
 
+types
+
+inline settings
+
 **2025-02-06**
 
 improve reveal()

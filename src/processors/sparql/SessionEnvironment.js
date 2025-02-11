@@ -13,7 +13,6 @@ class SessionEnvironment {
     }
 
     async loadEndpoints(dir) {
-        // logger.setLogLevel('debug')
         logger.debug(`SessionEnvironment.loadEndpoints dir = ${dir}`)
         const settingsPath = this.processor.getProperty(ns.trn.endpointSettings)
         logger.debug(`SessionEnvironment.loadEndpoints dir = ${dir}`)
