@@ -1,8 +1,8 @@
 # Transmissions : Next Steps
 
-types
-
-inline settings
+#:feature types
+#:feature inline settings
+#:bugfix subtask support
 
 **2025-02-06**
 

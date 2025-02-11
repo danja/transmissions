@@ -18,22 +18,21 @@
 :SM2 a :ShowMessage .
 
 :md-to-sparqlstore a :Transmission ;
-     :pipe (:p10 :p20 :SM :DE :p30) .
+     :pipe (:p20 :p30 :SM) .
 
-:p10 a :DirWalker ; # where is the default dir?
+:p10 a :DirWalker ;
     :settings :dirWalker .
 
 :p20 a :FileReader ;
      :settings :readerSet .
 
-:p30 a :SPARQLUpdate ;
+:p30 a :MakeEntry .
+
+:p40 a :SPARQLUpdate ;
      :settings :sparqlUpdate .
 
-:p40 a :SPARQLSelect ;
+:p50 a :SPARQLSelect ;
      :settings :sparqlSelect .
 
 
-:make-entry a :Transmission ;
-     :pipe (:p20 :SM :me30) .
 
-:me30 a :MakeEntry .

@@ -6,6 +6,8 @@
 @prefix : <http://purl.org/stuff/transmissions/> .
 
 
+:readerSet a :ConfigSet ;
+    :metaField "meta" .
 
 :sparqlUpdate a :ConfigSet ;
     :templateFilename "templates/update-blogposting.njk" ;

@@ -14,48 +14,53 @@ class MakeEntry extends Processor {
     if (message.done) {
       return this.emit('message', message)
     }
-    message.slug = this.extractSlug(message)
-    message.targetFilename = this.extractTargetFilename(message)
+    message.slug = this.extractSlug(message.filePath)
+
     message.contentBlocks = {}
-    message.contentBlocks.relURL = this.extractRelURL(message)
+    message.contentBlocks.relPath =
+      this.extractRelPath(message.appPath, message.filePath)
 
     // TODO generalise - use path.join
-    message.contentBlocks.link = 'entries/' + message.contentBlocks.relURL
+    //  message.contentBlocks.link = 'entries/' + message.contentBlocks.relURL
 
     message.contentBlocks.title = this.extractTitle(message)
 
-    const { created, updated } = this.extractDates(message)
-    message.contentBlocks.created = created
-    message.contentBlocks.updated = updated
+    // const { created, updated } = this.extractDates(message)
+    message.contentBlocks.dates = this.extractDates(message)
 
     return this.emit('message', message)
   }
 
-  extractSlug(message) { // TODO move this into a utils file?
-    var slug = message.filename
+  extractSlug(filePath) { // TODO move this into a utils file?
+    var slug = filePath
     if (slug.includes('.')) {
       slug = slug.substr(0, slug.lastIndexOf("."))
     }
     return slug
   }
 
-  /*
-  extractTargetFilename(message) {
-    logger.reveal(message)
-    return path.join(message.contentGroup.PostPages.targetDir, this.extractSlug(message) + '.html')
-  }
-    */
 
-  extractRelURL(message) { // TODO refactor
-    return this.extractSlug(message) + '.html'
+  // filePath - appPath
+  extractRelPath(basePath, filePath) { // TODO refactor
+    logger.trace(`basePath = ${basePath}`)
+    logger.trace(`filePath = ${filePath}`)
+    const baseLength = basePath.split(path.sep).length
+    logger.trace(`baseLength = ${baseLength}`)
+    const split = filePath.split(path.sep)
+    const splitLength = split.length
+    logger.trace(`split = ${split}`)
+    logger.trace(`splitLength = ${splitLength}`)
+    const dirs = split.slice(baseLength, splitLength - 1)
+    logger.trace(`dirs = ${dirs}`)
+    return dirs.join(path.sep)
   }
 
   extractDates(message) {
-    const today = (new Date()).toISOString().split('T')[0]
-    const dates = { created: today, updated: today }
+    const today = (new Date()).toISOString().split('.')[0]
+    const dates = { rendered: today, created: today, updated: today }
 
     //  eg. 2024-04-19_hello-postcraft.md
-    const nonExt = message.filename.split('.').slice(0, -1).join()
+    const nonExt = message.filePath.split('.').slice(0, -1).join()
     const shreds = nonExt.split('_')
     if (Date.parse(shreds[0])) { // filename version is not NaN
       dates.created = shreds[0]
