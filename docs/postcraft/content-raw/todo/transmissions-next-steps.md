@@ -3,6 +3,9 @@
 #:feature types
 #:feature inline settings
 #:bugfix subtask support
+#:feature Node Flow integration
+
+observer pattern - callbacks on Transmission etc.
 
 **2025-02-06**
 

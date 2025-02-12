@@ -1,145 +1,137 @@
-import path from 'path'
-import { fromFile } from 'rdf-utils-fs'
-import fs from 'fs/promises'
+// ApplicationManager.js
 import rdf from 'rdf-ext'
+import ns from '../utils/ns.js'
+import path from 'path'
+import fs from 'fs/promises'
+import _ from 'lodash'
 import logger from '../utils/Logger.js'
+import MockApplicationManager from '../utils/MockApplicationManager.js'
+import TransmissionBuilder from '../engine/TransmissionBuilder.js'
+import ModuleLoaderFactory from '../engine/ModuleLoaderFactory.js'
+import Application from '../engine/AppResolver.js'
 
-class Application {
-    constructor(options = {}) {
-        // Core paths
-        this.appsDir = 'src/applications'
-        this.transmissionFilename = 'transmissions.ttl'
-        this.configFilename = 'config.ttl'
-        this.moduleSubDir = 'processors'
-        this.dataSubDir = 'data'
-        this.manifestFilename = 'manifest.ttl'
-
-        // Application identity
-        this.appName = options.appName || null
-        this.appPath = options.appPath || null
-        this.subtask = options.subtask || null
-
-        // Runtime paths
-        this.rootDir = options.rootDir || null
-        this.dataDir = options.dataDir || null
-        this.targetPath = options.targetPath || null
-
-        // RDF dataset from manifest
-        this.dataset = options.dataset || null
+class ApplicationManager {
+    constructor() {
+        this.app = new Application()
+        this.moduleLoader = null
+        this.dataset = rdf.dataset()
     }
 
-    async initialize(appName, appPath, subtask, target, flags = {}) {
-        logger.debug(`Application.initialize,
-            appName : ${appName}
-            appPath : ${appPath}
-            subtask : ${subtask}
-            target : ${target}`)
+    async initialize(appName, appPath, subtask, target, flags) {
+        logger.debug(`ApplicationManager.initialize, appName=${appName}, appPath=${appPath}, subtask=${subtask}, target=${target}`)
 
-        this.appName = appName
-        this.appPath = await this.resolveApplicationPath(appName)
-        this.subtask = subtask
-        this.targetPath = target
-
-        if (target) {
-            this.manifestFilename = path.join(target, this.manifestFilename)
-            await this.loadManifest()
+        if (flags && flags.test) {
+            const mock = new MockApplicationManager()
+            await mock.initialize(appName, appPath, subtask, target, flags)
+            return mock
         }
+
+        await this.app.initialize(appName, appPath, subtask, target)
+        this.moduleLoader = ModuleLoaderFactory.createApplicationLoader(this.app.getModulePath())
+
+        const appNode = rdf.namedNode(`http://purl.org/stuff/transmissions/${appName}`)
+        const sessionNode = rdf.blankNode()
+
+        this.dataset.add(rdf.quad(
+            appNode,
+            ns.rdf.type,
+            ns.trn.Application
+        ))
+
+        this.dataset.add(rdf.quad(
+            sessionNode,
+            ns.rdf.type,
+            ns.trn.ApplicationSession
+        ))
+
+        this.dataset.add(rdf.quad(
+            sessionNode,
+            ns.trn.application,
+            appNode
+        ))
+
+        // Add to config before building transmissions
+        this.app.dataset = this.dataset
+        this.app.sessionNode = sessionNode
 
         return this
     }
 
-    async findInDirectory(dir, targetName, depth = 0) {
-        if (depth > 3) return null
+    async buildTransmissions(transmissionConfigFile, processorsConfigFile, moduleLoader, app) {
+        logger.debug(`\nApplicationManager.build ****************************************`)
 
-        try {
-            const entries = await fs.readdir(dir, { withFileTypes: true })
+        const builder = new TransmissionBuilder(this.moduleLoader, this.app)
+        const transmissionConfig = await TransmissionBuilder.readDataset(this.app.getTransmissionsPath())
+        const processorsConfig = await TransmissionBuilder.readDataset(this.app.getConfigPath())
 
-            for (const entry of entries) {
-                if (!entry.isDirectory()) continue
-
-                const fullPath = path.join(dir, entry.name)
-
-                // Check if this directory matches
-                if (entry.name === targetName) {
-                    const transmissionsFile = path.join(fullPath, this.transmissionFilename)
-                    try {
-                        await fs.access(transmissionsFile)
-                        return fullPath
-                    } catch {
-                        // Has matching name but no transmissions.ttl
-                    }
-                }
-
-                // Recurse into subdirectories
-                const found = await this.findInDirectory(fullPath, targetName, depth + 1)
-                if (found) return found
+        // Merge with app dataset
+        /*
+            for (const quad of app.dataset) {
+              transmissionConfig.add(quad)
+              processorsConfig.add(quad)
             }
-        } catch (err) {
-            logger.debug(`Error scanning directory ${dir}: ${err.message}`)
-        }
-
-        return null
+        */
+        return await builder.buildTransmissions(transmissionConfig, processorsConfig)
     }
 
-    async resolveApplicationPath(appName) {
-        if (!appName) {
-            throw new Error('Application name is required')
+    async start(message = {}) {
+        logger.debug(`\n||| ApplicationManager.start`)
+        logger.debug(`
+            transmissionsFile=${this.app.getTransmissionsPath()}
+            configFile=${this.app.getConfigPath()}
+            subtask=${this.app.subtask}`)
+
+        const transmissions = await this.buildTransmissions()
+
+        logger.debug(`Transmissions has length ${transmissions.length}`)
+        // Get application context
+        const contextMessage = this.app.toMessage()
+
+        // Modify the input message in place
+        _.merge(message, contextMessage)
+
+        logger.trace('Message with merged context:', message)
+
+        /*
+        for (const transmission of transmissions) {
+            if (!this.app.subtask || this.app.subtask === transmission.label) {
+                await transmission.process(message)
+            }
         }
+*/
+        //       message.app = this.app
+        message.sessionNode = this.app.sessionNode
 
-        const baseDir = path.join(process.cwd(), this.appsDir)
-        const appPath = await this.findInDirectory(baseDir, appName)
-
-        if (!appPath) {
-            throw new Error(`Could not find application ${appName} with transmissions.ttl in any subdirectory`)
+        for (const transmission of transmissions) {
+            logger.debug(`transmission = \n${transmission}`)
+            if (!this.app.subtask || this.app.subtask === transmission.label) {
+                //     await transmission.process(message)
+                message = await transmission.process(message)
+            }
         }
-
-        return appPath
+        message.success = true
+        //     logger.reveal(message)
+        return message //{ success: true }
     }
 
-    async loadManifest() {
+    async listApplications() {
         try {
-            logger.debug(`Application.loadManifest, loading: ${this.manifestFilename}`)
-            const stream = fromFile(this.manifestFilename)
-            this.dataset = await rdf.dataset().import(stream)
-            return this.dataset
+            const entries = await fs.readdir(this.app.appsDir, { withFileTypes: true })
+            const subdirChecks = entries
+                .filter(dirent => dirent.isDirectory())
+                .map(async (dirent) => {
+                    const subdirPath = path.join(this.app.appsDir, dirent.name)
+                    const files = await fs.readdir(subdirPath)
+                    return files.includes('about.md') ? dirent.name : null
+                })
+
+            const validApps = (await Promise.all(subdirChecks)).filter(Boolean)
+            return validApps
         } catch (err) {
-            logger.debug(`Application.loadManifest, ${this.manifestFilename} not found, creating empty dataset`)
-            this.dataset = rdf.dataset()
-            return this.dataset
-        }
-    }
-
-    getTransmissionsPath() {
-        return path.join(this.appPath, this.transmissionFilename)
-    }
-
-    getConfigPath() {
-        return path.join(this.appPath, this.configFilename)
-    }
-
-    getModulePath() {
-        logger.debug(`Application.getModulePath,\nthis.appPath : ${this.appPath}\nthis.moduleSubDir : ${this.moduleSubDir}`)
-        return path.join(this.appPath, this.moduleSubDir)
-    }
-
-    resolveDataDir() {
-        if (!this.dataDir) {
-            this.dataDir = path.join(this.appPath, this.dataSubDir)
-        }
-        return this.dataDir
-    }
-
-    toMessage() {
-        return {
-            appName: this.appName,
-            appPath: this.appPath,
-            subtask: this.subtask,
-            rootDir: this.rootDir || this.appPath,
-            dataDir: this.resolveDataDir(),
-            targetPath: this.targetPath,
-            dataset: this.dataset
+            logger.error('Error listing applications:', err)
+            return []
         }
     }
 }
 
-export default Application
+export default ApplicationManager
