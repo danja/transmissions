@@ -5,6 +5,7 @@
 #:bugfix subtask support
 #:feature Node Flow integration
 
+https://elicdavis.github.io/node-flow/
 observer pattern - callbacks on Transmission etc.
 
 **2025-02-06**

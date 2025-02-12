@@ -18,7 +18,7 @@
 :SM2 a :ShowMessage .
 
 :md-to-sparqlstore a :Transmission ;
-     :pipe (:p20 :p30 :SM) .
+     :pipe (:p20 :p30 :SM :p40) .
 
 :p10 a :DirWalker ;
     :settings :dirWalker .
