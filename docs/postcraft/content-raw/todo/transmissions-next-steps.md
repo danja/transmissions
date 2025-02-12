@@ -7,6 +7,11 @@
 
 https://elicdavis.github.io/node-flow/
 observer pattern - callbacks on Transmission etc.
+add Observer superclass?
+consider semem integration
+
+1. transmissions editor
+2. live interactions
 
 **2025-02-06**
 
