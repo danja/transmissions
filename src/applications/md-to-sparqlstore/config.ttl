@@ -9,7 +9,12 @@
 :readerSet a :ConfigSet ;
     :metaField "meta" .
 
+:entryDefaults a :ConfigSet ;
+    :authorName "Danny" ;
+    :authorURI <http://danny.ayers.name> .
+
 :sparqlUpdate a :ConfigSet ;
+    :dataBlock "contentBlocks" ;
     :templateFilename "templates/update-blogposting.njk" ;
     :endpointSettings "endpoint.json" .
 

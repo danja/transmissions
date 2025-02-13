@@ -15,13 +15,9 @@ class SPARQLUpdate extends Processor {
     async process(message) {
         logger.debug(`\nSPARQLUpdate.process`)
 
-        if (!this.env.endpoints) {
-            await this.env.loadEndpoints(message.rootDir)
-        }
-
-
-        const endpoint = this.env.getUpdateEndpoint()
+        const endpoint = await this.getUpdateEndpoint(message)
         logger.debug(`SPARQLUpdate.process endpoint = ${endpoint}`)
+
         const template = await this.env.getTemplate(
             message.rootDir,
             await this.getProperty(ns.trn.templateFilename)
@@ -29,31 +25,24 @@ class SPARQLUpdate extends Processor {
         logger.debug(`SPARQLUpdate.process template = ${template}`)
 
         const now = new Date().toISOString()
-        const updateData = {
-            id: crypto.randomUUID(),
-            title: message.meta?.title || 'Untitled Post',
-            content: message.content,
-            published: now,
-            modified: now,
-            author: { // default to me!!
-                name: 'Danny',
-                email: 'danny.ayers@gmail.com',
-                url: 'https://danny.ayers.name'
-            },
-            ...message
-        }
+
+        const updateID = crypto.randomUUID()
+
         logger.setLogLevel('debug')
 
-        logger.debug(`renderString(template = ${template}
-            updateData = ${updateData})`)
+        //logger.debug(`renderString(template = ${template}
+        //  updateData = ${updateData})`)
+        const dataField = super.getProperty(ns.trn.dataBlock)
+        const updateData = message[dataField]
+
         const update = nunjucks.renderString(template, updateData)
 
+        logger.debug(update)
+
+        //   process.exit()
         try {
             const response = await axios.post(endpoint.url, update, {
-                headers: {
-                    'Content-Type': 'application/sparql-update',
-                    'Authorization': this.env.getBasicAuthHeader(endpoint)
-                }
+                headers: await this.makeHeaders(endpoint)
             })
 
             message.updateStatus = response.status === 200 ? 'success' : 'error'
@@ -63,6 +52,21 @@ class SPARQLUpdate extends Processor {
         } catch (error) {
             logger.error('SPARQL update error:', error)
             throw error
+        }
+    }
+
+    async getUpdateEndpoint(message) {
+        // TODO maybe check message & config too?
+        if (!this.env.endpoints) {
+            await this.env.loadEndpoints(message.rootDir)
+        }
+        return this.env.getUpdateEndpoint()
+    }
+
+    async makeHeaders(endpoint) {
+        return {
+            'Content-Type': 'application/sparql-update',
+            'Authorization': this.env.getBasicAuthHeader(endpoint)
         }
     }
 }

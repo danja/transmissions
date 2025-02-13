@@ -26,7 +26,8 @@
 :p20 a :FileReader ;
      :settings :readerSet .
 
-:p30 a :MakeEntry .
+:p30 a :MakeEntry ;
+     :settings :entryDefaults .
 
 :p40 a :SPARQLUpdate ;
      :settings :sparqlUpdate .

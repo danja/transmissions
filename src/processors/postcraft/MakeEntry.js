@@ -14,50 +14,50 @@ class MakeEntry extends Processor {
     if (message.done) {
       return this.emit('message', message)
     }
-    message.slug = this.extractSlug(message.filePath)
 
-    message.contentBlocks = {}
-    message.contentBlocks.relPath =
-      this.extractRelPath(message.appPath, message.filePath)
-
-    // TODO generalise - use path.join
-    //  message.contentBlocks.link = 'entries/' + message.contentBlocks.relURL
-
-    message.contentBlocks.title = this.extractTitle(message)
-
-    // const { created, updated } = this.extractDates(message)
-    message.contentBlocks.dates = this.extractDates(message)
+    const { rel, slug } = this.extractRelSlug(message.appPath, message.filePath)
+    logger.log(`slug = ${slug}`)
+    message.contentBlocks = {
+      url: "URL",
+      sourcePath: message.meta.filepath,
+      relPath: rel,
+      content: message.content,
+      slug: slug,
+      title: this.extractTitle(message),
+      dates: this.extractDates(message)
+    }
 
     return this.emit('message', message)
   }
 
-  extractSlug(filePath) { // TODO move this into a utils file?
-    var slug = filePath
-    if (slug.includes('.')) {
-      slug = slug.substr(0, slug.lastIndexOf("."))
-    }
-    return slug
-  }
-
 
   // filePath - appPath
-  extractRelPath(basePath, filePath) { // TODO refactor
-    logger.trace(`basePath = ${basePath}`)
-    logger.trace(`filePath = ${filePath}`)
+  extractRelSlug(basePath, filePath) { // TODO refactor
+
     const baseLength = basePath.split(path.sep).length
-    logger.trace(`baseLength = ${baseLength}`)
     const split = filePath.split(path.sep)
     const splitLength = split.length
     logger.trace(`split = ${split}`)
-    logger.trace(`splitLength = ${splitLength}`)
+    var slug = split.slice(splitLength - 1).toString()
+    if (slug.includes('.')) {
+      slug = slug.substr(0, slug.lastIndexOf('.'))
+    }
+    logger.trace(`slug = ${slug}`)
     const dirs = split.slice(baseLength, splitLength - 1)
     logger.trace(`dirs = ${dirs}`)
-    return dirs.join(path.sep)
+    const rel = dirs.join(path.sep)
+    return { rel, slug }
   }
 
   extractDates(message) {
-    const today = (new Date()).toISOString().split('.')[0]
-    const dates = { rendered: today, created: today, updated: today }
+    const now = (new Date()).toISOString().split('.')[0]
+    const created = message.meta.created
+    const updated = message.meta.updated
+    const dates = {
+      read: now,
+      created: created,
+      updated: updated
+    }
 
     //  eg. 2024-04-19_hello-postcraft.md
     const nonExt = message.filePath.split('.').slice(0, -1).join()

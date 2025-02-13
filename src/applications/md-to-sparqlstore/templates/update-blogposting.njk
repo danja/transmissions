@@ -1,10 +1,20 @@
+
+
 PREFIX schema: <http://schema.org/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX : <http://purl.org/stuff/transmissions/>
+
+# https://schema.org/BlogPosting
+# https://schema.org/Article
 
 INSERT DATA {
-  <http://example.com/posts/{{id}}> a schema:BlogPosting ;
+  <{{url}}> a schema:Article ;
+    :sourcePath "{{sourcePath}}" ;
+    :relPath "{{relPath}}" ;
+    :slug "{{slug}}" ;
+
     schema:headline "{{title}}" ;
-    schema:url <http://example.com/posts/{{id}}> ;
+  #  schema:url <http://example.com/posts/{{id}}> ;
     schema:description """{{content}}""" ;
     schema:datePublished "{{published}}"^^xsd:dateTime ;
     schema:dateModified "{{modified}}"^^xsd:dateTime ;

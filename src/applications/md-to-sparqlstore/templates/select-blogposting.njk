@@ -3,7 +3,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 SELECT ?post ?headline ?content ?published ?modified ?author
 WHERE {
-  ?post a schema:BlogPosting ;
+  ?post a schema:Article ;
         schema:headline ?headline ;
         schema:description ?content ;
         schema:datePublished ?published ;
