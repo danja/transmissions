@@ -1,5 +1,6 @@
 import path from 'path'
 import logger from '../../utils/Logger.js'
+import ns from '../../utils/ns.js'
 
 import Processor from '../base/Processor.js'
 
@@ -17,6 +18,7 @@ class MakeEntry extends Processor {
 
     const { rel, slug } = this.extractRelSlug(message.appPath, message.filePath)
     logger.log(`slug = ${slug}`)
+
     message.contentBlocks = {
       url: "URL",
       sourcePath: message.meta.filepath,
@@ -24,16 +26,22 @@ class MakeEntry extends Processor {
       content: message.content,
       slug: slug,
       title: this.extractTitle(message),
-      dates: this.extractDates(message)
+      dates: this.extractDates(message),
+      creator: this.getCreator()
     }
 
     return this.emit('message', message)
   }
 
+  getCreator() {
+    return {
+      name: super.getProperty(ns.trn.creatorName),
+      uri: super.getProperty(ns.trn.creatorURI)
+    }
+  }
 
   // filePath - appPath
-  extractRelSlug(basePath, filePath) { // TODO refactor
-
+  extractRelSlug(basePath, filePath) {
     const baseLength = basePath.split(path.sep).length
     const split = filePath.split(path.sep)
     const splitLength = split.length
@@ -51,7 +59,8 @@ class MakeEntry extends Processor {
 
   extractDates(message) {
     const now = (new Date()).toISOString().split('.')[0]
-    const created = message.meta.created
+    // TODO make note - FileReader gives date object
+    const created = message.meta.created.toISOString().split('.')[0]
     const updated = message.meta.updated
     const dates = {
       read: now,

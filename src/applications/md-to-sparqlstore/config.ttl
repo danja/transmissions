@@ -10,8 +10,8 @@
     :metaField "meta" .
 
 :entryDefaults a :ConfigSet ;
-    :authorName "Danny" ;
-    :authorURI <http://danny.ayers.name> .
+    :creatorName "Danny" ;
+    :creatorURI <http://danny.ayers.name/me> .
 
 :sparqlUpdate a :ConfigSet ;
     :dataBlock "contentBlocks" ;
