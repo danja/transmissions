@@ -31,11 +31,13 @@ import SPARQLProcessorsFactory from '../sparql/SPARQLProcessorsFactory.js'
 class AbstractProcessorFactory {
 
     // looks until it finds
-    // good enough for now
 
     static createProcessor(type, config) {
+        if (!type) {
+            throw new Error(`Processor type undefined (typo in 'transmission.ttl'..?)`)
+        }
         logger.trace(`\nAbstractProcessorFactory.createProcessor : type.value = ${type.value}`)
-        //  logger.debug(`AbstractProcessorFactory.createProcessor : config = ${config}`)
+        logger.trace(`AbstractProcessorFactory.createProcessor : config = ${config}`)
 
         var processor = ExampleProcessorsFactory.createProcessor(type, config)
         if (processor) return processor

@@ -1,4 +1,5 @@
 // JsonRestructurer.js
+/// Helper for Restructure.js
 
 import logger from '../../utils/Logger.js'
 

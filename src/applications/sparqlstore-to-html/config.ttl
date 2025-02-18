@@ -10,4 +10,18 @@
     :templateFilename "templates/select-articles.njk" ;
     :endpointSettings "endpoint.json" .
 
+:resultIterator a :ConfigSet ;
+  :forEach "queryResults.results.bindings" .
+
+##############
+:prepArticle a :ConfigSet ;
+    :setters (:setter1)  . # consider using blank nodes
+        :setter1    :pre    "queryResults.results.bindings.content.value" ;
+                    :value  "contentBlocks.mdContent"  .
+
+:contentTemplater a :ConfigSet ;
+  :templateFilename "templates/article-html.njk" .
+
+:articleTemplater a :ConfigSet ;
+  :templateFilename "templates/article-html.njk" .
 
