@@ -22,13 +22,11 @@ class SPARQLUpdate extends Processor {
             message.rootDir,
             await this.getProperty(ns.trn.templateFilename)
         )
-        logger.debug(`SPARQLUpdate.process template = ${template}`)
+        logger.trace(`SPARQLUpdate.process template = ${template}`)
 
         const now = new Date().toISOString()
 
         const updateID = crypto.randomUUID()
-
-        logger.setLogLevel('debug')
 
         //logger.debug(`renderString(template = ${template}
         //  updateData = ${updateData})`)
@@ -50,8 +48,11 @@ class SPARQLUpdate extends Processor {
 
             return this.emit('message', message)
         } catch (error) {
-            logger.error('SPARQL update error:', error)
-            throw error
+            logger.error(`SPARQL update error on sourcePath : ${message.contentBlocks.sourcePath}`)
+            //   logger.error('SPARQL update error:', error)
+            //  logger.reveal(message)
+            // logger.log(update)
+            // throw error
         }
     }
 

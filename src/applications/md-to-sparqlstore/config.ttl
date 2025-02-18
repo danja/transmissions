@@ -6,18 +6,20 @@
 @prefix : <http://purl.org/stuff/transmissions/> .
 
 
+:walker a :ConfigSet ;
+    :sourceDir "/home/danny/sites/danny.ayers.name/postcraft/content-raw" .
+
 :readerSet a :ConfigSet ;
     :metaField "meta" .
 
 :entryDefaults a :ConfigSet ;
+    :baseURI <http://danny.ayers.name/blog> ;
     :creatorName "Danny" ;
     :creatorURI <http://danny.ayers.name/me> .
 
 :sparqlUpdate a :ConfigSet ;
     :dataBlock "contentBlocks" ;
-    :templateFilename "templates/update-blogposting.njk" ;
+    :templateFilename "templates/update-article.njk" ;
     :endpointSettings "endpoint.json" .
 
-:sparqlSelect a :ConfigSet ;
-    :templateFilename "templates/select-blogposting.njk" ;
-    :endpointSettings "endpoint.json" .
+

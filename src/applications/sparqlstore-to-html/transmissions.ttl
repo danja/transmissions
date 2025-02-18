@@ -1,37 +1,23 @@
-# src/applications/test/file-to-sparqlstore/transmissions.ttl
+# src/applications/example-application/transmissions.ttl
 
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
 @prefix : <http://purl.org/stuff/transmissions/> .
 
 ##################################################################
 # Utility Processors : insert into pipe for debugging            #
 #                                                                #
+:SM a :ShowMessage . # verbose report, continues pipe            #
+:SC a :ShowConfig . # verbose report, continues pipe             #
 :DE a :DeadEnd . # ends the current pipe quietly                 #
 :H  a :Halt . # kills everything                                 #
-:SC a :ShowConfig . # verbose report, continues pipe             #
-:SM a :ShowMessage . # verbose report, continues pipe            #
 :N  a :NOP . # no operation (except for showing stage in pipe)   #
 :UF a :Unfork . # collapses all pipes but one                    #
 ##################################################################
 
-:SM1 a :ShowMessage .
-:SM2 a :ShowMessage .
+:sparqlstore-to-html a :Transmission ;
+    :pipe (:p10 :SM) .
 
-:md-to-sparqlstore a :Transmission ;
-     :pipe (:p20 :p30 :p40) .
-
-:p10 a :DirWalker ;
-    :settings :dirWalker .
-
-:p20 a :FileReader ;
-     :settings :readerSet .
-
-:p30 a :MakeEntry ;
-     :settings :entryDefaults .
-
-:p40 a :SPARQLUpdate ;
-     :settings :sparqlUpdate .
-
-
-
-
+:p10 a :SPARQLSelect ;
+     :settings :sparqlSelect .

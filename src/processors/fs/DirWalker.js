@@ -14,7 +14,6 @@ class DirWalker extends Processor {
     }
 
     async process(message) {
-        //   logger.setLogLevel('debug')
         logger.debug('\nDirWalker.process')
         logger.debug(`\nDirWalker.process, this = ${this}`)
         message.counter = 0

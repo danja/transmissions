@@ -37,7 +37,7 @@ class SessionEnvironment {
     }
 
     async getTemplate(dir, templateFilename) {
-        logger.setLogLevel('debug')
+
         logger.debug(`SessionEnvironment.getTemplate dir = ${dir}`)
         logger.debug(`SessionEnvironment.getTemplate templateFilename = ${templateFilename}`)
 

@@ -1,4 +1,5 @@
 import path from 'path'
+import crypto from 'crypto'
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
 
@@ -16,21 +17,28 @@ class MakeEntry extends Processor {
       return this.emit('message', message)
     }
 
-    const { rel, slug } = this.extractRelSlug(message.appPath, message.filePath)
+    const dates = this.extractDates(message)
+
+    const { rel, slug } = this.extractRelSlug(message.appPath, dates, message.filePath)
     logger.log(`slug = ${slug}`)
 
     message.contentBlocks = {
-      url: "URL",
+      uri: this.getEntryURI(rel, slug),
       sourcePath: message.meta.filepath,
       relPath: rel,
       content: message.content,
       slug: slug,
       title: this.extractTitle(message),
-      dates: this.extractDates(message),
+      dates: dates,
       creator: this.getCreator()
     }
-
     return this.emit('message', message)
+  }
+
+  getEntryURI(rel, slug) {
+    const baseURI = super.getProperty(ns.trn.baseURI)
+    //  const id = crypto.randomUUID()
+    return path.join(baseURI, rel, slug)
   }
 
   getCreator() {
@@ -41,7 +49,7 @@ class MakeEntry extends Processor {
   }
 
   // filePath - appPath
-  extractRelSlug(basePath, filePath) {
+  extractRelSlug(basePath, dates, filePath) {
     const baseLength = basePath.split(path.sep).length
     const split = filePath.split(path.sep)
     const splitLength = split.length
@@ -53,7 +61,8 @@ class MakeEntry extends Processor {
     logger.trace(`slug = ${slug}`)
     const dirs = split.slice(baseLength, splitLength - 1)
     logger.trace(`dirs = ${dirs}`)
-    const rel = dirs.join(path.sep)
+    const day = dates.created.split('T')[0]
+    const rel = path.join(dirs.join(path.sep), day)
     return { rel, slug }
   }
 

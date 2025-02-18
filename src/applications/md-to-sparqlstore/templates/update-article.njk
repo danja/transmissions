@@ -1,0 +1,22 @@
+
+
+PREFIX schema: <http://schema.org/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX : <http://purl.org/stuff/transmissions/>
+
+# https://schema.org/BlogPosting
+# https://schema.org/Article
+
+INSERT DATA {
+  <{{uri}}> a schema:Article ;
+      :sourcePath "{{sourcePath}}" ;
+      :relPath "{{relPath}}" ;
+      :slug "{{slug}}" ;
+      schema:headline "{{title}}" ;
+      schema:dateCreated "{{dates.created}}"^^xsd:dateTime ;
+      schema:dateModified "{{dates.read}}"^^xsd:dateTime ;
+      schema:articleBody """{{content}}""" ;
+      schema:creator <{{creator.uri}}> .
+  <{{creator.uri}}> a schema:Person ;
+      schema:name "{{creator.name}}" .
+}
