@@ -5,7 +5,6 @@ import logger from '../../utils/Logger.js'
 
 class JsonRestructurer {
     constructor(mappings) {
-        //   logger.setLogLevel('info')
         if (!mappings?.mappings || !Array.isArray(mappings.mappings)) {
             throw new Error('JsonRestructurer : Invalid mapping structure')
         }
@@ -16,12 +15,7 @@ class JsonRestructurer {
 
     getValueByPath(obj, path) {
         logger.debug('JsonRestructurer, path = ' + path)
-        //  logger.debug('JsonRestructurer, OBJECT = ' + obj)
 
-        //        logger.reveal(obj)
-        //      logger.debug('JsonRestructurer, OBJECT = ^^^^')
-
-        //   logger.debug('JsonRestructurer, obj.item.chat_messages = ' + obj.item.chat_messages)
         try {
             const sp = path.split('.')
             logger.debug('JsonRestructurer, sp = ' + sp)
@@ -47,7 +41,6 @@ class JsonRestructurer {
     }
 
     restructure(inputData) {
-        //   logger.log(`typeof inputData = ${typeof inputData}`)
         if (typeof inputData === 'string') {
             try {
                 inputData = JSON.parse(inputData)
@@ -55,8 +48,7 @@ class JsonRestructurer {
                 throw new Error('Invalid JSON string provided')
             }
         }
-        // logger.reveal(inputData)
-        //  process.exit(0)
+
         const result = {}
         this.mappings.forEach(({ pre, post }) => {
             logger.log(`PRE = ${pre}, POST = ${post}`)
@@ -66,9 +58,6 @@ class JsonRestructurer {
                 this.setValueByPath(result, post, value)
             }
         })
-        //    logger.log('RESULT%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55')
-        //  logger.reveal(result)
-        // logger.log('RESULT ^^^^')
         return result
     }
 }
