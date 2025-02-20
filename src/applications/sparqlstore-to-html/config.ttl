@@ -1,5 +1,7 @@
 # src/applications/example-application/config.ttl
 
+# BEWARE OF NAMED CRUFT!!!
+
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
@@ -14,19 +16,14 @@
   :forEach "queryResults.results.bindings" .
 
 :prepArticle a :ConfigSet  ;
-    :rename (:s1)  .
-        :s1   :pre    "currentItem.title.value" ;
+    :rename (:pa1 :pa2)  .
+        :pa1   :pre    "currentItem.title.value" ;
               :post "contentBlocks.title"  .
-        :s2   :pre    "currentItem.content.value" ;
-              :value  "contentBlocks.mdContent"  .
+        :pa2   :pre    "currentItem.content.value" ;
+              :post  "contentBlocks.mdContent"  .
+
 
 ##############
-:prepArghjghjticle a :ConfigSet ;
-    :setters (:s1)  .
-            :s1    :pre    "queryResults.results.bindings.title.value" ;
-                    :value  "contentBlocks.title"  .
-        :s2    :pre    "queryResults.results.bindings.content.value" ;
-                    :value  "contentBlocks.mdContent"  .
 
 :contentTemplater a :ConfigSet ;
   :templateFilename "templates/article-html.njk" .

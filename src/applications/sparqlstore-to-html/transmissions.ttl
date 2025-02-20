@@ -18,7 +18,7 @@
 ##################################################################
 
 :sparqlstore-to-html a :Transmission ;
-    :pipe (:p10  :p20 :p30 :SM1 ) .
+    :pipe (:p10   :p20 :SM1 :p30  ) .
 
 :p10 a :SPARQLSelect ;
      :settings :sparqlSelect .

@@ -10,8 +10,8 @@ class Restructure extends Processor {
         super(config)
     }
 
-    async getRenames(config, settings, term) {
-        // logger.log(`***** config = ${config}`)
+    async getRenames(config, term) {
+        logger.log(`***** config = ${config}`)
         //logger.log(`***** settings = ${settings}`)
         //logger.log(`***** term = ${term}`)
 
@@ -27,6 +27,7 @@ class Restructure extends Processor {
             let poi = rdf.grapoi({ dataset: dataset, term: rename })
             let pre = poi.out(ns.trn.pre).value
             let post = poi.out(ns.trn.post).value
+            logger.trace(`PRE: ${pre}, POST: ${post}`)
             renames.push({ "pre": pre, "post": post })
         }
         return renames
@@ -40,7 +41,7 @@ class Restructure extends Processor {
         if (this.config.simples) {
             renames = this.config.rename
         } else {
-            renames = await this.getRenames(this.config, this.settings, ns.trn.rename)
+            renames = await this.getRenames(this.config, ns.trn.rename)
         }
 
         //  logger.log('Renames :')
@@ -61,9 +62,9 @@ class Restructure extends Processor {
             const restructured = this.restructurer.restructure(input)
 
             const type = typeof restructured
-            //   logger.debug(`typeof restructured = ${type}`) // is object... TODO need different handling for returned arrays?
+            logger.debug(`typeof restructured = ${type}`) // is object... TODO need different handling for returned arrays?
             // logger.debug(`restructured = ${restructured}`)
-            //    logger.reveal(restructured)
+            logger.reveal(restructured)
 
             for (const key of Object.keys(restructured)) {
                 message[key] = restructured[key]

@@ -7,15 +7,15 @@ class JsonRestructurer {
     constructor(mappings) {
         //   logger.setLogLevel('info')
         if (!mappings?.mappings || !Array.isArray(mappings.mappings)) {
-            throw new Error('Invalid mapping structure')
+            throw new Error('JsonRestructurer : Invalid mapping structure')
         }
         this.mappings = mappings.mappings
         logger.debug('JsonRestructurer,  this.mappings = ' + this.mappings)
-        //  logger.reveal(this.mappings)
+        logger.reveal(this.mappings)
     }
 
     getValueByPath(obj, path) {
-        //    logger.debug('JsonRestructurer, path = ' + path)
+        logger.debug('JsonRestructurer, path = ' + path)
         //  logger.debug('JsonRestructurer, OBJECT = ' + obj)
 
         //        logger.reveal(obj)
@@ -29,7 +29,7 @@ class JsonRestructurer {
             logger.debug('JsonRestructurer, reduced = ' + reduced)
             return reduced
         } catch (e) {
-            logger.warn(`Warning: Path ${path} not found`)
+            logger.warn(`Warning: JsonRestructurer.getValueByPath, path ${path} not found`)
             return undefined
         }
     }
@@ -59,7 +59,7 @@ class JsonRestructurer {
         //  process.exit(0)
         const result = {}
         this.mappings.forEach(({ pre, post }) => {
-            //   logger.log(`PRE = ${pre}, POST = ${post}`)
+            logger.log(`PRE = ${pre}, POST = ${post}`)
             const value = this.getValueByPath(inputData, pre)
             // logger.log(`PRE = ${pre}, POST = ${post} value = ${value}`)
             if (value !== undefined) {
