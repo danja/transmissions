@@ -15,9 +15,12 @@ class ForEach extends Processor {
         const split = forEach.split('.')
 
         // TODO is also in 'processors/json/JsonRestructurer.js' - move to utils?
+        // const reduced = split.reduce((acc, part) => acc[part], message)
         const reduced = split.reduce((acc, part) => acc[part], message)
 
-        //    logger.reveal(reduced)
+        logger.debug(`ForEach, reduced.length = ${reduced.length}`)
+
+        //  logger.reveal(reduced)
 
         /*
         if (!message.foreach || !Array.isArray(message.foreach)) {

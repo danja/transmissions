@@ -17,13 +17,13 @@
 :cjc a trn:Transmission ;
 
 
-trn:pipe (:read :retree1 :SM :writer) .
+trn:pipe (:read :restructure :SM   :write) .
 
 :read a :FileReader ;
      trn:settings :reader .
 
-:retree1 a :Restructure ;
+:restructure a :Restructure ;
      trn:settings :retree .
 
-:writer a :FileWriter ;
+:write a :FileWriter ;
      trn:settings :writer .

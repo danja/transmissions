@@ -52,7 +52,7 @@ class SPARQLUpdate extends Processor {
             //   logger.error('SPARQL update error:', error)
             //  logger.reveal(message)
             // logger.log(update)
-            // throw error
+            throw error
         }
     }
 

@@ -58,31 +58,20 @@ class FileWriter extends Processor {
             return this.doWrite(f, content, message)
         }
 
-        logger.debug("Filewriter, message.filepath = " + message.filepath)
+        // logger.debug("Filewriter, message.filepath = " + message.filepath)
 
-        var destinationFile = await this.getProperty(ns.trn.destinationFile)
-        var filepath = message.filepath
-        if (message.subdir) {
-            filepath = path.join(message.subdir, filepath)
-        }
-        //path.join(message.sourceDir, message.filepath)
-        logger.debug(`Filewriter, 1 filepath = ${filepath}`)
-        //   logger.reveal(filePath)
+        var filePath = await this.getProperty(ns.trn.destinationFile)
 
-        if (!destinationFile) { // TODO fix, do other cases, refactor
-            var targetDir = message.targetDir ?
-                message.targetDir : await this.getProperty(ns.trn.targetDir)
-            targetDir = targetDir ? targetDir : '.'
+        logger.debug(`filePath = ${filePath}`)
+        // Resolve relative to targetPath or rootDir
 
-            filepath = path.join(targetDir, filepath)
+        if (!path.isAbsolute(filePath)) {
+            //     filePath = path.join(message.targetPath || message.rootDir, filePath)
+            filePath = path.join(message.targetPath || message.dataDir, filePath)
         }
 
-        if (!path.isAbsolute(filepath)) {
-            filepath = path.join(message.targetPath, filepath)
-        }
-
-        logger.debug(`Filewriter, filepath = ${filepath}`)
-        const dirName = dirname(filepath)
+        logger.debug(`Filewriter, filepath = ${filePath}`)
+        const dirName = dirname(filePath)
         logger.debug("Filewriter, dirName = " + dirName)
 
         /*
@@ -104,10 +93,14 @@ class FileWriter extends Processor {
 
         this.mkdirs(dirName) // sync - see below
 
-        return await this.doWrite(filepath, content, message)
+        return await this.doWrite(filePath, content, message)
     }
 
     async doWrite(f, content, message) {
+        logger.debug(`typeof content = ${typeof content}`)
+        if (typeof content != 'string') {
+            content = JSON.stringify(content)
+        }
         logger.log(' - FileWriter writing : ' + f)
         await writeFile(f, content)
         return this.emit('message', message)

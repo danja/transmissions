@@ -2,14 +2,14 @@ PREFIX schema: <http://schema.org/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX : <http://purl.org/stuff/transmissions/>
 
-SELECT * WHERE {
+SELECT DISTINCT * WHERE {
 
   ?article a schema:Article ;
     :sourcePath ?sourcePath ;
     :relPath ?relPath ;
     :slug ?slug ;
     schema:headline ?title ;
-    schema:dateModified ?modified ;
+#    schema:dateModified ?modified ;
     schema:articleBody ?content ;
     schema:creator ?creator .
 
@@ -22,4 +22,3 @@ OPTIONAL {
 #   FILTER(?published >= "{{startDate}}"^^xsd:dateTime)
 }
 ORDER BY DESC(?published)
-LIMIT 1

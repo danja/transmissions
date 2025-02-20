@@ -19,6 +19,7 @@ class FileReader extends Processor {
 
         let filePath
 
+        // TODO tidy up
         // First try deriving path from message properties
         if (message.fullPath) {
             filePath = message.fullPath
@@ -59,19 +60,27 @@ class FileReader extends Processor {
         })
 
         // Handle metadata if requested
-        const metaField = await this.getProperty(ns.trn.metaField)
+        const metaField = await super.getProperty(ns.trn.metaField)
         if (metaField) {
             const metadata = this.getFileMetadata(filePath)
             message[metaField] = metadata
         }
+
 
         // Read and return file content
         const content = await readFile(filePath, 'utf8')
         logger.debug(`FileReader successfully read file: ${filePath}`)
 
         message.filePath = filePath
-        message.content = content
 
+        const mediaType = super.getProperty(ns.trn.mediaType)
+        logger.debug(`mediaType = ${mediaType}`)
+
+        if (mediaType === 'application/json') {
+            message.content = JSON.parse(content)
+        } else {
+            message.content = content
+        }
         return this.emit('message', message)
     }
 

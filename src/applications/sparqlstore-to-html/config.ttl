@@ -13,10 +13,19 @@
 :resultIterator a :ConfigSet ;
   :forEach "queryResults.results.bindings" .
 
+:prepArticle a :ConfigSet  ;
+    :rename (:s1)  .
+        :s1   :pre    "currentItem.title.value" ;
+              :post "contentBlocks.title"  .
+        :s2   :pre    "currentItem.content.value" ;
+              :value  "contentBlocks.mdContent"  .
+
 ##############
-:prepArticle a :ConfigSet ;
-    :setters (:setter1)  . # consider using blank nodes
-        :setter1    :pre    "queryResults.results.bindings.content.value" ;
+:prepArghjghjticle a :ConfigSet ;
+    :setters (:s1)  .
+            :s1    :pre    "queryResults.results.bindings.title.value" ;
+                    :value  "contentBlocks.title"  .
+        :s2    :pre    "queryResults.results.bindings.content.value" ;
                     :value  "contentBlocks.mdContent"  .
 
 :contentTemplater a :ConfigSet ;
