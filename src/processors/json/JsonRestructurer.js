@@ -1,5 +1,6 @@
 // JsonRestructurer.js
 /// Helper for Restructure.js
+// TODO move to utils/JSONUtils.js
 
 import logger from '../../utils/Logger.js'
 
@@ -9,18 +10,18 @@ class JsonRestructurer {
             throw new Error('JsonRestructurer : Invalid mapping structure')
         }
         this.mappings = mappings.mappings
-        logger.debug('JsonRestructurer,  this.mappings = ' + this.mappings)
-        logger.reveal(this.mappings)
+        logger.trace('JsonRestructurer,  this.mappings = ' + this.mappings)
+        //    logger.reveal(this.mappings)
     }
 
     getValueByPath(obj, path) {
-        logger.debug('JsonRestructurer, path = ' + path)
+        logger.trace('JsonRestructurer, path = ' + path)
 
         try {
             const sp = path.split('.')
-            logger.debug('JsonRestructurer, sp = ' + sp)
+            logger.trace('JsonRestructurer, sp = ' + sp)
             const reduced = sp.reduce((acc, part) => acc[part], obj)
-            logger.debug('JsonRestructurer, reduced = ' + reduced)
+            logger.trace('JsonRestructurer, reduced = ' + reduced)
             return reduced
         } catch (e) {
             logger.warn(`Warning: JsonRestructurer.getValueByPath, path ${path} not found`)
@@ -29,14 +30,14 @@ class JsonRestructurer {
     }
 
     setValueByPath(obj, path, value) {
-        logger.debug(`JsonRestructurer.setValueByPath, obj = ${obj}, path = ${path}, value = ${value}`)
+        logger.trace(`JsonRestructurer.setValueByPath, obj = ${obj}, path = ${path}, value = ${value}`)
         const parts = path.split('.')
         const last = parts.pop()
         const target = parts.reduce((acc, part) => {
             acc[part] = acc[part] || {}
             return acc[part]
         }, obj)
-        logger.debug(`JsonRestructurer.setValueByPath, target = ${target}, last = ${last}, value = ${value}`)
+        logger.trace(`JsonRestructurer.setValueByPath, target = ${target}, last = ${last}, value = ${value}`)
         target[last] = value
     }
 
@@ -51,7 +52,7 @@ class JsonRestructurer {
 
         const result = {}
         this.mappings.forEach(({ pre, post }) => {
-            logger.log(`PRE = ${pre}, POST = ${post}`)
+            logger.trace(`PRE = ${pre}, POST = ${post}`)
             const value = this.getValueByPath(inputData, pre)
             // logger.log(`PRE = ${pre}, POST = ${post} value = ${value}`)
             if (value !== undefined) {

@@ -27,4 +27,11 @@
 :articleContentTemplate a :ConfigSet ;
     :templateFilename "templates/article-content.njk" .
 
+:articlePageTemplate a :ConfigSet ;
+    :templateFilename "templates/article-page.njk" .
+
+:saveArticlePage a :ConfigSet ;
+  :targetDir "data/output" ;
+  :destinationFile "output.html" .
+
 

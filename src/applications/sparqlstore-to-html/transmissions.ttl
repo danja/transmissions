@@ -18,15 +18,13 @@
 ##################################################################
 
 :sparqlstore-to-html a :Transmission ;
-    :pipe (:p10 :p20 :p30 :SM2 :DE :p40 :p50 :p60 :SM1  ) .
+    :pipe (:p10 :p20 :p30 :p40 :p50 :p70 :SM1 :p80 ) .
 
 :p10 a :SPARQLSelect ;
      :settings :sparqlSelect .
 
-
 :p20 a :ForEach ;
     :settings :resultIterator .
-
 
 :p30 a :Restructure ;
     :settings :prepArticle .
@@ -36,4 +34,8 @@
 :p50 a :Templater ;
     :settings :articleContentTemplate .
 
-:p60 a :FileWriter.
+:p70 a :Templater ;
+    :settings :articlePageTemplate .
+
+:p80 a :FileWriter ;
+    :settings :saveArticlePage .

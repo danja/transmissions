@@ -5,6 +5,7 @@ import Processor from '../base/Processor.js'
 class ForEach extends Processor {
     constructor(config) {
         super(config)
+        this.eachCounter = 0
     }
 
     async process(message) {
@@ -20,16 +21,18 @@ class ForEach extends Processor {
 
         //  logger.reveal(reduced)
 
-
+        message.done = false
         for (const item of reduced) {
             const clonedMessage = structuredClone(message)
             clonedMessage.currentItem = item
             //    delete clonedMessage.foreach // Remove the original array to prevent infinite loops TODO needed?
 
             logger.debug(`ForEach: Emitting message for item: ${item}`)
+            clonedMessage.eachCounter = this.eachCounter++
             this.emit('message', clonedMessage)
         }
-
+        //   message.done = true
+        // this.emit('message', message)
         logger.debug('ForEach: Finished processing all items')
     }
 }

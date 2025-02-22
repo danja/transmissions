@@ -37,9 +37,12 @@ class FileWriter extends Processor {
     async process(message) {
         //   logger.setLogLevel('debug')
         logger.debug(`\n\nFileWriter.process, message.done = ${message.done}`)
-        if (message.done) {
+        logger.debug(`FileWriter.process, count = ${message.eachCount}`)
+        if (message.done) { // TODO fix this bloody thing
             //   message.done = false
-            return this.emit('message', message)
+            logger.debug(`\n\nFileWriter.process, message.done = ${message.done} SKIPPING!!`)
+            return
+            // this.emit('message', message)
         }
 
         if (message.dump) {
@@ -93,29 +96,41 @@ class FileWriter extends Processor {
         var content = message.content // TODO generalise, see above
         //   logger.debug("Filewriter, content = " + content)
         // logger.debug("Filewriter, typeof content = " + typeof content)
-
+        logger.debug(`CCCCCCCC`)
         this.mkdirs(dirName) // sync - see below
-
+        logger.debug(`DDDDDDDDDDD`)
         return await this.doWrite(filePath, content, message)
     }
 
     async doWrite(f, content, message) {
+        logger.debug(`FileWriter.doWrite, file = ${f}`)
         logger.debug(`typeof content = ${typeof content}`)
         if (typeof content != 'string') {
             content = JSON.stringify(content)
         }
         logger.log(' - FileWriter writing : ' + f)
         await writeFile(f, content)
+        logger.debug(' - FileWriter written : ' + f)
         return this.emit('message', message)
     }
 
     mkdirs(dir) {
-        mkdirSync(dir, { recursive: true })
+        logger.debug(`FileWriter.mkdirs, dir = ${dir}`)
+        try {
+            logger.debug(`AAAAAAAA`)
+            mkdirSync(dir, { recursive: true })
+            logger.debug(`BBBBBBBBBBBBB`)
+        }
+        catch (e) {
+            logger.warn(`Warn: FileWriter.mkdirs, maybe dir exists : ${dir} ?`)
+        }
+
+
         /*
-                mkdir(dir, { recursive: true }, (error) => {
-                    logger.log('EEEEEEEEEEEEEEEEEK!' + error)
-                })
-           */
+        mkdirSync(dir, { recursive: true }, (error) => {
+            logger.warn(`Warn: FileWriter.mkdirs, maybe dir exists : ${dir} ?`)
+        })
+*/
     }
 }
 

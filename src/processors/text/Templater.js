@@ -50,7 +50,7 @@ class Templater extends Processor {
         //   this.showMyConfig()
         var templateFilename = await this.getProperty(ns.trn.templateFilename)
 
-        logger.debug(`\nTemplater.process, templateFilename = ${templateFilename}`)
+        logger.trace(`\nTemplater.process, templateFilename = ${templateFilename}`)
         // process.exit()
 
         if (templateFilename) {
@@ -65,8 +65,8 @@ class Templater extends Processor {
                 targetPath = path.join(await this.getProperty(ns.trn.targetPath, message.rootDir), targetPath)
             }
 
-            logger.debug('\nTemplater, targetPath = ' + targetPath)
-            logger.debug('Templater, filename = ' + filename)
+            logger.trace('\nTemplater, targetPath = ' + targetPath)
+            logger.trace('Templater, filename = ' + filename)
 
             // Configure Nunjucks with the template path
             nunjucks.configure(targetPath, { autoescape: false })
@@ -75,7 +75,7 @@ class Templater extends Processor {
             // Render the template file
             message.content = nunjucks.render(filename, message.contentBlocks)
 
-            logger.debug(`content POST = ${message.content}`)
+            logger.trace(`content POST = ${message.content}`)
 
 
         } else {   // Configure Nunjucks for string templates

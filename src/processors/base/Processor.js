@@ -24,7 +24,7 @@ class Processor extends EventEmitter {
     }
 
     getValues(property, fallback) {
-        logger.debug(`Processor.getValues,
+        logger.trace(`Processor.getValues,
             looking for ${property}`)
 
         const shortName = ns.getShortname(property)
@@ -34,24 +34,24 @@ class Processor extends EventEmitter {
 
         this.settee.settingsNode = this.settingsNode ////////////////////////////////////////
         const values = this.settee.getValues(property, fallback)
-        logger.debug(`Processor.getValues values = ${values}`)
+        logger.trace(`Processor.getValues values = ${values}`)
         return values
     }
 
     getProperty(property, fallback = undefined) {
-        logger.debug(`\nProcessor.getProperty looking for ${property}`)
+        logger.trace(`\nProcessor.getProperty looking for ${property}`)
         const shortName = ns.getShortname(property)
         if (this.message && this.message[shortName]) {
-            logger.debug(`Found in message: ${this.message[shortName]}`)
+            logger.trace(`Found in message: ${this.message[shortName]}`)
             return this.message[shortName]
         }
 
-        if (this.settingsNode) logger.debug(`this.settingsNode = ${this.settingsNode.value}`)
+        if (this.settingsNode) logger.trace(`this.settingsNode = ${this.settingsNode.value}`)
 
-        //   logger.debug(`Processor.getProperty, this.settee.config = ${this.settee.config}`)
+        //   logger.trace(`Processor.getProperty, this.settee.config = ${this.settee.config}`)
         this.settee.settingsNode = this.settingsNode ////////////////////////////////////////////
         const value = this.settee.getValue(property, fallback)
-        logger.debug(`Processor.getProperty, value = ${value}`)
+        logger.trace(`Processor.getProperty, value = ${value}`)
         return value
     }
 

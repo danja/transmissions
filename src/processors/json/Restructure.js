@@ -47,14 +47,14 @@ class Restructure extends Processor {
     }
 
     async doRemoves(message) {
-        logger.debug('Restructure.doRemoves')
+        logger.trace('Restructure.doRemoves')
         const removes = super.getValues(ns.trn.remove)
-        logger.reveal(removes)
+        // logger.reveal(removes)
         var path
         for (let i = 0; i < removes.length; i++) {
             //  path = JSON.parse(removes[i])
             const path = removes[i]
-            logger.debug(`remove path = ${path}`)
+            logger.trace(`remove path = ${path}`)
             message = JSONUtils.remove(message, path)
         }
         //  logger.reveal(message)
@@ -63,7 +63,7 @@ class Restructure extends Processor {
     }
 
     async doRenames(message) {
-        logger.debug('Restructure.doRenames')
+        logger.trace('Restructure.doRenames')
         // Extract mappings array from config
         var renames
         if (this.config.simples) {

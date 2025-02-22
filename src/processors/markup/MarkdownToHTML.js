@@ -12,7 +12,8 @@ class MarkdownToHTML extends Processor {
 
 
     async process(message) {
-        logger.debug(`\n\nMarkdownToHTML.process`)
+        logger.trace(`\n\nMarkdownToHTML.process`)
+
         // logger.reveal(message)
 
         // TODO use config to point to I/O fields, add sensible defaults
@@ -22,7 +23,10 @@ class MarkdownToHTML extends Processor {
         } else { // default
             input = message.content
         }
-
+        if (!input) { // shouldn't get here TODO double-check MESSAGE.DONE
+            logger.debug(`MarkdownToHTML.process, no input`)
+            return this.emit('message', message)
+        }
 
         // new Marked()
         message.content = await
