@@ -16,18 +16,15 @@
   :forEach "queryResults.results.bindings" .
 
 :prepArticle a :ConfigSet  ;
+    :remove "queryResults" ;
     :rename (:pa1 :pa2)  .
         :pa1   :pre    "currentItem.title.value" ;
               :post "contentBlocks.title"  .
         :pa2   :pre    "currentItem.content.value" ;
-              :post  "contentBlocks.mdContent"  .
+              :post  "contentBlocks.content"  .
 
 
-##############
+:articleContentTemplate a :ConfigSet ;
+    :templateFilename "templates/article-content.njk" .
 
-:contentTemplater a :ConfigSet ;
-  :templateFilename "templates/article-html.njk" .
-
-:articleTemplater a :ConfigSet ;
-  :templateFilename "templates/article-html.njk" .
 

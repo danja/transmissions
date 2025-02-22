@@ -61,6 +61,9 @@ class FileWriter extends Processor {
         // logger.debug("Filewriter, message.filepath = " + message.filepath)
 
         var filePath = await this.getProperty(ns.trn.destinationFile)
+        if (!filePath) {
+            filePath = await this.getProperty(ns.trn.dataDir)
+        }
 
         logger.debug(`filePath = ${filePath}`)
         // Resolve relative to targetPath or rootDir

@@ -9,6 +9,8 @@ cd ~/hyperdata/transmissions # my local path
 ./trans sparqlstore-to-html
 ```
 
+./trans md-to-sparqlstore
+
 ## Description
 
 First pass :

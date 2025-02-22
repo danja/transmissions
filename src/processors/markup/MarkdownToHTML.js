@@ -13,7 +13,9 @@ class MarkdownToHTML extends Processor {
 
     async process(message) {
         logger.debug(`\n\nMarkdownToHTML.process`)
-        logger.reveal(message)
+        // logger.reveal(message)
+
+        // TODO use config to point to I/O fields, add sensible defaults
         var input
         if (message.contentBlocks) { // using templating
             input = message.contentBlocks.content

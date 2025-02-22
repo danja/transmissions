@@ -56,6 +56,7 @@ class Templater extends Processor {
         if (templateFilename) {
             //       logger.debug(`\nTemplater.process, templateFilename = ${templateFilename}`)
 
+            // TODO tidy this up (move out?)
             // Extract path and filename from templateFilename
             var targetPath = templateFilename.substr(0, templateFilename.lastIndexOf("/"))
             const filename = templateFilename.substr(templateFilename.lastIndexOf("/") + 1)
