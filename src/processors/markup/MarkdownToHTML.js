@@ -13,6 +13,7 @@ class MarkdownToHTML extends Processor {
 
     async process(message) {
         logger.trace(`\n\nMarkdownToHTML.process`)
+        if (message.done) return
 
         // logger.reveal(message)
 

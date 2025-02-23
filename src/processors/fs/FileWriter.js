@@ -1,5 +1,5 @@
 import path from 'path'
-import { access, constants } from 'node:fs'
+import { access, constants, writeFileSync } from 'node:fs'
 import ns from '../../utils/ns.js'
 import { writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
@@ -35,14 +35,11 @@ class FileWriter extends Processor {
      * @param {Object} message - The execution message.
      */
     async process(message) {
-        //   logger.setLogLevel('debug')
         logger.debug(`\n\nFileWriter.process, message.done = ${message.done}`)
         logger.debug(`FileWriter.process, count = ${message.eachCount}`)
         if (message.done) { // TODO fix this bloody thing
-            //   message.done = false
             logger.debug(`\n\nFileWriter.process, message.done = ${message.done} SKIPPING!!`)
             return
-            // this.emit('message', message)
         }
 
         if (message.dump) {
@@ -61,18 +58,13 @@ class FileWriter extends Processor {
             return this.doWrite(f, content, message)
         }
 
-        // logger.debug("Filewriter, message.filepath = " + message.filepath)
-
         var filePath = await this.getProperty(ns.trn.destinationFile)
         if (!filePath) {
             filePath = await this.getProperty(ns.trn.dataDir)
         }
 
-        logger.debug(`filePath = ${filePath}`)
         // Resolve relative to targetPath or rootDir
-
         if (!path.isAbsolute(filePath)) {
-            //     filePath = path.join(message.targetPath || message.rootDir, filePath)
             filePath = path.join(message.targetPath || message.dataDir, filePath)
         }
 
@@ -80,26 +72,14 @@ class FileWriter extends Processor {
         const dirName = dirname(filePath)
         logger.debug("Filewriter, dirName = " + dirName)
 
-        /*
-                var contentPath = this.getPropertyFromMyConfig(ns.trn.contentPath)
-
-                if (typeof contentPath === 'undefined' || contentPath === 'undefined' || contentPath.value === 'undefined') {
-                    contentPath = 'content'
-                }
-
-                // logger.debug("Filewriter, contentPath = " + contentPath)
-                var content = message[contentPath.toString()] // TODO generalise.it
-                if (typeof content === 'object') {
-                    content = JSON.stringify(content)
-                }
-        */
         var content = message.content // TODO generalise, see above
         //   logger.debug("Filewriter, content = " + content)
         // logger.debug("Filewriter, typeof content = " + typeof content)
         logger.debug(`CCCCCCCC`)
         this.mkdirs(dirName) // sync - see below
         logger.debug(`DDDDDDDDDDD`)
-        return await this.doWrite(filePath, content, message)
+        await this.doWrite(filePath, content, message)
+        return this.emit('message', message)
     }
 
     async doWrite(f, content, message) {
@@ -109,9 +89,11 @@ class FileWriter extends Processor {
             content = JSON.stringify(content)
         }
         logger.log(' - FileWriter writing : ' + f)
+        // maybe stat first, check validity - the intended target dir was blocked by a of the same name
         await writeFile(f, content)
+        //writeFileSync(f, content)
         logger.debug(' - FileWriter written : ' + f)
-        return this.emit('message', message)
+
     }
 
     mkdirs(dir) {
