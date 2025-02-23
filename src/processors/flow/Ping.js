@@ -1,13 +1,13 @@
-import { Worker } from 'worker_threads';
-import path from 'path';
-import logger from '../../utils/Logger.js';
-import Processor from '../base/Processor.js';
-import ns from '../../utils/ns.js';
+import { Worker } from 'worker_threads'
+import path from 'path'
+import logger from '../../utils/Logger.js'
+import Processor from '../../model/Processor.js'
+import ns from '../../utils/ns.js'
 
 class Ping extends Processor {
     constructor(config) {
-        super(config);
-        this.worker = null;
+        super(config)
+        this.worker = null
         this.pingConfig = {
             interval: this.getPropertyFromMyConfig(ns.trn.interval) || 5000,
             count: this.getPropertyFromMyConfig(ns.trn.count) || 0,
@@ -15,32 +15,32 @@ class Ping extends Processor {
             killSignal: this.getPropertyFromMyConfig(ns.trn.killSignal) || 'STOP',
             retryAttempts: this.getPropertyFromMyConfig(ns.trn.retryAttempts) || 3,
             retryDelay: this.getPropertyFromMyConfig(ns.trn.retryDelay) || 1000
-        };
+        }
     }
 
     async process(message) {
         try {
             // Check for kill signal in incoming message
             if (message.kill === this.pingConfig.killSignal) {
-                await this.shutdown();
+                await this.shutdown()
                 return this.emit('message', {
                     ...message,
                     pingStatus: 'stopped',
                     timestamp: Date.now()
-                });
+                })
             }
 
             if (this.worker) {
-                logger.warn('Ping worker already running, ignoring start request');
-                return;
+                logger.warn('Ping worker already running, ignoring start request')
+                return
             }
 
-            let retryCount = 0;
+            let retryCount = 0
             const startWorker = async () => {
                 try {
                     this.worker = new Worker(
                         path.join(process.cwd(), 'src/processors/flow/PingWorker.js')
-                    );
+                    )
 
                     this.worker.on('message', (msg) => {
                         switch (msg.type) {
@@ -53,24 +53,24 @@ class Ping extends Processor {
                                         payload: msg.payload,
                                         status: 'running'
                                     }
-                                });
-                                break;
+                                })
+                                break
                             case 'complete':
                                 this.emit('message', {
                                     ...message,
                                     pingComplete: true,
                                     timestamp: Date.now()
-                                });
-                                break;
+                                })
+                                break
                             case 'error':
-                                this.handleWorkerError(msg.error, startWorker, retryCount);
-                                break;
+                                this.handleWorkerError(msg.error, startWorker, retryCount)
+                                break
                         }
-                    });
+                    })
 
                     this.worker.on('error', (error) => {
-                        this.handleWorkerError(error, startWorker, retryCount);
-                    });
+                        this.handleWorkerError(error, startWorker, retryCount)
+                    })
 
                     this.worker.on('exit', (code) => {
                         if (code !== 0) {
@@ -78,55 +78,55 @@ class Ping extends Processor {
                                 new Error(`Worker stopped with exit code ${code}`),
                                 startWorker,
                                 retryCount
-                            );
+                            )
                         }
-                        this.worker = null;
-                    });
+                        this.worker = null
+                    })
 
                     this.worker.postMessage({
                         type: 'start',
                         config: this.pingConfig
-                    });
+                    })
 
                 } catch (error) {
-                    this.handleWorkerError(error, startWorker, retryCount);
+                    this.handleWorkerError(error, startWorker, retryCount)
                 }
-            };
+            }
 
-            await startWorker();
+            await startWorker()
 
             return new Promise((resolve) => {
                 this.worker.on('exit', () => {
-                    resolve(message);
-                });
-            });
+                    resolve(message)
+                })
+            })
 
         } catch (error) {
-            logger.error(`Failed to start ping processor: ${error}`);
-            throw error;
+            logger.error(`Failed to start ping processor: ${error}`)
+            throw error
         }
     }
 
     async handleWorkerError(error, retryFn, retryCount) {
-        logger.error(`Ping worker error: ${error}`);
+        logger.error(`Ping worker error: ${error}`)
 
         if (retryCount < this.pingConfig.retryAttempts) {
-            retryCount++;
-            logger.info(`Retrying ping worker (attempt ${retryCount}/${this.pingConfig.retryAttempts})`);
-            setTimeout(retryFn, this.pingConfig.retryDelay);
+            retryCount++
+            logger.info(`Retrying ping worker (attempt ${retryCount}/${this.pingConfig.retryAttempts})`)
+            setTimeout(retryFn, this.pingConfig.retryDelay)
         } else {
-            logger.error('Max retry attempts reached, stopping ping worker');
-            this.emit('error', error);
-            await this.shutdown();
+            logger.error('Max retry attempts reached, stopping ping worker')
+            this.emit('error', error)
+            await this.shutdown()
         }
     }
 
     async shutdown() {
         if (this.worker) {
-            this.worker.postMessage({ type: 'stop' });
-            this.worker = null;
+            this.worker.postMessage({ type: 'stop' })
+            this.worker = null
         }
     }
 }
 
-export default Ping;
+export default Ping

@@ -37,7 +37,7 @@ import { copyFile, mkdir, readdir, stat } from 'node:fs/promises'
 import path from 'path'
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
-import Processor from '../base/Processor.js'
+import Processor from '../../model/Processor.js'
 
 
 class FileCopy extends Processor {

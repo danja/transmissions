@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio'
 
 import logger from '../../utils/Logger.js'
-import Processor from '../base/Processor.js'
+import Processor from '../../model/Processor.js'
 
 class MetadataExtractor extends Processor {
 

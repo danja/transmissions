@@ -31,7 +31,7 @@ import ns from '../../utils/ns.js'
 
 import footpath from '../../utils/footpath.js'
 import logger from '../../utils/Logger.js'
-import Processor from '../base/Processor.js'
+import Processor from '../../model/Processor.js'
 
 class HttpGet extends Processor {
     constructor(config) {

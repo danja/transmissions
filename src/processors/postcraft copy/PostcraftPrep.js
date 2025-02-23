@@ -1,7 +1,7 @@
 import path from 'path'
 import logger from '../../utils/Logger.js'
 
-import Processor from '../base/Processor.js'
+import Processor from '../../model/Processor.js'
 
 class PostcraftPrep extends Processor {
 

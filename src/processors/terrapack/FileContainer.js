@@ -1,4 +1,4 @@
-import Processor from '../base/Processor.js'
+import Processor from '../../model/Processor.js'
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
 import path from 'path'

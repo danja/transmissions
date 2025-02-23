@@ -1,4 +1,4 @@
-import Processor from '../../base/Processor.js'
+import Processor from '../../../model/Processor.js'
 
 class StringSource extends Processor {
 

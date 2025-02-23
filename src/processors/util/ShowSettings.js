@@ -1,6 +1,6 @@
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
-import Processor from '../base/Processor.js'
+import Processor from '../../model/Processor.js'
 
 // probably not needed, see TestSetting
 class ShowSettings extends Processor {

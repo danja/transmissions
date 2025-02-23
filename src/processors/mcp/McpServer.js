@@ -1,5 +1,5 @@
 import logger from "../../utils/Logger.js" // path will likely change
-import Processor from "../base/Processor.js" // maybe more specific
+import Processor from "../../model/Processor.js" // maybe more specific
 
 /**
  * FileReader class that extends xxxxxProcessor.

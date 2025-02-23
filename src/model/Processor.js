@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events'
-import logger from '../../utils/Logger.js'
-import ns from '../../utils/ns.js'
-import ProcessorSettings from './ProcessorSettings.js'
+import logger from '../utils/Logger.js'
+import ns from '../utils/ns.js'
+import ProcessorSettings from '../engine/ProcessorSettings.js'
 
 class Processor extends EventEmitter {
     constructor(config) {

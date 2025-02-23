@@ -2,7 +2,7 @@ import axios from 'axios'
 import nunjucks from 'nunjucks'
 import crypto from 'crypto'
 import logger from '../../utils/Logger.js'
-import Processor from '../base/Processor.js'
+import Processor from '../../model/Processor.js'
 import ns from '../../utils/ns.js'
 import SessionEnvironment from './SessionEnvironment.js'
 

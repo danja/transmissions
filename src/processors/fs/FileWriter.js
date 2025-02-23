@@ -5,7 +5,7 @@ import { writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { mkdir, mkdirSync } from 'node:fs'
 import logger from '../../utils/Logger.js'
-import Processor from '../base/Processor.js'
+import Processor from '../../model/Processor.js'
 /**
  * FileWriter class that extends Processor
  * Write data to a file.

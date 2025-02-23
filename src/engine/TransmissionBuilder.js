@@ -6,7 +6,7 @@ import ns from '../utils/ns.js'
 import GrapoiHelpers from '../utils/GrapoiHelpers.js'
 import logger from '../utils/Logger.js'
 
-import AbstractProcessorFactory from "../processors/base/AbstractProcessorFactory.js"
+import AbstractProcessorFactory from "./AbstractProcessorFactory.js"
 import Transmission from '../model/Transmission.js'
 
 class TransmissionBuilder {

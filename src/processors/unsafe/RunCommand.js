@@ -1,68 +1,68 @@
-import { exec } from 'child_process';
-import logger from '../../utils/Logger.js';
-import Processor from '../base/Processor.js';
-import ns from '../../utils/ns.js';
+import { exec } from 'child_process'
+import logger from '../../utils/Logger.js'
+import Processor from '../../model/Processor.js'
+import ns from '../../utils/ns.js'
 
 class RunCommand extends Processor {
     constructor(config) {
-        super(config);
-        this.allowedCommands = config.allowedCommands || [];
-        this.blockedPatterns = config.blockedPatterns || [];
-        this.timeout = config.timeout || 5000;
-        this.initializeSecurity();
+        super(config)
+        this.allowedCommands = config.allowedCommands || []
+        this.blockedPatterns = config.blockedPatterns || []
+        this.timeout = config.timeout || 5000
+        this.initializeSecurity()
     }
 
     async initializeSecurity() {
         if (this.settings) {
-            const allowed = await this.getPropertyFromMyConfig(ns.trn.allowedCommands);
-            this.allowedCommands = allowed ? allowed.split(',') : [];
+            const allowed = await this.getPropertyFromMyConfig(ns.trn.allowedCommands)
+            this.allowedCommands = allowed ? allowed.split(',') : []
 
-            const blocked = await this.getPropertyFromMyConfig(ns.trn.blockedPatterns);
-            this.blockedPatterns = blocked ? blocked.split(',') : [];
+            const blocked = await this.getPropertyFromMyConfig(ns.trn.blockedPatterns)
+            this.blockedPatterns = blocked ? blocked.split(',') : []
         }
     }
 
     validateCommand(command) {
         if (!command) {
-            throw new Error('No command specified');
+            throw new Error('No command specified')
         }
 
-        const commandName = command.split(' ')[0];
+        const commandName = command.split(' ')[0]
         const isAllowed = this.allowedCommands.length === 0 ||
-            this.allowedCommands.includes(commandName);
+            this.allowedCommands.includes(commandName)
 
         if (!isAllowed) {
-            throw new Error(`Command '${commandName}' not in allowed list`);
+            throw new Error(`Command '${commandName}' not in allowed list`)
         }
 
         const hasBlocked = this.blockedPatterns.some(pattern =>
             command.includes(pattern)
-        );
+        )
         if (hasBlocked) {
-            throw new Error('Command contains blocked pattern');
+            throw new Error('Command contains blocked pattern')
         }
     }
 
     async process(message) {
-        let command = message.command;
+        let command = message.command
         if (!command) {
-            command = this.getPropertyFromMyConfig(ns.trn.command);
+            command = this.getPropertyFromMyConfig(ns.trn.command)
         }
 
         try {
-            this.validateCommand(command);
-            const result = await this.executeCommand(command);
-            message.content = result.stdout;
-            message.commandResult = result;
-            logger.debug(`Command executed successfully: ${command}`);
+            this.validateCommand(command)
+            const result = await this.executeCommand(command)
+            message.content = result.stdout
+            message.commandResult = result
+            logger.debug(`Command executed successfully: ${command}`)
         } catch (error) {
-            logger.error(`Command error: ${error.message}`);
-            message.commandError = error.message;
-            message.content = error.message;
-            throw error;
+            logger.error(`Command error: ${error.message}`)
+            message.commandError = error.message
+            message.content = error.message
+            throw error
         }
 
-        return this.emit('message', message);
+        return this.emit('message', message)
     }
 
     executeCommand(command) {
@@ -72,20 +72,20 @@ class RunCommand extends Processor {
             }, (error, stdout, stderr) => {
                 if (error) {
                     if (error.signal === 'SIGTERM') {
-                        reject(new Error('Command timeout'));
+                        reject(new Error('Command timeout'))
                     } else {
-                        reject(error);
+                        reject(error)
                     }
-                    return;
+                    return
                 }
                 resolve({
                     stdout: stdout.toString(),
                     stderr: stderr.toString(),
                     code: 0
-                });
-            });
-        });
+                })
+            })
+        })
     }
 }
 
-export default RunCommand;
+export default RunCommand

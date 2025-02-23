@@ -1,5 +1,5 @@
 import logger from '../../utils/Logger.js'
-import Processor from '../base/Processor.js'
+import Processor from '../../model/Processor.js'
 // import { parse } from 'marked'
 import { marked } from 'marked'
 

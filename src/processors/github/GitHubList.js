@@ -1,6 +1,6 @@
 import { Octokit } from '@octokit/rest'
 import dotenv from 'dotenv'
-import Processor from '../../../../transmissions/src/processors/base/Processor.js'
+import Processor from '../../model/Processor.js'
 import logger from '../../../../transmissions/src/utils/Logger.js'
 
 dotenv.config({ path: './trans-apps/applications/git-apps/.env' })

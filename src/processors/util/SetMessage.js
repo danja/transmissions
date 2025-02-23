@@ -1,5 +1,5 @@
 import logger from '../../utils/Logger.js'
-import Processor from '../base/Processor.js'
+import Processor from '../../model/Processor.js'
 import GrapoiHelpers from '../../utils/GrapoiHelpers.js'
 import ns from '../../utils/ns.js'
 import rdf from 'rdf-ext'

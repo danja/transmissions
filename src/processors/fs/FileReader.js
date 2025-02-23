@@ -4,7 +4,7 @@ import path from 'path'
 import mime from 'node-mime-types'
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
-import Processor from '../base/Processor.js'
+import Processor from '../../model/Processor.js'
 
 class FileReader extends Processor {
     constructor(config) {

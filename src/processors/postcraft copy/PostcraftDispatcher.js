@@ -6,7 +6,7 @@ import grapoi from 'grapoi'
 
 import footpath from '../../utils/footpath.js'
 import logger from '../../utils/Logger.js'
-import Processor from '../base/Processor.js'
+import Processor from '../../model/Processor.js'
 
 /**
  * A class that represents the PostcraftDispatcher processor.

@@ -1,10 +1,10 @@
 import rdf from 'rdf-ext'
 import { fromFile, toFile } from 'rdf-utils-fs'
-import Processor from '../base/Processor.js'
+import Processor from '../../model/Processor.js'
 
 /**
  * Takes the input and stashes it in the message as told by processors.ttl
- * 
+ *
  * #### __*Input*__
  * **data** : any
  * **message** : any

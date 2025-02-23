@@ -6,7 +6,7 @@ import footpath from '../../../utils/footpath.js'
 import grapoi from 'grapoi'
 import ns from '../../../utils/ns.js'
 import logger from '../../../utils/Logger.js'
-import Processor from '../../base/Processor.js'
+import Processor from '../../../model/Processor.js'
 
 class FileSink extends Processor {
 

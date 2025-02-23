@@ -1,6 +1,6 @@
 import grapoi from 'grapoi'
-import ns from '../../utils/ns.js'
-import logger from '../../utils/Logger.js'
+import ns from '../utils/ns.js'
+import logger from '../utils/Logger.js'
 
 class ProcessorSettings {
     constructor(config) {

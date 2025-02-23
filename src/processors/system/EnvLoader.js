@@ -3,7 +3,7 @@ import 'dotenv/config'
 // import { readFile } from 'node:fs/promises' // whatever else
 
 import logger from '../../utils/Logger.js'
-import Processor from '../base/Processor.js' // maybe more specific
+import Processor from '../../model/Processor.js' // maybe more specific
 
 
 /**

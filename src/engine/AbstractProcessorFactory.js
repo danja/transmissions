@@ -1,32 +1,32 @@
-import logger from '../../utils/Logger.js'
+import logger from '../utils/Logger.js'
 
 // Import processor groups
-import SystemProcessorsFactory from '../system/SystemProcessorsFactory.js'
-import TestProcessorsFactory from '../test/TestProcessorsFactory.js'
-import FsProcessorsFactory from '../fs/FsProcessorsFactory.js'
-import MarkupProcessorsFactory from '../markup/MarkupProcessorsFactory.js'
-import UtilProcessorsFactory from '../util/UtilProcessorsFactory.js'
-import TextProcessorsFactory from '../text/TextProcessorsFactory.js'
-import ProtocolsProcessorsFactory from '../protocols/ProtocolsProcessorsFactory.js'
-import RDFProcessorsFactory from '../rdf/RDFProcessorsFactory.js'
-import PostcraftProcessorsFactory from '../postcraft/PostcraftProcessorsFactory.js'
-import FlowProcessorsFactory from '../flow/FlowProcessorsFactory.js'
-import StagingProcessorsFactory from '../staging/StagingProcessorsFactory.js'
-import GitHubProcessorsFactory from '../github/GitHubProcessorsFactory.js'
-import JSONProcessorsFactory from '../json/JSONProcessorsFactory.js'
-import TerrapackProcessorsFactory from '../terrapack/TerrapackProcessorsFactory.js' // 2025-01-01
+import SystemProcessorsFactory from '../processors/system/SystemProcessorsFactory.js'
+import TestProcessorsFactory from '../processors/test/TestProcessorsFactory.js'
+import FsProcessorsFactory from '../processors/fs/FsProcessorsFactory.js'
+import MarkupProcessorsFactory from '../processors/markup/MarkupProcessorsFactory.js'
+import UtilProcessorsFactory from '../processors/util/UtilProcessorsFactory.js'
+import TextProcessorsFactory from '../processors/text/TextProcessorsFactory.js'
+import ProtocolsProcessorsFactory from '../processors/protocols/ProtocolsProcessorsFactory.js'
+import RDFProcessorsFactory from '../processors/rdf/RDFProcessorsFactory.js'
+import PostcraftProcessorsFactory from '../processors/postcraft/PostcraftProcessorsFactory.js'
+import FlowProcessorsFactory from '../processors/flow/FlowProcessorsFactory.js'
+import StagingProcessorsFactory from '../processors/staging/StagingProcessorsFactory.js'
+import GitHubProcessorsFactory from '../processors/github/GitHubProcessorsFactory.js'
+import JSONProcessorsFactory from '../processors/json/JSONProcessorsFactory.js'
+import TerrapackProcessorsFactory from '../processors/terrapack/TerrapackProcessorsFactory.js' // 2025-01-01
 
 // added 2024-11-28
-import UnsafeProcessorsFactory from '../unsafe/UnsafeProcessorsFactory.js'
-import HttpProcessorsFactory from '../http/HttpProcessorsFactory.js'
-import McpProcessorsFactory from '../mcp/McpProcessorsFactory.js'
-import XmppProcessorsFactory from '../xmpp/XmppProcessorsFactory.js'
+import UnsafeProcessorsFactory from '../processors/unsafe/UnsafeProcessorsFactory.js'
+import HttpProcessorsFactory from '../processors/http/HttpProcessorsFactory.js'
+import McpProcessorsFactory from '../processors/mcp/McpProcessorsFactory.js'
+import XmppProcessorsFactory from '../processors/xmpp/XmppProcessorsFactory.js'
 
 // added 2025-01-14 : Happy Birthday to me!
-import ExampleProcessorsFactory from '../example-group/ExampleProcessorsFactory.js'
+import ExampleProcessorsFactory from '../processors/example-group/ExampleProcessorsFactory.js'
 
 // 2025-01-16 : finally getting around to it
-import SPARQLProcessorsFactory from '../sparql/SPARQLProcessorsFactory.js'
+import SPARQLProcessorsFactory from '../processors/sparql/SPARQLProcessorsFactory.js'
 
 class AbstractProcessorFactory {
 

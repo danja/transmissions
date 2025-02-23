@@ -28,7 +28,7 @@
  * * Cache templates - cache in utils?
  */
 
-import Processor from '../base/Processor.js'
+import Processor from '../../model/Processor.js'
 import nunjucks from 'nunjucks'
 import path from 'path'
 import logger from '../../utils/Logger.js'
