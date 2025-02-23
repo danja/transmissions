@@ -5,16 +5,18 @@ import logger from '../utils/Logger.js'
 // import Transmission from './Transmission.js'
 
 class Application {
-    constructor(sessionNode = rdf.blankNode()) {
+    constructor() {
         this.dataset = rdf.dataset()
-        this.sessionNode = sessionNode
     }
 
-    async initDataset(appName) {
-        const appNode = rdf.namedNode(`http://purl.org/stuff/transmissions/${appName}`)
+    async initDataset(appName, sessionNode = rdf.blankNode()) {
+
+        // TODO validate syntax of appName
+        this.appNode = rdf.namedNode(`http://purl.org/stuff/transmissions/${appName}`)
+        this.sessionNode = sessionNode
 
         this.dataset.add(rdf.quad(
-            appNode,
+            this.appNode,
             ns.rdf.type,
             ns.trn.Application
         ))
@@ -28,10 +30,8 @@ class Application {
         this.dataset.add(rdf.quad(
             this.sessionNode,
             ns.trn.application,
-            appNode
+            this.appNode
         ))
-
-        //  return sessionNode
     }
 
     async mergeIn(dataset) {
