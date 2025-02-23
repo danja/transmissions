@@ -34,6 +34,10 @@ class Application {
         //  return sessionNode
     }
 
+    async mergeIn(dataset) {
+        this.dataset.addAll(dataset)
+    }
+
     toString() {
         return this.dataset.toString()
     }
