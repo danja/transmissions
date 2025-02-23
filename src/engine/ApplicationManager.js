@@ -40,7 +40,7 @@ class ApplicationManager {
         //    logger.log(`this.appResolver.dataset = ${this.appResolver.dataset}`)
         //  logger.log(`this.app.dataset = ${this.app.dataset}`)
 
-        this.app.mergeIn(this.appResolver.dataset)
+        await this.app.mergeIn(this.appResolver.dataset)
 
         return this
     }
@@ -65,6 +65,8 @@ class ApplicationManager {
 
     async start(message = {}) {
         message.app = this.app
+        logger.reveal(this.app)
+        //   process.exit(0)
         logger.debug(`\n||| ApplicationManager.start`)
         logger.debug(`
             transmissionsFile=${this.appResolver.getTransmissionsPath()}

@@ -1,3 +1,4 @@
+import rdf from 'rdf-ext'
 import grapoi from 'grapoi'
 import ns from '../utils/ns.js'
 import logger from '../utils/Logger.js'
@@ -48,7 +49,7 @@ class ProcessorSettings {
         logger.trace(`\n\nProcessorSettings.getValues,
             property = ${property.value}`)
         if (this.settingsNode) {
-            logger.trace(`    settingsNode = ${this.settingsNode.value}`)
+            logger.log(`    settingsNode = ${this.settingsNode.value}`)
         }
         if (!this.settingsNode || !this.config) {
             return fallback ? [fallback] : []
@@ -58,9 +59,16 @@ class ProcessorSettings {
         // logger.log(`this.app.dataset = ${this.app.dataset}`)
         //   logger.reveal(this.app.dataset)
 
-        var dataset = this.app.dataset
-        logger.debug(`ProcessorSettings.getValues, looking for ${property} in APP dataset`)
+        var dataset = this.app.datas
+        logger.reveal(dataset)
+        // logger.log(dataset)
 
+        logger.log(`    settingsNode = ${this.settingsNode.value}`)
+        logger.debug(`ProcessorSettings.getValues, looking for ${property} in APP dataset`)
+        logger.log('------------------------------------')
+        logger.log(this.app.datas)
+        logger.reveal(this.app)
+        logger.log('------------------------------------')
         var values = this.valuesFromDataset(dataset, property)
         if (values) {
             return values
