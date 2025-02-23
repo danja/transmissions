@@ -12,22 +12,22 @@ class ProcessorSettings {
 
     valuesFromDataset(dataset, property) {
         const ptr = grapoi({ dataset, term: this.settingsNode })
-        logger.trace(`valuesFromDataset, this.settingsNode = ${this.settingsNode.value}`)
-        logger.trace(`valuesFromDataset, property = ${property}`)
+        logger.debug(`valuesFromDataset, this.settingsNode = ${this.settingsNode.value}`)
+        logger.debug(`valuesFromDataset, property = ${property}`)
         //     logger.reveal(ptr)
 
         var values
-        //   try {
-        values = ptr.out(property).distinct()
-        // } catch (e) {
-        //   return undefined
-        // }
+        try {
+            values = ptr.out(property).distinct()
+        } catch (e) {
+            return undefined
+        }
 
-        logger.trace(`Values found: ${values.terms.length}`)
+        logger.debug(`Values found: ${values.terms.length}`)
 
         if (values.terms.length > 0) {
             const all = values.terms.map(term => term.value)
-            logger.trace(`All values: ${all}`)
+            logger.debug(`All values: ${all}`)
             return all
         }
 
@@ -38,7 +38,7 @@ class ProcessorSettings {
         if (settingsPtr.term) {
             const refPtr = grapoi({ dataset, term: settingsPtr.term })
             const refValues = refPtr.out([property]).distinct()
-            logger.trace(`RefValues found: ${refValues.terms.length}`)
+            logger.debug(`RefValues found: ${refValues.terms.length}`)
             if (refValues.terms.length > 0) {
                 return refValues.terms.map(term => term.value)
             }
@@ -48,30 +48,31 @@ class ProcessorSettings {
     }
 
     getValues(property, fallback) {
-        logger.trace(`\n\nProcessorSettings.getValues, property = ${property.value}`)
+        logger.debug(`\n\nProcessorSettings.getValues, property = ${property.value}`)
 
         if (!this.settingsNode || !this.config) {
             return fallback ? [fallback] : []
         }
 
-        logger.trace(`settingsNode = ${this.settingsNode.value}`)
+        logger.debug(`settingsNode = ${this.settingsNode.value}`)
 
         var dataset = this.app.datas
 
-        logger.trace(`ProcessorSettings.getValues, looking for ${property} in APP dataset`)
-        // logger.log('------------------------------------')
-        // logger.reveal(dataset)
-        // logger.log('------------------------------------')
+        logger.debug(`************ ProcessorSettings.getValues, looking for ${property} in APP dataset`)
+        logger.log('------------------------------------')
+        logger.reveal(dataset)
+        logger.log('------------------------------------')
         var values = this.valuesFromDataset(dataset, property)
         if (values) {
+            logger.debug(`ProcessorSettings.getValues, found in APP dataset: ${values}`)
             return values
         }
-        // logger.trace(`ProcessorSettings.getValues, looking for ${property} in CONFIG dataset`)
+        logger.debug(`*** ProcessorSettings.getValues, looking for ${property} in CONFIG dataset`)
         dataset = this.config
-        // logger.log('------------------------------------')
+        logger.log('------------------------------------')
         // logger.reveal(this.app)
-        // logger.reveal(dataset)
-        // logger.log('------------------------------------')
+        logger.reveal(dataset)
+        logger.log('------------------------------------')
         values = this.valuesFromDataset(dataset, property)
         if (values) {
             return values
@@ -81,7 +82,7 @@ class ProcessorSettings {
 
     getValue(property, fallback) {
         const values = this.getValues(property, fallback)
-        logger.trace(`All values2: ${values}`)
+        logger.debug(`All values2: ${values}`)
         if (values.length == 0) {
             return undefined
         }

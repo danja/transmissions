@@ -14,7 +14,7 @@
 #############################################################
 
 :testSetting a :Transmission ;
-    :pipe (:ts10) .
+    :pipe (:N :ts10) .
 
 :ts10 a :TestSetting ;
      :settings :theSettingsNode .
