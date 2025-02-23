@@ -4,7 +4,7 @@ import fs from 'fs/promises'
 import rdf from 'rdf-ext'
 import logger from '../utils/Logger.js'
 
-class Application {
+class AppResolver {
     constructor(options = {}) {
         // Core paths
         this.appsDir = 'src/applications'
@@ -29,7 +29,7 @@ class Application {
     }
 
     async initialize(appName, appPath, subtask, target, flags = {}) {
-        logger.debug(`Application.initialize,
+        logger.debug(`AppResolver.initialize,
             appName : ${appName}
             appPath : ${appPath}
             subtask : ${subtask}
@@ -98,12 +98,12 @@ class Application {
 
     async loadManifest() {
         try {
-            logger.debug(`Application.loadManifest, loading: ${this.manifestFilename}`)
+            logger.debug(`AppResolver.loadManifest, loading: ${this.manifestFilename}`)
             const stream = fromFile(this.manifestFilename)
             this.dataset = await rdf.dataset().import(stream)
             return this.dataset
         } catch (err) {
-            logger.debug(`Application.loadManifest, ${this.manifestFilename} not found, creating empty dataset`)
+            logger.debug(`AppResolver.loadManifest, ${this.manifestFilename} not found, creating empty dataset`)
             this.dataset = rdf.dataset()
             return this.dataset
         }
@@ -118,7 +118,7 @@ class Application {
     }
 
     getModulePath() {
-        logger.debug(`Application.getModulePath,\nthis.appPath : ${this.appPath}\nthis.moduleSubDir : ${this.moduleSubDir}`)
+        logger.debug(`AppResolver.getModulePath,\nthis.appPath : ${this.appPath}\nthis.moduleSubDir : ${this.moduleSubDir}`)
         return path.join(this.appPath, this.moduleSubDir)
     }
 
@@ -142,4 +142,4 @@ class Application {
     }
 }
 
-export default Application
+export default AppResolver

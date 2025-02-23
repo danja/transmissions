@@ -7,13 +7,13 @@ import _ from 'lodash'
 import logger from '../utils/Logger.js'
 import RDFUtils from '../utils/RDFUtils.js'
 import MockApplicationManager from '../utils/MockApplicationManager.js'
-import TransmissionBuilder from '../engine/TransmissionBuilder.js'
-import ModuleLoaderFactory from '../engine/ModuleLoaderFactory.js'
-import Application from '../engine/AppResolver.js'
+import TransmissionBuilder from './TransmissionBuilder.js'
+import ModuleLoaderFactory from './ModuleLoaderFactory.js'
+import AppResolver from './AppResolver.js'
 
 class ApplicationManager {
     constructor() {
-        this.app = new Application()
+        this.appResolver = new AppResolver()
         this.moduleLoader = null
         this.dataset = rdf.dataset()
     }
@@ -27,8 +27,8 @@ class ApplicationManager {
             return mock
         }
 
-        await this.app.initialize(appName, appPath, subtask, target)
-        this.moduleLoader = ModuleLoaderFactory.createApplicationLoader(this.app.getModulePath())
+        await this.appResolver.initialize(appName, appPath, subtask, target)
+        this.moduleLoader = ModuleLoaderFactory.createApplicationLoader(this.appResolver.getModulePath())
 
         const appNode = rdf.namedNode(`http://purl.org/stuff/transmissions/${appName}`)
         const sessionNode = rdf.blankNode()
@@ -54,8 +54,8 @@ class ApplicationManager {
         logger.log(this.dataset)
 
         // Add to config before building transmissions
-        this.app.dataset = this.dataset
-        this.app.sessionNode = sessionNode
+        this.appResolver.dataset = this.dataset
+        this.appResolver.sessionNode = sessionNode
 
         return this
     }
@@ -63,9 +63,10 @@ class ApplicationManager {
     async buildTransmissions(transmissionConfigFile, processorsConfigFile, moduleLoader, app) {
         logger.debug(`\nApplicationManager.build ****************************************`)
 
-        const builder = new TransmissionBuilder(this.moduleLoader, this.app)
-        const transmissionConfig = await RDFUtils.readDataset(this.app.getTransmissionsPath())
-        const processorsConfig = await RDFUtils.readDataset(this.app.getConfigPath())
+        const builder = new TransmissionBuilder(this.moduleLoader, this.appResolver)
+        const transmissionConfig = await RDFUtils.readDataset(this.appResolver.getTransmissionsPath())
+        const processorsConfig = await RDFUtils.readDataset(this.appResolver.getConfigPath())
+
 
         // Merge with app dataset
         /*
@@ -80,15 +81,15 @@ class ApplicationManager {
     async start(message = {}) {
         logger.debug(`\n||| ApplicationManager.start`)
         logger.debug(`
-            transmissionsFile=${this.app.getTransmissionsPath()}
-            configFile=${this.app.getConfigPath()}
-            subtask=${this.app.subtask}`)
+            transmissionsFile=${this.appResolver.getTransmissionsPath()}
+            configFile=${this.appResolver.getConfigPath()}
+            subtask=${this.appResolver.subtask}`)
 
         const transmissions = await this.buildTransmissions()
 
         logger.debug(`Transmissions has length ${transmissions.length}`)
         // Get application context
-        const contextMessage = this.app.toMessage()
+        const contextMessage = this.appResolver.toMessage()
 
         // Modify the input message in place
         _.merge(message, contextMessage)
@@ -97,17 +98,17 @@ class ApplicationManager {
 
         /*
         for (const transmission of transmissions) {
-            if (!this.app.subtask || this.app.subtask === transmission.label) {
+            if (!this.appResolver.subtask || this.appResolver.subtask === transmission.label) {
                 await transmission.process(message)
             }
         }
 */
-        //       message.app = this.app
-        message.sessionNode = this.app.sessionNode
+        //       message.app = this.appResolver
+        message.sessionNode = this.appResolver.sessionNode
 
         for (const transmission of transmissions) {
             logger.debug(`transmission = \n${transmission}`)
-            if (!this.app.subtask || this.app.subtask === transmission.label) {
+            if (!this.appResolver.subtask || this.appResolver.subtask === transmission.label) {
                 //     await transmission.process(message)
                 message = await transmission.process(message)
             }
@@ -119,11 +120,11 @@ class ApplicationManager {
 
     async listApplications() {
         try {
-            const entries = await fs.readdir(this.app.appsDir, { withFileTypes: true })
+            const entries = await fs.readdir(this.appResolver.appsDir, { withFileTypes: true })
             const subdirChecks = entries
                 .filter(dirent => dirent.isDirectory())
                 .map(async (dirent) => {
-                    const subdirPath = path.join(this.app.appsDir, dirent.name)
+                    const subdirPath = path.join(this.appResolver.appsDir, dirent.name)
                     const files = await fs.readdir(subdirPath)
                     return files.includes('about.md') ? dirent.name : null
                 })
