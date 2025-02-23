@@ -59,15 +59,15 @@ class ProcessorSettings {
         //   logger.reveal(this.app.dataset)
 
         var dataset = this.app.dataset
-        logger.debug(`\n\nProcessorSettings.getValues, looking for ${property} in APP dataset`)
-        logger.reveal(dataset)
+        logger.debug(`ProcessorSettings.getValues, looking for ${property} in APP dataset`)
+
         var values = this.valuesFromDataset(dataset, property)
         if (values) {
             return values
         }
-        logger.debug(`\n\nProcessorSettings.getValues, looking for ${property} in CONFIG dataset`)
+        logger.debug(`ProcessorSettings.getValues, looking for ${property} in CONFIG dataset`)
         dataset = this.config
-        logger.reveal(dataset)
+
         var values = this.valuesFromDataset(dataset, property)
         if (values) {
             return values
