@@ -42,7 +42,8 @@ class AppResolver {
 
         if (target) {
             this.manifestFilename = path.join(target, this.manifestFilename)
-            await this.loadManifest()
+            logger.debug(`AppResolver, found manifest : ${this.manifestFilename}`)
+            this.dataset = await this.loadManifest()
         }
 
         return this
