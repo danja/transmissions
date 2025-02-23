@@ -126,7 +126,15 @@ async process(message) {
         while (this.messageQueue.length > 0) {
             let { message } = this.messageQueue.shift()
 
+            /* structuredClone makes a deep copy of the message object
+            *  so that the original message is not modified
+            *  except its depth doesn't appear to cover internal objects
+            *  so here the app.datas is passed between messages
+            *  (which is fine)
+            */
+            const ds = message.app.datas
             message = structuredClone(message)
+            message.app.datas = ds
 
             this.addTag(message)
 
