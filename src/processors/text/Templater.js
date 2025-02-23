@@ -65,8 +65,8 @@ class Templater extends Processor {
                 targetPath = path.join(await this.getProperty(ns.trn.targetPath, message.rootDir), targetPath)
             }
 
-            logger.trace('\nTemplater, targetPath = ' + targetPath)
-            logger.trace('Templater, filename = ' + filename)
+            logger.debug('\nTemplater, targetPath = ' + targetPath)
+            logger.debug('Templater, filename = ' + filename)
 
             // Configure Nunjucks with the template path
             nunjucks.configure(targetPath, { autoescape: false })

@@ -5,6 +5,18 @@ import path from 'path'
 import logger from './Logger.js'
 
 class RDFUtils {
+
+    static async readDataset(filename) {
+        const stream = fromFile(filename)
+        const dataset = await rdf.dataset().import(stream)
+        return dataset
+    }
+
+    static async writeDataset(dataset, filename) {
+        await toFile(dataset.toStream(), filename)
+    }
+
+    // TODO tidy up woth the above
     static async loadDataset(relativePath) {
         try {
             const __filename = fileURLToPath(import.meta.url)

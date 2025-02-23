@@ -158,15 +158,7 @@ class TransmissionBuilder {
     }
   }
 
-  static async readDataset(filename) {
-    const stream = fromFile(filename)
-    const dataset = await rdf.dataset().import(stream)
-    return dataset
-  }
 
-  static async writeDataset(dataset, filename) {
-    await toFile(dataset.toStream(), filename)
-  }
 }
 
 export default TransmissionBuilder

@@ -5,6 +5,7 @@ import path from 'path'
 import fs from 'fs/promises'
 import _ from 'lodash'
 import logger from '../utils/Logger.js'
+import RDFUtils from '../utils/RDFUtils.js'
 import MockApplicationManager from '../utils/MockApplicationManager.js'
 import TransmissionBuilder from '../engine/TransmissionBuilder.js'
 import ModuleLoaderFactory from '../engine/ModuleLoaderFactory.js'
@@ -50,6 +51,8 @@ class ApplicationManager {
             appNode
         ))
 
+        logger.log(this.dataset)
+
         // Add to config before building transmissions
         this.app.dataset = this.dataset
         this.app.sessionNode = sessionNode
@@ -61,8 +64,8 @@ class ApplicationManager {
         logger.debug(`\nApplicationManager.build ****************************************`)
 
         const builder = new TransmissionBuilder(this.moduleLoader, this.app)
-        const transmissionConfig = await TransmissionBuilder.readDataset(this.app.getTransmissionsPath())
-        const processorsConfig = await TransmissionBuilder.readDataset(this.app.getConfigPath())
+        const transmissionConfig = await RDFUtils.readDataset(this.app.getTransmissionsPath())
+        const processorsConfig = await RDFUtils.readDataset(this.app.getConfigPath())
 
         // Merge with app dataset
         /*
