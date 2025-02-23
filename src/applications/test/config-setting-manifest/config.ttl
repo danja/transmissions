@@ -4,4 +4,4 @@
 @base <http://purl.org/stuff/path/> .
 
 :theSettingsNode a :ConfigSet ;
-    :theSettingProperty "the setting value from config" .
+    :theSettingProperty "the setting value from CONFIG" .

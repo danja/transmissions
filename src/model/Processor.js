@@ -8,14 +8,12 @@ class Processor extends EventEmitter {
         super()
         this.config = config
         this.settee = new ProcessorSettings(this.config)
-        //  this.settee = null;
         this.messageQueue = []
         this.processing = false
         this.outputs = []
-
-        this.app = null // Will be set from message
     }
 
+    // TODO needed?
     getAppPath(relativePath) {
         if (!this.app?.rootDir) {
             throw new Error('Application context not available')
@@ -33,20 +31,12 @@ class Processor extends EventEmitter {
             return [value]
         }
 
-        this.settee.settingsNode = this.settingsNode ////////////////////////////////////////
+        this.settee.settingsNode = this.settingsNode
         const values = this.settee.getValues(property, fallback)
         logger.trace(`Processor.getValues values = ${values}`)
         return values
     }
 
-    propertyInMessage(property) {
-        const shortName = ns.getShortname(property)
-        if (this.message && this.message[shortName]) {
-            logger.trace(`Found in message: ${this.message[shortName]}`)
-            return this.message[shortName]
-        }
-        return undefined
-    }
     // TODO merge with above (& move to ProcessorSettings)
     getProperty(property, fallback = undefined) {
         logger.trace(`\nProcessor.getProperty looking for ${property}`)
@@ -62,6 +52,16 @@ class Processor extends EventEmitter {
         value = this.settee.getValue(property, fallback)
         logger.trace(`Processor.getProperty, value = ${value}`)
         return value
+    }
+
+
+    propertyInMessage(property) {
+        const shortName = ns.getShortname(property)
+        if (this.message && this.message[shortName]) {
+            logger.trace(`Found in message: ${this.message[shortName]}`)
+            return this.message[shortName]
+        }
+        return undefined
     }
 
     async preProcess(message) {
@@ -89,15 +89,21 @@ class Processor extends EventEmitter {
         this.message = message
     }
 
-    // cLAUDE
+    /*
+async process(message) {
+    throw new Error('process method not implemented')
+}
+*/
+
+    /* cLAUDE
+    // is useful?
     async process(message) {
         if (message.onProcess) {
             message.onProcess(this, message)
         }
         await this.emit('message', message)
     }
-
-
+*/
 
     async postProcess(message) {
         logger.setLogLevel(this.previousLogLevel)
@@ -119,7 +125,9 @@ class Processor extends EventEmitter {
         this.processing = true
         while (this.messageQueue.length > 0) {
             let { message } = this.messageQueue.shift()
+
             message = structuredClone(message)
+
             this.addTag(message)
 
             await this.preProcess(message)
@@ -129,9 +137,7 @@ class Processor extends EventEmitter {
         this.processing = false
     }
 
-    async process(message) {
-        throw new Error('process method not implemented')
-    }
+
 
     addTag(message) {
         const tag = this.getTag()

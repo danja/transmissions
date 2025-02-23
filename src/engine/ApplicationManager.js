@@ -64,10 +64,11 @@ class ApplicationManager {
     }
 
     async start(message = {}) {
+        logger.debug(`\n||| ApplicationManager.start`)
         message.app = this.app
         logger.reveal(this.app)
         //   process.exit(0)
-        logger.debug(`\n||| ApplicationManager.start`)
+
         logger.debug(`
             transmissionsFile=${this.appResolver.getTransmissionsPath()}
             configFile=${this.appResolver.getConfigPath()}
@@ -76,13 +77,14 @@ class ApplicationManager {
         const transmissions = await this.buildTransmissions()
 
         logger.debug(`Transmissions has length ${transmissions.length}`)
+
         // Get application context
         const contextMessage = this.appResolver.toMessage()
 
         // Modify the input message in place
         _.merge(message, contextMessage)
 
-        logger.trace('Message with merged context:', message)
+        logger.debug('**************** Message with merged context:', message)
 
         /*
         for (const transmission of transmissions) {
