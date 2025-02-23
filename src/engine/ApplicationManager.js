@@ -61,6 +61,7 @@ class ApplicationManager {
     }
 
     async start(message = {}) {
+        message.app = this.app
         logger.debug(`\n||| ApplicationManager.start`)
         logger.debug(`
             transmissionsFile=${this.appResolver.getTransmissionsPath()}

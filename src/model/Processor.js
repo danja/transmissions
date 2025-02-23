@@ -23,13 +23,14 @@ class Processor extends EventEmitter {
         return path.join(this.app.rootDir, relativePath)
     }
 
+    // TODO move to ProcessorSettings
     getValues(property, fallback) {
         logger.trace(`Processor.getValues,
             looking for ${property}`)
 
-        const shortName = ns.getShortname(property)
-        if (this.message && this.message[shortName]) {
-            return [this.message[shortName]]
+        var value = this.propertyInMessage(property)
+        if (value) {
+            return [value]
         }
 
         this.settee.settingsNode = this.settingsNode ////////////////////////////////////////
@@ -38,26 +39,36 @@ class Processor extends EventEmitter {
         return values
     }
 
-    getProperty(property, fallback = undefined) {
-        logger.trace(`\nProcessor.getProperty looking for ${property}`)
+    propertyInMessage(property) {
         const shortName = ns.getShortname(property)
         if (this.message && this.message[shortName]) {
             logger.trace(`Found in message: ${this.message[shortName]}`)
             return this.message[shortName]
         }
+        return undefined
+    }
+    // TODO merge with above (& move to ProcessorSettings)
+    getProperty(property, fallback = undefined) {
+        logger.trace(`\nProcessor.getProperty looking for ${property}`)
+
+        // first check if the property is in the message
+        var value = this.propertyInMessage(property)
+        if (value) {
+            return value
+        }
 
         if (this.settingsNode) logger.trace(`this.settingsNode = ${this.settingsNode.value}`)
-
-        //   logger.trace(`Processor.getProperty, this.settee.config = ${this.settee.config}`)
         this.settee.settingsNode = this.settingsNode ////////////////////////////////////////////
-        const value = this.settee.getValue(property, fallback)
+        value = this.settee.getValue(property, fallback)
         logger.trace(`Processor.getProperty, value = ${value}`)
         return value
     }
 
     async preProcess(message) {
         this.app = message.app
-        this.config.app = this.app
+        // this.config.app = this.app // ??????????
+        this.settee.app = this.app
+        logger.log(`THIS APP = ${this.app}`)
 
         if (message.onProcess) { // Claude
             message.onProcess(this, message)

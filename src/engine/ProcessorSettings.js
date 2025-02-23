@@ -5,27 +5,21 @@ import logger from '../utils/Logger.js'
 class ProcessorSettings {
     constructor(config) {
         this.config = config
-
     }
 
-    getValues(property, fallback) {
-        logger.trace(`\n\nProcessorSettings.getValues,
-            property = ${property.value}`)
-        if (this.settingsNode) {
-            logger.trace(`    settingsNode = ${this.settingsNode.value}`)
-        }
-        if (!this.settingsNode || !this.config) {
-            return fallback ? [fallback] : []
-        }
-
-        const dataset = this.config
-        //  logger.log(dataset)
+    valuesFromDataset(dataset, property) {
         const ptr = grapoi({ dataset, term: this.settingsNode })
 
+        logger.log(dataset)
         // Get all values and make them unique using distinct()
-        logger.trace(`get all match to \n<${this.settingsNode.value}> <${property}> ?value`)
+        logger.debug(`get all match to \n<${this.settingsNode.value}> <${property}> ?value`)
         // const values = ptr.out([property]).distinct()
-        const values = ptr.out(property).distinct()
+        var values
+        try {
+            values = ptr.out(property).distinct()
+        } catch (e) {
+            return undefined
+        }
         // logger.debug(`Values found: ${values}`)
         // logger.reveal(values)
         // logger.debug(`Values found: ${values.terms.length}`)
@@ -47,7 +41,34 @@ class ProcessorSettings {
                 return refValues.terms.map(term => term.value)
             }
         }
+        return undefined
+    }
 
+    getValues(property, fallback) {
+        logger.trace(`\n\nProcessorSettings.getValues,
+            property = ${property.value}`)
+        if (this.settingsNode) {
+            logger.trace(`    settingsNode = ${this.settingsNode.value}`)
+        }
+        if (!this.settingsNode || !this.config) {
+            return fallback ? [fallback] : []
+        }
+
+        // const dataset = this.config
+        logger.log(`this.app.dataset = ${this.app.dataset}`)
+        logger.reveal(this.app.dataset)
+
+        var dataset = this.app.dataset
+        var values = this.valuesFromDataset(dataset, property)
+        if (values) {
+            return values
+        }
+        dataset = this.config
+        var values = this.valuesFromDataset(dataset, property)
+        if (values) {
+            return values
+        }
+        // logger.log(this.config)
         return fallback ? [fallback] : []
     }
 

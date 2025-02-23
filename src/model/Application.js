@@ -31,7 +31,7 @@ class Application {
             appNode
         ))
 
-        logger.log(this.dataset)
+        // logger.log(this.dataset)
         return sessionNode
     }
 }
