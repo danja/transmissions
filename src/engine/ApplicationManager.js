@@ -1,11 +1,14 @@
 // ApplicationManager.js
-import rdf from 'rdf-ext'
-import ns from '../utils/ns.js'
 import path from 'path'
 import fs from 'fs/promises'
 import _ from 'lodash'
+// import rdf from 'rdf-ext'
+
+// import ns from '../utils/ns.js'
 import logger from '../utils/Logger.js'
 import RDFUtils from '../utils/RDFUtils.js'
+
+import Application from '../model/Application.js'
 import MockApplicationManager from '../utils/MockApplicationManager.js'
 import TransmissionBuilder from './TransmissionBuilder.js'
 import ModuleLoaderFactory from './ModuleLoaderFactory.js'
@@ -15,7 +18,8 @@ class ApplicationManager {
     constructor() {
         this.appResolver = new AppResolver()
         this.moduleLoader = null
-        this.dataset = rdf.dataset()
+        this.app = new Application()
+        //   this.dataset = rdf.dataset()
     }
 
     async initialize(appName, appPath, subtask, target, flags) {
@@ -30,32 +34,10 @@ class ApplicationManager {
         await this.appResolver.initialize(appName, appPath, subtask, target)
         this.moduleLoader = ModuleLoaderFactory.createApplicationLoader(this.appResolver.getModulePath())
 
-        const appNode = rdf.namedNode(`http://purl.org/stuff/transmissions/${appName}`)
-        const sessionNode = rdf.blankNode()
-
-        this.dataset.add(rdf.quad(
-            appNode,
-            ns.rdf.type,
-            ns.trn.Application
-        ))
-
-        this.dataset.add(rdf.quad(
-            sessionNode,
-            ns.rdf.type,
-            ns.trn.ApplicationSession
-        ))
-
-        this.dataset.add(rdf.quad(
-            sessionNode,
-            ns.trn.application,
-            appNode
-        ))
-
-        logger.log(this.dataset)
-
+        // TODO refactor more
         // Add to config before building transmissions
-        this.appResolver.dataset = this.dataset
-        this.appResolver.sessionNode = sessionNode
+        this.appResolver.dataset = this.app.dataset
+        this.appResolver.sessionNode = await this.app.initDataset(appName)
 
         return this
     }
