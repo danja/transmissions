@@ -10,9 +10,9 @@ class ProcessorSettings {
     valuesFromDataset(dataset, property) {
         const ptr = grapoi({ dataset, term: this.settingsNode })
 
-        logger.log(dataset)
+        //  logger.log(dataset)
         // Get all values and make them unique using distinct()
-        logger.debug(`get all match to \n<${this.settingsNode.value}> <${property}> ?value`)
+        // logger.debug(`get all match to \n<${this.settingsNode.value}> <${property}> ?value`)
         // const values = ptr.out([property]).distinct()
         var values
         try {
@@ -55,15 +55,19 @@ class ProcessorSettings {
         }
 
         // const dataset = this.config
-        logger.log(`this.app.dataset = ${this.app.dataset}`)
-        logger.reveal(this.app.dataset)
+        // logger.log(`this.app.dataset = ${this.app.dataset}`)
+        //   logger.reveal(this.app.dataset)
 
         var dataset = this.app.dataset
+        logger.debug(`\n\nProcessorSettings.getValues, looking for ${property} in app dataset`)
+        logger.reveal(dataset)
         var values = this.valuesFromDataset(dataset, property)
         if (values) {
             return values
         }
+        logger.debug(`\n\nProcessorSettings.getValues, looking for ${property} in config dataset`)
         dataset = this.config
+        logger.reveal(dataset)
         var values = this.valuesFromDataset(dataset, property)
         if (values) {
             return values

@@ -68,7 +68,7 @@ class Processor extends EventEmitter {
         this.app = message.app
         // this.config.app = this.app // ??????????
         this.settee.app = this.app
-        logger.log(`THIS APP = ${this.app}`)
+        //    logger.log(`THIS APP = ${this.app}`)
 
         if (message.onProcess) { // Claude
             message.onProcess(this, message)
