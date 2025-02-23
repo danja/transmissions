@@ -12,8 +12,8 @@ class ProcessorSettings {
 
     valuesFromDataset(dataset, property) {
         const ptr = grapoi({ dataset, term: this.settingsNode })
-        logger.log(`valuesFromDataset, this.settingsNode = ${this.settingsNode.value}`)
-        logger.log(`valuesFromDataset, property = ${property}`)
+        logger.trace(`valuesFromDataset, this.settingsNode = ${this.settingsNode.value}`)
+        logger.trace(`valuesFromDataset, property = ${property}`)
         //     logger.reveal(ptr)
 
         var values
@@ -54,11 +54,9 @@ class ProcessorSettings {
             return fallback ? [fallback] : []
         }
 
-        logger.log(`settingsNode = ${this.settingsNode.value}`)
+        logger.trace(`settingsNode = ${this.settingsNode.value}`)
 
         var dataset = this.app.datas
-
-        // var dataset = rdf.dataset(this.app.datas)
 
         logger.trace(`ProcessorSettings.getValues, looking for ${property} in APP dataset`)
         // logger.log('------------------------------------')
