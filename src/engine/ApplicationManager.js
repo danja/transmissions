@@ -36,10 +36,12 @@ class ApplicationManager {
 
         // TODO refactor more
         // Add to config before building transmissions
-        logger.log(`this.appResolver.dataset = ${this.appResolver.dataset}`)
-        this.appResolver.dataset = this.app.dataset
-        this.appResolver.sessionNode = await this.app.initDataset(appName)
-        process.exit(0)
+        await this.app.initDataset(appName)
+        //    logger.log(`this.appResolver.dataset = ${this.appResolver.dataset}`)
+        //  logger.log(`this.app.dataset = ${this.app.dataset}`)
+
+        this.app.mergeIn(this.appResolver.dataset)
+
         return this
     }
 

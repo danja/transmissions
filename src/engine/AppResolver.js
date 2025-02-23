@@ -3,6 +3,7 @@ import { fromFile } from 'rdf-utils-fs'
 import fs from 'fs/promises'
 import rdf from 'rdf-ext'
 import logger from '../utils/Logger.js'
+import RDFUtils from '../utils/RDFUtils.js'
 
 class AppResolver {
     constructor(options = {}) {
@@ -43,10 +44,9 @@ class AppResolver {
         if (target) {
             this.manifestFilename = path.join(target, this.manifestFilename)
             logger.debug(`AppResolver, found manifest : ${this.manifestFilename}`)
-            this.dataset = await this.loadManifest()
+            this.dataset = await RDFUtils.readDataset(this.manifestFilename)
+            //  this.dataset = await this.loadManifest()
         }
-
-        return this
     }
 
     async findInDirectory(dir, targetName, depth = 0) {
@@ -97,6 +97,7 @@ class AppResolver {
         return appPath
     }
 
+    /*
     async loadManifest() {
         try {
             logger.debug(`AppResolver.loadManifest, loading: ${this.manifestFilename}`)
@@ -109,7 +110,7 @@ class AppResolver {
             return this.dataset
         }
     }
-
+*/
     getTransmissionsPath() {
         return path.join(this.appPath, this.transmissionFilename)
     }

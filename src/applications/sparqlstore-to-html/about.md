@@ -12,7 +12,7 @@ cd ~/hyperdata/transmissions # my local path
 ```
 
 ```sh
-./trans sparqlstore-to-html -v ~/sites/danny.ayers.name/public
+./trans sparqlstore-to-html -v ~/sites/danny.ayers.name/postcraft
 ```
 
 ./trans md-to-sparqlstore
