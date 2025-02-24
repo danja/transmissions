@@ -1,10 +1,14 @@
 # ForEach processor module for Transmissions
 
+./trans foreach -m '{"foreach": ["first TEST_PASSED", "second TEST_PASSED", "third TEST_PASSED"]}'
+
+## Prompts
+
 ```sh
 ./trans test_fork
 ```
 
-Your Goal is to write a processor module for Transmissions that will initiate multiple processing pipelines based on a list provided in the incoming message. First review these instructions as a whole, and then identify the subgoals. Then, taking each subgoal in turn, break it down into a concrete series of tasks. Carry out the sequence of tasks.  
+Your Goal is to write a processor module for Transmissions that will initiate multiple processing pipelines based on a list provided in the incoming message. First review these instructions as a whole, and then identify the subgoals. Then, taking each subgoal in turn, break it down into a concrete series of tasks. Carry out the sequence of tasks.
 You have plenty of time, so don't rush, try to be as careful in understanding and operation as possible.
 Existing source code may be found in the Project Knowledge files.
 

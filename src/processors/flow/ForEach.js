@@ -1,5 +1,6 @@
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
+import SysUtils from '../../utils/SysUtils.js'
 import Processor from '../../model/Processor.js'
 
 class ForEach extends Processor {
@@ -11,7 +12,9 @@ class ForEach extends Processor {
     async process(message) {
         logger.debug('ForEach execute method called')
 
+        // TODO default?
         const forEach = super.getProperty(ns.trn.forEach)
+
         const split = forEach.split('.')
 
         // TODO is similar in 'processors/json/JsonRestructurer.js' - move to utils?
@@ -23,7 +26,8 @@ class ForEach extends Processor {
 
         message.done = false
         for (const item of reduced) {
-            const clonedMessage = structuredClone(message)
+            //  const clonedMessage = structuredClone(message)
+            const clonedMessage = SysUtils.copyMessage(message)
             clonedMessage.currentItem = item
             //    delete clonedMessage.foreach // Remove the original array to prevent infinite loops TODO needed?
 

@@ -1,5 +1,7 @@
 # Applcations to run as integration tests
 
+'TEST_PASSED'
+
 To run :
 
 ```sh

@@ -3,7 +3,7 @@ import rdf from 'rdf-ext'
 import grapoi from 'grapoi'
 import ns from '../utils/ns.js'
 import logger from '../utils/Logger.js'
-import DatasetExt from 'rdf-ext/lib/Dataset.js'
+
 
 class ProcessorSettings {
     constructor(config) {
@@ -13,8 +13,8 @@ class ProcessorSettings {
     valuesFromDataset(dataset, property) {
         if (!dataset) return undefined
         const ptr = grapoi({ dataset, term: this.settingsNode })
-        logger.debug(`valuesFromDataset, this.settingsNode = ${this.settingsNode.value}`)
-        logger.debug(`valuesFromDataset, property = ${property}`)
+        logger.trace(`valuesFromDataset, this.settingsNode = ${this.settingsNode.value}`)
+        logger.trace(`valuesFromDataset, property = ${property}`)
         //     logger.reveal(ptr)
 
         var values
@@ -24,22 +24,22 @@ class ProcessorSettings {
             return undefined
         }
 
-        logger.debug(`Values found: ${values.terms.length}`)
+        logger.trace(`Values found: ${values.terms.length}`)
 
         if (values.terms.length > 0) {
             const all = values.terms.map(term => term.value)
-            logger.debug(`All values: ${all}`)
+            logger.trace(`All values: ${all}`)
             return all
         }
 
-        // logger.log(dataset)
+        // logger.trace(dataset)
         // Check settings reference
         /*
         const settingsPtr = ptr.out([ns.trn.settings]).distinct()
         if (settingsPtr.term) {
             const refPtr = grapoi({ dataset, term: settingsPtr.term })
             const refValues = refPtr.out([property]).distinct()
-            logger.debug(`RefValues found: ${refValues.terms.length}`)
+            logger.trace(`RefValues found: ${refValues.terms.length}`)
             if (refValues.terms.length > 0) {
                 return refValues.terms.map(term => term.value)
             }
@@ -49,31 +49,31 @@ class ProcessorSettings {
     }
 
     getValues(property, fallback) {
-        logger.debug(`\n\nProcessorSettings.getValues, property = ${property.value}`)
+        logger.trace(`\n\nProcessorSettings.getValues, property = ${property.value}`)
 
         if (!this.settingsNode || !this.config) {
             return fallback ? [fallback] : []
         }
 
-        logger.debug(`settingsNode = ${this.settingsNode.value}`)
+        logger.trace(`settingsNode = ${this.settingsNode.value}`)
 
         var dataset = this.app.dataset
 
-        logger.debug(`************ ProcessorSettings.getValues, looking for ${property} in APP dataset`)
-        logger.log('------------------------------------')
-        logger.reveal(dataset)
-        logger.log('------------------------------------')
+        logger.trace(`************ ProcessorSettings.getValues, looking for ${property} in APP dataset`)
+        logger.trace('------------------------------------')
+        // logger.reveal(dataset)
+        logger.trace('------------------------------------')
         var values = this.valuesFromDataset(dataset, property)
         if (values) {
-            logger.debug(`ProcessorSettings.getValues, found in APP dataset: ${values}`)
+            logger.trace(`ProcessorSettings.getValues, found in APP dataset: ${values}`)
             return values
         }
-        logger.debug(`*** ProcessorSettings.getValues, looking for ${property} in CONFIG dataset`)
+        logger.trace(`*** ProcessorSettings.getValues, looking for ${property} in CONFIG dataset`)
         dataset = this.config
-        logger.log('------------------------------------')
+        logger.trace('------------------------------------')
         // logger.reveal(this.app)
-        logger.reveal(dataset)
-        logger.log('------------------------------------')
+        // logger.reveal(dataset)
+        logger.trace('------------------------------------')
         values = this.valuesFromDataset(dataset, property)
         if (values) {
             return values
@@ -83,7 +83,7 @@ class ProcessorSettings {
 
     getValue(property, fallback) {
         const values = this.getValues(property, fallback)
-        logger.debug(`All values2: ${values}`)
+        logger.trace(`All values2: ${values}`)
         if (values.length == 0) {
             return undefined
         }

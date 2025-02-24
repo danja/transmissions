@@ -1,8 +1,5 @@
-# src/applications/example-application/transmissions.ttl
-
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-
+@prefix trn: <http://purl.org/stuff/transmissions/> .
 @prefix : <http://purl.org/stuff/transmissions/> .
 
 ##################################################################
@@ -17,25 +14,12 @@
 :UF a :Unfork . # collapses all pipes but one                    #
 ##################################################################
 
-:sparqlstore-to-html a :Transmission ;
-    :pipe (:p10 :p20 :p30 :p40 :p50 :p70 :p80 ) .
 
-:p10 a :SPARQLSelect ;
-     :settings :sparqlSelect .
+:foreach_test a trn:Transmission ;
+    trn:pipe (:fe10 :fe20 :fe30) .
 
-:p20 a :ForEach ;
-    :settings :resultIterator .
+:s1 a :ForEach ;
+    :settings :forEachTarget .
 
-:p30 a :Restructure ;
-    :settings :prepArticle .
-
-:p40 a :MarkdownToHTML .
-
-:p50 a :Templater ;
-    :settings :articleContentTemplate .
-
-:p70 a :Templater ;
-    :settings :articlePageTemplate .
-
-:p80 a :FileWriter ;
-    :settings :saveArticlePage .
+:s2 a :ShowMessage .
+:s3 a :DeadEnd .

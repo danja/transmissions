@@ -2,9 +2,5 @@
 @prefix trn: <http://purl.org/stuff/transmissions/> .
 @prefix : <http://purl.org/stuff/transmissions/> .
 
-:foreach_test a trn:Transmission ;
-    trn:pipe (:s1 :s2 :s3) .
-
-:s1 a :ForEach .
-:s2 a :ShowMessage .
-:s3 a :DeadEnd .
+:forEachTarget a :ConfigSet ;
+    :forEach  "foreach" .

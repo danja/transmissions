@@ -8,5 +8,10 @@
         "command": "./trans dirwalker",
         "description": "Test the dirwalker application",
         "requiredMatchCount": 2
+    },
+    {
+        "command": "./trans foreach",
+        "description": "Test the foreach application",
+        "requiredMatchCount": 2
     }
 ]
