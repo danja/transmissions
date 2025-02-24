@@ -2,6 +2,7 @@ import { readdir } from 'fs/promises'
 import path from 'path'
 import ns from '../../utils/ns.js'
 import logger from '../../utils/Logger.js'
+import SysUtils from '../../utils/SysUtils.js'
 import Processor from '../../model/Processor.js'
 import StringUtils from '../../utils/StringUtils.js'
 
@@ -56,7 +57,8 @@ class DirWalker extends Processor {
 
         await this.walkDirectory(dirPath, message)
 
-        const finalMessage = structuredClone(message)
+        //   const finalMessage = structuredClone(message)
+        const finalMessage = SysUtils.copyMessage(message)
         finalMessage.done = true
         logger.debug("DirWalker emitting final done=true message")
         return this.emit('message', finalMessage)
@@ -104,7 +106,8 @@ class DirWalker extends Processor {
                 if (!this.matchPatterns(fullPath, this.excludePatterns) &&
                     this.matchPatterns(fullPath, this.includePatterns)) {
 
-                    const message = structuredClone(baseMessage)
+                    //     const message = structuredClone(baseMessage)
+                    const message = SysUtils.copyMessage(baseMessage)
                     message.filename = entry.name
                     message.subdir = path.dirname(path.relative(targetPath, fullPath)).split(path.sep)[1]
                     //     message.subdir = path.dirname(path.relative(message.targetPath, fullPath)).split(path.sep)[1]

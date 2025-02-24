@@ -1,6 +1,10 @@
 # Transmissions : Next Steps
 
+docs - what has Bergi used for syntax hightlighting in RDF-Ext?
+
 tweak DirWalker & ForEach to copy `message.app.datas` along, make an implementation note somewhere
+
+Integration tests based on applications - need a fixture
 
 rename addTag
 

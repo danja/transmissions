@@ -1,0 +1,12 @@
+[
+    {
+        "command": "./trans config-setting-manifest tests/applications/config-setting-manifest",
+        "description": "Test the config-setting-manifest application",
+        "requiredMatchCount": 1
+    },
+    {
+        "command": "./trans dirwalker",
+        "description": "Test the dirwalker application",
+        "requiredMatchCount": 1
+    }
+]

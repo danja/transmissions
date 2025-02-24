@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events'
 import logger from '../utils/Logger.js'
 import ns from '../utils/ns.js'
+import SysUtils from '../utils/SysUtils.js'
 import ProcessorSettings from '../engine/ProcessorSettings.js'
 
 class Processor extends EventEmitter {
@@ -132,9 +133,10 @@ async process(message) {
             *  so here the app.dataset is passed between messages
             *  (which is fine)
             */
-            const ds = message.app.dataset
-            message = structuredClone(message)
-            message.app.dataset = ds
+            //            const dataset = message.app.dataset
+            //          message = structuredClone(message)
+            //        message.app.dataset = dataset
+            message = SysUtils.copyMessage(message)
 
             this.addTag(message)
 

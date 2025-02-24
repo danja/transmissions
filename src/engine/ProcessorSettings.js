@@ -11,6 +11,7 @@ class ProcessorSettings {
     }
 
     valuesFromDataset(dataset, property) {
+        if (!dataset) return undefined
         const ptr = grapoi({ dataset, term: this.settingsNode })
         logger.debug(`valuesFromDataset, this.settingsNode = ${this.settingsNode.value}`)
         logger.debug(`valuesFromDataset, property = ${property}`)

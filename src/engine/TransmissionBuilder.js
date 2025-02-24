@@ -90,8 +90,9 @@ class TransmissionBuilder {
           SettingsNode: ${settingsNodeName}
         `)
         //    Config: \n${processorsConfig}
-        // Check if node is a nested transmission
-        if (processorType && this.isTransmissionReference(processorType)) {
+        // Check if node is a nested transmission transmissionConfig
+        // if (processorType && this.isTransmissionReference(processorType)) {
+        if (processorType && this.isTransmissionReference(transmissionConfig, processorType)) {
           const nestedTransmission = await this.constructTransmission(
             transmissionConfig,
             processorType,
@@ -114,10 +115,17 @@ class TransmissionBuilder {
     }
   }
 
-  isTransmissionReference(processorType) {
+  isTransmissionReference(transmissionConfig, processorType) {
+    const processorPoi = grapoi({ dataset: transmissionConfig, term: processorType })
+    return processorPoi.out(ns.rdf.type).terms.some(t => t.equals(ns.trn.Transmission))
+  }
+
+  /*
+    isTransmissionReference(processorType) {
     const processorPoi = grapoi({ dataset: this.app.dataset, term: processorType })
     return processorPoi.out(ns.rdf.type).terms.some(t => t.equals(ns.trn.Transmission))
   }
+    */
 
   getPipeNodes(transmissionConfig, transmissionID) {
     const transPoi = grapoi({ dataset: transmissionConfig, term: transmissionID })
