@@ -13,9 +13,9 @@
 #############################################################
 
 :dirwalker a :Transmission ;
-    :pipe (:s1 :s2) .
+    :pipe (:d1 :d2 :SM) .
 
-:s1 a :DirWalker ;
+:d1 a :DirWalker ;
  :settings :dirWalker . # specify in config.ttl
 
-:s2 a :NOP .
+:d2 a :FileReader .

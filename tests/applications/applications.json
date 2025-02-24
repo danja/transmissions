@@ -7,6 +7,6 @@
     {
         "command": "./trans dirwalker",
         "description": "Test the dirwalker application",
-        "requiredMatchCount": 1
+        "requiredMatchCount": 2
     }
 ]
