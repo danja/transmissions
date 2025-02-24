@@ -4,3 +4,6 @@
 
 :forEachTarget a :ConfigSet ;
     :forEach  "foreach" .
+
+:removo a :ConfigSet ;
+    :remove  "foreach" .

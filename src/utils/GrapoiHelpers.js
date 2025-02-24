@@ -31,6 +31,7 @@ class GrapoiHelpers {
 
         while (true) {
             let restHead = p.out(ns.rdf.rest).term
+            if (!restHead) break
             let p2 = rdf.grapoi({ dataset, term: restHead })
             let object = p2.out(ns.rdf.first).term
             //   logger.log('restHead = ' + restHead.value)

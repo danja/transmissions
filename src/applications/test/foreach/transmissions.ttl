@@ -16,10 +16,13 @@
 
 
 :foreach_test a trn:Transmission ;
-    trn:pipe (:fe10 :fe20 :fe30) .
+    trn:pipe (:fe10 :fe15 :SM1) .
 
-:s1 a :ForEach ;
+:fe10 a :ForEach ;
     :settings :forEachTarget .
 
-:s2 a :ShowMessage .
-:s3 a :DeadEnd .
+:fe15 a :Restructure ;
+    :settings :removo .
+
+:fe20 a :ShowMessage .
+:fe30 a :DeadEnd .

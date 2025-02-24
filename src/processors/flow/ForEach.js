@@ -15,6 +15,10 @@ class ForEach extends Processor {
         // TODO default?
         const forEach = super.getProperty(ns.trn.forEach)
 
+        // TODO add suport for removeOrigin - see Restructure, RDFUtils
+
+        const removeOrigin = super.getProperty(ns.trn.removeOrigin, false)
+
         const split = forEach.split('.')
 
         // TODO is similar in 'processors/json/JsonRestructurer.js' - move to utils?

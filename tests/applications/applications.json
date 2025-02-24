@@ -1,17 +1,20 @@
 [
     {
         "command": "./trans config-setting-manifest tests/applications/config-setting-manifest",
+        "label": "config-setting-manifest",
         "description": "Test the config-setting-manifest application",
         "requiredMatchCount": 1
     },
     {
         "command": "./trans dirwalker",
+        "label": "dirwalker",
         "description": "Test the dirwalker application",
         "requiredMatchCount": 2
     },
     {
-        "command": "./trans foreach",
+        "command": "./trans foreach -m '{\"foreach\": [\"first TEST_PASSED\", \"second TEST_PASSED\", \"third TEST_PASSED\"]}'",
+        "label": "foreach",
         "description": "Test the foreach application",
-        "requiredMatchCount": 2
+        "requiredMatchCount": 3
     }
 ]

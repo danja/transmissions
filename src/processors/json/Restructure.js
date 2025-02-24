@@ -54,7 +54,7 @@ class Restructure extends Processor {
         for (let i = 0; i < removes.length; i++) {
             //  path = JSON.parse(removes[i])
             const path = removes[i]
-            logger.trace(`remove path = ${path}`)
+            logger.debug(`remove path = ${path}`)
             message = JSONUtils.remove(message, path)
         }
         //  logger.reveal(message)
