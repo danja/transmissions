@@ -6,9 +6,9 @@ import logger from '../utils/Logger.js'
 
 class Application {
     constructor() {
-        this.datas = rdf.dataset()
+        this.dataset = rdf.dataset()
         this.dummy = 'dummy'
-        this.datas.add(rdf.quad(
+        this.dataset.add(rdf.quad(
             rdf.namedNode(`http://purl.org/stuff/transmissions/dummy`),
             ns.rdf.type,
             ns.trn.Application
@@ -21,19 +21,19 @@ class Application {
         this.appNode = rdf.namedNode(`http://purl.org/stuff/transmissions/${appName}`)
         this.sessionNode = sessionNode
 
-        this.datas.add(rdf.quad(
+        this.dataset.add(rdf.quad(
             this.appNode,
             ns.rdf.type,
             ns.trn.Application
         ))
 
-        this.datas.add(rdf.quad(
+        this.dataset.add(rdf.quad(
             this.sessionNode,
             ns.rdf.type,
             ns.trn.ApplicationSession
         ))
 
-        this.datas.add(rdf.quad(
+        this.dataset.add(rdf.quad(
             this.sessionNode,
             ns.trn.application,
             this.appNode
@@ -49,17 +49,17 @@ class Application {
         logger.reveal(this.dataset)
         logger.log('--------------^^^^^^^^^^^^^^^^^^^^-')
         */
-        this.datas.addAll(dataset)
+        this.dataset.addAll(dataset)
         /*
         logger.log('--------------------MERGEDDDDDDDDDDDDD----------------')
-        logger.log(this.datas)
+        logger.log(this.dataset)
         logger.reveal(this.dataset)
         logger.log('---------------^^^^^^^^^^^^^^D----------------')
     */
     }
 
     toString() {
-        return this.datas.toString()
+        return this.dataset.toString()
     }
 }
 export default Application

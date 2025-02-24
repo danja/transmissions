@@ -56,7 +56,7 @@ class ProcessorSettings {
 
         logger.debug(`settingsNode = ${this.settingsNode.value}`)
 
-        var dataset = this.app.datas
+        var dataset = this.app.dataset
 
         logger.debug(`************ ProcessorSettings.getValues, looking for ${property} in APP dataset`)
         logger.log('------------------------------------')

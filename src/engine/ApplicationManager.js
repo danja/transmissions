@@ -41,9 +41,9 @@ class ApplicationManager {
         //  logger.log(`this.app.dataset = ${this.app.dataset}`)
 
         //     await this.app.mergeIn(this.appResolver.dataset)
-        this.app.datas = this.appResolver.dataset
-        //   logger.log(`TYPEOF this.app.datas = ${typeof this.app.datas}`)
-        //  logger.reveal(this.app.datas)
+        this.app.dataset = this.appResolver.dataset
+        //   logger.log(`TYPEOF this.app.dataset = ${typeof this.app.dataset}`)
+        //  logger.reveal(this.app.dataset)
         return this
     }
 

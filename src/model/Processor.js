@@ -129,12 +129,12 @@ async process(message) {
             /* structuredClone makes a deep copy of the message object
             *  so that the original message is not modified
             *  except its depth doesn't appear to cover internal objects
-            *  so here the app.datas is passed between messages
+            *  so here the app.dataset is passed between messages
             *  (which is fine)
             */
-            const ds = message.app.datas
+            const ds = message.app.dataset
             message = structuredClone(message)
-            message.app.datas = ds
+            message.app.dataset = ds
 
             this.addTag(message)
 

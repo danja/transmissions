@@ -1,5 +1,9 @@
 # Transmissions : Next Steps
 
+tweak DirWalker & ForEach to copy `message.app.datas` along, make an implementation note somewhere
+
+rename addTag
+
 #:feature types
 #:feature inline settings
 #:bugfix subtask support
