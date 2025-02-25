@@ -23,6 +23,8 @@
         :pa2   :pre    "currentItem.content.value" ;
               :post  "contentBlocks.content"  .
 
+:mdHTML a :ConfigSet ;
+    :outputField "contentBlocks.content" .
 
 :articleContentTemplate a :ConfigSet ;
     :templateFilename "templates/article-content.njk" .

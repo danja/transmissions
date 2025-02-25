@@ -1,4 +1,6 @@
 import logger from '../../utils/Logger.js'
+import ns from '../../utils/ns.js'
+import JSONUtils from '../../utils/JSONUtils.js'
 import Processor from '../../model/Processor.js'
 // import { parse } from 'marked'
 import { marked } from 'marked'
@@ -16,21 +18,17 @@ class MarkdownToHTML extends Processor {
         if (message.done) return
 
         // logger.reveal(message)
-
         // TODO use config to point to I/O fields, add sensible defaults
         var input
         if (message.contentBlocks) { // using templating
             input = message.contentBlocks.content
+            logger.trace(`MarkdownToHTML.process, using contentBlocks: ${input}`)
         } else { // default
             input = message.content
         }
-        if (!input) { // shouldn't get here TODO double-check MESSAGE.DONE
-            logger.debug(`MarkdownToHTML.process, no input`)
-            return this.emit('message', message)
-        }
 
         // new Marked()
-        message.content = await
+        const html = await
             marked
                 //                .use(customHeadingId())
                 .use(markedFootnote())
@@ -41,6 +39,11 @@ class MarkdownToHTML extends Processor {
                 )
                 .parse(input.toString())
 
+        const outputFieldPath = await this.getProperty(ns.trn.outputField, 'content')
+        logger.debug(`\nMarkdownToHTML.process, outputField = ${outputFieldPath}`)
+        message = JSONUtils.set(message, outputFieldPath, html)
+
+        logger.trace(`message.content = ${message.content}`)
         return this.emit('message', message)
     }
 }

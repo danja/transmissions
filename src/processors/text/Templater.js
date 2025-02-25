@@ -44,10 +44,8 @@ class Templater extends Processor {
      * @param {Object} message - The message object containing template and content information
      */
     async process(message) {
-        //    logger.setLogLevel('debug')
-        //   logger.log(this.getPropertyFromMyConfig(ns.trn.templateFilename))
-        //    this.addPropertyToMyConfig(ns.trn.templateFilename, 'poo')
-        //   this.showMyConfig()
+        logger.trace(`\n\nTemplater.process`)
+        logger.log(`\nTemplater.process, message.contentBlocks = ${JSON.stringify(message.contentBlocks)}`)
         var templateFilename = await this.getProperty(ns.trn.templateFilename)
 
         logger.trace(`\nTemplater.process, templateFilename = ${templateFilename}`)
@@ -61,7 +59,7 @@ class Templater extends Processor {
             var targetPath = templateFilename.substr(0, templateFilename.lastIndexOf("/"))
             const filename = templateFilename.substr(templateFilename.lastIndexOf("/") + 1)
 
-            if (!path.isAbsolute(targetPath)) {
+            if (!path.isAbsolute(targetPath)) { // needed?
                 targetPath = path.join(await this.getProperty(ns.trn.targetPath, message.rootDir), targetPath)
             }
 

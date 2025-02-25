@@ -1,14 +1,10 @@
 import logger from './Logger.js'
 
 class JSONUtils {
+    /* these functions might already be built into JS, but I couldn't find it
 
-    static remove(obj, path) {
-        var node = JSONUtils.find(obj, path, true)
-        return obj
-    }
+    for docs :
 
-
-    /*
     const a = {
     b: {
         c: 5
@@ -31,40 +27,20 @@ const a = {
     console.log(find(a, "b.c[3]")); // Output: undefined (index out of bounds)
     console.log(find(a, "b.d.f[0]")); // Output: undefined (key doesn't exist)
     */
-    /*
-     static find(obj, path) {
-         // Split the path into an array of keys and array indices
-         const keys = path.split('.')
 
-         // Traverse the object using the keys
-         let result = obj
-         for (let key of keys) {
-             // Check if the key contains an array index (e.g., "c[0]")
-             const arrayMatch = key.match(/^(.*)\[(\d+)\]$/)
-             if (arrayMatch) {
-                 // Extract the key and the index
-                 key = arrayMatch[1] // The key (e.g., "c")
-                 const index = parseInt(arrayMatch[2], 10) // The index (e.g., 0)
 
-                 // Check if the key exists and is an array
-                 if (result && typeof result === 'object' && key in result && Array.isArray(result[key])) {
-                     result = result[key][index] // Access the array element
-                 } else {
-                     return undefined // Invalid path
-                 }
-             } else {
-                 // Handle regular keys
-                 if (result && typeof result === 'object' && key in result) {
-                     result = result[key]
-                 } else {
-                     return undefined // Invalid path
-                 }
-             }
-         }
-         return result
-     }
-         */
-    static find(obj, path, remove = false) {
+    static set(obj, path, value) {
+        JSONUtils.find(obj, path, value, false)
+        return obj
+    }
+
+    static remove(obj, path) {
+        JSONUtils.find(obj, path, false, true)
+        return obj
+    }
+
+
+    static find(obj, path, setValue = false, remove = false) {
         const keys = path.split('.')
         let result = obj
 
@@ -95,8 +71,8 @@ const a = {
         const lastKey = keys[keys.length - 1]
         const lastKeyArrayMatch = lastKey.match(/^(.*)\[(\d+)\]$/)
 
+        // TODO simplify
         if (lastKeyArrayMatch) {
-            // Handle array indices for the last key
             const arrayKey = lastKeyArrayMatch[1]
             const index = parseInt(lastKeyArrayMatch[2], 10)
 
@@ -106,6 +82,10 @@ const a = {
                     result[arrayKey].splice(index, 1)
                     return true // Indicate success
                 } else {
+                    if (setValue) {
+                        result[arrayKey][index] = setValue
+                        return true
+                    }
                     return result[arrayKey][index] // Return the element
                 }
             } else {
@@ -119,6 +99,10 @@ const a = {
                     delete result[lastKey]
                     return true // Indicate success
                 } else {
+                    if (setValue) {
+                        result[lastKey] = setValue
+                        return true
+                    }
                     return result[lastKey] // Return the value
                 }
             } else {
