@@ -13,10 +13,10 @@ class SPARQLUpdate extends Processor {
     }
 
     async process(message) {
-        logger.debug(`\nSPARQLUpdate.process`)
+        logger.trace(`\nSPARQLUpdate.process`)
 
         const endpoint = await this.getUpdateEndpoint(message)
-        logger.debug(`SPARQLUpdate.process endpoint = ${endpoint}`)
+        logger.trace(`SPARQLUpdate.process endpoint = ${endpoint}`)
 
         const template = await this.env.getTemplate(
             message.rootDir,
@@ -28,14 +28,14 @@ class SPARQLUpdate extends Processor {
 
         const updateID = crypto.randomUUID()
 
-        //logger.debug(`renderString(template = ${template}
+        //logger.trace(`renderString(template = ${template}
         //  updateData = ${updateData})`)
         const dataField = super.getProperty(ns.trn.dataBlock)
         const updateData = message[dataField]
 
         const update = nunjucks.renderString(template, updateData)
 
-        logger.debug(update)
+        logger.trace(update)
 
         //   process.exit()
         try {

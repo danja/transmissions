@@ -103,8 +103,8 @@ logger.log = function (msg, level = "info") {
 
 }
 
-// have this return a string
-logger.reveal = function (instance) {
+// TODO have this return a string
+logger.reveal = function (instance, verbose = true) {
 
     if (!instance) {
         // logger.warn('*** no instance defined ***')
@@ -116,14 +116,20 @@ logger.reveal = function (instance) {
     const loglevel = logger.getLevel()
     logger.setLogLevel('trace')
 
-
-    if (instance.constructor) {
+    /*
+    if (instance.constructor && verbose) {
         logger.log(`*** Class : ${instance.constructor.name}`)
     }
-    logger.log('* Keys :  ', 'debug')
+*/
+    // logger.log('* Keys :  ', 'debug')
     for (const key in instance) {
+        if (key === 'app') {
+            logger.log(chalk.yellow(chalk.bold('message.app :')), 'debug')
+            logger.reveal(instance[key], false)
+            continue
+        }
         if (key === 'dataset') {
-            logger.log('[[dataset found, skipping]]', 'debug')
+            logger.log(chalk.yellow.italic('[[dataset found, skipping]]'), 'debug')
             continue
         }
 
@@ -157,7 +163,10 @@ logger.reveal = function (instance) {
 
     const props = JSON.stringify(serialized, null, 2)
     //  logger.log(`Instance of ${chalk.bold(instance.constructor.name)} with properties - \n${props}`, 'trace');
-    logger.log(`Instance of ${chalk.yellow(chalk.bold(instance.constructor.name))} with properties - \n${chalk.yellow(props)})`)
+    if (verbose) {
+        logger.log(`Instance of ${chalk.yellow(chalk.bold(instance.constructor.name))} with properties - `)
+    }
+    logger.log(`${chalk.yellow(props)}`)
     logger.setLogLevel(loglevel)
 }
 

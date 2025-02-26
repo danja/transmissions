@@ -44,35 +44,40 @@ class Templater extends Processor {
      * @param {Object} message - The message object containing template and content information
      */
     async process(message) {
-        logger.trace(`\n\nTemplater.process`)
-        logger.log(`\nTemplater.process, message.contentBlocks = ${JSON.stringify(message.contentBlocks)}`)
-        var templateFilename = await this.getProperty(ns.trn.templateFilename)
 
-        logger.trace(`\nTemplater.process, templateFilename = ${templateFilename}`)
-        // process.exit()
+        logger.trace(`\n\nTemplater.process`)
+        logger.trace(`\nTemplater.process, message.contentBlocks = ${JSON.stringify(message.contentBlocks)}`)
+        var templateFilename = await this.getProperty(ns.trn.templateFilename)
 
         if (templateFilename) {
             //       logger.debug(`\nTemplater.process, templateFilename = ${templateFilename}`)
 
             // TODO tidy this up (move out?)
             // Extract path and filename from templateFilename
-            var targetPath = templateFilename.substr(0, templateFilename.lastIndexOf("/"))
+            var templatePath = templateFilename.substr(0, templateFilename.lastIndexOf("/"))
             const filename = templateFilename.substr(templateFilename.lastIndexOf("/") + 1)
 
-            if (!path.isAbsolute(targetPath)) { // needed?
-                targetPath = path.join(await this.getProperty(ns.trn.targetPath, message.rootDir), targetPath)
+            if (!path.isAbsolute(templatePath)) { // needed?
+                super.getProperty(ns.trn.targetPath)
+                templatePath = path.join(super.getProperty(ns.trn.targetPath), templatePath) + path.sep
             }
 
-            logger.debug('\nTemplater, targetPath = ' + targetPath)
+            logger.trace('\nTemplater, templatePath = ' + templatePath)
             logger.debug('Templater, filename = ' + filename)
+            logger.debug(`\nTemplater.process, templateFilename = ${templateFilename}`)
 
             // Configure Nunjucks with the template path
-            nunjucks.configure(targetPath, { autoescape: false })
+            nunjucks.configure(templatePath, { autoescape: false })
 
             //   logger.debug(`content PRE = ${message.content}`)
             // Render the template file
-            message.content = nunjucks.render(filename, message.contentBlocks)
-
+            try {
+                message.content = nunjucks.render(filename, message.contentBlocks)
+            } catch (err) {
+                logger.error(`\nTemplater.process, error rendering template: ${err}`)
+                return
+            }
+            //
             logger.trace(`content POST = ${message.content}`)
 
 

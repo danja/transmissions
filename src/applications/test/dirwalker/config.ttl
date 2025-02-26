@@ -4,4 +4,4 @@
 
 
 :dirWalker a :ConfigSet ;
-    :sourceDir "." .  # subdirectory path
+    :sourcePath "." .

@@ -20,7 +20,7 @@ class MakeEntry extends Processor {
     const dates = this.extractDates(message)
 
     const { rel, slug } = this.extractRelSlug(message.appPath, dates, message.filePath)
-    logger.log(`slug = ${slug}`)
+    logger.trace(`slug = ${slug}`)
 
     message.contentBlocks = {
       uri: this.getEntryURI(rel, slug),

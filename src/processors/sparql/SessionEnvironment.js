@@ -13,17 +13,17 @@ class SessionEnvironment {
     }
 
     async loadEndpoints(dir) {
-        logger.debug(`SessionEnvironment.loadEndpoints dir = ${dir}`)
+        logger.trace(`SessionEnvironment.loadEndpoints dir = ${dir}`)
         const settingsPath = this.processor.getProperty(ns.trn.endpointSettings)
-        logger.debug(`SessionEnvironment.loadEndpoints dir = ${dir}`)
-        logger.debug(`SessionEnvironment.loadEndpoints settingsPath = ${settingsPath}`)
+        logger.trace(`SessionEnvironment.loadEndpoints dir = ${dir}`)
+        logger.trace(`SessionEnvironment.loadEndpoints settingsPath = ${settingsPath}`)
 
         if (!settingsPath) {
             throw new Error('Endpoint settings path is undefined')
         }
 
         const filePath = path.join(dir, settingsPath)
-        logger.debug(`SessionEnvironment.loadEndpoints filePath = ${filePath}`)
+        logger.trace(`SessionEnvironment.loadEndpoints filePath = ${filePath}`)
         const data = await fs.readFile(filePath, 'utf8')
         this.endpoints = JSON.parse(data)
     }
@@ -38,8 +38,8 @@ class SessionEnvironment {
 
     async getTemplate(dir, templateFilename) {
 
-        logger.debug(`SessionEnvironment.getTemplate dir = ${dir}`)
-        logger.debug(`SessionEnvironment.getTemplate templateFilename = ${templateFilename}`)
+        logger.trace(`SessionEnvironment.getTemplate dir = ${dir}`)
+        logger.trace(`SessionEnvironment.getTemplate templateFilename = ${templateFilename}`)
 
         const cacheKey = path.join(dir, templateFilename)
 
@@ -49,8 +49,8 @@ class SessionEnvironment {
 
         const template = await fs.readFile(cacheKey, 'utf8')
         this.templateCache.set(cacheKey, template)
-        logger.debug(`SessionEnvironment.getTemplate cacheKey = ${cacheKey}`)
-        logger.debug(`SessionEnvironment.getTemplate template = ${template}`)
+        logger.trace(`SessionEnvironment.getTemplate cacheKey = ${cacheKey}`)
+        logger.trace(`SessionEnvironment.getTemplate template = ${template}`)
         return template
     }
 

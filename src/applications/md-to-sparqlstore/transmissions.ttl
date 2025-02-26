@@ -14,11 +14,8 @@
 :UF a :Unfork . # collapses all pipes but one                    #
 ##################################################################
 
-:SM1 a :ShowMessage .
-:SM2 a :ShowMessage .
-
 :md-to-sparqlstore a :Transmission ;
-     :pipe (:p10 :p20 :p30 :p40) .
+     :pipe (:p10 :p20 :p30 :p40 :SM) .
 
 :p10 a :DirWalker ;
     :settings :dirWalker .

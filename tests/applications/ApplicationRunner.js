@@ -39,6 +39,7 @@ describe('', function () {
                     done()
                 } catch (err) {
                     console.error('Test error:', err)
+                    console.log('Logs:\n', err)
                     done(err)
                 }
             })

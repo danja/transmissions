@@ -9,20 +9,16 @@ import StringUtils from '../../utils/StringUtils.js'
 class DirWalker extends Processor {
     constructor(config) {
         super(config)
-        //    this.includePatterns = ['.md']
-        //  this.excludePrefixes = ['_', '.']
-        this.fileCount = 0
+        this.count = 0
     }
 
     async process(message) {
-        logger.debug('\nDirWalker.process')
-        logger.debug(`\nDirWalker.process, this = ${this}`)
-        message.counter = 0
-        message.slugs = []
+        logger.trace('\nDirWalker.process')
+        logger.trace(`\nDirWalker.process, this = ${this}`)
         message.done = false
 
         var sourceDir = this.getProperty(ns.trn.sourceDir)
-        logger.debug(`DirWalker sourceDir from config = ${sourceDir}`)
+        logger.trace(`DirWalker sourceDir from config = ${sourceDir}`)
         if (!message.sourceDir) {
             message.sourceDir = sourceDir
         }
@@ -30,16 +26,14 @@ class DirWalker extends Processor {
         if (!sourceDir) {
             sourceDir = message.dataDir
         }
-
-
         this.includePatterns = this.getProperty(ns.trn.includePattern, ['*.md', '*.js', '*.json', '*.ttl'])
         this.excludePatterns = this.getProperty(ns.trn.excludePattern, ['*.', '.git', 'node_modules'])
 
 
 
-        logger.debug('\n\nDirWalker, message.targetPath = ' + message.targetPath)
-        logger.debug('DirWalker, message.rootDir = ' + message.rootDir)
-        logger.debug('DirWalker, message.sourceDir = ' + message.sourceDir)
+        logger.trace('\n\nDirWalker, message.targetPath = ' + message.targetPath)
+        logger.trace('DirWalker, message.rootDir = ' + message.rootDir)
+        logger.trace('DirWalker, message.sourceDir = ' + message.sourceDir)
 
         //    logger.log(`DirWalker.sourceDir = ${sourceDir}`)
         //  logger.reveal(sourceDir)
@@ -53,14 +47,15 @@ class DirWalker extends Processor {
                 dirPath = path.join(message.rootDir, sourceDir)
             }
         }
-        logger.debug(`DirWalker resolved dirPath = ${dirPath}`)
+        logger.trace(`DirWalker resolved dirPath = ${dirPath}`)
 
         await this.walkDirectory(dirPath, message)
 
         //   const finalMessage = structuredClone(message)
         const finalMessage = SysUtils.copyMessage(message)
         finalMessage.done = true
-        logger.debug("DirWalker emitting final done=true message")
+        finalMessage.count = this.count
+        logger.trace("DirWalker emitting final done=true message")
         return this.emit('message', finalMessage)
     }
 
@@ -70,26 +65,30 @@ class DirWalker extends Processor {
     matchPatterns(str, patterns) {
         return StringUtils.matchPatterns(str, patterns)
 
+        /*
         const matches = patterns.filter(pattern => this.matchesPattern(str, pattern))
         if (matches.length > 0) {
             return matches
         }
         return false
+   */
     }
+    /*
+        matchesPattern(str, pattern) {
+            return StringUtils.matchesPattern(str, pattern)
 
-    matchesPattern(str, pattern) {
-        return StringUtils.matchesPattern(str, pattern)
+            // Convert glob pattern to regex
+            const regexPattern = pattern
+                .replace(/\./g, '\\.')   // Escape dots
+    */
+    //       .replace(/\*/g, '.*')   // Convert * to .*
+    //    const regex = new RegExp(`^${regexPattern}$`)
+    //  return regex.test(str)
+    //}
 
-        // Convert glob pattern to regex
-        const regexPattern = pattern
-            .replace(/\./g, '\\.')   // Escape dots
-            .replace(/\*/g, '.*')   // Convert * to .*
-        const regex = new RegExp(`^${regexPattern}$`)
-        return regex.test(str)
-    }
 
     async walkDirectory(dir, baseMessage) {
-        logger.debug(`DirWalker.walkDirectory, dir = ${dir}`)
+        logger.trace(`DirWalker.walkDirectory, dir = ${dir}`)
         //   logger.reveal(this.message)
         const entries = await readdir(dir, { withFileTypes: true })
 
@@ -114,12 +113,11 @@ class DirWalker extends Processor {
                     message.fullPath = fullPath
                     message.filepath = path.relative(baseMessage.targetPath || baseMessage.rootDir, fullPath)
                     message.done = false
-                    message.counter++
+                    message.count = this.count++
 
-                    const slug = message.filename.split('.')[0]
-                    message.slugs.push(slug)
+                    message.slug = message.filename.split('.')[0]
 
-                    logger.debug(`DirWalker emitting :
+                    logger.trace(`DirWalker emitting :
                         message.targetPath: ${message.targetPath}
                         message.filename: ${message.filename}
                         message.fullPath: ${message.fullPath}
@@ -127,7 +125,8 @@ class DirWalker extends Processor {
                         message.filepath: ${message.filepath}
                         message.slugs: ${message.slugs}`)
                     //        process.exit()
-                    message.fileCount++
+
+                    logger.debug(` - DirWalker emit ${this.count++} : ${message.fullPath}`)
                     this.emit('message', message)
                 }
             }

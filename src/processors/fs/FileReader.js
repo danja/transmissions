@@ -13,7 +13,7 @@ class FileReader extends Processor {
     }
 
     async process(message) {
-        logger.debug(`FileReader.process, done=${message.done}`)
+        logger.trace(`FileReader.process, done=${message.done}`)
 
         if (message.done) return this.emit('message', message)
 
@@ -37,7 +37,7 @@ class FileReader extends Processor {
                 filePath = this.defaultFilePath
             }
 
-            logger.debug(`filePath = ${filePath}`)
+            logger.trace(`filePath = ${filePath}`)
             // Resolve relative to targetPath or rootDir
 
             if (!path.isAbsolute(filePath)) {
@@ -46,8 +46,8 @@ class FileReader extends Processor {
             }
         }
 
-        logger.debug(`FileReader.process(), reading file: ${filePath}`)
-        logger.debug(`FileReader.process(), process.cwd() = ${process.cwd()}`)
+        logger.trace(`FileReader.process(), reading file: ${filePath}`)
+        logger.trace(`FileReader.process(), process.cwd() = ${process.cwd()}`)
 
         // Verify file is readable
         await new Promise((resolve, reject) => {
@@ -69,12 +69,12 @@ class FileReader extends Processor {
 
         // Read and return file content
         const content = await readFile(filePath, 'utf8')
-        logger.debug(`FileReader successfully read file: ${filePath}`)
+        logger.debug(` - FileReader read: ${filePath}`)
 
         message.filePath = filePath
 
         const mediaType = super.getProperty(ns.trn.mediaType)
-        logger.debug(`mediaType = ${mediaType}`)
+        logger.trace(`mediaType = ${mediaType}`)
 
         if (mediaType === 'application/json') {
             message.content = JSON.parse(content)

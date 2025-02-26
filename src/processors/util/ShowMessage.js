@@ -1,5 +1,6 @@
 import logger from '../../utils/Logger.js'
 import Processor from '../../model/Processor.js'
+import chalk from 'chalk'
 
 class ShowMessage extends Processor {
 
@@ -9,15 +10,11 @@ class ShowMessage extends Processor {
     }
 
     async process(message) {
+        //   if (this.verbose) logger.log("\n***  Show Message ***")
 
-        //    logger.log("\n\nStringSink outputs : \"" + data + "\"\n\n")
-
-        if (this.verbose) logger.log("\n***  Show Message ***")
-
-        logger.log("***************************")
-        logger.log("***  Message")
+        logger.log(chalk.bgYellow.black('\nMessage vvvvvvvvvvvvvvvvvvvvvvvv'))
         logger.reveal(message)
-        logger.log("***************************")
+        logger.log(chalk.bgYellow.black('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^'))
         //     logger.log("***  Trace")
         //   console.trace() // move to Logger, only when debugging
         // logger.log("***************************")

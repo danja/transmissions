@@ -13,6 +13,9 @@ cd ~/hyperdata/transmissions # my local path
 
 ```sh
 ./trans sparqlstore-to-html -v ~/sites/danny.ayers.name/postcraft
+
+./trans md-to-sparqlstore -v ~/sites/strandz.it/postcraft
+./trans sparqlstore-to-html -v ~/sites/strandz.it/postcraft
 ```
 
 ## Prerequisites
@@ -22,8 +25,9 @@ sudo systemctl stop tbox
 cd ~/hyperdata/tbox # my local dir
 docker-compose down
 docker-compose up -d
+
 cd ~/hyperdata/transmissions # my local path
-./trans md-to-sparqlstore
+./trans md-to-sparqlstore -v ~/sites/strandz.it/postcraft
 ```
 
 ## Description
