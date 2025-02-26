@@ -106,22 +106,13 @@ logger.log = function (msg, level = "info") {
 // TODO have this return a string
 logger.reveal = function (instance, verbose = true) {
 
-    if (!instance) {
-        // logger.warn('*** no instance defined ***')
-        return
-    }
+    if (!instance) return
 
     const serialized = {}
 
     const loglevel = logger.getLevel()
     logger.setLogLevel('trace')
 
-    /*
-    if (instance.constructor && verbose) {
-        logger.log(`*** Class : ${instance.constructor.name}`)
-    }
-*/
-    // logger.log('* Keys :  ', 'debug')
     for (const key in instance) {
         if (key === 'app') {
             logger.log(chalk.yellow(chalk.bold('message.app :')), 'debug')
@@ -162,7 +153,6 @@ logger.reveal = function (instance, verbose = true) {
     }
 
     const props = JSON.stringify(serialized, null, 2)
-    //  logger.log(`Instance of ${chalk.bold(instance.constructor.name)} with properties - \n${props}`, 'trace');
     if (verbose) {
         logger.log(`Instance of ${chalk.yellow(chalk.bold(instance.constructor.name))} with properties - `)
     }
@@ -189,7 +179,7 @@ logger.poi = function exploreGrapoi(grapoi, predicates, objects, subjects) {
 
 function handleExit(options, exitCode) {
     if (options.cleanup) {
-        // Perform cleanup
+        // TODO cleanup
     }
     if (exitCode || exitCode === 0) console.log(exitCode)
     if (options.exit) process.exit()
@@ -201,7 +191,7 @@ process.on('SIGUSR1', handleExit.bind(null, { exit: true }))
 process.on('SIGUSR2', handleExit.bind(null, { exit: true }))
 process.on('uncaughtException', handleExit.bind(null, { exit: true }))
 
-// TESTING
+// TODO testing
 // logger.setLogLevel('info')
 // logger.log('a log() message on info - show yellow, concise')
 // logger.debug('a debug() message on info -  dont show')
