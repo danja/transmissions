@@ -4,12 +4,12 @@ import ns from '../../utils/ns.js'
 import GrapoiHelpers from '../../utils/GrapoiHelpers.js'
 import Processor from '../../model/Processor.js'
 
-class ValueConcat extends Processor {
+class StringOps extends Processor {
 
     constructor(config) {
         super(config)
-        logger.log('CREATING VALUECONCAT')
+        logger.log('CREATING Sedlet')
     }
 
 }
-export default ValueConcat
+export default StringOps

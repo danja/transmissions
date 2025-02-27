@@ -36,4 +36,3 @@
   :targetDir "data/output" ;
   :destinationFile "output.html" .
 
-

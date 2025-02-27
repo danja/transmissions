@@ -40,5 +40,8 @@
 :p70 a :Templater ;
     :settings :articlePageTemplate .
 
-:p80 a :FileWriter ;
+:p80 a :Restructure ;
+    :settings :resolveFilepath .
+
+:p90 a :FileWriter ;
     :settings :saveArticlePage .

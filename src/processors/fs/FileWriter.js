@@ -94,7 +94,7 @@ class FileWriter extends Processor {
     }
 
     mkdirs(dir) {
-        logger.trace(`FileWriter.mkdirs, dir = ${dir}`)
+        logger.debug(`FileWriter.mkdirs, dir = ${dir}`)
         try {
             mkdirSync(dir, { recursive: true })
         }

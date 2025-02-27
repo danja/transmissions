@@ -1,6 +1,27 @@
 # Transmissions : Next Steps
 
-docs - what has Bergi used for syntax hightlighting in RDF-Ext?
+## feature : Docs
+
+Enough for Bergi to be able to review the RDF-Ext bits.
+
+docs - what has Bergi used for syntax highlighting in RDF-Ext?
+
+### feature : Signature standard
+
+Comments, add `src/processors/system/SignatureParser`
+
+
+
+### feature : Aux + Describe
+property in `transmissions.ttl` like
+
+```turtle
+:p a :Processor ;
+    :aux :Describe .
+```
+runs an auxiliary process, first case Describe to log the **Signature** of `:p`
+
+### Misc
 
 tweak DirWalker & ForEach to copy `message.app.datas` along, make an implementation note somewhere
 

@@ -28,6 +28,9 @@ const a = {
     console.log(find(a, "b.d.f[0]")); // Output: undefined (key doesn't exist)
     */
 
+    static get(obj, path) {
+        return JSONUtils.find(obj, path, false, false)
+    }
 
     static set(obj, path, value) {
         JSONUtils.find(obj, path, value, false)
@@ -38,7 +41,6 @@ const a = {
         JSONUtils.find(obj, path, false, true)
         return obj
     }
-
 
     static find(obj, path, setValue = false, remove = false) {
         const keys = path.split('.')
