@@ -43,6 +43,13 @@ const a = {
     }
 
     static find(obj, path, setValue = false, remove = false) {
+        // TODO I don't think set() is working for nested.objects - make tests, fix
+        // meanwhile, simplest case
+        if (setValue && !path.includes('.')) {
+            //    logger.debug(`setting ${path} = ${setValue}`)
+            obj[path] = setValue
+        }
+
         const keys = path.split('.')
         let result = obj
 
@@ -84,6 +91,7 @@ const a = {
                     result[arrayKey].splice(index, 1)
                     return true // Indicate success
                 } else {
+
                     if (setValue) {
                         result[arrayKey][index] = setValue
                         return true
