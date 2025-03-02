@@ -17,7 +17,7 @@
 ##################################################################
 
 :stringops a :Transmission ;
-    :pipe (:pFilename :pString :SM) .
+    :pipe (:pFilename :pString ) .
 
 :pFilename a :StringOps ;
   :settings :filenameConstructor .

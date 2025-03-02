@@ -6,9 +6,13 @@
 
 ```sh
 cd ~/hyperdata/transmissions # my local path
-./trans stringops -m '{"fields": {"fieldB" : "b","fieldC":"c"}}'
+./trans stringops -m '{"fields": {"fieldB" : "TEST","fieldC":"_PASSED"}}'
 ```
+
+## Tests
 
 ## Description
 
 ---
+
+TEST_PASSED

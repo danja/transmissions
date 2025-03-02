@@ -9,16 +9,16 @@
   :asPath true ;
   :targetField "aFilepath" ;
   :values (:a :b :c :d) .
-  :a :string "/home/danny/sites/strandz.it/postcraft/public" .
+  :a :string "TEST_PASSED" .
   :b :field "fields.fieldB" .
   :c :field "fields.fieldC" .
-  :d :string ".html" .
+  :d :string "TEST_PASSED" .
 
   :stringConstructor a :ConfigSet ;
   :asPath false ;
   :targetField "aString" ;
   :values (:a :b :c :d) .
-  :a :string "/home/danny/sites/strandz.it/postcraft/public" .
+  :a :string "TEST_PASSED" .
   :b :field "fields.fieldB" .
   :c :field "fields.fieldC" .
   :d :string ".html" .
