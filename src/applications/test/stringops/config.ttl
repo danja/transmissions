@@ -8,17 +8,17 @@
 :filenameConstructor a :ConfigSet ;
   :asPath true ;
   :targetField "aFilepath" ;
-  :values (:a :b :c :d) .
-  :a :string "TEST_PASSED" .
-  :b :field "fields.fieldB" .
-  :c :field "fields.fieldC" .
-  :d :string "TEST_PASSED" .
+  :values (:a1 :b1 :c1 :d1) .
+  :a1 :string "TEST_PASSED" .
+  :b1 :field "fields.fieldB" .
+  :c1 :field "fields.fieldC" .
+  :d1 :string "TEST_PASSED" .
 
   :stringConstructor a :ConfigSet ;
   :asPath false ;
   :targetField "aString" ;
-  :values (:a :b :c :d) .
-  :a :string "TEST_PASSED" .
-  :b :field "fields.fieldB" .
-  :c :field "fields.fieldC" .
-  :d :string ".html" .
+  :values (:a2 :b2 :c2 :d2) .
+  :a2 :string "TEST_PASSED" .
+  :b2 :field "fields.fieldB" .
+  :c2 :field "fields.fieldC" .
+  :d2 :string ".html" .

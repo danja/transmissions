@@ -35,12 +35,12 @@ class StringOps extends Processor {
         var segment
         for (var i = 0; i < segments.length; i++) {
             segment = segments[i]
-            // logger.log(`property = ${segment}`)
-            // logger.reveal(segment)
+            logger.log(`property = ${segment}`)
+            logger.reveal(segment)
 
             let stringSegment = rdf.grapoi({ dataset: dataset, term: segment })
             let stringProperty = stringSegment.out(ns.trn.string)
-            // logger.log(`stringProperty = ${stringProperty.value}`)
+            logger.log(`stringProperty = ${stringProperty.value}`)
             if (stringProperty && stringProperty.value) {
                 if (asPath) {
                     combined = path.join(combined, stringProperty.value)
