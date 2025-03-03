@@ -40,7 +40,7 @@ class StringOps extends Processor {
 
             let stringSegment = rdf.grapoi({ dataset: dataset, term: segment })
             let stringProperty = stringSegment.out(ns.trn.string)
-            logger.log(`stringProperty = ${stringProperty.value}`)
+            //  logger.log(`stringProperty = ${stringProperty.value}`)
             if (stringProperty && stringProperty.value) {
                 if (asPath) {
                     combined = path.join(combined, stringProperty.value)
@@ -67,10 +67,10 @@ class StringOps extends Processor {
                 continue
             }
         }
-        logger.debug(`combined = ${combined}`)
+        //logger.debug(`combined = ${combined}`)
 
         const targetField = await this.getProperty(ns.trn.targetField)
-        logger.debug(`targetField = ${targetField}`)
+        //logger.debug(`targetField = ${targetField}`)
         JSONUtils.set(message, targetField, combined)
 
         return this.emit('message', message)

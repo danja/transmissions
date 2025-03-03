@@ -21,6 +21,6 @@
         "command": "./trans -v stringops -m '{\"fields\": {\"fieldB\" : \"TEST\",\"fieldC\":\"_PASSED\"}}'",
         "label": "stringops",
         "description": "Test the stringops application",
-        "requiredMatchCount": 3
+        "requiredMatchCount": 4
     }
 ]
