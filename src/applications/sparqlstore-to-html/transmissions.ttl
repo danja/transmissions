@@ -20,7 +20,7 @@
 
 :sparqlstore-to-html a :Transmission ;
  #   :pipe (:p10 :p20 :p30  :p40 :SM1 :DE  :p50 :p70 :p80 ) .
- :pipe (:p10 :p20 :p30  :p40 :p50 :p70 :p80 :SM1) .
+ :pipe (:p10 :p20 :p30  :p40 :p50 :p70 :p80 :p90 :p100) .
 
 :p10 a :SPARQLSelect ;
      :settings :sparqlSelect .
@@ -40,8 +40,10 @@
 :p70 a :Templater ;
     :settings :articlePageTemplate .
 
-:p80 a :Restructure ;
-    :settings :resolveFilepath .
+:p80 a :StringOps ;
+  :settings :filenameConstructor .
 
-:p90 a :FileWriter ;
-    :settings :saveArticlePage .
+:p90 a :StringOps ;
+  :settings :filenameExtension .
+
+:p100 a :FileWriter .

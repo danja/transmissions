@@ -34,15 +34,17 @@
 
 :filenameConstructor a :ConfigSet ;
   :asPath true ;
-  :targetField "aFilepath" ;
-  :values (:a :b :c :d) .
-  :a :string "TEST_PASSED" .
-  :b :field "fields.fieldB" .
-  :c :field "fields.fieldC" .
-  :d :string "TEST_PASSED" .
+  :targetField "temp" ;
+  :values (:a1 :b1 :c1) .
+  :a1 :field "targetPath" .
+  :b1 :field "currentItem.relPath.value" .
+  :c1 :field "currentItem.slug.value" .
 
+  :filenameExtension a :ConfigSet ;
+    :asPath false ;
+    :targetField "destinationFile" ;
+    :values (:a2 :b2 ) .
+    :a2 :field "temp" .
+    :b2 :string ".html" .
 
-:saveArticlePage a :ConfigSet ;
-  :targetDir "data/output" ;
-  :destinationFile "output.html" .
 
