@@ -40,7 +40,7 @@
   :b1 :field "currentItem.relPath.value" .
   :c1 :field "currentItem.slug.value" .
 
-  :filenameExtension a :ConfigSet ;
+:filenameExtension a :ConfigSet ;
     :asPath false ;
     :targetField "destinationFile" ;
     :values (:a2 :b2 ) .

@@ -6,8 +6,8 @@
 @prefix : <http://purl.org/stuff/transmissions/> .
 
 
-:walker a :ConfigSet ;
-    :sourceDir "/home/danny/sites/danny.ayers.name/postcraft/content-raw" .
+:dirWalker a :ConfigSet ;
+  :sourceDir "TODO sensible default" .
 
 :readerSet a :ConfigSet ;
     :metaField "meta" .

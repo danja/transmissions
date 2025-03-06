@@ -18,7 +18,7 @@
      :pipe (:p10 :p20 :p30 :p40) .
 
 :p10 a :DirWalker ;
-    :settings :dirWalker .
+   :settings :dirWalker .
 
 :p20 a :FileReader ;
      :settings :readerSet .

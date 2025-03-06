@@ -50,6 +50,7 @@ class ProcessorSettings {
 
     getValues(property, fallback) {
         logger.trace(`\n\nProcessorSettings.getValues, property = ${property.value}`)
+        // needs settingsNode when
 
         if (!this.settingsNode || !this.config) {
             return fallback ? [fallback] : []
@@ -72,7 +73,7 @@ class ProcessorSettings {
         dataset = this.config
         logger.trace('------------------------------------')
         // logger.reveal(this.app)
-        // logger.reveal(dataset)
+        logger.reveal(dataset)
         logger.trace('------------------------------------')
         values = this.valuesFromDataset(dataset, property)
         if (values) {

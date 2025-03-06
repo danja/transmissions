@@ -13,12 +13,14 @@ class DirWalker extends Processor {
     }
 
     async process(message) {
+        logger.setLogLevel('trace')
         logger.trace('\nDirWalker.process')
         logger.trace(`\nDirWalker.process, this = ${this}`)
         message.done = false
 
         var sourceDir = this.getProperty(ns.trn.sourceDir)
-        logger.trace(`DirWalker sourceDir from config = ${sourceDir}`)
+        logger.trace(`--------------- DirWalker sourceDir from config = ${sourceDir}`)
+
         if (!message.sourceDir) {
             message.sourceDir = sourceDir
         }
@@ -26,10 +28,9 @@ class DirWalker extends Processor {
         if (!sourceDir) {
             sourceDir = message.dataDir
         }
+
         this.includePatterns = this.getProperty(ns.trn.includePattern, ['*.md', '*.js', '*.json', '*.ttl'])
         this.excludePatterns = this.getProperty(ns.trn.excludePattern, ['*.', '.git', 'node_modules'])
-
-
 
         logger.trace('\n\nDirWalker, message.targetPath = ' + message.targetPath)
         logger.trace('DirWalker, message.rootDir = ' + message.rootDir)
@@ -126,7 +127,7 @@ class DirWalker extends Processor {
                         message.slugs: ${message.slugs}`)
                     //        process.exit()
 
-                    logger.debug(` - DirWalker emit ${this.count++} : ${message.fullPath}`)
+                    logger.trace(` - DirWalker emit ${this.count++} : ${message.fullPath}`)
                     this.emit('message', message)
                 }
             }
