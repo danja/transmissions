@@ -13,7 +13,6 @@ class DirWalker extends Processor {
     }
 
     async process(message) {
-        logger.setLogLevel('trace')
         logger.trace('\nDirWalker.process')
         logger.trace(`\nDirWalker.process, this = ${this}`)
         message.done = false

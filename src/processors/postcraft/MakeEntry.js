@@ -19,9 +19,9 @@ class MakeEntry extends Processor {
 
     const dates = this.extractDates(message)
 
-    const { rel, slug } = this.extractRelSlug(message.appPath, dates, message.filePath)
-    logger.trace(`slug = ${slug}`)
-
+    const { rel, slug } = this.extractRelSlug(message.sourceDir, dates, message.filePath)
+    logger.debug(`message.meta.filepath = ${message.meta.filepath}`)
+    logger.debug(`slug = ${slug}`)
     message.contentBlocks = {
       uri: this.getEntryURI(rel, slug),
       sourcePath: message.meta.filepath,
@@ -50,19 +50,27 @@ class MakeEntry extends Processor {
 
   // filePath - appPath
   extractRelSlug(basePath, dates, filePath) {
+    logger.debug(`\nMakeEntry.extractRelSlug`)
+    logger.debug(`basePath = ${basePath}`)
     const baseLength = basePath.split(path.sep).length
     const split = filePath.split(path.sep)
     const splitLength = split.length
-    logger.trace(`split = ${split}`)
+    logger.debug(`split = ${split}`)
     var slug = split.slice(splitLength - 1).toString()
     if (slug.includes('.')) {
       slug = slug.substr(0, slug.lastIndexOf('.'))
     }
-    logger.trace(`slug = ${slug}`)
+    logger.debug(`slug = ${slug}`)
+    logger.debug(`baseLength = ${baseLength}, splitLength = ${splitLength}`)
     const dirs = split.slice(baseLength, splitLength - 1)
-    logger.trace(`dirs = ${dirs}`)
+    logger.debug(`dirs = ${dirs}`)
+
+    /* TODO make this an option
     const day = dates.created.split('T')[0]
     const rel = path.join(dirs.join(path.sep), day)
+    */
+    const rel = dirs.join(path.sep)
+    logger.debug(`rel = ${rel}`)
     return { rel, slug }
   }
 

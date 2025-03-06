@@ -73,7 +73,7 @@ class ProcessorSettings {
         dataset = this.config
         logger.trace('------------------------------------')
         // logger.reveal(this.app)
-        logger.reveal(dataset)
+        //  logger.reveal(dataset)
         logger.trace('------------------------------------')
         values = this.valuesFromDataset(dataset, property)
         if (values) {

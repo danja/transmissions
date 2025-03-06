@@ -90,11 +90,11 @@ class FileWriter extends Processor {
         // maybe stat first, check validity - the intended target dir was blocked by a of the same name
         await writeFile(f, content)
         //writeFileSync(f, content)
-        logger.debug(' - FileWriter written : ' + f)
+        logger.trace(' - FileWriter written : ' + f)
     }
 
     mkdirs(dir) {
-        logger.debug(`FileWriter.mkdirs, dir = ${dir}`)
+        logger.trace(`FileWriter.mkdirs, dir = ${dir}`)
         try {
             mkdirSync(dir, { recursive: true })
         }
