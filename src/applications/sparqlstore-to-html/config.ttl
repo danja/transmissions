@@ -47,4 +47,7 @@
     :a2 :field "temp" .
     :b2 :string ".html" .
 
-
+:recordRendering a :ConfigSet ;
+    :dataBlock "currentItem" ;
+    :templateFilename "layouts/base/templates/record-rendering.njk" ;
+    :endpointSettings "endpoint.json" .

@@ -18,8 +18,9 @@ class SPARQLUpdate extends Processor {
         const endpoint = await this.getUpdateEndpoint(message)
         logger.trace(`SPARQLUpdate.process endpoint = ${endpoint}`)
 
+        const dir = this.getProperty(ns.trn.targetPath, message.rootDir)
         const template = await this.env.getTemplate(
-            message.rootDir,
+            dir,
             await this.getProperty(ns.trn.templateFilename)
         )
         logger.trace(`SPARQLUpdate.process template = ${template}`)

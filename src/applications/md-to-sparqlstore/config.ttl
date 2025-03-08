@@ -19,7 +19,7 @@
 
 :sparqlUpdate a :ConfigSet ;
     :dataBlock "contentBlocks" ;
-    :templateFilename "templates/update-article.njk" ;
+    :templateFilename "layouts/base/templates/update-article.njk" ;
     :endpointSettings "endpoint.json" .
 
 
