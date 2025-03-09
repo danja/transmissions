@@ -19,8 +19,7 @@
 ##################################################################
 
 :sparqlstore-to-html a :Transmission ;
- #   :pipe (:p10 :p20 :p30  :p40 :SM1 :DE  :p50 :p70 :p80 ) .
- :pipe (:p10 :p20 :p30  :p40 :p50 :p70 :p80 :p90 :p100 :SM :DE :p110) .
+   :pipe (:p10 :p20 :p30 :p40 :p50 :p60 :p70 :p80 :p90 :p100) .
 
 :p10 a :SPARQLSelect ;
      :settings :sparqlSelect .
@@ -37,17 +36,16 @@
 :p50 a :Templater ;
     :settings :articleContentTemplate .
 
-:p70 a :Templater ;
+:p60 a :Templater ;
     :settings :articlePageTemplate .
 
-:p80 a :StringOps ;
+:p70 a :StringOps ;
   :settings :filenameConstructor .
 
-:p90 a :StringOps ;
+:p80 a :StringOps ;
   :settings :filenameExtension .
 
-:p100 a :FileWriter .
+:p90 a :FileWriter .
 
-# record the publication
-:p110 a :SPARQLUpdate ;
+:p100 a :SPARQLUpdate ;
      :settings :recordRendering .
