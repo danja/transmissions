@@ -13,30 +13,30 @@ class SPARQLUpdate extends Processor {
     }
 
     async process(message) {
-        logger.trace(`\nSPARQLUpdate.process`)
+        logger.debug(`\nSPARQLUpdate.process`)
 
         const endpoint = await this.getUpdateEndpoint(message)
-        logger.trace(`SPARQLUpdate.process endpoint = ${endpoint}`)
+        logger.debug(`SPARQLUpdate.process endpoint = ${endpoint}`)
 
         const dir = this.getProperty(ns.trn.targetPath, message.rootDir)
         const template = await this.env.getTemplate(
             dir,
             await this.getProperty(ns.trn.templateFilename)
         )
-        logger.trace(`SPARQLUpdate.process template = ${template}`)
+        logger.debug(`SPARQLUpdate.process template = ${template}`)
 
         const now = new Date().toISOString()
 
         const updateID = crypto.randomUUID()
 
-        //logger.trace(`renderString(template = ${template}
+        //logger.debug(`renderString(template = ${template}
         //  updateData = ${updateData})`)
         const dataField = super.getProperty(ns.trn.dataBlock)
         const updateData = message[dataField]
 
         const update = nunjucks.renderString(template, updateData)
 
-        logger.trace(update)
+        logger.debug(update)
 
         //   process.exit()
         try {

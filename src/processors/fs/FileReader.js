@@ -15,7 +15,7 @@ class FileReader extends Processor {
     async process(message) {
         logger.trace(`FileReader.process, done=${message.done}`)
 
-        if (message.done) return this.emit('message', message)
+        if (message.done) return
 
         let filePath
 
