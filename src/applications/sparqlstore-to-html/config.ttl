@@ -17,11 +17,13 @@
 
 :prepArticle a :ConfigSet  ;
     :remove "queryResults" ;
-    :rename (:pa1 :pa2)  .
+    :rename (:pa1 :pa2 :pa3)  .
         :pa1   :pre    "currentItem.title.value" ;
               :post "contentBlocks.title"  .
         :pa2   :pre    "currentItem.content.value" ;
               :post  "contentBlocks.content"  .
+        :pa3   :pre    "appRunStart" ;
+              :post  "contentBlocks.published"  .
 
 :mdHTML a :ConfigSet ;
     :outputField "contentBlocks.content" .
