@@ -35,10 +35,10 @@ class FileWriter extends Processor {
      * @param {Object} message - The execution message.
      */
     async process(message) {
-        logger.trace(`\n\nFileWriter.process, message.done = ${message.done}`)
-        logger.trace(`FileWriter.process, count = ${message.eachCount}`)
+        logger.debug(`\n\nFileWriter.process, message.done = ${message.done}`)
+        logger.debug(`FileWriter.process, count = ${message.eachCount}`)
         if (message.done) { // TODO fix this bloody thing
-            logger.trace(`\n\nFileWriter.process, message.done = ${message.done} SKIPPING!!`)
+            logger.debug(`\n\nFileWriter.process, message.done = ${message.done} SKIPPING!!`)
             return
         }
 
@@ -68,12 +68,12 @@ class FileWriter extends Processor {
             filePath = path.join(message.targetPath || message.dataDir, filePath)
         }
 
-        logger.trace(`Filewriter, filepath = ${filePath}`)
+        logger.debug(`Filewriter, filepath = ${filePath}`)
         const dirName = dirname(filePath)
-        logger.trace("Filewriter, dirName = " + dirName)
+        logger.debug("Filewriter, dirName = " + dirName)
 
         var content = message.content // TODO generalise, see above
-        logger.trace("Filewriter, content = " + content)
+        logger.debug("Filewriter, content = " + content)
 
         this.mkdirs(dirName) // sync - see below
         await this.doWrite(filePath, content, message)
@@ -81,8 +81,8 @@ class FileWriter extends Processor {
     }
 
     async doWrite(f, content, message) {
-        logger.trace(`FileWriter.doWrite, file = ${f}`)
-        logger.trace(`typeof content = ${typeof content}`)
+        logger.debug(`FileWriter.doWrite, file = ${f}`)
+        logger.debug(`typeof content = ${typeof content}`)
         if (typeof content != 'string') {
             content = JSON.stringify(content)
         }
@@ -90,11 +90,11 @@ class FileWriter extends Processor {
         // maybe stat first, check validity - the intended target dir was blocked by a of the same name
         await writeFile(f, content)
         //writeFileSync(f, content)
-        logger.trace(' - FileWriter written : ' + f)
+        logger.debug(' - FileWriter written : ' + f)
     }
 
     mkdirs(dir) {
-        logger.trace(`FileWriter.mkdirs, dir = ${dir}`)
+        logger.debug(`FileWriter.mkdirs, dir = ${dir}`)
         try {
             mkdirSync(dir, { recursive: true })
         }

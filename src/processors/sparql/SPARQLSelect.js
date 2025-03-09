@@ -17,8 +17,9 @@ class SPARQLSelect extends Processor {
         }
 
         const endpoint = this.env.getQueryEndpoint()
+        const dir = this.getProperty(ns.trn.targetPath, message.rootDir)
         const template = await this.env.getTemplate(
-            message.rootDir,
+            dir,
             await this.getProperty(ns.trn.templateFilename)
         )
 

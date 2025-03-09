@@ -9,7 +9,7 @@
 
 
 :sparqlSelect a :ConfigSet ;
-    :templateFilename "templates/select-articles.njk" ;
+    :templateFilename "layouts/base/templates//select-articles.njk" ;
     :endpointSettings "endpoint.json" .
 
 :resultIterator a :ConfigSet ;

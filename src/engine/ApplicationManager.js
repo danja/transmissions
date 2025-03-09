@@ -83,7 +83,7 @@ class ApplicationManager {
 
         // Modify the input message in place
         _.merge(message, contextMessage)
-
+        message.appRunStart = (new Date()).toISOString()
         logger.trace('**************** Message with merged context:', message)
 
         /*
