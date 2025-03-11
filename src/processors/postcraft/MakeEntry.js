@@ -40,8 +40,11 @@ class MakeEntry extends Processor {
 
   getEntryURI(rel, slug) {
     const baseURI = super.getProperty(ns.trn.baseURI)
+    logger.trace(`baseURI = ${baseURI}`)
+    //  process.exit()
     //  const id = crypto.randomUUID()
-    return path.join(baseURI, rel, slug)
+    //  return path.join(baseURI, rel, slug)
+    return baseURI + '/' + rel + '/' + slug
   }
 
   getCreator() {

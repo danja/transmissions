@@ -33,7 +33,11 @@ class SessionEnvironment {
     }
 
     getUpdateEndpoint() {
-        return this.endpoints.find(e => e.type === 'update')
+        // logger.trace(`this.endpoints = ${this.endpoints}`)
+        const ep = this.endpoints.find(e => e.type === 'update')
+        // logger.log(`update endpoint = ${ep}`)
+        // logger.reveal(ep)
+        return ep
     }
 
     async getTemplate(dir, templateFilename) {

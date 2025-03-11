@@ -13,48 +13,44 @@ class SPARQLUpdate extends Processor {
     }
 
     async process(message) {
-        logger.trace(`\nSPARQLUpdate.process`)
+        logger.debug(`\nSPARQLUpdate.process`)
 
         const endpoint = await this.getUpdateEndpoint(message)
-        logger.trace(`SPARQLUpdate.process endpoint = ${endpoint}`)
+        logger.debug(`SPARQLUpdate.process endpoint = ${endpoint}`)
 
         const dir = this.getProperty(ns.trn.targetPath, message.rootDir)
         const template = await this.env.getTemplate(
             dir,
             await this.getProperty(ns.trn.templateFilename)
         )
-        logger.trace(`SPARQLUpdate.process template = ${template}`)
+        logger.debug(`\nSPARQLUpdate.process template = ${template}`)
 
         const now = new Date().toISOString()
 
         const updateID = crypto.randomUUID()
 
-        //logger.trace(`renderString(template = ${template}
-        //  updateData = ${updateData})`)
         const dataField = super.getProperty(ns.trn.dataBlock)
         const updateData = message[dataField]
 
         const update = nunjucks.renderString(template, updateData)
 
-        logger.trace(update)
-
+        logger.debug(`dataField = ${dataField}`)
+        logger.debug(`updateData = `)
+        //   logger.reveal(updateData)
+        logger.debug(`update = ${update}`)
         //   process.exit()
-        try {
-            const response = await axios.post(endpoint.url, update, {
-                headers: await this.makeHeaders(endpoint)
-            })
+        const response = await axios.post(endpoint.url, update, {
+            headers: await this.makeHeaders(endpoint)
+        })
 
-            message.updateStatus = response.status === 200 ? 'success' : 'error'
-            message.updateResponse = response.data
-
+        // https://axios-http.com/docs/res_schema
+        if (response.status === 200 || response.status === 204) {
+            message.updateStatus = 'success'
             return this.emit('message', message)
-        } catch (error) {
-            logger.error(`SPARQL update error on sourcePath : ${message.contentBlocks.sourcePath}`)
-            //   logger.error('SPARQL update error:', error)
-            //  logger.reveal(message)
-            // logger.log(update)
-            throw error
         }
+        logger.debug(`SPARQLUpdate error, response : ${response.status} ${response.statusText}
+            ${response.headers}`)
+        //    logger.reveal(response)
     }
 
     async getUpdateEndpoint(message) {

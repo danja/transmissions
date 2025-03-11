@@ -9,7 +9,7 @@
 
 
 :sparqlSelect a :ConfigSet ;
-    :templateFilename "layouts/base/templates//select-articles.njk" ;
+    :templateFilename "layouts/base/templates/select-articles.njk" ;
     :endpointSettings "endpoint.json" .
 
 :resultIterator a :ConfigSet ;
@@ -17,13 +17,17 @@
 
 :prepArticle a :ConfigSet  ;
     :remove "queryResults" ;
-    :rename (:pa1 :pa2 :pa3)  .
-        :pa1   :pre    "currentItem.title.value" ;
+    :rename (:c1 :c2 :c3 :u1)  .
+        # for content
+        :c1   :pre    "currentIem.title.value" ;
               :post "contentBlocks.title"  .
-        :pa2   :pre    "currentItem.content.value" ;
+        :c2   :pre    "currentItem.content.value" ;
               :post  "contentBlocks.content"  .
-        :pa3   :pre    "appRunStart" ;
+        :c3   :pre    "appRunStart" ;
               :post  "contentBlocks.published"  .
+        # for SPARQL update
+        :u1     :pre    "currentItem.article.value" ;
+                :post   "contentBlocks.uri"  .
 
 :mdHTML a :ConfigSet ;
     :outputField "contentBlocks.content" .
@@ -50,6 +54,7 @@
     :b2 :string ".html" .
 
 :recordRendering a :ConfigSet ;
-    :dataBlock "currentItem" ;
+    :dataBlock "contentBlocks" ;
     :templateFilename "layouts/base/templates/record-rendering.njk" ;
     :endpointSettings "endpoint.json" .
+
