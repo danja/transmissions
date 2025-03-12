@@ -13,17 +13,20 @@ class SPARQLUpdate extends Processor {
     }
 
     async process(message) {
-        logger.trace(`\nSPARQLUpdate.process`)
+        logger.debug(`\nSPARQLUpdate.process`)
 
         const endpoint = await this.getUpdateEndpoint(message)
-        logger.trace(`SPARQLUpdate.process endpoint = ${endpoint}`)
+        //    const endpoint = this.env.getQueryEndpoint()
+
+
+        logger.debug(`SPARQLUpdate.process endpoint = ${endpoint}`)
 
         const dir = this.getProperty(ns.trn.targetPath, message.rootDir)
         const template = await this.env.getTemplate(
             dir,
             await this.getProperty(ns.trn.templateFilename)
         )
-        logger.trace(`\nSPARQLUpdate.process template = ${template}`)
+        logger.debug(`\nSPARQLUpdate.process template = ${template}`)
 
         const now = new Date().toISOString()
 
@@ -34,10 +37,10 @@ class SPARQLUpdate extends Processor {
 
         const update = nunjucks.renderString(template, updateData)
 
-        logger.trace(`dataField = ${dataField}`)
-        logger.trace(`updateData = `)
+        logger.debug(`dataField = ${dataField}`)
+        logger.debug(`updateData = `)
         //   logger.reveal(updateData)
-        logger.trace(`update = ${update}`)
+        logger.debug(`update = ${update}`)
         //   process.exit()
         const response = await axios.post(endpoint.url, update, {
             headers: await this.makeHeaders(endpoint)
@@ -48,18 +51,20 @@ class SPARQLUpdate extends Processor {
             message.updateStatus = 'success'
             return this.emit('message', message)
         }
-        logger.trace(`SPARQLUpdate error, response : ${response.status} ${response.statusText}
+        logger.debug(`SPARQLUpdate error, response : ${response.status} ${response.statusText}
             ${response.headers}`)
         //    logger.reveal(response)
     }
 
+
     async getUpdateEndpoint(message) {
-        // TODO maybe check message & config too?
         if (!this.env.endpoints) {
-            await this.env.loadEndpoints(message.rootDir)
+            const dir = this.getProperty(ns.trn.targetPath, message.rootDir)
+            await this.env.loadEndpoints(dir)
         }
         return this.env.getUpdateEndpoint()
     }
+
 
     async makeHeaders(endpoint) {
         return {

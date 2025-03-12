@@ -22,7 +22,7 @@
    :pipe (:p10 :p20 :p30 :p40 :p50 :p55 :p60 :p70 :p80 :p90 :p100) .
 
 :p10 a :SPARQLSelect ;
-     :settings :sparqlSelect .
+     :settings :selectArticles .
 
 :p20 a :ForEach ;
     :settings :resultIterator .

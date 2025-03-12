@@ -7,10 +7,10 @@
 
 @prefix : <http://purl.org/stuff/transmissions/> .
 
-
-:sparqlSelect a :ConfigSet ;
-    :templateFilename "layouts/base/templates/select-articles.njk" ;
-    :endpointSettings "endpoint.json" .
+# #:todo needs sensible/test defaults
+:selectArticles a :ConfigSet ;
+    :templateFilename "system/sparql-templates/select-articles.njk" ;
+    :endpointSettings "system/endpoints.json" .
 
 :resultIterator a :ConfigSet ;
   :forEach "queryResults.results.bindings" .

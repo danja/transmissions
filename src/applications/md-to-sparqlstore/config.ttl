@@ -17,6 +17,7 @@
     :creatorName "Danny" ;
     :creatorURI <http://danny.ayers.name/me> .
 
+# need sensible/test defaults
 :storeArticle a :ConfigSet ;
     :dataBlock "contentBlocks" ;
     :templateFilename "layouts/base/templates/store-article.njk" ;
