@@ -35,6 +35,11 @@
 :articleContentTemplate a :ConfigSet ;
     :templateFilename "templates/article-content.njk" .
 
+:articleHTML a :ConfigSet ;
+    :dataBlock "contentBlocks" ;
+    :templateFilename "system/sparql-templates/save-html-chunk.njk" ;
+    :endpointSettings "system/endpoints.json" .
+
 :articlePageTemplate a :ConfigSet ;
     :templateFilename "templates/article-page.njk" .
 

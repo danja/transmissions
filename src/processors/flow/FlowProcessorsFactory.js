@@ -7,6 +7,7 @@ import DeadEnd from '../flow/DeadEnd.js'
 import Halt from '../flow/Halt.js'
 import Unfork from '../flow/Unfork.js'
 import Fork from '../flow/Fork.js'
+import Accumulate from '../flow/Accumulate.js'
 
 class FlowProcessorsFactory {
     static createProcessor(type, config) {
@@ -32,6 +33,9 @@ class FlowProcessorsFactory {
         }
         if (type.equals(ns.trn.Unfork)) {
             return new Unfork(config)
+        }
+        if (type.equals(ns.trn.Accumulate)) {
+            return new Accumulate(config)
         }
         return false
     }

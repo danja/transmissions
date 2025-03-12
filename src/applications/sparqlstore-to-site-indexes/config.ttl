@@ -1,0 +1,32 @@
+# src/applications/example-application/config.ttl
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+@prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances
+
+:recentArticles a :ConfigSet ;
+    :templateFilename "system/sparql-templates/recent-articles.njk" ;
+    :endpointSettings "system/endpoints.json" .
+
+:htmlIndex a :ConfigSet ;
+    :templateFilename "templates/index-html.njk" .
+
+:htmlFilepath a :ConfigSet ;
+  :asPath true ;
+  :targetField "destinationFile" ;
+  :values (:ip1 :ip2 :ip3) .
+  :ip1 :field "targetPath" .
+  :ip2 :string "public" .
+  :ip3 :field "index.html" .
+
+:atomIndex a :ConfigSet ;
+    :templateFilename "templates/index-atom.njk" .
+
+:indexPath a :ConfigSet ;
+  :asPath true ;
+  :targetField "destinationFile" ;
+  :values (:ip1 :ip2 :ip3) .
+  :ip1 :field "targetPath" .
+  :ip2 :string "public" .
+  :ip3 :field "index.html" .

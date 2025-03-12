@@ -39,8 +39,8 @@ class ForEach extends Processor {
             clonedMessage.eachCounter = this.eachCounter++
             this.emit('message', clonedMessage)
         }
-        //   message.done = true
-        // this.emit('message', message)
+        message.done = true
+        this.emit('message', message)
         logger.debug('ForEach: Finished processing all items')
     }
 }
