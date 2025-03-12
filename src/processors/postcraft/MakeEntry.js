@@ -84,10 +84,10 @@ class MakeEntry extends Processor {
   }
 
   extractDates(message) {
-    const now = (new Date()).toISOString().split('.')[0]
+    const now = (new Date()).toISOString()
     // TODO make note - FileReader gives date object
-    const created = message.meta.created.toISOString().split('.')[0]
-    const modified = message.meta.updated
+    const created = message.meta.created.toISOString()
+    const modified = message.meta.modified.toISOString()
     const dates = {
       read: now,
       created: created,
