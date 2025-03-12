@@ -19,7 +19,7 @@
     :remove "queryResults" ;
     :rename (:c1 :c2 :c3 :u1)  .
         # for content
-        :c1   :pre    "currentIem.title.value" ;
+        :c1   :pre    "currentItem.title.value" ;
               :post "contentBlocks.title"  .
         :c2   :pre    "currentItem.content.value" ;
               :post  "contentBlocks.content"  .
