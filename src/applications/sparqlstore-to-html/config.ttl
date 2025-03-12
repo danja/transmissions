@@ -41,10 +41,11 @@
 :filenameConstructor a :ConfigSet ;
   :asPath true ;
   :targetField "temp" ;
-  :values (:a1 :b1 :c1) .
-  :a1 :field "targetPath" .
-  :b1 :field "currentItem.relPath.value" .
-  :c1 :field "currentItem.slug.value" .
+  :values (:fn1 :fn2 :fn3 :fn4) .
+  :fn1 :field "targetPath" .
+  :fn2 :string "public" .
+  :fn3 :field "currentItem.relPath.value" .
+  :fn4 :field "currentItem.slug.value" .
 
 :filenameExtension a :ConfigSet ;
     :asPath false ;
@@ -55,6 +56,6 @@
 
 :recordRendering a :ConfigSet ;
     :dataBlock "contentBlocks" ;
-    :templateFilename "layouts/base/templates/record-rendering.njk" ;
-    :endpointSettings "endpoint.json" .
+    :templateFilename "system/sparql-templates/record-rendering.njk" ;
+    :endpointSettings "system/endpoints.json" .
 

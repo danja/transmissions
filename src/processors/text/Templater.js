@@ -50,7 +50,7 @@ class Templater extends Processor {
         var templateFilename = await this.getProperty(ns.trn.templateFilename)
 
         if (templateFilename) {
-            //       logger.debug(`\nTemplater.process, templateFilename = ${templateFilename}`)
+            //       logger.trace(`\nTemplater.process, templateFilename = ${templateFilename}`)
 
             // TODO tidy this up (move out?)
             // Extract path and filename from templateFilename
@@ -63,15 +63,16 @@ class Templater extends Processor {
             }
 
             logger.trace('\nTemplater, templatePath = ' + templatePath)
-            logger.debug('Templater, filename = ' + filename)
-            logger.debug(`\nTemplater.process, templateFilename = ${templateFilename}`)
+            logger.trace('Templater, filename = ' + filename)
+            logger.trace(`\nTemplater.process, templateFilename = ${templateFilename}`)
 
             // Configure Nunjucks with the template path
             nunjucks.configure(templatePath, { autoescape: false })
 
-            //   logger.debug(`content PRE = ${message.content}`)
+            //   logger.trace(`content PRE = ${message.content}`)
             // Render the template file
             try {
+                // message.content = nunjucks.render(templateFilename, message.contentBlocks)
                 message.content = nunjucks.render(filename, message.contentBlocks)
             } catch (err) {
                 logger.error(`\nTemplater.process, error rendering template: ${err}`)

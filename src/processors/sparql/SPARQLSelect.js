@@ -11,12 +11,17 @@ class SPARQLSelect extends Processor {
         this.env = new SessionEnvironment(this)
     }
 
-    async process(message) {
+    async getQueryEndpoint(message) {
         if (!this.env.endpoints) {
-            await this.env.loadEndpoints(message.rootDir)
+            const dir = this.getProperty(ns.trn.targetPath, message.rootDir)
+            await this.env.loadEndpoints(dir)
         }
+        return this.env.getQueryEndpoint()
+    }
 
-        const endpoint = this.env.getQueryEndpoint()
+    async process(message) {
+
+        const endpoint = await this.getQueryEndpoint(message)
         const dir = this.getProperty(ns.trn.targetPath, message.rootDir)
         const template = await this.env.getTemplate(
             dir,

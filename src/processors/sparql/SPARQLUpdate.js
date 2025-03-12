@@ -13,20 +13,20 @@ class SPARQLUpdate extends Processor {
     }
 
     async process(message) {
-        logger.debug(`\nSPARQLUpdate.process`)
+        logger.trace(`\nSPARQLUpdate.process`)
 
         const endpoint = await this.getUpdateEndpoint(message)
         //    const endpoint = this.env.getQueryEndpoint()
 
 
-        logger.debug(`SPARQLUpdate.process endpoint = ${endpoint}`)
+        logger.trace(`SPARQLUpdate.process endpoint = ${endpoint}`)
 
         const dir = this.getProperty(ns.trn.targetPath, message.rootDir)
         const template = await this.env.getTemplate(
             dir,
             await this.getProperty(ns.trn.templateFilename)
         )
-        logger.debug(`\nSPARQLUpdate.process template = ${template}`)
+        logger.trace(`\nSPARQLUpdate.process template = ${template}`)
 
         const now = new Date().toISOString()
 
@@ -37,10 +37,10 @@ class SPARQLUpdate extends Processor {
 
         const update = nunjucks.renderString(template, updateData)
 
-        logger.debug(`dataField = ${dataField}`)
-        logger.debug(`updateData = `)
+        logger.trace(`dataField = ${dataField}`)
+        logger.trace(`updateData = `)
         //   logger.reveal(updateData)
-        logger.debug(`update = ${update}`)
+        logger.trace(`update = ${update}`)
         //   process.exit()
         const response = await axios.post(endpoint.url, update, {
             headers: await this.makeHeaders(endpoint)
@@ -51,7 +51,7 @@ class SPARQLUpdate extends Processor {
             message.updateStatus = 'success'
             return this.emit('message', message)
         }
-        logger.debug(`SPARQLUpdate error, response : ${response.status} ${response.statusText}
+        logger.trace(`SPARQLUpdate error, response : ${response.status} ${response.statusText}
             ${response.headers}`)
         //    logger.reveal(response)
     }
