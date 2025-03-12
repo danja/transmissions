@@ -7,7 +7,7 @@
 
 
 :dirWalker a :ConfigSet ;
-  :sourceDir "TODO sensible default" .
+  :sourceDir "." .
 
 :readerSet a :ConfigSet ;
     :metaField "meta" .
@@ -17,9 +17,9 @@
     :creatorName "Danny" ;
     :creatorURI <http://danny.ayers.name/me> .
 
-:sparqlUpdate a :ConfigSet ;
+:storeArticle a :ConfigSet ;
     :dataBlock "contentBlocks" ;
-    :templateFilename "layouts/base/templates/update-article.njk" ;
+    :templateFilename "layouts/base/templates/store-article.njk" ;
     :endpointSettings "endpoint.json" .
 
 

@@ -27,4 +27,4 @@
      :settings :entryDefaults .
 
 :p40 a :SPARQLUpdate ;
-     :settings :sparqlUpdate .
+     :settings :storeArticle .
