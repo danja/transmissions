@@ -18,10 +18,10 @@ class Accumulate extends Processor {
       */
     async process(message) {
         logger.debug(`\n\nAccumulate.process, done = ${message.done}`)
-        logger.log(`this.config.accumulator = ${this.config.accumulator}`)
+        logger.log(`this.config.whiteboard.accumulator = ${this.config.whiteboard.accumulator}`)
         if (message.done) {
             const targetField = super.getProperty(ns.trn.targetField, "accumulate")
-            message[targetField] = this.config.accumulator
+            message[targetField] = this.config.whiteboard.accumulator
             return this.emit('message', message)
         }
 
@@ -31,19 +31,24 @@ class Accumulate extends Processor {
 
         switch (accumulatorType) {
             case 'array':
-                if (this.config.accumulator) {
-                    this.config.accumulator.push(sourceValue)
+                if (this.config.whiteboard.accumulator) {
+                    this.config.whiteboard.accumulator.push(sourceValue)
                 } else {
-                    this.config.accumulator = []
+                    this.config.whiteboard.accumulator = []
                 }
                 break
 
             default:
-                if (this.config.accumulator) {
+                if (this.config.whiteboard.accumulator) {
                     // TODO check if this is the same as push()
-                    this.config.accumulator = this.config.accumulator + sourceValue
+                    logger.debug(`this.config.whiteboard.accumulator =
+                        ${this.config.whiteboard.accumulator}
+                        sourceValue = ${sourceValue}`)
+                    logger.debug(`append string`)
+                    this.config.whiteboard.accumulator = this.config.whiteboard.accumulator + sourceValue
                 } else {
-                    this.config.accumulator = ''
+                    logger.debug(`create string`)
+                    this.config.whiteboard.accumulator = ''
                 }
 
         }
