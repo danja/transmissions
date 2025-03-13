@@ -8,6 +8,7 @@ import logger from '../utils/Logger.js'
 
 import AbstractProcessorFactory from "./AbstractProcessorFactory.js"
 import Transmission from '../model/Transmission.js'
+import Whiteboard from '../model/Whiteboard.js'
 
 class TransmissionBuilder {
   constructor(moduleLoader, app) {
@@ -55,7 +56,9 @@ class TransmissionBuilder {
     transmission.id = transmissionID.value
     transmission.app = this.app
 
-    processorsConfig.whiteboard = {}
+    transmission.whiteboard = new Whiteboard()
+
+    //  processorsConfig.whiteboard = {}
     transmission.label = ''
 
     const transPoi = grapoi({ dataset: transmissionConfig, term: transmissionID })
@@ -95,7 +98,7 @@ class TransmissionBuilder {
         if (processorType && this.isTransmissionReference(transmissionConfig, processorType)) {
           const nestedTransmission = await this.constructTransmission(
             transmissionConfig,
-            processorType,
+            processorType, // is used?
             processorsConfig
           )
           transmission.register(node.value, nestedTransmission)
@@ -108,7 +111,7 @@ class TransmissionBuilder {
             processor.settingsNode = settingsNode
           }
           processor.transmission = transmission
-
+          processor.whiteboard = transmission.whiteboard // feels redundant...
           transmission.register(node.value, processor)
         }
       }

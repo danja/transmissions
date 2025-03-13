@@ -7,3 +7,6 @@
 
 :forEachTarget a :ConfigSet ;
     :forEach  "foreach" .
+
+:accumulator a :ConfigSet ;
+    :label "test" .

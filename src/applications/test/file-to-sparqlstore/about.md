@@ -1,5 +1,7 @@
 `src/applications/test/file-to-sparqlstore/about.md`
 
+NOT IN INTEGRATION TESTS
+
 # Application 'file-to-sparqlstore'
 
 **Checks interaction with SPARQL store**

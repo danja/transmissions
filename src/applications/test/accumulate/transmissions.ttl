@@ -17,9 +17,10 @@
 ##################################################################
 
 :accumulator_test a :Transmission ;
-    :pipe (:at10 :at20 :SM) .
+    :pipe (:at10 :at20 :UF :SM) .
 
 :at10 a :ForEach ;
     :settings :forEachTarget .
 
-:at20 a :Accumulate .
+:at20 a :Accumulate ;
+    :settings :accumulator .

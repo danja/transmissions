@@ -22,18 +22,18 @@
 
 :settingsMulti a :ConfigSet ;
     :me ":settingsMulti" ;
-    :name "Bob" ;
+    :name "BobTEST_PASSED" ;
     :uri <dirB> .
 
 :settingsLists a :ConfigSet ;
   # :loglevel 'debug' ; TODO #:todo MOVE TO TRANSMISSION
     :me ":settingsLists" ;
     :aSetting  "settingA1", "settingA2", "settingA3" ;
-    :bSetting  "settingB1", "settingB2", "settingB3" .
+    :bSetting  "settingB1", "settingB2TEST_PASSED", "settingB3" .
 
 :settingsKeyValue a :ConfigSet ;
     :me ":settingsKeyValue" ;
     :setters (:setter1)  . # consider using blank nodes
         :setter1    :key    "myKey" ;
-                    :value  "myValue"  .
+                    :value  "myValueTEST_PASSED"  .
 

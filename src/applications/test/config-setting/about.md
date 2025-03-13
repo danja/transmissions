@@ -6,5 +6,5 @@
 cd ~/hyperdata/transmissions # my local path
 ./trans -v config-setting
 
-./trans config-setting --verbose --message '{"theSettingProperty": "the setting value from message" }'
+./trans config-setting --message '{"theSettingProperty": "the setting value from message TEST_PASSEDTEST_PASSEDTEST_PASSED" }'
 ```

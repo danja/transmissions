@@ -21,8 +21,8 @@ describe('', function () {
     commands.forEach((test, index) => {
         const { command, label, description, requiredMatchCount } = test
 
-        it(`run ${label} app & check results, command : ${index + 1}`, (done) => {
-            console.log(`Running : ${description}`) // Print description to console
+        it(`run ${label} app & check results`, (done) => {
+            console.log(`${description}`) // Print description to console
             exec(command, async (error, stdout, stderr) => {
                 if (error) {
                     console.error('Exec error:', error)

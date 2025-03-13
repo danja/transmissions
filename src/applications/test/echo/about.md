@@ -8,7 +8,7 @@ src/applications/system/echo
 
 ```sh
 cd ~/hyperdata/transmissions # my local path
-./trans system/echo -m '{"message":"Hello, World!"}'
+./trans system/echo -m '{"message":"Hello, World, TEST_PASSED!"}'
 ```
 
 ## Description

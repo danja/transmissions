@@ -1,26 +1,68 @@
 [
     {
+        "command": "./trans accumulate -m '{\"foreach\": [\"first TEST_PASSED\", \"second TEST_PASSED\", \"third TEST_PASSED\"]}'",
+        "label": "stringops",
+        "description": "test accumulate application",
+        "requiredMatchCount": 6
+    },
+    {
+        "command": "./trans config-setting  --message '{\"theSettingProperty\": \"the setting value from message TEST_PASSED\"}'",
+        "label": "config-setting_message",
+        "description": "test config-setting application, setting in message",
+        "requiredMatchCount": 1
+    },
+    {
+        "command": "./trans config-setting",
+        "label": "config-setting_config",
+        "description": "test config-setting application, setting in config.ttl",
+        "requiredMatchCount": 3
+    },
+    {
+        "command": "./trans config-settings",
+        "label": "config-settings",
+        "description": "test config-settings application",
+        "requiredMatchCount": 3
+    },
+    {
         "command": "./trans config-setting-manifest tests/applications/config-setting-manifest",
         "label": "config-setting-manifest",
-        "description": "Test the config-setting-manifest application",
+        "description": "test config-setting-manifest application",
         "requiredMatchCount": 1
     },
     {
         "command": "./trans dirwalker",
         "label": "dirwalker",
-        "description": "Test the dirwalker application",
+        "description": "test dirwalker application",
         "requiredMatchCount": 2
+    },
+    {
+        "command": "./trans system/echo -m '{\"message\":\"Hello, World, TEST_PASSED!\"}'",
+        "label": "echo",
+        "description": "test echo application",
+        "requiredMatchCount": 1
+    },
+    {
+        "command": "./trans filereader",
+        "label": "filereader",
+        "description": "test filereader application",
+        "requiredMatchCount": 1
     },
     {
         "command": "./trans foreach -m '{\"foreach\": [\"first TEST_PASSED\", \"second TEST_PASSED\", \"third TEST_PASSED\"]}'",
         "label": "foreach",
-        "description": "Test the foreach application",
+        "description": "test foreach application",
         "requiredMatchCount": 3
+    },
+    {
+        "command": "./trans restructure",
+        "label": "restructurer",
+        "description": "test restructure application",
+        "requiredMatchCount": 1
     },
     {
         "command": "./trans -v stringops -m '{\"fields\": {\"fieldB\" : \"TEST\",\"fieldC\":\"_PASSED\"}}'",
         "label": "stringops",
-        "description": "Test the stringops application",
+        "description": "test stringops application",
         "requiredMatchCount": 4
     }
 ]
