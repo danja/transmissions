@@ -17,24 +17,31 @@
 ##################################################################
 
 :sparqlstore-to-indexes a :Transmission ;
-  :pipe (:p10  :SM) .
+  :pipe (:p10 :p20 :p30 :SM) .
  #  :pipe (:p10 :p20 :p30 :p40 :p50 :p60 :p70 :p80 :p90) .
 
+# most recent 5 (+pinned?)
 :p10 a :SPARQLSelect ;
      :settings :recentArticles .
 
+:p20 a :ForEach ;
+    :settings :indexResultIterator .
+
+:p30 a :Restructure ;
+    :settings :prepRecents .
+
 # HTML
-:p20 a :Templater ;
+:p100 a :Templater ;
      :settings :htmlIndex .
 
-:p30 a :StringOps ;
+:p110 a :StringOps ;
   :settings :htmlFilepath .
 
-:p40 a :FileWriter .
+:p120 a :FileWriter .
 
 # Atom
-:p50 a :Templater ;
+:p200 a :Templater ;
      :settings :atomIndex .
 
-:p60 a :StringOps ;
+:p210 a :StringOps ;
   :settings :atomFilepath .

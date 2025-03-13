@@ -9,6 +9,23 @@
     :templateFilename "system/sparql-templates/recent-articles.njk" ;
     :endpointSettings "system/endpoints.json" .
 
+:resultIterator a :ConfigSet ;
+  :forEach "queryResults.results.bindings" .
+
+:pppppppppppprepRecents a :ConfigSet  ;
+    :remove "queryResults" ;
+    :rename (:c1 :c2 :c3 :u1)  .
+        # for content
+        :c1   :pre    "currentItem.title.value" ;
+              :post "contentBlocks.title"  .
+        :c2   :pre    "currentItem.content.value" ;
+              :post  "contentBlocks.content"  .
+        :c3   :pre    "appRunStart" ;
+              :post  "contentBlocks.published"  .
+        # for SPARQL update
+        :u1     :pre    "currentItem.article.value" ;
+                :post   "contentBlocks.uri"  .
+
 :htmlIndex a :ConfigSet ;
     :templateFilename "templates/index-html.njk" .
 

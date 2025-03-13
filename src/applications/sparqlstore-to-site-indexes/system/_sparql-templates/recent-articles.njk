@@ -9,9 +9,10 @@ SELECT DISTINCT * WHERE {
     :relPath ?relPath ;
     :slug ?slug ;
     schema:headline ?title ;
-#    schema:dateModified ?modified ;
+    schema:dateModified ?modified ;
     schema:articleBody ?content ;
-    schema:creator ?creator .
+    schema:creator ?creator ;
+  :htmlContent ?html .
 
   ?creator a schema:Person ;
     schema:name ?creatorName .
@@ -19,7 +20,5 @@ SELECT DISTINCT * WHERE {
 OPTIONAL {
     ?article schema:datePublished ?published ;
 }
-#   FILTER(?published >= "{{startDate}}"^^xsd:dateTime)
 }
-ORDER BY DESC(?published)
-LIMIT 3
+ORDER BY DESC(?modified)

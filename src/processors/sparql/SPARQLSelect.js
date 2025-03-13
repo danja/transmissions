@@ -34,7 +34,8 @@ class SPARQLSelect extends Processor {
         }
 
         const query = nunjucks.renderString(template, queryData)
-
+        logger.debug(`query = ${query}`)
+        logger.debug(`endpoint.url = ${endpoint.url}`)
         try {
             const response = await axios.post(endpoint.url, query, {
                 headers: {
@@ -44,6 +45,8 @@ class SPARQLSelect extends Processor {
                 }
             })
 
+            logger.debug(`response.data = ${response.data}`)
+            //  logger.reveal(response.data)
             message.queryResults = response.data
             return this.emit('message', message)
         } catch (error) {
