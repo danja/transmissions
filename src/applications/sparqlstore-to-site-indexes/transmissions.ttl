@@ -16,15 +16,9 @@
 :UF a :Unfork . # collapses all pipes but one                    #
 ##################################################################
 
-1. query store for most 5 recent entries
-2. template as `index.html`
-3. save to site root dir
-4. template as `atom.xml`
-5. save to site root dir
-
-:sparqlstore-to-html a :Transmission ;
-   :pipe (:p10 :p20 :SM) .
-  # :pipe (:p10 :p20 :p30 :p40 :p50 :p60 :p70 :p80 :p90) .
+:sparqlstore-to-indexes a :Transmission ;
+  :pipe (:p10  :SM) .
+ #  :pipe (:p10 :p20 :p30 :p40 :p50 :p60 :p70 :p80 :p90) .
 
 :p10 a :SPARQLSelect ;
      :settings :recentArticles .

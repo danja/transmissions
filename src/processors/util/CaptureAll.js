@@ -1,3 +1,4 @@
+/// `USE flow/Accumulate.js instead`
 import logger from '../../utils/Logger.js'
 import Processor from '../../model/Processor.js'
 
@@ -17,6 +18,7 @@ class CaptureAll extends Processor {
 
     async process(message) {
         logger.debug(`CaptureAll at [${message.tags}] ${this.getTag()}, done=${message.done}`)
+        throw Error(`USE flow/Accumulate.js instead`)
         this.config.whiteboard.push(message)
         return this.emit('message', message)
     }
