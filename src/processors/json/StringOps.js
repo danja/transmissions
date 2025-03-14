@@ -21,8 +21,8 @@ class StringOps extends Processor {
   :d :string ".html" .
   */
     async process(message) {
-        logger.trace(`\n\nStringOps.process`)
-        logger.trace(this)
+        logger.debug(`\n\nStringOps.process`)
+        logger.debug(this)
         if (message.done) return
 
         // TODO refactor
@@ -36,8 +36,8 @@ class StringOps extends Processor {
         var segment
         for (var i = 0; i < segments.length; i++) {
             segment = segments[i]
-            logger.log(`property = ${segment}`)
-            logger.reveal(segment)
+            //   logger.log(`property = ${segment}`)
+            //     logger.reveal(segment)
 
             let stringSegment = rdf.grapoi({ dataset: dataset, term: segment })
             let stringProperty = stringSegment.out(ns.trn.string)
@@ -56,12 +56,20 @@ class StringOps extends Processor {
             logger.log(`ààààààààààààààààààààààààààààààààààààààà`)
 
             logger.log(`fieldProperty = ${fieldProperty.value}`)
-            logger.reveal(message)
+            //  logger.reveal(message)
 
             if (fieldProperty && fieldProperty.value) {
                 let fieldValue = JSONUtils.get(message, fieldProperty.value)
+
                 if (asPath) {
-                    combined = path.join(combined, fieldValue)
+                    try {
+                        combined = path.join(combined, fieldValue)
+                    } catch (e) {
+                        logger.error(`fieldProperty = ${fieldProperty.value}`)
+                        logger.error(`fieldValue = ${fieldValue}`)
+                        logger.error(`combined = ${combined}`)
+                        process.exit(1)
+                    }
                     continue
                 }
                 if ('string' != typeof fieldValue) {
@@ -71,10 +79,10 @@ class StringOps extends Processor {
                 continue
             }
         }
-        //logger.trace(`combined = ${combined}`)
+        //logger.debug(`combined = ${combined}`)
 
         const targetField = await this.getProperty(ns.trn.targetField)
-        //logger.trace(`targetField = ${targetField}`)
+        //logger.debug(`targetField = ${targetField}`)
         JSONUtils.set(message, targetField, combined)
 
         return this.emit('message', message)
