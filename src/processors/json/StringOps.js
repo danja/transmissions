@@ -21,7 +21,8 @@ class StringOps extends Processor {
   :d :string ".html" .
   */
     async process(message) {
-        logger.debug(`\n\nStringOps.process`)
+        logger.trace(`\n\nStringOps.process`)
+        logger.trace(this)
         if (message.done) return
 
         // TODO refactor
@@ -35,8 +36,8 @@ class StringOps extends Processor {
         var segment
         for (var i = 0; i < segments.length; i++) {
             segment = segments[i]
-            // logger.log(`property = ${segment}`)
-            //   logger.reveal(segment)
+            logger.log(`property = ${segment}`)
+            logger.reveal(segment)
 
             let stringSegment = rdf.grapoi({ dataset: dataset, term: segment })
             let stringProperty = stringSegment.out(ns.trn.string)
@@ -52,7 +53,10 @@ class StringOps extends Processor {
 
             let fieldSegment = rdf.grapoi({ dataset: dataset, term: segment })
             let fieldProperty = fieldSegment.out(ns.trn.field)
-            // logger.log(`fieldProperty = ${fieldProperty.value}`)
+            logger.log(`ààààààààààààààààààààààààààààààààààààààà`)
+
+            logger.log(`fieldProperty = ${fieldProperty.value}`)
+            logger.reveal(message)
 
             if (fieldProperty && fieldProperty.value) {
                 let fieldValue = JSONUtils.get(message, fieldProperty.value)
@@ -67,10 +71,10 @@ class StringOps extends Processor {
                 continue
             }
         }
-        //logger.debug(`combined = ${combined}`)
+        //logger.trace(`combined = ${combined}`)
 
         const targetField = await this.getProperty(ns.trn.targetField)
-        //logger.debug(`targetField = ${targetField}`)
+        //logger.trace(`targetField = ${targetField}`)
         JSONUtils.set(message, targetField, combined)
 
         return this.emit('message', message)

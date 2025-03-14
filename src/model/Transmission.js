@@ -53,6 +53,12 @@ class Transmission {
     connector.connect(this.processors)
   }
 
+  getFirstNode() { // used for nested transmissions
+    logger.log(this)
+    logger.log(this.processors[0])
+    return this.processors[0]
+  }
+
   // is used?
   handleError(error) {
     logger.error(`Error in transmission ${this.id}:`, error)

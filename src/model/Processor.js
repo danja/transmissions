@@ -24,7 +24,7 @@ class Processor extends EventEmitter {
 
     // TODO move to ProcessorSettings
     getValues(property, fallback) {
-        logger.trace(`Processor.getValues,
+        logger.debug(`Processor.getValues,
             looking for ${property}`)
 
         var value = this.propertyInMessage(property)
@@ -34,13 +34,13 @@ class Processor extends EventEmitter {
 
         this.settee.settingsNode = this.settingsNode
         const values = this.settee.getValues(property, fallback)
-        logger.trace(`Processor.getValues values = ${values}`)
+        logger.debug(`Processor.getValues values = ${values}`)
         return values
     }
 
     // TODO merge with above (& move to ProcessorSettings)
     getProperty(property, fallback = undefined) {
-        logger.trace(`\nProcessor.getProperty looking for ${property}`)
+        logger.debug(`\nProcessor.getProperty looking for ${property}`)
 
         // first check if the property is in the message
         var value = this.propertyInMessage(property)
@@ -48,10 +48,10 @@ class Processor extends EventEmitter {
             return value
         }
 
-        if (this.settingsNode) logger.trace(`this.settingsNode = ${this.settingsNode.value}`)
+        if (this.settingsNode) logger.debug(`this.settingsNode = ${this.settingsNode.value}`)
         this.settee.settingsNode = this.settingsNode ////////////////////////////////////////////
         value = this.settee.getValue(property, fallback)
-        logger.trace(`Processor.getProperty, value = ${value}`)
+        logger.debug(`Processor.getProperty, value = ${value}`)
         return value
     }
 
@@ -59,7 +59,7 @@ class Processor extends EventEmitter {
     propertyInMessage(property) {
         const shortName = ns.getShortname(property)
         if (this.message && this.message[shortName]) {
-            logger.trace(`Found in message: ${this.message[shortName]}`)
+            logger.debug(`Found in message: ${this.message[shortName]}`)
             return this.message[shortName]
         }
         return undefined

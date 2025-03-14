@@ -18,24 +18,26 @@ class Accumulate extends Processor {
       * @param {Object} message - The message object.
       */
     async process(message) {
-        logger.debug(`\n\nAccumulate.process, done = ${message.done}`)
+        logger.trace(`\n\nAccumulate.process, done = ${message.done}`)
 
         const label = super.getProperty(ns.trn.label, 'test')
         const type = super.getProperty(ns.trn.accumulatorType, 'string')
         const acc = this.whiteboard.getAccumulator(label, type)
 
-        logger.trace(`acc = ${acc}`)
+
 
         if (message.done) {
             const targetField = super.getProperty(ns.trn.targetField, "accumulate")
+            logger.trace(`targetField = ${targetField}`)
             message[targetField] = acc
+            logger.trace(`full acc = ${acc}`)
             return this.emit('message', message)
         }
 
         const sourceField = super.getProperty(ns.trn.sourceField, "currentItem")
         const sourceValue = JSONUtils.get(message, sourceField)
         this.whiteboard.accumulate(label, sourceValue)
-
+        logger.trace(`partial acc = ${acc}`)
         return this.emit('message', message)
     }
 }

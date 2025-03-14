@@ -9,6 +9,8 @@
 # Utility Processors : insert into pipe for debugging            #
 #                                                                #
 :SM a :ShowMessage . # verbose report, continues pipe            #
+:SM1 a :ShowMessage . # verbose report, continues pipe            #
+:SM2 a :ShowMessage . # verbose report, continues pipe            #
 :SC a :ShowConfig . # verbose report, continues pipe             #
 :DE a :DeadEnd . # ends the current pipe quietly                 #
 :H  a :Halt . # kills everything                                 #
@@ -17,7 +19,7 @@
 ##################################################################
 
 :sparqlstore-to-indexes a :Transmission ;
-  :pipe (:p10 :p20 :p30 :SM) .
+  :pipe (:p10 :p20 :p30 :p40 :p100 :p110 :p120) .
  #  :pipe (:p10 :p20 :p30 :p40 :p50 :p60 :p70 :p80 :p90) .
 
 # most recent 5 (+pinned?)
@@ -30,7 +32,9 @@
 :p30 a :Restructure ;
     :settings :prepRecents .
 
-# HTML
+:p40 a :Accumulate ;
+    :settings :accumulator .
+
 :p100 a :Templater ;
      :settings :htmlIndex .
 

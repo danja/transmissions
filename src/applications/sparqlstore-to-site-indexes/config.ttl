@@ -26,8 +26,8 @@
         :u1     :pre    "currentItem.article.value" ;
                 :post   "contentBlocks.uri"  .
 
-:htmlIndex a :ConfigSet ;
-    :templateFilename "templates/index-html.njk" .
+#:htmlIndex a :ConfigSet ;
+ #   :templateFilename "templates/index-html.njk" .
 
 :htmlFilepath a :ConfigSet ;
   :asPath true ;
