@@ -6,6 +6,7 @@ import { dirname, join } from 'node:path'
 import { mkdir, mkdirSync } from 'node:fs'
 import logger from '../../utils/Logger.js'
 import Processor from '../../model/Processor.js'
+import JSONUtils from '../../utils/JSONUtils.js'
 /**
  * FileWriter class that extends Processor
  * Write data to a file.
@@ -72,7 +73,11 @@ class FileWriter extends Processor {
         const dirName = dirname(filePath)
         logger.trace("Filewriter, dirName = " + dirName)
 
-        var content = message.content // TODO generalise, see above
+        const contentPath = super.getProperty(ns.trn.contentField, 'content')
+        //  var content = message.content // generalise, see above
+        logger.log(`contentPath = ${contentPath}`)
+        const content = JSONUtils.get(message, contentPath)
+        logger.log(`content = ${content}`)
         logger.trace("Filewriter, content = " + content)
 
         this.mkdirs(dirName) // sync - see below

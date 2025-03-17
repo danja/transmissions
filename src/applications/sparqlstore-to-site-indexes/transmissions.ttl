@@ -7,10 +7,10 @@
 
 ##################################################################
 # Utility Processors : insert into pipe for debugging            #
-#                                                                #
+# watch out for duplicates, they cause loops                     #
 :SM a :ShowMessage . # verbose report, continues pipe            #
-:SM1 a :ShowMessage . # verbose report, continues pipe            #
-:SM2 a :ShowMessage . # verbose report, continues pipe            #
+:SM1 a :ShowMessage . # verbose report, continues pipe           #
+:SM2 a :ShowMessage . # verbose report, continues pipe           #
 :SC a :ShowConfig . # verbose report, continues pipe             #
 :DE a :DeadEnd . # ends the current pipe quietly                 #
 :H  a :Halt . # kills everything                                 #
@@ -19,7 +19,10 @@
 ##################################################################
 
 :sparqlstore-to-indexes a :Transmission ;
-  :pipe (:p10 :p20 :p30 :p40 :p100 :p110 :p120) .
+  :pipe ( :p10 :p20 :p30 :p40 :p50
+          :p100 :p110 :p120
+          :p200 :p210 :p220 :SM2) .
+
  #  :pipe (:p10 :p20 :p30 :p40 :p50 :p60 :p70 :p80 :p90) .
 
 # most recent 5 (+pinned?)
@@ -35,13 +38,17 @@
 :p40 a :Accumulate ;
     :settings :accumulator .
 
+:p50 a :Unfork .
+
 :p100 a :Templater ;
      :settings :htmlIndex .
 
+# builds the path
 :p110 a :StringOps ;
   :settings :htmlFilepath .
 
-:p120 a :FileWriter .
+:p120 a :FileWriter ;
+  :settings :contentLocationA .
 
 # Atom
 :p200 a :Templater ;
@@ -49,3 +56,6 @@
 
 :p210 a :StringOps ;
   :settings :atomFilepath .
+
+:p220 a :FileWriter ;
+  :settings :contentLocationB . # reuse

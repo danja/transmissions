@@ -26,8 +26,11 @@
         :u1     :pre    "currentItem.article.value" ;
                 :post   "contentBlocks.uri"  .
 
-#:htmlIndex a :ConfigSet ;
- #   :templateFilename "templates/index-html.njk" .
+:htmlIndex a :ConfigSet ;
+   :templateFilename "templates/index-html.njk" .
+
+#:contentField  a :ConfigSet ;
+ #   :target "accumulator" .
 
 :htmlFilepath a :ConfigSet ;
   :asPath true ;
@@ -35,15 +38,15 @@
   :values (:ip1 :ip2 :ip3) .
   :ip1 :field "targetPath" .
   :ip2 :string "public" .
-  :ip3 :field "index.html" .
+  :ip3 :string "atom.xml" .
 
 :atomIndex a :ConfigSet ;
     :templateFilename "templates/index-atom.njk" .
 
-:indexPath a :ConfigSet ;
+:atomFilepath a :ConfigSet ;
   :asPath true ;
   :targetField "destinationFile" ;
   :values (:ip1 :ip2 :ip3) .
   :ip1 :field "targetPath" .
   :ip2 :string "public" .
-  :ip3 :field "index.html" .
+  :ip3 :field "atom.xml" .
