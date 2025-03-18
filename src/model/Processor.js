@@ -22,39 +22,24 @@ class Processor extends EventEmitter {
         return path.join(this.app.rootDir, relativePath)
     }
 
-    // TODO move to ProcessorSettings
+    // TODO tidy up
+
     getValues(property, fallback) {
-        logger.debug(`Processor.getValues,
-            looking for ${property}`)
-
-        var value = this.propertyInMessage(property)
-        if (value) {
-            return [value]
-        }
-
-        this.settee.settingsNode = this.settingsNode
-        const values = this.settee.getValues(property, fallback)
-        logger.debug(`Processor.getValues values = ${values}`)
-        return values
+        return this.settee.getValues(this.settingsNode, property, fallback)
     }
 
-    // TODO merge with above (& move to ProcessorSettings)
+
     getProperty(property, fallback = undefined) {
         logger.debug(`\nProcessor.getProperty looking for ${property}`)
-
         // first check if the property is in the message
         var value = this.propertyInMessage(property)
         if (value) {
+            logger.debug(`property found in message : ${value}`)
             return value
         }
 
-        if (this.settingsNode) logger.debug(`this.settingsNode = ${this.settingsNode.value}`)
-        this.settee.settingsNode = this.settingsNode ////////////////////////////////////////////
-        value = this.settee.getValue(property, fallback)
-        logger.debug(`Processor.getProperty, value = ${value}`)
-        return value
+        return this.settee.getProperty(this.settingsNode, property, fallback)
     }
-
 
     propertyInMessage(property) {
         const shortName = ns.getShortname(property)

@@ -14,9 +14,9 @@ class Restructure extends Processor {
     }
 
     async getRenames(config, term) {
-        // logger.log(`***** config = ${config}`)
-        //logger.log(`***** settings = ${settings}`)
-        //logger.log(`***** term = ${term}`)
+        logger.log(`***** config = ${config}`)
+        //   logger.log(`***** settings = ${settings}`)
+        logger.log(`***** term = ${term}`)
 
         const renamesRDF = GrapoiHelpers.listToArray(config, this.settingsNode, term)
         const dataset = this.config
@@ -41,15 +41,16 @@ class Restructure extends Processor {
 
         } catch (err) {
             logger.error("Restructure processor error: " + err.message)
-            logger.reveal(message)
+            ////////////////    logger.reveal(message)
             throw err
         }
     }
 
     async doRemoves(message) {
-        logger.trace('Restructure.doRemoves')
+        //   logger.trace('Restructure.doRemoves')
         const removes = super.getValues(ns.trn.remove)
-        // logger.reveal(removes)
+        //  logger.reveal(removes)
+
         var path
         for (let i = 0; i < removes.length; i++) {
             //  path = JSON.parse(removes[i])
@@ -63,7 +64,7 @@ class Restructure extends Processor {
     }
 
     async doRenames(message) {
-        logger.trace('Restructure.doRenames')
+        logger.debug('Restructure.doRenames')
         // Extract mappings array from config
         var renames
         if (this.config.simples) {
@@ -72,8 +73,8 @@ class Restructure extends Processor {
             renames = await this.getRenames(this.config, ns.trn.rename)
         }
 
-        //  logger.log('Renames :')
-        // logger.reveal(renames)
+        logger.log('Renames :')
+        logger.reveal(renames)
 
         // Initialize JsonRestructurer with mappings
         this.restructurer = new JsonRestructurer({

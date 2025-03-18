@@ -53,9 +53,9 @@ class StringOps extends Processor {
 
             let fieldSegment = rdf.grapoi({ dataset: dataset, term: segment })
             let fieldProperty = fieldSegment.out(ns.trn.field)
-            logger.log(`ààààààààààààààààààààààààààààààààààààààà`)
+            //     logger.log(`ààààààààààààààààààààààààààààààààààààààà`)
 
-            logger.log(`fieldProperty = ${fieldProperty.value}`)
+            logger.trace(`fieldProperty = ${fieldProperty.value}`)
             //  logger.reveal(message)
 
             if (fieldProperty && fieldProperty.value) {

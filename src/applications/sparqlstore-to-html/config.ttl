@@ -33,7 +33,7 @@
     :outputField "contentBlocks.content" .
 
 :articleContentTemplate a :ConfigSet ;
-    :templateFilename "templates/article-content.njk" .
+    :templateFilename "system/sparql-templates/article-content.njk" .
 
 :articleHTML a :ConfigSet ;
     :dataBlock "contentBlocks" ;
