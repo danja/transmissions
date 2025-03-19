@@ -6,6 +6,7 @@ import GrapoiHelpers from '../../utils/GrapoiHelpers.js'
 import JSONUtils from '../../utils/JSONUtils.js'
 import Processor from '../../model/Processor.js'
 
+// TODO FOR FUCKS SAKE REFACTOR
 class StringOps extends Processor {
 
     constructor(config) {
@@ -55,7 +56,7 @@ class StringOps extends Processor {
             let fieldProperty = fieldSegment.out(ns.trn.field)
             //     logger.log(`ààààààààààààààààààààààààààààààààààààààà`)
 
-            logger.trace(`fieldProperty = ${fieldProperty.value}`)
+            logger.debug(`fieldProperty = ${fieldProperty.value}`)
             //  logger.reveal(message)
 
             if (fieldProperty && fieldProperty.value) {
