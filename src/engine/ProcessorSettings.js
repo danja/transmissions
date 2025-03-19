@@ -15,7 +15,7 @@ class ProcessorSettings {
 
         this.settingsNode = settingsNode
         //    if (this.settingsNode) logger.debug(`this.settingsNode = ${this.settingsNode.value}`)
-
+        //   this.settee.settingsNode = settingsNode
 
         const values = this.getValues(settingsNode, property)
         if (values.length == 0) {
@@ -54,7 +54,8 @@ class ProcessorSettings {
     valuesFromDataset(dataset, property) {
         if (!dataset) return undefined
         const ptr = grapoi({ dataset, term: this.settingsNode })
-        logger.debug(`valuesFromDataset, this.settingsNode = ${this.settingsNode.value}`)
+        logger.debug(`ProcessorSettings.valuesFromDataset,  typeof this.settingsNode = ${typeof this.settingsNode}`)
+        //   logger.debug(`valuesFromDataset, this.settingsNode = ${this.settingsNode.value}`)
         logger.debug(`valuesFromDataset, property = ${property}`)
         //     logger.reveal(ptr)
 

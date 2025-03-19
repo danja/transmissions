@@ -76,6 +76,8 @@ class Templater extends Processor {
                 message.content = nunjucks.render(filename, message.contentBlocks)
             } catch (err) {
                 logger.error(`\nTemplater.process, error rendering template: ${err}`)
+                logger.error(`templatePath = ${templatePath}`)
+                logger.error(`templateFilename = ${templateFilename}`)
                 return
             }
             //

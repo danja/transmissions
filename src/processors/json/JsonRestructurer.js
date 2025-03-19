@@ -24,7 +24,12 @@ class JsonRestructurer {
             logger.trace('JsonRestructurer, reduced = ' + reduced)
             return reduced
         } catch (e) {
-            logger.warn(`Warning: JsonRestructurer.getValueByPath, path ${path} not found`)
+            logger.warn(`Warning: JsonRestructurer.getValueByPath, path ${path} not found,
+                ${e}`)
+            logger.reveal(obj)
+            process.exit(1)
+            //const err = new Error().stack
+
             return undefined
         }
     }

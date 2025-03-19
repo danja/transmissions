@@ -37,7 +37,8 @@ class Processor extends EventEmitter {
             logger.debug(`property found in message : ${value}`)
             return value
         }
-
+        logger.debug(`\nProcessor.getProperty this.settingsNode = ${this.settingsNode}`)
+        logger.debug(`\nProcessor.getProperty    typeof this.settingsNode = ${typeof this.settingsNode}`)
         return this.settee.getProperty(this.settingsNode, property, fallback)
     }
 

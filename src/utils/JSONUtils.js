@@ -37,7 +37,13 @@ const a = {
         return obj
     }
 
+    // TODO this isn't right.
     static remove(obj, path) {
+        logger.trace(`>>>>>>>>>>>>>>>>>>>>>>>>>> PATH = ${path}`)
+        if (!path.includes('.')) {
+            obj[path] = null
+            return obj
+        }
         JSONUtils.find(obj, path, false, true)
         return obj
     }
@@ -87,6 +93,7 @@ const a = {
 
             if (result && typeof result === 'object' && arrayKey in result && Array.isArray(result[arrayKey])) {
                 if (remove) {
+                    logger.debug(`JSONUtils.find, removing arrayKey ${arrayKey}`)
                     // Remove the element from the array
                     result[arrayKey].splice(index, 1)
                     return true // Indicate success
@@ -106,6 +113,7 @@ const a = {
             if (result && typeof result === 'object' && lastKey in result) {
                 if (remove) {
                     // Remove the key from the object
+                    logger.debug(`JSONUtils.find, removing lastKey ${lastKey}`)
                     delete result[lastKey]
                     return true // Indicate success
                 } else {

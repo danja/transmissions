@@ -13,7 +13,8 @@
     :endpointSettings "system/endpoints.json" .
 
 :resultIterator a :ConfigSet ;
-  :forEach "queryResults.results.bindings" .
+  :forEach "queryResults.results.bindings" ;
+  :remove "queryResults" .
 
 :prepArticle a :ConfigSet  ;
     :remove "queryResults" ;
