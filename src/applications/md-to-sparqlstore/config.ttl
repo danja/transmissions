@@ -13,8 +13,8 @@
     :metaField "meta" .
 
 :entryExtras a :ConfigSet ;
-    :pathMap "." ; # sourcePath goes to this
-    :baseURI <http://danny.ayers.name/blog> ;
+    :relMap "blog" ; # relPath goes to this
+    :baseURI <http://danny.ayers.name> ;
     :creatorName "Danny" ;
     :creatorURI <http://danny.ayers.name/me> .
 

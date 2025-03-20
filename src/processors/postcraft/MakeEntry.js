@@ -26,7 +26,9 @@ class MakeEntry extends Processor {
     logger.debug(`message.meta.filepath = ${message.meta.filepath}`)
     logger.debug(`slug = ${slug}`)
 
-    const uri = this.getEntryURI(rel, slug)
+    var uri = this.getEntryURI(rel, slug)
+    const relMap = super.getProperty(ns.trn.relMap, '')
+    uri = uri.replace(message.sourceDir, relMap)
     const title = this.extractTitle(message)
 
     message.contentBlocks = {
