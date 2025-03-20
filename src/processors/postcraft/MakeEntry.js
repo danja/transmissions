@@ -36,6 +36,7 @@ class MakeEntry extends Processor {
       sourcePath: message.meta.filepath,
       mediaType: message.meta.mediaType,
       relPath: rel,
+      relMap: relMap,
       title: title,
       content: message.content,
       slug: slug,
