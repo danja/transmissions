@@ -17,10 +17,14 @@ class MakeEntry extends Processor {
       return this.emit('message', message)
     }
     const dates = this.extractDates(message)
-    const { rel, slug } = this.extractRelSlug(message.sourceDir, dates, message.filePath)
 
-    logger.trace(`message.meta.filepath = ${message.meta.filepath}`)
-    logger.trace(`slug = ${slug}`)
+    // rootDir
+    const basePath = message.targetPath
+    // ? message.targetPath : message.sourceDir
+    const { rel, slug } = this.extractRelSlug(basePath, dates, message.filePath)
+
+    logger.debug(`message.meta.filepath = ${message.meta.filepath}`)
+    logger.debug(`slug = ${slug}`)
 
     const uri = this.getEntryURI(rel, slug)
     const title = this.extractTitle(message)
@@ -43,7 +47,7 @@ class MakeEntry extends Processor {
 
   getEntryURI(rel, slug) {
     const baseURI = super.getProperty(ns.trn.baseURI)
-    logger.trace(`baseURI = ${baseURI}`)
+    logger.debug(`baseURI = ${baseURI}`)
     //  process.exit()
     //  const id = crypto.randomUUID()
     //  return path.join(baseURI, rel, slug)
@@ -58,28 +62,36 @@ class MakeEntry extends Processor {
   }
 
   // filePath - appPath
+  // (message.sourceDir, dates, message.filePath)
   extractRelSlug(basePath, dates, filePath) {
-    logger.trace(`\nMakeEntry.extractRelSlug`)
-    logger.trace(`basePath = ${basePath}`)
+    logger.debug(`\n\nMakeEntry.extractRelSlug`)
+    logger.debug(`basePath = ${basePath}`)
+    logger.debug(`filePath = ${filePath}`)
+
     const baseLength = basePath.split(path.sep).length
     const split = filePath.split(path.sep)
     const splitLength = split.length
-    logger.trace(`split = ${split}`)
+
+    logger.debug(`split = ${split}`)
+
     var slug = split.slice(splitLength - 1).toString()
     if (slug.includes('.')) {
       slug = slug.substr(0, slug.lastIndexOf('.'))
     }
-    logger.trace(`slug = ${slug}`)
-    logger.trace(`baseLength = ${baseLength}, splitLength = ${splitLength}`)
+
+    logger.debug(`slug = ${slug}`)
+    logger.debug(`baseLength = ${baseLength}, splitLength = ${splitLength}`)
+
     const dirs = split.slice(baseLength, splitLength - 1)
-    logger.trace(`dirs = ${dirs}`)
+
+    logger.debug(`dirs = ${dirs}`)
 
     /* TODO make this an option
     const day = dates.created.split('T')[0]
     const rel = path.join(dirs.join(path.sep), day)
     */
     const rel = dirs.join(path.sep)
-    logger.trace(`rel = ${rel}`)
+    logger.debug(`rel = ${rel}`)
     return { rel, slug }
   }
 

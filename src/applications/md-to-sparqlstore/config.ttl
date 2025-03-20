@@ -6,13 +6,14 @@
 @prefix : <http://purl.org/stuff/transmissions/> .
 
 
-:dirWalker a :ConfigSet ;
-  :sourceDir "." .
+:dirWalker a :ConfigSet .
+ # :sourceDir "." .
 
 :readerSet a :ConfigSet ;
     :metaField "meta" .
 
-:entryDefaults a :ConfigSet ;
+:entryExtras a :ConfigSet ;
+    :pathMap "." ; # sourcePath goes to this
     :baseURI <http://danny.ayers.name/blog> ;
     :creatorName "Danny" ;
     :creatorURI <http://danny.ayers.name/me> .

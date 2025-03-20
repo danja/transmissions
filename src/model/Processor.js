@@ -30,22 +30,22 @@ class Processor extends EventEmitter {
 
 
     getProperty(property, fallback = undefined) {
-        logger.debug(`\nProcessor.getProperty looking for ${property}`)
+        logger.trace(`\nProcessor.getProperty looking for ${property}`)
         // first check if the property is in the message
         var value = this.propertyInMessage(property)
         if (value) {
-            logger.debug(`property found in message : ${value}`)
+            logger.trace(`property found in message : ${value}`)
             return value
         }
-        logger.debug(`\nProcessor.getProperty this.settingsNode = ${this.settingsNode}`)
-        logger.debug(`\nProcessor.getProperty    typeof this.settingsNode = ${typeof this.settingsNode}`)
+        logger.trace(`\nProcessor.getProperty this.settingsNode = ${this.settingsNode}`)
+        logger.trace(`\nProcessor.getProperty    typeof this.settingsNode = ${typeof this.settingsNode}`)
         return this.settee.getProperty(this.settingsNode, property, fallback)
     }
 
     propertyInMessage(property) {
         const shortName = ns.getShortname(property)
         if (this.message && this.message[shortName]) {
-            logger.debug(`Found in message: ${this.message[shortName]}`)
+            logger.trace(`Found in message: ${this.message[shortName]}`)
             return this.message[shortName]
         }
         return undefined
