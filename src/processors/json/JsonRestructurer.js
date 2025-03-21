@@ -24,9 +24,12 @@ class JsonRestructurer {
             logger.trace('JsonRestructurer, reduced = ' + reduced)
             return reduced
         } catch (e) {
-            logger.error(`Error: JsonRestructurer.getValueByPath, path ${path} not found,
-                ${e}`)
             logger.reveal(obj)
+            logger.error(`${e},
+                caused by : JsonRestructurer.getValueByPath, path ${path} not found,
+                message above.
+                `)
+
             process.exit(1)
             //const err = new Error().stack
 
