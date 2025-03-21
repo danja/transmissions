@@ -75,10 +75,10 @@ class FileWriter extends Processor {
 
         const contentPath = super.getProperty(ns.trn.contentField, 'content')
         //  var content = message.content // generalise, see above
-        logger.log(`contentPath = ${contentPath}`)
+        logger.trace(`Filewriter, contentPath = ${contentPath}`)
         const content = JSONUtils.get(message, contentPath)
-        logger.log(`content = ${content}`)
-        logger.trace("Filewriter, content = " + content)
+        logger.trace(`Filewriter, content = ${content}`)
+
 
         this.mkdirs(dirName) // sync - see below
         await this.doWrite(filePath, content, message)

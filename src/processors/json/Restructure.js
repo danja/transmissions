@@ -18,8 +18,8 @@ class Restructure extends Processor {
 
         //    logger.log(`***** config = ${config}`)
         //   logger.log(`***** settings = ${settings}`)
-        logger.log(`\nRestructure.getRenames`)
-        logger.debug(`this.settingsNode.value = ${this.settingsNode.value}`)
+        //   logger.log(`\nRestructure.getRenames`)
+        logger.trace(`this.settingsNode.value = ${this.settingsNode.value}`)
         ////////////////////////////
 
         //   const renamesRDF = GrapoiHelpers.listToArray(this.config, this.settingsNode, ns.trn.rename)
@@ -27,7 +27,7 @@ class Restructure extends Processor {
 
         logger.trace(JSON.stringify(renamesRDF))
 
-        //   logger.debug(this.app.dataset)
+        //   logger.trace(this.app.dataset)
         var dataset = this.config
         if (this.message.targetPath) {
             dataset = this.app.dataset
@@ -40,7 +40,7 @@ class Restructure extends Processor {
             let poi = rdf.grapoi({ dataset: dataset, term: rename })
             let pre = poi.out(ns.trn.pre).value
             let post = poi.out(ns.trn.post).value
-            logger.debug(`PRE: ${pre}, POST: ${post}`)
+            logger.trace(`PRE: ${pre}, POST: ${post}`)
             renames.push({ "pre": pre, "post": post })
         }
         return renames
@@ -60,7 +60,7 @@ class Restructure extends Processor {
     }
 
     async doRemoves(message) {
-        //   logger.debug('Restructure.doRemoves')
+        //   logger.trace('Restructure.doRemoves')
         const removes = super.getValues(ns.trn.remove)
         //  logger.reveal(removes)
 
@@ -68,7 +68,7 @@ class Restructure extends Processor {
         for (let i = 0; i < removes.length; i++) {
             //  path = JSON.parse(removes[i])
             const path = removes[i]
-            logger.debug(`remove path = ${path}`)
+            logger.trace(`remove path = ${path}`)
             message = JSONUtils.remove(message, path)
         }
         //  logger.reveal(message)
@@ -77,7 +77,7 @@ class Restructure extends Processor {
     }
 
     async doRenames(message) {
-        logger.debug('\n\nRestructure.doRenames')
+        logger.trace('\n\nRestructure.doRenames')
         // Extract mappings array from config
         var renames
         if (this.config.simples) {
@@ -87,8 +87,8 @@ class Restructure extends Processor {
             renames = await this.getRenames()
         }
 
-        logger.log('Renames :')
-        logger.reveal(renames)
+        //     logger.log('Renames :')
+        //   logger.reveal(renames)
 
         // Initialize JsonRestructurer with mappings
         this.restructurer = new JsonRestructurer({
@@ -103,8 +103,8 @@ class Restructure extends Processor {
         const restructured = this.restructurer.restructure(input)
 
         const type = typeof restructured
-        // logger.debug(`typeof restructured = ${type}`) // is object... TODO need different handling for returned arrays?
-        // logger.debug(`restructured = ${restructured}`)
+        // logger.trace(`typeof restructured = ${type}`) // is object... TODO need different handling for returned arrays?
+        // logger.trace(`restructured = ${restructured}`)
         // logger.reveal(restructured)
 
         for (const key of Object.keys(restructured)) {

@@ -4,7 +4,10 @@ Run with :
 
 ```sh
 cd ~/hyperdata/transmissions/ # local path of repo
-./trans test_restructure
+./trans restructure
+
+./trans  restructure src/applications/test/restructure/manifest
+
 ```
 
 #:todo make this into something like processor signature

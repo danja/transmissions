@@ -60,6 +60,12 @@
         "requiredMatchCount": 1
     },
     {
+        "command": "./trans restructure src/applications/test/restructure/manifest",
+        "label": "restructurer+manifest",
+        "description": "test restructure application with manifest",
+        "requiredMatchCount": 2
+    },
+    {
         "command": "./trans -v stringops -m '{\"fields\": {\"fieldB\" : \"TEST\",\"fieldC\":\"_PASSED\"}}'",
         "label": "stringops",
         "description": "test stringops application",
