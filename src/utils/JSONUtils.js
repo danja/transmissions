@@ -39,6 +39,9 @@ const a = {
 
     // TODO this isn't right.
     static remove(obj, path) {
+        if (!path) {
+            return
+        }
         logger.trace(`>>>>>>>>>>>>>>>>>>>>>>>>>> PATH = ${path}`)
         if (!path.includes('.')) {
             obj[path] = null

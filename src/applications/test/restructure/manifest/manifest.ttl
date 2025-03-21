@@ -1,15 +1,16 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix : <http://purl.org/stuff/transmissions/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
 @prefix : <http://purl.org/stuff/transmissions/> .
 
 :reader a :ConfigSet ;
-    :sourceFile "input/input-01.json" ;
-    :mediaType "application/json" .
+   :sourceFile "../data/input/input-01.json" .
 
 :retree a :ConfigSet ;
     :rename (:pp1 :pp2 :pp3) . # consider using blank nodes
-    :pp1   :pre     "content.item.chat_messages" ; # not used
-            :post    "content.channel"  .
+    :pp1   :pre     "content.item.chat_messages" ;
+            :post    "content.TEST_PASSED"  .
     :pp2   :pre     "content.item.uuid" ;
             :post    "content.filename"  .
     :pp3   :pre     "content.item.name" ;
@@ -17,5 +18,4 @@
 
 
 :writer a :ConfigSet ;
-    :destinationFile "output/output-01.json" .
-
+    :destinationFile "../data/output/output-02.json" .

@@ -22,7 +22,7 @@ describe('', function () {
         const { command, label, description, requiredMatchCount } = test
 
         it(`run ${label} app & check results`, (done) => {
-            console.log(`${description}`) // Print description to console
+            console.log(`${description}, "${command}"`) // Print description to console
             exec(command, async (error, stdout, stderr) => {
                 if (error) {
                     console.error('Exec error:', error)
