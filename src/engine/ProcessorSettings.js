@@ -101,18 +101,18 @@ class ProcessorSettings {
         /////////////////////////////////////////////////////////////////////////////////////////////////
         // logger.debug(`settingsNode = ${this.settingsNode.value}`)
 
-        logger.debug(`************ ProcessorSettings.getValues, looking for ${property} in APP dataset`)
+        logger.log(`\n\n   *** ProcessorSettings.getValues, looking for ${property} in APP dataset`)
         var dataset = this.app.dataset
 
-        /*
+
         logger.debug('------------------------------------')
-         logger.reveal(dataset)
+        logger.log(dataset)
         logger.debug('------------------------------------')
-        */
+
 
         var values = this.valuesFromDataset(dataset, property)
         if (values) {
-            logger.debug(`ProcessorSettings.getValues, found in APP dataset (manifest.ttl): ${values}`)
+            logger.debug(`   ProcessorSettings.getValues, found in APP dataset (manifest.ttl): ${values}`)
             return values
         }
 

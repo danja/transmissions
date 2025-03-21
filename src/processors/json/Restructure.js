@@ -28,8 +28,11 @@ class Restructure extends Processor {
         logger.trace(JSON.stringify(renamesRDF))
 
         //   logger.debug(this.app.dataset)
+        var dataset = this.config
+        if (this.message.targetPath) {
+            dataset = this.app.dataset
+        }
 
-        const dataset = this.config
 
         var renames = []
         for (let i = 0; i < renamesRDF.length; i++) {
