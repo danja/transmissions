@@ -50,7 +50,7 @@
   :values (:fn1 :fn2 :fn3 :fn4) .
   :fn1 :field "targetPath" .
   :fn2 :string "public" .
-  :fn3 :field "currentItem.relPath.value" .
+  :fn3 :field "currentItem.relative.value" .
   :fn4 :field "currentItem.slug.value" .
 
 :filenameExtension a :ConfigSet ;

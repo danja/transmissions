@@ -20,7 +20,7 @@
 
 :sparqlstore-to-html a :Transmission ;
    :pipe (:p10 :p20 :p30 :p40 :p50 :p55  :p60 :p70
-          :p80 :p90 :p100) .
+          :p80 :SM :p90 :p100) .
 
 :p10 a :SPARQLSelect ;
      :settings :selectArticles .
@@ -41,6 +41,7 @@
 :p55 a :SPARQLUpdate ;
      :settings :articleHTML .
 
+# make the page
 :p60 a :Templater ;
     :settings :articlePageTemplate .
 
@@ -50,7 +51,8 @@
 :p80 a :StringOps ;
   :settings :filenameExtension .
 
-:p90 a :FileWriter .
+:p90 a :FileWriter ;
+  :settings :htmlField .
 
 :p100 a :SPARQLUpdate ;
      :settings :recordRendering .

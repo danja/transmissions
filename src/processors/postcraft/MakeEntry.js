@@ -5,6 +5,8 @@ import ns from '../../utils/ns.js'
 
 import Processor from '../../model/Processor.js'
 
+// Hacky placeholder!!
+
 class MakeEntry extends Processor {
 
   constructor(config) {
@@ -29,12 +31,16 @@ class MakeEntry extends Processor {
     var uri = this.getEntryURI(rel, slug)
     const relMap = super.getProperty(ns.trn.relMap, '')
     uri = uri.replace(message.sourceDir, relMap)
+
+    const relative = rel.replace(message.sourceDir, relMap)
+
     const title = this.extractTitle(message)
 
     message.contentBlocks = {
       uri: uri,
       sourcePath: message.meta.filepath,
       mediaType: message.meta.mediaType,
+      relative: relative,
       relPath: rel,
       relMap: relMap,
       title: title,
