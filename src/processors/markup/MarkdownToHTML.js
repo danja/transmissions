@@ -14,7 +14,7 @@ class MarkdownToHTML extends Processor {
 
 
     async process(message) {
-        logger.trace(`\n\nMarkdownToHTML.process`)
+        logger.debug(`\n\nMarkdownToHTML.process`)
         if (message.done) return
 
         // logger.reveal(message)
@@ -22,7 +22,7 @@ class MarkdownToHTML extends Processor {
         var input
         if (message.contentBlocks) { // using templating
             input = message.contentBlocks.content
-            logger.trace(`MarkdownToHTML.process, using contentBlocks: ${input}`)
+            logger.debug(`MarkdownToHTML.process, using contentBlocks: ${input}`)
         } else { // default
             input = message.content
         }
@@ -43,7 +43,7 @@ class MarkdownToHTML extends Processor {
         logger.debug(`\nMarkdownToHTML.process, outputField = ${outputFieldPath}`)
         message = JSONUtils.set(message, outputFieldPath, html)
 
-        logger.trace(`message.content = ${message.content}`)
+        logger.debug(`message.content = ${message.content}`)
         return this.emit('message', message)
     }
 }

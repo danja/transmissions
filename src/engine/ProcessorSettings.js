@@ -60,22 +60,25 @@ class ProcessorSettings {
         logger.trace(`valuesFromDataset, property = ${property}`)
         //     logger.reveal(ptr)
 
-        /*
-        var values
-        try {
-            values = ptr.out(property).distinct()
-        } catch (e) {
 
-            return undefined
+
+        // try {
+        const value = ptr.out(property).distinct()
+        if (value.terms.length == 1) {
+            return [ptr.out(property).distinct().value]
         }
-*/
+        //  } catch (e) {
+
+        //       return undefined
+        //}
+
         const values = GrapoiHelpers.listToArray(dataset, this.settingsNode, property)
 
         logger.trace(`property ${property}`)
         logger.trace(`${values.length} values found`)
-        if (values.length == 1) {
-            return ptr.out(property).distinct().value
-        }
+        // if (values.length == 1) {
+        //   return ptr.out(property).distinct().value
+        //}
 
         //    logger.trace(`Values found: ${values.terms.length}`)
 
