@@ -13,12 +13,18 @@ class Restructure extends Processor {
         super(config)
     }
 
-    async getRenames(config, term) {
+
+    async getRenames() {
+
         //    logger.log(`***** config = ${config}`)
         //   logger.log(`***** settings = ${settings}`)
-        logger.log(`Restructure.getRenames term = ${term}`)
+        logger.log(`\nRestructure.getRenames`)
+        logger.debug(`this.settingsNode.value = ${this.settingsNode.value}`)
+        ////////////////////////////
 
-        const renamesRDF = GrapoiHelpers.listToArray(config, this.settingsNode, term)
+        const renamesRDF = GrapoiHelpers.listToArray(this.config, this.settingsNode, ns.trn.rename)
+        //   const renamesRDF = super.getValues(ns.trn.renames)
+        /////////////////////////////
         const dataset = this.config
 
         var renames = []
@@ -27,7 +33,7 @@ class Restructure extends Processor {
             let poi = rdf.grapoi({ dataset: dataset, term: rename })
             let pre = poi.out(ns.trn.pre).value
             let post = poi.out(ns.trn.post).value
-            logger.trace(`PRE: ${pre}, POST: ${post}`)
+            logger.debug(`PRE: ${pre}, POST: ${post}`)
             renames.push({ "pre": pre, "post": post })
         }
         return renames
@@ -47,7 +53,7 @@ class Restructure extends Processor {
     }
 
     async doRemoves(message) {
-        //   logger.trace('Restructure.doRemoves')
+        //   logger.debug('Restructure.doRemoves')
         const removes = super.getValues(ns.trn.remove)
         //  logger.reveal(removes)
 
@@ -70,11 +76,12 @@ class Restructure extends Processor {
         if (this.config.simples) {
             renames = this.config.rename
         } else {
-            renames = await this.getRenames(this.config, ns.trn.rename)
+
+            renames = await this.getRenames()
         }
 
-        //   logger.log('Renames :')
-        // logger.reveal(renames)
+        logger.log('Renames :')
+        logger.reveal(renames)
 
         // Initialize JsonRestructurer with mappings
         this.restructurer = new JsonRestructurer({

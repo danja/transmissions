@@ -48,8 +48,8 @@
 :p110 a :StringOps ;
   :settings :htmlFilepath .
 
-#:p120 a :FileWriter ;
-  :settings :contentLocationA .
+:p120 a :FileWriter ;
+ :settings :contentLocation .
 
 # Atom
 :p200 a :Templater ;
