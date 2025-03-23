@@ -1,6 +1,7 @@
 import log from 'loglevel'
 import fs from 'fs'
 import chalk from 'chalk'
+import ns from './ns.js'
 
 const logger = {}
 
@@ -101,6 +102,17 @@ logger.log = function (msg, level = "info") {
         console.log(`wtf? ${err.message}`)
     }
 
+}
+
+// abbrev URLs in text - dirty version!
+logger.sh = function (rdfString) {
+    const loglevel = logger.getLevel()
+    // logger.setLogLevel('trace')
+    rdfString = rdfString.toString() // to be sure, to be sure
+    Object.entries(ns.prefixMap).forEach(([key, value]) => {
+        rdfString = rdfString.replaceAll(key, chalk.green(value))
+    })
+    logger.log(chalk.magentaBright(rdfString))
 }
 
 // TODO have this return a string

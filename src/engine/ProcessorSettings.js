@@ -59,7 +59,7 @@ class ProcessorSettings {
         //   logger.debug(`valuesFromDataset, this.settingsNode = ${this.settingsNode.value}`)
         logger.debug(`valuesFromDataset, property = ${property}`)
         //     logger.reveal(ptr)
-
+        logger.sh(dataset)
 
 
         // try {
