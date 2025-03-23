@@ -12,10 +12,10 @@ class ProcessorSettings {
 
     // rename...to what?
     getProperty(settingsNode, property, fallback = undefined) {
-        logger.trace(`\nProcessorSettings.getProperty looking for ${property}`)
-
+        logger.debug(`\nProcessorSettings.getProperty looking for ${property}`)
+        logger.debug(`settingsNode = ${settingsNode}`)
         this.settingsNode = settingsNode
-        //    if (this.settingsNode) logger.trace(`this.settingsNode = ${this.settingsNode.value}`)
+        //    if (this.settingsNode) logger.debug(`this.settingsNode = ${this.settingsNode.value}`)
         //   this.settee.settingsNode = settingsNode
 
         const values = this.getValues(settingsNode, property)
@@ -27,14 +27,14 @@ class ProcessorSettings {
         /*
         const value = this.getValue(property, fallback)
 
-        logger.trace(`Processor.getProperty, value = ${value}`)
+        logger.debug(`Processor.getProperty, value = ${value}`)
         return value
         */
     }
 
     /*
     getValues(property, fallback) {
-        logger.trace(`ProcessorSettings.getValues,
+        logger.debug(`ProcessorSettings.getValues,
                 looking for ${property}`)
 
         var value = this.propertyInMessage(property)
@@ -47,7 +47,7 @@ class ProcessorSettings {
         if (!values) {
             values = this.settee.getValues(property, fallback)
         }
-        logger.trace(`Processor.getValues values = ${values}`)
+        logger.debug(`Processor.getValues values = ${values}`)
         return values
     }
         */
@@ -55,77 +55,83 @@ class ProcessorSettings {
     valuesFromDataset(dataset, property) {
         if (!dataset) return undefined
         const ptr = grapoi({ dataset, term: this.settingsNode })
-        logger.trace(`ProcessorSettings.valuesFromDataset,  typeof this.settingsNode = ${typeof this.settingsNode}`)
-        //   logger.trace(`valuesFromDataset, this.settingsNode = ${this.settingsNode.value}`)
-        logger.trace(`valuesFromDataset, property = ${property}`)
+        logger.debug(`ProcessorSettings.valuesFromDataset,  this.settingsNode = ${this.settingsNode.value}`)
+        //   logger.debug(`valuesFromDataset, this.settingsNode = ${this.settingsNode.value}`)
+        logger.debug(`valuesFromDataset, property = ${property}`)
         //     logger.reveal(ptr)
 
 
 
         // try {
-        const value = ptr.out(property).distinct()
-        if (value.terms.length == 1) {
-            return [ptr.out(property).distinct().value]
+        const value1 = ptr.out(property)
+        logger.log(`value1 = ${value1.value}`)
+        logger.log(`TYPPE OF ${typeof value1}`)
+        if (value1 != ns.trn.rename) {
+            return value1.value
+        }
+        if (value1.terms.length == 1) {
+            //   return [value1.value]
         }
         //  } catch (e) {
 
         //       return undefined
         //}
-
         const values = GrapoiHelpers.listToArray(dataset, this.settingsNode, property)
 
-        logger.trace(`property ${property}`)
-        logger.trace(`${values.length} values found`)
+        logger.debug(`property ${property}`)
+        logger.debug(`${values.length} values found`)
         // if (values.length == 1) {
         //   return ptr.out(property).distinct().value
         //}
 
-        //    logger.trace(`Values found: ${values.terms.length}`)
+        //    logger.debug(`Values found: ${values.terms.length}`)
 
         /*
             if (values.terms.length > 0) {
                 const all = values.terms.map(term => term.value)
-                logger.trace(`All values: ${all}`)
+                logger.debug(`All values: ${all}`)
                 return all
             }
     */
-
+        if (values.length == 1) {
+            return values[0]
+        }
         return values
     }
 
     getValues(settingsNode, property, fallback) {
         this.settingsNode = settingsNode
-        logger.trace(`\n\nProcessorSettings.getValues, property = ${property.value}`)
+        logger.debug(`\n\nProcessorSettings.getValues, property = ${property.value}`)
 
         //    if (!this.settingsNode || !this.config) {
         //      return fallback ? [fallback] : []
         // }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////
-        // logger.trace(`settingsNode = ${this.settingsNode.value}`)
+        // logger.debug(`settingsNode = ${this.settingsNode.value}`)
 
-        logger.trace(`\n\n   *** ProcessorSettings.getValues, looking for ${property} in APP dataset`)
+        logger.debug(`\n\n   *** ProcessorSettings.getValues, looking for ${property} in APP dataset`)
         var dataset = this.app.dataset
 
 
-        // logger.trace('------------------------------------')
+        // logger.debug('------------------------------------')
         //logger.log(dataset)
-        // logger.trace('------------------------------------')
+        // logger.debug('------------------------------------')
 
 
         var values = this.valuesFromDataset(dataset, property)
         if (values) {
-            logger.trace(`   ProcessorSettings.getValues, found in APP dataset (manifest.ttl): ${values}`)
+            logger.debug(`   ProcessorSettings.getValues, found in APP dataset (manifest.ttl): ${values}`)
             return values
         }
 
-        logger.trace(`*** ProcessorSettings.getValues, looking for ${property} in CONFIG dataset (config.ttl)`)
+        logger.debug(`*** ProcessorSettings.getValues, looking for ${property} in CONFIG dataset (config.ttl)`)
         dataset = this.config
 
         /*
-        logger.trace('------------------------------------')
+        logger.debug('------------------------------------')
         logger.reveal(dataset)
-        logger.trace('------------------------------------')
+        logger.debug('------------------------------------')
         */
 
         values = this.valuesFromDataset(dataset, property)
@@ -139,7 +145,7 @@ class ProcessorSettings {
     getValue(property, fallback) {
         const values = this.getValues(property, fallback)
 
-        logger.trace(`All values2: ${values}`)
+        logger.debug(`All values2: ${values}`)
         if (values.length == 0) {
             return undefined
         }
