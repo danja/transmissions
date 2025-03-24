@@ -46,7 +46,8 @@ class ForEach extends Processor {
             this.emit('message', clonedMessage)
         }
         message.done = true
-        /////////////////// TODO put back in  this.emit('message', message)
+        /////////////////// TODO put back in
+        this.emit('message', message)
         logger.debug('ForEach: Finished processing all items')
     }
 }

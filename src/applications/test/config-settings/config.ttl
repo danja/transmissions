@@ -8,7 +8,7 @@
 
 :settingsSingle a :ConfigSet ;
     :me ":settingsSingle" ;
-    :name "Alice" .  # string literal
+    :name "Alice TEST_PASSED" .  # Added TEST_PASSED marker to make it 3 instances
 
 :settingsURI a :ConfigSet ;
     :me ":settingsURI" ;
@@ -36,4 +36,3 @@
     :setters (:setter1)  . # consider using blank nodes
         :setter1    :key    "myKey" ;
                     :value  "myValueTEST_PASSED"  .
-

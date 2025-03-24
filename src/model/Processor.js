@@ -23,11 +23,9 @@ class Processor extends EventEmitter {
     }
 
     // TODO tidy up
-
     getValues(property, fallback) {
         return this.settee.getValues(this.settingsNode, property, fallback)
     }
-
 
     getProperty(property, fallback = undefined) {
         logger.trace(`\nProcessor.getProperty looking for ${property}`)
@@ -39,7 +37,20 @@ class Processor extends EventEmitter {
         }
         logger.trace(`\nProcessor.getProperty this.settingsNode = ${this.settingsNode}`)
         logger.trace(`\nProcessor.getProperty    typeof this.settingsNode = ${typeof this.settingsNode}`)
-        return this.settee.getProperty(this.settingsNode, property, fallback)
+
+        // Get values from settings
+        const values = this.settee.getValues(this.settingsNode, property, fallback)
+
+        // If it's a single value, return it directly, otherwise return the array
+        if (values && Array.isArray(values)) {
+            if (values.length === 1) {
+                return values[0]
+            } else if (values.length > 1) {
+                return values
+            }
+        }
+
+        return fallback
     }
 
     propertyInMessage(property) {
@@ -132,8 +143,6 @@ async process(message) {
         }
         this.processing = false
     }
-
-
 
     addTag(message) {
         const tag = this.getTag()

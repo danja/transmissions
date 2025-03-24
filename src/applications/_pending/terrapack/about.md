@@ -9,6 +9,7 @@ cd ~/hyperdata/transmissions # my local dir
 
 ./trans terrapack ./src/applications/terrapack/data
 
+./trans terrapack ./src/applications/terrapack/data
 
 ./trans terrapack path/to/repo
 

@@ -1,1 +1,1 @@
-{"item":{"uuid":"convo1","name":"Name of this convo","created_at":"2024-10-29T17:57:50.229169Z","chat_messages":[{"uuid":"id1","text":"Text one"},{"uuid":"id2","text":"Text two TEST_PASSED"}]}}
+{"channel":[{"uuid":"id1","text":"Text one"},{"uuid":"id2","text":"Text two TEST_PASSED"}],"filename":"convo1","title":"Name of this convo"}

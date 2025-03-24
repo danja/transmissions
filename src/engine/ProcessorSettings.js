@@ -55,74 +55,68 @@ class ProcessorSettings {
     valuesFromDataset(dataset, property) {
         if (!dataset) return undefined
         const ptr = grapoi({ dataset, term: this.settingsNode })
-        logger.debug(`ProcessorSettings.valuesFromDataset,  this.settingsNode = ${this.settingsNode.value}`)
+        //      logger.debug(`ProcessorSettings.valuesFromDataset,  this.settingsNode = ${this.settingsNode.value}`)
         //   logger.debug(`valuesFromDataset, this.settingsNode = ${this.settingsNode.value}`)
-        logger.debug(`valuesFromDataset, property = ${property}`)
+        //    logger.debug(`valuesFromDataset, property = ${property}`)
         //     logger.reveal(ptr)
-        logger.sh(dataset)
-
-
-        // try {
-        const value1 = ptr.out(property)
-        logger.log(`value1 = ${value1.value}`)
-        logger.log(`TYPPE OF ${typeof value1}`)
-        if (value1 != ns.trn.rename) {
-            return value1.value
-        }
-        if (value1.terms.length == 1) {
-            //   return [value1.value]
-        }
-        //  } catch (e) {
-
-        //       return undefined
-        //}
-        const values = GrapoiHelpers.listToArray(dataset, this.settingsNode, property)
-
-        logger.debug(`property ${property}`)
-        logger.debug(`${values.length} values found`)
-        // if (values.length == 1) {
-        //   return ptr.out(property).distinct().value
-        //}
-
-        //    logger.debug(`Values found: ${values.terms.length}`)
-
-        /*
-            if (values.terms.length > 0) {
-                const all = values.terms.map(term => term.value)
-                logger.debug(`All values: ${all}`)
-                return all
+        //  logger.sh(dataset)
+        //
+        // Special handling for rename lists
+        if (property.equals(ns.trn.rename)) {
+            try {
+                return GrapoiHelpers.listToArray(dataset, this.settingsNode, property)
+            } catch (err) {
+                logger.error(`Error extracting list values for ${property}: ${err}`)
+                return []
             }
-    */
-        if (values.length == 1) {
-            return values[0]
         }
-        return values
+
+        // Regular property handling
+        try {
+            const value1 = ptr.out(property)
+            //    logger.log(`value1 = ${value1.value}`)
+            //  logger.log(`TYPE OF ${typeof value1}`)
+
+            // Check if property exists but doesn't have value1
+            if (value1.terms.length === 0) {
+                return []
+            }
+
+            // Process value based on type
+            if (value1.terms.length === 1) {
+                return [value1.value]
+            } else {
+                return value1.terms.map(term => term.value)
+            }
+        } catch (e) {
+            logger.error(`Error getting values for ${property}: ${e}`)
+            return []
+        }
     }
 
     getValues(settingsNode, property, fallback) {
         this.settingsNode = settingsNode
         logger.debug(`\n\nProcessorSettings.getValues, property = ${property.value}`)
 
-        //    if (!this.settingsNode || !this.config) {
-        //      return fallback ? [fallback] : []
-        // }
+        if (!this.settingsNode) {
+            return fallback ? [fallback] : []
+        }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////
         // logger.debug(`settingsNode = ${this.settingsNode.value}`)
 
         logger.debug(`\n\n   *** ProcessorSettings.getValues, looking for ${property} in APP dataset`)
-        var dataset = this.app.dataset
+        var dataset = this.app?.dataset
 
-
-        // logger.debug('------------------------------------')
-        //logger.log(dataset)
-        // logger.debug('------------------------------------')
-
-
-        var values = this.valuesFromDataset(dataset, property)
-        if (values) {
-            logger.debug(`   ProcessorSettings.getValues, found in APP dataset (manifest.ttl): ${values}`)
-            return values
+        if (dataset) {
+            // logger.debug('------------------------------------')
+            //logger.log(dataset)
+            // logger.debug('------------------------------------')
+            var values = this.valuesFromDataset(dataset, property)
+            if (values && values.length > 0) {
+                logger.debug(`   ProcessorSettings.getValues, found in APP dataset (manifest.ttl): ${values}`)
+                return values
+            }
         }
 
         logger.debug(`*** ProcessorSettings.getValues, looking for ${property} in CONFIG dataset (config.ttl)`)
@@ -135,9 +129,10 @@ class ProcessorSettings {
         */
 
         values = this.valuesFromDataset(dataset, property)
-        if (values) {
+        if (values && values.length > 0) {
             return values
         }
+
         return fallback ? [fallback] : []
     }
 

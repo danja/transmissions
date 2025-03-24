@@ -13,36 +13,48 @@ class Restructure extends Processor {
         super(config)
     }
 
-
     async getRenames() {
-
-        //    logger.log(`***** config = ${config}`)
-        //   logger.log(`***** settings = ${settings}`)
-        //   logger.log(`\nRestructure.getRenames`)
+        logger.debug(`\nRestructure.getRenames`)
         logger.debug(`this.settingsNode.value = ${this.settingsNode.value}`)
-        ////////////////////////////
 
-        //   const renamesRDF = GrapoiHelpers.listToArray(this.config, this.settingsNode, ns.trn.rename)
+        // Get renamesRDF as an array of NamedNode terms
         const renamesRDF = super.getValues(ns.trn.rename)
 
-        logger.debug(JSON.stringify(renamesRDF))
-
-        //   logger.debug(this.app.dataset)
-        var dataset = this.config
-        if (this.message.targetPath) {
-            dataset = this.app.dataset
+        if (!renamesRDF || !Array.isArray(renamesRDF) || renamesRDF.length === 0) {
+            logger.debug('No rename values found')
+            return []
         }
 
+        logger.debug(`Found ${renamesRDF.length} rename values`)
+        logger.debug(JSON.stringify(renamesRDF))
+
+        // Determine which dataset to use based on targetPath
+        var dataset = this.config
+        if (this.message && this.message.targetPath) {
+            dataset = this.app.dataset || this.config
+        }
 
         var renames = []
         for (let i = 0; i < renamesRDF.length; i++) {
-            let rename = renamesRDF[i]
-            let poi = rdf.grapoi({ dataset: dataset, term: rename })
-            let pre = poi.out(ns.trn.pre).value
-            let post = poi.out(ns.trn.post).value
-            logger.debug(`PRE: ${pre}, POST: ${post}`)
-            renames.push({ "pre": pre, "post": post })
+            try {
+                let rename = typeof renamesRDF[i] === 'string'
+                    ? rdf.namedNode(renamesRDF[i])
+                    : renamesRDF[i]
+
+                let poi = rdf.grapoi({ dataset: dataset, term: rename })
+                let pre = poi.out(ns.trn.pre).value
+                let post = poi.out(ns.trn.post).value
+
+                logger.debug(`Found mapping: PRE: ${pre}, POST: ${post}`)
+
+                if (pre && post) {
+                    renames.push({ "pre": pre, "post": post })
+                }
+            } catch (err) {
+                logger.error(`Error processing rename value at index ${i}: ${err.message}`)
+            }
         }
+
         return renames
     }
 
@@ -51,10 +63,9 @@ class Restructure extends Processor {
             message = await this.doRenames(message)
             message = await this.doRemoves(message)
             return this.emit('message', message)
-
         } catch (err) {
             logger.error("Restructure processor error: " + err.message)
-            ////////////////    logger.reveal(message)
+            logger.error(err.stack)
             throw err
         }
     }
@@ -62,17 +73,21 @@ class Restructure extends Processor {
     async doRemoves(message) {
         logger.debug('\n\nRestructure.doRemoves')
         const removes = super.getValues(ns.trn.remove)
+
+        if (!removes || removes.length === 0) {
+            logger.debug('No remove directives found')
+            return message
+        }
+
+        logger.debug(`Found ${removes.length} remove directives`)
         logger.reveal(removes)
 
-        var path
         for (let i = 0; i < removes.length; i++) {
-            //  path = JSON.parse(removes[i])
             const path = removes[i]
-            logger.debug(`remove path = ${path}`)
+            logger.debug(`Processing remove path = ${path}`)
             message = JSONUtils.remove(message, path)
         }
-        //  logger.reveal(message)
-        // process.exit()
+
         return message
     }
 
@@ -83,12 +98,16 @@ class Restructure extends Processor {
         if (this.config.simples) {
             renames = this.config.rename
         } else {
-
             renames = await this.getRenames()
         }
 
-        //     logger.log('Renames :')
-        //   logger.reveal(renames)
+        if (!renames || renames.length === 0) {
+            logger.debug('No rename mappings found')
+            return message
+        }
+
+        logger.debug(`Found ${renames.length} rename mappings:`)
+        logger.debug(JSON.stringify(renames))
 
         // Initialize JsonRestructurer with mappings
         this.restructurer = new JsonRestructurer({
@@ -96,16 +115,15 @@ class Restructure extends Processor {
         })
 
         // Get input data from message
-        // const input = message.payload?.item || message.payload
         const input = structuredClone(message)
 
         // Perform restructuring
         const restructured = this.restructurer.restructure(input)
 
         const type = typeof restructured
-        // logger.debug(`typeof restructured = ${type}`) // is object... TODO need different handling for returned arrays?
-        // logger.debug(`restructured = ${restructured}`)
-        // logger.reveal(restructured)
+        logger.debug(`Restructuring output type: ${type}`)
+        logger.debug('Restructuring result:')
+        logger.debug(JSON.stringify(restructured))
 
         for (const key of Object.keys(restructured)) {
             message[key] = restructured[key]
