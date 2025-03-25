@@ -14,7 +14,7 @@ class JsonRestructurer {
         //    logger.reveal(this.mappings)
     }
 
-    getValueByPath(obj, path) {
+    getValueByPath(obj, path, caller) {
         logger.debug('JsonRestructurer, path = ' + path)
 
         try {
@@ -29,7 +29,7 @@ class JsonRestructurer {
                 caused by : JsonRestructurer.getValueByPath, path ${path} not found,
                 message above.
                 `)
-
+            logger.debug(`JsonRestructurer.setValueByPath caller : ${caller}`)
             //  process.exit(1)
             //const err = new Error().stack
 
@@ -49,7 +49,7 @@ class JsonRestructurer {
         target[last] = value
     }
 
-    restructure(inputData) {
+    restructure(inputData, caller) {
         if (typeof inputData === 'string') {
             try {
                 inputData = JSON.parse(inputData)
@@ -61,7 +61,7 @@ class JsonRestructurer {
         const result = {}
         this.mappings.forEach(({ pre, post }) => {
             logger.debug(`PRE = ${pre}, POST = ${post}`)
-            const value = this.getValueByPath(inputData, pre)
+            const value = this.getValueByPath(inputData, pre, caller)
             // logger.log(`PRE = ${pre}, POST = ${post} value = ${value}`)
             if (value !== undefined) {
                 this.setValueByPath(result, post, value)

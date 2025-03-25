@@ -118,7 +118,7 @@ class Restructure extends Processor {
         const input = structuredClone(message)
 
         // Perform restructuring
-        const restructured = this.restructurer.restructure(input)
+        const restructured = this.restructurer.restructure(input, this)
 
         const type = typeof restructured
         logger.debug(`Restructuring output type: ${type}`)
