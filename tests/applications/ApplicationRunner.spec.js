@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url'
 import { expect } from 'chai'
 import { exec } from 'child_process'
 import fs from 'fs'
+import chalk from 'chalk'
 
 describe('', function () {
     const __filename = fileURLToPath(import.meta.url)
@@ -21,11 +22,11 @@ describe('', function () {
     commands.forEach((test, index) => {
         const { command, label, description, requiredMatchCount } = test
 
-        it(`run ${label} app & check results`, (done) => {
-            console.log(`${description}, "${command}"`) // Print description to console
+        it(`run ${label}`, (done) => {
+            console.log(`${chalk.bold(description)}, command :\n   ${chalk.yellow(command)}`) // Print description to console
             exec(command, async (error, stdout, stderr) => {
                 if (error) {
-                    console.error('Exec error:', error)
+                    console.error(chalk.red('Exec error:'), error)
                     done(error)
                     return
                 }
@@ -38,8 +39,8 @@ describe('', function () {
                     expect(matchCount).to.equal(requiredMatchCount)
                     done()
                 } catch (err) {
-                    console.error('Test error:', err)
-                    console.log('Logs:\n', err)
+                    console.error(chalk.red('Test error:'), err)
+                    //  console.log('Logs:\n', err)
                     done(err)
                 }
             })

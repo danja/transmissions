@@ -24,11 +24,11 @@
  * * TODO: Add test information
  */
 
-import ns from '../../utils/ns.js'
+import ns from '../src/utils/ns.js'
 import rdf from 'rdf-ext'
 import grapoi from 'grapoi'
-import logger from '../../utils/Logger.js'
-import Processor from '../../model/Processor.js'
+import logger from '../src/utils/Logger.js'
+import Processor from '../src/model/Processor.js'
 
 class ConfigMap extends Processor {
   constructor(config) {

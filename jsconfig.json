@@ -14,7 +14,9 @@
     "../trans-apps/applications/git-apps/github_",
     "src-old/CommandUtilsNO.js",
     "../trans-apps/applications/markmap",
-    "_old/GrapoiHelpers copy.js"
+    "_old/GrapoiHelpers copy.js",
+    "_old/claudeGrapoiHelpers copy.js",
+    "_old/__ConfigMap.js"
   ],
   "exclude": ["node_modules", "**/node_modules/*"],
   "typeAcquisition": {
