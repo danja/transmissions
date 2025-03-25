@@ -44,8 +44,11 @@ class AppResolver {
         if (target) {
             this.manifestFilename = path.join(target, this.manifestFilename)
             logger.debug(`AppResolver, found manifest : ${this.manifestFilename}`)
-            this.dataset = await RDFUtils.readDataset(this.manifestFilename)
-            //  this.dataset = await this.loadManifest()
+            try {
+                this.dataset = await RDFUtils.readDataset(this.manifestFilename)
+            } catch (e) {
+                this.dataset = rdf.dataset()
+            }
         }
     }
 

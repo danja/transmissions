@@ -15,7 +15,7 @@
 
 :terrapack a trn:Transmission ;
     rdfs:label "Repository terrapack" ;
-    trn:pipe (:p10 :p20 :p30 :p40 :p50 :p60 :p70 :p80) .
+    trn:pipe (:p10 :p20 :p30 :p40 :p50 :SM :p70 :p80) .
 
 :p10 a :DirWalker ;
     trn:settings :dirWalker .
@@ -29,7 +29,8 @@
 :p40 a :FileContainer ;
     trn:settings :containerConfig .
 
-:p50 a :CaptureAll .
+:p50 a :Accumulate a :Accumulate ;
+    :settings :accumulator .
 
 :p60 a :WhiteboardToMessage .
 
