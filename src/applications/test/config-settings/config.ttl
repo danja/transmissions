@@ -36,3 +36,12 @@
     :setters (:setter1)  . # consider using blank nodes
         :setter1    :key    "myKey" ;
                     :value  "myValueTEST_PASSED"  .
+
+:settingsCollection a :ConfigSet ;
+    :me ":settingsCollection" ;
+    :items  (:sc1 :sc2 :sc3 :sc4) .
+  #  :items  a :collectionProperty .
+  :sc1 :value "value1" .
+  :sc2 :value "value2" .
+  :sc3 :value "value3" .
+  :sc4 :value "value4" .

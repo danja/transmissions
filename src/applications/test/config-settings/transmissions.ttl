@@ -14,7 +14,7 @@
 #############################################################
 
 :testSettings a :Transmission ;
-    :pipe (:ts0 :ts10 :ts20 :ts30 :ts40 :ts50 :ts60 :ts70 :SM) .
+    :pipe (:ts0 :ts10 :ts20 :ts30 :ts40 :ts50 :ts60 :ts70 :ts80 :SM) .
 
 
 :ts0 a :TestSettings  .
@@ -39,3 +39,6 @@
 
 :ts70 a :SetMessage ;
      :settings :settingsKeyValue .
+
+:ts80 a :TestSettings ;
+     :settings :settingsCollection .

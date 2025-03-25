@@ -62,6 +62,7 @@ class ProcessorSettings {
         //  logger.sh(dataset)
         //
         // Special handling for rename lists
+
         if (property.equals(ns.trn.rename)) {
             try {
                 return GrapoiHelpers.listToArray(dataset, this.settingsNode, property)
@@ -73,9 +74,22 @@ class ProcessorSettings {
 
         // Regular property handling
         try {
+
             const value1 = ptr.out(property)
-            //    logger.log(`value1 = ${value1.value}`)
-            //  logger.log(`TYPE OF ${typeof value1}`)
+            logger.log(`\n\nvalue1 = ${value1.value}`)
+
+            ////////////// looks if <value1> rdf:first ?o
+            const first = this.tryFirst(dataset, value1)
+            if (first) {
+                const arr = GrapoiHelpers.listToArray(dataset, this.settingsNode, property)
+                logger.log(`\narr = ${arr}`)
+                for (var i = 0; i < arr.length; i++) {
+                    logger.log(`\narr[i] = `)
+                    logger.reveal(arr[i])
+                }
+                //    return arr
+            }
+            //////////////////////
 
             // Check if property exists but doesn't have value1
             if (value1.terms.length === 0) {
@@ -91,6 +105,19 @@ class ProcessorSettings {
         } catch (e) {
             logger.error(`Error getting values for ${property}: ${e}`)
             return []
+        }
+    }
+
+    /** looks to see if exists
+        <value1> rdf:first ?o
+    */
+    tryFirst(dataset, maybeList) {
+        try {
+            const maybe = grapoi({ dataset, term: maybeList }).out(ns.rdf.first)
+            logger.log(`OUT = ${maybe.value}`)
+            return maybe
+        } catch (e) {
+            return false
         }
     }
 

@@ -90,6 +90,13 @@ class TestSettings extends Processor {
                 logger.log(`bSetting : \n${this.getProperty(ns.trn.bSetting)}`)
                 break
 
+            case ':settingsCollection':
+                const values = this.getValues(ns.trn.items)
+                logger.log(`values = `)
+                logger.reveal(values)
+                logger.sh(this.config)
+                break
+
             default:
                 logger.log(`This is fallback : ${this.getProperty(ns.trn.name, 'yes it is')}`)
                 break
