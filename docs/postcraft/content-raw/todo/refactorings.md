@@ -1,5 +1,10 @@
 # Refactorings
 
+relocate StringOps
+
+---
+
+#### Done?
 * Vocabs
 
 ## Core

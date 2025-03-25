@@ -22,8 +22,8 @@ class StringOps extends Processor {
   :d :string ".html" .
   */
     async process(message) {
-        logger.debug(`\n\nStringOps.process`)
-        logger.debug(this)
+        logger.trace(`\n\nStringOps.process`)
+        logger.trace(this)
         if (message.done) return
 
         // TODO refactor
@@ -56,7 +56,7 @@ class StringOps extends Processor {
             let fieldProperty = fieldSegment.out(ns.trn.field)
             //     logger.log(`ààààààààààààààààààààààààààààààààààààààà`)
 
-            logger.debug(`fieldProperty = ${fieldProperty.value}`)
+            logger.trace(`fieldProperty = ${fieldProperty.value}`)
             //  logger.reveal(message)
 
             if (fieldProperty && fieldProperty.value) {
@@ -80,10 +80,10 @@ class StringOps extends Processor {
                 continue
             }
         }
-        //logger.debug(`combined = ${combined}`)
+        //logger.trace(`combined = ${combined}`)
 
         const targetField = await this.getProperty(ns.trn.targetField)
-        //logger.debug(`targetField = ${targetField}`)
+        //logger.trace(`targetField = ${targetField}`)
         JSONUtils.set(message, targetField, combined)
 
         return this.emit('message', message)
