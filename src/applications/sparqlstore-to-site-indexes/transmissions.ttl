@@ -1,4 +1,4 @@
-# src/applications/example-application/transmissions.ttl
+# src/applications/sparqlstore-to-site-indexes/transmissions.ttl
 
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -20,10 +20,8 @@
 
 :sparqlstore-to-indexes a :Transmission ;
   :pipe ( :p10 :p20 :p30  :p40 :p50 # Query call
-          :p100 :p110 :p120 # HTML rendering
-          :p200 :p210 :p220) . # Atom rendering
-
- #  :pipe (:p10 :p20 :p30 :p40 :p50 :p60 :p70 :p80 :p90) .
+          :p90 :p100 :p110    :p120 # HTML rendering
+          :p130 :p200 :p210 :p220) . # Atom rendering
 
 # most recent 5 (+pinned?)
 :p10 a :SPARQLSelect ;
@@ -41,6 +39,9 @@
 :p50 a :Unfork .
 
 # HTML
+:p90 a :Restructure ;
+    :settings :prepHTML .
+
 :p100 a :Templater ;
      :settings :htmlIndex .
 
@@ -48,15 +49,18 @@
 :p110 a :StringOps ;
   :settings :htmlFilepath .
 
-:p120 a :FileWriter ;
- :settings :contentLocation .
+:p120 a :FileWriter .
+# :settings :contentLocation .
 
 # Atom
+:p130 a :Restructure ;
+    :settings :prepAtom .
+
 :p200 a :Templater ;
      :settings :atomIndex .
 
 :p210 a :StringOps ;
   :settings :atomFilepath .
 
-:p220 a :FileWriter ;
-  :settings :contentLocationB . # reuse
+:p220 a :FileWriter .
+ # :settings :contentLocationB .

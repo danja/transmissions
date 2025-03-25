@@ -45,12 +45,12 @@ class Templater extends Processor {
      */
     async process(message) {
 
-        logger.trace(`\n\nTemplater.process`)
-        logger.trace(`\nTemplater.process, message.contentBlocks = ${JSON.stringify(message.contentBlocks)}`)
+        logger.debug(`\n\nTemplater.process`)
+        logger.debug(`\nTemplater.process, message.contentBlocks = ${JSON.stringify(message.contentBlocks)}`)
         var templateFilename = await this.getProperty(ns.trn.templateFilename)
 
         if (templateFilename) {
-            //       logger.trace(`\nTemplater.process, templateFilename = ${templateFilename}`)
+            //       logger.debug(`\nTemplater.process, templateFilename = ${templateFilename}`)
 
             // TODO tidy this up (move out?)
             // Extract path and filename from templateFilename
@@ -62,14 +62,14 @@ class Templater extends Processor {
                 templatePath = path.join(super.getProperty(ns.trn.targetPath), templatePath) + path.sep
             }
 
-            logger.trace('\nTemplater, templatePath = ' + templatePath)
-            logger.trace('Templater, filename = ' + filename)
-            logger.trace(`\nTemplater.process, templateFilename = ${templateFilename}`)
+            logger.debug('\nTemplater, templatePath = ' + templatePath)
+            logger.debug('Templater, filename = ' + filename)
+            logger.debug(`\nTemplater.process, templateFilename = ${templateFilename}`)
 
             // Configure Nunjucks with the template path
             nunjucks.configure(templatePath, { autoescape: false })
 
-            //   logger.trace(`content PRE = ${message.content}`)
+            //   logger.debug(`content PRE = ${message.content}`)
             // Render the template file
             try {
                 // message.content = nunjucks.render(templateFilename, message.contentBlocks)
@@ -81,7 +81,7 @@ class Templater extends Processor {
                 return
             }
             //
-            logger.trace(`content POST = ${message.content}`)
+            logger.debug(`content POST = ${message.content}`)
 
 
         } else {   // Configure Nunjucks for string templates

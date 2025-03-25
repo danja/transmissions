@@ -3,22 +3,20 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX : <http://purl.org/stuff/transmissions/>
 
 SELECT DISTINCT * WHERE {
-
   ?article a schema:Article ;
     :sourcePath ?sourcePath ;
     :relPath ?relPath ;
     :slug ?slug ;
     schema:headline ?title ;
-    schema:dateModified ?modified ;
     schema:articleBody ?content ;
-    schema:creator ?creator ;
-  :htmlContent ?html .
+    schema:creator ?creator .
 
   ?creator a schema:Person ;
     schema:name ?creatorName .
 
-OPTIONAL {
+  OPTIONAL {
     ?article schema:datePublished ?published ;
+  }
 }
-}
-ORDER BY DESC(?modified)
+ORDER BY DESC(?published)
+LIMIT 5

@@ -13,7 +13,8 @@
     "src/api/cli/run.js",
     "../trans-apps/applications/git-apps/github_",
     "src-old/CommandUtilsNO.js",
-    "../trans-apps/applications/markmap"
+    "../trans-apps/applications/markmap",
+    "_old/GrapoiHelpers copy.js"
   ],
   "exclude": ["node_modules", "**/node_modules/*"],
   "typeAcquisition": {

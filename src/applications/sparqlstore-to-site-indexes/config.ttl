@@ -1,4 +1,4 @@
-# src/applications/example-application/config.ttl
+# src/applications/sparqlstore-to-site-indexes/config.ttl
 
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -9,10 +9,10 @@
     :templateFilename "system/sparql-templates/recent-articles.njk" ;
     :endpointSettings "system/endpoints.json" .
 
-:resultIterator a :ConfigSet ;
+:indexResultIterator a :ConfigSet ;
   :forEach "queryResults.results.bindings" .
 
-:pppppppppppprepRecents a :ConfigSet  ;
+:prepRecents a :ConfigSet  ;
     :remove "queryResults" ;
     :rename (:c1 :c2 :c3 :u1)  .
         # for content
@@ -26,11 +26,11 @@
         :u1     :pre    "currentItem.article.value" ;
                 :post   "contentBlocks.uri"  .
 
+:accumulator a :ConfigSet ;
+    :targetField "accumulator" .
+
 :htmlIndex a :ConfigSet ;
    :templateFilename "templates/index-html.njk" .
-
-#:contentField  a :ConfigSet ;
- #   :target "accumulator" .
 
 :htmlFilepath a :ConfigSet ;
   :asPath true ;
@@ -38,7 +38,17 @@
   :values (:ip1 :ip2 :ip3) .
   :ip1 :field "targetPath" .
   :ip2 :string "public" .
-  :ip3 :string "atom.xml" .
+  :ip3 :string "index.html" .
+
+:contentLocation a :ConfigSet ;
+    :contentField "accumulator" .
+
+:prepHTML a :ConfigSet  ;
+    :rename (:ph1)  .
+        # for content
+        :ph1   :pre    "content" ;
+              :post "contentBlocks.content"  .
+
 
 :atomIndex a :ConfigSet ;
     :templateFilename "templates/index-atom.njk" .
@@ -46,7 +56,17 @@
 :atomFilepath a :ConfigSet ;
   :asPath true ;
   :targetField "destinationFile" ;
-  :values (:ip1 :ip2 :ip3) .
-  :ip1 :field "targetPath" .
-  :ip2 :string "public" .
-  :ip3 :field "atom.xml" .
+  :values (:ap1 :ap2 :ap3) .
+  :ap1 :field "targetPath" .
+  :ap2 :string "public" .
+  :ap3 :string "atom.xml" .
+
+
+:contentLocationB a :ConfigSet ;
+    :contentField "accumulator" .
+
+  :prepAtom a :ConfigSet  ;
+    :rename (:pa1)  .
+        # for content
+        :pa1   :pre    "content" ;
+              :post "contentBlocks.content"  .
