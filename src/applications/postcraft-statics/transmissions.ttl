@@ -16,10 +16,13 @@
 :UF a :Unfork . # collapses all pipes but one                    #
 ##################################################################
 
-:clearCache a :Transmission ;
-    rdfs:label "clear cache" ;
+:cleanTarget a :Transmission ;
+    rdfs:label "clear public" ;
     rdfs:comment "directory cleaner" ;
-    :pipe (:r10) .
+    :pipe (:ct10 :ct20) .
 
-:r10 a :FileRemove ;
-    :settings :removeCache .
+:ct10 a :FileRemove ;
+    :settings :removePublic .
+
+:ct20 a :FileCopy ;
+    :settings :copyLayout .

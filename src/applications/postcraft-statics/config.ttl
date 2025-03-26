@@ -5,13 +5,6 @@
 
 @prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances
 
-:exampleSettings1 a :ConfigSet ;
-    :me "exampleSettings1" ;
-    :common "common from 1"  ;
-    :something1 "something1 from config" .
+:removePublic a :ConfigSet ;
+    :target "data/public" .
 
-:exampleSettings2 a :ConfigSet ;
-    :me "exampleSettings2" ;
-    :common "common from 2" ;
-    :something2 "something2 from config" ;
-    :added " added from exampleSettings2" .

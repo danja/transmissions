@@ -53,26 +53,9 @@ class FileCopy extends Processor {
         //  logger.setLogLevel("info")
 
         logger.debug("message.rootDir = " + message.rootDir)
-        var source, destination
+        var source = super.getProperty(ns.trn.source)
+        var destination = super.getProperty(ns.trn.destination)
 
-        // Determine source and destination paths
-        if (this.settings === 'undefined') {
-            logger.debug('FileCopy: using message.source and message.destination')
-            source = message.source
-            destination = message.destination
-        } else {
-            logger.debug(`FileCopy: using settings ${this.settings.value}`)
-            source = this.getPropertyFromMyConfig(ns.trn.source)
-            destination = this.getPropertyFromMyConfig(ns.trn.destination)
-            if (message.targetPath) {
-                source = path.join(message.targetPath, source)
-                destination = path.join(message.targetPath, destination)
-            } else {
-                source = path.join(message.rootDir, source)
-                destination = path.join(message.rootDir, destination)
-            }
-
-        }
 
         logger.debug(`Source: ${source}`)
         logger.debug(`Destination: ${destination}`)

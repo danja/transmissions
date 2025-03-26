@@ -49,22 +49,11 @@ class FileRemove extends Processor {
 
         this.ignoreDotfiles = true // default, simplify ".gitinclude"
 
-        var target
-
-        // TODO add check for  ignoreDotfiles = false
-
-        // Determine target path
-        if (this.settings === 'undefined') {
-            logger.debug('FileRemove no settings from transmission, using message.target')
-            target = message.target
-        } else {
-            logger.debug('FileRemove this.settings = ' + this.settings.value)
-            target = await this.getProperty(ns.trn.target)
-            //       target = this.getPropertyFromMyConfig(ns.trn.target)
-            target = path.join(message.rootDir, target)
-        }
-
+        var target = await this.getProperty(ns.trn.target)
+          
         logger.debug('FileRemove, target = ' + target)
+     
+        return this.emit('message', message)
         try {
             const removeStat = await stat(target)
 
