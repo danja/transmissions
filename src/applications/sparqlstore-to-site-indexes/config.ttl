@@ -44,11 +44,9 @@
     :contentField "accumulator" .
 
 :prepHTML a :ConfigSet  ;
-    :rename (:ph1 :ph2)  .
+    :rename (:ph1)  .
         # for content
-        :ph1   :pre    "content" ;
-              :post "contentBlocks.content"  .
-        :ph2   :pre    "content" ;
+        :ph1   :pre    "accumulator" ;
               :post "contentBlocks.content"  .
 
 :atomIndex a :ConfigSet ;
@@ -69,5 +67,5 @@
   :prepAtom a :ConfigSet  ;
     :rename :pa1  .
         # for content
-        :pa1   :pre    "content" ;
+        :pa1   :pre    "accumulator" ;
               :post "contentBlocks.content"  .
