@@ -14,7 +14,7 @@
 #############################################################
 
 :testSettings a :Transmission ;
-    :pipe (:ts0 :ts10 :ts20 :ts30 :ts40 :ts50 :ts60 :ts70 :ts80 :SM) .
+    :pipe (:ts0 :ts10 :ts20 :ts30 :ts40 :ts50 :ts60 :ts70 :ts80 ) .
 
 
 :ts0 a :TestSettings  .

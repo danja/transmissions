@@ -1,5 +1,8 @@
 # Transmissions Known Bugs
 
+:ForEach / :Restructure remove might be broken
+
+* check       const values = this.getValues(ns.trn.items)
 **RUN TESTS!!!**
 
 When a settings field wasn't associated with a `:FileWriter` it picked up an unrelated one from the manifest

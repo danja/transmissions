@@ -11,7 +11,7 @@ class ForEach extends Processor {
     }
 
     async process(message) {
-        logger.debug('ForEach execute method called')
+        logger.trace('ForEach execute method called')
 
         // TODO default?
         const forEach = super.getProperty(ns.trn.forEach)
@@ -25,7 +25,7 @@ class ForEach extends Processor {
         // TODO is similar in 'processors/json/JsonRestructurer.js' - move to utils?
         const reduced = split.reduce((acc, part) => acc[part], message)
 
-        logger.debug(`ForEach, reduced.length = ${reduced.length}`)
+        logger.trace(`ForEach, reduced.length = ${reduced.length}`)
 
         //  logger.reveal(reduced)
 
@@ -41,14 +41,14 @@ class ForEach extends Processor {
             clonedMessage.currentItem = item
             //    delete clonedMessage.foreach // Remove the original array to prevent infinite loops TODO needed?
 
-            logger.debug(`ForEach: Emitting message for item: ${item}`)
+            logger.trace(`ForEach: Emitting message for item: ${item}`)
             clonedMessage.eachCounter = this.eachCounter++
             this.emit('message', clonedMessage)
         }
         message.done = true
         /////////////////// TODO put back in
         this.emit('message', message)
-        logger.debug('ForEach: Finished processing all items')
+        logger.trace('ForEach: Finished processing all items')
     }
 }
 export default ForEach

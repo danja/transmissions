@@ -93,7 +93,7 @@ class TestSettings extends Processor {
             case ':settingsCollection':
                 const values = this.getValues(ns.trn.items)
                 logger.log(`values = `)
-                logger.reveal(values)
+           //   logger.reveal(values)
                 logger.sh(this.config)
                 break
 

@@ -75,10 +75,8 @@ class ProcessorSettings {
         // Regular property handling
         try {
 
-            const value1 = ptr.out(property)
-            logger.log(`\n\nvalue1 = ${value1.value}`)
-
-
+           const value1 = ptr.out(property)
+            logger.trace(`\n\nvalue1 = ${value1.value}`)
 
             // Check if property exists but doesn't have value1
             if (value1.terms.length === 0) {
@@ -91,7 +89,7 @@ class ProcessorSettings {
                 //      logger.log(`\narr = ${arr}`)
                 for (var i = 0; i < arr.length; i++) {
                     //        logger.log(`\narr[i] = `)
-                    logger.reveal(arr[i])
+             //       logger.reveal(arr[i])
                 }
                 //    return arr
             }

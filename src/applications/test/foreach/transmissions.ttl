@@ -24,5 +24,3 @@
 :fe15 a :Restructure ;
     :settings :removo .
 
-:fe20 a :ShowMessage .
-:fe30 a :DeadEnd .
