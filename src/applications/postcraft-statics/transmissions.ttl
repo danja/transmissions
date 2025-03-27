@@ -19,7 +19,7 @@
 :cleanTarget a :Transmission ;
     rdfs:label "clear public" ;
     rdfs:comment "directory cleaner" ;
-    :pipe (:ct10 :ct20) .
+    :pipe (:ct20) . # :ct10 not needed right now
 
 :ct10 a :FileRemove ;
     :settings :removePublic .
