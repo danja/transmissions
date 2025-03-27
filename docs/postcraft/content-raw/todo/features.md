@@ -1,10 +1,14 @@
 # Transmissions ToDo : Features
 
+* add a safety check to FileRemove
+
 ## Postcraft - related
 
 set up the multi-transmission runner
 
 move to trans-apps
+
+
 
 ## RDF
 
