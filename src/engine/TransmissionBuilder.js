@@ -85,12 +85,12 @@ class TransmissionBuilder {
         const processorType = np.out(ns.rdf.type).term
 
         const settingsNode = np.out(ns.trn.settings).term
-        const settingsNodeName = settingsNode ? settingsNode : undefined
+     //   const settingsNodeName = settingsNode ? settingsNode.value : undefined
 
         logger.debug(`Creating processor:
-          Node: ${node.value}
-          Type: ${processorType?.value}
-          SettingsNode: ${settingsNodeName}
+          Node: :${ns.shortName(node?.value)}
+          Type: :${ns.shortName(processorType?.value)}
+          SettingsNode: :${ns.shortName(settingsNode?.value)}
         `)
         //    Config: \n${processorsConfig}
         // Check if node is a nested transmission transmissionConfig

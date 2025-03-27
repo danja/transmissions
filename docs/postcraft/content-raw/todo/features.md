@@ -1,5 +1,13 @@
 # Transmissions ToDo : Features
 
+## RDF
+
+drop need for `:ConfigSettings`
+
+allow settings in `transmissions.ttl`
+(when it's loaded, use grapoi, prime config)
+precedence?
+
 ## Processors
 
 ### `src/processors/semem`

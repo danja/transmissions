@@ -37,7 +37,7 @@ class CommandUtils {
         var { appName, appPath, subtask } = CommandUtils.splitName(application)
         // short name or path (TODO or URL)
 
-        logger.debug(`\n
+        logger.trace(`\n
     after split :
     appName = ${appName}
     appPath = ${appPath}

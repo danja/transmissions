@@ -76,6 +76,7 @@ class ApplicationManager {
 
         const transmissions = await this.buildTransmissions()
 
+        // TODO this is wrong
         logger.debug(`Transmissions has length ${transmissions.length}`)
 
         // Get application context

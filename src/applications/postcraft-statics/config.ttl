@@ -8,3 +8,6 @@
 :removePublic a :ConfigSet ;
     :target "data/public" .
 
+:copyLayout a :ConfigSet ;
+    :source "data/raw" ;
+    :destination "data/public" .

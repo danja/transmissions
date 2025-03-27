@@ -12,6 +12,8 @@ class DirWalker extends Processor {
         this.count = 0
     }
 
+
+
     async process(message) {
         logger.trace('\nDirWalker.process')
         logger.trace(`\nDirWalker.process, this = ${this}`)

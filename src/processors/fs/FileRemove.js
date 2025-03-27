@@ -53,7 +53,7 @@ class FileRemove extends Processor {
           
         logger.debug('FileRemove, target = ' + target)
      
-        return this.emit('message', message)
+     //   return this.emit('message', message)
         try {
             const removeStat = await stat(target)
 
