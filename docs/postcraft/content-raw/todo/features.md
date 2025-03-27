@@ -1,5 +1,11 @@
 # Transmissions ToDo : Features
 
+## Postcraft - related
+
+set up the multi-transmission runner
+
+move to trans-apps
+
 ## RDF
 
 drop need for `:ConfigSettings`
