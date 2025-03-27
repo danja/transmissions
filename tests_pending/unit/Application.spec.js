@@ -85,7 +85,7 @@ describe('Application', () => {
             expect(message).to.have.property('appPath', '/test/path')
             expect(message).to.have.property('subtask', 'test-task')
             expect(message).to.have.property('targetPath', '/test/target')
-            expect(message).to.have.property('dataDir').that.includes('data')
+            expect(message).to.have.property('workingDir').that.includes('data')
             expect(message).to.have.property('dataset')
         })
     })

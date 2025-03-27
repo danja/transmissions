@@ -60,7 +60,7 @@ describe('ApplicationManager Integration', () => {
             expect(testMessage).to.have.property('appName', 'test_app_manager')
             expect(testMessage).to.have.property('appPath', testAppRoot)
             expect(testMessage).to.have.property('targetPath', testTarget)
-            expect(testMessage).to.have.property('dataDir').that.includes('data')
+            expect(testMessage).to.have.property('workingDir').that.includes('data')
         })
     })
 })

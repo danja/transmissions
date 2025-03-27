@@ -8,13 +8,13 @@ import fs from 'fs/promises'
 describe('test_restructure', function () {
     const __filename = fileURLToPath(import.meta.url)
     const __dirname = path.dirname(__filename)
-    const dataDir = path.join(__dirname, '../../src/applications/test_restructure/data')
+    const workingDir = path.join(__dirname, '../../src/applications/test_restructure/data')
 
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000
 
     async function clearOutputFiles() {
         console.log('Clearing output files...')
-        const outputDir = path.join(dataDir, 'output')
+        const outputDir = path.join(workingDir, 'output')
         const files = await fs.readdir(outputDir)
         for (const file of files) {
             if (file.startsWith('output-')) {
@@ -25,8 +25,8 @@ describe('test_restructure', function () {
     }
 
     async function compareFiles(index) {
-        const outputFile = path.join(dataDir, 'output', `output-${index}.json`)
-        const requiredFile = path.join(dataDir, 'output', `required-${index}.json`)
+        const outputFile = path.join(workingDir, 'output', `output-${index}.json`)
+        const requiredFile = path.join(workingDir, 'output', `required-${index}.json`)
 
         console.log(`Comparing files:`)
         console.log(`Output: ${outputFile}`)

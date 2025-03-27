@@ -20,8 +20,8 @@ class FileSink extends Processor {
     // In FileSink.js
     async process(message) {
         const toRootDir = '../../../'
-        const dataDir = path.join(toRootDir, message.dataDir)
-        const df = footpath.resolve(import.meta.url, dataDir, this.destinationFile)
+        const workingDir = path.join(toRootDir, message.workingDir)
+        const df = footpath.resolve(import.meta.url, workingDir, this.destinationFile)
         logger.debug("FileSink to = " + df)
         await writeFile(df, message.content)
         return this.emit('message', message)

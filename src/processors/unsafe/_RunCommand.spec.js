@@ -5,7 +5,7 @@ import path from 'path';
 
 describe('RunCommand', function () {
     let runCommand;
-    const dataDir = 'src/applications/test_runcommand/data';
+    const workingDir = 'src/applications/test_runcommand/data';
 
     beforeEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 3000;
@@ -17,7 +17,7 @@ describe('RunCommand', function () {
     });
 
     it('should validate command output against required file', async function () {
-        const requiredPath = path.join(dataDir, 'output', 'required-01.txt');
+        const requiredPath = path.join(workingDir, 'output', 'required-01.txt');
         const required = await fs.readFile(requiredPath, 'utf8');
         const message = { command: 'echo "Hello from RunCommand!"' };
 

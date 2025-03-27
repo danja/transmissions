@@ -7,9 +7,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 describe('filename-mapper test', () => {
-    const dataDir = path.join(__dirname, '../../src/applications/test_filename-mapper/data');
-    const inputDir = path.join(dataDir, 'input');
-    const outputDir = path.join(dataDir, 'output');
+    const workingDir = path.join(__dirname, '../../src/applications/test_filename-mapper/data');
+    const inputDir = path.join(workingDir, 'input');
+    const outputDir = path.join(workingDir, 'output');
 
     async function setupTestFiles() {
         await fs.mkdir(outputDir, { recursive: true });

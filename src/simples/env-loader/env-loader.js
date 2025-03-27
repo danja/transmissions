@@ -13,7 +13,7 @@ const p20 = new WhiteboardToMessage(config)
 p10.id = 'http://purls.org/stuff/#p20'
 
 var message = {
-    "dataDir": "src/applications/env-loader-test/data",
+    "workingDir": "src/applications/env-loader-test/data",
     "rootDir": "[no key]",
     "tags": "SM"
 }

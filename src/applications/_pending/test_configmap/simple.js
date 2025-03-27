@@ -9,7 +9,7 @@ const config = {
     "destinationFile": "output/output-01.md"
 }
 
-var message = { "dataDir": "src/applications/test_fs-rw/data" }
+var message = { "workingDir": "src/applications/test_fs-rw/data" }
 
 const read = new FileReader(config)
 

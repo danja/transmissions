@@ -21,7 +21,7 @@ const config = {
     }]
 }
 
-var message = { "dataDir": "src/applications/test_restructure/data" }
+var message = { "workingDir": "src/applications/test_restructure/data" }
 
 const read = new FileReader(config)
 message = await read.process(message)

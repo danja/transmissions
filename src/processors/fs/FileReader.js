@@ -42,7 +42,7 @@ class FileReader extends Processor {
 
             if (!path.isAbsolute(filePath)) {
                 //     filePath = path.join(message.targetPath || message.rootDir, filePath)
-                filePath = path.join(message.targetPath || message.dataDir, filePath)
+                filePath = path.join(message.targetPath || message.workingDir, filePath)
             }
         }
 

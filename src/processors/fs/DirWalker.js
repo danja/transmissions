@@ -27,7 +27,7 @@ class DirWalker extends Processor {
         }
 
         if (!sourceDir) {
-            sourceDir = message.dataDir
+            sourceDir = message.workingDir
         }
 
         this.includePatterns = this.getProperty(ns.trn.includePattern, ['*.md', '*.js', '*.json', '*.ttl'])
@@ -96,7 +96,7 @@ class DirWalker extends Processor {
 
         for (const entry of entries) {
             const fullPath = path.join(dir, entry.name)
-            const targetPath = super.getProperty(ns.trn.targetPath, this.message.dataDir)
+            const targetPath = super.getProperty(ns.trn.targetPath, this.message.workingDir)
             //   if (entry.isDirectory() && !this.excludePatterns.includes(entry.name[0])) {
 
             // should be dir? what about added includes?

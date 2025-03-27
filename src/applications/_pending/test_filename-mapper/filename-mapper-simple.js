@@ -14,7 +14,7 @@ const config = {
 
 async function runPipeline() {
     var message = {
-        "dataDir": "src/applications/test_filename-mapper/data",
+        "workingDir": "src/applications/test_filename-mapper/data",
         "format": "html"
     }
 

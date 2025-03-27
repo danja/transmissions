@@ -25,8 +25,8 @@ class FileSource extends Processor {
     async process(message) {
         try {
             const toRootDir = '../../../'
-            const dataDir = toRootDir + message.dataDir
-            const sf = footpath.resolve(import.meta.url, dataDir, this.sourceFile)
+            const workingDir = toRootDir + message.workingDir
+            const sf = footpath.resolve(import.meta.url, workingDir, this.sourceFile)
             logger.debug('FileSource file : ' + sf)
             const contents = await readFile(sf, { encoding: 'utf8' })
             logger.debug('FileSource data : ' + contents)

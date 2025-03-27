@@ -22,7 +22,7 @@ class AppResolver {
 
         // Runtime paths
         this.rootDir = options.rootDir || null
-        this.dataDir = options.dataDir || null
+        this.workingDir = options.workingDir || null
         this.targetPath = options.targetPath || null
 
         // RDF dataset from manifest
@@ -128,10 +128,10 @@ class AppResolver {
     }
 
     resolveDataDir() {
-        if (!this.dataDir) {
-            this.dataDir = path.join(this.appPath, this.dataSubDir)
+        if (!this.workingDir) {
+            this.workingDir = path.join(this.appPath, this.dataSubDir)
         }
-        return this.dataDir
+        return this.workingDir
     }
 
     toMessage() {
@@ -140,7 +140,7 @@ class AppResolver {
             appPath: this.appPath,
             subtask: this.subtask,
             rootDir: this.rootDir || this.appPath,
-            dataDir: this.resolveDataDir(),
+            workingDir: this.resolveDataDir(),
             targetPath: this.targetPath,
             dataset: this.dataset
         }

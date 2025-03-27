@@ -47,7 +47,7 @@ class FileWriter extends Processor {
             // TODO make optional (on done?) - is a pain for multi
             //    const filename = `message_${new Date().toISOString()}.json`
             const filename = 'message.json'
-            const f = path.join(message.dataDir, filename)
+            const f = path.join(message.workingDir, filename)
             const content = JSON.stringify(message)
             // Check if the file is readable.
             access(f, constants.W_OK, (err) => {
@@ -61,12 +61,12 @@ class FileWriter extends Processor {
 
         var filePath = await this.getProperty(ns.trn.destinationFile)
         if (!filePath) {
-            filePath = await this.getProperty(ns.trn.dataDir)
+            filePath = await this.getProperty(ns.trn.workingDir)
         }
 
         // Resolve relative to targetPath or rootDir
         if (!path.isAbsolute(filePath)) {
-            filePath = path.join(message.targetPath || message.dataDir, filePath)
+            filePath = path.join(message.targetPath || message.workingDir, filePath)
         }
 
         logger.trace(`Filewriter, filepath = ${filePath}`)
