@@ -70,5 +70,11 @@
         "label": "stringops",
         "description": "test stringops application",
         "requiredMatchCount": 4
+    },
+    {
+        "command": "./trans file-remove-copy",
+        "label": "file-remove-copy",
+        "description": "file-remove-copy VALUES NOT TESTED",
+        "requiredMatchCount": 0
     }
 ]

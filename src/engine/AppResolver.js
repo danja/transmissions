@@ -128,6 +128,9 @@ class AppResolver {
     }
 
     resolveDataDir() {
+        if (this.targetPath){
+            this.workingDir = this.targetPath
+        }
         if (!this.workingDir) {
             this.workingDir = path.join(this.appPath, this.dataSubDir)
         }
