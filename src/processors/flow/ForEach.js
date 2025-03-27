@@ -29,6 +29,8 @@ class ForEach extends Processor {
 
         //  logger.reveal(reduced)
 
+        const delay = super.getProperty(ns.trn.delay, '10')
+
         message.done = false
         for (const item of reduced) {
             //  const clonedMessage = structuredClone(message)
@@ -44,6 +46,7 @@ class ForEach extends Processor {
             logger.trace(`ForEach: Emitting message for item: ${item}`)
             clonedMessage.eachCounter = this.eachCounter++
             this.emit('message', clonedMessage)
+            await SysUtils.sleep(delay)
         }
         message.done = true
         /////////////////// TODO put back in

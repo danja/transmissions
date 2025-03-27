@@ -9,5 +9,11 @@ class SysUtils {
         message.app.dataset = dataset
         return message
     }
+
+    static sleep(ms) {
+        return new Promise((resolve) => {
+            setTimeout(resolve, ms)
+        })
+    }
 }
 export default SysUtils
