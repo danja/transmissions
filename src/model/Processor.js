@@ -136,8 +136,9 @@ async process(message) {
             message = SysUtils.copyMessage(message)
 
             this.addTag(message)
-
+            logger.trace(`BEFORE PRE`)
             await this.preProcess(message)
+            logger.trace(`AFTER PRE`)
             await this.process(message)
             await this.postProcess(message)
         }

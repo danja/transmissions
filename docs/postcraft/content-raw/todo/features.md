@@ -1,5 +1,14 @@
 # Transmissions ToDo : Features
 
+* somehow make the processor type more visible in config/manifest
+
+maybe just naming
+```turtle
+:p10Settings a :ConfigSet ;
+...
+```
+
+
 * add a safety check to FileRemove
 
 ## Postcraft - related

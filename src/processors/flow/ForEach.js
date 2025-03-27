@@ -1,10 +1,10 @@
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
 import SysUtils from '../../utils/SysUtils.js'
-import Processor from '../../model/Processor.js'
+import SlowableProcessor from '../../model/SlowableProcessor.js'
 import JSONUtils from '../../utils/JSONUtils.js'
 
-class ForEach extends Processor {
+class ForEach extends SlowableProcessor {
     constructor(config) {
         super(config)
         this.eachCounter = 0
@@ -29,7 +29,7 @@ class ForEach extends Processor {
 
         //  logger.reveal(reduced)
 
-        const delay = super.getProperty(ns.trn.delay, '10')
+        const delay = super.getProperty(ns.trn.delay, '100')
 
         message.done = false
         for (const item of reduced) {
@@ -46,7 +46,7 @@ class ForEach extends Processor {
             logger.trace(`ForEach: Emitting message for item: ${item}`)
             clonedMessage.eachCounter = this.eachCounter++
             this.emit('message', clonedMessage)
-            await SysUtils.sleep(delay)
+            //  await SysUtils.sleep(delay)
         }
         message.done = true
         /////////////////// TODO put back in

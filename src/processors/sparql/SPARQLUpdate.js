@@ -2,11 +2,11 @@ import axios from 'axios'
 import nunjucks from 'nunjucks'
 import crypto from 'crypto'
 import logger from '../../utils/Logger.js'
-import Processor from '../../model/Processor.js'
+import SlowableProcessor from '../../model/SlowableProcessor.js'
 import ns from '../../utils/ns.js'
 import SessionEnvironment from './SessionEnvironment.js'
 
-class SPARQLUpdate extends Processor {
+class SPARQLUpdate extends SlowableProcessor {
     constructor(config) {
         super(config)
         this.env = new SessionEnvironment(this)
