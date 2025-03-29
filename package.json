@@ -1,8 +1,11 @@
 {
   "type": "module",
+  "main": "src/cli/run.js",
   "version": "1.0.0",
-  "description": "Transmissions",
+  "description": "Transmissions Dataflow Driver",
   "name": "transmissions",
+  "author": "Danny Ayers <danny.ayers@gmail.com> (https://danny.ayers.name)",
+  "license": "MIT",
   "scripts": {
     "test": "jasmine --config=config/jasmine.json --reporter=tests/tests-support/helpers/reporter.js",
     "cov": "nyc -a --include=src --reporter=lcov npm run test",
