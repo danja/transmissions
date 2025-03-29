@@ -2,14 +2,14 @@
 import ns from '../../utils/ns.js'
 
 
-import RunCommand from './BashCommand.js'
+import BashCommand from './BashCommand.js'
 
 
 class UnsafeProcessorsFactory {
     static createProcessor(type, config) {
 
-        if (type.equals(ns.trn.RunCommand)) {
-            return new RunCommand(config)
+        if (type.equals(ns.trn.BashCommand)) {
+            return new BashCommand(config)
         }
 
         return false

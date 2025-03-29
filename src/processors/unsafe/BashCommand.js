@@ -3,7 +3,7 @@ import logger from '../../utils/Logger.js'
 import Processor from '../../model/Processor.js'
 import ns from '../../utils/ns.js'
 
-class RunCommand extends Processor {
+class BashCommand extends Processor {
     constructor(config) {
         super(config)
         this.allowedCommands = config.allowedCommands || []
@@ -88,4 +88,4 @@ class RunCommand extends Processor {
     }
 }
 
-export default RunCommand
+export default BashCommand
