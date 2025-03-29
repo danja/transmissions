@@ -6,7 +6,7 @@
 @prefix : <http://purl.org/stuff/transmissions/> .
 
 
-:dirWalker a :ConfigSet .
+:mts10-dirWalker a :ConfigSet .
  # :sourceDir "." .
 
 :readerSet a :ConfigSet ;
@@ -19,9 +19,9 @@
     :creatorURI <http://danny.ayers.name/me> .
 
 # need sensible/test defaults
-:storeArticle a :ConfigSet ;
-    :dataBlock "contentBlocks" ;
-    :templateFilename "layouts/base/templates/store-article.njk" ;
-    :endpointSettings "endpoint.json" .
+#:mts40-storeArticle a :ConfigSet ;
+ #   :dataBlock "contentBlocks" ;
+ #   :templateFilename "layouts/base/templates/store-article.njk" ;
+  #  :endpointSettings "endpoint.json" .
 
 
