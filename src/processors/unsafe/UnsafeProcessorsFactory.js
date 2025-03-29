@@ -2,7 +2,7 @@
 import ns from '../../utils/ns.js'
 
 
-import RunCommand from './RunCommand.js'
+import RunCommand from './BashCommand.js'
 
 
 class UnsafeProcessorsFactory {
