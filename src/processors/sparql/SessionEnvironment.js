@@ -13,17 +13,20 @@ class SessionEnvironment {
     }
 
     async loadEndpoints(dir) {
-        logger.trace(`SessionEnvironment.loadEndpoints dir = ${dir}`)
+        logger.debug(`SessionEnvironment.loadEndpoints dir = ${dir}`)
         const settingsPath = this.processor.getProperty(ns.trn.endpointSettings)
-        logger.trace(`SessionEnvironment.loadEndpoints dir = ${dir}`)
-        logger.trace(`SessionEnvironment.loadEndpoints settingsPath = ${settingsPath}`)
+        logger.debug(`SessionEnvironment.loadEndpoints dir = ${dir}`)
+        logger.debug(`SessionEnvironment.loadEndpoints settingsPath = ${settingsPath}`)
 
         if (!settingsPath) {
-            throw new Error('Endpoint settings path is undefined')
+            throw new Error(`
+Endpoint settings path is undefined
+Config :
+${logger.shorter(this.processor.config)}`)
         }
 
         const filePath = path.join(dir, settingsPath)
-        logger.trace(`SessionEnvironment.loadEndpoints filePath = ${filePath}`)
+        logger.debug(`SessionEnvironment.loadEndpoints filePath = ${filePath}`)
         const data = await fs.readFile(filePath, 'utf8')
         this.endpoints = JSON.parse(data)
     }
@@ -33,7 +36,7 @@ class SessionEnvironment {
     }
 
     getUpdateEndpoint() {
-        // logger.trace(`this.endpoints = ${this.endpoints}`)
+        // logger.debug(`this.endpoints = ${this.endpoints}`)
         const ep = this.endpoints.find(e => e.type === 'update')
         // logger.log(`update endpoint = ${ep}`)
         // logger.reveal(ep)
@@ -42,8 +45,8 @@ class SessionEnvironment {
 
     async getTemplate(dir, templateFilename) {
 
-        logger.trace(`SessionEnvironment.getTemplate dir = ${dir}`)
-        logger.trace(`SessionEnvironment.getTemplate templateFilename = ${templateFilename}`)
+        logger.debug(`SessionEnvironment.getTemplate dir = ${dir}`)
+        logger.debug(`SessionEnvironment.getTemplate templateFilename = ${templateFilename}`)
 
         const cacheKey = path.join(dir, templateFilename)
 
@@ -53,8 +56,8 @@ class SessionEnvironment {
 
         const template = await fs.readFile(cacheKey, 'utf8')
         this.templateCache.set(cacheKey, template)
-        logger.trace(`SessionEnvironment.getTemplate cacheKey = ${cacheKey}`)
-        logger.trace(`SessionEnvironment.getTemplate template = ${template}`)
+        logger.debug(`SessionEnvironment.getTemplate cacheKey = ${cacheKey}`)
+        logger.debug(`SessionEnvironment.getTemplate template = ${template}`)
         return template
     }
 

@@ -60,6 +60,7 @@ class SPARQLUpdate extends SlowableProcessor {
     async getUpdateEndpoint(message) {
         if (!this.env.endpoints) {
             const dir = this.getProperty(ns.trn.targetPath, message.rootDir)
+            logger.debug(`SPARQLUpdate.getUpdateEndpoint, dir = ${dir}`)
             await this.env.loadEndpoints(dir)
         }
         return this.env.getUpdateEndpoint()

@@ -63,6 +63,7 @@ class Processor extends EventEmitter {
     }
 
     async preProcess(message) {
+
         this.app = message.app
         // this.config.app = this.app // ??????????
         this.settee.app = this.app
@@ -73,6 +74,14 @@ class Processor extends EventEmitter {
         }
 
         this.previousLogLevel = logger.getLevel()
+
+
+        const debug = this.getProperty(ns.trn.debug)
+
+        if (debug) {
+            logger.setLogLevel('debug')
+        }
+        logger.debug(`Processor.preProcess, debug = ${debug}`)
 
         /* TODO uncomment after config sorted
         const messageType = this.getProperty(ns.trn.messageType)

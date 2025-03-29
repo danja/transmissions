@@ -105,14 +105,19 @@ logger.log = function (msg, level = "info") {
 }
 
 // abbrev URLs in text - dirty version!
-logger.sh = function (rdfString) {
-    const loglevel = logger.getLevel()
+logger.sh = function (string) {
+    // const loglevel = logger.getLevel()
     // logger.setLogLevel('trace')
+    string = logger.shorter(string)
+    logger.log(string)
+}
+
+logger.shorter = function (rdfString) {
     rdfString = rdfString.toString() // to be sure, to be sure
     Object.entries(ns.prefixMap).forEach(([key, value]) => {
         rdfString = rdfString.replaceAll(key, chalk.green(value))
     })
-    logger.log(chalk.magentaBright(rdfString))
+    return chalk.magentaBright(rdfString)
 }
 
 // TODO have this return a string
