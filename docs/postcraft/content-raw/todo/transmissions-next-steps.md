@@ -1,5 +1,9 @@
 # Transmissions : Next Steps
 
+https://docs.npmjs.com/cli/v11/configuring-npm/package-json
+
+graphicals
+
 ## feature : Docs
 
 Enough for Bergi to be able to review the RDF-Ext bits.
