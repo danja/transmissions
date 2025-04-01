@@ -11,6 +11,7 @@
         "useGitignore": true,
         "useDefaultPatterns": true,
         "customPatterns": [
+            "src/applications/claude-json-converter/data",
             "**/_*/**",
             "**/.env",
             "**/old",
