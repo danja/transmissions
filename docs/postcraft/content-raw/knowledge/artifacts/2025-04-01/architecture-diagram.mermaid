@@ -1,0 +1,63 @@
+flowchart TB
+    subgraph files["File System"]
+        TTL["Transmission TTL Files"]
+    end
+    
+    subgraph editor["Transmission Pipeline Editor"]
+        TE["TransmissionEditor"]
+        TL["TransmissionsLoader"]
+        PNP["ProcessorNodePublisher"]
+        TGB["TransmissionsGraphBuilder"]
+        TEX["TransmissionsExporter"]
+    end
+    
+    subgraph nodeflow["Node-Flow Library"]
+        NFG["NodeFlowGraph"]
+        FN["FlowNode"]
+        PB["Publisher"]
+    end
+    
+    subgraph system["Transmissions System"]
+        RU["RDFUtils"]
+        GP["Grapoi"]
+        NS["NS"]
+    end
+    
+    %% Component Relationships
+    TTL <--"Load/Save"--> TL
+    TL --"Parse"--> TE
+    TEX --"Serialize"--> TTL
+    
+    TE --"Coordinates"--> TL
+    TE --"Coordinates"--> PNP
+    TE --"Coordinates"--> TGB
+    TE --"Coordinates"--> TEX
+    
+    PNP --"Register Types"--> NFG
+    TGB --"Build Graph"--> NFG
+    TEX --"Extract Graph"--> NFG
+    
+    TL --"Use"--> RU
+    TL --"Use"--> GP
+    TL --"Use"--> NS
+    TEX --"Use"--> RU
+    TEX --"Use"--> NS
+    
+    %% Data Flow
+    TTL -.->|"1. TTL File"| TL
+    TL -.->|"2. RDF Dataset"| TE
+    TE -.->|"3. Intermediate Format"| TGB
+    TGB -.->|"4. Create Nodes"| FN
+    FN -.->|"5. User Edits"| NFG
+    NFG -.->|"6. Extract Data"| TEX
+    TEX -.->|"7. Save TTL"| TTL
+    
+    classDef component fill:#154050,stroke:#afb9bb,color:#afb9bb
+    classDef data fill:#07212a,stroke:#afb9bb,color:#afb9bb,stroke-dasharray: 5 5
+    classDef system fill:#195366,stroke:#afb9bb,color:#afb9bb
+    classDef files fill:#0c2b35,stroke:#afb9bb,color:#afb9bb
+    
+    class TE,TL,PNP,TGB,TEX component
+    class NFG,FN,PB system
+    class RU,GP,NS system
+    class TTL files
