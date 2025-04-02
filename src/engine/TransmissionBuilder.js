@@ -19,7 +19,7 @@ class TransmissionBuilder {
     this.currentDepth = 0
   }
 
-  async buildTransmissions(transmissionConfig, processorsConfig) {
+  async buildTransmissions(app, transmissionConfig, processorsConfig) {
     logger.debug(`\nTransmissionBuilder.buildTransmissions`)
     logger.trace(`transmissionConfig = \n${transmissionConfig}`)
     const poi = grapoi({ dataset: transmissionConfig })
@@ -35,6 +35,8 @@ class TransmissionBuilder {
           transmissionID,
           processorsConfig
         )
+        logger.reveal(app)
+        transmission.app = app
         transmissions.push(transmission)
       }
     }
@@ -85,7 +87,7 @@ class TransmissionBuilder {
         const processorType = np.out(ns.rdf.type).term
 
         const settingsNode = np.out(ns.trn.settings).term
-     //   const settingsNodeName = settingsNode ? settingsNode.value : undefined
+        //   const settingsNodeName = settingsNode ? settingsNode.value : undefined
 
         logger.debug(`Creating processor:
           Node: :${ns.shortName(node?.value)}
@@ -104,15 +106,19 @@ class TransmissionBuilder {
           transmission.register(node.value, nestedTransmission)
         } else {
           // Regular processor handling
-          const processor = await this.createProcessor(processorType, processorsConfig)
-          processor.id = node.value
-          processor.type = processorType
+          const processorBase = await this.createProcessor(processorType, processorsConfig)
+          processorBase.id = node.value
+          processorBase.type = processorType
           if (settingsNode) {
-            processor.settingsNode = settingsNode
+            processorBase.settingsNode = settingsNode
           }
-          processor.transmission = transmission
-          processor.whiteboard = transmission.whiteboard // feels redundant...
-          transmission.register(node.value, processor)
+
+          logger.debug('sssssssssssssssssssssssssssssssssssss')
+          logger.reveal(transmission) ///////////////////////////////////7
+          processorBase.whiteboard = transmission.whiteboard // feels redundant...
+          processorBase.x = `X`
+          const processorInstance = transmission.register(node.value, processorBase)
+          processorInstance.app = transmission.app
         }
       }
     }

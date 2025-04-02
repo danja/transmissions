@@ -41,7 +41,7 @@ class Transmission {
       this.children.add(processor)
     }
     this.processors[processorName] = instance
-    return processor
+    return instance
   }
 
   get(processorName) {

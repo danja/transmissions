@@ -6,62 +6,84 @@ import logger from '../utils/Logger.js'
 import GrapoiHelpers from '../utils/GrapoiHelpers.js'
 
 class ProcessorSettings {
-    constructor(config) {
-        this.config = config
+    constructor(parent) {
+        this.parent = parent
+        logger.debug(`parent.app = ${parent.app}`)
+        this.appConfig = parent.app?.dataset
+        logger.debug(`this.appConfig = ${this.appConfig}`)
+        this.transmissionConfig = parent.app?.transmissionConfig
+        logger.debug(`this.transmissionConfig = ${this.transmissionConfig}`)
+        this.config = parent.config
+        logger.debug(`this.config = ${this.config}`)
     }
 
     // rename...to what?
     getProperty(settingsNode, property, fallback = undefined) {
-        logger.trace(`\nProcessorSettings.getProperty looking for ${property}`)
-        logger.trace(`settingsNode = ${settingsNode}`)
+        logger.debug(`ProcessorSettings.getProperty looking for ${property}`)
+        logger.debug(`settingsNode = ${settingsNode}`)
         this.settingsNode = settingsNode
-        //    if (this.settingsNode) logger.trace(`this.settingsNode = ${this.settingsNode.value}`)
-        //   this.settee.settingsNode = settingsNode
 
-        const values = this.getValues(settingsNode, property)
+        const values = this.getValues(settingsNode, property, fallback)
         if (values.length == 0) {
             return fallback
         }
         return values.length == 1 ? values[0] : values
-
-        /*
-        const value = this.getValue(property, fallback)
-
-        logger.trace(`Processor.getProperty, value = ${value}`)
-        return value
-        */
     }
 
-    /*
-    getValues(property, fallback) {
-        logger.trace(`ProcessorSettings.getValues,
-                looking for ${property}`)
+    getValues(settingsNode, property, fallback) {
+        this.settingsNode = settingsNode;
+        logger.debug(`ProcessorSettings.getValues, property = ${property.value}`);
 
-        var value = this.propertyInMessage(property)
-        if (value) {
-            return [value]
+        if (!this.settingsNode) {
+            return fallback ? [fallback] : [];
         }
 
-        this.settee.settingsNode = this.settingsNode
-        var values = this.settee.valuesFromDataset(this.app.dataset, property)
-        if (!values) {
-            values = this.settee.getValues(property, fallback)
+        // First check the app dataset (manifest.ttl)
+        logger.debug(`> ProcessorSettings.getValues, checking APP dataset`);
+        //  const appDataset = this.config.app.dataset; // TODO can we see app?
+        const appDataset = this.appConfig
+        logger.debug(`appDataset = ${appDataset}`)
+
+        if (appDataset) {
+            const appValues = this.valuesFromDataset(appDataset, property);
+            if (appValues && appValues.length > 0) {
+                logger.debug(`-> ProcessorSettings.getValues, found in APP dataset: ${appValues}`);
+                return appValues;
+            }
         }
-        logger.trace(`Processor.getValues values = ${values}`)
-        return values
+
+        // Next check the transmission config (transmissions.ttl)
+        logger.debug(`> not found, checking TRANSMISSIONS dataset`);
+        const transDataset = this.transmissionConfig
+        logger.debug(`transDataset = ${transDataset}`)
+        if (transDataset) {
+            const transValues = this.valuesFromDataset(transDataset, property);
+            if (transValues && transValues.length > 0) {
+                logger.debug(`> ProcessorSettings.getValues, found in TRANSMISSIONS dataset: ${transValues}`);
+                return transValues;
+            }
+        }
+
+        // Finally check the general config (config.ttl)
+        logger.debug(`> not found, checking CONFIG dataset`);
+        const configDataset = this.config;
+        logger.debug(`configDataset = ${configDataset}`)
+
+        if (configDataset) {
+            const configValues = this.valuesFromDataset(configDataset, property);
+            if (configValues && configValues.length > 0) {
+                logger.debug(`   ProcessorSettings.getValues, found in CONFIG dataset: ${configValues}`);
+                return configValues;
+            }
+        }
+
+        return fallback ? [fallback] : [];
     }
-        */
+
 
     valuesFromDataset(dataset, property) {
         if (!dataset) return undefined
         const ptr = grapoi({ dataset, term: this.settingsNode })
-        //      logger.trace(`ProcessorSettings.valuesFromDataset,  this.settingsNode = ${this.settingsNode.value}`)
-        //   logger.trace(`valuesFromDataset, this.settingsNode = ${this.settingsNode.value}`)
-        //    logger.trace(`valuesFromDataset, property = ${property}`)
-        //     logger.reveal(ptr)
-        //  logger.sh(dataset)
-        //
-        // Special handling for rename lists
 
         if (property.equals(ns.trn.rename)) {
             try {
@@ -75,8 +97,8 @@ class ProcessorSettings {
         // Regular property handling
         try {
 
-           const value1 = ptr.out(property)
-            logger.trace(`\n\nvalue1 = ${value1.value}`)
+            const value1 = ptr.out(property)
+            logger.debug(`value1 = ${value1.value}`)
 
             // Check if property exists but doesn't have value1
             if (value1.terms.length === 0) {
@@ -89,11 +111,10 @@ class ProcessorSettings {
                 //      logger.log(`\narr = ${arr}`)
                 for (var i = 0; i < arr.length; i++) {
                     //        logger.log(`\narr[i] = `)
-             //       logger.reveal(arr[i])
+                    //       logger.reveal(arr[i])
                 }
                 //    return arr
             }
-            //////////////////////
 
             // Process value based on type
             if (value1.terms.length === 1) {
@@ -122,39 +143,47 @@ class ProcessorSettings {
         }
     }
 
+
+    /*
     getValues(settingsNode, property, fallback) {
         this.settingsNode = settingsNode
-        logger.trace(`\n\nProcessorSettings.getValues, property = ${property.value}`)
+        logger.debug(`\n\nProcessorSettings.getValues, property = ${property.value}`)
 
         if (!this.settingsNode) {
             return fallback ? [fallback] : []
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////
-        // logger.trace(`settingsNode = ${this.settingsNode.value}`)
+        // logger.debug(`settingsNode = ${this.settingsNode.value}`)
 
-        logger.trace(`\n\n   *** ProcessorSettings.getValues, looking for ${property} in APP dataset`)
+        logger.debug(`\n\n   *** ProcessorSettings.getValues, looking for ${property} in APP dataset`)
         var dataset = this.app?.dataset
 
         if (dataset) {
-            // logger.trace('------------------------------------')
+            // logger.debug('------------------------------------')
             //logger.log(dataset)
-            // logger.trace('------------------------------------')
+            // logger.debug('------------------------------------')
             var values = this.valuesFromDataset(dataset, property)
             if (values && values.length > 0) {
-                logger.trace(`   ProcessorSettings.getValues, found in APP dataset (manifest.ttl): ${values}`)
+                logger.debug(`   ProcessorSettings.getValues, found in APP dataset (manifest.ttl): ${values}`)
                 return values
             }
         }
 
-        logger.trace(`*** ProcessorSettings.getValues, looking for ${property} in CONFIG dataset (config.ttl)`)
+        //+++++++++++++++++++++++++++++++++++
+        logger.debug(`*** ProcessorSettings.getValues, looking for ${property} in TRANSMISSIONS dataset (transmissions.ttl)`)
+        dataset = this.transmissionConfig
+
+        logger.log(`DATASET = \n${dataset}`)
+        values = this.valuesFromDataset(dataset, property)
+        if (values && values.length > 0) {
+            return values
+        }
+        //++++++++++++++++++++++++++++++++++++++++
+
+        logger.debug(`*** ProcessorSettings.getValues, looking for ${property} in CONFIG dataset (config.ttl)`)
         dataset = this.config
 
-        /*
-        logger.trace('------------------------------------')
-        logger.reveal(dataset)
-        logger.trace('------------------------------------')
-        */
 
         values = this.valuesFromDataset(dataset, property)
         if (values && values.length > 0) {
@@ -163,12 +192,12 @@ class ProcessorSettings {
 
         return fallback ? [fallback] : []
     }
-
+*/
     /*
     getValue(property, fallback) {
         const values = this.getValues(property, fallback)
 
-        logger.trace(`All values2: ${values}`)
+        logger.debug(`All values2: ${values}`)
         if (values.length == 0) {
             return undefined
         }

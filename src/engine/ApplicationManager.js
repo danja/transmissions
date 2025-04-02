@@ -19,7 +19,7 @@ class ApplicationManager {
     }
 
     async initialize(appName, appPath, subtask, target, flags) {
-        logger.trace(`ApplicationManager.initialize, appName=${appName}, appPath=${appPath}, subtask=${subtask}, target=${target}`)
+        logger.debug(`ApplicationManager.initialize, appName=${appName}, appPath=${appPath}, subtask=${subtask}, target=${target}`)
 
         if (flags && flags.test) {
             const mock = new MockApplicationManager()
@@ -44,13 +44,13 @@ class ApplicationManager {
     }
 
     async buildTransmissions(transmissionConfigFile, processorsConfigFile, moduleLoader, app) {
-        logger.trace(`\nApplicationManager.build ****************************************`)
+        logger.debug(`\nApplicationManager.build ****************************************`)
 
         const builder = new TransmissionBuilder(this.moduleLoader, this.appResolver)
         const transmissionConfig = await RDFUtils.readDataset(this.appResolver.getTransmissionsPath())
         const processorsConfig = await RDFUtils.readDataset(this.appResolver.getConfigPath())
 
-
+        this.app.transmissionConfig = transmissionConfig
         // Merge with app dataset
         /*
             for (const quad of app.dataset) {
@@ -58,11 +58,11 @@ class ApplicationManager {
               processorsConfig.add(quad)
             }
         */
-        return await builder.buildTransmissions(transmissionConfig, processorsConfig)
+        return await builder.buildTransmissions(this.app, transmissionConfig, processorsConfig)
     }
 
     async start(message = {}) {
-        logger.trace(`\n||| ApplicationManager.start`)
+        logger.debug(`\n||| ApplicationManager.start`)
         message.app = this.app
 
         logger.debug(`
@@ -81,7 +81,7 @@ class ApplicationManager {
         // Modify the input message in place
         _.merge(message, contextMessage)
         message.appRunStart = (new Date()).toISOString()
-        logger.trace('**************** Message with merged context:', message)
+        logger.debug('**************** Message with merged context:', message)
 
         /*
         for (const transmission of transmissions) {
@@ -94,7 +94,7 @@ class ApplicationManager {
         message.sessionNode = this.appResolver.sessionNode
 
         for (const transmission of transmissions) {
-            logger.trace(`transmission = \n${transmission}`)
+            logger.debug(`transmission = \n${transmission}`)
             if (!this.appResolver.subtask || this.appResolver.subtask === transmission.label) {
                 //     await transmission.process(message)
                 message = await transmission.process(message)

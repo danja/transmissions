@@ -183,6 +183,8 @@ async process(message) {
 
     toString() {
         logger.reveal(this.settings)
+        logger.reveal(this.app.transmissionConfig)
+
         const settingsNodeValue = this.settingsNode ? this.settingsNode.value : 'none'
         return `
         *** Processor ${this.constructor.name}
@@ -192,6 +194,8 @@ async process(message) {
                 description = ${this.description}
                 settingsNodeValue = ${settingsNodeValue}
                 settings = ${this.settings}
+                 x = ${this.x}
+              
        `
     }
 }

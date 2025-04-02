@@ -187,14 +187,14 @@ logger.reveal = function (instance, verbose = true) {
     try {
         // Create a cache to store already-visited objects to avoid circular references
         const cache = new WeakSet();
-        
+
         // Custom replacer function to handle circular references
         const customReplacer = (key, value) => {
             // Ignore special properties that lead to circular references
             if (key === 'transmission' || key === 'config' || key === 'dataset' || key === 'app') {
                 return `[${key}: circular ref]`;
             }
-            
+
             // Handle other objects that might be circular
             if (typeof value === 'object' && value !== null) {
                 if (cache.has(value)) {
@@ -202,12 +202,12 @@ logger.reveal = function (instance, verbose = true) {
                 }
                 cache.add(value);
             }
-            
+
             // If it's a Buffer, convert to string
             if (Buffer.isBuffer(value)) {
                 return value.toString();
             }
-            
+
             // Truncate long strings
             if (typeof value === 'string' && value.length > 100) {
                 try {
@@ -216,7 +216,7 @@ logger.reveal = function (instance, verbose = true) {
                     return value.slice(0, 99);
                 }
             }
-            
+
             return value;
         };
 
@@ -227,10 +227,10 @@ logger.reveal = function (instance, verbose = true) {
 
         for (const key in instance) {
             if (key === 'app') {
-                logger.log(chalk.yellow(chalk.bold('message.app :')), 'debug');
+                logger.log(chalk.yellow(chalk.bold('.app :')), 'debug');
                 continue;
             }
-            
+
             if (key.startsWith('_')) {
                 logger.log(`       ${key}`, 'debug');
                 continue;
@@ -251,7 +251,7 @@ logger.reveal = function (instance, verbose = true) {
         logger.error(`Error in reveal: ${error.message}`);
         logger.log(`Failed to stringify object of type: ${instance.constructor?.name || typeof instance}`);
         logger.setLogLevel('debug');
-        
+
         // Fallback to simple key listing
         logger.log("Properties (keys only):");
         try {
