@@ -2,7 +2,7 @@
     "output": {
         "filePath": "./docs/terrapacks/repomix-transmissions-large.md",
         "headerText": "Transmissions source code",
-        "removeComments": false
+        "removeComments": true
     },
     "include": [
         "**/*"

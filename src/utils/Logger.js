@@ -121,6 +121,7 @@ logger.shorter = function (rdfString) {
 }
 
 // TODO have this return a string
+/*
 logger.reveal = function (instance, verbose = true) {
 
     if (!instance) return
@@ -175,6 +176,94 @@ logger.reveal = function (instance, verbose = true) {
     }
     logger.log(`${chalk.yellow(props)}`)
     logger.setLogLevel(loglevel)
+}
+*/
+// Updated reveal function for src/utils/Logger.js
+// Replace the existing reveal function with this one
+
+logger.reveal = function (instance, verbose = true) {
+    if (!instance) return;
+
+    try {
+        // Create a cache to store already-visited objects to avoid circular references
+        const cache = new WeakSet();
+        
+        // Custom replacer function to handle circular references
+        const customReplacer = (key, value) => {
+            // Ignore special properties that lead to circular references
+            if (key === 'transmission' || key === 'config' || key === 'dataset' || key === 'app') {
+                return `[${key}: circular ref]`;
+            }
+            
+            // Handle other objects that might be circular
+            if (typeof value === 'object' && value !== null) {
+                if (cache.has(value)) {
+                    return '[Circular]';
+                }
+                cache.add(value);
+            }
+            
+            // If it's a Buffer, convert to string
+            if (Buffer.isBuffer(value)) {
+                return value.toString();
+            }
+            
+            // Truncate long strings
+            if (typeof value === 'string' && value.length > 100) {
+                try {
+                    return value.substring(0, 100) + '...';
+                } catch (e) {
+                    return value.slice(0, 99);
+                }
+            }
+            
+            return value;
+        };
+
+        const serialized = {};
+
+        const loglevel = logger.getLevel();
+        logger.setLogLevel('trace');
+
+        for (const key in instance) {
+            if (key === 'app') {
+                logger.log(chalk.yellow(chalk.bold('message.app :')), 'debug');
+                continue;
+            }
+            
+            if (key.startsWith('_')) {
+                logger.log(`       ${key}`, 'debug');
+                continue;
+            }
+
+            if (instance.hasOwnProperty(key)) {
+                serialized[key] = instance[key];
+            }
+        }
+
+        const props = JSON.stringify(serialized, customReplacer, 2);
+        if (verbose) {
+            logger.log(`Instance of ${chalk.yellow(chalk.bold(instance.constructor.name))} with properties - `);
+        }
+        logger.log(`${chalk.yellow(props)}`);
+        logger.setLogLevel(loglevel);
+    } catch (error) {
+        logger.error(`Error in reveal: ${error.message}`);
+        logger.log(`Failed to stringify object of type: ${instance.constructor?.name || typeof instance}`);
+        logger.setLogLevel('debug');
+        
+        // Fallback to simple key listing
+        logger.log("Properties (keys only):");
+        try {
+            for (const key in instance) {
+                if (instance.hasOwnProperty(key)) {
+                    logger.log(`- ${key}: [${typeof instance[key]}]`);
+                }
+            }
+        } catch (e) {
+            logger.error(`Even simple inspection failed: ${e.message}`);
+        }
+    }
 }
 
 LOG_LEVELS.forEach(level => {

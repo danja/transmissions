@@ -3,7 +3,8 @@ import Connector from './Connector.js'
 import ns from '../utils/ns.js'
 
 class Transmission {
-  constructor() {
+  constructor(transmissionConfig) {
+    this.transmissionConfig = transmissionConfig
     this.processors = {}
     this.connectors = []
     this.parent = null
@@ -40,6 +41,7 @@ class Transmission {
       this.children.add(processor)
     }
     this.processors[processorName] = instance
+    return processor
   }
 
   get(processorName) {

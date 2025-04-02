@@ -1,4 +1,4 @@
-// src/processors/rdf/ConfigMap.js
+/sdfg/ src/processors/rdf/ConfigMap.js
 /**
  * @class ConfigMap
  * @extends Processor

@@ -9,9 +9,16 @@ class NOP extends Processor {
     }
 
     async process(message) {
-        const done = message.done ? `DONE` : `NOT DONE`
-        logger.log(`\nNOP at [${message.tags}] ${this.getTag()} (${done})`)
-
+     const done = message.done ? `done = true` : `done = false`
+     
+     logger.log(`\nNOP at [${message.tags}] ${this.getTag()} (${done})`)
+        const test = await super.getProperty(ns.trn.test, "TEST_FAILED")
+        if(test){
+            logger.log(test)
+        }
+         logger.log(this)
+       // logger.reveal(this)
+        //    process.exit()
         return this.emit('message', message)
     }
 
