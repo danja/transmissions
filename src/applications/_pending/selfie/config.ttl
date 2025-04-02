@@ -1,9 +1,0 @@
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix trn: <http://purl.org/stuff/transmissions/> .
-@prefix trn: <http://purl.org/stuff/transmissions/> . # for custom terms & instances
-
-trn:setDemo a trn:ConfigSet ;
-    trn:setValue (trn:sv0)  . # consider using blank nodes
-    trn:sv0   trn:key    "demo" ;
-            trn:value    "a test value"  .

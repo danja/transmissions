@@ -1,8 +1,0 @@
-### NOT USED
-
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix dc: <http://purl.org/dc/terms/> .
-@prefix trn: <http://purl.org/stuff/transmissions/> .
-@prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances
-
-:StringPipeline dc:title "Hello" .
