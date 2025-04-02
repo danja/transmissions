@@ -2,9 +2,6 @@
 import path from 'path'
 import fs from 'fs/promises'
 import _ from 'lodash'
-// import rdf from 'rdf-ext'
-
-// import ns from '../utils/ns.js'
 import logger from '../utils/Logger.js'
 import RDFUtils from '../utils/RDFUtils.js'
 
@@ -19,7 +16,6 @@ class ApplicationManager {
         this.appResolver = new AppResolver()
         this.moduleLoader = null
         this.app = new Application()
-        //   this.dataset = rdf.dataset()
     }
 
     async initialize(appName, appPath, subtask, target, flags) {
