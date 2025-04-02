@@ -1,0 +1,492 @@
+src/api/cli/run.js(4,1): error TS6133: 'WebRunner' is declared but its value is never read.
+src/api/cli/run.js(11,32): error TS2345: Argument of type 'Buffer<ArrayBufferLike>' is not assignable to parameter of type 'string'.
+src/api/common/CommandUtils.js(47,9): error TS2322: Type 'MockApplicationManager | ApplicationManager' is not assignable to type 'ApplicationManager'.
+  Type 'MockApplicationManager' is missing the following properties from type 'ApplicationManager': appResolver, moduleLoader, buildTransmissions
+src/api/http/client/js/client.js(16,14): error TS2531: Object is possibly 'null'.
+src/api/http/client/js/client.js(16,36): error TS2339: Property 'value' does not exist on type 'HTMLElement'.
+src/api/http/client/js/client.js(17,13): error TS2531: Object is possibly 'null'.
+src/api/http/client/js/client.js(17,35): error TS2339: Property 'value' does not exist on type 'HTMLElement'.
+src/api/http/client/js/client.js(26,51): error TS2531: Object is possibly 'null'.
+src/api/http/client/js/client.js(26,73): error TS2339: Property 'value' does not exist on type 'HTMLElement'.
+src/api/http/client/js/client.js(36,9): error TS2531: Object is possibly 'null'.
+src/api/http/client/js/client.js(37,9): error TS2531: Object is possibly 'null'.
+src/api/http/client/js/client.js(39,17): error TS2532: Object is possibly 'undefined'.
+src/api/http/client/js/client.js(39,40): error TS2531: Object is possibly 'null'.
+src/api/http/client/js/client.js(39,62): error TS2339: Property 'value' does not exist on type 'HTMLElement'.
+src/api/http/client/js/client.js(50,13): error TS18047: 'statusEl' is possibly 'null'.
+src/api/http/client/js/client.js(51,13): error TS18047: 'statusEl' is possibly 'null'.
+src/api/http/client/js/client.js(52,13): error TS18047: 'sendButton' is possibly 'null'.
+src/api/http/client/js/client.js(52,24): error TS2339: Property 'disabled' does not exist on type 'HTMLElement'.
+src/api/http/client/js/client.js(54,13): error TS18047: 'statusEl' is possibly 'null'.
+src/api/http/client/js/client.js(55,13): error TS18047: 'statusEl' is possibly 'null'.
+src/api/http/client/js/client.js(56,13): error TS18047: 'sendButton' is possibly 'null'.
+src/api/http/client/js/client.js(56,24): error TS2339: Property 'disabled' does not exist on type 'HTMLElement'.
+src/api/http/client/js/client.js(62,9): error TS18047: 'statusEl' is possibly 'null'.
+src/api/http/client/js/client.js(63,9): error TS18047: 'statusEl' is possibly 'null'.
+src/api/http/client/js/client.js(79,9): error TS2531: Object is possibly 'null'.
+src/api/http/client/js/client.js(101,42): error TS18047: 'message' is possibly 'null'.
+src/api/http/client/js/client.js(101,50): error TS2339: Property 'value' does not exist on type 'HTMLElement'.
+src/api/http/client/js/client.js(106,13): error TS18047: 'statusEl' is possibly 'null'.
+src/api/http/client/js/client.js(107,13): error TS18047: 'statusEl' is possibly 'null'.
+src/api/http/client/js/client.js(108,13): error TS18047: 'sendButton' is possibly 'null'.
+src/api/http/client/js/client.js(108,24): error TS2339: Property 'disabled' does not exist on type 'HTMLElement'.
+src/api/http/client/js/client.js(110,34): error TS2532: Object is possibly 'undefined'.
+src/api/http/client/js/client.js(110,61): error TS18047: 'application' is possibly 'null'.
+src/api/http/client/js/client.js(110,73): error TS2339: Property 'value' does not exist on type 'HTMLElement'.
+src/api/http/client/js/client.js(113,17): error TS18047: 'statusEl' is possibly 'null'.
+src/api/http/client/js/client.js(114,17): error TS18047: 'statusEl' is possibly 'null'.
+src/api/http/client/js/client.js(115,17): error TS18047: 'responseEl' is possibly 'null'.
+src/api/http/client/js/client.js(120,13): error TS18047: 'statusEl' is possibly 'null'.
+src/api/http/client/js/client.js(121,13): error TS18047: 'statusEl' is possibly 'null'.
+src/api/http/client/js/client.js(121,46): error TS18046: 'err' is of type 'unknown'.
+src/api/http/client/js/client.js(122,13): error TS18047: 'responseEl' is possibly 'null'.
+src/api/http/client/js/client.js(125,13): error TS18047: 'sendButton' is possibly 'null'.
+src/api/http/client/js/client.js(125,24): error TS2339: Property 'disabled' does not exist on type 'HTMLElement'.
+src/api/http/server/WebRunner.js(3,1): error TS6133: 'path' is declared but its value is never read.
+src/api/http/server/WebRunner.js(4,1): error TS6133: 'ApplicationManager' is declared but its value is never read.
+src/api/http/server/WebRunner.js(38,22): error TS6133: 'req' is declared but its value is never read.
+src/api/http/server/WebRunner.js(38,27): error TS6133: 'res' is declared but its value is never read.
+src/api/http/server/WebRunner.js(40,32): error TS2345: Argument of type 'Buffer<ArrayBufferLike>' is not assignable to parameter of type 'string'.
+src/api/http/server/WebRunner.js(89,28): error TS18046: 'error' is of type 'unknown'.
+src/api/http/server/WebRunner.js(90,30): error TS18046: 'error' is of type 'unknown'.
+src/api/http/server/WebRunner.js(98,55): error TS18046: 'error' is of type 'unknown'.
+src/api/http/server/WebRunner.js(121,21): error TS2810: Expected 1 argument, but got 0. 'new Promise()' needs a JSDoc hint to produce a 'resolve' that can be called without arguments.
+src/api/http/server/WebRunner.js(145,25): error TS2810: Expected 1 argument, but got 0. 'new Promise()' needs a JSDoc hint to produce a 'resolve' that can be called without arguments.
+src/api/http/server/WebRunner.js(149,17): error TS2810: Expected 1 argument, but got 0. 'new Promise()' needs a JSDoc hint to produce a 'resolve' that can be called without arguments.
+src/applications/test/config-setting-manifest/simple.js(38,13): error TS2339: Property 'settingsNode' does not exist on type 'TestSettings'.
+src/applications/test/config-setting/simple.js(38,13): error TS2339: Property 'settingsNode' does not exist on type 'TestSettings'.
+src/applications/test/config-settings/test-settings-simple.js(32,14): error TS2339: Property 'settingsNode' does not exist on type 'TestSettings'.
+src/engine/AbstractProcessorFactory.js(35,12): error TS7030: Not all code paths return a value.
+src/engine/AbstractProcessorFactory.js(45,13): error TS2403: Subsequent variable declarations must have the same type.  Variable 'processor' must be of type 'boolean | ExampleProcessor', but here has type 'boolean | BashCommand'.
+src/engine/AbstractProcessorFactory.js(47,13): error TS2403: Subsequent variable declarations must have the same type.  Variable 'processor' must be of type 'boolean | ExampleProcessor', but here has type 'boolean | HttpServer | HttpClient | HttpProxy'.
+src/engine/AbstractProcessorFactory.js(56,13): error TS2403: Subsequent variable declarations must have the same type.  Variable 'processor' must be of type 'boolean | ExampleProcessor', but here has type 'boolean | ShowMessage | ShowTransmission | CaptureAll | ShowConfig | WhiteboardToMessage | SetMessage | ShowSettings'.
+src/engine/AbstractProcessorFactory.js(68,9): error TS2322: Type 'false | HttpGet' is not assignable to type 'boolean | ExampleProcessor'.
+  Type 'HttpGet' is not assignable to type 'boolean | ExampleProcessor'.
+    Type 'HttpGet' is not assignable to type 'ExampleProcessor'.
+      Types of property 'process' are incompatible.
+        Type '(url: string, message: any) => Promise<any>' is not assignable to type '(message: any) => Promise<any>'.
+          Target signature provides too few arguments. Expected 2 or more, but got 1.
+src/engine/AbstractProcessorFactory.js(80,9): error TS2322: Type 'false | ForEach | Ping | NOP | DeadEnd | Halt | Unfork | Fork | Accumulate' is not assignable to type 'boolean | ExampleProcessor'.
+  Type 'Halt' is not assignable to type 'boolean | ExampleProcessor'.
+    Type 'Halt' is not assignable to type 'ExampleProcessor'.
+      The types returned by 'process(...)' are incompatible between these types.
+        Type 'void' is not assignable to type 'Promise<any>'.
+src/engine/AbstractProcessorFactory.js(92,13): error TS2403: Subsequent variable declarations must have the same type.  Variable 'processor' must be of type 'boolean | ExampleProcessor', but here has type 'boolean | FileContainer'.
+src/engine/AbstractProcessorFactory.js(95,13): error TS2403: Subsequent variable declarations must have the same type.  Variable 'processor' must be of type 'boolean | ExampleProcessor', but here has type 'boolean | SPARQLSelect | SPARQLUpdate'.
+src/engine/AppResolver.js(2,1): error TS6133: 'fromFile' is declared but its value is never read.
+src/engine/AppResolver.js(32,57): error TS6133: 'flags' is declared but its value is never read.
+src/engine/AppResolver.js(82,62): error TS18046: 'err' is of type 'unknown'.
+src/engine/ApplicationManager.js(50,30): error TS6133: 'transmissionConfigFile' is declared but its value is never read.
+src/engine/ApplicationManager.js(50,54): error TS6133: 'processorsConfigFile' is declared but its value is never read.
+src/engine/ApplicationManager.js(50,76): error TS6133: 'moduleLoader' is declared but its value is never read.
+src/engine/ApplicationManager.js(50,90): error TS6133: 'app' is declared but its value is never read.
+src/engine/ApplicationManager.js(98,48): error TS2339: Property 'sessionNode' does not exist on type 'AppResolver'.
+src/engine/ModuleLoader.js(2,1): error TS6133: 'fileURLToPath' is declared but its value is never read.
+src/engine/ModuleLoader.js(33,45): error TS18046: 'error' is of type 'unknown'.
+src/engine/ModuleLoaderFactory.js(12,15): error TS6133: '__dirname' is declared but its value is never read.
+src/engine/ModuleLoaderFactory.js(15,13): error TS2322: Type 'ModuleLoader' is not assignable to type 'null'.
+src/engine/ProcessorSettings copy.js(2,1): error TS6133: 'rdf' is declared but its value is never read.
+src/engine/ProcessorSettings copy.js(85,21): error TS2349: This expression is not callable.
+  Type 'typeof import("/home/danny/hyperdata/transmissions/types/grapoi")' has no call signatures.
+src/engine/ProcessorSettings copy.js(137,27): error TS2349: This expression is not callable.
+  Type 'typeof import("/home/danny/hyperdata/transmissions/types/grapoi")' has no call signatures.
+src/engine/ProcessorSettings.js(2,1): error TS6133: 'rdf' is declared but its value is never read.
+src/engine/ProcessorSettings.js(57,21): error TS2349: This expression is not callable.
+  Type 'typeof import("/home/danny/hyperdata/transmissions/types/grapoi")' has no call signatures.
+src/engine/ProcessorSettings.js(117,27): error TS2349: This expression is not callable.
+  Type 'typeof import("/home/danny/hyperdata/transmissions/types/grapoi")' has no call signatures.
+src/engine/ProcessorSettings.js(137,28): error TS2339: Property 'app' does not exist on type 'ProcessorSettings'.
+src/engine/TransmissionBuilder copy.js(3,1): error TS6192: All imports in import declaration are unused.
+src/engine/TransmissionBuilder copy.js(25,17): error TS2349: This expression is not callable.
+  Type 'typeof import("/home/danny/hyperdata/transmissions/types/grapoi")' has no call signatures.
+src/engine/TransmissionBuilder copy.js(56,18): error TS2339: Property 'id' does not exist on type 'Transmission'.
+src/engine/TransmissionBuilder copy.js(57,18): error TS2339: Property 'app' does not exist on type 'Transmission'.
+src/engine/TransmissionBuilder copy.js(59,18): error TS2339: Property 'whiteboard' does not exist on type 'Transmission'.
+src/engine/TransmissionBuilder copy.js(62,18): error TS2339: Property 'label' does not exist on type 'Transmission'.
+src/engine/TransmissionBuilder copy.js(64,22): error TS2349: This expression is not callable.
+  Type 'typeof import("/home/danny/hyperdata/transmissions/types/grapoi")' has no call signatures.
+src/engine/TransmissionBuilder copy.js(68,20): error TS2339: Property 'label' does not exist on type 'Transmission'.
+src/engine/TransmissionBuilder copy.js(70,69): error TS2339: Property 'label' does not exist on type 'Transmission'.
+src/engine/TransmissionBuilder copy.js(70,97): error TS2339: Property 'id' does not exist on type 'Transmission'.
+src/engine/TransmissionBuilder copy.js(132,26): error TS2349: This expression is not callable.
+  Type 'typeof import("/home/danny/hyperdata/transmissions/types/grapoi")' has no call signatures.
+src/engine/TransmissionBuilder copy.js(144,22): error TS2349: This expression is not callable.
+  Type 'typeof import("/home/danny/hyperdata/transmissions/types/grapoi")' has no call signatures.
+src/engine/TransmissionBuilder copy.js(177,92): error TS18046: 'error' is of type 'unknown'.
+src/engine/TransmissionBuilder.js(3,1): error TS6192: All imports in import declaration are unused.
+src/engine/TransmissionBuilder.js(25,17): error TS2349: This expression is not callable.
+  Type 'typeof import("/home/danny/hyperdata/transmissions/types/grapoi")' has no call signatures.
+src/engine/TransmissionBuilder.js(56,18): error TS2339: Property 'id' does not exist on type 'Transmission'.
+src/engine/TransmissionBuilder.js(57,18): error TS2339: Property 'app' does not exist on type 'Transmission'.
+src/engine/TransmissionBuilder.js(59,18): error TS2339: Property 'whiteboard' does not exist on type 'Transmission'.
+src/engine/TransmissionBuilder.js(62,18): error TS2339: Property 'label' does not exist on type 'Transmission'.
+src/engine/TransmissionBuilder.js(64,22): error TS2349: This expression is not callable.
+  Type 'typeof import("/home/danny/hyperdata/transmissions/types/grapoi")' has no call signatures.
+src/engine/TransmissionBuilder.js(68,20): error TS2339: Property 'label' does not exist on type 'Transmission'.
+src/engine/TransmissionBuilder.js(70,69): error TS2339: Property 'label' does not exist on type 'Transmission'.
+src/engine/TransmissionBuilder.js(70,97): error TS2339: Property 'id' does not exist on type 'Transmission'.
+src/engine/TransmissionBuilder.js(122,26): error TS2349: This expression is not callable.
+  Type 'typeof import("/home/danny/hyperdata/transmissions/types/grapoi")' has no call signatures.
+src/engine/TransmissionBuilder.js(134,22): error TS2349: This expression is not callable.
+  Type 'typeof import("/home/danny/hyperdata/transmissions/types/grapoi")' has no call signatures.
+src/engine/TransmissionBuilder.js(167,92): error TS18046: 'error' is of type 'unknown'.
+src/engine/WorkerPool.js(3,7): error TS6196: 'WorkerPool' is declared but never used.
+src/model/Application.js(4,1): error TS6133: 'logger' is declared but its value is never read.
+src/model/Connector.js(20,44): error TS2339: Property 'getLastNode' does not exist on type 'Transmission'.
+src/model/Processor copy.js(30,43): error TS2339: Property 'settingsNode' does not exist on type 'Processor'.
+src/model/Processor copy.js(41,74): error TS2339: Property 'settingsNode' does not exist on type 'Processor'.
+src/model/Processor copy.js(42,91): error TS2339: Property 'settingsNode' does not exist on type 'Processor'.
+src/model/Processor copy.js(45,51): error TS2339: Property 'settingsNode' does not exist on type 'Processor'.
+src/model/Processor copy.js(72,21): error TS2339: Property 'app' does not exist on type 'ProcessorSettings'.
+src/model/Processor copy.js(118,23): error TS6133: 'message' is declared but its value is never read.
+src/model/Processor copy.js(119,28): error TS2345: Argument of type '0 | 1 | 2 | 3 | 4 | 5 | null | undefined' is not assignable to parameter of type 'string | undefined'.
+  Type 'null' is not assignable to type 'string | undefined'.
+src/model/Processor copy.js(154,24): error TS2339: Property 'process' does not exist on type 'Processor'.
+src/model/Processor copy.js(170,34): error TS2339: Property 'id' does not exist on type 'Processor'.
+src/model/Processor copy.js(173,11): error TS2416: Property 'emit' in type 'Processor' is not assignable to the same property in base type 'EventEmitter<DefaultEventMap>'.
+  Type '(event: any, message: any) => Promise<any>' is not assignable to type '<K>(eventName: string | symbol, ...args: AnyRest) => boolean'.
+    Type 'Promise<any>' is not assignable to type 'boolean'.
+src/model/Processor copy.js(176,13): error TS2810: Expected 1 argument, but got 0. 'new Promise()' needs a JSDoc hint to produce a 'resolve' that can be called without arguments.
+src/model/Processor copy.js(188,28): error TS2339: Property 'settings' does not exist on type 'Processor'.
+src/model/Processor copy.js(189,40): error TS2339: Property 'settingsNode' does not exist on type 'Processor'.
+src/model/Processor copy.js(189,60): error TS2339: Property 'settingsNode' does not exist on type 'Processor'.
+src/model/Processor copy.js(192,29): error TS2339: Property 'id' does not exist on type 'Processor'.
+src/model/Processor copy.js(193,32): error TS2339: Property 'label' does not exist on type 'Processor'.
+src/model/Processor copy.js(194,31): error TS2339: Property 'type' does not exist on type 'Processor'.
+src/model/Processor copy.js(195,38): error TS2339: Property 'description' does not exist on type 'Processor'.
+src/model/Processor copy.js(198,35): error TS2339: Property 'settings' does not exist on type 'Processor'.
+src/model/Processor.js(22,16): error TS2304: Cannot find name 'path'.
+src/model/Processor.js(27,43): error TS2339: Property 'settingsNode' does not exist on type 'Processor'.
+src/model/Processor.js(38,74): error TS2339: Property 'settingsNode' does not exist on type 'Processor'.
+src/model/Processor.js(39,91): error TS2339: Property 'settingsNode' does not exist on type 'Processor'.
+src/model/Processor.js(42,51): error TS2339: Property 'settingsNode' does not exist on type 'Processor'.
+src/model/Processor.js(69,21): error TS2339: Property 'app' does not exist on type 'ProcessorSettings'.
+src/model/Processor.js(115,23): error TS6133: 'message' is declared but its value is never read.
+src/model/Processor.js(116,28): error TS2345: Argument of type '0 | 1 | 2 | 3 | 4 | 5 | null | undefined' is not assignable to parameter of type 'string | undefined'.
+  Type 'null' is not assignable to type 'string | undefined'.
+src/model/Processor.js(151,24): error TS2339: Property 'process' does not exist on type 'Processor'.
+src/model/Processor.js(167,34): error TS2339: Property 'id' does not exist on type 'Processor'.
+src/model/Processor.js(170,11): error TS2416: Property 'emit' in type 'Processor' is not assignable to the same property in base type 'EventEmitter<DefaultEventMap>'.
+  Type '(event: any, message: any) => Promise<any>' is not assignable to type '<K>(eventName: string | symbol, ...args: AnyRest) => boolean'.
+    Type 'Promise<any>' is not assignable to type 'boolean'.
+src/model/Processor.js(173,13): error TS2810: Expected 1 argument, but got 0. 'new Promise()' needs a JSDoc hint to produce a 'resolve' that can be called without arguments.
+src/model/Processor.js(185,28): error TS2339: Property 'settings' does not exist on type 'Processor'.
+src/model/Processor.js(186,40): error TS2339: Property 'settingsNode' does not exist on type 'Processor'.
+src/model/Processor.js(186,60): error TS2339: Property 'settingsNode' does not exist on type 'Processor'.
+src/model/Processor.js(189,29): error TS2339: Property 'id' does not exist on type 'Processor'.
+src/model/Processor.js(190,32): error TS2339: Property 'label' does not exist on type 'Processor'.
+src/model/Processor.js(191,31): error TS2339: Property 'type' does not exist on type 'Processor'.
+src/model/Processor.js(192,38): error TS2339: Property 'description' does not exist on type 'Processor'.
+src/model/Processor.js(194,35): error TS2339: Property 'settings' does not exist on type 'Processor'.
+src/model/SlowableProcessor.js(1,1): error TS6133: 'EventEmitter' is declared but its value is never read.
+src/model/SlowableProcessor.js(14,55): error TS2345: Argument of type '"0"' is not assignable to parameter of type 'undefined'.
+src/model/Transmission.js(17,47): error TS2339: Property 'label' does not exist on type 'Transmission'.
+src/model/Transmission.js(17,62): error TS2339: Property 'id' does not exist on type 'Transmission'.
+src/model/Transmission.js(29,7): error TS18046: 'error' is of type 'unknown'.
+src/model/Transmission.js(29,33): error TS18046: 'error' is of type 'unknown'.
+src/model/Transmission.js(30,7): error TS18046: 'error' is of type 'unknown'.
+src/model/Transmission.js(30,41): error TS2339: Property 'id' does not exist on type 'Transmission'.
+src/model/Transmission.js(66,48): error TS2339: Property 'id' does not exist on type 'Transmission'.
+src/model/Transmission.js(76,16): error TS2339: Property 'id' does not exist on type 'Transmission'.
+src/model/Whiteboard.js(1,1): error TS6133: 'logger' is declared but its value is never read.
+src/model/Whiteboard.js(6,24): error TS2339: Property 'singleInstance' does not exist on type 'typeof Whiteboard'.
+src/model/Whiteboard.js(7,31): error TS2339: Property 'singleInstance' does not exist on type 'typeof Whiteboard'.
+src/model/Whiteboard.js(9,20): error TS2339: Property 'singleInstance' does not exist on type 'typeof Whiteboard'.
+src/model/Whiteboard.js(39,14): error TS2304: Cannot find name 'key'.
+src/model/Whiteboard.js(39,21): error TS2663: Cannot find name 'accumulators'. Did you mean the instance member 'this.accumulators'?
+src/model/Whiteboard.js(40,36): error TS2304: Cannot find name 'key'.
+src/model/Whiteboard.js(40,45): error TS2663: Cannot find name 'accumulators'. Did you mean the instance member 'this.accumulators'?
+src/model/Whiteboard.js(40,58): error TS2304: Cannot find name 'key'.
+src/processors/example-group/ExampleProcessor.js(34,1): error TS6133: 'readFile' is declared but its value is never read.
+src/processors/example-group/ExampleProcessor.js(34,1): error TS8022: JSDoc '@extends' is not attached to a class.
+src/processors/example-group/ExampleProcessor.js(35,1): error TS6192: All imports in import declaration are unused.
+src/processors/example-group/ExampleProcessor.js(36,1): error TS6133: 'path' is declared but its value is never read.
+src/processors/example-group/ExampleProcessor.js(72,58): error TS2345: Argument of type '""' is not assignable to parameter of type 'undefined'.
+src/processors/example-group/ExampleProcessor.js(75,70): error TS2345: Argument of type '"fallback value"' is not assignable to parameter of type 'undefined'.
+src/processors/example-group/ExampleProcessorsFactory.js(1,1): error TS6133: 'logger' is declared but its value is never read.
+src/processors/flow/Accumulate.js(3,1): error TS6133: 'readFile' is declared but its value is never read.
+src/processors/flow/Accumulate.js(4,1): error TS6192: All imports in import declaration are unused.
+src/processors/flow/Accumulate.js(5,1): error TS6133: 'path' is declared but its value is never read.
+src/processors/flow/Accumulate.js(23,55): error TS2345: Argument of type '"test"' is not assignable to parameter of type 'undefined'.
+src/processors/flow/Accumulate.js(24,64): error TS2345: Argument of type '"string"' is not assignable to parameter of type 'undefined'.
+src/processors/flow/Accumulate.js(25,26): error TS2339: Property 'whiteboard' does not exist on type 'Accumulate'.
+src/processors/flow/Accumulate.js(30,71): error TS2345: Argument of type '"accumulate"' is not assignable to parameter of type 'undefined'.
+src/processors/flow/Accumulate.js(37,67): error TS2345: Argument of type '"currentItem"' is not assignable to parameter of type 'undefined'.
+src/processors/flow/Accumulate.js(39,14): error TS2339: Property 'whiteboard' does not exist on type 'Accumulate'.
+src/processors/flow/ForEach.js(21,57): error TS2345: Argument of type 'false' is not assignable to parameter of type 'undefined'.
+src/processors/flow/ForEach.js(32,15): error TS6133: 'delay' is declared but its value is never read.
+src/processors/flow/ForEach.js(32,55): error TS2345: Argument of type '"100"' is not assignable to parameter of type 'undefined'.
+src/processors/flow/NOP.js(15,59): error TS2345: Argument of type '"TEST_FAILED"' is not assignable to parameter of type 'undefined'.
+src/processors/flow/Ping.js(12,28): error TS2339: Property 'getPropertyFromMyConfig' does not exist on type 'Ping'.
+src/processors/flow/Ping.js(13,25): error TS2339: Property 'getPropertyFromMyConfig' does not exist on type 'Ping'.
+src/processors/flow/Ping.js(14,27): error TS2339: Property 'getPropertyFromMyConfig' does not exist on type 'Ping'.
+src/processors/flow/Ping.js(15,30): error TS2339: Property 'getPropertyFromMyConfig' does not exist on type 'Ping'.
+src/processors/flow/Ping.js(16,33): error TS2339: Property 'getPropertyFromMyConfig' does not exist on type 'Ping'.
+src/processors/flow/Ping.js(17,30): error TS2339: Property 'getPropertyFromMyConfig' does not exist on type 'Ping'.
+src/processors/flow/Ping.js(99,17): error TS2531: Object is possibly 'null'.
+src/processors/flow/Unfork.js(3,1): error TS6133: 'ns' is declared but its value is never read.
+src/processors/flow/Unfork.js(4,1): error TS6133: 'rdf' is declared but its value is never read.
+src/processors/flow/Unfork.js(5,1): error TS6133: 'grapoi' is declared but its value is never read.
+src/processors/flow/Unfork.js(6,1): error TS6133: 'DeadEnd' is declared but its value is never read.
+src/processors/fs/DirWalker.js(33,72): error TS2345: Argument of type 'string[]' is not assignable to parameter of type 'undefined'.
+src/processors/fs/DirWalker.js(34,72): error TS2345: Argument of type 'string[]' is not assignable to parameter of type 'undefined'.
+src/processors/fs/FileCopy.js(36,1): error TS8022: JSDoc '@extends' is not attached to a class.
+src/processors/fs/FileCopy.js(77,48): error TS18046: 'err' is of type 'unknown'.
+src/processors/fs/FileCopy.js(95,66): error TS18046: 'err' is of type 'unknown'.
+src/processors/fs/FileCopy.js(125,53): error TS18046: 'err' is of type 'unknown'.
+src/processors/fs/FileReader.js(58,17): error TS2810: Expected 1 argument, but got 0. 'new Promise()' needs a JSDoc hint to produce a 'resolve' that can be called without arguments.
+src/processors/fs/FileReader.js(106,58): error TS18046: 'error' is of type 'unknown'.
+src/processors/fs/FileRemove.js(31,1): error TS8022: JSDoc '@extends' is not attached to a class.
+src/processors/fs/FileRemove.js(31,33): error TS6133: 'rm' is declared but its value is never read.
+src/processors/fs/FileWriter.js(2,29): error TS6133: 'writeFileSync' is declared but its value is never read.
+src/processors/fs/FileWriter.js(5,19): error TS6133: 'join' is declared but its value is never read.
+src/processors/fs/FileWriter.js(6,10): error TS6133: 'mkdir' is declared but its value is never read.
+src/processors/fs/FileWriter.js(76,68): error TS2345: Argument of type '"content"' is not assignable to parameter of type 'undefined'.
+src/processors/fs/FileWriter.js(88,31): error TS6133: 'message' is declared but its value is never read.
+src/processors/fs/FilenameMapper.js(3,1): error TS6133: 'logger' is declared but its value is never read.
+src/processors/fs/FsProcessorsFactory.js(1,1): error TS6133: 'logger' is declared but its value is never read.
+src/processors/github/GitHubList.js(45,37): error TS2304: Cannot find name 'username'.
+src/processors/github/GitHubList.js(52,15): error TS6133: 'delay' is declared but its value is never read.
+src/processors/github/GitHubList.js(116,23): error TS2339: Property 'status' does not exist on type 'Error'.
+src/processors/github/GitHubList.js(117,23): error TS2339: Property 'response' does not exist on type 'Error'.
+src/processors/github/GitHubList_no-pag.js(44,17): error TS18046: 'error' is of type 'unknown'.
+src/processors/github/GitHubProcessorsFactory.js(2,1): error TS6133: 'logger' is declared but its value is never read.
+src/processors/http/HttpClient.js(1,1): error TS6133: 'logger' is declared but its value is never read.
+src/processors/http/HttpProxy.js(1,1): error TS6133: 'logger' is declared but its value is never read.
+src/processors/http/HttpServer.js(12,24): error TS2339: Property 'getPropertyFromMyConfig' does not exist on type 'HttpServer'.
+src/processors/http/HttpServer.js(13,28): error TS2339: Property 'getPropertyFromMyConfig' does not exist on type 'HttpServer'.
+src/processors/http/HttpServer.js(14,30): error TS2339: Property 'getPropertyFromMyConfig' does not exist on type 'HttpServer'.
+src/processors/http/HttpServer.js(15,24): error TS2339: Property 'getPropertyFromMyConfig' does not exist on type 'HttpServer'.
+src/processors/http/HttpServer.js(16,27): error TS2339: Property 'getPropertyFromMyConfig' does not exist on type 'HttpServer'.
+src/processors/http/HttpServer.js(17,34): error TS2339: Property 'getPropertyFromMyConfig' does not exist on type 'HttpServer'.
+src/processors/http/HttpServer.js(58,17): error TS2531: Object is possibly 'null'.
+src/processors/http/HttpServerWorker.js(3,1): error TS6133: 'path' is declared but its value is never read.
+src/processors/http/HttpServerWorker.js(15,9): error TS18047: 'parentPort' is possibly 'null'.
+src/processors/http/HttpServerWorker.js(37,41): error TS6133: 'req' is declared but its value is never read.
+src/processors/http/HttpServerWorker.js(43,17): error TS18047: 'parentPort' is possibly 'null'.
+src/processors/http/HttpServerWorker.js(51,13): error TS18047: 'parentPort' is possibly 'null'.
+src/processors/http/HttpServerWorker.js(53,24): error TS18046: 'error' is of type 'unknown'.
+src/processors/http/HttpServerWorker.js(62,21): error TS2531: Object is possibly 'null'.
+src/processors/http/HttpServerWorker.js(64,25): error TS2810: Expected 1 argument, but got 0. 'new Promise()' needs a JSDoc hint to produce a 'resolve' that can be called without arguments.
+src/processors/http/HttpServerWorker.js(68,17): error TS18047: 'parentPort' is possibly 'null'.
+src/processors/http/HttpServerWorker.js(75,17): error TS18047: 'parentPort' is possibly 'null'.
+src/processors/http/HttpServerWorker.js(77,28): error TS18046: 'error' is of type 'unknown'.
+src/processors/http/HttpServerWorker.js(85,7): error TS6133: 'worker' is declared but its value is never read.
+src/processors/http/services/ShutdownService.js(33,40): error TS6133: 'req' is declared but its value is never read.
+src/processors/http/services/ShutdownService.js(37,38): error TS6133: 'req' is declared but its value is never read.
+src/processors/json/Blanker.js(14,30): error TS2339: Property 'getPropertyFromMyConfig' does not exist on type 'Blanker'.
+src/processors/json/Blanker.js(15,31): error TS2339: Property 'getPropertyFromMyConfig' does not exist on type 'Blanker'.
+src/processors/json/JSONProcessorsFactory.js(1,1): error TS6133: 'logger' is declared but its value is never read.
+src/processors/json/JSONWalker.js(32,1): error TS6133: 'path' is declared but its value is never read.
+src/processors/json/JSONWalker.js(32,1): error TS8022: JSDoc '@extends' is not attached to a class.
+src/processors/json/Restructure.js(3,1): error TS6133: 'GrapoiHelpers' is declared but its value is never read.
+src/processors/json/Restructure.js(24,60): error TS18046: 'err' is of type 'unknown'.
+src/processors/json/Restructure.js(25,26): error TS18046: 'err' is of type 'unknown'.
+src/processors/json/Restructure.js(32,56): error TS2339: Property 'settingsNode' does not exist on type 'Restructure'.
+src/processors/json/Restructure.js(68,78): error TS18046: 'err' is of type 'unknown'.
+src/processors/json/StringOps.js(31,13): error TS6133: 'poi' is declared but its value is never read.
+src/processors/json/StringOps.js(31,61): error TS2339: Property 'settingsNode' does not exist on type 'StringOps'.
+src/processors/json/StringOps.js(32,66): error TS2339: Property 'settingsNode' does not exist on type 'StringOps'.
+src/processors/markup/LinkFinder.js(12,13): error TS2304: Cannot find name 'data'.
+src/processors/markup/LinkFinder.js(14,25): error TS2339: Property 'emitLocal' does not exist on type 'LinkFinder'.
+src/processors/markup/LinkFinder.js(30,45): error TS2345: Argument of type '(this: Element, _: number, element: Element) => Promise<any> | undefined' is not assignable to parameter of type '(this: Element, i: number, el: Element) => boolean | void'.
+  Type 'Promise<any> | undefined' is not assignable to type 'boolean | void'.
+    Type 'Promise<any>' is not assignable to type 'boolean | void'.
+src/processors/markup/MarkdownToHTML.js(42,76): error TS2345: Argument of type '"content"' is not assignable to parameter of type 'undefined'.
+src/processors/markup/MarkupProcessorsFactory.js(1,1): error TS6133: 'logger' is declared but its value is never read.
+src/processors/markup/MetadataExtractor.js(9,26): error TS2304: Cannot find name 'data'.
+src/processors/markup/MetadataExtractor.js(10,25): error TS2304: Cannot find name 'data'.
+src/processors/markup/MetadataExtractor.js(22,45): error TS2554: Expected 0-2 arguments, but got 3.
+src/processors/mcp/McpClient.js(1,1): error TS6133: 'logger' is declared but its value is never read.
+src/processors/mcp/McpProcessorsFactory.js(1,1): error TS6133: 'logger' is declared but its value is never read.
+src/processors/mcp/McpServer.js(1,1): error TS6133: 'logger' is declared but its value is never read.
+src/processors/postcraft/MakeEntry.js(2,1): error TS6133: 'crypto' is declared but its value is never read.
+src/processors/postcraft/MakeEntry.js(32,53): error TS2345: Argument of type '""' is not assignable to parameter of type 'undefined'.
+src/processors/postcraft/MakeEntry.js(49,7): error TS1117: An object literal cannot have multiple properties with the same name.
+src/processors/postcraft/MakeEntry.js(75,28): error TS6133: 'dates' is declared but its value is never read.
+src/processors/postcraft/MakeEntry.js(130,3): error TS2393: Duplicate function implementation.
+src/processors/postcraft/MakeEntry.js(158,3): error TS2393: Duplicate function implementation.
+src/processors/postcraft/PostcraftProcessorsFactory.js(4,1): error TS6133: 'RenderArticle' is declared but its value is never read.
+src/processors/postcraft/PostcraftProcessorsFactory.js(12,24): error TS2304: Cannot find name 'PrepareArticle'.
+src/processors/postcraft/PrepareArticle.js(36,1): error TS6133: 'readFile' is declared but its value is never read.
+src/processors/postcraft/PrepareArticle.js(36,1): error TS8022: JSDoc '@extends' is not attached to a class.
+src/processors/postcraft/PrepareArticle.js(37,1): error TS6192: All imports in import declaration are unused.
+src/processors/postcraft/PrepareArticle.js(38,1): error TS6133: 'path' is declared but its value is never read.
+src/processors/postcraft/PrepareArticle.js(40,1): error TS6133: 'ns' is declared but its value is never read.
+src/processors/protocols/HttpGet.js(28,1): error TS8022: JSDoc '@extends' is not attached to a class.
+src/processors/protocols/HttpGet.js(29,1): error TS6133: 'grapoi' is declared but its value is never read.
+src/processors/protocols/HttpGet.js(30,1): error TS6133: 'ns' is declared but its value is never read.
+src/processors/protocols/HttpGet.js(32,1): error TS6133: 'footpath' is declared but its value is never read.
+src/processors/protocols/HttpGet.js(52,46): error TS2554: Expected 0-2 arguments, but got 3.
+src/processors/protocols/HttpGet.js(61,50): error TS2554: Expected 0-2 arguments, but got 3.
+src/processors/protocols/ProtocolsProcessorsFactory.js(1,1): error TS6133: 'logger' is declared but its value is never read.
+src/processors/rdf/ConfigMap.js(1,1): error TS6133: 'rdf' is declared but its value is never read.
+src/processors/rdf/ConfigMap.js(23,10): error TS2339: Property 'showMyConfig' does not exist on type 'ConfigMap'.
+src/processors/rdf/ConfigMap.js(29,17): error TS2349: This expression is not callable.
+  Type 'typeof import("/home/danny/hyperdata/transmissions/types/grapoi")' has no call signatures.
+src/processors/rdf/ConfigMap.js(40,24): error TS2349: This expression is not callable.
+  Type 'typeof import("/home/danny/hyperdata/transmissions/types/grapoi")' has no call signatures.
+src/processors/rdf/DatasetReader.js(15,38): error TS2339: Property 'getPropertyFromMyConfig' does not exist on type 'DatasetReader'.
+src/processors/rdf/RDFConfig.js(1,1): error TS6133: 'rdf' is declared but its value is never read.
+src/processors/rdf/RDFConfig.js(4,1): error TS6133: 'logger' is declared but its value is never read.
+src/processors/rdf/RDFConfig.js(19,17): error TS2349: This expression is not callable.
+  Type 'typeof import("/home/danny/hyperdata/transmissions/types/grapoi")' has no call signatures.
+src/processors/rdf/RDFConfig.js(23,24): error TS2349: This expression is not callable.
+  Type 'typeof import("/home/danny/hyperdata/transmissions/types/grapoi")' has no call signatures.
+src/processors/sparql/SPARQLProcessorsFactory.js(1,1): error TS6133: 'logger' is declared but its value is never read.
+src/processors/sparql/SPARQLUpdate.js(31,15): error TS6133: 'now' is declared but its value is never read.
+src/processors/sparql/SPARQLUpdate.js(33,15): error TS6133: 'updateID' is declared but its value is never read.
+src/processors/sparql/SessionEnvironment.js(1,1): error TS6133: 'axios' is declared but its value is never read.
+src/processors/sparql/SessionEnvironment.js(2,1): error TS6133: 'nunjucks' is declared but its value is never read.
+src/processors/sparql/validator.js(3,27): error TS2307: Cannot find module './TextUtils.js' or its corresponding type declarations.
+src/processors/sparql/validator.js(4,34): error TS2307: Cannot find module './customPredicates.js' or its corresponding type declarations.
+src/processors/sparql/validator.js(39,33): error TS18046: 'e' is of type 'unknown'.
+src/processors/staging/MarkdownFormatter.js(2,1): error TS6133: 'logger' is declared but its value is never read.
+src/processors/staging/StagingProcessorsFactory.js(1,1): error TS6133: 'logger' is declared but its value is never read.
+src/processors/staging/TurtleFormatter.js(24,62): error TS18046: 'err' is of type 'unknown'.
+src/processors/system/EnvLoader.js(5,1): error TS6133: 'logger' is declared but its value is never read.
+src/processors/system/SystemProcessorsFactory.js(1,1): error TS6133: 'logger' is declared but its value is never read.
+src/processors/terrapack/file-container.js(22,37): error TS2339: Property 'getPropertyFromMyConfig' does not exist on type 'FileContainer'.
+src/processors/test/TestSetting.js(32,1): error TS6133: 'readFile' is declared but its value is never read.
+src/processors/test/TestSetting.js(32,1): error TS8022: JSDoc '@extends' is not attached to a class.
+src/processors/test/TestSetting.js(33,1): error TS6192: All imports in import declaration are unused.
+src/processors/test/TestSetting.js(34,1): error TS6133: 'path' is declared but its value is never read.
+src/processors/test/TestSettings.js(32,1): error TS6133: 'readFile' is declared but its value is never read.
+src/processors/test/TestSettings.js(32,1): error TS8022: JSDoc '@extends' is not attached to a class.
+src/processors/test/TestSettings.js(33,1): error TS6192: All imports in import declaration are unused.
+src/processors/test/TestSettings.js(34,1): error TS6133: 'path' is declared but its value is never read.
+src/processors/test/TestSettings.js(55,48): error TS2345: Argument of type '"default me"' is not assignable to parameter of type 'undefined'.
+src/processors/test/TestSettings.js(94,23): error TS6133: 'values' is declared but its value is never read.
+src/processors/test/TestSettings.js(101,80): error TS2345: Argument of type '"yes it is"' is not assignable to parameter of type 'undefined'.
+src/processors/test/_old/FileSink.js(2,1): error TS6133: 'fileURLToPath' is declared but its value is never read.
+src/processors/test/_old/FileSink.js(16,21): error TS2349: This expression is not callable.
+  Type 'typeof import("/home/danny/hyperdata/transmissions/types/grapoi")' has no call signatures.
+src/processors/test/_old/FileSource.js(1,1): error TS6133: 'path' is declared but its value is never read.
+src/processors/test/_old/FileSource.js(2,1): error TS6133: 'fileURLToPath' is declared but its value is never read.
+src/processors/test/_old/FileSource.js(7,1): error TS6133: 'rdf' is declared but its value is never read.
+src/processors/test/_old/FileSource.js(20,21): error TS2349: This expression is not callable.
+  Type 'typeof import("/home/danny/hyperdata/transmissions/types/grapoi")' has no call signatures.
+src/processors/test/_old/FileSource.js(35,58): error TS18046: 'err' is of type 'unknown'.
+src/processors/test/_old/StringSource.js(11,33): error TS2304: Cannot find name 'data'.
+src/processors/test/_old/TestProcessorsFactory.js(1,1): error TS6133: 'logger' is declared but its value is never read.
+src/processors/test/_old/TestProcessorsFactory.js(1,20): error TS2307: Cannot find module '../../utils/Logger.js' or its corresponding type declarations.
+src/processors/test/_old/TestProcessorsFactory.js(2,16): error TS2307: Cannot find module '../../utils/ns.js' or its corresponding type declarations.
+src/processors/test/_old/TestProcessorsFactory.js(4,26): error TS2307: Cannot find module './_old/StringSource.js' or its corresponding type declarations.
+src/processors/test/_old/TestProcessorsFactory.js(5,24): error TS2307: Cannot find module './_old/StringSink.js' or its corresponding type declarations.
+src/processors/test/_old/TestProcessorsFactory.js(6,27): error TS2307: Cannot find module './_old/AppendProcess.js' or its corresponding type declarations.
+src/processors/test/_old/TestProcessorsFactory.js(7,24): error TS2307: Cannot find module './_old/FileSource.js' or its corresponding type declarations.
+src/processors/test/_old/TestProcessorsFactory.js(8,22): error TS2307: Cannot find module './_old/FileSink.js' or its corresponding type declarations.
+src/processors/text/LineReader.js(2,1): error TS6133: 'readFile' is declared but its value is never read.
+src/processors/text/LineReader.js(3,1): error TS6133: 'grapoi' is declared but its value is never read.
+src/processors/text/LineReader.js(4,1): error TS6133: 'ns' is declared but its value is never read.
+src/processors/text/LineReader.js(5,1): error TS6133: 'footpath' is declared but its value is never read.
+src/processors/text/LineReader.js(17,22): error TS2304: Cannot find name 'data'.
+src/processors/text/LineReader.js(24,51): error TS2554: Expected 0-2 arguments, but got 3.
+src/processors/text/LineReader.js(28,49): error TS2554: Expected 0-2 arguments, but got 3.
+src/processors/text/StringFilter.js(1,1): error TS6133: 'path' is declared but its value is never read.
+src/processors/text/StringMerger.js(12,66): error TS2304: Cannot find name 'data'.
+src/processors/text/StringMerger.js(14,13): error TS2304: Cannot find name 'data'.
+src/processors/text/StringMerger.js(16,54): error TS2554: Expected 0-2 arguments, but got 3.
+src/processors/text/StringMerger.js(19,37): error TS2304: Cannot find name 'data'.
+src/processors/text/StringReplace.js(28,1): error TS8022: JSDoc '@extends' is not attached to a class.
+src/processors/text/Templater.js(31,1): error TS8022: JSDoc '@extends' is not attached to a class.
+src/processors/unsafe/BashCommand.js(16,18): error TS2339: Property 'settings' does not exist on type 'BashCommand'.
+src/processors/unsafe/BashCommand.js(17,40): error TS2339: Property 'getPropertyFromMyConfig' does not exist on type 'BashCommand'.
+src/processors/unsafe/BashCommand.js(20,40): error TS2339: Property 'getPropertyFromMyConfig' does not exist on type 'BashCommand'.
+src/processors/unsafe/BashCommand.js(49,28): error TS2339: Property 'getPropertyFromMyConfig' does not exist on type 'BashCommand'.
+src/processors/unsafe/BashCommand.js(59,44): error TS18046: 'error' is of type 'unknown'.
+src/processors/unsafe/BashCommand.js(60,36): error TS18046: 'error' is of type 'unknown'.
+src/processors/unsafe/BashCommand.js(61,31): error TS18046: 'error' is of type 'unknown'.
+src/processors/unsafe/BashCommand.js(70,19): error TS6133: 'child' is declared but its value is never read.
+src/processors/unsafe/ExampleProcessor.js(34,1): error TS6133: 'readFile' is declared but its value is never read.
+src/processors/unsafe/ExampleProcessor.js(34,1): error TS8022: JSDoc '@extends' is not attached to a class.
+src/processors/unsafe/ExampleProcessor.js(35,1): error TS6192: All imports in import declaration are unused.
+src/processors/unsafe/ExampleProcessor.js(36,1): error TS6133: 'path' is declared but its value is never read.
+src/processors/unsafe/ExampleProcessor.js(72,58): error TS2345: Argument of type '""' is not assignable to parameter of type 'undefined'.
+src/processors/unsafe/ExampleProcessor.js(75,70): error TS2345: Argument of type '"fallback value"' is not assignable to parameter of type 'undefined'.
+src/processors/util/CaptureAll.js(13,24): error TS2339: Property 'singleInstance' does not exist on type 'typeof CaptureAll'.
+src/processors/util/CaptureAll.js(14,31): error TS2339: Property 'singleInstance' does not exist on type 'typeof CaptureAll'.
+src/processors/util/CaptureAll.js(16,20): error TS2339: Property 'singleInstance' does not exist on type 'typeof CaptureAll'.
+src/processors/util/SetMessage.js(16,65): error TS2339: Property 'settingsNode' does not exist on type 'SetMessage'.
+src/processors/util/ShowTransmission.js(7,25): error TS2339: Property 'transmission' does not exist on type 'ShowTransmission'.
+src/processors/util/Stash.js(2,20): error TS6133: 'toFile' is declared but its value is never read.
+src/processors/util/Stash.js(28,24): error TS8024: JSDoc '@param' tag has name 'data', but there is no parameter with that name.
+src/processors/util/Stash.js(32,34): error TS2304: Cannot find name 'rootDir'.
+src/processors/util/Stash.js(36,27): error TS2304: Cannot find name 'rootDir'.
+src/processors/util/UtilProcessorsFactory.js(1,1): error TS6133: 'logger' is declared but its value is never read.
+src/processors/xmpp/XmppProcessorsFactory.js(1,1): error TS6133: 'logger' is declared but its value is never read.
+src/processors/xmpp/XmppProcessorsFactory.js(4,1): error TS6133: 'ProcessorTemplate' is declared but its value is never read.
+src/processors/xmpp/XmppProcessorsFactory.js(11,18): error TS2304: Cannot find name 'XmppClient'.
+src/simples/env-loader/env-loader.js(10,5): error TS2339: Property 'id' does not exist on type 'EnvLoader'.
+src/simples/env-loader/env-loader.js(13,5): error TS2339: Property 'id' does not exist on type 'EnvLoader'.
+src/simples/env-loader/env-loader.js(21,7): error TS6133: 'x' is declared but its value is never read.
+src/tools/nodeflow/ProcessorNodePublisher.js(5,1): error TS6133: 'ns' is declared but its value is never read.
+src/tools/nodeflow/ProcessorNodePublisher.js(7,1): error TS6133: 'rdf' is declared but its value is never read.
+src/tools/nodeflow/TransmissionEditor.js(46,42): error TS6133: 'publisher' is declared but its value is never read.
+src/tools/nodeflow/TransmissionEditor.js(52,14): error TS2339: Property 'setMetadataProperty' does not exist on type 'FlowNode'.
+src/tools/nodeflow/TransmissionEditor.js(53,14): error TS2339: Property 'setMetadataProperty' does not exist on type 'FlowNode'.
+src/tools/nodeflow/TransmissionEditor.js(54,14): error TS2339: Property 'setMetadataProperty' does not exist on type 'FlowNode'.
+src/tools/nodeflow/TransmissionEditor.js(82,7): error TS2322: Type 'any[]' is not assignable to type 'void'.
+src/tools/nodeflow/TransmissionEditor.js(84,63): error TS18046: 'error' is of type 'unknown'.
+src/tools/nodeflow/TransmissionEditor.js(95,20): error TS2322: Type 'null' is not assignable to type 'string'.
+src/tools/nodeflow/TransmissionEditor.js(95,37): error TS2322: Type 'null' is not assignable to type 'string'.
+src/tools/nodeflow/TransmissionEditor.js(105,62): error TS18046: 'error' is of type 'unknown'.
+src/tools/nodeflow/TransmissionEditor.js(131,41): error TS2304: Cannot find name 'FlowNode'.
+src/tools/nodeflow/TransmissionEditor.js(137,10): error TS2339: Property 'setMetadataProperty' does not exist on type 'void'.
+src/tools/nodeflow/TransmissionEditor.js(138,10): error TS2339: Property 'setMetadataProperty' does not exist on type 'void'.
+src/tools/nodeflow/TransmissionEditor.js(139,10): error TS2339: Property 'setMetadataProperty' does not exist on type 'void'.
+src/tools/nodeflow/TransmissionsExporter.js(12,14): error TS2304: Cannot find name 'NodeFlowGraph'.
+src/tools/nodeflow/TransmissionsExporter.js(21,16): error TS2304: Cannot find name 'Dataset'.
+src/tools/nodeflow/TransmissionsExporter.js(23,17): error TS2322: Type 'null' is not assignable to type 'string'.
+src/tools/nodeflow/TransmissionsExporter.js(45,14): error TS2304: Cannot find name 'Dataset'.
+src/tools/nodeflow/TransmissionsExporter.js(46,16): error TS2304: Cannot find name 'Dataset'.
+src/tools/nodeflow/TransmissionsExporter.js(89,17): error TS6133: 'id' is declared but its value is never read.
+src/tools/nodeflow/TransmissionsExporter.js(174,14): error TS2304: Cannot find name 'Dataset'.
+src/tools/nodeflow/TransmissionsExporter.js(260,14): error TS2304: Cannot find name 'Dataset'.
+src/tools/nodeflow/TransmissionsExporter.js(261,14): error TS2304: Cannot find name 'Term'.
+src/tools/nodeflow/TransmissionsExporter.js(262,14): error TS2304: Cannot find name 'Term'.
+src/tools/nodeflow/TransmissionsExporter.js(321,30): error TS2322: Type 'null' is not assignable to type 'string'.
+src/tools/nodeflow/TransmissionsExporter.js(327,65): error TS18046: 'error' is of type 'unknown'.
+src/tools/nodeflow/TransmissionsGraphBuilder.js(5,1): error TS6133: 'ns' is declared but its value is never read.
+src/tools/nodeflow/TransmissionsGraphBuilder.js(11,14): error TS2304: Cannot find name 'NodeFlowGraph'.
+src/tools/nodeflow/TransmissionsGraphBuilder.js(89,10): error TS2339: Property 'setMetadataProperty' does not exist on type 'FlowNode'.
+src/tools/nodeflow/TransmissionsGraphBuilder.js(90,10): error TS2339: Property 'setMetadataProperty' does not exist on type 'FlowNode'.
+src/tools/nodeflow/TransmissionsGraphBuilder.js(91,10): error TS2339: Property 'setMetadataProperty' does not exist on type 'FlowNode'.
+src/tools/nodeflow/TransmissionsGraphBuilder.js(94,12): error TS2339: Property 'setMetadataProperty' does not exist on type 'FlowNode'.
+src/tools/nodeflow/TransmissionsGraphBuilder.js(95,12): error TS2339: Property 'setMetadataProperty' does not exist on type 'FlowNode'.
+src/tools/nodeflow/TransmissionsGraphBuilder.js(100,12): error TS2339: Property 'setMetadataProperty' does not exist on type 'FlowNode'.
+src/tools/nodeflow/TransmissionsGraphBuilder.js(104,10): error TS2339: Property 'setMetadataProperty' does not exist on type 'FlowNode'.
+src/tools/nodeflow/TransmissionsGraphBuilder.js(105,10): error TS2339: Property 'setMetadataProperty' does not exist on type 'FlowNode'.
+src/tools/nodeflow/TransmissionsGraphBuilder.js(108,12): error TS2339: Property 'setMetadataProperty' does not exist on type 'FlowNode'.
+src/tools/nodeflow/TransmissionsGraphBuilder.js(121,16): error TS6133: 'node' is declared but its value is never read.
+src/tools/nodeflow/TransmissionsLoader.js(22,64): error TS18046: 'error' is of type 'unknown'.
+src/tools/nodeflow/TransmissionsLoader.js(29,14): error TS2304: Cannot find name 'Dataset'.
+src/tools/nodeflow/TransmissionsLoader.js(35,17): error TS2349: This expression is not callable.
+  Type 'typeof import("/home/danny/hyperdata/transmissions/types/grapoi")' has no call signatures.
+src/tools/nodeflow/TransmissionsLoader.js(53,14): error TS2304: Cannot find name 'Dataset'.
+src/tools/nodeflow/TransmissionsLoader.js(54,14): error TS2304: Cannot find name 'Term'.
+src/tools/nodeflow/TransmissionsLoader.js(58,22): error TS2349: This expression is not callable.
+  Type 'typeof import("/home/danny/hyperdata/transmissions/types/grapoi")' has no call signatures.
+src/tools/nodeflow/TransmissionsLoader.js(78,18): error TS2349: This expression is not callable.
+  Type 'typeof import("/home/danny/hyperdata/transmissions/types/grapoi")' has no call signatures.
+src/utils/GrapoiHelpers.js(2,1): error TS6133: 'grapoi' is declared but its value is never read.
+src/utils/Logger.js(24,14): error TS2345: Argument of type 'string' is not assignable to parameter of type 'LogLevelDesc'.
+src/utils/Logger.js(43,15): error TS6133: 'timestamp' is declared but its value is never read.
+src/utils/Logger.js(45,15): error TS6133: 'levelTag' is declared but its value is never read.
+src/utils/Logger.js(46,15): error TS6133: 'nameTag' is declared but its value is never read.
+src/utils/Logger.js(83,18): error TS2345: Argument of type 'string' is not assignable to parameter of type 'LogLevelDesc'.
+src/utils/Logger.js(102,29): error TS18046: 'err' is of type 'unknown'.
+src/utils/Logger.js(249,28): error TS2345: Argument of type '0 | 1 | 2 | 3 | 4 | 5' is not assignable to parameter of type 'string | undefined'.
+  Type 'number' is not assignable to type 'string'.
+src/utils/Logger.js(251,42): error TS18046: 'error' is of type 'unknown'.
+src/utils/Logger.js(264,60): error TS18046: 'e' is of type 'unknown'.
+src/utils/MockApplicationManager.js(9,57): error TS6133: 'flags' is declared but its value is never read.
+src/utils/MockApplicationManager.js(68,20): error TS2304: Cannot find name 'path'.
+src/utils/MockApplicationManager.js(71,16): error TS2304: Cannot find name 'path'.
+src/utils/RDFUtils.js(16,15): error TS2552: Cannot find name 'toFile'. Did you mean 'File'?
+src/utils/RDFUtils.js(34,52): error TS18046: 'error' is of type 'unknown'.
+src/utils/RDFUtils.js(35,36): error TS18046: 'error' is of type 'unknown'.
+src/utils/ns.js(38,11): error TS6133: 'lastHashIndex' is declared but its value is never read.
+src/utils/t2j.js(8,1): error TS6133: 'Serializer' is declared but its value is never read.
+src/utils/t2j.js(10,1): error TS6133: 'fromFile' is declared but its value is never read.
+src/utils/t2j.js(11,1): error TS6133: 'toFile' is declared but its value is never read.
