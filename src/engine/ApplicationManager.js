@@ -47,8 +47,14 @@ class ApplicationManager {
         logger.debug(`\nApplicationManager.build ****************************************`)
 
         const builder = new TransmissionBuilder(this.moduleLoader, this.appResolver)
+
+
         const transmissionConfig = await RDFUtils.readDataset(this.appResolver.getTransmissionsPath())
-        const processorsConfig = await RDFUtils.readDataset(this.appResolver.getConfigPath())
+        // REFACTORHERE
+        // const processorsConfig = await RDFUtils.readDataset(this.appResolver.getConfigPath())
+        const configModel = await this.appResolver.loadModel('config', this.appResolver.getConfigPath())
+        const processorsConfig = configModel.dataset
+        logger.log(`LOADED processorsConfig = ${processorsConfig}`)
 
         this.app.transmissionConfig = transmissionConfig
         // Merge with app dataset
@@ -58,7 +64,7 @@ class ApplicationManager {
               processorsConfig.add(quad)
             }
         */
-        return await builder.buildTransmissions(this.app, transmissionConfig, processorsConfig)
+        return await builder.buildTransmissions(this.app, transmissionConfig, processorsConfig, configModel)
     }
 
     async start(message = {}) {

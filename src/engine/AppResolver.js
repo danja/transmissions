@@ -4,6 +4,7 @@ import fs from 'fs/promises'
 import rdf from 'rdf-ext'
 import logger from '../utils/Logger.js'
 import RDFUtils from '../utils/RDFUtils.js'
+import Model from '../model/Model.js'
 
 class AppResolver {
     constructor(options = {}) {
@@ -51,6 +52,14 @@ class AppResolver {
             }
         }
     }
+
+    // REFACTORHERE
+    async loadModel(shortName, path) {
+        const dataset = await RDFUtils.readDataset(path)
+        const model = new Model(shortName, dataset)
+        return model
+    }
+
 
     async findInDirectory(dir, targetName, depth = 0) {
         if (depth > 3) return null
@@ -128,7 +137,7 @@ class AppResolver {
     }
 
     resolveDataDir() {
-        if (this.targetPath){
+        if (this.targetPath) {
             this.workingDir = this.targetPath
         }
         if (!this.workingDir) {

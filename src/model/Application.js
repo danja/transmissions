@@ -13,6 +13,12 @@ class Application {
             ns.rdf.type,
             ns.trn.Application
         ))
+
+        // refactor to :
+        this.transmissionsModel = null
+        this.manifestModel = null
+        this.configModel = null
+
     }
 
     async initDataset(appName, sessionNode = rdf.blankNode()) {
