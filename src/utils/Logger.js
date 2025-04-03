@@ -113,6 +113,7 @@ logger.sh = function (string) {
 }
 
 logger.shorter = function (rdfString) {
+    if (!rdfString) return chalk.red('undefined')
     rdfString = rdfString.toString() // to be sure, to be sure
     Object.entries(ns.prefixMap).forEach(([key, value]) => {
         rdfString = rdfString.replaceAll(key, chalk.green(value))

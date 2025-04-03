@@ -14,7 +14,7 @@ class ForEach extends SlowableProcessor {
         logger.trace('ForEach execute method called')
 
         // TODO default?
-        const forEach = super.getProperty(ns.trn.forEach)
+        const forEach = super.getProperty(ns.trn.forEach, 'foreach')
 
         // TODO add suport for removeOrigin - see Restructure, RDFUtils
 

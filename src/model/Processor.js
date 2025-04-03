@@ -8,19 +8,22 @@ class Processor extends EventEmitter {
     constructor(config) {
         super()
         this.config = config
-        this.settee = new ProcessorSettings(this.config)
+        logger.debug(`\nProcessor constructor : ${this}`)
+        this.settee = new ProcessorSettings(this)
         this.messageQueue = []
         this.processing = false
         this.outputs = []
     }
 
     // TODO needed?
+    /*
     getAppPath(relativePath) {
         if (!this.app?.rootDir) {
             throw new Error('Application context not available')
         }
         return path.join(this.app.rootDir, relativePath)
     }
+        */
 
     // TODO tidy up
     getValues(property, fallback) {
@@ -183,8 +186,6 @@ async process(message) {
 
     toString() {
         logger.reveal(this.settings)
-        logger.reveal(this.app.transmissionConfig)
-
         const settingsNodeValue = this.settingsNode ? this.settingsNode.value : 'none'
         return `
         *** Processor ${this.constructor.name}
@@ -192,10 +193,9 @@ async process(message) {
                 label = ${this.label}
                 type = ${this.type}
                 description = ${this.description}
+        
                 settingsNodeValue = ${settingsNodeValue}
                 settings = ${this.settings}
-                 x = ${this.x}
-              
        `
     }
 }

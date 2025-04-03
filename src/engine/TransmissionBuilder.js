@@ -35,7 +35,7 @@ class TransmissionBuilder {
           transmissionID,
           processorsConfig
         )
-        logger.reveal(app)
+        // logger.reveal(app)
         transmission.app = app
         transmissions.push(transmission)
       }
