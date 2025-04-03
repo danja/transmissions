@@ -19,7 +19,7 @@ class TransmissionBuilder {
     this.currentDepth = 0
   }
 
-  async buildTransmissions(app, transmissionConfig, processorsConfig, configModel) {
+  async buildTransmissions(app, transmissionConfig, configModel) {
     logger.debug(`\nTransmissionBuilder.buildTransmissions`)
     logger.debug(`transmissionConfig = \n${transmissionConfig}`)
     const poi = grapoi({ dataset: transmissionConfig })
@@ -33,7 +33,6 @@ class TransmissionBuilder {
         const transmission = await this.constructTransmission(
           transmissionConfig,
           transmissionID,
-          processorsConfig,
           configModel
         )
         // logger.reveal(app)
@@ -44,7 +43,10 @@ class TransmissionBuilder {
     return transmissions
   }
 
-  async constructTransmission(transmissionConfig, transmissionID, processorsConfig, configModel) {
+  async constructTransmission(transmissionConfig, transmissionID, configModel) {
+    // REFACTORHERE
+    const processorsConfig = configModel.dataset
+
     logger.debug(`\nTransmissionBuilder.constructTransmission`)
 
     if (++this.currentDepth > this.MAX_NESTING_DEPTH) {
@@ -108,7 +110,7 @@ class TransmissionBuilder {
           transmission.register(node.value, nestedTransmission)
         } else {
           // Regular processor handling
-          const processorBase = await this.createProcessor(processorType, processorsConfig, configModel)
+          const processorBase = await this.createProcessor(processorType, configModel)
           processorBase.id = node.value
           processorBase.type = processorType
           if (settingsNode) {
@@ -154,9 +156,9 @@ class TransmissionBuilder {
     }
   }
 
-  async createProcessor(type, config, configModel) {
+  async createProcessor(type, configModel) {
     // REFACTOR HERE
-    config = configModel.dataset
+    const config = configModel.dataset
     logger.debug(`\n\nTransmissionBuilder.createProcessor, config = ${config}`)
 
 
