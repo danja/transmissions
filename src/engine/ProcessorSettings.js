@@ -13,7 +13,7 @@ class ProcessorSettings {
         logger.debug(`this.appConfig = ${this.appConfig}`)
         this.transmissionConfig = parent.app?.transmissionConfig
         logger.debug(`this.transmissionConfig = ${this.transmissionConfig}`)
-        this.config = parent.config
+        this.configDataset = parent.configDataset
         logger.debug(`this.config = ${this.config}`)
     }
 
@@ -46,14 +46,16 @@ class ProcessorSettings {
         if (values) return values
 
         // Check the transmission config (transmissions.ttl)
-        var dataset = this.transmissionConfig
+        dataset = this.transmissionConfig
         logger.debug(`Trying TRANSMISSIONS dataset \n ${logger.shorter(dataset)}`)
         var values = this.valuesFromDataset(dataset, property);
         if (values) return values
 
         // check the general config (config.ttl)
-        const configDataset = this.config;
+        dataset = this.configDataset
         logger.debug(`\nTrying CONFIG dataset \n ${logger.shorter(dataset)}`)
+        logger.debug(`\nTrying CONFIG dataset \n ${dataset}`)
+        logger.reveal(dataset)
         var values = this.valuesFromDataset(dataset, property);
         if (values) return values
 

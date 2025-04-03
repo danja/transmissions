@@ -5,11 +5,12 @@ import SysUtils from '../utils/SysUtils.js'
 import ProcessorSettings from '../engine/ProcessorSettings.js'
 
 class Processor extends EventEmitter {
-    constructor(config) {
+    constructor(configDataset) {
         super()
-        this.config = config
+        this.configDataset = configDataset
         logger.debug(`\nProcessor constructor : ${this}`)
         this.settee = new ProcessorSettings(this)
+        logger.debug(`configDataset : ${configDataset}`)
         this.messageQueue = []
         this.processing = false
         this.outputs = []
@@ -26,9 +27,13 @@ class Processor extends EventEmitter {
         */
 
     // TODO tidy up
+    /*
     getValues(property, fallback) {
+        this.settee.configDataset = this.configDataset
+        logger.debug(`Processor.getValues, this.configDataset : ${this.configDataset}`)
         return this.settee.getValues(this.settingsNode, property, fallback)
     }
+        */
 
     getProperty(property, fallback = undefined) {
         logger.trace(`\nProcessor.getProperty looking for ${property}`)
@@ -41,6 +46,8 @@ class Processor extends EventEmitter {
         logger.trace(`\nProcessor.getProperty this.settingsNode = ${this.settingsNode}`)
         logger.trace(`\nProcessor.getProperty    typeof this.settingsNode = ${typeof this.settingsNode}`)
 
+        this.settee.configDataset = structuredClone(this.configDataset) // TODO probably not needed
+        logger.debug(`Processor.getProperty, this.configDataset : ${this.configDataset}`)
         // Get values from settings
         const values = this.settee.getValues(this.settingsNode, property, fallback)
 
@@ -196,6 +203,7 @@ async process(message) {
         
                 settingsNodeValue = ${settingsNodeValue}
                 settings = ${this.settings}
+                          config = ${this.config}
        `
     }
 }

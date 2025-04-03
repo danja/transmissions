@@ -74,14 +74,14 @@ class TransmissionBuilder {
     }
     logger.log('\n+ ***** Construct Transmission : ' + transmission.label + ' <' + transmission.id + '>')
 
-    await this.createNodes(transmission, pipenodes, transmissionConfig, processorsConfig, configModel)
+    await this.createNodes(transmission, pipenodes, transmissionConfig, configModel)
     this.connectNodes(transmission, pipenodes)
 
     this.currentDepth--
     return transmission
   }
 
-  async createNodes(transmission, pipenodes, transmissionConfig, processorsConfig, configModel) {
+  async createNodes(transmission, pipenodes, transmissionConfig, configModel) {
     for (const node of pipenodes) {
       //  node.value is either the name of a processor or a nested transmission
 
@@ -104,7 +104,6 @@ class TransmissionBuilder {
           const nestedTransmission = await this.constructTransmission(
             transmissionConfig,
             processorType, // is used?
-            processorsConfig,
             configModel
           )
           transmission.register(node.value, nestedTransmission)
@@ -158,12 +157,12 @@ class TransmissionBuilder {
 
   async createProcessor(type, configModel) {
     // REFACTOR HERE
-    const config = configModel.dataset
-    logger.debug(`\n\nTransmissionBuilder.createProcessor, config = ${config}`)
+    // const config = configModel.dataset
+    logger.debug(`\n\nTransmissionBuilder.createProcessor, config = ${configModel}`)
 
-
-    const coreProcessor = AbstractProcessorFactory.createProcessor(type, config)
+    const coreProcessor = AbstractProcessorFactory.createProcessor(type, configModel.dataset)
     if (coreProcessor) {
+      coreProcessor.configModel = configModel
       return coreProcessor
     }
 
@@ -175,11 +174,13 @@ class TransmissionBuilder {
       const ProcessorClass = await this.moduleLoader.loadModule(shortName)
 
       logger.debug(`Module loaded successfully: ${shortName}`)
-      return new ProcessorClass.default(config)
+      const moduleProcessor = new ProcessorClass.default(configModel.dataset)
+      moduleProcessor.configModel = configModel
     } catch (error) {
       logger.error(`TransmissionBuilder.createProcessor, failed to load ${type?.value} : ${error.message}`)
       process.exit(1)
     }
+    return moduleProcessor
   }
 
 
