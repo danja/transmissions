@@ -21,7 +21,7 @@ class TransmissionBuilder {
 
   async buildTransmissions(app, transmissionConfig, configModel) {
     logger.debug(`\nTransmissionBuilder.buildTransmissions`)
-    logger.debug(`transmissionConfig = \n${transmissionConfig}`)
+    // logger.debug(`transmissionConfig = \n${transmissionConfig}`)
     const poi = grapoi({ dataset: transmissionConfig })
     const transmissions = []
 
