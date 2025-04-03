@@ -8,9 +8,9 @@ class Processor extends EventEmitter {
     constructor(configDataset) {
         super()
         this.configDataset = configDataset
-        logger.debug(`\nProcessor constructor : ${this}`)
+        logger.debug(`Processor.constructor : \n${this}`)
         this.settee = new ProcessorSettings(this)
-        logger.debug(`configDataset : ${configDataset}`)
+        logger.trace(`configDataset : ${configDataset}`)
         this.messageQueue = []
         this.processing = false
         this.outputs = []
@@ -30,24 +30,24 @@ class Processor extends EventEmitter {
 
     getValues(property, fallback) {
         this.settee.configDataset = this.configDataset
-        logger.debug(`Processor.getValues, this.configDataset : ${this.configDataset}`)
+        logger.debug(`   Processor.getValues, this.configDataset : ${this.configDataset}`)
         return this.settee.getValues(this.settingsNode, property, fallback)
     }
 
 
     getProperty(property, fallback = undefined) {
-        logger.debug(`\nProcessor.getProperty looking for ${property}`)
+        logger.debug(`   Processor.getProperty looking for ${property}`)
         // first check if the property is in the message
         var value = this.propertyInMessage(property)
         if (value) {
-            logger.debug(`property found in message : ${value}`)
+            logger.debug(`   property found in message : ${value}`)
             return value
         }
-        logger.debug(`\nProcessor.getProperty this.settingsNode = ${this.settingsNode}`)
-        logger.debug(`\nProcessor.getProperty    typeof this.settingsNode = ${typeof this.settingsNode}`)
+        logger.debug(`   this.settingsNode = ${this.settingsNode?.value}`)
+        logger.debug(`   typeof this.settingsNode = ${typeof this.settingsNode}`)
 
         this.settee.configDataset = this.configDataset // TODO probably not needed
-        logger.debug(`Processor.getProperty, this.configDataset : ${this.configDataset}`)
+        logger.trace(`   this.configDataset : ${this.configDataset}`)
         // Get values from settings
         const values = this.settee.getValues(this.settingsNode, property, fallback)
 
@@ -73,11 +73,10 @@ class Processor extends EventEmitter {
     }
 
     async preProcess(message) {
-
+        logger.debug('Processor.preProcess')
         this.app = message.app
-        // this.config.app = this.app // ??????????
         this.settee.app = this.app
-        //    logger.log(`THIS APP = ${this.app}`)
+        logger.trace(`THIS APP = ${this.app}`)
 
         if (message.onProcess) { // Claude
             message.onProcess(this, message)
@@ -85,13 +84,13 @@ class Processor extends EventEmitter {
 
         this.previousLogLevel = logger.getLevel()
 
+        // TODO make it loglevel value
+        const loglevel = this.getProperty(ns.trn.loglevel)
 
-        const debug = this.getProperty(ns.trn.debug)
-
-        if (debug) {
-            logger.setLogLevel('debug')
+        if (loglevel) {
+            logger.setLogLevel(loglevel)
         }
-        logger.debug(`Processor.preProcess, debug = ${debug}`)
+        logger.debug(`   loglevel = ${loglevel}`)
 
         /* TODO uncomment after config sorted
         const messageType = this.getProperty(ns.trn.messageType)
@@ -139,6 +138,7 @@ async process(message) {
     }
 
     async executeQueue() {
+        logger.debug(`Processor.executeQueue`)
         this.processing = true
         while (this.messageQueue.length > 0) {
             let { message } = this.messageQueue.shift()
@@ -155,9 +155,9 @@ async process(message) {
             message = SysUtils.copyMessage(message)
 
             this.addTag(message)
-            logger.debug(`BEFORE PRE`)
+            logger.debug(`  before`)
             await this.preProcess(message)
-            logger.debug(`AFTER PRE`)
+            logger.debug(`  after`)
             await this.process(message)
             await this.postProcess(message)
         }
@@ -192,18 +192,17 @@ async process(message) {
     }
 
     toString() {
-        //  logger.reveal(this.settings)
         const settingsNodeValue = this.settingsNode ? this.settingsNode.value : 'none'
         return `
-        *** Processor ${this.constructor.name}
-                id = ${this.id}
-                label = ${this.label}
-                type = ${this.type?.value}
-                description = ${this.description}
+=== Processor ${this.constructor.name} ===
+    id = ${this.id}
+    label = ${this.label}
+    type = ${this.type?.value}
+    description = ${this.description}
         
-                settingsNodeValue = ${settingsNodeValue}
-                settings = ${this.settings}
-                          config = ${this.config}
+        settingsNodeValue = ${settingsNodeValue}
+        settings = ${this.settings}
+        config = ${this.config}
        `
     }
 }

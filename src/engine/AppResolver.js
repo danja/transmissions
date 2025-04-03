@@ -132,7 +132,9 @@ class AppResolver {
     }
 
     getModulePath() {
-        logger.debug(`AppResolver.getModulePath,\nthis.appPath : ${this.appPath}\nthis.moduleSubDir : ${this.moduleSubDir}`)
+        logger.debug(`AppResolver.getModulePath
+    this.appPath : ${this.appPath}
+    this.moduleSubDir : ${this.moduleSubDir}`)
         return path.join(this.appPath, this.moduleSubDir)
     }
 

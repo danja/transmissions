@@ -21,13 +21,13 @@ class CommandUtils {
         if (!flags.verbose) logger.silent = flags.silent
         logger.setLogLevel(debugLevel)
 
-        logger.debug('\nCommandUtils.begin')
-        logger.debug('CommandUtils.begin, process.cwd() = ' + process.cwd())
-        logger.debug('CommandUtils.begin, flags = ' + flags)
+        logger.debug('CommandUtils.begin')
+        logger.debug('   process.cwd() = ' + process.cwd())
+        logger.debug('   flags = ' + flags)
         // logger.reveal(flags)
-        logger.debug('CommandUtils.begin, application = ' + application)
-        logger.debug('CommandUtils.begin, target = ' + target)
-        logger.debug(`CommandUtils.begin, message = ${message}`)
+        logger.debug('   application = ' + application)
+        logger.debug('   target = ' + target)
+        logger.debug(`   message = ${message}`)
 
         // dir containing manifest
         if (target && !target.startsWith('/')) {
@@ -56,9 +56,10 @@ class CommandUtils {
     }
 
     static splitName(fullPath) {
-        logger.debug(`\nCommandUtils.splitName, fullPath  = ${fullPath}`)
+        logger.debug(`CommandUtils.splitName
+   fullPath  = ${fullPath}`)
         const parts = fullPath.split(path.sep)
-        logger.debug(`\nCommandUtils.splitName, parts  = ${parts}`)
+        logger.debug(`   parts  = ${parts}`)
         var lastPart = parts[parts.length - 1]
 
         var task = false
@@ -72,7 +73,7 @@ class CommandUtils {
         //  logger.debug(`\nCommandUtils.splitName, parts.slice(0, parts.length - 1) = ${parts.slice(0, parts.length - 1)}`)
 
         // const appPath = parts.join(path.sep)
-        logger.debug(`CommandUtils.splitName, appName:${lastPart}, appPath:${appPath}, task:${task},`)
+        logger.debug(`   appName:${lastPart}, appPath:${appPath}, task:${task},`)
 
         return { appName: lastPart, appPath: appPath, task: task }
     }

@@ -99,7 +99,7 @@ class Restructure extends Processor {
         logger.debug('\n\nRestructure.doRenames')
         // Extract mappings array from config
         var renames
-        if (this.config.simples) {
+        if (this.config?.simples) {
             renames = this.config.rename
         } else {
             renames = await this.getRenames()

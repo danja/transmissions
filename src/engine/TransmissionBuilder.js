@@ -116,7 +116,6 @@ class TransmissionBuilder {
             processorBase.settingsNode = settingsNode
           }
 
-          logger.debug('sssssssssssssssssssssssssssssssssssss')
           //  logger.reveal(transmission) ///////////////////////////////////7
           processorBase.whiteboard = transmission.whiteboard // feels redundant...
           processorBase.x = `X`

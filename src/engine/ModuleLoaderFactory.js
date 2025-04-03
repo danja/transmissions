@@ -19,7 +19,8 @@ class ModuleLoaderFactory {
     }
 
     static createApplicationLoader(appPath) {
-        logger.debug(`\nModuleLoaderFactory.createApplicationLoader called with ${appPath}`)
+        logger.debug(`ModuleLoaderFactory.createApplicationLoader
+    appPath = ${appPath}`)
         if (!appPath) {
             throw new Error('Application path is required')
         }

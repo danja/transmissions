@@ -19,7 +19,11 @@ class ApplicationManager {
     }
 
     async initialize(appName, appPath, subtask, target, flags) {
-        logger.debug(`ApplicationManager.initialize, appName=${appName}, appPath=${appPath}, subtask=${subtask}, target=${target}`)
+        logger.debug(`ApplicationManager.initialize
+    appName=${appName}
+    appPath=${appPath}
+    subtask=${subtask}
+    target=${target}`)
 
         if (flags && flags.test) {
             const mock = new MockApplicationManager()
@@ -38,8 +42,8 @@ class ApplicationManager {
 
         //     await this.app.mergeIn(this.appResolver.dataset)
         this.app.dataset = this.appResolver.dataset
-        logger.log(`TYPEOF this.app.dataset = ${typeof this.app.dataset}`)
-        logger.sh(this.app.dataset)
+
+        logger.debug(this.app.dataset)
         return this
     }
 

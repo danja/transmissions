@@ -32,7 +32,8 @@ class ProcessorSettings {
 
     getValues(settingsNode, property, fallback) {
         this.settingsNode = settingsNode;
-        logger.debug(`ProcessorSettings.getValues, property = ${property.value}`);
+        logger.debug(`ProcessorSettings.getValues
+    property = ${property.value}`);
 
         if (!this.settingsNode) {
             return fallback ? [fallback] : [];
@@ -42,21 +43,22 @@ class ProcessorSettings {
         //  const appDataset = this.config.app.dataset; // TODO can we see app?
         // Check the app dataset (manifest.ttl)
         var dataset = this.appDataset
-        logger.debug(`Trying APP dataset \n ${logger.shorter(dataset)}`)
+        logger.debug(`    * looking in APP dataset`)
+        logger.trace(`${logger.shorter(dataset)}`)
         var values = this.valuesFromDataset(dataset, property);
         if (values) return values
 
         // Check the transmission config (transmissions.ttl)
         dataset = this.transmissionConfig
-        logger.debug(`Trying TRANSMISSIONS dataset \n ${logger.shorter(dataset)}`)
+        logger.debug(`    * looking in TRANSMISSIONS dataset`)
+        logger.trace(`${logger.shorter(dataset)}`)
         var values = this.valuesFromDataset(dataset, property);
         if (values) return values
 
         // check the general config (config.ttl)
         dataset = this.configDataset
-        logger.debug(`\nTrying CONFIG dataset \n ${logger.shorter(dataset)}`)
-        //  logger.debug(`\nTrying CONFIG dataset \n ${dataset}`)
-        //    logger.reveal(dataset)
+        logger.debug(`    * looking in CONFIG dataset`)
+        logger.trace(`${logger.shorter(dataset)}`)
         var values = this.valuesFromDataset(dataset, property);
         if (values) return values
 
@@ -64,12 +66,14 @@ class ProcessorSettings {
     }
 
     valuesFromDataset(dataset, property) { // TODO refactor
+        logger.debug('ProcessorSettings.valuesFromDataset')
         const values = this.valuesFromDatasetWrapped(dataset, property);
         if (values && values.length > 0) {
-            logger.debug(`-> ProcessorSettingsvaluesFromDataset, : \n${values}`);
+            logger.debug(`   values = 
+    ${values}`);
             return values;
         }
-        logger.debug('not found')
+        logger.debug('    (not found)')
         return undefined
     }
 
@@ -90,7 +94,7 @@ class ProcessorSettings {
         try {
 
             const value1 = ptr.out(property)
-            logger.debug(`value1 = ${value1.value}`)
+            logger.debug(`   value1 = ${value1.value}`)
 
             // Check if property exists but doesn't have value1
             if (value1.terms.length === 0) {

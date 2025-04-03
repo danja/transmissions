@@ -20,6 +20,7 @@ class WorkerPool {
     }
 
     dispatch() {
+        logger.debug(`WorkerPool.dispatch ********************`)
         const idleWorkerWrapper = this.workers.find(wrapper => !wrapper.busy);
         if (idleWorkerWrapper && this.queue.length) {
             const message = this.queue.shift();

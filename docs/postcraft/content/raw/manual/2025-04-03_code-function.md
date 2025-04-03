@@ -1,5 +1,11 @@
 # Code Function
 
+## logging convention
+ minimal `logger.log`
+
+logger.debug, start method with  `ClassName.methodName`
+inside method, indent 4 spaces (= tab)
+
 #:definitive 2025-04-03
 
 What they **should** do. Dated notes are things that may change in future (mostly generalizations of current functionality).
