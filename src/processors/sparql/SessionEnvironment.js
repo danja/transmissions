@@ -13,15 +13,15 @@ class SessionEnvironment {
     }
 
     async loadEndpoints(dir) {
-        logger.debug(`SessionEnvironment.loadEndpoints dir = ${dir}`)
+        logger.debug(`    loadEndpoints dir = ${dir}`)
         const settingsPath = this.processor.getProperty(ns.trn.endpointSettings)
-        logger.debug(`SessionEnvironment.loadEndpoints dir = ${dir}`)
-        logger.debug(`SessionEnvironment.loadEndpoints settingsPath = ${settingsPath}`)
+        logger.debug(`    dir = ${dir}`)
+        logger.debug(`    settingsPath = ${settingsPath}`)
 
         if (!settingsPath) {
             throw new Error(`
-Endpoint settings path is undefined
-Config :
+    Endpoint settings path is undefined
+    Config :
 ${logger.shorter(this.processor.config)}`)
         }
 

@@ -41,23 +41,23 @@ class ProcessorSettings {
 
         this.appDataset = this.parent.app?.dataset
         //  const appDataset = this.config.app.dataset; // TODO can we see app?
-        // Check the app dataset (manifest.ttl)
+        // Check the app dataset 
         var dataset = this.appDataset
-        logger.debug(`    * looking in APP dataset`)
+        logger.debug(`    * looking in APP dataset (manifest.ttl)`)
         logger.trace(`${logger.shorter(dataset)}`)
         var values = this.valuesFromDataset(dataset, property);
         if (values) return values
 
         // Check the transmission config (transmissions.ttl)
         dataset = this.transmissionConfig
-        logger.debug(`    * looking in TRANSMISSIONS dataset`)
+        logger.debug(`    * looking in TRANSMISSIONS dataset (transmissions.ttl)`)
         logger.trace(`${logger.shorter(dataset)}`)
         var values = this.valuesFromDataset(dataset, property);
         if (values) return values
 
         // check the general config (config.ttl)
         dataset = this.configDataset
-        logger.debug(`    * looking in CONFIG dataset`)
+        logger.debug(`    * looking in CONFIG dataset (config.ttl)`)
         logger.trace(`${logger.shorter(dataset)}`)
         var values = this.valuesFromDataset(dataset, property);
         if (values) return values
