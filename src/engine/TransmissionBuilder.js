@@ -117,7 +117,7 @@ class TransmissionBuilder {
           }
 
           logger.debug('sssssssssssssssssssssssssssssssssssss')
-          logger.reveal(transmission) ///////////////////////////////////7
+          //  logger.reveal(transmission) ///////////////////////////////////7
           processorBase.whiteboard = transmission.whiteboard // feels redundant...
           processorBase.x = `X`
           const processorInstance = transmission.register(node.value, processorBase)

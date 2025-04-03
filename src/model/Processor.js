@@ -27,26 +27,26 @@ class Processor extends EventEmitter {
         */
 
     // TODO tidy up
-    /*
+
     getValues(property, fallback) {
         this.settee.configDataset = this.configDataset
         logger.debug(`Processor.getValues, this.configDataset : ${this.configDataset}`)
         return this.settee.getValues(this.settingsNode, property, fallback)
     }
-        */
+
 
     getProperty(property, fallback = undefined) {
-        logger.trace(`\nProcessor.getProperty looking for ${property}`)
+        logger.debug(`\nProcessor.getProperty looking for ${property}`)
         // first check if the property is in the message
         var value = this.propertyInMessage(property)
         if (value) {
-            logger.trace(`property found in message : ${value}`)
+            logger.debug(`property found in message : ${value}`)
             return value
         }
-        logger.trace(`\nProcessor.getProperty this.settingsNode = ${this.settingsNode}`)
-        logger.trace(`\nProcessor.getProperty    typeof this.settingsNode = ${typeof this.settingsNode}`)
+        logger.debug(`\nProcessor.getProperty this.settingsNode = ${this.settingsNode}`)
+        logger.debug(`\nProcessor.getProperty    typeof this.settingsNode = ${typeof this.settingsNode}`)
 
-        this.settee.configDataset = structuredClone(this.configDataset) // TODO probably not needed
+        this.settee.configDataset = this.configDataset // TODO probably not needed
         logger.debug(`Processor.getProperty, this.configDataset : ${this.configDataset}`)
         // Get values from settings
         const values = this.settee.getValues(this.settingsNode, property, fallback)
@@ -66,7 +66,7 @@ class Processor extends EventEmitter {
     propertyInMessage(property) {
         const shortName = ns.getShortname(property)
         if (this.message && this.message[shortName]) {
-            logger.trace(`Found in message: ${this.message[shortName]}`)
+            logger.debug(`Found in message: ${this.message[shortName]}`)
             return this.message[shortName]
         }
         return undefined
@@ -155,9 +155,9 @@ async process(message) {
             message = SysUtils.copyMessage(message)
 
             this.addTag(message)
-            logger.trace(`BEFORE PRE`)
+            logger.debug(`BEFORE PRE`)
             await this.preProcess(message)
-            logger.trace(`AFTER PRE`)
+            logger.debug(`AFTER PRE`)
             await this.process(message)
             await this.postProcess(message)
         }
@@ -192,7 +192,7 @@ async process(message) {
     }
 
     toString() {
-        logger.reveal(this.settings)
+        //  logger.reveal(this.settings)
         const settingsNodeValue = this.settingsNode ? this.settingsNode.value : 'none'
         return `
         *** Processor ${this.constructor.name}

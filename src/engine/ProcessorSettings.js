@@ -54,8 +54,8 @@ class ProcessorSettings {
         // check the general config (config.ttl)
         dataset = this.configDataset
         logger.debug(`\nTrying CONFIG dataset \n ${logger.shorter(dataset)}`)
-        logger.debug(`\nTrying CONFIG dataset \n ${dataset}`)
-        logger.reveal(dataset)
+        //  logger.debug(`\nTrying CONFIG dataset \n ${dataset}`)
+        //    logger.reveal(dataset)
         var values = this.valuesFromDataset(dataset, property);
         if (values) return values
 

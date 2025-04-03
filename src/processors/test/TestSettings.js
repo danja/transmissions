@@ -91,9 +91,9 @@ class TestSettings extends Processor {
                 break
 
             case ':settingsCollection':
-                const values = this.getValues(ns.trn.items)
+                const values = super.getValues(ns.trn.items)
                 logger.log(`values = `)
-           //   logger.reveal(values)
+                //   logger.reveal(values)
                 logger.sh(this.config)
                 break
 

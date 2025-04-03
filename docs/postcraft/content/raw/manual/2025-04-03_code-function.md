@@ -20,9 +20,10 @@ Top-level Transmissions application. An Application contains a set of Transmissi
 this.transmissionsModel = null
      this.manifestModel = null
      this.configModel = null
-     
+
 **2025-04-03** transmissions are defined in the file `transmissions.ttl`
 
+### Model
 
 ### Transmission  
 

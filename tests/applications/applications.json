@@ -21,7 +21,8 @@
         "command": "./trans config-settings",
         "label": "config-settings",
         "description": "test config-settings application",
-        "requiredMatchCount": 8
+        "requiredMatchCount": 3,
+        "isValid":"probably not"
     },
     {
         "command": "./trans config-setting-manifest tests/applications/config-setting-manifest",

@@ -55,7 +55,7 @@ class ApplicationManager {
         const configModel = await this.appResolver.loadModel('config', this.appResolver.getConfigPath())
 
         //  const processorsConfig = configModel.dataset
-        logger.log(`LOADED configModel = ${configModel}`)
+        //    logger.log(`LOADED configModel = ${configModel}`)
 
         this.app.transmissionConfig = transmissionConfig
         // Merge with app dataset
