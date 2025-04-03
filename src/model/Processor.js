@@ -198,7 +198,7 @@ async process(message) {
         *** Processor ${this.constructor.name}
                 id = ${this.id}
                 label = ${this.label}
-                type = ${this.type}
+                type = ${this.type?.value}
                 description = ${this.description}
         
                 settingsNodeValue = ${settingsNodeValue}

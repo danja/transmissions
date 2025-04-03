@@ -38,7 +38,7 @@ class ProcessorSettings {
             return fallback ? [fallback] : [];
         }
 
-
+        this.appDataset = this.parent.app?.dataset
         //  const appDataset = this.config.app.dataset; // TODO can we see app?
         // Check the app dataset (manifest.ttl)
         var dataset = this.appDataset

@@ -31,15 +31,15 @@ class ApplicationManager {
         this.moduleLoader = ModuleLoaderFactory.createApplicationLoader(this.appResolver.getModulePath())
 
         // TODO refactor more
-        // Add to config before building transmissions
-        await this.app.initDataset(appName)
+
+        //   await this.app.initDataset(appName)
         //    logger.log(`this.appResolver.dataset = ${this.appResolver.dataset}`)
         //  logger.log(`this.app.dataset = ${this.app.dataset}`)
 
         //     await this.app.mergeIn(this.appResolver.dataset)
         this.app.dataset = this.appResolver.dataset
-        //   logger.log(`TYPEOF this.app.dataset = ${typeof this.app.dataset}`)
-        //  logger.reveal(this.app.dataset)
+        logger.log(`TYPEOF this.app.dataset = ${typeof this.app.dataset}`)
+        logger.sh(this.app.dataset)
         return this
     }
 
@@ -71,7 +71,7 @@ class ApplicationManager {
     async start(message = {}) {
         logger.debug(`\n||| ApplicationManager.start`)
         message.app = this.app
-
+        logger.debug(`this.app = ${this.app}`)
         logger.debug(`
             transmissionsFile=${this.appResolver.getTransmissionsPath()}
             configFile=${this.appResolver.getConfigPath()}

@@ -65,7 +65,11 @@ class Application {
     }
 
     toString() {
-        return this.dataset.toString()
+        var string = `=== Application ===
+            dataset :
+${this.dataset}
+        `
+        return string
     }
 }
 export default Application
