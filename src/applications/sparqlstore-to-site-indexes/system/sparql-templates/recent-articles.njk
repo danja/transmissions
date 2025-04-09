@@ -4,9 +4,9 @@ PREFIX : <http://purl.org/stuff/transmissions/>
 
 SELECT DISTINCT * WHERE {
   ?article a schema:Article ;
-    :sourcePath ?sourcePath ;
+  #  :sourcePath ?sourcePath ;
     :relPath ?relPath ;
-    :slug ?slug ;
+   # :slug ?slug ;
     schema:headline ?title ;
     schema:articleBody ?content ;
     schema:creator ?creator .
@@ -14,9 +14,8 @@ SELECT DISTINCT * WHERE {
   ?creator a schema:Person ;
     schema:name ?creatorName .
 
-  OPTIONAL {
-    ?article schema:datePublished ?published ;
-  }
+    ?article schema:dateCreated ?created ;
+
 }
-ORDER BY DESC(?published)
+ORDER BY DESC(?created)
 LIMIT 5

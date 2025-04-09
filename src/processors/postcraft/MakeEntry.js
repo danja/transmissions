@@ -118,9 +118,9 @@ class MakeEntry extends Processor {
     //  eg. 2024-04-19_hello-postcraft.md
     const nonExt = message.filePath.split('.').slice(0, -1).join()
     const shreds = nonExt.split('_')
-    if (Date.parse(shreds[0])) { // filename version is not NaN
-      dates.created = shreds[0]
-    }
+    //if (Date.parse(shreds[0])) { // filename version is not NaN
+    //dates.created = shreds[0]
+    //}
     return dates
   }
 
