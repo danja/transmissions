@@ -14,6 +14,8 @@ class StringOps extends Processor {
 
     constructor(config) {
         super(config)
+        this.config = undefined
+        this.settingsNode = undefined
     }
 
     /*
@@ -26,25 +28,56 @@ class StringOps extends Processor {
   */
     async process(message) {
         logger.debug(`StringOps.process`)
+        // @ts-ignore
         const targetField = await this.getProperty(ns.trn.targetField, 'concat')
         logger.debug(`     targetField = ${targetField}`)
 
         // logger.debug(this)
         if (message.done) return
+        //  let poi = rdf.grapoi({ dataset: dataset, term: this.settingsNode })
 
         // TODO refactor
-        const dataset = this.config
-        let poi = rdf.grapoi({ dataset: dataset, term: this.settingsNode })
-        const segments = GrapoiHelpers.listToArray(dataset, this.settingsNode, ns.trn.values)
-        // logger.reveal(segments)
+        var dataset
+        var segments
+        if (this.app?.dataset) { // manifest
+            dataset = this.app?.dataset
+            segments = GrapoiHelpers.listToArray(dataset, this.settingsNode, ns.trn.values)
+        }
+
+        if (!segments && this.transmissionConfig) {
+            dataset = this.app?.dataset
+            segments = GrapoiHelpers.listToArray(dataset, this.settingsNode, ns.trn.values)
+        }
+        if (!segments && this.config) {
+            dataset = this.config
+            segments = GrapoiHelpers.listToArray(dataset, this.settingsNode, ns.trn.values)
+        }
+
+        logger.log('SEGEMNTS')
+        logger.reveal(segments)
         const asPath = super.getProperty(ns.trn.asPath) === 'true'
 
+        var combined = this.combineSegments(dataset, segments, asPath)
+        logger.debug(`combined = ${combined}`)
+
+        process.exit()
+
+        logger.reveal(message)
+
+        logger.debug(`combined = ${combined}`)
+        JSONUtils.set(message, targetField, combined)
+        logger.reveal(message)
+        process.exit()
+        return this.emit('message', message)
+    }
+
+    combineSegments(dataset, segments, asPath) {
         var combined = ''
         var segment
         for (var i = 0; i < segments.length; i++) {
             segment = segments[i]
             logger.log(`    property = ${segment}`)
-            logger.reveal(segment)
+            //  logger.reveal(segment)
 
             let stringSegment = rdf.grapoi({ dataset: dataset, term: segment })
             let stringProperty = stringSegment.out(ns.trn.string)
@@ -86,18 +119,7 @@ class StringOps extends Processor {
                 continue
             }
         }
-        //logger.debug(`combined = ${combined}`)
-
-
-
-        logger.reveal(message)
-
-        logger.debug(`combined = ${combined}`)
-        JSONUtils.set(message, targetField, combined)
-        logger.reveal(message)
-        process.exit()
-        return this.emit('message', message)
+        return combined
     }
-
 }
 export default StringOps

@@ -14,6 +14,11 @@ class Processor extends EventEmitter {
         this.messageQueue = []
         this.processing = false
         this.outputs = []
+        this.label = undefined
+        this.type = undefined
+        this.description = undefined
+        this.settings = undefined
+        this.config = undefined
     }
 
     // TODO needed?
@@ -33,16 +38,21 @@ class Processor extends EventEmitter {
         logger.debug(`   Processor.getValues, this.configDataset : ${this.configDataset}`)
         return this.settee.getValues(this.settingsNode, property, fallback)
     }
+    settingsNode(settingsNode, property, fallback) {
+        throw new Error('Method not implemented.')
+    }
 
 
     getProperty(property, fallback = undefined) {
         logger.debug(`   Processor.getProperty looking for ${property}`)
+
         // first check if the property is in the message
         var value = this.propertyInMessage(property)
         if (value) {
             logger.debug(`   property found in message : ${value}`)
             return value
         }
+        // @ts-ignore
         logger.debug(`   this.settingsNode = ${this.settingsNode?.value}`)
         logger.debug(`   typeof this.settingsNode = ${typeof this.settingsNode}`)
 
@@ -121,7 +131,7 @@ async process(message) {
     }
 */
 
-    async postProcess(message) {
+    async postProcess(_message) {
         logger.setLogLevel(this.previousLogLevel)
         this.previousLogLevel = null
     }
@@ -163,6 +173,9 @@ async process(message) {
         }
         this.processing = false
     }
+    process(_message) {
+        throw new Error('Method not implemented.')
+    }
 
     addTag(message) {
         const tag = this.getTag()
@@ -175,6 +188,9 @@ async process(message) {
 
     getTag() {
         return ns.shortName(this.id)
+    }
+    id(_id) {
+        throw new Error('Method not implemented.')
     }
 
     async emit(event, message) {
@@ -199,7 +215,7 @@ async process(message) {
     label = ${this.label}
     type = ${this.type?.value}
     description = ${this.description}
-        
+
         settingsNodeValue = ${settingsNodeValue}
         settings = ${this.settings}
         config = ${this.config}
