@@ -1,9 +1,9 @@
 // TransmissionsExporter.js
 // Exports node-flow graphs back to TTL format
 
-import RDFUtils from '../../utils/RDFUtils.js'
-import ns from '../../utils/ns.js'
-import logger from '../../utils/Logger.js'
+import RDFUtils from '../../../utils/RDFUtils.js'
+import ns from '../../../utils/ns.js'
+import logger from '../../../utils/Logger.js'
 import rdf from 'rdf-ext'
 
 class TransmissionsExporter {
@@ -14,7 +14,7 @@ class TransmissionsExporter {
   constructor(graph) {
     this.graph = graph
   }
-  
+
   /**
    * Creates an RDF dataset from the graph
    * @param {string} transmissionId - ID of the transmission to export (or null for all)
@@ -23,10 +23,10 @@ class TransmissionsExporter {
   createDataset(transmissionId = null) {
     const dataset = rdf.dataset()
     const nodes = this.graph.getNodes()
-    
+
     // Group nodes by transmission
     const transmissions = this.organizeNodesByTransmission(nodes)
-    
+
     // Filter to a specific transmission if requested
     if (transmissionId) {
       const filtered = new Map()
@@ -35,10 +35,10 @@ class TransmissionsExporter {
       }
       return this.buildDatasetFromTransmissions(filtered, dataset)
     }
-    
+
     return this.buildDatasetFromTransmissions(transmissions, dataset)
   }
-  
+
   /**
    * Builds an RDF dataset from organized transmission data
    * @param {Map} transmissions - Map of transmission ID to processors
@@ -51,10 +51,10 @@ class TransmissionsExporter {
       const { label, comment, processors } = transmissionData
       this.addTransmissionToDataset(dataset, transmissionId, label, comment, processors)
     }
-    
+
     return dataset
   }
-  
+
   /**
    * Organizes nodes into transmission groups
    * @param {Array} nodes - Array of flow nodes
@@ -62,16 +62,16 @@ class TransmissionsExporter {
    */
   organizeNodesByTransmission(nodes) {
     const transmissions = new Map()
-    
+
     // Default transmission if none specified
     const defaultId = 'http://purl.org/stuff/transmissions/main'
     let defaultLabel = 'main'
-    
+
     for (const node of nodes) {
       // Get transmission data from node (if available)
       const transmissionId = node.getMetadataProperty('transmissionId') || defaultId
       const transmissionLabel = node.getMetadataProperty('transmissionLabel') || defaultLabel
-      
+
       // Create transmission entry if it doesn't exist
       if (!transmissions.has(transmissionId)) {
         transmissions.set(transmissionId, {
@@ -80,19 +80,19 @@ class TransmissionsExporter {
           processors: []
         })
       }
-      
+
       // Add node to transmission
       transmissions.get(transmissionId).processors.push(node)
     }
-    
+
     // Sort processors in each transmission based on connections
     for (const [id, transmission] of transmissions.entries()) {
       transmission.processors = this.sortProcessorsByConnections(transmission.processors)
     }
-    
+
     return transmissions
   }
-  
+
   /**
    * Sorts processors based on connection order
    * @param {Array} processors - Array of processor nodes
@@ -102,11 +102,11 @@ class TransmissionsExporter {
     if (processors.length <= 1) {
       return processors
     }
-    
+
     // Create a map of node output connections
     const outputMap = new Map()
     const inputMap = new Map()
-    
+
     for (const node of processors) {
       for (const outputPort of node.outputs()) {
         for (const connection of outputPort.connections()) {
@@ -116,7 +116,7 @@ class TransmissionsExporter {
               outputMap.set(node.title(), [])
             }
             outputMap.get(node.title()).push(toNode.title())
-            
+
             if (!inputMap.has(toNode.title())) {
               inputMap.set(toNode.title(), [])
             }
@@ -125,26 +125,26 @@ class TransmissionsExporter {
         }
       }
     }
-    
+
     // Find start nodes (no inputs)
-    const startNodes = processors.filter(node => 
+    const startNodes = processors.filter(node =>
       !inputMap.has(node.title()) || inputMap.get(node.title()).length === 0
     )
-    
+
     if (startNodes.length === 0) {
       // No clear starting point, return as-is
       return processors
     }
-    
+
     // Build ordered list
     const ordered = []
     const visited = new Set()
-    
+
     const visit = (node) => {
       if (visited.has(node.title())) return
       visited.add(node.title())
       ordered.push(node)
-      
+
       const outputs = outputMap.get(node.title()) || []
       for (const outputTitle of outputs) {
         const outputNode = processors.find(n => n.title() === outputTitle)
@@ -153,22 +153,22 @@ class TransmissionsExporter {
         }
       }
     }
-    
+
     // Visit from each start node
     for (const startNode of startNodes) {
       visit(startNode)
     }
-    
+
     // Add any remaining nodes
     for (const node of processors) {
       if (!visited.has(node.title())) {
         ordered.push(node)
       }
     }
-    
+
     return ordered
   }
-  
+
   /**
    * Adds a transmission to the dataset
    * @param {Dataset} dataset - RDF dataset
@@ -179,21 +179,21 @@ class TransmissionsExporter {
    */
   addTransmissionToDataset(dataset, transmissionId, label, comment, processors) {
     const transmissionNode = rdf.namedNode(transmissionId)
-    
+
     // Add transmission type
     dataset.add(rdf.quad(
       transmissionNode,
       ns.rdf.type,
       ns.trn.Transmission
     ))
-    
+
     // Add label
     dataset.add(rdf.quad(
       transmissionNode,
       ns.rdfs.label,
       rdf.literal(label)
     ))
-    
+
     // Add comment if present
     if (comment) {
       dataset.add(rdf.quad(
@@ -202,36 +202,36 @@ class TransmissionsExporter {
         rdf.literal(comment)
       ))
     }
-    
+
     // Create pipe list
     const pipeNodes = processors.map(node => {
       // Use the node's processorId if available, otherwise generate one
-      const nodeId = node.getMetadataProperty('processorId') || 
-                    `http://purl.org/stuff/transmissions/${node.title()}`
+      const nodeId = node.getMetadataProperty('processorId') ||
+        `http://purl.org/stuff/transmissions/${node.title()}`
       return rdf.namedNode(nodeId)
     })
-    
+
     // Add pipe list to dataset
     this.addListToDataset(dataset, transmissionNode, ns.trn.pipe, pipeNodes)
-    
+
     // Add processor definitions
     for (let i = 0; i < processors.length; i++) {
       const node = processors[i]
-      const nodeId = node.getMetadataProperty('processorId') || 
-                    `http://purl.org/stuff/transmissions/${node.title()}`
+      const nodeId = node.getMetadataProperty('processorId') ||
+        `http://purl.org/stuff/transmissions/${node.title()}`
       const processorId = rdf.namedNode(nodeId)
-      
+
       // Get processor type
       const processorType = node.getMetadataProperty('processorType') || node.title()
       const processorTypeNode = rdf.namedNode(`http://purl.org/stuff/transmissions/${processorType}`)
-      
+
       // Add processor type
       dataset.add(rdf.quad(
         processorId,
         ns.rdf.type,
         processorTypeNode
       ))
-      
+
       // Add settings if present
       const settings = node.getMetadataProperty('settings')
       if (settings) {
@@ -242,7 +242,7 @@ class TransmissionsExporter {
           settingsNode
         ))
       }
-      
+
       // Add comment if present
       const comment = node.getMetadataProperty('comment')
       if (comment) {
@@ -254,7 +254,7 @@ class TransmissionsExporter {
       }
     }
   }
-  
+
   /**
    * Adds an RDF list to the dataset
    * @param {Dataset} dataset - RDF dataset
@@ -272,7 +272,7 @@ class TransmissionsExporter {
       ))
       return
     }
-    
+
     // Create list
     let listNode = rdf.blankNode()
     dataset.add(rdf.quad(
@@ -280,18 +280,18 @@ class TransmissionsExporter {
       predicate,
       listNode
     ))
-    
+
     // Add items
     for (let i = 0; i < items.length; i++) {
       const item = items[i]
-      
+
       // Add first item
       dataset.add(rdf.quad(
         listNode,
         ns.rdf.first,
         item
       ))
-      
+
       // Add rest link
       if (i < items.length - 1) {
         const nextNode = rdf.blankNode()
@@ -311,7 +311,7 @@ class TransmissionsExporter {
       }
     }
   }
-  
+
   /**
    * Saves the RDF dataset to a TTL file
    * @param {string} filePath - Path to save to

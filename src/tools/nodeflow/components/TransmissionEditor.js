@@ -1,13 +1,17 @@
 // TransmissionEditor.js
 // Main component that provides transmission editing functionality
 
-import { NodeFlowGraph } from '@elicdavis/node-flow'
+import { NodeFlowGraph, FlowNode } from '@elicdavis/node-flow'
 import TransmissionsLoader from './TransmissionsLoader.js'
 import TransmissionsGraphBuilder from './TransmissionsGraphBuilder.js'
 import TransmissionsExporter from './TransmissionsExporter.js'
 import ProcessorNodePublisher from './ProcessorNodePublisher.js'
-import logger from '../../utils/Logger.js'
+import logger from '../../../utils/Logger.js'
 
+/**
+ * Main editor component that coordinates loading, editing and saving
+ * of transmission pipelines using the node-flow library
+ */
 class TransmissionEditor {
   /**
    * Creates a transmission editor
@@ -18,26 +22,26 @@ class TransmissionEditor {
     this.graph = new NodeFlowGraph(canvas, {
       backgroundColor: '#07212a'
     })
-    
+
     // Create component instances
     this.loader = new TransmissionsLoader()
     this.builder = new TransmissionsGraphBuilder(this.graph)
     this.exporter = new TransmissionsExporter(this.graph)
     this.publisher = new ProcessorNodePublisher()
-    
+
     // Register publisher
     this.graph.addPublisher('transmissions', this.publisher)
-    
+
     // Track loaded file
     this.currentFile = null
     this.loadedTransmissions = []
-    
+
     // Set up event handlers
     this.setupEvents()
-    
+
     logger.info('TransmissionEditor: Initialized')
   }
-  
+
   /**
    * Sets up event handlers for the editor
    */
@@ -45,7 +49,7 @@ class TransmissionEditor {
     // Set up node creation handler
     this.graph.addOnNodeCreatedListener((publisher, nodeType, node) => {
       logger.debug(`TransmissionEditor: Node created - ${nodeType}`)
-      
+
       // Set default metadata
       if (this.loadedTransmissions.length > 0) {
         const transmission = this.loadedTransmissions[0]
@@ -55,29 +59,29 @@ class TransmissionEditor {
       }
     })
   }
-  
+
   /**
    * Loads transmissions from a TTL file
    * @param {string} filePath - Path to the TTL file
-   * @returns {Promise<void>}
+   * @returns {Promise<Array>} - The loaded transmissions
    */
   async loadFromFile(filePath) {
     try {
       logger.info(`TransmissionEditor: Loading from ${filePath}`)
-      
+
       // Load transmissions from file
       const transmissions = await this.loader.loadFromFile(filePath)
       this.loadedTransmissions = transmissions
-      
+
       // Register processor types discovered in the file
       this.publisher.registerProcessorsFromTransmissions(transmissions)
-      
+
       // Build the graph
       this.builder.buildGraph(transmissions)
-      
+
       // Store current file
       this.currentFile = filePath
-      
+
       logger.info(`TransmissionEditor: Loaded ${transmissions.length} transmissions from ${filePath}`)
       return transmissions
     } catch (error) {
@@ -85,7 +89,7 @@ class TransmissionEditor {
       throw error
     }
   }
-  
+
   /**
    * Saves the current graph to a TTL file
    * @param {string} filePath - Path to save to (defaults to the loaded file)
@@ -98,7 +102,7 @@ class TransmissionEditor {
       if (!targetFile) {
         throw new Error('No file specified and no current file loaded')
       }
-      
+
       await this.exporter.saveToFile(targetFile, transmissionId)
       logger.info(`TransmissionEditor: Saved to ${targetFile}`)
     } catch (error) {
@@ -106,7 +110,7 @@ class TransmissionEditor {
       throw error
     }
   }
-  
+
   /**
    * Creates a new transmission with a default node
    * @param {string} label - Transmission label
@@ -114,7 +118,7 @@ class TransmissionEditor {
    */
   createNewTransmission(label = 'New Transmission') {
     const transmissionId = `http://purl.org/stuff/transmissions/${label.replace(/\s+/g, '_')}`.toLowerCase()
-    
+
     const transmission = {
       id: transmissionId,
       shortId: label.replace(/\s+/g, '_').toLowerCase(),
@@ -123,24 +127,26 @@ class TransmissionEditor {
       processors: [],
       connections: []
     }
-    
+
     this.loadedTransmissions = [transmission]
-    
+
     // Add default node
     const nodeType = 'ShowMessage' // Default processor type
-    const node = this.graph.addNode(new FlowNode({
+    const node = new FlowNode({
       title: 'SM',
       position: { x: 200, y: 200 },
       data: {}
-    }))
-    
+    })
+
     node.setMetadataProperty('transmissionId', transmissionId)
     node.setMetadataProperty('transmissionLabel', label)
     node.setMetadataProperty('processorType', `http://purl.org/stuff/transmissions/${nodeType}`)
-    
+
+    this.graph.addNode(node)
+
     return transmission
   }
-  
+
   /**
    * Gets the current node-flow graph
    * @returns {NodeFlowGraph} - The graph

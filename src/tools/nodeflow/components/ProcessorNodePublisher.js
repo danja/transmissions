@@ -2,10 +2,14 @@
 // Defines node types for transmission processors in node-flow
 
 import { Publisher } from '@elicdavis/node-flow'
-import ns from '../../utils/ns.js'
-import logger from '../../utils/Logger.js'
+import ns from '../../../utils/ns.js'
+import logger from '../../../utils/Logger.js'
 import rdf from 'rdf-ext'
 
+/**
+ * Creates a publisher that defines node types for transmission processors
+ * in the node-flow graph.
+ */
 class ProcessorNodePublisher extends Publisher {
   /**
    * Creates a publisher that defines node types for transmission processors
@@ -17,7 +21,7 @@ class ProcessorNodePublisher extends Publisher {
       version: '1.0.0',
       nodes: {}
     })
-    
+
     // Register common processor types
     this.registerCommonProcessorTypes()
   }
@@ -33,14 +37,14 @@ class ProcessorNodePublisher extends Publisher {
     this.registerProcessor('ShowMessage', 'Displays message contents and continues')
     this.registerProcessor('NOP', 'No operation, just passes message through')
     this.registerProcessor('Unfork', 'Collapses all pipes but one')
-    
+
     // File processors
     this.registerProcessor('FileReader', 'Reads a file into the message')
     this.registerProcessor('FileWriter', 'Writes message content to a file')
-    
+
     // JSON processors
     this.registerProcessor('JSONWalker', 'Navigates JSON structure')
-    
+
     // Text processors
     this.registerProcessor('Restructure', 'Restructures message content')
     this.registerProcessor('MarkdownFormatter', 'Formats content as Markdown')
@@ -98,11 +102,11 @@ class ProcessorNodePublisher extends Publisher {
    */
   registerProcessorsFromTransmissions(transmissions) {
     const registeredTypes = new Set()
-    
+
     for (const transmission of transmissions) {
       for (const processor of transmission.processors) {
         const shortType = processor.shortType
-        
+
         if (shortType && !registeredTypes.has(shortType) && !this.nodes().has(shortType)) {
           this.registerProcessor(shortType)
           registeredTypes.add(shortType)

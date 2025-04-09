@@ -1,12 +1,17 @@
 // TransmissionsLoader.js
 // Loads transmission TTL files into node-flow format
 
-import RDFUtils from '../../utils/RDFUtils.js'
+import RDFUtils from '../../../utils/RDFUtils.js'
+// Import with module map
 import grapoi from 'grapoi'
-import GrapoiHelpers from '../../utils/GrapoiHelpers.js'
-import ns from '../../utils/ns.js'
-import logger from '../../utils/Logger.js'
+import GrapoiHelpers from '../../../utils/GrapoiHelpers.js'
+import ns from '../../../utils/ns.js'
+import logger from '../../../utils/Logger.js'
 
+/**
+ * Loads and parses transmission TTL files into an intermediate format
+ * suitable for conversion to node-flow graphs
+ */
 class TransmissionsLoader {
   /**
    * Loads a transmission TTL file and converts it to a format suitable for node-flow
@@ -33,7 +38,7 @@ class TransmissionsLoader {
   parseDataset(dataset, filePath) {
     const transmissions = []
     const poi = grapoi({ dataset })
-    
+
     // Find all transmissions
     for (const q of poi.out(ns.rdf.type).quads()) {
       if (q.object.equals(ns.trn.Transmission)) {
@@ -43,7 +48,7 @@ class TransmissionsLoader {
         transmissions.push(transmission)
       }
     }
-    
+
     logger.debug(`TransmissionsLoader: Found ${transmissions.length} transmissions`)
     return transmissions
   }
@@ -56,29 +61,29 @@ class TransmissionsLoader {
    */
   extractTransmission(dataset, transmissionID) {
     const transPoi = grapoi({ dataset, term: transmissionID })
-    
+
     // Get transmission label
     let label = ''
     let comment = ''
-    
+
     for (const quad of transPoi.out(ns.rdfs.label).quads()) {
       label = quad.object.value
     }
-    
+
     for (const quad of transPoi.out(ns.rdfs.comment).quads()) {
       comment = quad.object.value
     }
-    
+
     // Get pipe nodes
     const pipeNodes = GrapoiHelpers.listToArray(dataset, transmissionID, ns.trn.pipe)
-    
+
     // Extract processor details
     const processors = []
     for (const node of pipeNodes) {
       const np = grapoi({ dataset, term: node })
       const processorType = np.out(ns.rdf.type).term
       const settingsNode = np.out(ns.trn.settings).term
-      
+
       // Extract comments for this processor node
       const nodeComments = []
       for (const quad of np.quads()) {
@@ -86,7 +91,7 @@ class TransmissionsLoader {
           nodeComments.push(quad.object.value)
         }
       }
-      
+
       processors.push({
         id: node.value,
         shortId: ns.shortName(node.value),
@@ -97,7 +102,7 @@ class TransmissionsLoader {
         comments: nodeComments
       })
     }
-    
+
     // Create connections between processors
     const connections = []
     for (let i = 0; i < processors.length - 1; i++) {
@@ -106,7 +111,7 @@ class TransmissionsLoader {
         to: processors[i + 1].id
       })
     }
-    
+
     return {
       id: transmissionID.value,
       shortId: ns.shortName(transmissionID.value),
