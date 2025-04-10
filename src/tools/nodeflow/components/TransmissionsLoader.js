@@ -1,6 +1,7 @@
 import { isBrowser } from '../../../utils/BrowserUtils.js'
 import RDFUtils from '../../../utils/RDFUtils.js'
 import logger from '../../../utils/Logger.js'
+import ns from '../../../utils/ns.js'
 import grapoi from 'grapoi'
 
 class TransmissionsLoader {
@@ -8,251 +9,229 @@ class TransmissionsLoader {
     try {
       logger.debug(`TransmissionsLoader: Loading from ${filePath}`)
       const dataset = await RDFUtils.readDataset(filePath)
-      return this.parseDataset(dataset, filePath)
+      return this.parseDataset(dataset)
     } catch (error) {
       logger.error(`TransmissionsLoader: Error loading file: ${error.message}`)
       throw error
     }
   }
 
-  parseDataset(dataset, filePath) {
-    const transmissions = []
-
-    let ns
+  parseDataset(dataset) {
     try {
-      if (isBrowser()) {
-        ns = {
-          rdf: { type: { value: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' } },
-          rdfs: {
-            label: { value: 'http://www.w3.org/2000/01/rdf-schema#label' },
-            comment: { value: 'http://www.w3.org/2000/01/rdf-schema#comment' }
-          },
-          trn: {
-            Transmission: { value: 'http://purl.org/stuff/transmissions/Transmission' },
-            pipe: { value: 'http://purl.org/stuff/transmissions/pipe' },
-            settings: { value: 'http://purl.org/stuff/transmissions/settings' }
-          }
-        }
-      } else {
-        ns = require('../../../utils/ns.js').default
-      }
+      // Get all quads as array for safety
+      //  const quads = this.getAllQuads(dataset)
+      const poi = grapoi({ dataset: transmissionConfig })
+      const transmissions = []
 
-      console.log(`Dataset size: ${dataset.size}`)
+      for (const q of poi.out(ns.rdf.type).quads()) {
+        if (q.object.equals(ns.trn.Transmission)) {
+          const transmissionID = q.subject
+          logger.debug(`\ntransmissionID = ${transmissionID.value}`)
 
-      // HERE
-      // console.log(`D : \n ${JSON.stringify(dataset)}`)
-      // Find all transmissions in the dataset
-      const wtf = 'http://purl.org/stuff/transmissions/a'
-
-      for (const quad of dataset.quads) {
-        console.log(`quad- ${JSON.stringify(quad)} \n\n`)
-        //  console.log(`quad.predicate.value : \n ${JSON.stringify(quad.predicate.value)}`)
-        // console.log(`ns.trn.a : \n ${JSON.stringify(ns.trn.a)}`)
-        console.log(`quad.object.value : \n ${JSON.stringify(quad.object.value)}`)
-        console.log(`ns.trn.Transmission.value : \n ${JSON.stringify(ns.trn.Transmission.value)}`)
-        //  if (quad.predicate.value === ns.rdf.type.value &&
-        //  quad.object.value === ns.trn.Transmission.value) {
-        if (quad.predicate.value === wtf &&
-          quad.object.value === ns.trn.Transmission.value) {
-          console.log(`A`)
-          const transmissionID = quad.subject
-          const transmission = this.extractTransmission(dataset, transmissionID, ns)
-          transmission.filePath = filePath
+          const transmission = await this.constructTransmission(
+            transmissionConfig,
+            transmissionID,
+            configModel
+          )
+          // logger.reveal(app)
+          transmission.app = app
           transmissions.push(transmission)
         }
       }
-
-      /////////////////////////////////////
-      /*
-      console.log(`A`)
-      const poi = grapoi({ dataset: dataset })
-      console.log(`D : \n ${JSON.stringify(dataset)}`)
-      console.log(` poi.out(ns.rdf.type) = ${poi.out(ns.rdf.type)}`)
-      console.log(`B`)
-      console.log(` poi.out(ns.rdf.type).quads() = ${poi.out(ns.rdf.type).quads()}`)
-      console.log(`C`)
-      for (const quad of poi.out(ns.rdf.type).quads()) {
-        if (quad.object.equals(ns.trn.Transmission)) {
-          const transmissionID = quad.subject
-          const transmission = this.extractTransmission(dataset, transmissionID, ns)
-          transmission.filePath = filePath
-          transmissions.push(transmission)
-        }
-      }
-*/
-      //////////////////////////////////////7
-
-      logger.debug(`TransmissionsLoader: Found ${transmissions.length} transmissions`)
       return transmissions
-    } catch (error) {
-      logger.error(`Error parsing dataset: ${error.message}`)
-      logger.error(`Stack trace: ${error.stack}`)
-
-      // Return empty array if error occurs
-      return []
     }
-  }
 
-  extractTransmission(dataset, transmissionID, ns) {
-    console.log(`B`)
-    let label = ''
-    let comment = ''
-    console.log(`Dataset : \n ${JSON.stringify(dataset)}`)
-    // HERE TOO
-    for (const quad of dataset.quads) {
-      console.log(`C`)
-      if (quad.subject.equals(transmissionID)) {
-        console.log(`D`)
-        if (quad.predicate.value === ns.rdfs.label.value) {
-          label = quad.object.value
-        } else if (quad.predicate.value === ns.rdfs.comment.value) {
-          comment = quad.object.value
+  extractTransmission(quads, transmissionID) {
+      let label = ''
+      let comment = ''
+
+      // Get label
+      const labelQuads = quads.filter(quad =>
+        this.equalTerms(quad.subject, transmissionID) &&
+        this.equalTerms(quad.predicate, ns.rdfs.label)
+      )
+      if (labelQuads.length > 0) {
+        label = labelQuads[0].object.value
+      }
+
+      // Get comment
+      const commentQuads = quads.filter(quad =>
+        this.equalTerms(quad.subject, transmissionID) &&
+        this.equalTerms(quad.predicate, ns.rdfs.comment)
+      )
+      if (commentQuads.length > 0) {
+        comment = commentQuads[0].object.value
+      }
+
+      // Get pipe nodes
+      const pipeNodes = this.getPipeNodes(quads, transmissionID)
+
+      // Extract processor details
+      const processors = []
+      for (const node of pipeNodes) {
+        let processorType = null
+        let settingsNode = null
+        const nodeComments = []
+
+        // Get processor type
+        const typeQuads = quads.filter(quad =>
+          this.equalTerms(quad.subject, node) &&
+          this.equalTerms(quad.predicate, ns.rdf.type)
+        )
+        if (typeQuads.length > 0) {
+          processorType = typeQuads[0].object
         }
+
+        // Get settings
+        const settingsQuads = quads.filter(quad =>
+          this.equalTerms(quad.subject, node) &&
+          this.equalTerms(quad.predicate, ns.trn.settings)
+        )
+        if (settingsQuads.length > 0) {
+          settingsNode = settingsQuads[0].object
+        }
+
+        // Get comments
+        const processorCommentQuads = quads.filter(quad =>
+          this.equalTerms(quad.subject, node) &&
+          this.equalTerms(quad.predicate, ns.rdfs.comment)
+        )
+        for (const quad of processorCommentQuads) {
+          nodeComments.push(quad.object.value)
+        }
+
+        // Add processor
+        processors.push({
+          id: node.value,
+          shortId: this.getShortName(node.value),
+          type: processorType ? processorType.value : null,
+          shortType: processorType ? this.getShortName(processorType.value) : null,
+          settings: settingsNode ? settingsNode.value : null,
+          shortSettings: settingsNode ? this.getShortName(settingsNode.value) : null,
+          comments: nodeComments
+        })
+      }
+
+      // Create connections
+      const connections = []
+      for (let i = 0; i < processors.length - 1; i++) {
+        connections.push({
+          from: processors[i].id,
+          to: processors[i + 1].id
+        })
+      }
+
+      return {
+        id: transmissionID.value,
+        shortId: this.getShortName(transmissionID.value),
+        label,
+        comment,
+        processors,
+        connections
       }
     }
 
-    // Extract pipe nodes
-    const pipeNodes = this.findPipeNodes(dataset, transmissionID, ns)
+    getPipeNodes(quads, transmissionID) {
+      // Find pipe head
+      const pipeQuads = quads.filter(quad =>
+        this.equalTerms(quad.subject, transmissionID) &&
+        this.equalTerms(quad.predicate, ns.trn.pipe)
+      )
 
-    // Extract processor details
-    const processors = []
-    for (const node of pipeNodes) {
-      let processorType = null
-      let settingsNode = null
-      const nodeComments = []
-
-      for (const quad of dataset) {
-        if (quad.subject.equals(node)) {
-          if (quad.predicate.value === ns.rdf.type.value) {
-            processorType = quad.object
-          } else if (quad.predicate.value === ns.trn.settings.value) {
-            settingsNode = quad.object
-          } else if (quad.predicate.value === ns.rdfs.comment.value) {
-            nodeComments.push(quad.object.value)
-          }
-        }
+      if (pipeQuads.length === 0) {
+        return []
       }
 
-      // Create processor object
-      processors.push({
-        id: node.value,
-        shortId: this.getShortName(node.value),
-        type: processorType ? processorType.value : null,
-        shortType: processorType ? this.getShortName(processorType.value) : null,
-        settings: settingsNode ? settingsNode.value : null,
-        shortSettings: settingsNode ? this.getShortName(settingsNode.value) : null,
-        comments: nodeComments
-      })
+      const listHead = pipeQuads[0].object
+      const nodes = []
+
+      // Manual RDF list traversal
+      this.traverseList(quads, listHead, nodes)
+      return nodes
     }
 
-    // Create connections between processors
-    const connections = []
-    for (let i = 0; i < processors.length - 1; i++) {
-      connections.push({
-        from: processors[i].id,
-        to: processors[i + 1].id
-      })
+    traverseList(quads, currentNode, result) {
+      // Check if we're at the end of the list
+      if (this.equalTerms(currentNode, ns.rdf.nil)) {
+        return
+      }
+
+      // Get first element
+      const firstQuads = quads.filter(quad =>
+        this.equalTerms(quad.subject, currentNode) &&
+        this.equalTerms(quad.predicate, ns.rdf.first)
+      )
+
+      if (firstQuads.length > 0) {
+        result.push(firstQuads[0].object)
+      }
+
+      // Get rest of the list
+      const restQuads = quads.filter(quad =>
+        this.equalTerms(quad.subject, currentNode) &&
+        this.equalTerms(quad.predicate, ns.rdf.rest)
+      )
+
+      if (restQuads.length > 0) {
+        this.traverseList(quads, restQuads[0].object, result)
+      }
     }
 
-    // Return the complete transmission object
-    return {
-      id: transmissionID.value,
-      shortId: this.getShortName(transmissionID.value),
-      label,
-      comment,
-      processors,
-      connections
-    }
-  }
+    getAllQuads(dataset) {
+      // Convert dataset to array of quads in a way that works in any environment
+      const quads = []
 
-  findPipeNodes(dataset, transmissionID, ns) {
-    const pipeNodes = []
-    let pipeFound = false
-
-    // HERE 3
-    // Try to find the pipe property
-    for (const quad of dataset.quads) {
-      if (quad.subject.equals(transmissionID) &&
-        quad.predicate.value === ns.trn.pipe.value) {
-
-        pipeFound = true
-
+      console.log(JSON.stringify(dataset))
+      // Handle different dataset implementations
+      /*
+      if (typeof dataset.forEach === 'function') {
+        dataset.forEach(quad => quads.push(quad))
+      } else if (dataset.toArray && typeof dataset.toArray === 'function') {
+        return dataset.toArray()
+      } else if (dataset.quads) {
+        // Browser RDF-Ext sometimes has quads property
+        return Array.isArray(dataset.quads) ? dataset.quads : Array.from(dataset.quads)
+      } else {
+        // Last resort, try different iteration approaches
         try {
-          // Check if the object is a blank node (start of RDF list)
-          const listHead = quad.object
-          this.traverseRdfList(dataset, listHead, pipeNodes, ns)
-        } catch (error) {
-          logger.error(`Error traversing RDF list: ${error.message}`)
-
-          // Fallback: Try to parse the pipe as space-separated values
-          const objectId = quad.object.value
-          if (objectId && objectId.includes(' ')) {
-            const parts = objectId.split(' ')
-
-            for (const part of parts) {
-              if (part && !part.startsWith('(') && !part.startsWith(')')) {
-                pipeNodes.push({
-                  value: part,
-                  equals: other => part === other.value
-                })
-              }
-            }
-          }
+          return [...dataset]
+        } catch (e) {
+          logger.error(`Cannot iterate dataset: ${e.message}`)
+          return []
         }
       }
+        */
+
+      return quads
     }
 
-    if (!pipeFound) {
-      logger.warn(`No pipe found for transmission: ${transmissionID.value}`)
-    }
+    equalTerms(term1, term2) {
+      // Simple equality check that works with any implementation
+      if (!term1 || !term2) return false
 
-    return pipeNodes
-  }
-
-  traverseRdfList(dataset, currentNode, results, ns) {
-    // Base case: nil node
-    if (currentNode.value === ns.rdf.nil.value) {
-      return
-    }
-
-    // Get first item
-    let firstItem = null
-    for (const quad of dataset) {
-      if (quad.subject.equals(currentNode) &&
-        quad.predicate.value === ns.rdf.first.value) {
-        firstItem = quad.object
-        break
+      // Use equals method if available
+      if (term1.equals && typeof term1.equals === 'function') {
+        return term1.equals(term2)
       }
+
+      // Compare values as fallback
+      return term1.value === term2.value
     }
 
-    if (firstItem) {
-      results.push(firstItem)
-    }
+    getShortName(uri) {
+      if (!uri) return ''
 
-    // Get rest of list
-    for (const quad of dataset) {
-      if (quad.subject.equals(currentNode) &&
-        quad.predicate.value === ns.rdf.rest.value) {
-        this.traverseRdfList(dataset, quad.object, results, ns)
-        break
+      // Get the last part after / or #
+      const lastSlashIndex = uri.lastIndexOf('/')
+      const lastHashIndex = uri.lastIndexIndex('#')
+      const splitIndex = Math.max(lastSlashIndex, lastHashIndex)
+
+      if (splitIndex >= 0 && splitIndex < uri.length - 1) {
+        return uri.substring(splitIndex + 1)
       }
+
+      return uri
     }
   }
-
-  getShortName(uri) {
-    if (!uri) return ''
-
-    // Get the last part after / or #
-    const lastSlashIndex = uri.lastIndexOf('/')
-    const lastHashIndex = uri.lastIndexOf('#')
-    const splitIndex = Math.max(lastSlashIndex, lastHashIndex)
-
-    if (splitIndex >= 0 && splitIndex < uri.length - 1) {
-      return uri.substring(splitIndex + 1)
-    }
-
-    return uri
-  }
-}
 
 export default TransmissionsLoader
