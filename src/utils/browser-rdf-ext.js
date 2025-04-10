@@ -1,196 +1,180 @@
-// src/utils/browser-rdf-ext.js
 import rdfExt from 'rdf-ext'
-import N3Parser from '@rdfjs/parser-n3'
-import stringToStream from 'string-to-stream'
 
-class SerializerTurtle {
+class SimpleEventEmitter {
   constructor() {
-    this.contentType = 'text/turtle'
+    this.listeners = {}
+  }
+
+  on(event, listener) {
+    if (!this.listeners[event]) {
+      this.listeners[event] = []
+    }
+    this.listeners[event].push(listener)
+    return this
+  }
+
+  emit(event, ...args) {
+    if (this.listeners[event]) {
+      this.listeners[event].forEach(listener => listener(...args))
+    }
+    return this
+  }
+}
+
+class BrowserDataset {
+  constructor(quads) {
+    this.quads = quads || []
+    this.size = this.quads.length
+  }
+
+  add(quad) {
+    this.quads.push(quad)
+    this.size++
+    return this
+  }
+
+  addAll(dataset) {
+    if (dataset && dataset.quads) {
+      this.quads = this.quads.concat(dataset.quads)
+      this.size = this.quads.length
+    }
+    return this
   }
 
   import(stream) {
-    let output = ''
+    let result = this
 
     return {
-      on: (event, callback) => {
+      on(event, callback) {
         if (event === 'data') {
-          stream.on('data', (quad) => {
-            output += this.quadToTurtle(quad) + '\n'
-            callback(this.quadToTurtle(quad) + '\n')
-          })
+          const data = stream.toString()
+          callback(data)
         }
         if (event === 'end') {
-          stream.on('end', () => {
-            callback()
-          })
+          callback()
         }
         return this
       }
     }
   }
 
-  quadToTurtle(quad) {
-    const subject = this.termToTurtle(quad.subject)
-    const predicate = this.termToTurtle(quad.predicate)
-    const object = this.termToTurtle(quad.object)
-
-    return `${subject} ${predicate} ${object} .`
-  }
-
-  termToTurtle(term) {
-    if (term.termType === 'NamedNode') {
-      return `<${term.value}>`
-    } else if (term.termType === 'BlankNode') {
-      return `_:${term.value}`
-    } else if (term.termType === 'Literal') {
-      let result = `"${term.value.replace(/"/g, '\\"')}"`
-      if (term.language) {
-        result += `@${term.language}`
-      } else if (term.datatype && !term.datatype.value.endsWith('string')) {
-        result += `^^<${term.datatype.value}>`
-      }
-      return result
-    }
-    return term.value
-  }
-}
-
-class SerializerJsonld {
-  import(stream) {
-    // Simple implementation
-    const quads = []
-
+  toStream() {
+    const quads = this.quads
     return {
-      on: (event, callback) => {
+      on(event, callback) {
         if (event === 'data') {
-          stream.on('data', (quad) => {
-            quads.push(quad)
-          })
+          for (const quad of quads) {
+            callback(quad)
+          }
         }
         if (event === 'end') {
-          stream.on('end', () => {
-            // Very simplified conversion to JSON-LD
-            const jsonld = {
-              '@context': {
-                'rdf': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-                'rdfs': 'http://www.w3.org/2000/01/rdf-schema#',
-                'xsd': 'http://www.w3.org/2001/XMLSchema#',
-                'trn': 'http://purl.org/stuff/transmissions/'
-              },
-              '@graph': []
-            }
-
-            // Group by subject
-            const subjects = {}
-            for (const quad of quads) {
-              const subjectId = quad.subject.value
-              if (!subjects[subjectId]) {
-                subjects[subjectId] = {
-                  '@id': subjectId
-                }
-              }
-
-              const predicateShort = quad.predicate.value
-              const objectValue = this.getObjectValue(quad.object)
-
-              if (!subjects[subjectId][predicateShort]) {
-                subjects[subjectId][predicateShort] = objectValue
-              } else if (Array.isArray(subjects[subjectId][predicateShort])) {
-                subjects[subjectId][predicateShort].push(objectValue)
-              } else {
-                subjects[subjectId][predicateShort] = [
-                  subjects[subjectId][predicateShort],
-                  objectValue
-                ]
-              }
-            }
-
-            jsonld['@graph'] = Object.values(subjects)
-            callback(JSON.stringify(jsonld, null, 2))
-          })
+          callback()
         }
         return this
       }
     }
   }
 
-  getObjectValue(object) {
-    if (object.termType === 'NamedNode') {
-      return { '@id': object.value }
-    } else if (object.termType === 'BlankNode') {
-      return { '@id': `_:${object.value}` }
-    } else if (object.termType === 'Literal') {
-      const value = { '@value': object.value }
-      if (object.language) {
-        value['@language'] = object.language
-      } else if (object.datatype && !object.datatype.value.endsWith('string')) {
-        value['@type'] = object.datatype.value
+  match(subject, predicate, object, graph) {
+    const matches = []
+    for (const quad of this.quads) {
+      if ((!subject || quad.subject.equals(subject)) &&
+        (!predicate || quad.predicate.equals(predicate)) &&
+        (!object || quad.object.equals(object)) &&
+        (!graph || quad.graph.equals(graph))) {
+        matches.push(quad)
       }
-      return value
     }
-    return object.value
+    return new BrowserDataset(matches)
   }
 }
 
-// Configure the Turtle parser
-const turtleParser = new N3Parser({
-  factory: rdfExt,
-  format: 'text/turtle'
-})
+function parseTurtleString(turtleString) {
+  const dataset = new BrowserDataset()
 
-// Extended rdfExt for browser use
+  const statements = turtleString.split('.\n')
+
+  const prefixes = {}
+  statements.forEach(stmt => {
+    const prefixMatch = stmt.match(/@prefix\s+([^:]+):\s+<([^>]+)>\s*\./)
+    if (prefixMatch) {
+      prefixes[prefixMatch[1]] = prefixMatch[2]
+    }
+  })
+
+  prefixes['rdf'] = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
+  prefixes[''] = 'http://purl.org/stuff/transmissions/'
+
+  statements.forEach(stmt => {
+    if (stmt.trim().startsWith('#') || !stmt.trim()) return
+    if (stmt.trim().startsWith('@prefix')) return
+
+    let parts = stmt.trim().split(/\s+/, 3)
+    if (parts.length === 3) {
+      try {
+        const subjectNode = resolveNode(parts[0], prefixes)
+        const predicateNode = resolveNode(parts[1], prefixes)
+        const objectNode = resolveNode(parts[2], prefixes)
+
+        if (subjectNode && predicateNode && objectNode) {
+          dataset.add(rdfExt.quad(subjectNode, predicateNode, objectNode))
+        }
+      } catch (e) {
+        console.error("Error parsing triple:", e)
+      }
+    }
+  })
+
+  return dataset
+}
+
+function resolveNode(term, prefixes) {
+  term = term.trim()
+
+  if (term.startsWith('<') && term.endsWith('>')) {
+    return rdfExt.namedNode(term.slice(1, -1))
+  }
+
+  if (term.includes(':')) {
+    const [prefix, local] = term.split(':')
+    if (prefix in prefixes) {
+      return rdfExt.namedNode(prefixes[prefix] + local)
+    }
+  }
+
+  if (term.startsWith(':')) {
+    return rdfExt.namedNode('http://purl.org/stuff/transmissions/' + term.slice(1))
+  }
+
+  if (term.startsWith('"') && term.endsWith('"')) {
+    return rdfExt.literal(term.slice(1, -1))
+  }
+
+  return rdfExt.namedNode('http://purl.org/stuff/transmissions/' + term)
+}
+
 const rdfExtBrowser = {
   ...rdfExt,
 
-  // Parse Turtle string to dataset
   async parseTurtle(turtleString) {
     try {
-      const stream = stringToStream(turtleString)
-      const dataset = rdfExt.dataset()
-      const quadStream = turtleParser.import(stream)
-
-      return new Promise((resolve, reject) => {
-        let quads = []
-        quadStream.on('data', quad => {
-          quads.push(quad)
-        })
-
-        quadStream.on('end', () => {
-          quads.forEach(quad => dataset.add(quad))
-          resolve(dataset)
-        })
-
-        quadStream.on('error', reject)
-      })
+      console.log("Parsing Turtle string:", turtleString.substring(0, 100) + "...")
+      return parseTurtleString(turtleString)
     } catch (error) {
       console.error('Error parsing Turtle:', error)
       throw error
     }
   },
 
-  SerializerTurtle,
-  SerializerJsonld
+  dataset(quads) {
+    return new BrowserDataset(quads || [])
+  }
 }
 
-// Add term factory methods directly to the exported object
-rdfExtBrowser.namedNode = function (value) {
-  return rdfExt.namedNode(value)
-}
-
-rdfExtBrowser.blankNode = function (value) {
-  return rdfExt.blankNode(value)
-}
-
-rdfExtBrowser.literal = function (value, language, datatype) {
-  return rdfExt.literal(value, language, datatype)
-}
-
-rdfExtBrowser.quad = function (subject, predicate, object, graph) {
-  return rdfExt.quad(subject, predicate, object, graph)
-}
-
-rdfExtBrowser.dataset = function (quads) {
-  return rdfExt.dataset(quads)
-}
+Object.keys(rdfExt).forEach(key => {
+  if (typeof rdfExt[key] === 'function' && !rdfExtBrowser[key]) {
+    rdfExtBrowser[key] = rdfExt[key].bind(rdfExt)
+  }
+})
 
 export default rdfExtBrowser

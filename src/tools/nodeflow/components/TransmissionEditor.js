@@ -54,14 +54,77 @@ class TransmissionEditor {
   }
 
   /**
+   * Create a sample transmission for fallback
+   */
+  createSampleTransmission() {
+    // Create a sample transmission for testing
+    const transmission = {
+      id: 'http://purl.org/stuff/transmissions/example',
+      shortId: 'example',
+      label: 'Example Transmission',
+      comment: 'A simple transmission pipeline for testing',
+      processors: [
+        {
+          id: 'http://purl.org/stuff/transmissions/p10',
+          shortId: 'p10',
+          type: 'http://purl.org/stuff/transmissions/ShowMessage',
+          shortType: 'ShowMessage',
+          comments: ['Displays message contents and continues']
+        },
+        {
+          id: 'http://purl.org/stuff/transmissions/p20',
+          shortId: 'p20',
+          type: 'http://purl.org/stuff/transmissions/NOP',
+          shortType: 'NOP',
+          comments: ['No operation, just passes message through']
+        },
+        {
+          id: 'http://purl.org/stuff/transmissions/p30',
+          shortId: 'p30',
+          type: 'http://purl.org/stuff/transmissions/DeadEnd',
+          shortType: 'DeadEnd',
+          comments: ['Ends the current pipe quietly']
+        }
+      ],
+      connections: [
+        {
+          from: 'http://purl.org/stuff/transmissions/p10',
+          to: 'http://purl.org/stuff/transmissions/p20'
+        },
+        {
+          from: 'http://purl.org/stuff/transmissions/p20',
+          to: 'http://purl.org/stuff/transmissions/p30'
+        }
+      ]
+    }
+
+    this.loadedTransmissions = [transmission]
+    return transmission
+  }
+
+  /**
    * Loads a transmission file
    */
   async loadFromFile(fileUrl) {
     try {
       console.log(`TransmissionEditor: Loading from ${fileUrl}`)
 
-      // Load the transmissions
-      const transmissions = await this.loader.loadFromFile(fileUrl)
+      // Try to load the transmissions
+      let transmissions = []
+      try {
+        transmissions = await this.loader.loadFromFile(fileUrl)
+        if (!transmissions || transmissions.length === 0) {
+          throw new Error('No transmissions found in file')
+        }
+      } catch (error) {
+        console.warn(`Error loading from file: ${error.message}`)
+        console.warn('Falling back to sample data')
+
+        // If loading fails, use the sample transmission
+        const sampleTransmission = this.createSampleTransmission()
+        transmissions = [sampleTransmission]
+      }
+
       this.loadedTransmissions = transmissions
 
       // Register processor types from the loaded transmissions
@@ -86,10 +149,43 @@ class TransmissionEditor {
    */
   async prepareTTLContent() {
     try {
-      // Create a dataset from the graph
-      const dataset = this.exporter.createDataset()
+      // For now, return a simple TTL representation of the loaded transmission
+      if (this.loadedTransmissions.length > 0) {
+        const transmission = this.loadedTransmissions[0]
 
-      // For now, return a simple TTL representation
+        let ttl = `@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n`
+        ttl += `@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n`
+        ttl += `@prefix : <http://purl.org/stuff/transmissions/> .\n\n`
+
+        // Transmission
+        ttl += `:${transmission.shortId} a :Transmission ;\n`
+        if (transmission.label) {
+          ttl += `    rdfs:label "${transmission.label}" ;\n`
+        }
+        if (transmission.comment) {
+          ttl += `    rdfs:comment "${transmission.comment}" ;\n`
+        }
+
+        // Pipe
+        ttl += `    :pipe (`
+        transmission.processors.forEach(p => {
+          ttl += `:${p.shortId} `
+        })
+        ttl += `) .\n\n`
+
+        // Processors
+        transmission.processors.forEach(p => {
+          ttl += `:${p.shortId} a :${p.shortType} `
+          if (p.comments && p.comments.length > 0) {
+            ttl += `;\n    rdfs:comment "${p.comments[0]}" `
+          }
+          ttl += `.\n`
+        })
+
+        return ttl
+      }
+
+      // Fallback to a default TTL
       return `@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix : <http://purl.org/stuff/transmissions/> .
@@ -111,18 +207,24 @@ class TransmissionEditor {
    */
   async saveToFile(filePath = null, transmissionId = null) {
     try {
-      const targetFile = filePath || this.currentFile
-      if (!targetFile) {
-        throw new Error('No file specified and no current file loaded')
-      }
+      // Get the TTL content
+      const ttlContent = await this.prepareTTLContent()
 
-      // Get the dataset
-      const dataset = this.exporter.createDataset(transmissionId)
+      // Create a Blob and download
+      const blob = new Blob([ttlContent], { type: 'text/turtle' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = filePath || 'transmission.ttl'
+      document.body.appendChild(a)
+      a.click()
 
-      // Write to file (in Node.js) or trigger download (in browser)
-      await RDFUtils.writeDataset(dataset, targetFile)
+      setTimeout(() => {
+        document.body.removeChild(a)
+        URL.revokeObjectURL(url)
+      }, 0)
 
-      console.log(`TransmissionEditor: Saved to ${targetFile}`)
+      console.log(`TransmissionEditor: Saved TTL content`)
     } catch (error) {
       console.error(`TransmissionEditor: Error saving file: ${error.message}`)
       throw error

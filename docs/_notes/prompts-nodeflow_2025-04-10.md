@@ -29,3 +29,13 @@ Please refer to project knowledge. We are in the process of creating a visual ed
 After running `npm run start`, when I try to load a Turtle file in the browser I get the error below. You may find relevant examples of using rdf-ext in `src/utils/RDFUtils.js`.
 
 Error loading sample: dataset.import(...).on is not a function
+
+---
+
+Please refer to project knowledge. We are in the process of creating a visual editor for `transmission.ttl` pipeline descriptions using the nodeflow library. A lot of code is in place under `src/tools/nodeflow` which is addressed by means of `index.html`. Transmissions is a node-based project, some of the libs (eg. RDF-Ext) aren't natively browser-friendly. So compatibility is acheived by packaging with WebPack, see `webpack.config.js` and `package.json`. ES modules are used throughout. Right now most of the code is in place but there are many bugs to fix. I'd like you to help me fix them. The procedure will be that you familiarise yourself with the relevant parts of the codebase and then we fix the bugs one-by-one. The `index.html` in the root of the project and `src/tools/nodeflow/editor.html` are probably good starting points.
+
+After running `npm run start` the following error is shown :
+ERROR in ./src/utils/browser-rdf-ext.js 136:2-12
+export 'DatasetExt' (imported as 'DatasetExt') was not found in 'rdf-ext' (possible exports: DataFactory, DatasetFactory, Environment, FetchFactory, FormatsFactory, GrapoiFactory, NamespaceFactory, PrefixMapFactory, ScoreFactory, TermMapFactory, TermSetFactory, TraverserFactory, default)
+
+please give me the complete source of src/utils/browser-rdf-ext.js as an artifact

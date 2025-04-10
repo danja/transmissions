@@ -24,83 +24,45 @@ class TransmissionsLoader {
   parseDataset(dataset, filePath) {
     const transmissions = []
 
-    // If in browser environment with missing grapoi, return placeholder data
-    if (isBrowser() && !window.grapoi) {
-      // Lazy-load dependencies
-      import('grapoi').then(module => { window.grapoi = module.default })
-      import('../../../utils/GrapoiHelpers.js').then(module => { window.GrapoiHelpers = module.default })
-      import('../../../utils/ns.js').then(module => { window.ns = module.default })
-
-      // Return placeholder data until dependencies are loaded
-      return [{
-        id: 'http://purl.org/stuff/transmissions/example',
-        shortId: 'example',
-        label: 'Example Transmission',
-        comment: 'This is a placeholder transmission for browser testing',
-        processors: [
-          {
-            id: 'http://purl.org/stuff/transmissions/p10',
-            shortId: 'p10',
-            type: 'http://purl.org/stuff/transmissions/ShowMessage',
-            shortType: 'ShowMessage',
-            comments: ['Displays message contents and continues']
-          },
-          {
-            id: 'http://purl.org/stuff/transmissions/p20',
-            shortId: 'p20',
-            type: 'http://purl.org/stuff/transmissions/DeadEnd',
-            shortType: 'DeadEnd',
-            comments: ['Ends the pipeline without error']
-          }
-        ],
-        connections: [
-          {
-            from: 'http://purl.org/stuff/transmissions/p10',
-            to: 'http://purl.org/stuff/transmissions/p20'
-          }
-        ],
-        filePath: filePath
-      }]
-    }
-
-    // Import necessary libraries
-    let grapoi, GrapoiHelpers, ns
+    // Import necessary dependencies
+    let ns
 
     try {
       if (isBrowser()) {
-        // Use window globals if available
-        grapoi = window.grapoi
-        GrapoiHelpers = window.GrapoiHelpers
-        ns = window.ns
-        window.grapoiLoaded = true
+        // In browser environment
+        ns = {
+          rdf: { type: { value: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' } },
+          rdfs: {
+            label: { value: 'http://www.w3.org/2000/01/rdf-schema#label' },
+            comment: { value: 'http://www.w3.org/2000/01/rdf-schema#comment' }
+          },
+          trn: {
+            Transmission: { value: 'http://purl.org/stuff/transmissions/Transmission' },
+            pipe: { value: 'http://purl.org/stuff/transmissions/pipe' },
+            settings: { value: 'http://purl.org/stuff/transmissions/settings' }
+          }
+        }
       } else {
-        // Import directly in Node.js
-        const grapoiModule = require('grapoi')
-        grapoi = grapoiModule.default || grapoiModule
-
-        const GrapoiHelpersModule = require('../../../utils/GrapoiHelpers.js')
-        GrapoiHelpers = GrapoiHelpersModule.default || GrapoiHelpersModule
-
-        const nsModule = require('../../../utils/ns.js')
-        ns = nsModule.default || nsModule
+        // In Node.js environment
+        ns = require('../../../utils/ns.js').default
       }
 
-      // Continue with parsing if dependencies are loaded
-      if (grapoi && ns) {
-        const poi = grapoi({ dataset })
+      // Print dataset info for debugging
+      console.log(`Dataset size: ${dataset.size}`)
 
-        // Find all transmissions in the dataset
-        const transmissionType = ns.trn.Transmission
-        for (const quad of dataset.match(null, ns.rdf.type, transmissionType)) {
+      // Find all transmissions in the dataset
+      for (const quad of dataset) {
+        if (quad.predicate.value === ns.rdf.type.value &&
+          quad.object.value === ns.trn.Transmission.value) {
+
           const transmissionID = quad.subject
-          const transmission = this.extractTransmission(dataset, transmissionID, ns, GrapoiHelpers, grapoi)
+          const transmission = this.extractTransmission(dataset, transmissionID, ns)
           transmission.filePath = filePath
           transmissions.push(transmission)
         }
-
-        logger.debug(`TransmissionsLoader: Found ${transmissions.length} transmissions`)
       }
 
+      console.log(`TransmissionsLoader: Found ${transmissions.length} transmissions`)
       return transmissions
     } catch (error) {
       logger.error(`Error parsing dataset: ${error.message}`)
@@ -112,46 +74,41 @@ class TransmissionsLoader {
   /**
    * Extract a transmission definition from the dataset
    */
-  extractTransmission(dataset, transmissionID, ns, GrapoiHelpers, grapoi) {
-    // Create a pointer to the transmission in the dataset
-    const transPoi = grapoi({ dataset, term: transmissionID })
-
+  extractTransmission(dataset, transmissionID, ns) {
     // Extract label and comment
     let label = ''
     let comment = ''
 
-    for (const quad of dataset.match(transmissionID, ns.rdfs.label)) {
-      label = quad.object.value
+    for (const quad of dataset) {
+      if (quad.subject.equals(transmissionID)) {
+        if (quad.predicate.value === ns.rdfs.label.value) {
+          label = quad.object.value
+        } else if (quad.predicate.value === ns.rdfs.comment.value) {
+          comment = quad.object.value
+        }
+      }
     }
 
-    for (const quad of dataset.match(transmissionID, ns.rdfs.comment)) {
-      comment = quad.object.value
-    }
-
-    // Extract the pipe (list of processors)
-    const pipeNodes = GrapoiHelpers.listToArray(dataset, transmissionID, ns.trn.pipe)
+    // Extract pipe nodes
+    const pipeNodes = this.findPipeNodes(dataset, transmissionID, ns)
 
     // Extract processor details
     const processors = []
     for (const node of pipeNodes) {
-      // Find the processor type
       let processorType = null
-      for (const quad of dataset.match(node, ns.rdf.type)) {
-        processorType = quad.object
-        break
-      }
-
-      // Find settings node
       let settingsNode = null
-      for (const quad of dataset.match(node, ns.trn.settings)) {
-        settingsNode = quad.object
-        break
-      }
-
-      // Get comments
       const nodeComments = []
-      for (const quad of dataset.match(node, ns.rdfs.comment)) {
-        nodeComments.push(quad.object.value)
+
+      for (const quad of dataset) {
+        if (quad.subject.equals(node)) {
+          if (quad.predicate.value === ns.rdf.type.value) {
+            processorType = quad.object
+          } else if (quad.predicate.value === ns.trn.settings.value) {
+            settingsNode = quad.object
+          } else if (quad.predicate.value === ns.rdfs.comment.value) {
+            nodeComments.push(quad.object.value)
+          }
+        }
       }
 
       // Create processor object
@@ -184,6 +141,33 @@ class TransmissionsLoader {
       processors,
       connections
     }
+  }
+
+  /**
+   * Find pipe nodes for a transmission
+   */
+  findPipeNodes(dataset, transmissionID, ns) {
+    const pipeNodes = []
+
+    // Find pipe property
+    for (const quad of dataset) {
+      if (quad.subject.equals(transmissionID) &&
+        quad.predicate.value === ns.trn.pipe.value) {
+
+        // This is a simplified approach - we're assuming the pipe nodes are listed directly
+        // In a proper RDF list, we'd need to follow rdf:first/rdf:rest chains
+        const objectId = quad.object.value
+        const parts = objectId.split(' ')
+
+        for (const part of parts) {
+          if (part && !part.startsWith('(') && !part.startsWith(')')) {
+            pipeNodes.push({ value: part, equals: other => part === other.value })
+          }
+        }
+      }
+    }
+
+    return pipeNodes
   }
 
   /**
