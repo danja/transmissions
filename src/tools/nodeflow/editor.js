@@ -1,18 +1,25 @@
-// src/tools/nodeflow/editor.js
 import './editor.css'
 import { TransmissionEditor } from './components/index.js'
 
-// Initialize the editor when the DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    // Get the canvas element
+// Flag to indicate browser environment
+window.isBrowserEnvironment = true
+
+// Set up logging to browser console
+window.transmissionsDebug = true
+
+document.addEventListener('DOMContentLoaded', async () => {
+    // Initialize the editor
     const canvas = document.getElementById('canvas')
     if (!canvas) {
         console.error('Canvas element not found')
         return
     }
 
-    // Initialize the editor
+    // Create editor instance
     const editor = new TransmissionEditor(canvas)
+
+    // Expose editor instance to global scope for debugging
+    window.transmissionsEditor = editor
 
     // Set up UI elements
     const fileInput = document.getElementById('file-input')
@@ -20,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveBtn = document.getElementById('save-btn')
     const newBtn = document.getElementById('new-btn')
     const organizeBtn = document.getElementById('organize-btn')
+    const loadSampleBtn = document.getElementById('load-sample-btn')
     const status = document.getElementById('status')
 
     // New transmission dialog
@@ -43,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 status.textContent = `Loaded ${file.name}`
             } catch (error) {
                 status.textContent = `Error: ${error.message}`
-                console.error(error)
+                console.error('Load error:', error)
             }
         }
     })
@@ -55,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const ttlContent = await editor.prepareTTLContent()
 
-            // Create a download link
+            // Create download
             const blob = new Blob([ttlContent], { type: 'text/turtle' })
             const url = URL.createObjectURL(blob)
             const a = document.createElement('a')
@@ -73,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
             status.textContent = 'Saved to transmission.ttl'
         } catch (error) {
             status.textContent = `Error: ${error.message}`
-            console.error(error)
+            console.error('Save error:', error)
         }
     })
 
@@ -100,10 +108,40 @@ document.addEventListener('DOMContentLoaded', () => {
             status.textContent = 'Graph organized!'
         } catch (error) {
             status.textContent = `Error: ${error.message}`
-            console.error(error)
+            console.error('Organize error:', error)
         }
     })
 
-    // Initial status
-    status.textContent = 'Ready - Click "Load TTL" to open a transmission file'
+    // Load sample file
+    if (loadSampleBtn) {
+        loadSampleBtn.addEventListener('click', async () => {
+            try {
+                status.textContent = 'Loading sample file...'
+                await loadSampleFile(editor)
+                status.textContent = 'Sample file loaded'
+            } catch (error) {
+                status.textContent = `Error loading sample: ${error.message}`
+                console.error('Sample load error:', error)
+            }
+        })
+    }
+
+    // Auto-load sample file on startup
+    try {
+        status.textContent = 'Loading sample file...'
+        await loadSampleFile(editor)
+        status.textContent = 'Sample file loaded'
+    } catch (error) {
+        status.textContent = 'Ready - Click "Load TTL" to open a transmission file'
+        console.warn('Could not auto-load sample:', error)
+    }
 })
+
+/**
+ * Loads a sample transmission file
+ * @param {TransmissionEditor} editor - The editor instance
+ */
+async function loadSampleFile(editor) {
+    const samplePath = 'samples/transmissions.ttl'
+    await editor.loadFromFile(samplePath)
+}

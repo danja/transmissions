@@ -5,7 +5,104 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Transmission Pipeline Editor</title>
-  <!-- CSS will be injected by webpack -->
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+
+    #editor-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    #canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    #toolbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 10px;
+      background-color: #0c2b35;
+      color: #afb9bb;
+      display: flex;
+      gap: 10px;
+      z-index: 100;
+    }
+
+    button {
+      padding: 5px 10px;
+      background-color: #154050;
+      color: #afb9bb;
+      border: 1px solid #1c1c1c;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #195366;
+    }
+
+    #status {
+      margin-left: auto;
+      padding: 5px 10px;
+      background-color: #07212a;
+      border-radius: 4px;
+    }
+
+    .dialog {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #0c2b35;
+      border: 1px solid #154050;
+      border-radius: 8px;
+      padding: 20px;
+      z-index: 200;
+      min-width: 300px;
+    }
+
+    .dialog h2 {
+      margin-top: 0;
+      color: #afb9bb;
+    }
+
+    .dialog label {
+      display: block;
+      margin-bottom: 5px;
+      color: #afb9bb;
+    }
+
+    .dialog input {
+      width: 100%;
+      padding: 8px;
+      background-color: #07212a;
+      border: 1px solid #154050;
+      border-radius: 4px;
+      color: #afb9bb;
+      margin-bottom: 15px;
+    }
+
+    .dialog-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+  </style>
 </head>
 
 <body>
@@ -14,6 +111,7 @@
     <button id="save-btn">Save TTL</button>
     <button id="new-btn">New Transmission</button>
     <button id="organize-btn">Organize</button>
+    <button id="load-sample-btn">Load Sample</button>
     <span id="status">Ready</span>
   </div>
 
@@ -32,7 +130,6 @@
   </div>
 
   <input type="file" id="file-input" accept=".ttl" style="display:none">
-  <!-- JS will be injected by webpack -->
 </body>
 
 </html>

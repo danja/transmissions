@@ -1,20 +1,47 @@
 import log from 'loglevel'
-import fs from 'fs'
-import chalk from 'chalk'
+import { isBrowser } from './BrowserUtils.js'
 import ns from './ns.js'
+
+// Conditionally import Node.js modules
+let fs, chalk
+if (!isBrowser()) {
+    try {
+        fs = await import('fs')
+        chalk = await import('chalk')
+    } catch (e) {
+        // Handle import errors - will use fallbacks
+    }
+}
+
+// Fallback chalk for browser
+const browserChalk = {
+    cyan: (text) => `%c${text}`,
+    red: (text) => `%c${text}`,
+    green: (text) => `%c${text}`,
+    yellow: (text) => `%c${text}`,
+    magentaBright: (text) => `%c${text}`,
+    dim: (text) => `%c${text}`,
+    bold: (text) => `%c${text}`,
+    bgYellow: {
+        black: (text) => `%c${text}`
+    },
+    red: {
+        bold: (text) => `%c${text}`,
+        italic: (text) => `%c${text}`
+    }
+}
+
+// Use appropriate chalk implementation
+const chalkImpl = isBrowser() ? browserChalk : (chalk?.default || browserChalk)
 
 const logger = {}
 
-//  logger.log(`\n\nconfig dataset: ${[...config].map(q => `${q.subject.value} ${q.predicate.value} ${q.object.value}`).join('\n')}`)
-
-
-// Map log levels to chalk styles
 const LOG_STYLES = {
-    "trace": chalk.bgGray.greenBright,
-    "debug": chalk.cyanBright,
-    "info": chalk.white,
-    "warn": chalk.red.italic,
-    "error": chalk.red.bold
+    "trace": chalkImpl.bgGray?.greenBright || ((text) => `%c${text}`),
+    "debug": chalkImpl.cyanBright || ((text) => `%c${text}`),
+    "info": chalkImpl.white || ((text) => `%c${text}`),
+    "warn": chalkImpl.red?.italic || ((text) => `%c${text}`),
+    "error": chalkImpl.red?.bold || ((text) => `%c${text}`)
 }
 const LOG_LEVELS = ["trace", "debug", "info", "warn", "error"]
 
@@ -39,14 +66,13 @@ logger.noConflict = () => log.noConflict()
 function wrapLogger(baseLogger, name = 'root') {
     const wrapped = {}
 
-    wrapped.log = function (msg, level = "info") {  // Changed default to info
-        const timestamp = chalk.dim(`[${logger.timestampISO()}]`)
-        const levelStyle = LOG_STYLES[level] || LOG_STYLES["info"]  // Fallback to info style
+    wrapped.log = function (msg, level = "info") {
+        const timestamp = chalkImpl.dim ? chalkImpl.dim(`[${logger.timestampISO()}]`) : `[${logger.timestampISO()}]`
+        const levelStyle = LOG_STYLES[level] || LOG_STYLES["info"]
         const levelTag = levelStyle(`[${level.toUpperCase()}]`)
-        const nameTag = chalk.green(`[${name}]`)
+        const nameTag = chalkImpl.green ? chalkImpl.green(`[${name}]`) : `[${name}]`
         const message = levelStyle(msg)
 
-        //   const consoleMessage = `${timestamp} ${levelTag} ${nameTag} - ${message}`;
         const consoleMessage = `${message}`
         const fileMessage = `[${logger.timestampISO()}] [${level.toUpperCase()}] [${name}] - ${msg}`
 
@@ -73,8 +99,12 @@ function wrapLogger(baseLogger, name = 'root') {
 }
 
 logger.appendLogToFile = function (message) {
-    if (logger.logfile) {
-        fs.appendFileSync(logger.logfile, message + '\n', 'utf8')
+    if (logger.logfile && !isBrowser() && fs) {
+        try {
+            fs.appendFileSync(logger.logfile, message + '\n', 'utf8')
+        } catch (e) {
+            console.warn('Failed to write to log file:', e)
+        }
     }
 }
 
@@ -93,176 +123,104 @@ logger.log = function (msg, level = "info") {
     const consoleMessage = `${message}`
     const fileMessage = `[${logger.timestampISO()}] [${level.toUpperCase()}] [root] - ${msg}`
     try {
-        //   console.log(`level = ${level}`)
-        // console.log(`consoleMessage = ${consoleMessage}`)
-
         log[level](consoleMessage)
         logger.appendLogToFile(fileMessage)
     } catch (err) {
-        console.log(`wtf? ${err.message}`)
+        console.log(`Logger error: ${err.message}`)
     }
-
 }
 
-// abbrev URLs in text - dirty version!
 logger.sh = function (string) {
-    // const loglevel = logger.getLevel()
-    // logger.setLogLevel('trace')
     string = logger.shorter(string)
     logger.log(string)
 }
 
 logger.shorter = function (rdfString) {
-    if (!rdfString) return chalk.red('undefined')
-    rdfString = rdfString.toString() // to be sure, to be sure
+    if (!rdfString) return chalkImpl.red ? chalkImpl.red('undefined') : 'undefined'
+    rdfString = rdfString.toString()
     Object.entries(ns.prefixMap).forEach(([key, value]) => {
-        rdfString = rdfString.replaceAll(key, chalk.green(value))
+        rdfString = rdfString.replaceAll(key, chalkImpl.green ? chalkImpl.green(value) : value)
     })
-    return chalk.magentaBright(rdfString)
+    return chalkImpl.magentaBright ? chalkImpl.magentaBright(rdfString) : rdfString
 }
 
-// TODO have this return a string
-/*
 logger.reveal = function (instance, verbose = true) {
-
     if (!instance) return
 
-    const serialized = {}
-
-    const loglevel = logger.getLevel()
-    logger.setLogLevel('trace')
-
-    for (const key in instance) {
-        if (key === 'app') {
-            logger.log(chalk.yellow(chalk.bold('message.app :')), 'debug')
-            logger.reveal(instance[key], false)
-            continue
-        }
-        if (key === 'dataset') {
-            logger.log(chalk.yellow.italic('[[dataset found, skipping]]'), 'debug')
-            continue
-        }
-
-        if (key.startsWith('_')) {
-            logger.log(`       ${key}`, 'debug')
-            continue
-        }
-
-        if (instance.hasOwnProperty(key)) {
-            var value = instance[key]
-
-            if (value) {
-                if (Buffer.isBuffer(value)) {
-                    value = value.toString()
-                }
-                if (value.length > 100) {
-                    try {
-                        value = value.substring(0, 100) + '...'
-                    } catch (e) {
-                        value = value.slice(0, 99)
-                    }
-                }
-
-                serialized[key] = value
-
-            } else {
-                serialized[key] = '[no key]'
-            }
-        }
-    }
-
-    const props = JSON.stringify(serialized, null, 2)
-    if (verbose) {
-        logger.log(`Instance of ${chalk.yellow(chalk.bold(instance.constructor.name))} with properties - `)
-    }
-    logger.log(`${chalk.yellow(props)}`)
-    logger.setLogLevel(loglevel)
-}
-*/
-// Updated reveal function for src/utils/Logger.js
-// Replace the existing reveal function with this one
-
-logger.reveal = function (instance, verbose = true) {
-    if (!instance) return;
-
     try {
-        // Create a cache to store already-visited objects to avoid circular references
-        const cache = new WeakSet();
+        const cache = new WeakSet()
 
-        // Custom replacer function to handle circular references
         const customReplacer = (key, value) => {
-            // Ignore special properties that lead to circular references
             if (key === 'transmission' || key === 'config' || key === 'dataset' || key === 'app') {
-                return `[${key}: circular ref]`;
+                return `[${key}: circular ref]`
             }
 
-            // Handle other objects that might be circular
             if (typeof value === 'object' && value !== null) {
                 if (cache.has(value)) {
-                    return '[Circular]';
+                    return '[Circular]'
                 }
-                cache.add(value);
+                cache.add(value)
             }
 
-            // If it's a Buffer, convert to string
-            if (Buffer.isBuffer(value)) {
-                return value.toString();
+            if (isBrowser() && value instanceof ArrayBuffer) {
+                return '[ArrayBuffer]'
+            } else if (!isBrowser() && Buffer && Buffer.isBuffer(value)) {
+                return value.toString()
             }
 
-            // Truncate long strings
             if (typeof value === 'string' && value.length > 100) {
                 try {
-                    return value.substring(0, 100) + '...';
+                    return value.substring(0, 100) + '...'
                 } catch (e) {
-                    return value.slice(0, 99);
+                    return value.slice(0, 99)
                 }
             }
 
-            return value;
-        };
+            return value
+        }
 
-        const serialized = {};
+        const serialized = {}
 
-        const loglevel = logger.getLevel();
-        logger.setLogLevel('trace');
+        const loglevel = logger.getLevel()
+        logger.setLogLevel('trace')
 
         for (const key in instance) {
             if (key === 'app') {
-                logger.log(chalk.yellow(chalk.bold('.app :')), 'debug');
-                continue;
+                logger.log(chalkImpl.yellow ? chalkImpl.yellow(chalkImpl.bold('.app :')) : '.app :', 'debug')
+                continue
             }
 
             if (key.startsWith('_')) {
-                logger.log(`       ${key}`, 'debug');
-                continue;
+                logger.log(`       ${key}`, 'debug')
+                continue
             }
 
             if (instance.hasOwnProperty(key)) {
-                serialized[key] = instance[key];
+                serialized[key] = instance[key]
             }
         }
 
-        const props = JSON.stringify(serialized, customReplacer, 2);
+        const props = JSON.stringify(serialized, customReplacer, 2)
         if (verbose) {
-            logger.log(`Instance of ${chalk.yellow(chalk.bold(instance.constructor.name))} with properties - `);
+            const className = instance.constructor?.name || typeof instance
+            logger.log(`Instance of ${chalkImpl.yellow ? chalkImpl.yellow(chalkImpl.bold(className)) : className} with properties - `)
         }
-        logger.log(`${chalk.yellow(props)}`);
-        logger.setLogLevel(loglevel);
+        logger.log(`${chalkImpl.yellow ? chalkImpl.yellow(props) : props}`)
+        logger.setLogLevel(loglevel)
     } catch (error) {
-        logger.error(`Error in reveal: ${error.message}`);
-        logger.log(`Failed to stringify object of type: ${instance.constructor?.name || typeof instance}`);
-        logger.setLogLevel('debug');
+        logger.error(`Error in reveal: ${error.message}`)
+        logger.log(`Failed to stringify object of type: ${instance.constructor?.name || typeof instance}`)
+        logger.setLogLevel('debug')
 
-        // Fallback to simple key listing
-        logger.log("Properties (keys only):");
+        logger.log("Properties (keys only):")
         try {
             for (const key in instance) {
                 if (instance.hasOwnProperty(key)) {
-                    logger.log(`- ${key}: [${typeof instance[key]}]`);
+                    logger.log(`- ${key}: [${typeof instance[key]}]`)
                 }
             }
         } catch (e) {
-            logger.error(`Even simple inspection failed: ${e.message}`);
+            logger.error(`Even simple inspection failed: ${e.message}`)
         }
     }
 }
@@ -272,38 +230,35 @@ LOG_LEVELS.forEach(level => {
 })
 
 logger.poi = function exploreGrapoi(grapoi, predicates, objects, subjects) {
-    console.log(chalk.bold('Properties of the Grapoi object:'))
+    console.log(chalkImpl.bold ? chalkImpl.bold('Properties of the Grapoi object:') : 'Properties of the Grapoi object:')
     for (const prop in grapoi) {
-        console.log(chalk.cyan(`\t${prop}: ${grapoi[prop]}`))
+        console.log(chalkImpl.cyan ? chalkImpl.cyan(`\t${prop}: ${grapoi[prop]}`) : `\t${prop}: ${grapoi[prop]}`)
     }
 
-    console.log(chalk.bold('\nPath:'))
+    console.log(chalkImpl.bold ? chalkImpl.bold('\nPath:') : '\nPath:')
     const path = grapoi.out(predicates, objects).in(predicates, subjects)
     for (const quad of path.quads()) {
-        console.log(chalk.cyan(`\t${quad.predicate.value}: ${quad.object.value}`))
+        console.log(chalkImpl.cyan ? chalkImpl.cyan(`\t${quad.predicate.value}: ${quad.object.value}`) : `\t${quad.predicate.value}: ${quad.object.value}`)
     }
 }
 
-function handleExit(options, exitCode) {
-    if (options.cleanup) {
-        // TODO cleanup
+// Only add event handlers in Node.js environment
+if (!isBrowser()) {
+    function handleExit(options, exitCode) {
+        if (options.cleanup) {
+            // Cleanup tasks
+        }
+        if (exitCode || exitCode === 0) console.log(exitCode)
+        if (options.exit) process.exit()
     }
-    if (exitCode || exitCode === 0) console.log(exitCode)
-    if (options.exit) process.exit()
+
+    if (typeof process !== 'undefined') {
+        process.on('exit', handleExit.bind(null, { cleanup: true }))
+        process.on('SIGINT', handleExit.bind(null, { exit: true }))
+        process.on('SIGUSR1', handleExit.bind(null, { exit: true }))
+        process.on('SIGUSR2', handleExit.bind(null, { exit: true }))
+        process.on('uncaughtException', handleExit.bind(null, { exit: true }))
+    }
 }
-
-process.on('exit', handleExit.bind(null, { cleanup: true }))
-process.on('SIGINT', handleExit.bind(null, { exit: true }))
-process.on('SIGUSR1', handleExit.bind(null, { exit: true }))
-process.on('SIGUSR2', handleExit.bind(null, { exit: true }))
-process.on('uncaughtException', handleExit.bind(null, { exit: true }))
-
-// TODO testing
-// logger.setLogLevel('info')
-// logger.log('a log() message on info - show yellow, concise')
-// logger.debug('a debug() message on info -  dont show')
-// logger.setLogLevel('debug')
-// logger.log('a log() message on debug - show yellow, with prefix')
-// logger.debug('a debug() message on debug - show red, with prefix')
 
 export default logger
