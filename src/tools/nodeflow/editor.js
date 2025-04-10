@@ -1,14 +1,13 @@
-// src/tools/nodeflow/editor.js
 import './editor.css'
 import { TransmissionEditor } from './components/index.js'
 
-// Preload RDF dependencies for browser environment
+// Import utilities
 import grapoi from 'grapoi'
 import rdfExt from '../../utils/browser-rdf-ext.js'
 import GrapoiHelpers from '../../utils/GrapoiHelpers.js'
 import ns from '../../utils/ns.js'
 
-// Make dependencies available globally
+// Make utilities available globally for debugging
 window.isBrowserEnvironment = true
 window.transmissionsDebug = true
 window.grapoi = grapoi
@@ -29,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const editor = new TransmissionEditor(canvas)
     window.transmissionsEditor = editor
 
-    // Set up UI elements
+    // Get UI elements
     const fileInput = document.getElementById('file-input')
     const loadBtn = document.getElementById('load-btn')
     const saveBtn = document.getElementById('save-btn')
@@ -38,25 +37,53 @@ document.addEventListener('DOMContentLoaded', async () => {
     const loadSampleBtn = document.getElementById('load-sample-btn')
     const status = document.getElementById('status')
 
-    // New transmission dialog
+    // Dialog elements
     const newDialog = document.getElementById('new-dialog')
     const transmissionName = document.getElementById('transmission-name')
     const cancelNewBtn = document.getElementById('cancel-new')
     const createNewBtn = document.getElementById('create-new')
 
-    // Load TTL file
+    // Add load file button event
     loadBtn.addEventListener('click', () => {
         fileInput.click()
     })
 
+    // Handle file selection
     fileInput.addEventListener('change', async (e) => {
         const file = e.target.files[0]
         if (file) {
             try {
                 status.textContent = `Loading ${file.name}...`
-                const fileURL = URL.createObjectURL(file)
-                await editor.loadFromFile(fileURL)
-                status.textContent = `Loaded ${file.name}`
+
+                // Create a FileReader to read the file content
+                const reader = new FileReader()
+
+                reader.onload = async (event) => {
+                    try {
+                        // Create a temporary URL containing the TTL content
+                        const turtleContent = event.target.result
+                        const blob = new Blob([turtleContent], { type: 'text/turtle' })
+                        const fileURL = URL.createObjectURL(blob)
+
+                        // Load the file into the editor
+                        await editor.loadFromFile(fileURL)
+                        status.textContent = `Loaded ${file.name}`
+
+                        // Clean up the temporary URL
+                        URL.revokeObjectURL(fileURL)
+                    } catch (error) {
+                        status.textContent = `Error parsing file: ${error.message}`
+                        console.error('Load error:', error)
+                    }
+                }
+
+                reader.onerror = () => {
+                    status.textContent = `Error reading file`
+                    console.error('FileReader error')
+                }
+
+                // Read the file as text
+                reader.readAsText(file)
             } catch (error) {
                 status.textContent = `Error: ${error.message}`
                 console.error('Load error:', error)
@@ -64,13 +91,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     })
 
-    // Save TTL file
+    // Add save button event
     saveBtn.addEventListener('click', async () => {
         try {
             status.textContent = 'Preparing TTL data...'
             const ttlContent = await editor.prepareTTLContent()
 
-            // Download the content
+            // Create download link
             const blob = new Blob([ttlContent], { type: 'text/turtle' })
             const url = URL.createObjectURL(blob)
             const a = document.createElement('a')
@@ -92,7 +119,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     })
 
-    // Create new transmission
+    // Add new transmission button event
     newBtn.addEventListener('click', () => {
         newDialog.style.display = 'block'
     })
@@ -108,7 +135,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         status.textContent = `Created new transmission: ${name}`
     })
 
-    // Organize graph
+    // Add organize button event
     organizeBtn.addEventListener('click', () => {
         try {
             editor.getGraph().organize()
@@ -119,7 +146,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     })
 
-    // Load sample file
+    // Add sample loading button if present
     if (loadSampleBtn) {
         loadSampleBtn.addEventListener('click', async () => {
             try {
@@ -133,7 +160,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         })
     }
 
-    // Try to load a sample file on startup
+    // Auto-load sample on startup
     try {
         status.textContent = 'Loading sample file...'
         await loadSampleFile(editor)
@@ -145,7 +172,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 })
 
 /**
- * Load a sample transmission file
+ * Loads a sample transmission file
+ * @param {TransmissionEditor} editor - The transmission editor instance
  */
 async function loadSampleFile(editor) {
     const samplePath = 'samples/transmissions.ttl'

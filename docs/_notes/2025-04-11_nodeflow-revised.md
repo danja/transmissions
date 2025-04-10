@@ -8,3 +8,11 @@ cError parsing dataset: ptr.dataset.match is not a function or its return value 
 loadFromFile @ TransmissionEditor.js:187
 ...
 Logger.js:184 %cStack trace: TypeError: ptr.dataset.match is not a function or its return value is not iterable
+
+I don't think `src/tools/nodeflow/editor.js` is picking up the request file, around :
+
+    fileInput.addEventListener('change', async (e) => {
+        console.log(`------------- e.target = ${JSON.stringify(e.target)}`)
+        ...
+
+        please double-check
