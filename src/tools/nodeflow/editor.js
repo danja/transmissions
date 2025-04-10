@@ -1,14 +1,24 @@
+// src/tools/nodeflow/editor.js
 import './editor.css'
 import { TransmissionEditor } from './components/index.js'
 
-// Flag to indicate browser environment
-window.isBrowserEnvironment = true
+// Preload RDF dependencies for browser environment
+import grapoi from 'grapoi'
+import rdfExt from '../../utils/browser-rdf-ext.js'
+import GrapoiHelpers from '../../utils/GrapoiHelpers.js'
+import ns from '../../utils/ns.js'
 
-// Set up logging to browser console
+// Make dependencies available globally
+window.isBrowserEnvironment = true
 window.transmissionsDebug = true
+window.grapoi = grapoi
+window.rdfExt = rdfExt
+window.GrapoiHelpers = GrapoiHelpers
+window.ns = ns
+window.grapoiLoaded = true
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // Initialize the editor
+    // Initialize editor
     const canvas = document.getElementById('canvas')
     if (!canvas) {
         console.error('Canvas element not found')
@@ -17,8 +27,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Create editor instance
     const editor = new TransmissionEditor(canvas)
-
-    // Expose editor instance to global scope for debugging
     window.transmissionsEditor = editor
 
     // Set up UI elements
@@ -60,10 +68,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     saveBtn.addEventListener('click', async () => {
         try {
             status.textContent = 'Preparing TTL data...'
-
             const ttlContent = await editor.prepareTTLContent()
 
-            // Create download
+            // Download the content
             const blob = new Blob([ttlContent], { type: 'text/turtle' })
             const url = URL.createObjectURL(blob)
             const a = document.createElement('a')
@@ -85,7 +92,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     })
 
-    // New transmission
+    // Create new transmission
     newBtn.addEventListener('click', () => {
         newDialog.style.display = 'block'
     })
@@ -126,7 +133,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         })
     }
 
-    // Auto-load sample file on startup
+    // Try to load a sample file on startup
     try {
         status.textContent = 'Loading sample file...'
         await loadSampleFile(editor)
@@ -138,8 +145,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 })
 
 /**
- * Loads a sample transmission file
- * @param {TransmissionEditor} editor - The editor instance
+ * Load a sample transmission file
  */
 async function loadSampleFile(editor) {
     const samplePath = 'samples/transmissions.ttl'

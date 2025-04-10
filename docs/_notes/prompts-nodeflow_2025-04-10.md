@@ -13,6 +13,9 @@ npm run start
 [webpack-cli] Failed to load '/home/danny/hyperdata/transmissions/webpack.config.js' config
 [webpack-cli] ReferenceError: require is not defined
 
+[webpack-cli] Failed to load '/home/danny/hyperdata/transmissions/webpack.config.js' config
+[webpack-cli] ReferenceError: require is not defined
+
 ---
 
 After running `npm run start`, when I try to load a Turtle file in the browser I get the error below. You may find relevant examples of using rdf-ext in `src/utils/RDFUtils.js`. It would be good if the system initialized by loading a sample file, call it `src/applications/intro/transmissions.ttl` and I can use that for quick start documentation.

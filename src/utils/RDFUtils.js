@@ -1,4 +1,4 @@
-import rdfExt from './browser-rdf-ext.js'
+// src/utils/RDFUtils.js
 import { isBrowser } from './BrowserUtils.js'
 import logger from './Logger.js'
 
@@ -11,14 +11,18 @@ class RDFUtils {
                     throw new Error(`Failed to load dataset: ${filename}`)
                 }
                 const turtleText = await response.text()
+
+                // Import dynamically in browser context
+                const rdfModule = await import('./browser-rdf-ext.js')
+                const rdfExt = rdfModule.default
                 return await rdfExt.parseTurtle(turtleText)
             } catch (error) {
                 logger.error(`Error loading dataset in browser: ${error.message}`)
                 throw error
             }
         } else {
-            // Node.js implementation (using dynamic imports)
             try {
+                const rdfExt = await import('rdf-ext').then(m => m.default)
                 const { fromFile } = await import('rdf-utils-fs')
                 const stream = fromFile(filename)
                 const dataset = await rdfExt.dataset().import(stream)
@@ -33,29 +37,30 @@ class RDFUtils {
     static async writeDataset(dataset, filename) {
         if (isBrowser()) {
             try {
-                // In browser, serialize to string
-                const serializer = new rdfExt.SerializerJsonld()
+                const rdfModule = await import('./browser-rdf-ext.js')
+                const rdfExt = rdfModule.default
+
+                // Serialize to Turtle
+                const serializer = new rdfExt.SerializerTurtle()
                 const quadStream = dataset.toStream()
-                const jsonStream = serializer.import(quadStream)
+                const textStream = serializer.import(quadStream)
 
-                // Collect JSON data
-                let jsonData = ''
-                jsonStream.on('data', chunk => {
-                    jsonData += chunk
-                })
-
+                let turtleData = ''
                 return new Promise((resolve, reject) => {
-                    jsonStream.on('end', () => {
-                        // Trigger download
-                        const blob = new Blob([jsonData], { type: 'application/ld+json' })
+                    textStream.on('data', chunk => {
+                        turtleData += chunk
+                    })
+
+                    textStream.on('end', () => {
+                        // Create download
+                        const blob = new Blob([turtleData], { type: 'text/turtle' })
                         const url = URL.createObjectURL(blob)
                         const a = document.createElement('a')
                         a.href = url
-                        a.download = filename.split('/').pop() || 'dataset.jsonld'
+                        a.download = filename.split('/').pop() || 'dataset.ttl'
                         document.body.appendChild(a)
                         a.click()
 
-                        // Clean up
                         setTimeout(() => {
                             document.body.removeChild(a)
                             URL.revokeObjectURL(url)
@@ -64,14 +69,13 @@ class RDFUtils {
                         resolve()
                     })
 
-                    jsonStream.on('error', reject)
+                    textStream.on('error', reject)
                 })
             } catch (error) {
                 logger.error(`Error saving dataset in browser: ${error.message}`)
                 throw error
             }
         } else {
-            // Node.js implementation
             try {
                 const { toFile } = await import('rdf-utils-fs')
                 await toFile(dataset.toStream(), filename)
@@ -87,9 +91,8 @@ class RDFUtils {
             let filePath
 
             if (isBrowser()) {
-                filePath = relativePath // In browser, just use the path as-is for fetch
+                filePath = relativePath
             } else {
-                // Node.js path resolution
                 const { fileURLToPath } = await import('url')
                 const nodePath = await import('path')
                 const __filename = fileURLToPath(import.meta.url)

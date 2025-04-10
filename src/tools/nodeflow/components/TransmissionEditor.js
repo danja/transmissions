@@ -1,33 +1,32 @@
+// src/tools/nodeflow/components/TransmissionEditor.js
 import { NodeFlowGraph, FlowNode } from '@elicdavis/node-flow'
 import TransmissionsLoader from './TransmissionsLoader.js'
 import TransmissionsGraphBuilder from './TransmissionsGraphBuilder.js'
 import TransmissionsExporter from './TransmissionsExporter.js'
 import ProcessorNodePublisher from './ProcessorNodePublisher.js'
+import RDFUtils from '../../../utils/RDFUtils.js'
+import logger from '../../../utils/Logger.js'
 
-/**
- * Main editor component for transmission pipelines
- */
 class TransmissionEditor {
   /**
-   * Initialize the transmission editor
-   * @param {HTMLCanvasElement} canvas - Canvas element for the graph
+   * Creates a new transmission editor
    */
   constructor(canvas) {
-    // Initialize graph with the canvas
+    // Initialize the graph
     this.graph = new NodeFlowGraph(canvas, {
       backgroundColor: '#07212a'
     })
 
-    // Initialize helper components
+    // Create component instances
     this.loader = new TransmissionsLoader()
     this.builder = new TransmissionsGraphBuilder(this.graph)
     this.exporter = new TransmissionsExporter(this.graph)
     this.publisher = new ProcessorNodePublisher()
 
-    // Add processor types to the graph
+    // Register the publisher with the graph
     this.graph.addPublisher('transmissions', this.publisher)
 
-    // Initialize state variables
+    // Initialize state
     this.currentFile = null
     this.loadedTransmissions = []
 
@@ -38,13 +37,13 @@ class TransmissionEditor {
   }
 
   /**
-   * Set up event listeners for the graph
+   * Sets up event listeners
    */
   setupEvents() {
     this.graph.addOnNodeCreatedListener((publisher, nodeType, node) => {
       console.log(`TransmissionEditor: Node created - ${nodeType}`)
 
-      // Set transmission metadata on new nodes
+      // Associate the node with the current transmission
       if (this.loadedTransmissions.length > 0) {
         const transmission = this.loadedTransmissions[0]
         node.setMetadataProperty('transmissionId', transmission.id)
@@ -55,25 +54,23 @@ class TransmissionEditor {
   }
 
   /**
-   * Load a transmission from a file
-   * @param {string} fileUrl - URL of the file to load
-   * @returns {Promise<Array>} - Loaded transmissions
+   * Loads a transmission file
    */
   async loadFromFile(fileUrl) {
     try {
       console.log(`TransmissionEditor: Loading from ${fileUrl}`)
 
-      // Load transmissions from the file
+      // Load the transmissions
       const transmissions = await this.loader.loadFromFile(fileUrl)
       this.loadedTransmissions = transmissions
 
-      // Register additional processor types
+      // Register processor types from the loaded transmissions
       this.publisher.registerProcessorsFromTransmissions(transmissions)
 
-      // Build the graph
+      // Build the graph from the transmissions
       this.builder.buildGraph(transmissions)
 
-      // Store the current file
+      // Update current file
       this.currentFile = fileUrl
 
       console.log(`TransmissionEditor: Loaded ${transmissions.length} transmissions from ${fileUrl}`)
@@ -85,19 +82,24 @@ class TransmissionEditor {
   }
 
   /**
-   * Prepare TTL content for saving
-   * @returns {Promise<string>} - TTL content
+   * Prepares TTL content for saving
    */
   async prepareTTLContent() {
     try {
+      // Create a dataset from the graph
       const dataset = this.exporter.createDataset()
 
-      // Convert dataset to TTL string
-      // This is a simple version that would need to be replaced with actual TTL serialization
-      const serializer = new TurtleSerializer()
-      const ttlContent = await serializer.serialize(dataset)
+      // For now, return a simple TTL representation
+      return `@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix : <http://purl.org/stuff/transmissions/> .
 
-      return ttlContent
+:example a :Transmission ;
+    :pipe (:p10 :p20) .
+
+:p10 a :ShowMessage .
+:p20 a :DeadEnd .
+`
     } catch (error) {
       console.error(`TransmissionEditor: Error preparing TTL: ${error.message}`)
       throw error
@@ -105,9 +107,7 @@ class TransmissionEditor {
   }
 
   /**
-   * Save to a file
-   * @param {string} filePath - Path to save to (not used in browser)
-   * @param {string} transmissionId - ID of transmission to save
+   * Saves the current transmissions to a file
    */
   async saveToFile(filePath = null, transmissionId = null) {
     try {
@@ -116,9 +116,13 @@ class TransmissionEditor {
         throw new Error('No file specified and no current file loaded')
       }
 
-      // In browser context, we don't directly save to file
-      // Instead, prepareTTLContent() should be used and handled by the UI
-      console.log(`TransmissionEditor: Saved TTL content ready`)
+      // Get the dataset
+      const dataset = this.exporter.createDataset(transmissionId)
+
+      // Write to file (in Node.js) or trigger download (in browser)
+      await RDFUtils.writeDataset(dataset, targetFile)
+
+      console.log(`TransmissionEditor: Saved to ${targetFile}`)
     } catch (error) {
       console.error(`TransmissionEditor: Error saving file: ${error.message}`)
       throw error
@@ -126,13 +130,12 @@ class TransmissionEditor {
   }
 
   /**
-   * Create a new transmission
-   * @param {string} label - Label for the new transmission
-   * @returns {Object} - The created transmission object
+   * Creates a new transmission
    */
   createNewTransmission(label = 'New Transmission') {
     const transmissionId = `http://purl.org/stuff/transmissions/${label.replace(/\s+/g, '_')}`.toLowerCase()
 
+    // Create a transmission object
     const transmission = {
       id: transmissionId,
       shortId: label.replace(/\s+/g, '_').toLowerCase(),
@@ -152,38 +155,22 @@ class TransmissionEditor {
       data: {}
     })
 
+    // Set node metadata
     node.setMetadataProperty('transmissionId', transmissionId)
     node.setMetadataProperty('transmissionLabel', label)
     node.setMetadataProperty('processorType', `http://purl.org/stuff/transmissions/${nodeType}`)
 
+    // Add the node to the graph
     this.graph.addNode(node)
 
     return transmission
   }
 
   /**
-   * Get the graph instance
-   * @returns {NodeFlowGraph} - The graph instance
+   * Gets the graph instance
    */
   getGraph() {
     return this.graph
-  }
-}
-
-// Simple placeholder for TTL serialization
-class TurtleSerializer {
-  async serialize(dataset) {
-    // This would be replaced with actual serialization logic
-    // using the RDF-Ext library or similar
-    return `@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix : <http://purl.org/stuff/transmissions/> .
-
-:example a :Transmission ;
-    :pipe (:p10 :p20) .
-
-:p10 a :ShowMessage .
-:p20 a :DeadEnd .
-`
   }
 }
 

@@ -1,3 +1,4 @@
+// webpack.config.js
 import path from 'path'
 import { fileURLToPath } from 'url'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
@@ -20,9 +21,11 @@ export default {
     extensions: ['.js'],
     alias: {
       '@nodeflow': path.resolve(__dirname, 'src/tools/nodeflow/'),
-      'rdf-utils-fs': path.resolve(__dirname, 'src/utils/browser-rdf-utils.js')
+      'rdf-utils-fs': path.resolve(__dirname, 'src/utils/browser-rdf-utils.js'),
+      '@rdfjs/serializer-jsonld': path.resolve(__dirname, 'src/utils/browser-rdf-ext.js'),
+      '@rdfjs/serializer-turtle': path.resolve(__dirname, 'src/utils/browser-rdf-ext.js')
     },
-    // Use a function that dynamically constructs the fallback object
+    // Provide polyfills for Node.js built-ins
     fallback: {
       "fs": false,
       "path": false,
@@ -52,7 +55,6 @@ export default {
         use: [MiniCssExtractPlugin.loader, 'css-loader']
       },
       {
-        // Handle node: protocol imports
         test: /\.js$/,
         include: /node_modules/,
         resolve: {
@@ -72,7 +74,8 @@ export default {
     new NodePolyfillPlugin(),
     new CopyPlugin({
       patterns: [
-        { from: 'src/applications/intro', to: 'samples' }
+        { from: 'src/applications/intro', to: 'samples' },
+        { from: 'src/applications/example-application', to: 'samples/example-application' }
       ]
     })
   ],

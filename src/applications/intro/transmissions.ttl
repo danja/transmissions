@@ -2,30 +2,16 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix : <http://purl.org/stuff/transmissions/> .
 
-# Introduction Transmission for the Visual Editor
+:example a :Transmission ;
+    rdfs:label "Example Transmission" ;
+    rdfs:comment "A simple transmission pipeline for testing" ;
+    :pipe (:p10 :p20 :p30) .
 
-:introExample a :Transmission ;
-    rdfs:label "Introduction Example" ;
-    rdfs:comment "A simple transmission pipeline demonstrating the basics of transmissions" ;
-    :pipe (:fileReader :markdownProcessor :fileWriter) .
+:p10 a :ShowMessage ;
+    rdfs:comment "Displays message contents and continues" .
 
-:fileReader a :FileReader ;
-    rdfs:comment "Reads a file into the message" ;
-    :settings :fileReaderSettings .
+:p20 a :NOP ;
+    rdfs:comment "No operation, just passes message through" .
 
-:fileReaderSettings a :ConfigSet ;
-    :sourceFile "input/intro.md" .
-
-:markdownProcessor a :MarkdownToHTML ;
-    rdfs:comment "Converts markdown to HTML" ;
-    :settings :markdownSettings .
-
-:markdownSettings a :ConfigSet ;
-    :outputField "content" .
-
-:fileWriter a :FileWriter ;
-    rdfs:comment "Writes message content to a file" ;
-    :settings :fileWriterSettings .
-
-:fileWriterSettings a :ConfigSet ;
-    :destinationFile "output/intro.html" .
+:p30 a :DeadEnd ;
+    rdfs:comment "Ends the current pipe quietly" .
