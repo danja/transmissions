@@ -12,9 +12,8 @@ class RDFUtils {
                 }
                 const turtleText = await response.text()
 
-                // Import dynamically in browser context
-                const rdfModule = await import('./browser-rdf-ext.js')
-                const rdfExt = rdfModule.default
+                // Import browser-compatible RDF utils
+                const rdfExt = await import('./browser-rdf-ext.js').then(m => m.default)
                 return await rdfExt.parseTurtle(turtleText)
             } catch (error) {
                 logger.error(`Error loading dataset in browser: ${error.message}`)
@@ -37,10 +36,10 @@ class RDFUtils {
     static async writeDataset(dataset, filename) {
         if (isBrowser()) {
             try {
-                const rdfModule = await import('./browser-rdf-ext.js')
-                const rdfExt = rdfModule.default
+                // Use browser-compatible implementation
+                const rdfExt = await import('./browser-rdf-ext.js').then(m => m.default)
 
-                // Serialize to Turtle
+                // Create a serializer
                 const serializer = new rdfExt.SerializerTurtle()
                 const quadStream = dataset.toStream()
                 const textStream = serializer.import(quadStream)
@@ -52,7 +51,7 @@ class RDFUtils {
                     })
 
                     textStream.on('end', () => {
-                        // Create download
+                        // Create download link
                         const blob = new Blob([turtleData], { type: 'text/turtle' })
                         const url = URL.createObjectURL(blob)
                         const a = document.createElement('a')

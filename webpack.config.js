@@ -3,7 +3,6 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
-import NodePolyfillPlugin from 'node-polyfill-webpack-plugin'
 import CopyPlugin from 'copy-webpack-plugin'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -21,21 +20,13 @@ export default {
     extensions: ['.js'],
     alias: {
       '@nodeflow': path.resolve(__dirname, 'src/tools/nodeflow/'),
-      'rdf-utils-fs': path.resolve(__dirname, 'src/utils/browser-rdf-utils.js'),
-      '@rdfjs/serializer-jsonld': path.resolve(__dirname, 'src/utils/browser-rdf-ext.js'),
-      '@rdfjs/serializer-turtle': path.resolve(__dirname, 'src/utils/browser-rdf-ext.js')
+      'rdf-utils-fs': path.resolve(__dirname, 'src/utils/browser-rdf-utils.js')
     },
-    // Provide polyfills for Node.js built-ins
     fallback: {
-      "fs": false,
-      "path": false,
-      "url": false,
-      "util": false,
-      "stream": false,
-      "buffer": false,
-      "process": false,
-      "events": false,
-      "string_decoder": false
+      fs: false,
+      path: false,
+      stream: false,
+      buffer: false
     }
   },
   module: {
@@ -71,10 +62,10 @@ export default {
     new MiniCssExtractPlugin({
       filename: 'styles.css'
     }),
-    new NodePolyfillPlugin(),
     new CopyPlugin({
       patterns: [
         { from: 'src/applications/intro', to: 'samples' },
+        { from: path.resolve(__dirname, 'src/tools/nodeflow/samples'), to: 'samples' },
         { from: 'src/applications/example-application', to: 'samples/example-application' }
       ]
     })

@@ -168,30 +168,29 @@ const rdfExtBrowser = {
     }
   },
 
-  // Term factories
-  namedNode(value) {
-    return rdfExt.namedNode(value)
-  },
-
-  blankNode(value) {
-    return rdfExt.blankNode(value)
-  },
-
-  literal(value, language, datatype) {
-    return rdfExt.literal(value, language, datatype)
-  },
-
-  quad(subject, predicate, object, graph) {
-    return rdfExt.quad(subject, predicate, object, graph)
-  },
-
-  dataset(quads) {
-    return rdfExt.dataset(quads)
-  },
-
-  // Serializers
   SerializerTurtle,
   SerializerJsonld
+}
+
+// Add term factory methods directly to the exported object
+rdfExtBrowser.namedNode = function (value) {
+  return rdfExt.namedNode(value)
+}
+
+rdfExtBrowser.blankNode = function (value) {
+  return rdfExt.blankNode(value)
+}
+
+rdfExtBrowser.literal = function (value, language, datatype) {
+  return rdfExt.literal(value, language, datatype)
+}
+
+rdfExtBrowser.quad = function (subject, predicate, object, graph) {
+  return rdfExt.quad(subject, predicate, object, graph)
+}
+
+rdfExtBrowser.dataset = function (quads) {
+  return rdfExt.dataset(quads)
 }
 
 export default rdfExtBrowser
