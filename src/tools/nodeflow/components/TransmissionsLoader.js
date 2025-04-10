@@ -1,12 +1,9 @@
-// src/tools/nodeflow/components/TransmissionsLoader.js
 import { isBrowser } from '../../../utils/BrowserUtils.js'
 import RDFUtils from '../../../utils/RDFUtils.js'
 import logger from '../../../utils/Logger.js'
+import grapoi from 'grapoi'
 
 class TransmissionsLoader {
-  /**
-   * Load transmission definitions from a TTL file
-   */
   async loadFromFile(filePath) {
     try {
       logger.debug(`TransmissionsLoader: Loading from ${filePath}`)
@@ -18,18 +15,12 @@ class TransmissionsLoader {
     }
   }
 
-  /**
-   * Parse an RDF dataset into transmission objects
-   */
   parseDataset(dataset, filePath) {
     const transmissions = []
 
-    // Import necessary dependencies
     let ns
-
     try {
       if (isBrowser()) {
-        // In browser environment
         ns = {
           rdf: { type: { value: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' } },
           rdfs: {
@@ -43,18 +34,27 @@ class TransmissionsLoader {
           }
         }
       } else {
-        // In Node.js environment
         ns = require('../../../utils/ns.js').default
       }
 
-      // Print dataset info for debugging
       console.log(`Dataset size: ${dataset.size}`)
 
+      // HERE
+      // console.log(`D : \n ${JSON.stringify(dataset)}`)
       // Find all transmissions in the dataset
-      for (const quad of dataset) {
-        if (quad.predicate.value === ns.rdf.type.value &&
-          quad.object.value === ns.trn.Transmission.value) {
+      const wtf = 'http://purl.org/stuff/transmissions/a'
 
+      for (const quad of dataset.quads) {
+        console.log(`quad- ${JSON.stringify(quad)} \n\n`)
+        //  console.log(`quad.predicate.value : \n ${JSON.stringify(quad.predicate.value)}`)
+        // console.log(`ns.trn.a : \n ${JSON.stringify(ns.trn.a)}`)
+        console.log(`quad.object.value : \n ${JSON.stringify(quad.object.value)}`)
+        console.log(`ns.trn.Transmission.value : \n ${JSON.stringify(ns.trn.Transmission.value)}`)
+        //  if (quad.predicate.value === ns.rdf.type.value &&
+        //  quad.object.value === ns.trn.Transmission.value) {
+        if (quad.predicate.value === wtf &&
+          quad.object.value === ns.trn.Transmission.value) {
+          console.log(`A`)
           const transmissionID = quad.subject
           const transmission = this.extractTransmission(dataset, transmissionID, ns)
           transmission.filePath = filePath
@@ -62,25 +62,47 @@ class TransmissionsLoader {
         }
       }
 
-      console.log(`TransmissionsLoader: Found ${transmissions.length} transmissions`)
+      /////////////////////////////////////
+      /*
+      console.log(`A`)
+      const poi = grapoi({ dataset: dataset })
+      console.log(`D : \n ${JSON.stringify(dataset)}`)
+      console.log(` poi.out(ns.rdf.type) = ${poi.out(ns.rdf.type)}`)
+      console.log(`B`)
+      console.log(` poi.out(ns.rdf.type).quads() = ${poi.out(ns.rdf.type).quads()}`)
+      console.log(`C`)
+      for (const quad of poi.out(ns.rdf.type).quads()) {
+        if (quad.object.equals(ns.trn.Transmission)) {
+          const transmissionID = quad.subject
+          const transmission = this.extractTransmission(dataset, transmissionID, ns)
+          transmission.filePath = filePath
+          transmissions.push(transmission)
+        }
+      }
+*/
+      //////////////////////////////////////7
+
+      logger.debug(`TransmissionsLoader: Found ${transmissions.length} transmissions`)
       return transmissions
     } catch (error) {
       logger.error(`Error parsing dataset: ${error.message}`)
       logger.error(`Stack trace: ${error.stack}`)
+
+      // Return empty array if error occurs
       return []
     }
   }
 
-  /**
-   * Extract a transmission definition from the dataset
-   */
   extractTransmission(dataset, transmissionID, ns) {
-    // Extract label and comment
+    console.log(`B`)
     let label = ''
     let comment = ''
-
-    for (const quad of dataset) {
+    console.log(`Dataset : \n ${JSON.stringify(dataset)}`)
+    // HERE TOO
+    for (const quad of dataset.quads) {
+      console.log(`C`)
       if (quad.subject.equals(transmissionID)) {
+        console.log(`D`)
         if (quad.predicate.value === ns.rdfs.label.value) {
           label = quad.object.value
         } else if (quad.predicate.value === ns.rdfs.comment.value) {
@@ -143,36 +165,80 @@ class TransmissionsLoader {
     }
   }
 
-  /**
-   * Find pipe nodes for a transmission
-   */
   findPipeNodes(dataset, transmissionID, ns) {
     const pipeNodes = []
+    let pipeFound = false
 
-    // Find pipe property
-    for (const quad of dataset) {
+    // HERE 3
+    // Try to find the pipe property
+    for (const quad of dataset.quads) {
       if (quad.subject.equals(transmissionID) &&
         quad.predicate.value === ns.trn.pipe.value) {
 
-        // This is a simplified approach - we're assuming the pipe nodes are listed directly
-        // In a proper RDF list, we'd need to follow rdf:first/rdf:rest chains
-        const objectId = quad.object.value
-        const parts = objectId.split(' ')
+        pipeFound = true
 
-        for (const part of parts) {
-          if (part && !part.startsWith('(') && !part.startsWith(')')) {
-            pipeNodes.push({ value: part, equals: other => part === other.value })
+        try {
+          // Check if the object is a blank node (start of RDF list)
+          const listHead = quad.object
+          this.traverseRdfList(dataset, listHead, pipeNodes, ns)
+        } catch (error) {
+          logger.error(`Error traversing RDF list: ${error.message}`)
+
+          // Fallback: Try to parse the pipe as space-separated values
+          const objectId = quad.object.value
+          if (objectId && objectId.includes(' ')) {
+            const parts = objectId.split(' ')
+
+            for (const part of parts) {
+              if (part && !part.startsWith('(') && !part.startsWith(')')) {
+                pipeNodes.push({
+                  value: part,
+                  equals: other => part === other.value
+                })
+              }
+            }
           }
         }
       }
     }
 
+    if (!pipeFound) {
+      logger.warn(`No pipe found for transmission: ${transmissionID.value}`)
+    }
+
     return pipeNodes
   }
 
-  /**
-   * Extract short name from URI
-   */
+  traverseRdfList(dataset, currentNode, results, ns) {
+    // Base case: nil node
+    if (currentNode.value === ns.rdf.nil.value) {
+      return
+    }
+
+    // Get first item
+    let firstItem = null
+    for (const quad of dataset) {
+      if (quad.subject.equals(currentNode) &&
+        quad.predicate.value === ns.rdf.first.value) {
+        firstItem = quad.object
+        break
+      }
+    }
+
+    if (firstItem) {
+      results.push(firstItem)
+    }
+
+    // Get rest of list
+    for (const quad of dataset) {
+      if (quad.subject.equals(currentNode) &&
+        quad.predicate.value === ns.rdf.rest.value) {
+        this.traverseRdfList(dataset, quad.object, results, ns)
+        break
+      }
+    }
+  }
+
   getShortName(uri) {
     if (!uri) return ''
 

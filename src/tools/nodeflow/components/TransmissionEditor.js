@@ -113,8 +113,9 @@ class TransmissionEditor {
       let transmissions = []
       try {
         transmissions = await this.loader.loadFromFile(fileUrl)
+
         if (!transmissions || transmissions.length === 0) {
-          throw new Error('No transmissions found in file')
+          throw new Error('TransmissionsEditorloadFromFile, No transmissions found in file')
         }
       } catch (error) {
         console.warn(`Error loading from file: ${error.message}`)
