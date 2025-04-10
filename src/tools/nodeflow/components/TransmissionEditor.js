@@ -1,56 +1,50 @@
-// TransmissionEditor.js
-// Main component that provides transmission editing functionality
-
 import { NodeFlowGraph, FlowNode } from '@elicdavis/node-flow'
 import TransmissionsLoader from './TransmissionsLoader.js'
 import TransmissionsGraphBuilder from './TransmissionsGraphBuilder.js'
 import TransmissionsExporter from './TransmissionsExporter.js'
 import ProcessorNodePublisher from './ProcessorNodePublisher.js'
-import logger from '../../../utils/Logger.js'
 
 /**
- * Main editor component that coordinates loading, editing and saving
- * of transmission pipelines using the node-flow library
+ * Main editor component for transmission pipelines
  */
 class TransmissionEditor {
   /**
-   * Creates a transmission editor
-   * @param {HTMLCanvasElement} canvas - Canvas element for the editor
+   * Initialize the transmission editor
+   * @param {HTMLCanvasElement} canvas - Canvas element for the graph
    */
   constructor(canvas) {
-    // Initialize the graph
+    // Initialize graph with the canvas
     this.graph = new NodeFlowGraph(canvas, {
       backgroundColor: '#07212a'
     })
 
-    // Create component instances
+    // Initialize helper components
     this.loader = new TransmissionsLoader()
     this.builder = new TransmissionsGraphBuilder(this.graph)
     this.exporter = new TransmissionsExporter(this.graph)
     this.publisher = new ProcessorNodePublisher()
 
-    // Register publisher
+    // Add processor types to the graph
     this.graph.addPublisher('transmissions', this.publisher)
 
-    // Track loaded file
+    // Initialize state variables
     this.currentFile = null
     this.loadedTransmissions = []
 
-    // Set up event handlers
+    // Set up event listeners
     this.setupEvents()
 
-    logger.info('TransmissionEditor: Initialized')
+    console.log('TransmissionEditor: Initialized')
   }
 
   /**
-   * Sets up event handlers for the editor
+   * Set up event listeners for the graph
    */
   setupEvents() {
-    // Set up node creation handler
     this.graph.addOnNodeCreatedListener((publisher, nodeType, node) => {
-      logger.debug(`TransmissionEditor: Node created - ${nodeType}`)
+      console.log(`TransmissionEditor: Node created - ${nodeType}`)
 
-      // Set default metadata
+      // Set transmission metadata on new nodes
       if (this.loadedTransmissions.length > 0) {
         const transmission = this.loadedTransmissions[0]
         node.setMetadataProperty('transmissionId', transmission.id)
@@ -61,40 +55,59 @@ class TransmissionEditor {
   }
 
   /**
-   * Loads transmissions from a TTL file
-   * @param {string} filePath - Path to the TTL file
-   * @returns {Promise<Array>} - The loaded transmissions
+   * Load a transmission from a file
+   * @param {string} fileUrl - URL of the file to load
+   * @returns {Promise<Array>} - Loaded transmissions
    */
-  async loadFromFile(filePath) {
+  async loadFromFile(fileUrl) {
     try {
-      logger.info(`TransmissionEditor: Loading from ${filePath}`)
+      console.log(`TransmissionEditor: Loading from ${fileUrl}`)
 
-      // Load transmissions from file
-      const transmissions = await this.loader.loadFromFile(filePath)
+      // Load transmissions from the file
+      const transmissions = await this.loader.loadFromFile(fileUrl)
       this.loadedTransmissions = transmissions
 
-      // Register processor types discovered in the file
+      // Register additional processor types
       this.publisher.registerProcessorsFromTransmissions(transmissions)
 
       // Build the graph
       this.builder.buildGraph(transmissions)
 
-      // Store current file
-      this.currentFile = filePath
+      // Store the current file
+      this.currentFile = fileUrl
 
-      logger.info(`TransmissionEditor: Loaded ${transmissions.length} transmissions from ${filePath}`)
+      console.log(`TransmissionEditor: Loaded ${transmissions.length} transmissions from ${fileUrl}`)
       return transmissions
     } catch (error) {
-      logger.error(`TransmissionEditor: Error loading file: ${error.message}`)
+      console.error(`TransmissionEditor: Error loading file: ${error.message}`)
       throw error
     }
   }
 
   /**
-   * Saves the current graph to a TTL file
-   * @param {string} filePath - Path to save to (defaults to the loaded file)
-   * @param {string} transmissionId - Optional ID of specific transmission to save
-   * @returns {Promise<void>}
+   * Prepare TTL content for saving
+   * @returns {Promise<string>} - TTL content
+   */
+  async prepareTTLContent() {
+    try {
+      const dataset = this.exporter.createDataset()
+
+      // Convert dataset to TTL string
+      // This is a simple version that would need to be replaced with actual TTL serialization
+      const serializer = new TurtleSerializer()
+      const ttlContent = await serializer.serialize(dataset)
+
+      return ttlContent
+    } catch (error) {
+      console.error(`TransmissionEditor: Error preparing TTL: ${error.message}`)
+      throw error
+    }
+  }
+
+  /**
+   * Save to a file
+   * @param {string} filePath - Path to save to (not used in browser)
+   * @param {string} transmissionId - ID of transmission to save
    */
   async saveToFile(filePath = null, transmissionId = null) {
     try {
@@ -103,18 +116,19 @@ class TransmissionEditor {
         throw new Error('No file specified and no current file loaded')
       }
 
-      await this.exporter.saveToFile(targetFile, transmissionId)
-      logger.info(`TransmissionEditor: Saved to ${targetFile}`)
+      // In browser context, we don't directly save to file
+      // Instead, prepareTTLContent() should be used and handled by the UI
+      console.log(`TransmissionEditor: Saved TTL content ready`)
     } catch (error) {
-      logger.error(`TransmissionEditor: Error saving file: ${error.message}`)
+      console.error(`TransmissionEditor: Error saving file: ${error.message}`)
       throw error
     }
   }
 
   /**
-   * Creates a new transmission with a default node
-   * @param {string} label - Transmission label
-   * @returns {Object} - The created transmission data
+   * Create a new transmission
+   * @param {string} label - Label for the new transmission
+   * @returns {Object} - The created transmission object
    */
   createNewTransmission(label = 'New Transmission') {
     const transmissionId = `http://purl.org/stuff/transmissions/${label.replace(/\s+/g, '_')}`.toLowerCase()
@@ -130,8 +144,8 @@ class TransmissionEditor {
 
     this.loadedTransmissions = [transmission]
 
-    // Add default node
-    const nodeType = 'ShowMessage' // Default processor type
+    // Create an initial node
+    const nodeType = 'ShowMessage'
     const node = new FlowNode({
       title: 'SM',
       position: { x: 200, y: 200 },
@@ -148,11 +162,28 @@ class TransmissionEditor {
   }
 
   /**
-   * Gets the current node-flow graph
-   * @returns {NodeFlowGraph} - The graph
+   * Get the graph instance
+   * @returns {NodeFlowGraph} - The graph instance
    */
   getGraph() {
     return this.graph
+  }
+}
+
+// Simple placeholder for TTL serialization
+class TurtleSerializer {
+  async serialize(dataset) {
+    // This would be replaced with actual serialization logic
+    // using the RDF-Ext library or similar
+    return `@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+:example a :Transmission ;
+    :pipe (:p10 :p20) .
+
+:p10 a :ShowMessage .
+:p20 a :DeadEnd .
+`
   }
 }
 

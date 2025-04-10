@@ -8,8 +8,9 @@ class ModuleLoaderFactory {
 
     static createModuleLoader(classpath) {
         logger.debug(`\nModuleLoaderFactory.createModuleLoader, classpath =\n ${classpath}`)
-        const __filename = fileURLToPath(import.meta.url)
-        const __dirname = path.dirname(__filename)
+
+        // In browser environment, we don't have __filename or __dirname
+        const isBrowser = typeof window !== 'undefined'
 
         if (!ModuleLoaderFactory.instance) {
             ModuleLoaderFactory.instance = new ModuleLoader(classpath)
@@ -25,11 +26,17 @@ class ModuleLoaderFactory {
             throw new Error('Application path is required')
         }
 
-        // TODO revisit
         const appProcessorsPath = appPath
-        // const appProcessorsPath = path.join(appPath, 'processors')
 
-        const corePath = path.resolve(process.cwd(), 'src/processors')
+        // Handle different environments (browser vs node)
+        let corePath
+        if (typeof window !== 'undefined') {
+            // Browser environment
+            corePath = '/src/processors'
+        } else {
+            // Node.js environment
+            corePath = path.resolve(process.cwd(), 'src/processors')
+        }
 
         logger.debug(`ModuleLoaderFactory creating loader with paths:
       App: ${appProcessorsPath}

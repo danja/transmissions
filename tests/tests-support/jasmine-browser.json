@@ -1,14 +1,14 @@
 {
   "srcDir": "src",
   "srcFiles": [
-    "**/*.js"
+    "tools/nodeflow/components/**/*.js"
   ],
-  "specDir": "spec",
+  "specDir": "tests",
   "specFiles": [
-    "**/*[sS]pec.js"
+    "api/**/*[sS]pec.js"
   ],
   "helpers": [
-    "helpers/**/*.js"
+    "tests-support/helpers/**/*.js"
   ],
   "env": {
     "stopSpecOnExpectationFailure": false,
