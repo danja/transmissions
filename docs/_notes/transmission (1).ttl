@@ -1,0 +1,15 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+:example a :Transmission ;
+    rdfs:label "Example Transmission" ;
+    rdfs:comment "A simple transmission pipeline for testing" ;
+    :pipe (:p10 :p20 :p30 ) .
+
+:p10 a :ShowMessage ;
+    rdfs:comment "Displays message contents and continues" .
+:p20 a :NOP ;
+    rdfs:comment "No operation, just passes message through" .
+:p30 a :DeadEnd ;
+    rdfs:comment "Ends the current pipe quietly" .

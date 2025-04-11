@@ -28,6 +28,7 @@ class StringOps extends Processor {
   */
     async process(message) {
         logger.debug(`StringOps.process`)
+        logger.warn('TODO StringOps.process, message not checked')
         // @ts-ignore
         const targetField = await this.getProperty(ns.trn.targetField, 'concat')
         logger.debug(`     targetField = ${targetField}`)

@@ -1,3 +1,4 @@
+// TODO refactor (according to dependencies?)
 import rdf from 'rdf-ext'
 import grapoi from 'grapoi'
 // import { fromFile, toFile } from 'rdf-utils-fs'
