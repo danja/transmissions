@@ -21,6 +21,13 @@ subclass of Processor. Demo :Merge - somehow messages are combined
 
 content/raw/prompts/2025-04-17_combo.md
 
+### Workers
+
+Some implementation, not yet working `examples/worker`
+
+not passing tests...
+
+npm test -- tests/engine/WorkerPool.spec.js
 ---
 
 * somehow make the processor type more visible in config/manifest
