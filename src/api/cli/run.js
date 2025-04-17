@@ -12,22 +12,26 @@ const packageJson = JSON.parse(readFileSync(join(__dirname, '../../../package.js
 const buildInfo = process.env.BUILD_INFO || 'dev'
 const version = `${packageJson.version} (${buildInfo})`
 
-const banner = `
-  _____
- |_   _| __ __ _ _ __  ___
-   | || '__/ _\` | '_ \\/ __|
-   | || | | (_| | | | \\__ \\
-   |_||_|  \\__,_|_| |_|___/
-             ${version.padStart(10).padEnd(20)}
-         ${new Date().toISOString().split('T')[0]}
+
+const banner = ` _____                              _            _
+|_   _|--------------------------> (_) -------> (_) ---------->
+  | |_ __ __ _ _ __  ___ _ __ ___  _ ___ ___ _  ___  _ __  ___
+  | | '__/ _\` | '_ \\/ __| '_ \` _ \\| / __/ __| |/ _ \\| '_ \\/ __|
+  | | | | (_| | | | \\__ \\ | | | | | \\__ \\__ \\ | (_) | | | \\__ \\
+  \\_| |_| \\__,_|_| |_|___|_| |_| |_|_|___|___|_|\\___/_| |_|___/
+   ${version.padStart(10).padEnd(20)}                             ${new Date().toISOString().split('T')[0]}
 `
 
 async function main() {
-    console.log(chalk.cyan(banner))
     const commandUtils = new CommandUtils()
 
+    console.log(chalk.magentaBright(banner))
+    console.log(chalk.cyan('Usage:'))
+    console.log(chalk.cyanBright('./trans\n'))
+    const usageString = `${chalk.cyanBright('./trans [application][.subtask] [options] [target]')}}`
+
     const yargsInstance = yargs(hideBin(process.argv))
-        .usage(chalk.cyan('Usage: ./trans [application][.subtask] [options] [target]\n  Run without arguments to list available applications.'))
+        .usage(usageString)
         .option('verbose', {
             alias: 'v',
             describe: chalk.yellow('Enable verbose output'),
