@@ -1,3 +1,5 @@
+when I do Load TTL in the editor and point it to @src/applications/trial/transmissions.ttl it should refresh the view with the loaded data
+
 # Transmission Pipeline Editor
 
 This module provides a visual editor for transmission pipelines using the node-flow library. It allows you to:

@@ -20,6 +20,7 @@ export default {
     extensions: ['.js'],
     alias: {
       '@nodeflow': path.resolve(__dirname, 'src/tools/nodeflow/'),
+      '@src': path.resolve(__dirname, 'src/'),
       'rdf-utils-fs': path.resolve(__dirname, 'src/utils/browser-rdf-utils.js')
     },
     fallback: {

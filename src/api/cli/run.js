@@ -65,6 +65,11 @@ async function main() {
             type: 'number',
             default: 4200
         })
+        .option('editor', {
+            alias: 'e',
+            describe: chalk.yellow('Launch the visual Transmissions editor'),
+            type: 'boolean'
+        })
 
     yargsInstance.command('$0 [application] [target]', chalk.green('runs the specified application\n'), (yargs) => {
         return yargs
@@ -75,7 +80,12 @@ async function main() {
                 describe: chalk.yellow('the target of the application')
             })
     }, async (argv) => {
-
+        // If editor flag is set, launch the editor and return
+        if (argv.editor) {
+            const flags = { "editor": true, "port": argv.port, "verbose": argv.verbose, "silent": argv.silent }
+            await commandUtils.launchEditor(flags)
+            return
+        }
 
         if (!argv.application) {
             console.log(chalk.cyan('Available applications:'))

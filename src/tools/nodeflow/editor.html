@@ -102,16 +102,86 @@
       justify-content: flex-end;
       gap: 10px;
     }
+
+    .loading {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(12, 43, 53, 0.8);
+      z-index: 300;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .spinner {
+      border: 5px solid #154050;
+      border-top: 5px solid #afb9bb;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    #loading-message {
+      color: #afb9bb;
+      font-size: 18px;
+    }
+
+    .instructions {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #0c2b35;
+      border: 1px solid #154050;
+      border-radius: 8px;
+      padding: 20px;
+      z-index: 200;
+      min-width: 400px;
+      color: #afb9bb;
+    }
+
+    .instructions h3 {
+      margin-top: 0;
+    }
+
+    .instructions ul {
+      padding-left: 20px;
+    }
+
+    .instructions li {
+      margin-bottom: 10px;
+    }
+
+    #file-input {
+      display: none;
+    }
   </style>
 </head>
 
 <body>
   <div id="toolbar">
-    <button id="load-btn">Load TTL</button>
-    <button id="save-btn">Save TTL</button>
-    <button id="new-btn">New Transmission</button>
-    <button id="organize-btn">Organize</button>
-    <button id="load-sample-btn">Load Sample</button>
+    <button id="load-btn" title="Load a Transmission TTL file">Load TTL</button>
+    <button id="save-btn" title="Save the current Transmission to TTL">Save TTL</button>
+    <button id="new-btn" title="Create a new Transmission">New Transmission</button>
+    <button id="organize-btn" title="Automatically organize the graph layout">Organize</button>
+    <button id="load-sample-btn" title="Load a sample Transmission">Load Sample</button>
     <span id="status">Ready</span>
   </div>
 
@@ -129,7 +199,24 @@
     </div>
   </div>
 
-  <input type="file" id="file-input" accept=".ttl" style="display:none">
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+    <div id="loading-message">Loading...</div>
+  </div>
+  <input type="file" id="file-input" accept=".ttl">
+
+  <!-- Instructions overlay that can be toggled -->
+  <div id="instructions" class="instructions">
+    <h3>Transmissions Editor Instructions</h3>
+    <ul>
+      <li><strong>Load TTL</strong>: Import a Transmissions TTL file</li>
+      <li><strong>Save TTL</strong>: Export the current graph as TTL</li>
+      <li><strong>New Transmission</strong>: Start a fresh Transmission</li>
+      <li><strong>Organize</strong>: Auto-arrange the graph layout</li>
+      <li><strong>Drag & Drop</strong>: You can also drag a TTL file directly onto the canvas</li>
+    </ul>
+    <button id="close-instructions">Close</button>
+  </div>
 </body>
 
 </html>

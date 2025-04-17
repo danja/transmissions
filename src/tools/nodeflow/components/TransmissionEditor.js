@@ -109,6 +109,9 @@ class TransmissionEditor {
     try {
       console.log(`TransmissionEditor: Loading from ${fileUrl}`)
 
+      // this.graph.clear()
+      this.reinitializeGraph()
+
       // Try to load the transmissions
       let transmissions = []
       try {
@@ -118,7 +121,7 @@ class TransmissionEditor {
           throw new Error('TransmissionsEditorloadFromFile, No transmissions found in file')
         }
       } catch (error) {
-        console.warn(`Error loading from file: ${error.message}`)
+        console.error(`Error loading from file: ${error.message}`)
         console.warn('Falling back to sample data')
 
         // If loading fails, use the sample transmission
@@ -132,10 +135,15 @@ class TransmissionEditor {
       this.publisher.registerProcessorsFromTransmissions(transmissions)
 
       // Build the graph from the transmissions
-      this.builder.buildGraph(transmissions)
+      await this.builder.buildGraph(transmissions)
 
       // Update current file
       this.currentFile = fileUrl
+
+      // Force redraw to ensure the graph is updated
+      setTimeout(() => {
+        this.graph.redrawGraph()
+      }, 100)
 
       console.log(`TransmissionEditor: Loaded ${transmissions.length} transmissions from ${fileUrl}`)
       return transmissions
@@ -202,7 +210,6 @@ class TransmissionEditor {
       throw error
     }
   }
-
   /**
    * Saves the current transmissions to a file
    */
@@ -232,10 +239,32 @@ class TransmissionEditor {
     }
   }
 
+  reinitializeGraph() {
+    console.log('TransmissionEditor: Reinitializing graph...')
+    // Create a new graph instance
+    this.graph = new NodeFlowGraph(this.canvas, {
+      backgroundColor: '#07212a'
+    })
+
+    // Create new instances of builder and exporter tied to the new graph
+    this.builder = new TransmissionsGraphBuilder(this.graph)
+    this.exporter = new TransmissionsExporter(this.graph)
+
+    // Register the publisher with the *new* graph
+    this.graph.addPublisher('transmissions', this.publisher)
+
+    // Set up event listeners on the *new* graph
+    this.setupEvents()
+    console.log('TransmissionEditor: Graph reinitialized.')
+  }
   /**
    * Creates a new transmission
    */
   createNewTransmission(label = 'New Transmission') {
+    // Clear the existing graph
+    this.reinitializeGraph()
+
+
     const transmissionId = `http://purl.org/stuff/transmissions/${label.replace(/\s+/g, '_')}`.toLowerCase()
 
     // Create a transmission object
@@ -274,6 +303,13 @@ class TransmissionEditor {
    */
   getGraph() {
     return this.graph
+  }
+
+  /**
+   * Force a redraw of the graph
+   */
+  redrawGraph() {
+    this.graph.redrawGraph()
   }
 }
 

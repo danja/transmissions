@@ -1,9 +1,9 @@
 import path from 'path'
 import fs from 'fs/promises'
 import logger from '../../utils/Logger.js'
-
 import ApplicationManager from '../../engine/ApplicationManager.js'
 import WebRunner from '../http/server/WebRunner.js'
+import EditorWebRunner from '../http/server/EditorWebRunner.js'
 
 class CommandUtils {
 
@@ -51,6 +51,34 @@ class CommandUtils {
         }
 
         return await this.#appManager.start(message)
+    }
+
+    /**
+     * Launch the visual Transmissions editor
+     * This method will build the editor if needed, start a web server,
+     * and open the editor in a browser.
+     *
+     * @param {Object} flags - Configuration flags
+     */
+    async launchEditor(flags = {}) {
+        var debugLevel = flags.verbose ? "debug" : "info"
+        if (!flags.verbose) logger.silent = flags.silent
+        logger.setLogLevel(debugLevel)
+
+        logger.info('Launching Transmissions Editor...')
+
+        // Create and start the editor web runner
+        const port = flags.port || 9000
+        const editorWebRunner = new EditorWebRunner(port)
+        await editorWebRunner.start()
+        // Keep the process running
+        return new Promise((resolve) => {
+            process.on('SIGINT', async () => {
+                logger.info('Shutting down editor server...')
+                await editorWebRunner.stop()
+                resolve()
+            })
+        })
     }
 
     static splitName(fullPath) {
