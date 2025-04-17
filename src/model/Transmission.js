@@ -56,8 +56,8 @@ class Transmission {
   }
 
   getFirstNode() { // used for nested transmissions
-    logger.log(this)
-    logger.log(this.processors[0])
+    // logger.log(this)
+    //logger.log(this.processors[0])
     return this.processors[0]
   }
 

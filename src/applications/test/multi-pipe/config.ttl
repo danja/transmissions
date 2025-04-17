@@ -1,0 +1,20 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix trn: <http://purl.org/stuff/transmissions/> .
+# @prefix trn: <http://purl.org/stuff/transmissions/> .
+@prefix trn: <http://purl.org/stuff/transmissions/> . # for custom terms & instances
+
+trn:dirWalkerPosts a trn:ConfigSet ;
+    trn:key trn:files .
+
+trn:postTemplateMap a trn:ReMap ;
+   trn:rename (trn:rn1) . # consider using blank nodes
+     trn:rn1    trn:pre     "content" ;
+            trn:post    "template"  .
+
+trn:postSaver a trn:ReMap ;
+    trn:rename (trn:rn2) .
+    trn:rn2   trn:pre     "targetFilename" ;
+            trn:post    "filename" .
+
+
+

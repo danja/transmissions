@@ -192,6 +192,7 @@ async process(message) {
     }
 
     toString() {
+
         const settingsNodeValue = this.settingsNode ? this.settingsNode.value : 'none'
         return `
 === Processor ${this.constructor.name} ===
