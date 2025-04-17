@@ -1,5 +1,9 @@
 # Transmissions Known Bugs
 
+### forward tree pipes should be joinable
+
+src/applications/test/multi-pipe
+
 ### stringops processor test removed for now
 ```json
 {

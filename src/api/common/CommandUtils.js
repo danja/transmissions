@@ -1,5 +1,3 @@
-// src/api/CommandUtils.js
-
 import path from 'path'
 import fs from 'fs/promises'
 import logger from '../../utils/Logger.js'
@@ -24,18 +22,18 @@ class CommandUtils {
         logger.debug('CommandUtils.begin')
         logger.debug('   process.cwd() = ' + process.cwd())
         logger.debug('   flags = ' + flags)
-        // logger.reveal(flags)
+
         logger.debug('   application = ' + application)
         logger.debug('   target = ' + target)
         logger.debug(`   message = ${message}`)
 
-        // dir containing manifest
+
         if (target && !target.startsWith('/')) {
             target = path.join(process.cwd(), target)
         }
 
         var { appName, appPath, subtask } = CommandUtils.splitName(application)
-        // short name or path (TODO or URL)
+
 
         logger.trace(`\n
     after split :
@@ -62,28 +60,28 @@ class CommandUtils {
         logger.debug(`   parts  = ${parts}`)
         var lastPart = parts[parts.length - 1]
 
-        var task = false
+        var subtask = false
         if (lastPart.includes('.')) {
             const split = lastPart.split('.')
-            task = split[1]
+            subtask = split[1]
             lastPart = split[0]
         }
         var appPath = parts.slice(0, parts.length - 1).join(path.sep)
         appPath = path.join(appPath, lastPart)
-        //  logger.debug(`\nCommandUtils.splitName, parts.slice(0, parts.length - 1) = ${parts.slice(0, parts.length - 1)}`)
 
-        // const appPath = parts.join(path.sep)
-        logger.debug(`   appName:${lastPart}, appPath:${appPath}, task:${task},`)
 
-        return { appName: lastPart, appPath: appPath, task: task }
+
+        logger.debug(`   appName:${lastPart}, appPath:${appPath}, subtask:${subtask},`)
+
+        return { appName: lastPart, appPath: appPath, subtask: subtask }
     }
 
     async listApplications() {
         return await this.#appManager.listApplications()
     }
 
-    // TODO appears to be unused
-    static async parseOrLoadContext(contextArg) { // TODO rename context -> message
+
+    static async parseOrLoadContext(contextArg) {
         logger.debug(`CommandUtils.parseOrLoadContext(), contextArg = ${contextArg}`)
         let message = {}
         try {

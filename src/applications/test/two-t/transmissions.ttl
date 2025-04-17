@@ -1,4 +1,5 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix trn: <http://purl.org/stuff/transmissions/> .
 @prefix : <http://purl.org/stuff/transmissions/> .
 
@@ -12,12 +13,14 @@
 #############################################################
 
 :tx a trn:Transmission ;
+    rdfs:label "t1" ;
     trn:pipe (:a1 :a2) .
 
 :a1 a :NOP .
 :a2 a :NOP .
 
 :ty a trn:Transmission ;
+    rdfs:label "t2" ;
     trn:pipe (:b1 :b2 :b3) .
 
 :b1 a :NOP .

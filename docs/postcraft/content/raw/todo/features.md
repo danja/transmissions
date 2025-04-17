@@ -1,5 +1,28 @@
 # Transmissions ToDo : Features
 
+### sub trans running
+
+implemented, can't find, need test :
+
+```turtle
+:pipeA a trn:Transmission ;
+trn:pipe (:pipeB :pipeC ) .
+
+:pipeB  a trn:Transmission ;
+ trn:pipe (:s3 :s104 :s105) .
+
+:pipeC a trn:Transmission ;
+trn:pipe (:s3 :s204 :s205) .
+```
+
+### Multiple input ports processor
+
+subclass of Processor. Demo :Merge - somehow messages are combined
+
+content/raw/prompts/2025-04-17_combo.md
+
+---
+
 * somehow make the processor type more visible in config/manifest
 
 maybe just naming
