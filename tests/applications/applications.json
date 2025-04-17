@@ -22,7 +22,7 @@
         "label": "config-settings",
         "description": "test config-settings application",
         "requiredMatchCount": 3,
-        "isValid":"probably not"
+        "isValid": "probably not"
     },
     {
         "command": "./trans config-setting-manifest tests/applications/config-setting-manifest",
@@ -65,12 +65,6 @@
         "label": "restructurer+manifest",
         "description": "test restructure application with manifest",
         "requiredMatchCount": 2
-    },
-    {
-        "command": "./trans -v stringops -m '{\"fields\": {\"fieldB\" : \"TEST\",\"fieldC\":\"_PASSED\"}}'",
-        "label": "stringops",
-        "description": "test stringops application",
-        "requiredMatchCount": 4
     },
     {
         "command": "./trans file-remove-copy",

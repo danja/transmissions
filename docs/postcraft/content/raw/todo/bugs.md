@@ -1,5 +1,19 @@
 # Transmissions Known Bugs
 
+### stringops processor test removed for now
+```json
+{
+    "command": "./trans -v stringops -m '{\"fields\": {\"fieldB\" : \"TEST\",\"fieldC\":\"_PASSED\"}}'",
+    "label": "stringops",
+    "description": "test stringops application",
+    "requiredMatchCount": 4
+}
+```
+
+---
+
+reset 2025-04-17
+
 :ForEach / :Restructure remove might be broken
 
 * check       const values = this.getValues(ns.trn.items)
