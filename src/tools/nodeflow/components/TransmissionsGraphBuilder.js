@@ -155,6 +155,8 @@ class TransmissionsGraphBuilder {
     }
   }
 
+  // TODO wtf - is used?
+  /*
   clearGraph() {
     try {
       // Get all nodes
@@ -176,6 +178,7 @@ class TransmissionsGraphBuilder {
       logger.error(`Error clearing graph: ${error.message}`)
     }
   }
+    */
 }
 
 export default TransmissionsGraphBuilder

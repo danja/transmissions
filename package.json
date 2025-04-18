@@ -12,9 +12,7 @@
     "cov": "nyc -a --include=src --reporter=lcov npm run test",
     "docs": "jsdoc -c config/jsdoc.json",
     "build": "webpack --config webpack.config.js --mode=production",
-    "build:dev": "webpack --config webpack.config.js --mode=development",
-    "build:prod": "webpack --config webpack.config.js --mode=production",
-    "start": "webpack serve --config webpack.config.js --mode=development",
+    "dev": "webpack serve --config webpack.config.js --mode=development",
     "rp": "repomix -c config/repomix.config-large.json .",
     "watch": "webpack --config webpack.config.js --watch"
   },
