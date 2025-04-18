@@ -112,7 +112,8 @@ class AppResolver {
         const appPath = await this.findInDirectory(baseDir, appName)
 
         if (!appPath) {
-            throw new Error(`Could not find application ${appName} with transmissions.ttl in any subdirectory`)
+            throw new Error(`Could not find application ${appName}
+(check the app dir is on local path and contains at least about.md and transmissions.ttl)`)
         }
 
         return appPath

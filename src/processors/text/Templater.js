@@ -57,11 +57,17 @@ class Templater extends Processor {
             var templatePath = templateFilename.substr(0, templateFilename.lastIndexOf("/"))
             const filename = templateFilename.substr(templateFilename.lastIndexOf("/") + 1)
 
-            if (!path.isAbsolute(templatePath)) { // needed?
-                super.getProperty(ns.trn.targetPath)
-                templatePath = path.join(super.getProperty(ns.trn.targetPath), templatePath) + path.sep
+            // TODO move to util -  check fs/FileReader.js
+            if (!path.isAbsolute(templatePath)) {
+                templatePath = path.join(message.targetPath || message.workingDir, templatePath)
             }
-
+            /*
+            if (!path.isAbsolute(templatePath)) { // needed?
+                if (super.getProperty(ns.trn.targetPath)) {
+                    templatePath = path.join(super.getProperty(ns.trn.targetPath), templatePath) + path.sep
+                }
+            }
+*/
             logger.debug('\nTemplater, templatePath = ' + templatePath)
             logger.debug('Templater, filename = ' + filename)
             logger.debug(`\nTemplater.process, templateFilename = ${templateFilename}`)

@@ -1,0 +1,62 @@
+# src/applications/test/md-to-html/transmissions.ttl
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+##################################################################
+# Utility Processors : insert into pipe for debugging            #
+#                                                                #
+:SM a :ShowMessage . # verbose report, continues pipe            #
+:SC a :ShowConfig . # verbose report, continues pipe             #
+:DE a :DeadEnd . # ends the current pipe quietly                 #
+:H  a :Halt . # kills everything                                 #
+:N  a :NOP . # no operation (except for showing stage in pipe)   #
+:UF a :Unfork . # collapses all pipes but one                    #
+##################################################################
+
+# Main transmission pipeline
+:md-to-html a :Transmission ;
+    rdfs:label "Markdown to HTML Converter" ;
+    rdfs:comment "Reads Markdown, converts to HTML, applies template and saves output" ;
+    :pipe (:p10 :p20 :p30 :p40 :p50 :p60 :p70) .
+
+# Read the main Markdown file
+:p10 a :FileReader ;
+    rdfs:comment "Read test.md file" ;
+    :settings :mdFileReader .
+
+# Convert Markdown to HTML
+:p20 a :MarkdownToHTML ;
+    rdfs:comment "Convert Markdown content to HTML" ;
+    :settings :mdConverter .
+
+# Save the initial HTML output
+:p30 a :FileWriter ;
+    rdfs:comment "Save initial HTML to testA.html" ;
+    :settings :firstHtmlWriter .
+
+# Read the title file
+:p40 a :FileReader ;
+    rdfs:comment "Read title from title.md file" ;
+    :settings :titleReader .
+
+# Create contentBlocks for template
+:p50 a :Restructure ;
+    rdfs:comment "Prepare data for template" ;
+    :settings [
+        :rename (
+            [ :pre "content" ; :post "contentBlocks.content" ]
+            [ :pre "content" ; :post "contentBlocks.html" ]
+        )
+    ] .
+
+# Apply template to HTML
+:p60 a :Templater ;
+    rdfs:comment "Apply template to HTML content" ;
+    :settings :templateSettings .
+
+# Save the final templated HTML
+:p70 a :FileWriter ;
+    rdfs:comment "Save final HTML to testB.html" ;
+    :settings :finalHtmlWriter .

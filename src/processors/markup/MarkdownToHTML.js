@@ -30,13 +30,19 @@ class MarkdownToHTML extends Processor {
         // new Marked()
         const html = await
             marked
-                //                .use(customHeadingId())
                 .use(markedFootnote())
                 .use(
                     markedCodeFormat({
-                        /* Prettier options */
                     })
                 )
+                .setOptions({
+                    gfm: true,  // GitHub-Flavored Markdown
+                    breaks: false,  // Disable line breaks
+                    sanitize: false,  // Ensure raw HTML is allowed (sanitization disables this)
+                    smartypants: false, // Disable smart quotes
+                    headerIds: true, // Optional: prevent auto generation of header ids
+                    mangle: false, // Optional: disable mangle for links and email
+                })
                 .parse(input.toString())
 
         const outputFieldPath = await this.getProperty(ns.trn.outputField, 'content')

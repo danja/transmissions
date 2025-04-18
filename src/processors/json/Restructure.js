@@ -84,7 +84,7 @@ class Restructure extends Processor {
         }
 
         logger.debug(`Found ${removes.length} remove directives`)
-        logger.reveal(removes)
+        // logger.reveal(removes)
 
         for (let i = 0; i < removes.length; i++) {
             const path = removes[i]

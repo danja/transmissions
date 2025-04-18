@@ -11,6 +11,7 @@
         "useGitignore": true,
         "useDefaultPatterns": true,
         "customPatterns": [
+            "references",
             "tests_pending",
             "src/applications/test",
             "src/applications/claude-json-converter/data",

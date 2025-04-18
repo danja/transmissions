@@ -1,0 +1,29 @@
+# src/applications/test/md-to-html/config.ttl
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances
+
+# Configuration for reading the main Markdown file
+:mdFileReader a :ConfigSet ;
+    :sourceFile "input/test.md" .
+
+# Configuration for converting Markdown to HTML
+:mdConverter a :ConfigSet ;
+    :outputField "content" .
+
+# Configuration for saving the initial HTML output
+:firstHtmlWriter a :ConfigSet ;
+    :destinationFile "output/testA.html" .
+
+# Configuration for reading the title file
+:titleReader a :ConfigSet ;
+    :sourceFile "input/title.md" .
+
+# Configuration for applying template
+:templateSettings a :ConfigSet ;
+    :templateFilename "input/template.njk" .
+
+# Configuration for saving the final templated HTML
+:finalHtmlWriter a :ConfigSet ;
+    :destinationFile "output/testB.html" .
