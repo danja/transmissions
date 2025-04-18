@@ -53,19 +53,25 @@ class AppResolver {
             try {
                 logger.debug(`AppResolver, trying : ${this.appFilename}`)
                 this.dataset = await RDFUtils.readDataset(this.appFilename)
+
                 logger.debug(`Loaded.`)
             } catch (e) {
                 try {
                     // TODO deprecate
                     logger.debug(`AppResolver, trying : ${this.manifestFilename}`)
                     this.dataset = await RDFUtils.readDataset(this.manifestFilename)
+
                     logger.debug(`Loaded.`)
                 } catch (e) {
-                    logger.debug(`AppResolver, falling back to empty dataset`)
-                    this.dataset = rdf.dataset()
+
                 }
             }
         }
+        if (!this.dataset) {
+            logger.debug(`AppResolver, falling back to empty dataset`)
+            this.dataset = rdf.dataset()
+        }
+        this.dataset.kind = 'app'
     }
 
     // REFACTORHERE
@@ -125,20 +131,6 @@ class AppResolver {
         return appPath
     }
 
-    /*
-    async loadManifest() {
-        try {
-            logger.debug(`AppResolver.loadManifest, loading: ${this.manifestFilename}`)
-            const stream = fromFile(this.manifestFilename)
-            this.dataset = await rdf.dataset().import(stream)
-            return this.dataset
-        } catch (err) {
-            logger.debug(`AppResolver.loadManifest, ${this.manifestFilename} not found, creating empty dataset`)
-            this.dataset = rdf.dataset()
-            return this.dataset
-        }
-    }
-*/
     getTransmissionsPath() {
         return path.join(this.appPath, this.transmissionFilename)
     }

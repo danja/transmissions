@@ -54,10 +54,11 @@ class ApplicationManager {
 
 
         const transmissionConfig = await RDFUtils.readDataset(this.appResolver.getTransmissionsPath())
+        transmissionConfig.kind = 'transmission'
         // REFACTORHERE
         // const processorsConfig = await RDFUtils.readDataset(this.appResolver.getConfigPath())
         const configModel = await this.appResolver.loadModel('config', this.appResolver.getConfigPath())
-
+        configModel.kind = 'config'
         //  const processorsConfig = configModel.dataset
         //    logger.log(`LOADED configModel = ${configModel}`)
 

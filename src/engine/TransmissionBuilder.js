@@ -47,7 +47,8 @@ class TransmissionBuilder {
   async constructTransmission(transmissionConfig, transmissionID, configModel) {
     // REFACTORHERE
     const processorsConfig = configModel.dataset
-
+    processorsConfig.kind = 'config'
+    processorsConfig.whiteboard = {}
     logger.debug(`\nTransmissionBuilder.constructTransmission`)
 
     if (++this.currentDepth > this.MAX_NESTING_DEPTH) {
@@ -116,7 +117,8 @@ class TransmissionBuilder {
           if (settingsNode) {
             processorBase.settingsNode = settingsNode
           }
-
+          // NOPE  transmissionConfig.kind = `transmissionConfig`
+          // processorBase.transmissionConfig = transmissionConfig
           //  logger.reveal(transmission) ///////////////////////////////////7
           processorBase.whiteboard = transmission.whiteboard // feels redundant...
           processorBase.x = `X`

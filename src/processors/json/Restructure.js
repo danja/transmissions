@@ -42,12 +42,16 @@ class Restructure extends Processor {
         logger.debug(`Found ${renamesRDF.length} rename values`)
         logger.debug(JSON.stringify(renamesRDF))
 
-        // Determine which dataset to use based on targetPath
-        var dataset = this.config
-        if (this.message && this.message.targetPath) {
-            dataset = this.app.dataset || this.config
-        }
+        // TODO move to Processor class
 
+        // Determine which dataset to use based on targetPath
+        var dataset = this.configDataset
+        logger.debug(`    this.config = ${this.configDataset}`)
+        if (this.message && this.message.targetPath) {
+            dataset = this.app.dataset
+            logger.debug(`    using dataset.kind = ${dataset.kind}`)
+        }
+        logger.debug(`    using dataset.kind = ${dataset.kind}`)
         var renames = []
         for (let i = 0; i < renamesRDF.length; i++) {
             logger.debug(`renamesRDF[i] = ${JSON.stringify(renamesRDF[i])}`)

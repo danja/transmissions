@@ -44,12 +44,15 @@ class ProcessorSettings {
         // Check the app dataset
         var dataset = this.appDataset
         logger.debug(`    * looking in APP dataset (app.ttl/manifest.ttl)`)
+        logger.debug(` dataset.kind = ${dataset.kind}`)
         logger.trace(`${logger.shorter(dataset)}`)
         var values = this.valuesFromDataset(dataset, property)
         if (values) return values
 
         // Check the transmission config (transmissions.ttl)
         dataset = this.transmissionConfig
+        logger.log(dataset)
+        logger.debug(` dataset.kind = ${dataset.kind}`)
         logger.debug(`    * looking in TRANSMISSIONS dataset (transmissions.ttl)`)
         logger.trace(`${logger.shorter(dataset)}`)
         var values = this.valuesFromDataset(dataset, property)
@@ -57,6 +60,7 @@ class ProcessorSettings {
 
         // check the general config (config.ttl)
         dataset = this.configDataset
+        logger.debug(` dataset.kind = ${dataset.kind}`)
         logger.debug(`    * looking in CONFIG dataset (config.ttl)`)
         logger.trace(`${logger.shorter(dataset)}`)
         var values = this.valuesFromDataset(dataset, property)
