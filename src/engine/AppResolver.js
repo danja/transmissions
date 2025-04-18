@@ -46,18 +46,24 @@ class AppResolver {
 
 
         if (target) {
-            this.manifestFilename = path.join(target, this.manifestFilename) // TODO deprecate
-            this.appFilename = path.join(target, this.appFilename)
-            logger.debug(`AppResolver, found manifest : ${this.manifestFilename}`)
+
+
+            //  logger.debug(`AppResolver, found manifest : ${this.manifestFilename}`)
             try {
+                this.appFilename = path.join(target, this.appFilename)
                 this.dataset = await RDFUtils.readDataset(this.appFilename)
             } catch (e) {
                 try {
-                    // TODO deprecate
+                    // TODO remove
+                    logger.warn(`manifest.ttl is deprecated`)
+                    this.manifestFilename = path.join(target, this.manifestFilename)
                     this.dataset = await RDFUtils.readDataset(this.manifestFilename)
                 } catch (e) {
-                    this.dataset = rdf.dataset()
+                    console.log(e)
                 }
+            }
+            if (!this.dataset) {
+                this.dataset = rdf.dataset()
             }
         }
     }

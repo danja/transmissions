@@ -39,7 +39,11 @@ class ProcessorSettings {
             return fallback ? [fallback] : []
         }
         const datasets = [this.appDataset, this.transmissionConfig, this.configDataset]
+        //  logger.log(this.appDataset)
+        // logger.log(JSON.stringify(this.parent))
+        logger.reveal(this.parent.appDataset)
         for (var dataset of datasets) {
+
             var values = this.valuesFromDataset(dataset, property)
             if (values) return values
         }

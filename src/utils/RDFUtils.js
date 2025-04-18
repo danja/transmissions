@@ -4,44 +4,40 @@ import logger from './Logger.js'
 class RDFUtils {
     static async readDataset(filename) {
         if (isBrowser()) {
-            try {
-                const response = await fetch(filename)
-                if (!response.ok) {
-                    throw new Error(`Failed to load dataset: ${filename}`)
-                }
-                const turtleText = await response.text()
 
-                // Import the browser-compatible extension
-                const rdfExt = await import('./browser-rdf-ext.js').then(m => m.default)
-
-                // Determine format based on file extension
-                if (filename.endsWith('.ttl') || filename.endsWith('.nt')) {
-                    // For a complete implementation, use proper N3 parser
-                    return await rdfExt.parseTurtle(turtleText)
-                } else if (filename.endsWith('.jsonld')) {
-                    // For JSON-LD you'd use the proper JSON-LD parser
-                    // This is a placeholder
-                    logger.warn('JSON-LD parsing not yet implemented in browser')
-                    return rdfExt.dataset()
-                } else {
-                    // Default to turtle parser
-                    return await rdfExt.parseTurtle(turtleText)
-                }
-            } catch (error) {
-                logger.error(`Error loading dataset in browser: ${error.message}`)
-                throw error
+            const response = await fetch(filename)
+            if (!response.ok) {
+                throw new Error(`Failed to load dataset: ${filename}`)
             }
+            const turtleText = await response.text()
+
+            // Import the browser-compatible extension
+            const rdfExt = await import('./browser-rdf-ext.js').then(m => m.default)
+
+            // Determine format based on file extension
+            if (filename.endsWith('.ttl') || filename.endsWith('.nt')) {
+                // For a complete implementation, use proper N3 parser
+                return await rdfExt.parseTurtle(turtleText)
+            } else if (filename.endsWith('.jsonld')) {
+                // For JSON-LD you'd use the proper JSON-LD parser
+                // This is a placeholder
+                logger.warn('JSON-LD parsing not yet implemented in browser')
+                return rdfExt.dataset()
+            } else {
+                // Default to turtle parser
+                return await rdfExt.parseTurtle(turtleText)
+            }
+
         } else {
-            try {
-                const rdfExt = await import('rdf-ext').then(m => m.default)
-                const { fromFile } = await import('rdf-utils-fs')
-                const stream = fromFile(filename)
-                const dataset = await rdfExt.dataset().import(stream)
-                return dataset
-            } catch (error) {
-                logger.error(`Error loading dataset in Node.js: ${error.message}`)
-                throw error
-            }
+
+            const rdfExt = await import('rdf-ext').then(m => m.default)
+            const { fromFile } = await import('rdf-utils-fs')
+            const stream = fromFile(filename)
+            const dataset = await rdfExt.dataset().import(stream)
+            return dataset
+
+            throw error
+
         }
     }
 
