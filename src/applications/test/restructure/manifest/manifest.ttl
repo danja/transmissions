@@ -8,6 +8,7 @@
    :sourceFile "../data/input/input-01.json" .
 
 :retree a :ConfigSet ;
+:loglevel "debug" ;
     :rename (:pp1 :pp2 :pp3) . # consider using blank nodes
     :pp1   :pre     "content.item.chat_messages" ;
             :post    "content.TEST_PASSED"  .

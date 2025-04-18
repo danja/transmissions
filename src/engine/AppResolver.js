@@ -46,16 +46,22 @@ class AppResolver {
 
 
         if (target) {
-            this.manifestFilename = path.join(target, this.manifestFilename) // TODO deprecate
             this.appFilename = path.join(target, this.appFilename)
-            logger.debug(`AppResolver, found manifest : ${this.manifestFilename}`)
+            this.manifestFilename = path.join(target, this.manifestFilename) // TODO deprecate
+
+            //   logger.debug(`AppResolver, found manifest : ${this.manifestFilename}`)
             try {
+                logger.debug(`AppResolver, trying : ${this.appFilename}`)
                 this.dataset = await RDFUtils.readDataset(this.appFilename)
+                logger.debug(`Loaded.`)
             } catch (e) {
                 try {
                     // TODO deprecate
+                    logger.debug(`AppResolver, trying : ${this.manifestFilename}`)
                     this.dataset = await RDFUtils.readDataset(this.manifestFilename)
+                    logger.debug(`Loaded.`)
                 } catch (e) {
+                    logger.debug(`AppResolver, falling back to empty dataset`)
                     this.dataset = rdf.dataset()
                 }
             }

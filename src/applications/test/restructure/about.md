@@ -1,11 +1,14 @@
 # Application : test_restructure
 
+Tests for `src/processors/json/Restructure.js`
+
 Run with :
 
 ```sh
 cd ~/hyperdata/transmissions/ # local path of repo
 ./trans restructure
 
+# for an app.ttl defined config
 ./trans  restructure src/applications/test/restructure/manifest
 
 ```

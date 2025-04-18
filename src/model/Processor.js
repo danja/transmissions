@@ -30,7 +30,7 @@ class Processor extends EventEmitter {
 
     getValues(property, fallback) {
         this.settee.configDataset = this.configDataset
-        logger.debug(`   Processor.getValues, this.configDataset : ${this.configDataset}`)
+        logger.trace(`   Processor.getValues, this.configDataset : ${this.configDataset}`)
         return this.settee.getValues(this.settingsNode, property, fallback)
     }
 
@@ -200,7 +200,7 @@ async process(message) {
     label = ${this.label}
     type = ${this.type?.value}
     description = ${this.description}
-        
+
         settingsNodeValue = ${settingsNodeValue}
         settings = ${this.settings}
         config = ${this.config}
