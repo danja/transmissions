@@ -19,7 +19,7 @@
 :md-to-html a :Transmission ;
     rdfs:label "Markdown to HTML Converter" ;
     rdfs:comment "Reads Markdown, converts to HTML, applies template and saves output" ;
-    :pipe (:p10 :p20 :p30 :p40 :p50 :p60 :p70) .
+    :pipe (:p10 :p20 :p30 :p40 :p50 :SM :DE :p60 :p70) .
 
 # Read the main Markdown file
 :p10 a :FileReader ;
@@ -44,12 +44,8 @@
 # Create contentBlocks for template
 :p50 a :Restructure ;
     rdfs:comment "Prepare data for template" ;
-    :settings [
-        :rename (
-            [ :pre "content" ; :post "contentBlocks.content" ]
-            [ :pre "content" ; :post "contentBlocks.html" ]
-        )
-    ] .
+     :settings :prepContentBlocks .
+
 
 # Apply template to HTML
 :p60 a :Templater ;

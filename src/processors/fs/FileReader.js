@@ -75,11 +75,11 @@ class FileReader extends Processor {
 
         const mediaType = super.getProperty(ns.trn.mediaType)
         logger.trace(`mediaType = ${mediaType}`)
-
+        const targetField = super.getProperty(ns.trn.targetField, `content`)
         if (mediaType === 'application/json') {
-            message.content = JSON.parse(content)
+            message[targetField] = JSON.parse(content)
         } else {
-            message.content = content
+            message[targetField] = content
         }
         return this.emit('message', message)
     }

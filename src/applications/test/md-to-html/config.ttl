@@ -18,7 +18,16 @@
 
 # Configuration for reading the title file
 :titleReader a :ConfigSet ;
-    :sourceFile "input/title.md" .
+    :sourceFile "input/title.md" ;
+    :targetField "title" .
+
+:prepContentBlocks  a :ConfigSet ;
+        :rename (:mt :mc) .
+        :mt    :pre "title" ;
+                :post "contentBlocks.title" .
+        :mc    :pre "content" ;
+                :post "contentBlocks.content" .
+
 
 # Configuration for applying template
 :templateSettings a :ConfigSet ;
