@@ -7,6 +7,7 @@ A simple application that demonstrates Markdown to HTML conversion and HTML temp
 ```sh
 cd ~/hyperdata/transmissions # adjust to your local path
 ./trans -v test/md-to-html
+./trans -v md-to-html
 ```
 
 ## Description
