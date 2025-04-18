@@ -29,8 +29,8 @@ class Stash extends Processor {
      * @param {Object} message - .
      */
     async process(message) {
-        const manifestFilename = rootDir + '/manifest.ttl'
-        const stream = fromFile(manifestFilename)
+        const appFilename = rootDir + '/app.ttl'
+        const stream = fromFile(appFilename)
 
         // should append RDF to incoming
         message.rootDir = rootDir

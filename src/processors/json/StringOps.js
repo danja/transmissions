@@ -41,7 +41,7 @@ class StringOps extends Processor {
         // TODO fix all or nothing reading
         var dataset
         var segments
-        if (this.app?.dataset) { // manifest
+        if (this.app?.dataset) {
             dataset = this.app?.dataset
             segments = GrapoiHelpers.listToArray(dataset, this.settingsNode, ns.trn.values)
         }

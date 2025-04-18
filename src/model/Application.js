@@ -16,7 +16,7 @@ class Application {
 
         // refactor to :
         this.transmissionsModel = null
-        this.manifestModel = null
+        this.appModel = null
         this.configModel = null
 
     }

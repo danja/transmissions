@@ -19,7 +19,7 @@ class MockApplicationManager {
             subtask,
             targetPath: target,
             dataset: {},
-            manifestFilename: target ? `${target}/manifest.ttl` : null
+            appFilename: target ? `${target}/app.ttl` : null
         }
 
         return Promise.resolve()

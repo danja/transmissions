@@ -14,7 +14,7 @@ class AppResolver {
         this.configFilename = 'config.ttl'
         this.moduleSubDir = 'processors'
         this.dataSubDir = 'data'
-        this.manifestFilename = 'manifest.ttl' // TODO deprecate in favour of
+
         this.appFilename = 'app.ttl' // this
 
         // Application identity
@@ -27,7 +27,7 @@ class AppResolver {
         this.workingDir = options.workingDir || null
         this.targetPath = options.targetPath || null
 
-        // RDF dataset from manifest
+        // RDF dataset from app.ttl
         this.dataset = options.dataset || null
     }
 
@@ -42,25 +42,14 @@ class AppResolver {
         this.appPath = await this.resolveApplicationPath(appName)
         this.subtask = subtask
         this.targetPath = target
-
-
-
         if (target) {
-            this.manifestFilename = path.join(target, this.manifestFilename) // TODO deprecate
+
             this.appFilename = path.join(target, this.appFilename)
-            logger.debug(`AppResolver, found manifest : ${this.manifestFilename}`)
-            try {
-                this.dataset = await RDFUtils.readDataset(this.appFilename)
-            } catch (e) {
-                try {
-                    // TODO deprecate
-                    this.dataset = await RDFUtils.readDataset(this.manifestFilename)
-                } catch (e) {
-                    this.dataset = rdf.dataset()
-                }
-            }
+            logger.debug(`AppResolver, reading : ${this.appFilename}`)
+            this.dataset = await RDFUtils.readDataset(this.appFilename)
         }
     }
+
 
     // REFACTORHERE
     async loadModel(shortName, path) {
@@ -119,20 +108,6 @@ class AppResolver {
         return appPath
     }
 
-    /*
-    async loadManifest() {
-        try {
-            logger.debug(`AppResolver.loadManifest, loading: ${this.manifestFilename}`)
-            const stream = fromFile(this.manifestFilename)
-            this.dataset = await rdf.dataset().import(stream)
-            return this.dataset
-        } catch (err) {
-            logger.debug(`AppResolver.loadManifest, ${this.manifestFilename} not found, creating empty dataset`)
-            this.dataset = rdf.dataset()
-            return this.dataset
-        }
-    }
-*/
     getTransmissionsPath() {
         return path.join(this.appPath, this.transmissionFilename)
     }
