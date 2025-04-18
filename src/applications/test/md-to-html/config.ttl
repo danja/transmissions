@@ -22,7 +22,7 @@
     :targetField "title" .
 
 :prepContentBlocks  a :ConfigSet ;
-:loglevel "debug" ;
+    # :loglevel "debug" ;
         :rename (:mt :mc) .
         :mt    :pre "title" ;
                 :post "contentBlocks.title" .

@@ -44,7 +44,7 @@
 # Create contentBlocks for template
 :p50 a :Restructure ;
     rdfs:comment "Prepare data for template" ;
-
+:loglevel "debug" ;
      :settings :prepContentBlocks .
 
 
