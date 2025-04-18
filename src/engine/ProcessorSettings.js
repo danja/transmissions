@@ -50,8 +50,10 @@ class ProcessorSettings {
         if (values) return values
 
         // Check the transmission config (transmissions.ttl)
-        dataset = this.transmissionConfig
+        dataset = this.app.transmissionConfig
         logger.log(dataset)
+
+        //////////////////// HERE
         logger.debug(` dataset.kind = ${dataset.kind}`)
         logger.debug(`    * looking in TRANSMISSIONS dataset (transmissions.ttl)`)
         logger.trace(`${logger.shorter(dataset)}`)

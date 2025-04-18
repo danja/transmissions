@@ -32,7 +32,7 @@ class AbstractProcessorFactory {
 
     // looks until it finds
 
-    static createProcessor(type, config) {
+    static createProcessor(type, config, transmissionConfig) {
 
         if (!type) {
             throw new Error(`Processor type undefined (typo in 'transmission.ttl'..?)`)

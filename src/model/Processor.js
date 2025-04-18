@@ -30,6 +30,7 @@ class Processor extends EventEmitter {
 
     getValues(property, fallback) {
         this.settee.configDataset = this.configDataset
+        this.settee.transmissionConfig = this.transmissionConfig
         logger.trace(`   Processor.getValues, this.configDataset : ${this.configDataset}`)
         return this.settee.getValues(this.settingsNode, property, fallback)
     }

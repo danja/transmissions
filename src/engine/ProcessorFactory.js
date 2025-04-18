@@ -1,28 +1,30 @@
-import AbstractProcessorFactory from '../engine/AbstractProcessorFactory.js';
-import logger from '../utils/Logger.js';
+import AbstractProcessorFactory from '../engine/AbstractProcessorFactory.js'
+import logger from '../utils/Logger.js'
 
-export async function createProcessor(type, configModel, moduleLoader) {
-    logger.debug(`ProcessorFactory.createProcessor, config = ${configModel}`);
+export async function createProcessor(type, configModel, moduleLoader, transmissionConfig) {
+    logger.error('NOOOOOOOOO')
 
-    const coreProcessor = AbstractProcessorFactory.createProcessor(type, configModel.dataset);
+    logger.debug(`ProcessorFactory.createProcessor, config = ${configModel}`)
+
+    const coreProcessor = AbstractProcessorFactory.createProcessor(type, configModel.dataset, transmissionConfig)
     if (coreProcessor) {
-        coreProcessor.configModel = configModel;
-        return coreProcessor;
+        coreProcessor.configModel = configModel
+        return coreProcessor
     }
 
-    logger.debug(`ProcessorFactory, core processor not found for ${type?.value}. Trying remote module loader...`);
+    logger.debug(`ProcessorFactory, core processor not found for ${type?.value}. Trying remote module loader...`)
 
     try {
-        const shortName = type.value.split('/').pop();
-        logger.debug(`ProcessorFactory, loading module: ${shortName}`);
-        const ProcessorClass = await moduleLoader.loadModule(shortName);
+        const shortName = type.value.split('/').pop()
+        logger.debug(`ProcessorFactory, loading module: ${shortName}`)
+        const ProcessorClass = await moduleLoader.loadModule(shortName)
 
-        logger.debug(`Module loaded successfully: ${shortName}`);
-        const moduleProcessor = new ProcessorClass.default(configModel.dataset);
-        moduleProcessor.configModel = configModel;
-        return moduleProcessor;
+        logger.debug(`Module loaded successfully: ${shortName}`)
+        const moduleProcessor = new ProcessorClass.default(configModel.dataset)
+        moduleProcessor.configModel = configModel
+        return moduleProcessor
     } catch (error) {
-        logger.error(`ProcessorFactory.createProcessor, failed to load ${type?.value} : ${error.message}`);
-        throw error;
+        logger.error(`ProcessorFactory.createProcessor, failed to load ${type?.value} : ${error.message}`)
+        throw error
     }
 }

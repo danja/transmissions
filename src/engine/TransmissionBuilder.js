@@ -111,19 +111,21 @@ class TransmissionBuilder {
           transmission.register(node.value, nestedTransmission)
         } else {
           // Regular processor handling
-          const processorBase = await this.createProcessor(processorType, configModel)
+          const processorBase = await this.createProcessor(processorType, configModel, transmissionConfig)
           processorBase.id = node.value
           processorBase.type = processorType
           if (settingsNode) {
             processorBase.settingsNode = settingsNode
           }
           // NOPE  transmissionConfig.kind = `transmissionConfig`
-          // processorBase.transmissionConfig = transmissionConfig
+          //  processorBase.transmissionConfig = transmissionConfig
           //  logger.reveal(transmission) ///////////////////////////////////7
           processorBase.whiteboard = transmission.whiteboard // feels redundant...
           processorBase.x = `X`
           const processorInstance = transmission.register(node.value, processorBase)
+
           processorInstance.app = transmission.app
+          processorInstance.app.transmissionConfig = transmissionConfig
         }
       }
     }
@@ -157,12 +159,12 @@ class TransmissionBuilder {
     }
   }
 
-  async createProcessor(type, configModel) {
+  async createProcessor(type, configModel, transmissionConfig) {
     // REFACTOR HERE
     // const config = configModel.dataset
     logger.debug(`\n\nTransmissionBuilder.createProcessor, config = ${configModel}`)
 
-    const coreProcessor = AbstractProcessorFactory.createProcessor(type, configModel.dataset)
+    const coreProcessor = AbstractProcessorFactory.createProcessor(type, configModel.dataset, transmissionConfig)
     if (coreProcessor) {
       coreProcessor.configModel = configModel
       return coreProcessor
