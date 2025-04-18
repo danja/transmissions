@@ -50,10 +50,11 @@ class Restructure extends Processor {
 
         var renames = []
         for (let i = 0; i < renamesRDF.length; i++) {
+            logger.debug(`renamesRDF[i] = ${JSON.stringify(renamesRDF[i])}`)
+            logger.debug(`typeof renamesRDF[i] = ${typeof renamesRDF[i]}`)
             try {
-                let rename = typeof renamesRDF[i] === 'string'
-                    ? rdf.namedNode(renamesRDF[i])
-                    : renamesRDF[i]
+                let rename = typeof renamesRDF[i] === 'string' ?
+                    rdf.namedNode(renamesRDF[i]) : renamesRDF[i]
 
                 let poi = rdf.grapoi({ dataset: dataset, term: rename })
                 let pre = poi.out(ns.trn.pre).value
