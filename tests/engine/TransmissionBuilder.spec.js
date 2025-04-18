@@ -15,7 +15,7 @@ describe('TransmissionBuilder', () => {
     let mockModuleLoader
     let mockApp
     let mockProcessor
-    let mockTransmissionConfig
+    let mocktransmissionDataset
     let mockConfigModel
 
     beforeEach(() => {
@@ -35,20 +35,20 @@ describe('TransmissionBuilder', () => {
         mockProcessor.type = ns.trn.MockProcessor
 
         // Create sample RDF dataset for transmission configuration
-        mockTransmissionConfig = rdf.dataset()
+        mocktransmissionDataset = rdf.dataset()
         const transmissionId = rdf.namedNode('http://example.org/transmission')
         const processorId1 = rdf.namedNode('http://example.org/processor1')
         const processorId2 = rdf.namedNode('http://example.org/processor2')
         const processorType = rdf.namedNode('http://purl.org/stuff/transmissions/MockProcessor')
 
         // Add transmission triples
-        mockTransmissionConfig.add(rdf.quad(
+        mocktransmissionDataset.add(rdf.quad(
             transmissionId,
             ns.rdf.type,
             ns.trn.Transmission
         ))
 
-        mockTransmissionConfig.add(rdf.quad(
+        mocktransmissionDataset.add(rdf.quad(
             transmissionId,
             ns.rdfs.label,
             rdf.literal('Test Transmission')
@@ -56,46 +56,46 @@ describe('TransmissionBuilder', () => {
 
         // Add pipe property with processors
         const listNode1 = rdf.blankNode('list1')
-        mockTransmissionConfig.add(rdf.quad(
+        mocktransmissionDataset.add(rdf.quad(
             transmissionId,
             ns.trn.pipe,
             listNode1
         ))
 
         // Create RDF list for pipeline
-        mockTransmissionConfig.add(rdf.quad(
+        mocktransmissionDataset.add(rdf.quad(
             listNode1,
             ns.rdf.first,
             processorId1
         ))
 
         const listNode2 = rdf.blankNode('list2')
-        mockTransmissionConfig.add(rdf.quad(
+        mocktransmissionDataset.add(rdf.quad(
             listNode1,
             ns.rdf.rest,
             listNode2
         ))
 
-        mockTransmissionConfig.add(rdf.quad(
+        mocktransmissionDataset.add(rdf.quad(
             listNode2,
             ns.rdf.first,
             processorId2
         ))
 
-        mockTransmissionConfig.add(rdf.quad(
+        mocktransmissionDataset.add(rdf.quad(
             listNode2,
             ns.rdf.rest,
             ns.rdf.nil
         ))
 
         // Add processor type information
-        mockTransmissionConfig.add(rdf.quad(
+        mocktransmissionDataset.add(rdf.quad(
             processorId1,
             ns.rdf.type,
             processorType
         ))
 
-        mockTransmissionConfig.add(rdf.quad(
+        mocktransmissionDataset.add(rdf.quad(
             processorId2,
             ns.rdf.type,
             processorType
@@ -114,7 +114,7 @@ describe('TransmissionBuilder', () => {
     describe('#buildTransmissions', () => {
         it('should build transmissions from RDF config', async () => {
             const app = { dataset: rdf.dataset() }
-            const result = await builder.buildTransmissions(app, mockTransmissionConfig, mockConfigModel)
+            const result = await builder.buildTransmissions(app, mocktransmissionDataset, mockConfigModel)
 
             expect(result).toBeInstanceOf(Array)
             expect(result.length).toBe(1)
@@ -136,7 +136,7 @@ describe('TransmissionBuilder', () => {
         it('should construct a transmission with the right properties', async () => {
             const transmissionId = rdf.namedNode('http://example.org/transmission')
             const transmission = await builder.constructTransmission(
-                mockTransmissionConfig,
+                mocktransmissionDataset,
                 transmissionId,
                 mockConfigModel
             )
@@ -157,7 +157,7 @@ describe('TransmissionBuilder', () => {
 
             // Should return the cached version
             const result = await builder.constructTransmission(
-                mockTransmissionConfig,
+                mocktransmissionDataset,
                 transmissionId,
                 mockConfigModel
             )
@@ -172,7 +172,7 @@ describe('TransmissionBuilder', () => {
             builder.currentDepth = builder.MAX_NESTING_DEPTH
 
             await expectAsync(builder.constructTransmission(
-                mockTransmissionConfig,
+                mocktransmissionDataset,
                 transmissionId,
                 mockConfigModel
             )).toBeRejectedWithError(/Maximum transmission nesting depth/)
@@ -194,7 +194,7 @@ describe('TransmissionBuilder', () => {
             await builder.createNodes(
                 transmission,
                 pipenodes,
-                mockTransmissionConfig,
+                mocktransmissionDataset,
                 mockConfigModel
             )
 

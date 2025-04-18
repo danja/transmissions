@@ -47,13 +47,13 @@ class ApplicationManager {
         return this
     }
 
-    async buildTransmissions(transmissionConfigFile, processorsConfigFile, moduleLoader, app) {
+    async buildTransmissions(transmissionDatasetFile, processorsConfigFile, moduleLoader, app) {
         logger.debug(`\nApplicationManager.build ****************************************`)
 
         const builder = new TransmissionBuilder(this.moduleLoader, this.appResolver)
 
 
-        const transmissionConfig = await RDFUtils.readDataset(this.appResolver.getTransmissionsPath())
+        const transmissionDataset = await RDFUtils.readDataset(this.appResolver.getTransmissionsPath())
         // REFACTORHERE
         // const processorsConfig = await RDFUtils.readDataset(this.appResolver.getConfigPath())
         const configModel = await this.appResolver.loadModel('config', this.appResolver.getConfigPath())
@@ -61,15 +61,15 @@ class ApplicationManager {
         //  const processorsConfig = configModel.dataset
         //    logger.log(`LOADED configModel = ${configModel}`)
 
-        this.app.transmissionConfig = transmissionConfig
+        this.app.transmissionDataset = transmissionDataset
         // Merge with app dataset
         /*
             for (const quad of app.dataset) {
-              transmissionConfig.add(quad)
+              transmissionDataset.add(quad)
               processorsConfig.add(quad)
             }
         */
-        return await builder.buildTransmissions(this.app, transmissionConfig, configModel)
+        return await builder.buildTransmissions(this.app, transmissionDataset, configModel)
     }
 
     async start(message = {}) {

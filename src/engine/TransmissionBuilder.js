@@ -20,10 +20,10 @@ class TransmissionBuilder {
     this.currentDepth = 0
   }
 
-  async buildTransmissions(app, transmissionConfig, configModel) {
+  async buildTransmissions(app, transmissionDataset, configModel) {
     logger.debug(`\nTransmissionBuilder.buildTransmissions`)
-    // logger.debug(`transmissionConfig = \n${transmissionConfig}`)
-    const poi = grapoi({ dataset: transmissionConfig })
+    // logger.debug(`transmissionDataset = \n${transmissionDataset}`)
+    const poi = grapoi({ dataset: transmissionDataset })
     const transmissions = []
 
     for (const q of poi.out(ns.rdf.type).quads()) {
@@ -32,7 +32,7 @@ class TransmissionBuilder {
         logger.debug(`\ntransmissionID = ${transmissionID.value}`)
 
         const transmission = await this.constructTransmission(
-          transmissionConfig,
+          transmissionDataset,
           transmissionID,
           configModel
         )
@@ -44,7 +44,7 @@ class TransmissionBuilder {
     return transmissions
   }
 
-  async constructTransmission(transmissionConfig, transmissionID, configModel) {
+  async constructTransmission(transmissionDataset, transmissionID, configModel) {
     // REFACTORHERE
     const processorsConfig = configModel.dataset
 
@@ -67,27 +67,27 @@ class TransmissionBuilder {
     //  processorsConfig.whiteboard = {}
     transmission.label = ''
 
-    const transPoi = grapoi({ dataset: transmissionConfig, term: transmissionID })
-    const pipenodes = GrapoiHelpers.listToArray(transmissionConfig, transmissionID, ns.trn.pipe)
+    const transPoi = grapoi({ dataset: transmissionDataset, term: transmissionID })
+    const pipenodes = GrapoiHelpers.listToArray(transmissionDataset, transmissionID, ns.trn.pipe)
 
     for (const quad of transPoi.out(ns.rdfs.label).quads()) {
       transmission.label = quad.object.value
     }
     logger.log('\n+ ***** Construct Transmission : ' + transmission.label + ' <' + transmission.id + '>')
 
-    await this.createNodes(transmission, pipenodes, transmissionConfig, configModel)
+    await this.createNodes(transmission, pipenodes, transmissionDataset, configModel)
     this.connectNodes(transmission, pipenodes)
 
     this.currentDepth--
     return transmission
   }
 
-  async createNodes(transmission, pipenodes, transmissionConfig, configModel) {
+  async createNodes(transmission, pipenodes, transmissionDataset, configModel) {
     for (const node of pipenodes) {
       //  node.value is either the name of a processor or a nested transmission
 
       if (!transmission.get(node.value)) {
-        const np = rdf.grapoi({ dataset: transmissionConfig, term: node })
+        const np = rdf.grapoi({ dataset: transmissionDataset, term: node })
         const processorType = np.out(ns.rdf.type).term
 
         const settingsNode = np.out(ns.trn.settings).term
@@ -99,11 +99,11 @@ class TransmissionBuilder {
           SettingsNode: :${ns.shortName(settingsNode?.value)}
         `)
         //    Config: \n${processorsConfig}
-        // Check if node is a nested transmission transmissionConfig
+        // Check if node is a nested transmission transmissionDataset
         // if (processorType && this.isTransmissionReference(processorType)) {
-        if (processorType && this.isTransmissionReference(transmissionConfig, processorType)) {
+        if (processorType && this.isTransmissionReference(transmissionDataset, processorType)) {
           const nestedTransmission = await this.constructTransmission(
-            transmissionConfig,
+            transmissionDataset,
             processorType, // is used?
             configModel
           )
@@ -127,8 +127,8 @@ class TransmissionBuilder {
     }
   }
 
-  isTransmissionReference(transmissionConfig, processorType) {
-    const processorPoi = grapoi({ dataset: transmissionConfig, term: processorType })
+  isTransmissionReference(transmissionDataset, processorType) {
+    const processorPoi = grapoi({ dataset: transmissionDataset, term: processorType })
     return processorPoi.out(ns.rdf.type).terms.some(t => t.equals(ns.trn.Transmission))
   }
 
@@ -139,8 +139,8 @@ class TransmissionBuilder {
   }
     */
 
-  getPipeNodes(transmissionConfig, transmissionID) {
-    const transPoi = grapoi({ dataset: transmissionConfig, term: transmissionID })
+  getPipeNodes(transmissionDataset, transmissionID) {
+    const transPoi = grapoi({ dataset: transmissionDataset, term: transmissionID })
     return transPoi.out(ns.trn.pipe).terms
   }
 

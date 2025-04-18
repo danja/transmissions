@@ -46,7 +46,7 @@ class StringOps extends Processor {
             segments = GrapoiHelpers.listToArray(dataset, this.settingsNode, ns.trn.values)
         }
 
-        if (!segments && this.transmissionConfig) {
+        if (!segments && this.transmissionDataset) {
             dataset = this.app?.dataset
             segments = GrapoiHelpers.listToArray(dataset, this.settingsNode, ns.trn.values)
         }
