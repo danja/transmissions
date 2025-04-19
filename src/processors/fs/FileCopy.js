@@ -56,9 +56,9 @@ class FileCopy extends Processor {
         var source = super.getProperty(ns.trn.source)
         var destination = super.getProperty(ns.trn.destination)
 
-const wd = super.getProperty(ns.trn.workingDir)
-source = path.join(wd,source)
-destination = path.join(wd,destination)
+        const wd = super.getProperty(ns.trn.workingDir)
+        source = path.join(wd, source)
+        destination = path.join(wd, destination)
         logger.debug(`Source: ${source}`)
         logger.debug(`Destination: ${destination}`)
 

@@ -1,210 +1,40 @@
-import { EventEmitter } from 'events'
-import logger from '../utils/Logger.js'
-import ns from '../utils/ns.js'
-import SysUtils from '../utils/SysUtils.js'
-import ProcessorSettings from '../engine/ProcessorSettings.js'
+import ProcessorImpl from '../engine/ProcessorImpl.js'
 
-class Processor extends EventEmitter {
+/**
+ * Interface for Processor implementations
+ * @extends ProcessorImpl
+ */
+class Processor extends ProcessorImpl {
+    /**
+     * Creates a new Processor instance
+     * @param {Dataset} configDataset - RDF dataset containing configuration
+     */
     constructor(configDataset) {
-        super()
-        this.configDataset = configDataset
-        logger.debug(`Processor.constructor : \n${this}`)
-        this.settee = new ProcessorSettings(this)
-        logger.trace(`configDataset : ${configDataset}`)
-        this.messageQueue = []
-        this.processing = false
-        this.outputs = []
+        super(configDataset)
     }
 
-    // TODO needed?
-    /*
-    getAppPath(relativePath) {
-        if (!this.app?.rootDir) {
-            throw new Error('Application context not available')
-        }
-        return path.join(this.app.rootDir, relativePath)
-    }
-        */
-
-    // TODO tidy up
-
-    getValues(property, fallback) {
-        this.settee.configDataset = this.configDataset
-        logger.debug(`   Processor.getValues, this.configDataset : ${this.configDataset}`)
-        return this.settee.getValues(this.settingsNode, property, fallback)
-    }
-
-
-    getProperty(property, fallback = undefined) {
-        logger.debug(`   Processor.getProperty looking for ${property}`)
-        // first check if the property is in the message
-        var value = this.propertyInMessage(property)
-        if (value) {
-            logger.debug(`   property found in message : ${value}`)
-            return value
-        }
-        logger.debug(`   this.settingsNode = ${this.settingsNode?.value}`)
-        logger.debug(`   typeof this.settingsNode = ${typeof this.settingsNode}`)
-
-        this.settee.configDataset = this.configDataset // TODO probably not needed
-        logger.trace(`   this.configDataset : ${this.configDataset}`)
-        // Get values from settings
-        const values = this.settee.getValues(this.settingsNode, property, fallback)
-
-        // If it's a single value, return it directly, otherwise return the array
-        if (values && Array.isArray(values)) {
-            if (values.length === 1) {
-                return values[0]
-            } else if (values.length > 1) {
-                return values
-            }
-        }
-
-        return fallback
-    }
-
-    propertyInMessage(property) {
-        const shortName = ns.getShortname(property)
-        if (this.message && this.message[shortName]) {
-            logger.debug(`Found in message: ${this.message[shortName]}`)
-            return this.message[shortName]
-        }
-        return undefined
-    }
-
-    async preProcess(message) {
-        logger.debug('Processor.preProcess')
-        this.app = message.app
-        this.settee.app = this.app
-        logger.trace(`THIS APP = ${this.app}`)
-
-        if (message.onProcess) { // Claude
-            message.onProcess(this, message)
-        }
-
-        this.previousLogLevel = logger.getLevel()
-
-        // TODO make it loglevel value
-        const loglevel = this.getProperty(ns.trn.loglevel)
-
-        if (loglevel) {
-            logger.setLogLevel(loglevel)
-        }
-        logger.debug(`   loglevel = ${loglevel}`)
-
-        /* TODO uncomment after config sorted
-        const messageType = this.getProperty(ns.trn.messageType)
-        if (messageType) {
-            if (messageType.value) {
-                message.messageType = messageType.value
-            } else {
-                message.messageType = messageType
-            }
-        }
-            */
-        this.message = message
-    }
-
-    /*
-async process(message) {
-    throw new Error('process method not implemented')
-}
-*/
-
-    /* cLAUDE
-    // is useful?
     async process(message) {
-        if (message.onProcess) {
-            message.onProcess(this, message)
-        }
-        await this.emit('message', message)
-    }
-*/
-
-    async postProcess(message) {
-        logger.setLogLevel(this.previousLogLevel)
-        this.previousLogLevel = null
+        return super.process(message)
     }
 
-    async receive(message) {
-        await this.enqueue(message)
+    /**
+     * Gets multiple values for a property from settings
+     * @param {Term} property - RDF property to retrieve
+     * @param {any} fallback - Default value if property not found
+     * @returns {Array<string>} Array of property values
+     */
+    getValues(property, fallback) {
+        return super.getValues(property, fallback)
     }
 
-    async enqueue(message) {
-        this.messageQueue.push({ message })
-        if (!this.processing) {
-            this.executeQueue()
-        }
-    }
-
-    async executeQueue() {
-        logger.debug(`Processor.executeQueue`)
-        this.processing = true
-        while (this.messageQueue.length > 0) {
-            let { message } = this.messageQueue.shift()
-
-            /* structuredClone makes a deep copy of the message object
-            *  so that the original message is not modified
-            *  except its depth doesn't appear to cover internal objects
-            *  so here the app.dataset is passed between messages
-            *  (which is fine)
-            */
-            //            const dataset = message.app.dataset
-            //          message = structuredClone(message)
-            //        message.app.dataset = dataset
-            message = SysUtils.copyMessage(message)
-
-            this.addTag(message)
-            logger.debug(`  before`)
-            await this.preProcess(message)
-            logger.debug(`  after`)
-            await this.process(message)
-            await this.postProcess(message)
-        }
-        this.processing = false
-    }
-
-    addTag(message) {
-        const tag = this.getTag()
-        if (!message.tags) {
-            message.tags = tag
-            return
-        }
-        message.tags = message.tags + '.' + tag
-    }
-
-    getTag() {
-        return ns.shortName(this.id)
-    }
-
-    async emit(event, message) {
-        await new Promise(resolve => {
-            super.emit(event, message)
-            resolve()
-        })
-        return message
-    }
-
-    getOutputs() {
-        const results = this.outputs
-        this.outputs = []
-        return results
-    }
-
-    toString() {
-
-        const settingsNodeValue = this.settingsNode ? this.settingsNode.value : 'none'
-        return `
-=== Processor ${this.constructor.name} ===
-    id = ${this.id}
-    label = ${this.label}
-    type = ${this.type?.value}
-    description = ${this.description}
-        
-        settingsNodeValue = ${settingsNodeValue}
-        settings = ${this.settings}
-        config = ${this.config}
-       `
+    /**
+     * Gets a single property value from settings
+     * @param {Term} property - RDF property to retrieve
+     * @param {any} fallback - Default value if property not found
+     * @returns {string|Array<string>|undefined} Property value(s) or fallback
+     */
+    getProperty(property, fallback) {
+        return super.getProperty(property, fallback)
     }
 }
 

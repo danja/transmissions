@@ -50,11 +50,11 @@ class FileRemove extends Processor {
         this.ignoreDotfiles = true // default, simplify ".gitinclude"
 
         var target = await this.getProperty(ns.trn.target)
-          const wd = super.getProperty(ns.trn.workingDir)
-          target = path.join(wd,target)
+        const wd = super.getProperty(ns.trn.workingDir)
+        target = path.join(wd, target)
         logger.debug('FileRemove, target = ' + target)
-     
-     //   return this.emit('message', message)
+
+        //   return this.emit('message', message)
         try {
             const removeStat = await stat(target)
 
