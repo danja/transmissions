@@ -9,5 +9,5 @@
     :target "public" .
 
 :copyLayout a :ConfigSet ;
-    :source "raw" ;
+    :source "media" ;
     :destination "public" .

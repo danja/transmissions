@@ -70,6 +70,7 @@ class ProcessorImpl extends EventEmitter {
         const shortName = ns.getShortname(property)
         logger.debug(`ProcessorImpl.propertyInMessage, shortName = ${shortName}`)
         logger.debug(`ProcessorImpl.propertyInMessage, this.message = ${this.message}`)
+
         if (this.message && this.message[shortName]) {
             logger.debug(`Found in message: ${this.message[shortName]}`)
             return this.message[shortName]

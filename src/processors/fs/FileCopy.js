@@ -51,13 +51,23 @@ class FileCopy extends Processor {
      */
     async process(message) {
         //  logger.setLogLevel("info")
-
-        logger.debug("message.rootDir = " + message.rootDir)
+        logger.debug("FileCopy.process")
+        logger.debug("   message.rootDir = " + message.rootDir)
         var source = super.getProperty(ns.trn.source)
+
         var destination = super.getProperty(ns.trn.destination)
 
         const wd = super.getProperty(ns.trn.workingDir)
+
+        logger.debug(`   wd = ${wd}`)
+        logger.reveal(source)
+        // TODO HERE
+        source = source[0]
         source = path.join(wd, source)
+        logger.reveal(destination)
+        destination = destination[0]
+        //////////////////////////////////////////7
+
         destination = path.join(wd, destination)
         logger.debug(`Source: ${source}`)
         logger.debug(`Destination: ${destination}`)
