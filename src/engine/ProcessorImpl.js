@@ -28,6 +28,8 @@ class ProcessorImpl extends EventEmitter {
 
     // TODO tidy up
 
+
+
     getValues(property, fallback) {
         this.settee.configDataset = this.configDataset
         logger.debug(`   ProcessorImpl.getValues, this.configDataset : ${this.configDataset}`)
@@ -64,7 +66,10 @@ class ProcessorImpl extends EventEmitter {
     }
 
     propertyInMessage(property) {
+        logger.debug(`ProcessorImpl.propertyInMessage, property = ${property}`)
         const shortName = ns.getShortname(property)
+        logger.debug(`ProcessorImpl.propertyInMessage, shortName = ${shortName}`)
+        logger.debug(`ProcessorImpl.propertyInMessage, this.message = ${this.message}`)
         if (this.message && this.message[shortName]) {
             logger.debug(`Found in message: ${this.message[shortName]}`)
             return this.message[shortName]

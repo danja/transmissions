@@ -34,6 +34,9 @@ import path from 'path'
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
 
+// TODO cache templates
+// in a singleton this.app.cache?
+
 class Templater extends Processor {
     constructor(config) {
         super(config)

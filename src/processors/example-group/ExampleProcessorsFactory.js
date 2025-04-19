@@ -13,6 +13,7 @@ class ExampleProcessorsFactory {
 
     static createProcessor(type, config) {
 
+        // note this isn't the same as ===
         if (type.equals(ns.trn.ExampleProcessor)) {
             return new ExampleProcessor(config)
         }

@@ -5,6 +5,7 @@ import StringFilter from './StringFilter.js'
 import StringMerger from './StringMerger.js'
 import StringReplace from './StringReplace.js'
 import Templater from './Templater.js'
+import Escaper from './Escaper.js'
 
 class TextProcessorsFactory {
     static createProcessor(type, config) {
@@ -27,11 +28,9 @@ class TextProcessorsFactory {
         if (type.equals(ns.trn.StringReplace)) {
             return new StringReplace(config)
         }
-
-        //     if (type.equals(ns.trn.CommentStripper)) {
-        //       return new CommentStripper(config)
-        // }
-
+        if (type.equals(ns.trn.Escaper)) {
+            return new Escaper(config)
+        }
         return false
     }
 }

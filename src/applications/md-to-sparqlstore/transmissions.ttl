@@ -15,13 +15,15 @@
 ##################################################################
 
 :md-to-sparqlstore a :Transmission ;
-   :pipe (:mts10 :mts20  :mts30 :mts40) .
+   :pipe (:mts10 :mts20 :mts25 :mts30 :mts40) .
 
 :mts10 a :DirWalker ;
    :settings :mts10-dirWalker .
 
 :mts20 a :FileReader ;
      :settings :readerSet .
+
+:mts25 a :Escaper .
 
 :mts30 a :MakeEntry ;
      :settings :entryExtras .

@@ -1,6 +1,6 @@
 // simple-runner.js
-import NOP from '../../processors/flow/NOP.js'
-import Fork from '../../processors/flow/Fork.js'
+import NOP from '../../../processors/flow/NOP.js'
+import Fork from '../../../processors/flow/Fork.js'
 
 /*
 async function runProcessor(processor, message) {

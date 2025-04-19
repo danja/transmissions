@@ -1,7 +1,7 @@
 // nop.js
 // node src/simples/nop/nop.js
 
-import NOP from '../../processors/flow/NOP.js'
+import NOP from '../../../processors/flow/NOP.js'
 
 const config = {
     "runmode": "functions",

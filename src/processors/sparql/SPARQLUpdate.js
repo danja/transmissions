@@ -5,11 +5,15 @@ import logger from '../../utils/Logger.js'
 import SlowableProcessor from '../../model/SlowableProcessor.js'
 import ns from '../../utils/ns.js'
 import SessionEnvironment from './SessionEnvironment.js'
+// TODO unhack
+import Escaper from '../text/Escaper.js'
 
 class SPARQLUpdate extends SlowableProcessor {
     constructor(config) {
         super(config)
         this.env = new SessionEnvironment(this)
+        // TODO unhack
+        this.escaper = new Escaper()
     }
 
     async process(message) {
@@ -35,14 +39,25 @@ class SPARQLUpdate extends SlowableProcessor {
         const dataField = super.getProperty(ns.trn.dataBlock)
         const updateData = message[dataField]
 
+        const escape = super.getProperty(ns.trn.escape)
+        //  logger.reveal(message)
+        // process.exit()
+
+        if (escape) { // TODO unhackify
+            const replacements = this.escaper.getReplacementList('SPARQL')
+            message.contentBlocks.content = this.escaper.escape(message.contentBlocks.content, replacements)
+        }
+
         nunjucks.configure({ autoescape: true })
         const update = nunjucks.renderString(template, updateData)
 
         logger.trace(`dataField = ${dataField}`)
         logger.trace(`updateData = `)
-        logger.reveal(updateData)
+        //  logger.reveal(updateData)
         logger.trace(`update = ${update}`)
-        //   process.exit()
+
+
+
         const response = await axios.post(endpoint.url, update, {
             headers: await this.makeHeaders(endpoint)
         })

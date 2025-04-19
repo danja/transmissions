@@ -1,5 +1,7 @@
 # Transmissions Known Bugs
 
+### simples properties not being picked up
+
 ### forward tree pipes should be joinable
 
 src/applications/test/multi-pipe

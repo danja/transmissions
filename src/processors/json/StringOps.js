@@ -65,7 +65,7 @@ class StringOps extends Processor {
         logger.debug(`combined = ${combined}`)
 
         JSONUtils.set(message, targetField, combined)
-        logger.reveal(message)
+        //  logger.reveal(message)
 
         return this.emit('message', message)
     }
