@@ -19,7 +19,7 @@
 :md-to-html a :Transmission ;
     rdfs:label "Markdown to HTML Converter" ;
     rdfs:comment "Reads Markdown, converts to HTML, applies template and saves output" ;
-    :pipe (:p10 :p20 :p30 :p40 :p50 :SM :DE :p60 :p70) .
+    :pipe (:p10 :p20 :p30 :p40 :p50 :p60 :p70 :SM) .
 
 # Read the main Markdown file
 :p10 a :FileReader ;

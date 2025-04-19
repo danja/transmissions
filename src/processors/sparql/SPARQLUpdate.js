@@ -35,11 +35,12 @@ class SPARQLUpdate extends SlowableProcessor {
         const dataField = super.getProperty(ns.trn.dataBlock)
         const updateData = message[dataField]
 
+        nunjucks.configure({ autoescape: true })
         const update = nunjucks.renderString(template, updateData)
 
         logger.trace(`dataField = ${dataField}`)
         logger.trace(`updateData = `)
-        //   logger.reveal(updateData)
+        logger.reveal(updateData)
         logger.trace(`update = ${update}`)
         //   process.exit()
         const response = await axios.post(endpoint.url, update, {
