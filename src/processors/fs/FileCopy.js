@@ -50,43 +50,47 @@ class FileCopy extends Processor {
      * @param {Object} message - The input message
      */
     async process(message) {
-        //  logger.setLogLevel("info")
         logger.debug("FileCopy.process")
         logger.debug("   message.rootDir = " + message.rootDir)
-        var source = super.getProperty(ns.trn.source)
-
-        var destination = super.getProperty(ns.trn.destination)
 
         const wd = super.getProperty(ns.trn.workingDir)
-
         logger.debug(`   wd = ${wd}`)
-        logger.reveal(source)
-        // TODO HERE
-        source = source[0]
-        source = path.join(wd, source)
-        logger.reveal(destination)
-        destination = destination[0]
-        //////////////////////////////////////////7
 
+        var source = super.getProperty(ns.trn.source)
+        var destination = super.getProperty(ns.trn.destination)
+
+        // TODO fixme
+        if (typeof source !== 'string') {
+            logger.warn(`   typeof source  = ${typeof source}`)
+            logger.reveal(source)
+            source = source[0]
+        }
+        if (typeof destination !== 'string') {
+            logger.warn(`   Warningtypeof destination  = ${typeof destination}`)
+            logger.reveal(destination)
+            destination = destination[0]
+        }
+
+        source = path.join(wd, source)
         destination = path.join(wd, destination)
-        logger.debug(`Source: ${source}`)
-        logger.debug(`Destination: ${destination}`)
+        logger.debug(`Source: ${source} `)
+        logger.debug(`Destination: ${destination} `)
 
         try {
             await this.ensureDirectoryExists(path.dirname(destination))
             const sourceStat = await stat(source)
 
             if (sourceStat.isFile()) {
-                logger.debug(`Copying file from ${source} to ${destination}`)
+                logger.debug(`Copying file from ${source} to ${destination} `)
                 await copyFile(source, destination)
             } else if (sourceStat.isDirectory()) {
-                logger.debug(`Copying directory from ${source} to ${destination}`)
+                logger.debug(`Copying directory from ${source} to ${destination} `)
                 await this.copyDirectory(source, destination)
             }
         } catch (err) {
-            logger.error(`Error in FileCopy: ${err.message}`)
-            logger.error(`Source: ${source}`)
-            logger.error(`Destination: ${destination}`)
+            logger.error(`Error in FileCopy: ${err.message} `)
+            logger.error(`Source: ${source} `)
+            logger.error(`Destination: ${destination} `)
         }
 
         return this.emit('message', message)
@@ -97,12 +101,12 @@ class FileCopy extends Processor {
      * @param {string} dirPath - The directory path to ensure
      */
     async ensureDirectoryExists(dirPath) {
-        logger.debug(`Ensuring directory exists: ${dirPath}`)
+        logger.debug(`Ensuring directory exists: ${dirPath} `)
         try {
             await mkdir(dirPath, { recursive: true })
-            logger.debug(`Directory created/ensured: ${dirPath}`)
+            logger.debug(`Directory created / ensured: ${dirPath} `)
         } catch (err) {
-            logger.debug(`Error creating directory ${dirPath}: ${err.message}`)
+            logger.debug(`Error creating directory ${dirPath}: ${err.message} `)
             throw err
         }
     }
@@ -113,7 +117,7 @@ class FileCopy extends Processor {
      * @param {string} destination - The destination directory path
      */
     async copyDirectory(source, destination) {
-        logger.debug(`Copying directory: ${source} to ${destination}`)
+        logger.debug(`Copying directory: ${source} to ${destination} `)
         try {
             await this.ensureDirectoryExists(destination)
             const entries = await readdir(source, { withFileTypes: true })
@@ -122,17 +126,17 @@ class FileCopy extends Processor {
                 const srcPath = path.join(source, entry.name)
                 const destPath = path.join(destination, entry.name)
 
-                logger.debug(`Processing: ${srcPath} to ${destPath}`)
+                logger.debug(`Processing: ${srcPath} to ${destPath} `)
 
                 if (entry.isDirectory()) {
                     await this.copyDirectory(srcPath, destPath)
                 } else {
                     await copyFile(srcPath, destPath)
-                    logger.debug(`File copied: ${srcPath} to ${destPath}`)
+                    logger.debug(`File copied: ${srcPath} to ${destPath} `)
                 }
             }
         } catch (err) {
-            logger.debug(`Error in copyDirectory: ${err.message}`)
+            logger.debug(`Error in copyDirectory: ${err.message} `)
             throw err
         }
     }

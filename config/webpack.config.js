@@ -1,66 +1,82 @@
-// Generated using webpack-cli https://github.com/webpack/webpack-cli
+// webpack.config.js
+import path from 'path'
+import { fileURLToPath } from 'url'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+import CopyPlugin from 'copy-webpack-plugin'
 
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.join(path.dirname(__filename), '../')
 
-const isProduction = process.env.NODE_ENV == 'production';
-
-
-const stylesHandler = MiniCssExtractPlugin.loader;
-
-
-
-const config = {
-    entry: './src/index.js',
-    output: {
-        path: path.resolve(__dirname, 'dist'),
+export default {
+  mode: 'development',
+  entry: './src/tools/nodeflow/editor.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
+    clean: true
+  },
+  resolve: {
+    extensions: ['.js'],
+    alias: {
+      '@nodeflow': path.resolve(__dirname, 'src/tools/nodeflow/'),
+      '@src': path.resolve(__dirname, 'src/'),
+      'rdf-utils-fs': path.resolve(__dirname, 'src/utils/browser-rdf-utils.js')
     },
-    devServer: {
-        open: true,
-        host: 'localhost',
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: 'index.html',
-        }),
-
-        new MiniCssExtractPlugin(),
-
-        // Add your plugins here
-        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
-    ],
-    module: {
-        rules: [
-            {
-                test: /\.(js|jsx)$/i,
-                loader: 'babel-loader',
-            },
-            {
-                test: /\.css$/i,
-                use: [stylesHandler, 'css-loader', 'postcss-loader'],
-            },
-            {
-                test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
-            },
-
-            // Add your rules for custom modules here
-            // Learn more about loaders from https://webpack.js.org/loaders/
-        ],
-    },
-};
-
-module.exports = () => {
-    if (isProduction) {
-        config.mode = 'production';
-        
-        
-        config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        
-    } else {
-        config.mode = 'development';
+    fallback: {
+      fs: false,
+      path: false,
+      stream: false,
+      buffer: false
     }
-    return config;
-};
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
+      },
+      {
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader']
+      },
+      {
+        test: /\.js$/,
+        include: /node_modules/,
+        resolve: {
+          fullySpecified: false
+        }
+      }
+    ]
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/tools/nodeflow/editor.html',
+      filename: 'index.html'
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'styles.css'
+    }),
+    new CopyPlugin({
+      patterns: [
+        { from: 'src/applications/intro', to: 'samples' },
+        { from: path.resolve(__dirname, 'src/tools/nodeflow/samples'), to: 'samples' },
+        { from: 'src/applications/example-application', to: 'samples/example-application' }
+      ]
+    })
+  ],
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'dist')
+    },
+    hot: true,
+    port: 9000,
+    open: true
+  }
+}

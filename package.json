@@ -8,13 +8,13 @@
   "license": "MIT",
   "scripts": {
     "test": "jasmine --config=config/jasmine.json --reporter=tests/tests-support/helpers/reporter.js",
-    "test:browser": "npx http-server -c-1 -o tests/browser/transmission-editor-test.html",
+    "test:ed": "npx http-server -c-1 -o tests/browser/transmission-editor-test.html",
     "cov": "nyc -a --include=src --reporter=lcov npm run test",
     "docs": "jsdoc -c config/jsdoc.json",
-    "build": "webpack --config webpack.config.js --mode=production",
-    "dev": "webpack serve --config webpack.config.js --mode=development",
-    "rp": "repomix -c config/repomix.config-large.json .",
-    "watch": "webpack --config webpack.config.js --watch"
+    "build": "webpack --config config/webpack.config.js --mode=production",
+    "dev": "webpack serve --config config/webpack.config.js --mode=development",
+    "watch": "webpack --config config/webpack.config.js --watch",
+    "rp": "repomix -c config/repomix.config-large.json ."
   },
   "nyc": {
     "report-dir": "spec/coverage",

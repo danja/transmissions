@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Garbage collecting version
+
+# Execute the Node.js script with Node
+node --expose-gc src/api/cli/run.js "--garbage-collect $@"

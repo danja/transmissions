@@ -156,7 +156,9 @@ class TransmissionEditor {
   /**
    * Prepares TTL content for saving
    */
+  // TODO use proper RDF lib
   async prepareTTLContent() {
+    console.log('HERE *********************************')
     try {
       // For now, return a simple TTL representation of the loaded transmission
       if (this.loadedTransmissions.length > 0) {
