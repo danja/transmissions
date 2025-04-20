@@ -1,5 +1,6 @@
 import './editor.css'
 import { TransmissionEditor } from './components/index.js'
+import CustomNodeRenderer from './components/CustomNodeRenderer.js'
 
 // Import required dependencies for the browser environment
 import grapoi from 'grapoi'
@@ -70,11 +71,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Loading indicator functions
     function showLoading(message) {
         loadingMessage.textContent = message
-        loadingEl.classList.add('show')
+        loadingEl.style.display = 'flex'
     }
 
     function hideLoading() {
-        loadingEl.classList.remove('show')
+        loadingEl.style.display = 'none'
     }
 
     // File input change handler

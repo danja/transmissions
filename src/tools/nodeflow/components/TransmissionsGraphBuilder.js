@@ -85,9 +85,29 @@ class TransmissionsGraphBuilder {
       const shortId = processor.shortId || ns.getShortname(processor.id)
       const shortType = processor.shortType || (processor.type ? ns.getShortname(processor.type) : "Unknown")
 
-      // Format settings for display in the node body
+      // Format settings as HTML-like content for the node body
       let settingsDisplay = ''
+      let settingsHtml = ''
+
       if (processor.settingsData) {
+        settingsHtml = `<div style="font-size:10px; text-align:left; padding:4px;
+                         background-color:rgba(7,33,42,0.6); color:#afb9bb;
+                         border-top:1px solid rgba(175,185,187,0.2); overflow-y:auto;
+                         max-height:80px; width:100%;">`
+
+        Object.entries(processor.settingsData)
+          .filter(([key]) => key !== 'type')
+          .forEach(([key, values]) => {
+            const displayValues = Array.isArray(values)
+              ? values.map(v => this.formatSettingValue(v)).join(", ")
+              : this.formatSettingValue(values)
+
+            settingsHtml += `<div>${key}: ${displayValues}</div>`
+          })
+
+        settingsHtml += `</div>`
+
+        // Create a simple text version as fallback
         settingsDisplay = Object.entries(processor.settingsData)
           .filter(([key]) => key !== 'type')
           .map(([key, values]) => {
@@ -99,7 +119,7 @@ class TransmissionsGraphBuilder {
           .join("\n")
       }
 
-      // Create node title and subtitle
+      // Create node title
       const title = `:${shortId} a :${shortType}`
 
       // Store the original comments for the info popup
@@ -124,15 +144,17 @@ class TransmissionsGraphBuilder {
         infoText += `Settings: :${processor.shortSettings}\n`
       }
 
-      // Configure the node
+      // Configure the node with both HTML and text fallback
       const config = {
         title: title,
-        subTitle: settingsDisplay, // Display settings in the node body
+        subTitle: settingsDisplay,
         position: position,
-        info: infoText, // Keep the detailed info for the popup
+        info: infoText,
         canEditInfo: true,
         locked: false,
-        data: {},
+        data: {
+          settingsHtml: settingsHtml
+        },
         inputs: [{
           name: 'in',
           type: 'message'
@@ -143,10 +165,15 @@ class TransmissionsGraphBuilder {
         }],
         style: {
           subTitle: {
-            fontSize: '10px', // Smaller font for settings
+            fontSize: '10px',
             textAlign: 'left',
             padding: '4px',
-            whiteSpace: 'pre-wrap' // Preserve line breaks
+            whiteSpace: 'pre-wrap',
+            overflow: 'auto',
+            maxHeight: '80px',
+            backgroundColor: 'rgba(7, 33, 42, 0.6)',
+            borderTop: '1px solid rgba(175, 185, 187, 0.2)',
+            color: '#afb9bb'
           }
         }
       }
@@ -180,6 +207,8 @@ class TransmissionsGraphBuilder {
       setMetadata('processorType', processor.type)
       setMetadata('shortType', processor.shortType)
       setMetadata('shortId', processor.shortId)
+      setMetadata('settingsDisplay', settingsDisplay)
+      setMetadata('settingsHtml', settingsHtml)
 
       // Set settings metadata
       if (processor.settings) {

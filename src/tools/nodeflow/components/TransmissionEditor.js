@@ -3,6 +3,7 @@ import TransmissionsLoader from './TransmissionsLoader.js'
 import TransmissionsGraphBuilder from './TransmissionsGraphBuilder.js'
 import TransmissionsExporter from './TransmissionsExporter.js'
 import ProcessorNodePublisher from './ProcessorNodePublisher.js'
+import CustomNodeRenderer from './CustomNodeRenderer.js'
 import RDFUtils from '../../../utils/RDFUtils.js'
 import logger from '../../../utils/Logger.js'
 
@@ -29,7 +30,8 @@ class TransmissionEditor {
               fontSize: '10px'
             }
           }
-        }
+        },
+        minHeight: 80 // Ensure nodes have minimum height for settings
       },
       navigation: {
         enabled: true,
@@ -42,6 +44,9 @@ class TransmissionEditor {
     }
 
     this.graph = new NodeFlowGraph(canvas, options)
+
+    // Add custom renderer
+    this.customRenderer = new CustomNodeRenderer(this.graph)
 
     // Initialize components
     this.loader = new TransmissionsLoader()
@@ -74,8 +79,29 @@ class TransmissionEditor {
           node.setMetadataProperty('transmissionId', transmission.id)
           node.setMetadataProperty('transmissionLabel', transmission.label)
           node.setMetadataProperty('processorType', `http://purl.org/stuff/transmissions/${nodeType}`)
+
+          // Add default empty settings
+          node.setMetadataProperty('settingsData', {})
         }
       })
+
+      // Add select event to show settings in info box
+      if (this.graph.onNodeSelected) {
+        this.graph.onNodeSelected((node) => {
+          // Update info display with settings
+          const settingsData = node.getMetadataProperty('settingsData')
+          if (settingsData) {
+            const infoText = Object.entries(settingsData)
+              .filter(([key]) => key !== 'type')
+              .map(([key, value]) => `${key}: ${value}`)
+              .join('\n')
+
+            if (node.setInfo) {
+              node.setInfo(infoText)
+            }
+          }
+        })
+      }
     } catch (error) {
       console.error('Error setting up event listeners:', error)
     }
@@ -325,7 +351,8 @@ class TransmissionEditor {
               fontSize: '10px'
             }
           }
-        }
+        },
+        minHeight: 80 // Ensure nodes have minimum height for settings
       },
       navigation: {
         enabled: true,
@@ -338,6 +365,11 @@ class TransmissionEditor {
     }
 
     this.graph = new NodeFlowGraph(this.canvas, options)
+
+
+    // Create a new custom renderer
+    // TODO figure out HERE
+    this.customRenderer = new CustomNodeRenderer(this.graph)
 
     // Reinitialize components
     this.builder = new TransmissionsGraphBuilder(this.graph)
@@ -383,18 +415,29 @@ class TransmissionEditor {
       node.setMetadataProperty('transmissionId', transmissionId)
       node.setMetadataProperty('transmissionLabel', label)
       node.setMetadataProperty('processorType', `http://purl.org/stuff/transmissions/${nodeType}`)
+
+      // Add settings data
+      node.setMetadataProperty('settingsData', {
+        example: 'New setting value'
+      })
     } else {
       // Fallback for older node-flow versions
       node.metadata = node.metadata || {}
       node.metadata.transmissionId = transmissionId
       node.metadata.transmissionLabel = label
       node.metadata.processorType = `http://purl.org/stuff/transmissions/${nodeType}`
+      node.metadata.settingsData = {
+        example: 'New setting value'
+      }
 
       // Also set on data for compatibility
       if (node.data) {
         node.data.transmissionId = transmissionId
         node.data.transmissionLabel = label
         node.data.processorType = `http://purl.org/stuff/transmissions/${nodeType}`
+        node.data.settingsData = {
+          example: 'New setting value'
+        }
       }
     }
 
