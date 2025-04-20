@@ -1,19 +1,9 @@
-// ProcessorNodePublisher.js
-// Defines node types for transmission processors in node-flow
-
 import { Publisher } from '@elicdavis/node-flow'
 import ns from '../../../utils/ns.js'
 import logger from '../../../utils/Logger.js'
 import rdf from 'rdf-ext'
 
-/**
- * Creates a publisher that defines node types for transmission processors
- * in the node-flow graph.
- */
 class ProcessorNodePublisher extends Publisher {
-  /**
-   * Creates a publisher that defines node types for transmission processors
-   */
   constructor() {
     super({
       name: 'Transmissions',
@@ -22,15 +12,12 @@ class ProcessorNodePublisher extends Publisher {
       nodes: {}
     })
 
-    // Register common processor types
+    // Register the common processor types
     this.registerCommonProcessorTypes()
   }
 
-  /**
-   * Registers common processor types found in transmission files
-   */
   registerCommonProcessorTypes() {
-    // Core processors
+    // Register utility processors
     this.registerProcessor('DeadEnd', 'Ends the pipeline without error')
     this.registerProcessor('Halt', 'Stops pipeline execution with error')
     this.registerProcessor('ShowConfig', 'Displays configuration and continues')
@@ -38,23 +25,18 @@ class ProcessorNodePublisher extends Publisher {
     this.registerProcessor('NOP', 'No operation, just passes message through')
     this.registerProcessor('Unfork', 'Collapses all pipes but one')
 
-    // File processors
+    // Register file system processors
     this.registerProcessor('FileReader', 'Reads a file into the message')
     this.registerProcessor('FileWriter', 'Writes message content to a file')
 
-    // JSON processors
+    // Register JSON processors
     this.registerProcessor('JSONWalker', 'Navigates JSON structure')
 
-    // Text processors
+    // Register other common processors
     this.registerProcessor('Restructure', 'Restructures message content')
     this.registerProcessor('MarkdownFormatter', 'Formats content as Markdown')
   }
 
-  /**
-   * Registers a processor type as a node type
-   * @param {string} type - Processor type name
-   * @param {string} description - Description of the processor
-   */
   registerProcessor(type, description = '') {
     const config = this.createProcessorNodeConfig(type, description)
     this.register(type, config)
@@ -80,6 +62,13 @@ class ProcessorNodePublisher extends Publisher {
           textStyle: {
             color: '#afb9bb'
           }
+        },
+        subTitle: {
+          color: 'rgba(7, 33, 42, 0.6)',
+          textStyle: {
+            color: '#afb9bb',
+            fontSize: '10px'
+          }
         }
       },
       inputs: [{
@@ -96,10 +85,6 @@ class ProcessorNodePublisher extends Publisher {
     }
   }
 
-  /**
-   * Registers processor types discovered in a transmission
-   * @param {Array} transmissions - Array of transmission data objects
-   */
   registerProcessorsFromTransmissions(transmissions) {
     const registeredTypes = new Set()
 

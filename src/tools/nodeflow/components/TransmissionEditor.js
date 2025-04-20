@@ -10,10 +10,27 @@ class TransmissionEditor {
   constructor(canvas) {
     this.canvas = canvas
 
-    // Initialize the graph with safe defaults
+    // Default options for the graph
     const options = {
       backgroundColor: '#07212a',
-      // Avoid zoom initialization issues
+      // Configure node appearance
+      nodeDefaults: {
+        style: {
+          title: {
+            color: '#154050',
+            textStyle: {
+              color: '#afb9bb'
+            }
+          },
+          subTitle: {
+            color: 'rgba(7, 33, 42, 0.6)',
+            textStyle: {
+              color: '#afb9bb',
+              fontSize: '10px'
+            }
+          }
+        }
+      },
       navigation: {
         enabled: true,
         zoom: {
@@ -26,16 +43,16 @@ class TransmissionEditor {
 
     this.graph = new NodeFlowGraph(canvas, options)
 
-    // Create components
+    // Initialize components
     this.loader = new TransmissionsLoader()
     this.builder = new TransmissionsGraphBuilder(this.graph)
     this.exporter = new TransmissionsExporter(this.graph)
     this.publisher = new ProcessorNodePublisher()
 
-    // Register publishers
+    // Add the processor publisher to the graph
     this.graph.addPublisher('transmissions', this.publisher)
 
-    // Initialize state
+    // State tracking
     this.currentFile = null
     this.loadedTransmissions = []
 
@@ -46,12 +63,12 @@ class TransmissionEditor {
   }
 
   setupEvents() {
-    // Safely add event listeners
+    // Set up event listeners for the graph
     try {
       this.graph.addOnNodeCreatedListener((publisher, nodeType, node) => {
         console.log(`TransmissionEditor: Node created - ${nodeType}`)
 
-        // Associate the node with the current transmission
+        // Add transmission metadata to newly created nodes
         if (this.loadedTransmissions.length > 0) {
           const transmission = this.loadedTransmissions[0]
           node.setMetadataProperty('transmissionId', transmission.id)
@@ -117,10 +134,10 @@ class TransmissionEditor {
     try {
       console.log(`TransmissionEditor: Loading from ${fileUrl}`)
 
-      // Clear existing graph
+      // Clear the existing graph
       this.reinitializeGraph()
 
-      // Load and parse transmission file
+      // Load the transmission data
       let transmissions = []
       try {
         transmissions = await this.loader.loadFromFile(fileUrl)
@@ -132,23 +149,23 @@ class TransmissionEditor {
         console.error(`Error loading from file: ${error.message}`)
         console.warn('Falling back to sample data')
 
-        // Use sample data as fallback
+        // Fall back to sample data
         const sampleTransmission = this.createSampleTransmission()
         transmissions = [sampleTransmission]
       }
 
       this.loadedTransmissions = transmissions
 
-      // Register processor types from loaded transmissions
+      // Register processor types from the loaded transmissions
       this.publisher.registerProcessorsFromTransmissions(transmissions)
 
-      // Build the graph
+      // Build the graph from the transmissions
       await this.builder.buildGraph(transmissions)
 
-      // Update the current file reference
+      // Store the current file
       this.currentFile = fileUrl
 
-      // Ensure graph is rendered properly
+      // Ensure the graph is correctly displayed
       await this.safeRedrawGraph()
 
       console.log(`TransmissionEditor: Loaded ${transmissions.length} transmissions from ${fileUrl}`)
@@ -159,30 +176,20 @@ class TransmissionEditor {
     }
   }
 
-  // Safer graph redraw method
+  // Safely redraw the graph, handling errors
   async safeRedrawGraph() {
     try {
       const nodes = this.graph.getNodes()
       if (Array.isArray(nodes)) {
         nodes.forEach(node => {
           if (node && typeof node.update === 'function') {
-            //    node.update()
+            // Ensure node is rendered
             node.render()
           }
         })
       }
-      /*
-            const edges = this.graph.getEdges()
-            if (Array.isArray(edges)) {
-              edges.forEach(edge => {
-                if (edge && typeof edge.update === 'function') {
-                  // edge.update()
-                  edge.render()
-                }
-              })
-            }
-      */
-      // Only call organize if it exists
+
+      // Organize the graph layout if possible
       if (typeof this.graph.organize === 'function') {
         this.graph.organize()
       }
@@ -193,7 +200,7 @@ class TransmissionEditor {
 
   async prepareTTLContent() {
     try {
-      // Create TTL representation of the current graph
+      // Generate TTL content from the current graph
       if (this.loadedTransmissions.length > 0) {
         const transmission = this.loadedTransmissions[0]
 
@@ -201,7 +208,7 @@ class TransmissionEditor {
         ttl += `@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n`
         ttl += `@prefix : <http://purl.org/stuff/transmissions/> .\n\n`
 
-        // Add transmission triple
+        // Transmission declaration
         ttl += `:${transmission.shortId} a :Transmission ;\n`
         if (transmission.label) {
           ttl += `    rdfs:label "${transmission.label}" ;\n`
@@ -210,14 +217,14 @@ class TransmissionEditor {
           ttl += `    rdfs:comment "${transmission.comment}" ;\n`
         }
 
-        // Add pipe listing
+        // Pipe list
         ttl += `    :pipe (`
         transmission.processors.forEach(p => {
           ttl += `:${p.shortId} `
         })
         ttl += `) .\n\n`
 
-        // Add processor definitions
+        // Processor declarations
         transmission.processors.forEach(p => {
           ttl += `:${p.shortId} a :${p.shortType} `
           if (p.comments && p.comments.length > 0) {
@@ -229,13 +236,13 @@ class TransmissionEditor {
           ttl += `.\n`
         })
 
-        // Add settings definitions
+        // Settings declarations
         transmission.processors.forEach(p => {
           if (p.settingsData && p.shortSettings) {
             ttl += `\n:${p.shortSettings} a :ConfigSet`
 
             for (const [key, values] of Object.entries(p.settingsData)) {
-              if (key === 'type') continue // Skip type property
+              if (key === 'type') continue
 
               if (Array.isArray(values)) {
                 values.forEach(value => {
@@ -253,7 +260,7 @@ class TransmissionEditor {
         return ttl
       }
 
-      // Return default TTL if no transmissions are loaded
+      // Default template if no transmission is loaded
       return `@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix : <http://purl.org/stuff/transmissions/> .
@@ -272,10 +279,10 @@ class TransmissionEditor {
 
   async saveToFile(filePath = null, transmissionId = null) {
     try {
-      // Generate TTL content
+      // Generate the TTL content
       const ttlContent = await this.prepareTTLContent()
 
-      // Create and download blob
+      // Create a download
       const blob = new Blob([ttlContent], { type: 'text/turtle' })
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
@@ -299,10 +306,27 @@ class TransmissionEditor {
   reinitializeGraph() {
     console.log('TransmissionEditor: Reinitializing graph...')
 
-    // Create new graph instance with safe options
+    // Create new graph with the same options
     const options = {
       backgroundColor: '#07212a',
-      // Ensure navigation is properly initialized
+      // Configure node appearance
+      nodeDefaults: {
+        style: {
+          title: {
+            color: '#154050',
+            textStyle: {
+              color: '#afb9bb'
+            }
+          },
+          subTitle: {
+            color: 'rgba(7, 33, 42, 0.6)',
+            textStyle: {
+              color: '#afb9bb',
+              fontSize: '10px'
+            }
+          }
+        }
+      },
       navigation: {
         enabled: true,
         zoom: {
@@ -315,14 +339,14 @@ class TransmissionEditor {
 
     this.graph = new NodeFlowGraph(this.canvas, options)
 
-    // Recreate components that need the graph
+    // Reinitialize components
     this.builder = new TransmissionsGraphBuilder(this.graph)
     this.exporter = new TransmissionsExporter(this.graph)
 
-    // Re-register the publisher
+    // Add the publisher to the graph
     this.graph.addPublisher('transmissions', this.publisher)
 
-    // Set up event handlers again
+    // Set up events
     this.setupEvents()
     console.log('TransmissionEditor: Graph reinitialized.')
   }
@@ -331,10 +355,10 @@ class TransmissionEditor {
     // Reinitialize the graph
     this.reinitializeGraph()
 
-    // Create a new transmission ID and object
+    // Create a new transmission ID based on the label
     const transmissionId = `http://purl.org/stuff/transmissions/${label.replace(/\s+/g, '_')}`.toLowerCase()
 
-    // Create new transmission object
+    // Create a basic transmission structure
     const transmission = {
       id: transmissionId,
       shortId: label.replace(/\s+/g, '_').toLowerCase(),
@@ -346,7 +370,7 @@ class TransmissionEditor {
 
     this.loadedTransmissions = [transmission]
 
-    // Add a sample node to start with
+    // Add an initial ShowMessage node
     const nodeType = 'ShowMessage'
     const node = new FlowNode({
       title: 'SM',
@@ -354,19 +378,19 @@ class TransmissionEditor {
       data: {}
     })
 
-    // Set node metadata
+    // Set metadata on the node
     if (typeof node.setMetadataProperty === 'function') {
       node.setMetadataProperty('transmissionId', transmissionId)
       node.setMetadataProperty('transmissionLabel', label)
       node.setMetadataProperty('processorType', `http://purl.org/stuff/transmissions/${nodeType}`)
     } else {
-      // Fallback if method not available
+      // Fallback for older node-flow versions
       node.metadata = node.metadata || {}
       node.metadata.transmissionId = transmissionId
       node.metadata.transmissionLabel = label
       node.metadata.processorType = `http://purl.org/stuff/transmissions/${nodeType}`
 
-      // Also set in data for compatibility
+      // Also set on data for compatibility
       if (node.data) {
         node.data.transmissionId = transmissionId
         node.data.transmissionLabel = label

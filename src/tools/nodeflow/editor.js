@@ -1,13 +1,13 @@
 import './editor.css'
 import { TransmissionEditor } from './components/index.js'
 
-// Import utilities
+// Import required dependencies for the browser environment
 import grapoi from 'grapoi'
 import rdfExt from '../../utils/browser-rdf-ext.js'
 import GrapoiHelpers from '../../utils/GrapoiHelpers.js'
 import ns from '../../utils/ns.js'
 
-// Make utilities available globally for debugging
+// Set up global objects for debugging
 window.isBrowserEnvironment = true
 window.transmissionsDebug = true
 window.grapoi = grapoi
@@ -17,19 +17,18 @@ window.ns = ns
 window.grapoiLoaded = true
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // Initialize editor
+    // Initialize the editor with the canvas element
     const canvas = document.getElementById('canvas')
     if (!canvas) {
         console.error('Canvas element not found')
         return
     }
 
-
-    // Create editor instance
+    // Create the editor instance
     const editor = new TransmissionEditor(canvas)
-    window.transmissionsEditor = editor
+    window.transmissionsEditor = editor // Make it globally accessible for debugging
 
-    // Get UI elements
+    // Set up UI elements
     const fileInput = document.getElementById('file-input')
     const loadBtn = document.getElementById('load-btn')
     const saveBtn = document.getElementById('save-btn')
@@ -50,36 +49,35 @@ document.addEventListener('DOMContentLoaded', async () => {
     const instructions = document.getElementById('instructions')
     const closeInstructionsBtn = document.getElementById('close-instructions')
 
-    // Show instructions if it's the first visit
+    // Show instructions on first visit
     if (!localStorage.getItem('transmissionsEditorInstructionsShown')) {
         instructions.classList.add('show')
         localStorage.setItem('transmissionsEditorInstructionsShown', 'true')
     }
 
-    // Close instructions button
+    // Close instructions handler
     if (closeInstructionsBtn) {
         closeInstructionsBtn.addEventListener('click', () => {
             instructions.classList.remove('show')
         })
     }
 
-    // Add load file button event
+    // Load file button handler
     loadBtn.addEventListener('click', () => {
         fileInput.click()
     })
 
-    // Helper function to show loading state
+    // Loading indicator functions
     function showLoading(message) {
         loadingMessage.textContent = message
         loadingEl.classList.add('show')
     }
 
-    // Helper function to hide loading state
     function hideLoading() {
         loadingEl.classList.remove('show')
     }
 
-    // Handle file selection
+    // File input change handler
     fileInput.addEventListener('change', async (e) => {
         console.log(`File input change event triggered`, e)
         const file = e.target.files[0]
@@ -89,13 +87,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 showLoading(`Loading ${file.name}...`)
                 console.log(`Loading file: ${file.name}`)
 
-                // Create a FileReader to read the file content
+                // Read the file contents
                 const reader = new FileReader()
 
                 reader.onload = async (event) => {
                     try {
                         console.log(`File content loaded, creating blob URL`)
-                        // Create a temporary URL containing the TTL content
+
                         const turtleContent = event.target.result
                         const blob = new Blob([turtleContent], { type: 'text/turtle' })
                         const fileURL = URL.createObjectURL(blob)
@@ -106,7 +104,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         status.textContent = `Loaded ${file.name}`
                         hideLoading()
 
-                        // Clean up the temporary URL
+                        // Clean up the blob URL
                         URL.revokeObjectURL(fileURL)
                     } catch (error) {
                         hideLoading()
@@ -121,7 +119,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     console.error('FileReader error')
                 }
 
-                // Read the file as text
+                // Start reading the file
                 reader.readAsText(file)
             } catch (error) {
                 hideLoading()
@@ -130,18 +128,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
 
-        // Clear the file input so the same file can be loaded again
+        // Reset the input to allow loading the same file again
         fileInput.value = ''
     })
 
-    // Add save button event
+    // Save button event handler
     saveBtn.addEventListener('click', async () => {
         try {
             status.textContent = 'Preparing TTL data...'
             showLoading('Preparing TTL data...')
             const ttlContent = await editor.prepareTTLContent()
 
-            // Create download link
+            // Create a download for the TTL content
             const blob = new Blob([ttlContent], { type: 'text/turtle' })
             const url = URL.createObjectURL(blob)
             const a = document.createElement('a')
@@ -165,7 +163,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     })
 
-    // Add new transmission button event
+    // New transmission dialog handlers
     newBtn.addEventListener('click', () => {
         newDialog.style.display = 'block'
     })
@@ -183,10 +181,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             newDialog.style.display = 'none'
             status.textContent = `Created new transmission: ${name}`
             hideLoading()
-        }, 100) // Small delay to allow loading indicator to appear
+        }, 100)
     })
 
-    // Add organize button event
+    // Organize graph button handler
     organizeBtn.addEventListener('click', () => {
         try {
             showLoading('Organizing graph...')
@@ -194,7 +192,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 editor.getGraph().organize()
                 status.textContent = 'Graph organized!'
                 hideLoading()
-            }, 100) // Small delay to allow loading indicator to appear
+            }, 100)
         } catch (error) {
             hideLoading()
             status.textContent = `Error: ${error.message}`
@@ -202,7 +200,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     })
 
-    // Add sample loading button if present
+    // Load sample button handler
     if (loadSampleBtn) {
         loadSampleBtn.addEventListener('click', async () => {
             try {
@@ -219,7 +217,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         })
     }
 
-    // Handle drag and drop for TTL files
+    // Set up drag and drop handlers for TTL files
     canvas.addEventListener('dragover', (e) => {
         e.preventDefault()
         e.stopPropagation()
@@ -276,7 +274,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     })
 
-    // Auto-load sample on startup
+    // Auto-load sample file on startup
     try {
         status.textContent = 'Loading sample file...'
         showLoading('Loading sample file...')
@@ -289,21 +287,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.warn('Could not auto-load sample:', error)
     }
 
-    // Add keyboard shortcuts
+    // Set up keyboard shortcuts
     document.addEventListener('keydown', (e) => {
-        // Ctrl+O or Cmd+O to open file
+        // Ctrl+O / Cmd+O to open file
         if ((e.ctrlKey || e.metaKey) && e.key === 'o') {
             e.preventDefault()
             loadBtn.click()
         }
 
-        // Ctrl+S or Cmd+S to save file
+        // Ctrl+S / Cmd+S to save file
         if ((e.ctrlKey || e.metaKey) && e.key === 's') {
             e.preventDefault()
             saveBtn.click()
         }
 
-        // Ctrl+N or Cmd+N for new transmission
+        // Ctrl+N / Cmd+N to create new transmission
         if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
             e.preventDefault()
             newBtn.click()
@@ -311,10 +309,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     })
 })
 
-/**
- * Loads a sample transmission file
- * @param {TransmissionEditor} editor - The transmission editor instance
- */
+// Load a sample file
 async function loadSampleFile(editor) {
     const samplePath = 'samples/transmissions.ttl'
     await editor.loadFromFile(samplePath)
