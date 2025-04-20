@@ -1,7 +1,6 @@
 import { isBrowser } from '../../../utils/BrowserUtils.js'
 import RDFUtils from '../../../utils/RDFUtils.js'
 import logger from '../../../utils/Logger.js'
-// import TransmissionBuilder from '../../../engine/TransmissionBuilder.js'
 
 class TransmissionsLoader {
   async loadFromFile(filePath) {
@@ -19,7 +18,7 @@ class TransmissionsLoader {
     const transmissions = []
 
     try {
-      // Get namespace
+      // Get namespace definitions (handle both browser and Node environments)
       let ns
       try {
         if (isBrowser()) {
@@ -37,14 +36,15 @@ class TransmissionsLoader {
             trn: {
               Transmission: { value: 'http://purl.org/stuff/transmissions/Transmission' },
               pipe: { value: 'http://purl.org/stuff/transmissions/pipe' },
-              settings: { value: 'http://purl.org/stuff/transmissions/settings' }
+              settings: { value: 'http://purl.org/stuff/transmissions/settings' },
+              ConfigSet: { value: 'http://purl.org/stuff/transmissions/ConfigSet' }
             }
           }
         } else {
           ns = require('../../../utils/ns.js').default
         }
       } catch (e) {
-        // Fallback
+        // Fallback namespace definition
         ns = {
           rdf: {
             type: { value: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' },
@@ -59,19 +59,19 @@ class TransmissionsLoader {
           trn: {
             Transmission: { value: 'http://purl.org/stuff/transmissions/Transmission' },
             pipe: { value: 'http://purl.org/stuff/transmissions/pipe' },
-            settings: { value: 'http://purl.org/stuff/transmissions/settings' }
+            settings: { value: 'http://purl.org/stuff/transmissions/settings' },
+            ConfigSet: { value: 'http://purl.org/stuff/transmissions/ConfigSet' }
           }
         }
       }
 
-      // Make sure we can iterate through the dataset
+      // Get all quads from the dataset
       const quads = this.getQuadsArray(dataset)
 
-      // Find all transmissions in the dataset
+      // Find all transmissions
       for (const quad of quads) {
         if (!quad.predicate || !quad.object) continue
 
-        // Check for RDF type of Transmission
         if (quad.predicate.value === ns.rdf.type.value &&
           quad.object.value === ns.trn.Transmission.value) {
           const transmissionID = quad.subject
@@ -90,7 +90,7 @@ class TransmissionsLoader {
     }
   }
 
-  // Helper to get quads as an array, handling different dataset implementations
+  // Get array of quads from dataset
   getQuadsArray(dataset) {
     if (Array.isArray(dataset)) {
       return dataset
@@ -144,6 +144,7 @@ class TransmissionsLoader {
     for (const node of pipeNodes) {
       let processorType = null
       let settingsNode = null
+      let settingsData = null
       const nodeComments = []
 
       for (const quad of quads) {
@@ -154,6 +155,8 @@ class TransmissionsLoader {
             processorType = quad.object
           } else if (quad.predicate.value === ns.trn.settings.value) {
             settingsNode = quad.object
+            // Extract settings data
+            settingsData = this.extractSettingsData(dataset, settingsNode, ns)
           } else if (quad.predicate.value === ns.rdfs.comment.value) {
             nodeComments.push(quad.object.value)
           }
@@ -168,6 +171,7 @@ class TransmissionsLoader {
         shortType: processorType ? this.getShortName(processorType.value) : null,
         settings: settingsNode ? settingsNode.value : null,
         shortSettings: settingsNode ? this.getShortName(settingsNode.value) : null,
+        settingsData: settingsData,
         comments: nodeComments
       })
     }
@@ -190,6 +194,45 @@ class TransmissionsLoader {
       processors,
       connections
     }
+  }
+
+  // Extract settings data from config set
+  extractSettingsData(dataset, settingsNode, ns) {
+    if (!settingsNode) return null
+
+    const settings = {}
+    const quads = this.getQuadsArray(dataset)
+
+    // First verify it's a ConfigSet
+    let isConfigSet = false
+    for (const quad of quads) {
+      if (this.termsEqual(quad.subject, settingsNode) &&
+        quad.predicate.value === ns.rdf.type.value &&
+        quad.object.value === ns.trn.ConfigSet.value) {
+        isConfigSet = true
+        break
+      }
+    }
+
+    if (!isConfigSet) return null
+
+    // Extract all properties from the settings node
+    for (const quad of quads) {
+      if (this.termsEqual(quad.subject, settingsNode) &&
+        quad.predicate.value !== ns.rdf.type.value) {
+
+        const propName = this.getShortName(quad.predicate.value)
+        const propValue = quad.object.value
+
+        // Add to settings object
+        if (!settings[propName]) {
+          settings[propName] = []
+        }
+        settings[propName].push(propValue)
+      }
+    }
+
+    return settings
   }
 
   findPipeNodes(dataset, transmissionID, ns) {
@@ -284,12 +327,12 @@ class TransmissionsLoader {
       return term1.equals(term2)
     }
 
-    // Fall back to comparing values
+    // Compare by value
     if (term1.value && term2.value) {
       return term1.value === term2.value
     }
 
-    // Last resort: Compare stringified terms
+    // Last resort - compare stringified objects
     return JSON.stringify(term1) === JSON.stringify(term2)
   }
 
