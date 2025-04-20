@@ -22,7 +22,7 @@ class TransmissionsGraphBuilder {
     for (let i = 0; i < transmission.processors.length; i++) {
       const processor = transmission.processors[i]
 
-      // Position nodes in a grid layout
+      // Position nodes on grid
       const position = {
         x: 200 + (i * 250),
         y: 200
@@ -38,28 +38,26 @@ class TransmissionsGraphBuilder {
       nodes.set(processor.id, node)
     }
 
-    // Create connections between processors based on pipeline order
+    // Create connections between nodes
     for (const connection of transmission.connections) {
       try {
         const fromNode = nodes.get(connection.from)
         const toNode = nodes.get(connection.to)
 
         if (fromNode && toNode) {
-          // Get available output/input ports
-          //    console.log(`fromNode.outputs() = ${JSON.stringify(fromNode.outputs())}`)
-          // danny  const outputPort = fromNode.outputs().size() > 0 ? 0 : null
-          // danny  const inputPort = toNode.inputs().size() > 0 ? 0 : null
+          // Get default ports (usually the first input/output)
           const outputPort = fromNode.outputs() > 0 ? 0 : null
           const inputPort = toNode.inputs() > 0 ? 0 : null
 
           if (outputPort !== null && inputPort !== null) {
-            // Try to connect nodes safely
+            // Try modern API first
             try {
               this.graph.connectNodes(fromNode, outputPort, toNode, inputPort)
               logger.debug(`Connected ${connection.from} to ${connection.to}`)
             } catch (error) {
               logger.error(`Failed to connect nodes: ${error.message}`)
-              // Try alternative method if available
+
+              // Try alternative API if available
               if (this.graph.connect) {
                 try {
                   this.graph.connect(fromNode, outputPort, toNode, inputPort)
@@ -83,9 +81,13 @@ class TransmissionsGraphBuilder {
 
   createProcessorNode(processor, position, transmission) {
     try {
-      // Create node configuration
+      // Format the title in ":p10 a :NOP" style
+      const shortId = processor.shortId || ns.getShortname(processor.id)
+      const shortType = processor.shortType || (processor.type ? ns.getShortname(processor.type) : "Unknown")
+      const title = `:${shortId} a :${shortType}`
+
       const config = {
-        title: processor.shortId || processor.id,
+        title: title,
         position: position,
         info: processor.comments && processor.comments.length ? processor.comments.join("\n") : "",
         canEditInfo: true,
@@ -101,46 +103,47 @@ class TransmissionsGraphBuilder {
         }]
       }
 
-      // Create the node
+      // Create node
       const node = new FlowNode(config)
 
-      // Ensure metadata functionality
+      // Ensure metadata exists
       if (!node.metadata) {
         node.metadata = {}
       }
 
-      // Implement or use setMetadataProperty
+      // Helper function to set metadata
       const setMetadata = (key, value) => {
         if (typeof node.setMetadataProperty === 'function') {
           node.setMetadataProperty(key, value)
         } else {
           node.metadata[key] = value
-          // Also set in data for backup
+          // Also set in data for compatibility
           if (node.data) node.data[key] = value
         }
       }
 
-      // Implement or use getMetadataProperty
+      // Ensure getMetadataProperty is available
       node.getMetadataProperty = node.getMetadataProperty || function (key) {
         return this.metadata[key] || (this.data ? this.data[key] : undefined)
       }
 
-      // Set processor metadata
+      // Set processor information in metadata
       setMetadata('processorId', processor.id)
       setMetadata('processorType', processor.type)
       setMetadata('shortType', processor.shortType)
+      setMetadata('shortId', processor.shortId)
 
       if (processor.settings) {
         setMetadata('settings', processor.settings)
         setMetadata('shortSettings', processor.shortSettings)
       }
 
-      // Set comments
+      // Set comments if available
       if (processor.comments && processor.comments.length > 0) {
         setMetadata('comment', processor.comments.join('\n'))
       }
 
-      // Set transmission metadata
+      // Set transmission information
       setMetadata('transmissionId', transmission.id)
       setMetadata('transmissionLabel', transmission.label)
 
@@ -154,31 +157,6 @@ class TransmissionsGraphBuilder {
       return null
     }
   }
-
-  // TODO wtf - is used?
-  /*
-  clearGraph() {
-    try {
-      // Get all nodes
-      const nodes = this.graph.getNodes()
-
-      // Try different methods to remove nodes
-      if (typeof this.graph.removeNode === 'function') {
-        for (const node of nodes) {
-          this.graph.removeNode(node)
-        }
-      } else if (typeof this.graph.remove === 'function') {
-        for (const node of nodes) {
-          this.graph.remove(node)
-        }
-      } else {
-        logger.warn('TransmissionsGraphBuilder: No valid method to remove nodes found')
-      }
-    } catch (error) {
-      logger.error(`Error clearing graph: ${error.message}`)
-    }
-  }
-    */
 }
 
 export default TransmissionsGraphBuilder
