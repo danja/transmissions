@@ -13,6 +13,7 @@ class TransmissionEditor {
    */
   constructor(canvas) {
     // Initialize the graph
+    this.canvas = canvas
     this.graph = new NodeFlowGraph(canvas, {
       backgroundColor: '#07212a'
     })
@@ -110,8 +111,10 @@ class TransmissionEditor {
       console.log(`TransmissionEditor: Loading from ${fileUrl}`)
 
       // this.graph.clear()
-      this.reinitializeGraph()
-
+      this.reinitializeGraph() // HERE
+      //this.graph = new NodeFlowGraph(this.canvas, {
+      //backgroundColor: '#07212a'
+      //})
       // Try to load the transmissions
       let transmissions = []
       try {
@@ -141,9 +144,10 @@ class TransmissionEditor {
       this.currentFile = fileUrl
 
       // Force redraw to ensure the graph is updated
-      setTimeout(() => {
-        this.graph.redrawGraph()
-      }, 100)
+      //   setTimeout(() => {
+      //   this.graph.redrawGraph() /// HERE
+      await this.redrawGraph()
+      // }, 100)
 
       console.log(`TransmissionEditor: Loaded ${transmissions.length} transmissions from ${fileUrl}`)
       return transmissions
@@ -151,6 +155,15 @@ class TransmissionEditor {
       console.error(`TransmissionEditor: Error loading file: ${error.message}`)
       throw error
     }
+  }
+
+  async redrawGraph() {
+    this.graph.getNodes().forEach(node => {
+      node.update()
+    })
+    this.graph.getEdges().forEach(edge => {
+      edge.update()
+    })
   }
 
   /**
@@ -310,9 +323,9 @@ class TransmissionEditor {
   /**
    * Force a redraw of the graph
    */
-  redrawGraph() {
-    this.graph.redrawGraph()
-  }
+  //  redrawGraph() {
+  //  this.graph.redrawGraph()
+  // }
 }
 
 export default TransmissionEditor

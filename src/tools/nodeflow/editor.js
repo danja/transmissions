@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return
     }
 
+
     // Create editor instance
     const editor = new TransmissionEditor(canvas)
     window.transmissionsEditor = editor
