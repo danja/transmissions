@@ -81,10 +81,10 @@ class FileCopy extends Processor {
             const sourceStat = await stat(source)
 
             if (sourceStat.isFile()) {
-                logger.debug(`Copying file from ${source} to ${destination} `)
+                logger.debug(`   Copying file from ${source} to ${destination} `)
                 await copyFile(source, destination)
             } else if (sourceStat.isDirectory()) {
-                logger.debug(`Copying directory from ${source} to ${destination} `)
+                logger.debug(`\nCopying directory from ${source} to ${destination} `)
                 await this.copyDirectory(source, destination)
             }
         } catch (err) {
@@ -117,7 +117,7 @@ class FileCopy extends Processor {
      * @param {string} destination - The destination directory path
      */
     async copyDirectory(source, destination) {
-        logger.debug(`Copying directory: ${source} to ${destination} `)
+        logger.debug(`\nCopying directory: ${source} to ${destination} `)
         try {
             await this.ensureDirectoryExists(destination)
             const entries = await readdir(source, { withFileTypes: true })
@@ -126,13 +126,13 @@ class FileCopy extends Processor {
                 const srcPath = path.join(source, entry.name)
                 const destPath = path.join(destination, entry.name)
 
-                logger.debug(`Processing: ${srcPath} to ${destPath} `)
+                logger.debug(`   Processing: ${srcPath} to ${destPath} `)
 
                 if (entry.isDirectory()) {
                     await this.copyDirectory(srcPath, destPath)
                 } else {
                     await copyFile(srcPath, destPath)
-                    logger.debug(`File copied: ${srcPath} to ${destPath} `)
+                    logger.debug(`   File copied: ${srcPath} to ${destPath} `)
                 }
             }
         } catch (err) {
