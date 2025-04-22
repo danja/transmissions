@@ -1,7 +1,6 @@
 import logger from "../../utils/Logger.js"
 import ns from "../../utils/ns.js"
 import Processor from "../../model/Processor.js"
-import { NodeMermaidRender } from "node-mermaid-render"
 
 class MermaidRenderer extends Processor {
   constructor(config) {
@@ -30,25 +29,9 @@ class MermaidRenderer extends Processor {
       "content"
     )
 
-    const mermaidRender = new NodeMermaidRender()
-
-    await mermaidRender.launch()
-    //initialize()
-
-    const svg = await mermaidRender
-      .renderToSVG(message[sourceField])
-    //   .data.toString()
-
-    message[destinationField]
 
     return this.emit("message", message)
   }
 
-  renderer() {
-    if (!this.renderer) {
-      this.renderer = new NodeMermaidRender()
-    }
-    return this.renderer
-  }
 }
 export default MermaidRenderer
