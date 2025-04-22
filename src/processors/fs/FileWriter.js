@@ -29,6 +29,7 @@ class FileWriter extends Processor {
      */
     constructor(config) {
         super(config)
+        this.defaultFilePath = 'output/output.md'
     }
 
     /**

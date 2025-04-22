@@ -28,6 +28,9 @@ import ExampleProcessorsFactory from '../processors/example-group/ExampleProcess
 // 2025-01-16 : finally getting around to it
 import SPARQLProcessorsFactory from '../processors/sparql/SPARQLProcessorsFactory.js'
 
+// 2025-04-21
+import MediaProcessorsFactory from '../processors/media/MediaProcessorsFactory.js'
+
 class AbstractProcessorFactory {
 
     // looks until it finds
@@ -96,6 +99,8 @@ class AbstractProcessorFactory {
         var processor = SPARQLProcessorsFactory.createProcessor(type, config)
         if (processor) return processor
 
+        var processor = MediaProcessorsFactory.createProcessor(type, config)
+        if (processor) return processor
     }
 }
 

@@ -12,6 +12,7 @@ class FileReader extends Processor {
         this.defaultFilePath = 'input/input.md'
     }
 
+    // TODO use src/utils/SysUtils.js  resolveFilePath(message, property, default)
     async process(message) {
         logger.trace(`FileReader.process, done=${message.done}`)
 

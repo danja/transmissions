@@ -1,45 +1,49 @@
 // src/processors/example-group/ExampleProcessor.js
 /**
- * @class ExampleProcessor
+ * @class Escaper
  * @extends Processor
  * @classdesc
- * **a Basic Transmissions Processor**
+ * **a Transmissions Processor**
  *
- * Provides a template for creating new processors, demonstrates use of config settings.
+ * Escapes string characters
  *
  * #### __*Input*__
- * * **`message.common`** - addressed by all instances of this ExampleProcessor (optional, default undefined)
- * * **`message.something1`** - Template string (used if templateFilename is not provided)
- * * **`message.something2`** - Object with properties for template rendering (e.g., title, body)
- * * **`message.notavalue`** - Object with properties for template rendering (e.g., title, body)
+ * * **`message.content`** - default field for input/output
+ * * **`message.* `** - input/output field defined in settings
  *
  * #### __*Output*__
- * * **`message.content`** - The rendered template content
+ * * **`message.content`** - default field for input/output
+ * * **`message.* `** - input/output field defined in settings
  *
- * #### __*Processing*__
- * * Uses Nunjucks to render templates
- * * Can render from a template file or a template string
- * * Applies content from message.contentBlocks to the template
+ * #### __*Behavior*__
+ * * retrieve input field from message
+ * * replace characters according to rules determined by format
+ * * place output field in message
  *
-* #### __*Side Effects*__
+ * #### __*Settings*__
+ * * **`format`** - SPARQL, Turtle... [default : 'SPARQL']
+ * * **`inputField`** - field in message to use as input [default : 'content']
+ * * **`outputField`** - field in message to use as output
  *
- * #### __Tests__
- * *
+ * #### __*Side Effects*__
+ * * none
  *
-  * #### __*ToDo*__
- * * Add test information here
- * * Cache templates - cache in utils?
+ * #### __*References*__
+ * * tests : TBD
+ * * docs : TBD
+ *
+ * #### __*TODO*__
+ * * create code
+ * * create tests
+ * * create docs
  */
 
-import { readFile } from 'node:fs/promises'
-import { access, constants } from 'node:fs'
-import path from 'path'
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
 import Processor from '../../model/Processor.js'
 
 
-class ExampleProcessor extends Processor {
+class Example extends Processor {
     constructor(config) {
         super(config)
     }
@@ -49,7 +53,7 @@ class ExampleProcessor extends Processor {
       * @param {Object} message - The message object.
       */
     async process(message) {
-        logger.debug(`\n\nExampleProcessor.process`)
+        logger.debug(`\n\nExample.process`)
 
         // TODO figure this out better
         // may be needed if preceded by a spawning processor, eg. fs/DirWalker
@@ -78,4 +82,4 @@ class ExampleProcessor extends Processor {
         return this.emit('message', message)
     }
 }
-export default ExampleProcessor
+export default Example

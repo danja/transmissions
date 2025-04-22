@@ -1,0 +1,16 @@
+# src/applications/example-application/config.ttl
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+@prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances
+
+:read  a :ConfigSet ;
+        :sourceFile  "input/flowchart.mermaid" .
+
+:mermaid a :ConfigSet ;
+    :sourceField "mermaid" ;
+    :destinationField "svg"  .
+
+:write a  :ConfigSet ;
+        :destinationFile  "out/flowchart.svg" .

@@ -45,6 +45,8 @@ class FileRemove extends Processor {
      */
     async process(message) {
 
+            // TODO use src/utils/SysUtils.js  resolveFilePath(message, property, default)
+            
         //  logger.setLogLevel('debug')
 
         this.ignoreDotfiles = true // default, simplify ".gitinclude"
