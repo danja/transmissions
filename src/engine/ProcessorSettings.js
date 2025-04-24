@@ -8,19 +8,19 @@ import GrapoiHelpers from '../utils/GrapoiHelpers.js'
 class ProcessorSettings {
     constructor(parent) {
         this.parent = parent
-        logger.debug(`parent.app = ${parent.app}`)
+        logger.debug(`   parent.app = ${parent.app}`)
         this.appDataset = parent.app?.dataset
-        logger.debug(`this.appDataset = ${this.appDataset}`)
+        logger.debug(`   this.appDataset = ${this.appDataset}`)
         this.transmissionConfig = parent.app?.transmissionConfig
         //   logger.debug(`this.transmissionConfig = ${this.transmissionConfig}`)
         this.configDataset = parent.configDataset
-        logger.debug(`this.config = ${this.config}`)
+        logger.debug(`   this.config = ${this.config}`)
     }
 
     // rename...to what?
     getProperty(settingsNode, property, fallback = undefined) {
-        logger.debug(`ProcessorSettings.getProperty looking for ${property}`)
-        logger.debug(`settingsNode = ${settingsNode}`)
+        logger.debug(`   ProcessorSettings.getProperty looking for ${property}`)
+        logger.debug(`   settingsNode = ${settingsNode}`)
         this.settingsNode = settingsNode
 
         const values = this.getValues(settingsNode, property, fallback)
@@ -32,7 +32,7 @@ class ProcessorSettings {
 
     getValues(settingsNode, property, fallback) {
         this.settingsNode = settingsNode
-        logger.debug(`ProcessorSettings.getValues
+        logger.debug(`   ProcessorSettings.getValues
     property = ${property.value}`)
 
         if (!this.settingsNode) {
@@ -66,7 +66,7 @@ class ProcessorSettings {
     }
 
     valuesFromDataset(dataset, property) { // TODO refactor
-        logger.debug('ProcessorSettings.valuesFromDataset')
+        logger.debug('   ProcessorSettings.valuesFromDataset')
         const values = this.valuesFromDatasetWrapped(dataset, property)
         if (values && values.length > 0) {
             logger.debug(`   values = 

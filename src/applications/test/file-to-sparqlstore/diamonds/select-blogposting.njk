@@ -1,15 +1,10 @@
 PREFIX schema: <http://schema.org/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
-SELECT ?post ?headline ?content ?published ?modified ?author
+SELECT *
 WHERE {
-  ?post a schema:BlogPosting ;
-        schema:headline ?headline ;
-        schema:description ?content ;
-        schema:datePublished ?published ;
-        schema:dateModified ?modified ;
-        schema:author/schema:name ?author .
-  FILTER(?published >= "{{startDate}}"^^xsd:dateTime)
+  GRAPH ?graph {
+    ?s  ?p ?o .
+  }
 }
-ORDER BY DESC(?published)
-LIMIT 1
+LIMIT 10

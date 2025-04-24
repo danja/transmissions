@@ -17,33 +17,34 @@ class SPARQLUpdate extends SlowableProcessor {
     }
 
     async process(message) {
-        logger.trace(`\nSPARQLUpdate.process`)
+        logger.debug(`\n[[SPARQLUpdate.process]]`)
 
         const endpoint = await this.getUpdateEndpoint(message)
-        //    const endpoint = this.env.getQueryEndpoint()
+        const dir = super.getProperty(ns.trn.targetPath, message.rootDir)
+        const dataField = super.getProperty(ns.trn.dataBlock)
+        message.graph = await super.getProperty(ns.trn.graph, 'default')
+        logger.debug(`  message.graph = ${message.graph}`)
+        const escape = super.getProperty(ns.trn.escape)
+        const templateFilename = await this.getProperty(ns.trn.templateFilename)
 
+        logger.trace(`   endpoint = ${endpoint}`)
 
-        logger.trace(`SPARQLUpdate.process endpoint = ${endpoint}`)
+        const template = await this.env.getTemplate(dir, templateFilename)
+        //  message.contentBlocks.graph = graph
 
-        const dir = this.getProperty(ns.trn.targetPath, message.rootDir)
-        const template = await this.env.getTemplate(
-            dir,
-            await this.getProperty(ns.trn.templateFilename)
-        )
-        logger.trace(`\nSPARQLUpdate.process template = ${template}`)
+        logger.debug(`   process template = ${template}`)
 
         const now = new Date().toISOString()
-
         const updateID = crypto.randomUUID()
 
-        const dataField = super.getProperty(ns.trn.dataBlock)
-        const updateData = message[dataField]
 
-        const escape = super.getProperty(ns.trn.escape)
+        const updateData = message[dataField] || message
+        logger.debug(`---   updateData = ${updateData}`)
         //  logger.reveal(message)
         // process.exit()
 
         if (escape) { // TODO unhackify
+            logger.debug(`---   escaping`)
             const replacements = this.escaper.getReplacementList('SPARQL')
             message.contentBlocks.content = this.escaper.escape(message.contentBlocks.content, replacements)
         }
@@ -54,7 +55,7 @@ class SPARQLUpdate extends SlowableProcessor {
         logger.trace(`dataField = ${dataField}`)
         logger.trace(`updateData = `)
         //  logger.reveal(updateData)
-        logger.trace(`update = ${update}`)
+        logger.debug(`update = ${update}`)
 
 
 

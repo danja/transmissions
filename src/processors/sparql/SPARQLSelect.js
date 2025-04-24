@@ -22,16 +22,16 @@ class SPARQLSelect extends Processor {
     async process(message) {
 
         const endpoint = await this.getQueryEndpoint(message)
-        const dir = this.getProperty(ns.trn.targetPath, message.rootDir)
-        const template = await this.env.getTemplate(
-            dir,
-            await this.getProperty(ns.trn.templateFilename)
-        )
+        const dir = await this.getProperty(ns.trn.targetPath, message.rootDir)
+        const templateFilename = await this.getProperty(ns.trn.templateFilename)
+        const dataField = await this.getProperty(ns.trn.dataField)
+        const graph = await this.getProperty(ns.trn.graph, '?g')
 
-        const queryData = {
-            startDate: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-            ...message
-        }
+        const template = await this.env.getTemplate(dir, templateFilename)
+
+        const queryData = message[dataField] || message
+        queryData.graph = graph
+        queryData.startDate = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
 
         const query = nunjucks.renderString(template, queryData)
         logger.debug(`query = ${query}`)

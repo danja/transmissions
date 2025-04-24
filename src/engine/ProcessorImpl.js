@@ -10,7 +10,7 @@ class ProcessorImpl extends EventEmitter {
         this.configDataset = configDataset
         logger.debug(`ProcessorImpl.constructor : \n${this}`)
         this.settee = new ProcessorSettings(this)
-        logger.trace(`configDataset : ${configDataset}`)
+        logger.trace(`   configDataset : ${configDataset}`)
         this.messageQueue = []
         this.processing = false
         this.outputs = []
@@ -66,13 +66,14 @@ class ProcessorImpl extends EventEmitter {
     }
 
     propertyInMessage(property) {
-        logger.debug(`ProcessorImpl.propertyInMessage, property = ${property}`)
+        logger.debug(`   ProcessorImpl.propertyInMessage
+            property = ${property}`)
         const shortName = ns.getShortname(property)
-        logger.debug(`ProcessorImpl.propertyInMessage, shortName = ${shortName}`)
-        logger.debug(`ProcessorImpl.propertyInMessage, this.message = ${this.message}`)
+        logger.debug(`   shortName = ${shortName}`)
+        logger.debug(`   this.message = ${this.message}`)
 
         if (this.message && this.message[shortName]) {
-            logger.debug(`Found in message: ${this.message[shortName]}`)
+            logger.debug(`   Found in message: ${this.message[shortName]}`)
             return this.message[shortName]
         }
         return undefined
@@ -82,7 +83,7 @@ class ProcessorImpl extends EventEmitter {
         logger.debug('ProcessorImpl.preProcess')
         this.app = message.app
         this.settee.app = this.app
-        logger.trace(`THIS APP = ${this.app}`)
+        logger.trace(`   THIS APP = ${this.app}`)
 
         if (message.onProcess) { // Claude
             message.onProcess(this, message)

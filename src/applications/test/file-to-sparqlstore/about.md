@@ -10,7 +10,7 @@ NOT IN INTEGRATION TESTS
 
 ```sh
 cd ~/hyperdata/transmissions # my local path
-./trans test_file-to-sparqlstore
+./trans -v file-to-sparqlstore
 ```
 
 ## Description

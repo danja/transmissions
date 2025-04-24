@@ -71,5 +71,11 @@
         "label": "file-remove-copy",
         "description": "file-remove-copy VALUES NOT TESTED",
         "requiredMatchCount": 0
+    },
+    {
+        "command": "./del-3030-test.sh && ./trans file-to-sparqlstore",
+        "label": "file-to-sparqlstore",
+        "description": "file-to-sparqlstore - 3030",
+        "requiredMatchCount": 8
     }
 ]

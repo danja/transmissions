@@ -11,8 +11,10 @@
 
 :sparqlUpdate a :ConfigSet ;
     :templateFilename "diamonds/update-blogposting.njk" ;
-    :endpointSettings "endpoint.json" .
+    :endpointSettings "endpoint.json" ;
+    :graph <http://example.com/graph/TEST_PASSED> .
 
 :sparqlSelect a :ConfigSet ;
     :templateFilename "diamonds/select-blogposting.njk" ;
-    :endpointSettings "endpoint.json" .
+    :endpointSettings "endpoint.json" ;
+    :graph <http://example.com/graph/TEST_PASSED> .
