@@ -1,7 +1,28 @@
-import * as BrowserUtils from '../../src/utils/BrowserUtils.js'
+import * as BrowserUtils from './BrowserUtils.js'
 import logger from './Logger.js'
+import N3Parser from '@rdfjs/parser-n3'
+import { getFromFile, getToFile } from './rdfUtilsFsWrapper.node.js'
 
 class RDFUtils {
+
+    async fromFile(filename) {
+        if (BrowserUtils.isBrowser()) {
+            const browser = await import('./RDFUtilsBrowser.js')
+            return browser.fromFile(filename)
+        }
+        const fromFile = await getFromFile()
+        return fromFile(filename)
+    }
+
+    async toFile(dataset, filename) {
+        if (BrowserUtils.isBrowser()) {
+            const browser = await import('./RDFUtilsBrowser.js')
+            return browser.toFile(dataset, filename)
+        }
+        const toFile = await getToFile()
+        return toFile(dataset, filename)
+    }
+
     async readDataset(path) {
         if (BrowserUtils.isBrowser()) {
             try {
@@ -10,8 +31,10 @@ class RDFUtils {
                     throw new Error(`Failed to load dataset from ${path}`)
                 }
                 const text = await response.text()
-                const parseFunction = (await import('@rdfjs/parser-turtle')).default
-                return parseFunction(text)
+                //  const parseFunction = (await import('@rdfjs/parser-turtle')).default
+                //   return parseFunction(text)
+                return N3Parser.parse(text)
+
             } catch (error) {
                 logger.error(`Error loading dataset in browser: ${error.message}`)
                 throw error
@@ -23,7 +46,7 @@ class RDFUtils {
                 }
 
                 const rdfExt = await import('rdf-ext').then(m => m.default)
-                const { fromFile } = await import('rdf-utils-fs')
+                const fromFile = await getFromFile()
                 const stream = fromFile(path)
                 const dataset = await rdfExt.dataset().import(stream)
                 return dataset
@@ -53,7 +76,7 @@ class RDFUtils {
             }
         } else {
             try {
-                const { toFile } = await import('rdf-utils-fs')
+                const toFile = await getToFile()
                 await toFile(dataset.toStream(), path)
                 return true
             } catch (error) {
@@ -74,4 +97,4 @@ class RDFUtils {
     }
 }
 
-export default new RDFUtils()
+export default RDFUtils

@@ -1,28 +1,13 @@
+// TODO is needed? Refacto to normal subclass style if so
 import rdfExt from 'rdf-ext'
 import N3Parser from '@rdfjs/parser-n3'
 import SerializerJsonld from '@rdfjs/serializer-jsonld'
 import SerializerNtriples from '@rdfjs/serializer-ntriples'
 import { Readable } from 'readable-stream'
 
-// Browser-compatible stream implementation
-class BrowserReadable extends Readable {
-  constructor(data) {
-    super()
-    this.data = data
-    this.pushed = false
-  }
-
-  _read() {
-    if (!this.pushed) {
-      this.push(this.data)
-      this.push(null)
-      this.pushed = true
-    }
-  }
-}
 
 // Extend rdf-ext for browser environments
-const rdfExtBrowser = {
+const RDFExtBrowser = {
   ...rdfExt,
 
   // Parse Turtle/N3 content using the proper parser
@@ -147,4 +132,5 @@ const rdfExtBrowser = {
   }
 }
 
-export default rdfExtBrowser
+export default RDFExtBrowser
+//rdfExtBrowser

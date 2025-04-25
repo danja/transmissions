@@ -4,7 +4,7 @@ import CustomNodeRenderer from './components/CustomNodeRenderer.js'
 
 // Import required dependencies for the browser environment
 import grapoi from 'grapoi'
-import rdfExt from '../../utils/browser-rdf-ext.js'
+import rdfExt from '../../utils/RDFExtBrowser.js'
 import GrapoiHelpers from '../../utils/GrapoiHelpers.js'
 import ns from '../../utils/ns.js'
 

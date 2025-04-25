@@ -6,7 +6,11 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import CopyPlugin from 'copy-webpack-plugin'
 
 const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.join(path.dirname(__filename), '../')
+const __dirname = path.join(path.dirname(__filename), './')
+
+const distPath = path.resolve(__dirname, 'dist')
+
+console.log(distPath)
 
 export default {
   mode: 'development',
@@ -14,14 +18,13 @@ export default {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
-    clean: true
   },
   resolve: {
     extensions: ['.js'],
     alias: {
       '@nodeflow': path.resolve(__dirname, 'src/tools/nodeflow/'),
       '@src': path.resolve(__dirname, 'src/'),
-      'rdf-utils-fs': path.resolve(__dirname, 'src/utils/browser-rdf-utils.js')
+      'rdfUtilsFsWrapper': path.resolve(__dirname, 'src/utils/rdfUtilsFsWrapper.browser.js')
     },
     fallback: {
       fs: false,

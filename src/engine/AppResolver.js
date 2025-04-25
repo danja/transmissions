@@ -1,5 +1,5 @@
 import path from 'path'
-import { fromFile } from 'rdf-utils-fs'
+// import { fromFile } from 'rdf-utils-fs'
 import fs from 'fs/promises'
 import rdf from 'rdf-ext'
 import logger from '../utils/Logger.js'
