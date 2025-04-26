@@ -18,20 +18,20 @@ class ApplicationManager {
         this.app = new Application()
     }
 
-    async initialize(appName, appPath, subtask, target, flags) {
+    async initialize(appName, appPath, subtask, targetBaseDir, flags) {
         logger.debug(`ApplicationManager.initialize
     appName=${appName}
     appPath=${appPath}
     subtask=${subtask}
-    target=${target}`)
+    targetBaseDir=${targetBaseDir}`)
 
         if (flags && flags.test) {
             const mock = new MockApplicationManager()
-            await mock.initialize(appName, appPath, subtask, target, flags)
+            await mock.initialize(appName, appPath, subtask, targetBaseDir, flags)
             return mock
         }
 
-        await this.appResolver.initialize(appName, appPath, subtask, target)
+        await this.appResolver.initialize(appName, appPath, subtask, targetBaseDir)
         this.moduleLoader = ModuleLoaderFactory.createApplicationLoader(this.appResolver.getModulePath())
 
         // TODO refactor more
@@ -52,8 +52,9 @@ class ApplicationManager {
 
         const builder = new TransmissionBuilder(this.moduleLoader, this.appResolver)
 
-
-        const transmissionConfig = await RDFUtils.readDataset(this.appResolver.getTransmissionsPath())
+        const ru = new RDFUtils() // TODO refactor
+        const transmissionConfig = await ru.readDataset(this.appResolver.getTransmissionsPath())
+        //    const transmissionConfig = await RDFUtils.readDataset(this.appResolver.getTransmissionsPath())
         // REFACTORHERE
         // const processorsConfig = await RDFUtils.readDataset(this.appResolver.getConfigPath())
         const configModel = await this.appResolver.loadModel('config', this.appResolver.getConfigPath())

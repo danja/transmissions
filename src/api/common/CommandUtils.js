@@ -13,7 +13,7 @@ class CommandUtils {
         this.#appManager = new ApplicationManager()
     }
 
-    async begin(application, target, message = {}, flags = {}) {
+    async begin(application, targetBaseDir, message = {}, flags = {}) {
 
         var debugLevel = (flags.verbose || flags.test) ? "debug" : "info"
         if (!flags.verbose) logger.silent = flags.silent
@@ -24,25 +24,28 @@ class CommandUtils {
         logger.debug('   flags = ' + flags)
 
         logger.debug('   application = ' + application)
-        logger.debug('   target = ' + target)
+        logger.debug('   targetBaseDir = ' + targetBaseDir)
         logger.debug(`   message = ${message}`)
 
 
-        if (target && !target.startsWith('/')) {
-            target = path.join(process.cwd(), target)
+        if (targetBaseDir && !targetBaseDir.startsWith('/')) {
+            targetBaseDir = path.join(process.cwd(), targetBaseDir)
         }
 
         var { appName, appPath, subtask } = CommandUtils.splitName(application)
+        if (targetBaseDir) { // TODO refactor
+            appPath = path.join(targetBaseDir, appName) // targetBaseDir
+            //    targetBaseDir = path.join(appPath, appName)
+        }
 
-
-        logger.trace(`\n
+        logger.debug(`\n
     after split :
     appName = ${appName}
     appPath = ${appPath}
     subtask = ${subtask}
-    target = ${target}`)
+    targetBaseDir = ${targetBaseDir}`)
 
-        this.#appManager = await this.#appManager.initialize(appName, appPath, subtask, target, flags)
+        this.#appManager = await this.#appManager.initialize(appName, appPath, subtask, targetBaseDir, flags)
 
         if (flags.web) {
             const webRunner = new WebRunner(this.#appManager, flags.port)

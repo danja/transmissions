@@ -25,35 +25,42 @@ class AppResolver {
         // Runtime paths
         this.rootDir = options.rootDir || null
         this.workingDir = options.workingDir || null
-        this.targetPath = options.targetPath || null
+        this.targetBaseDir = options.targetBaseDir || null // TODO targetBaseDir???
+
 
         // RDF dataset from app.ttl
         this.dataset = options.dataset || null
     }
 
-    async initialize(appName, appPath, subtask, target, flags = {}) {
+    async initialize(appName, appPath, subtask, targetBaseDir, flags = {}) {
         logger.debug(`AppResolver.initialize,
             appName : ${appName}
             appPath : ${appPath}
             subtask : ${subtask}
-            target : ${target}`)
+            targetBaseDir : ${targetBaseDir}`)
 
+        this.subtask = subtask
+        this.targetBaseDir = targetBaseDir
         this.appName = appName
         this.appPath = await this.resolveApplicationPath(appName)
-        this.subtask = subtask
-        this.targetPath = target
-        if (target) {
 
-            this.appFilename = path.join(target, this.appFilename)
-            logger.debug(`AppResolver, reading : ${this.appFilename}`)
-            this.dataset = await RDFUtils.readDataset(this.appFilename)
+        if (targetBaseDir) {
+
+            //  this.appFilename = path.join(targetBaseDir, this.appFilename)
+            const appFilename = path.join(targetBaseDir, this.appName, this.appFilename)
+            logger.debug(`AppResolver, reading : ${appFilename}`)
+            const ru = new RDFUtils() // TODO refactor
+            //  this.dataset = await RDFUtils.readDataset(appFilename)
+            this.dataset = await ru.readDataset(appFilename)
         }
     }
 
 
     // REFACTORHERE
     async loadModel(shortName, path) {
-        const dataset = await RDFUtils.readDataset(path)
+        //   const dataset = await RDFUtils.readDataset(path)
+        const ru = new RDFUtils()
+        const dataset = await ru.readDataset(path)
         const model = new Model(shortName, dataset)
         return model
     }
@@ -93,15 +100,17 @@ class AppResolver {
     }
 
     async resolveApplicationPath(appName) {
-        if (!appName) {
-            throw new Error('Application name is required')
-        }
 
-        const baseDir = path.join(process.cwd(), this.appsDir)
+        logger.log(`******** this.targetBaseDir = ${this.targetBaseDir}`)
+
+        const baseDir = this.targetBaseDir || path.join(process.cwd(), this.appsDir)
+
         const appPath = await this.findInDirectory(baseDir, appName)
 
         if (!appPath) {
-            throw new Error(`Could not find application ${appName}
+            throw new Error(`Could not find 
+                appName : ${appName}
+                baseDir : ${baseDir}
 (check the app dir is on local path and contains at least about.md and transmissions.ttl)`)
         }
 
@@ -124,8 +133,8 @@ class AppResolver {
     }
 
     resolveDataDir() {
-        if (this.targetPath) {
-            this.workingDir = this.targetPath
+        if (this.targetBaseDir) {
+            this.workingDir = this.targetBaseDir
         }
         if (!this.workingDir) {
             this.workingDir = path.join(this.appPath, this.dataSubDir)
@@ -140,7 +149,7 @@ class AppResolver {
             subtask: this.subtask,
             rootDir: this.rootDir || this.appPath,
             workingDir: this.resolveDataDir(),
-            targetPath: this.targetPath,
+            targetBaseDir: this.targetBaseDir,
             dataset: this.dataset
         }
     }

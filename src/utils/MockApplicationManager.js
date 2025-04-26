@@ -6,8 +6,8 @@ class MockApplicationManager {
         logger.debug('MockApplicationManager: Created new instance')
     }
 
-    async initialize(appName, appPath, subtask, target, flags) {
-        logger.debug(`MockApplicationManager.initialize(${appName}, ${appPath}, ${subtask}, ${target})`)
+    async initialize(appName, appPath, subtask, targetBaseDir, flags) {
+        logger.debug(`MockApplicationManager.initialize(${appName}, ${appPath}, ${subtask}, ${targetBaseDir})`)
 
         if (!appName) {
             throw new Error('Application name is required')
@@ -17,9 +17,9 @@ class MockApplicationManager {
             appName,
             appPath: appPath || appName,
             subtask,
-            targetPath: target,
+            targetPath: targetBaseDir,
             dataset: {},
-            appFilename: target ? `${target}/app.ttl` : null
+            appFilename: targetBaseDir ? `${targetBaseDir}/app.ttl` : null
         }
 
         return Promise.resolve()
