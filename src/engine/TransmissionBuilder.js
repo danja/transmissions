@@ -168,18 +168,18 @@ class TransmissionBuilder {
 
     logger.debug(`TransmissionBuilder, core processor not found for ${type?.value}. Trying remote module loader...`)
 
-    try {
-      const shortName = type.value.split('/').pop()
-      logger.debug(`TransmissionBuilder, loading module: ${shortName}`)
-      const ProcessorClass = await this.moduleLoader.loadModule(shortName)
+    //  try {
+    const shortName = type.value.split('/').pop()
+    logger.debug(`TransmissionBuilder, loading module: ${shortName}`)
+    const ProcessorClass = await this.moduleLoader.loadModule(shortName)
 
-      logger.debug(`Module loaded successfully: ${shortName}`)
-      const moduleProcessor = new ProcessorClass.default(configModel.dataset)
-      moduleProcessor.configModel = configModel
-    } catch (error) {
-      logger.error(`TransmissionBuilder.createProcessor, failed to load ${type?.value} : ${error.message}`)
-      process.exit(1)
-    }
+    logger.debug(`Module loaded successfully: ${shortName}`)
+    const moduleProcessor = new ProcessorClass.default(configModel.dataset)
+    moduleProcessor.configModel = configModel
+    //} catch (error) {
+    //logger.error(`TransmissionBuilder.createProcessor, failed to load ${type?.value} : ${error.message}`)
+    // process.exit(1)
+    // }
     return moduleProcessor
   }
 
