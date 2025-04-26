@@ -18,20 +18,21 @@ class ApplicationManager {
         this.app = new Application()
     }
 
-    async initialize(appName, appPath, subtask, targetBaseDir, flags) {
+    async initialize(appName, appPath, subtask, target, moduleDir, flags) {
         logger.debug(`ApplicationManager.initialize
     appName=${appName}
     appPath=${appPath}
     subtask=${subtask}
-    targetBaseDir=${targetBaseDir}`)
+    target=${target}   
+    moduleDir=${moduleDir}`)
 
         if (flags && flags.test) {
             const mock = new MockApplicationManager()
-            await mock.initialize(appName, appPath, subtask, targetBaseDir, flags)
+            await mock.initialize(appName, appPath, subtask, target, moduleDir, flags)
             return mock
         }
 
-        await this.appResolver.initialize(appName, appPath, subtask, targetBaseDir)
+        await this.appResolver.initialize(appName, appPath, subtask, moduleDir, target)
         this.moduleLoader = ModuleLoaderFactory.createApplicationLoader(this.appResolver.getModulePath())
 
         // TODO refactor more
@@ -43,12 +44,13 @@ class ApplicationManager {
         //     await this.app.mergeIn(this.appResolver.dataset)
         this.app.dataset = this.appResolver.dataset
 
-        logger.debug(this.app.dataset)
+        //   logger.debug(this.app.dataset)
+        logger.debug(`   this.app = ${this.app}`)
         return this
     }
 
     async buildTransmissions(transmissionConfigFile, processorsConfigFile, moduleLoader, app) {
-        logger.debug(`\nApplicationManager.build ****************************************`)
+        logger.debug(`\nApplicationManager.build **************************************** `)
 
         const builder = new TransmissionBuilder(this.moduleLoader, this.appResolver)
 
@@ -60,7 +62,7 @@ class ApplicationManager {
         const configModel = await this.appResolver.loadModel('config', this.appResolver.getConfigPath())
 
         //  const processorsConfig = configModel.dataset
-        //    logger.log(`LOADED configModel = ${configModel}`)
+        //    logger.log(`LOADED configModel = ${ configModel }`)
 
         this.app.transmissionConfig = transmissionConfig
         // Merge with app dataset
@@ -74,13 +76,13 @@ class ApplicationManager {
     }
 
     async start(message = {}) {
-        logger.debug(`\n||| ApplicationManager.start`)
+        logger.debug(`\n ||| ApplicationManager.start`)
         message.app = this.app
         logger.debug(`this.app = ${this.app}`)
         logger.debug(`
-            transmissionsFile=${this.appResolver.getTransmissionsPath()}
-            configFile=${this.appResolver.getConfigPath()}
-            subtask=${this.appResolver.subtask}`)
+            transmissionsFile = ${this.appResolver.getTransmissionsPath()}
+            configFile = ${this.appResolver.getConfigPath()}
+            subtask = ${this.appResolver.subtask}`)
 
         const transmissions = await this.buildTransmissions()
 
@@ -93,6 +95,8 @@ class ApplicationManager {
         // Modify the input message in place
         _.merge(message, contextMessage)
         message.appRunStart = (new Date()).toISOString()
+        // message.target = this.app.target
+        // HERERER
         logger.debug('**************** Message with merged context:', message)
 
         /*

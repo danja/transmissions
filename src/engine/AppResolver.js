@@ -25,29 +25,31 @@ class AppResolver {
         // Runtime paths
         this.rootDir = options.rootDir || null
         this.workingDir = options.workingDir || null
-        this.targetBaseDir = options.targetBaseDir || null // TODO targetBaseDir???
+        this.target = options.target || null
 
 
         // RDF dataset from app.ttl
         this.dataset = options.dataset || null
     }
 
-    async initialize(appName, appPath, subtask, targetBaseDir, flags = {}) {
+    async initialize(appName, appPath, subtask, target, moduleDir, flags = {}) {
         logger.debug(`AppResolver.initialize,
             appName : ${appName}
             appPath : ${appPath}
             subtask : ${subtask}
-            targetBaseDir : ${targetBaseDir}`)
+            moduleDir : ${moduleDir}
+            target : ${target}`)
 
         this.subtask = subtask
-        this.targetBaseDir = targetBaseDir
+        this.moduleDir = moduleDir
+        this.target = target
         this.appName = appName
         this.appPath = await this.resolveApplicationPath(appName)
 
-        if (targetBaseDir) {
+        if (target) {
 
-            //  this.appFilename = path.join(targetBaseDir, this.appFilename)
-            const appFilename = path.join(targetBaseDir, this.appName, this.appFilename)
+            //  this.appFilename = path.join(target, this.appFilename)
+            const appFilename = path.join(target, this.appName, this.appFilename)
             logger.debug(`AppResolver, reading : ${appFilename}`)
             const ru = new RDFUtils() // TODO refactor
             //  this.dataset = await RDFUtils.readDataset(appFilename)
@@ -101,9 +103,9 @@ class AppResolver {
 
     async resolveApplicationPath(appName) {
 
-        logger.log(`******** this.targetBaseDir = ${this.targetBaseDir}`)
+        logger.log(`******** this.target = ${this.target}`)
 
-        const baseDir = this.targetBaseDir || path.join(process.cwd(), this.appsDir)
+        const baseDir = this.target || path.join(process.cwd(), this.appsDir)
 
         const appPath = await this.findInDirectory(baseDir, appName)
 
@@ -129,12 +131,13 @@ class AppResolver {
         logger.debug(`AppResolver.getModulePath
     this.appPath : ${this.appPath}
     this.moduleSubDir : ${this.moduleSubDir}`)
+
         return path.join(this.appPath, this.moduleSubDir)
     }
 
     resolveDataDir() {
-        if (this.targetBaseDir) {
-            this.workingDir = this.targetBaseDir
+        if (this.target) {
+            this.workingDir = this.target
         }
         if (!this.workingDir) {
             this.workingDir = path.join(this.appPath, this.dataSubDir)
@@ -149,7 +152,7 @@ class AppResolver {
             subtask: this.subtask,
             rootDir: this.rootDir || this.appPath,
             workingDir: this.resolveDataDir(),
-            targetBaseDir: this.targetBaseDir,
+            target: this.target,
             dataset: this.dataset
         }
     }

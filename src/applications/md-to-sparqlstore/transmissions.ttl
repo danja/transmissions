@@ -15,7 +15,7 @@
 ##################################################################
 
 :md-to-sparqlstore a :Transmission ;
-   :pipe (:mts10 :mts20 :mts25 :mts30 :mts40) .
+   :pipe (:SM :DE :mts10 :mts20 :mts25  :mts30 :mts40) .
 
 :mts10 a :DirWalker ;
    :settings :mts10-dirWalker .

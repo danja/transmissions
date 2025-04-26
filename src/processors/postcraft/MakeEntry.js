@@ -21,7 +21,7 @@ class MakeEntry extends Processor {
     const dates = this.extractDates(message)
 
     // rootDir
-    const basePath = message.targetPath
+    const basePath = message.target
     // ? message.targetPath : message.sourceDir
     const { rel, slug } = this.extractRelSlug(basePath, dates, message.filePath)
 

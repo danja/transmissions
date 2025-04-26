@@ -48,11 +48,18 @@ async function main() {
             type: 'string',
             coerce: JSON.parse
         })
-        .option('directory', {
-            alias: 'd',
-            describe: chalk.yellow('Input message as JSON'),
+        .option('module-dir', {
+            alias: 'M',
+            describe: chalk.yellow('directory containing modules'),
             type: 'string'
         })
+        /*
+          .option('directory', {
+              alias: 'd',
+              describe: chalk.yellow('directory to search for modules in. defaults to current directory. set to \'.\' to only use module-directory. set to empty string to disable directory scan.<ctrl63>
+              type: 'string'
+          })
+          */
         .option('test', {
             alias: 't',
             describe: chalk.yellow('Run in test mode'),
@@ -81,9 +88,9 @@ async function main() {
             .positional('application', {
                 describe: chalk.yellow('the application to run')
             })
-        //     .positional('target', {
-        //       describe: chalk.yellow('the target of the application')
-        // })
+            .positional('target', {
+                describe: chalk.yellow('the target of the application')
+            })
     }, async (argv) => {
         // If editor flag is set, launch the editor and return
         if (argv.editor) {
@@ -101,7 +108,9 @@ async function main() {
             return
         } // argv.target,
         const flags = { "web": argv.web, "port": argv.port, "verbose": argv.verbose, "silent": argv.silent, "test": argv.test }
-        await commandUtils.begin(argv.application, argv.directory, argv.message, flags)
+        //  console.log(argv)
+        // process.exit()
+        await commandUtils.begin(argv.application, argv.moduleDir, argv.message, flags)
     })
 
     await yargsInstance.argv
