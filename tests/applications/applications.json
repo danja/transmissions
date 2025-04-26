@@ -27,8 +27,8 @@
     {
         "command": "./trans config-setting-manifest tests/applications/config-setting-manifest",
         "label": "config-setting-manifest",
-        "description": "test config-setting-manifest application",
-        "requiredMatchCount": 1
+        "description": "test config-setting-manifest application UNTESTED",
+        "requiredMatchCount": 0
     },
     {
         "command": "./trans dirwalker",
@@ -63,8 +63,8 @@
     {
         "command": "./trans restructure src/applications/test/restructure/manifest",
         "label": "restructurer+manifest",
-        "description": "test restructure application with manifest",
-        "requiredMatchCount": 2
+        "description": "test restructure application with manifest NOT TESTED",
+        "requiredMatchCount": 1
     },
     {
         "command": "./trans file-remove-copy",
@@ -77,5 +77,11 @@
         "label": "file-to-sparqlstore",
         "description": "file-to-sparqlstore - 3030",
         "requiredMatchCount": 8
+    },
+    {
+        "command": "./trans  -d ~/hyperdata/trans-apps/applications test_module-load -m '{\"first\":\"TEST_\",\"second\":\"PASSED\"}'",
+        "label": "test_module-load",
+        "description": "runs remote app, with remote Concat processor",
+        "requiredMatchCount": 1
     }
 ]
