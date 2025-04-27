@@ -126,7 +126,7 @@ class DirWalker extends Processor {
                         message.subdir: ${message.subdir}
                         message.filepath: ${message.filepath}
                         message.slugs: ${message.slugs}`)
-                    //        process.exit()
+
 
                     logger.trace(` - DirWalker emit ${this.count++} : ${message.fullPath}`)
                     this.emit('message', message)

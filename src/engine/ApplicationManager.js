@@ -18,45 +18,23 @@ class ApplicationManager {
         this.app = new Application()
     }
 
-    //     async initialize(appName, appPath, subtask, target, moduleDir, flags) {
     async initialize(appOptions) {
-        // this = { ...this, ...appOptions }
-        logger.reveal(appOptions)
-        process.exit()
-        Object.assign(this, ...appOptions)
-        const appName = appOptions.appName
-        const appPath = appOptions.appPath
-        const subtask = appOptions.subtask
-        const target = appOptions.targetPath
-        const moduleDir = appOptions.moduleDir
 
-        logger.debug(`ApplicationManager.initialize
-    appName=${appName}
-    appPath=${appPath}
-    subtask=${subtask}
-    target=${target}   
-    moduleDir=${moduleDir}`)
+        Object.assign(this, appOptions)
+
+        logger.debug(`ApplicationManager.initialize, ${this}`)
 
         if (appOptions.test) {
             const mock = new MockApplicationManager()
-            await mock.initialize(appName, appPath, subtask, target, moduleDir, flags)
+            await mock.initialize(appOptions)
             return mock
         }
 
         logger.debug(`ApplicationManager.initialize, this = ${this}`)
-        await this.appResolver.initialize(appName, appPath, subtask, moduleDir, target)
+        await this.appResolver.initialize(appOptions)
         this.moduleLoader = ModuleLoaderFactory.createApplicationLoader(this.appResolver.getModulePath())
-
-        // TODO refactor more
-
-        //   await this.app.initDataset(appName)
-        //    logger.log(`this.appResolver.dataset = ${this.appResolver.dataset}`)
-        //  logger.log(`this.app.dataset = ${this.app.dataset}`)
-
-        //     await this.app.mergeIn(this.appResolver.dataset)
         this.app.dataset = this.appResolver.dataset
 
-        //   logger.debug(this.app.dataset)
         logger.debug(`   this.app = ${this.app}`)
         return this
     }
@@ -151,6 +129,12 @@ class ApplicationManager {
             return []
         }
     }
+
+    toString() {
+        return `\n*** ApplicationManager ***
+   this =  \n     ${JSON.stringify(this).replaceAll(',', ',\n      ')}`
+    }
 }
+
 
 export default ApplicationManager

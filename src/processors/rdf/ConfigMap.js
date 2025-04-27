@@ -81,7 +81,7 @@ message.contentGroup[groupName] =
 */
       //  logger.reveal(message)
     }
-    // process.exit()
+
 
     return this.emit('message', message)
   }

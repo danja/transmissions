@@ -32,21 +32,15 @@ class AppResolver {
         this.dataset = options.dataset || null
     }
 
-    async initialize(appName, appPath, subtask, target, moduleDir, flags = {}) {
-        logger.debug(`AppResolver.initialize,
-            appName : ${appName}
-            appPath : ${appPath}
-            subtask : ${subtask}
-            moduleDir : ${moduleDir}
-            target : ${target}`)
+    // async initialize(appName, appPath, subtask, target, moduleDir, flags = {}) {
+    async initialize(appOptions) {
+        Object.assign(this, appOptions)
+        logger.reveal(appOptions)
+        //    process.exit()
 
-        this.subtask = subtask
-        this.moduleDir = moduleDir
-        this.target = target
-        this.appName = appName
-        this.appPath = await this.resolveApplicationPath(appName)
+        this.appPath = await this.resolveApplicationPath(this.appName)
 
-        if (target) {
+        if (this.target) {
 
             //  this.appFilename = path.join(target, this.appFilename)
             const appFilename = path.join(target, this.appName, this.appFilename)
@@ -102,14 +96,22 @@ class AppResolver {
     }
 
     async resolveApplicationPath(appName) {
-
+        logger.debug(`   resolveApplicationPath, appName = ${appName}`)
         logger.log(`******** this.target = ${this.target}`)
 
         const baseDir = this.target || path.join(process.cwd(), this.appsDir)
 
-        const appPath = await this.findInDirectory(baseDir, appName)
+        var appPath = await this.findInDirectory(baseDir, appName)
+        //|| await this.findInDirectory(this.appsDir, appName)
+        if (!appPath) {
+            await this.findInDirectory(this.appsDir, appName)
+        }
+        // if (!appPath) {
+        //   await this.findInDirectory(this.moduleDir, appName)
+        // }
 
-        process.exit()
+        logger.log(`this = ${this}`)
+        //  process.exit()
 
         if (!appPath) {
             throw new Error(`Could not find 
@@ -158,6 +160,10 @@ class AppResolver {
             dataset: this.dataset
         }
     }
-}
 
+    toString() {
+        return `\n*** AppResolver ***
+   this =  \n     ${JSON.stringify(this).replaceAll(',', ',\n      ')}`
+    }
+}
 export default AppResolver

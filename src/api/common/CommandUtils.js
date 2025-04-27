@@ -51,18 +51,18 @@ class CommandUtils {
 
         logger.debug(this)
 
-        // process.exit()
+
 
         //    this.appManager = await this.appManager.initialize(appName, appPath, subtask, this.appOptions.targetPath, moduleDir, flags)
         this.appManager = await this.appManager.initialize(this.appOptions)
 
         if (this.options.web) {
-            const webRunner = new WebRunner(this.appManager, flags.port)
+            const webRunner = new WebRunner(this.appManager, this.options.port)
             await webRunner.start()
             return
         }
 
-        return await this.appManager.start(message)
+        return await this.appManager.start(this.options.message)
     }
 
     /**

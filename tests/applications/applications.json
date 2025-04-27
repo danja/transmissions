@@ -79,7 +79,7 @@
         "requiredMatchCount": 8
     },
     {
-        "command": "./trans  -d ~/hyperdata/trans-apps/applications test_module-load -m '{\"first\":\"TEST_\",\"second\":\"PASSED\"}'",
+        "command": "./trans  -M ~/hyperdata/trans-apps/applications test_module-load -m '{\"first\":\"TEST_\",\"second\":\"PASSED\"}'",
         "label": "test_module-load",
         "description": "runs remote app, with remote Concat processor",
         "requiredMatchCount": 1

@@ -52,7 +52,7 @@ class JSONWalker extends Processor {
 
         logger.debug(`JSONWalker pointer =  ${pointer}`)
 
-        //   process.exit(1)
+
         var content = structuredClone(message.content)
         if (typeof content === 'string') {
             logger.debug(`content is a string, parsing to JSON`)

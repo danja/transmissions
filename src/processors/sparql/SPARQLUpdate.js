@@ -41,7 +41,7 @@ class SPARQLUpdate extends SlowableProcessor {
         const updateData = message[dataField] || message
         logger.debug(`---   updateData = ${updateData}`)
         //  logger.reveal(message)
-        // process.exit()
+
 
         if (escape) { // TODO unhackify
             logger.debug(`---   escaping`)

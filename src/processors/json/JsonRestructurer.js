@@ -30,7 +30,7 @@ class JsonRestructurer {
                 message above.
                 `)
             logger.debug(`JsonRestructurer.setValueByPath caller : ${caller}`)
-            //  process.exit(1)
+
             //const err = new Error().stack
 
             return undefined

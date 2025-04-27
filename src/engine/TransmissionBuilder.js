@@ -178,7 +178,7 @@ class TransmissionBuilder {
     moduleProcessor.configModel = configModel
     //} catch (error) {
     //logger.error(`TransmissionBuilder.createProcessor, failed to load ${type?.value} : ${error.message}`)
-    // process.exit(1)
+
     // }
     return moduleProcessor
   }

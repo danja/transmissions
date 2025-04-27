@@ -6,7 +6,8 @@ class MockApplicationManager {
         logger.debug('MockApplicationManager: Created new instance')
     }
 
-    async initialize(appName, appPath, subtask, targetBaseDir, flags) {
+    async initialize(options) {
+        //   async initialize(appName, appPath, subtask, targetBaseDir, flags) {
         logger.debug(`MockApplicationManager.initialize(${appName}, ${appPath}, ${subtask}, ${targetBaseDir})`)
 
         if (!appName) {

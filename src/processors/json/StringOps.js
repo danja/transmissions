@@ -57,7 +57,7 @@ class StringOps extends Processor {
 
         //  logger.log('SEGEMNTS')
         //    logger.reveal(segments)
-        // process.exit()
+
 
         const asPath = super.getProperty(ns.trn.asPath) === 'true'
 
