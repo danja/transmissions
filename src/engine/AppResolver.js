@@ -109,6 +109,8 @@ class AppResolver {
 
         const appPath = await this.findInDirectory(baseDir, appName)
 
+        process.exit()
+
         if (!appPath) {
             throw new Error(`Could not find 
                 appName : ${appName}

@@ -18,7 +18,18 @@ class ApplicationManager {
         this.app = new Application()
     }
 
-    async initialize(appName, appPath, subtask, target, moduleDir, flags) {
+    //     async initialize(appName, appPath, subtask, target, moduleDir, flags) {
+    async initialize(appOptions) {
+        // this = { ...this, ...appOptions }
+        logger.reveal(appOptions)
+        process.exit()
+        Object.assign(this, ...appOptions)
+        const appName = appOptions.appName
+        const appPath = appOptions.appPath
+        const subtask = appOptions.subtask
+        const target = appOptions.targetPath
+        const moduleDir = appOptions.moduleDir
+
         logger.debug(`ApplicationManager.initialize
     appName=${appName}
     appPath=${appPath}
@@ -26,12 +37,13 @@ class ApplicationManager {
     target=${target}   
     moduleDir=${moduleDir}`)
 
-        if (flags && flags.test) {
+        if (appOptions.test) {
             const mock = new MockApplicationManager()
             await mock.initialize(appName, appPath, subtask, target, moduleDir, flags)
             return mock
         }
 
+        logger.debug(`ApplicationManager.initialize, this = ${this}`)
         await this.appResolver.initialize(appName, appPath, subtask, moduleDir, target)
         this.moduleLoader = ModuleLoaderFactory.createApplicationLoader(this.appResolver.getModulePath())
 

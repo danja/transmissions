@@ -23,7 +23,7 @@ const banner = ` _____                              _            _
 `
 
 async function main() {
-    const commandUtils = new CommandUtils()
+    // const commandUtils = new CommandUtils()
 
     console.log(chalk.magentaBright(banner))
     console.log(chalk.cyan('Usage:'))
@@ -92,6 +92,9 @@ async function main() {
                 describe: chalk.yellow('the target of the application')
             })
     }, async (argv) => {
+
+        const commandUtils = new CommandUtils(argv)
+
         // If editor flag is set, launch the editor and return
         if (argv.editor) {
             const flags = { "editor": true, "port": argv.port, "verbose": argv.verbose, "silent": argv.silent }
@@ -106,11 +109,10 @@ async function main() {
 
             yargsInstance.showHelp()
             return
-        } // argv.target,
-        const flags = { "web": argv.web, "port": argv.port, "verbose": argv.verbose, "silent": argv.silent, "test": argv.test }
-        //  console.log(argv)
-        // process.exit()
-        await commandUtils.begin(argv.application, argv.moduleDir, argv.message, flags)
+        }
+        //      await commandUtils.begin(argv.application, argv.moduleDir, argv.message, flags)
+        await commandUtils.interpret()
+
     })
 
     await yargsInstance.argv

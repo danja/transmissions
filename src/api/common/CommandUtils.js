@@ -7,55 +7,62 @@ import EditorWebRunner from '../http/server/EditorWebRunner.js'
 
 class CommandUtils {
 
-    #appManager
-
-    constructor() {
-        this.#appManager = new ApplicationManager()
+    constructor(options) {
+        this.options = options
+        this.appOptions = {}
+        this.appManager = new ApplicationManager()
     }
 
-    async begin(application, moduleDir, target, message = {}, flags = {}) {
+    setDebug() {
+        var debugLevel = (this.options.verbose || this.options.test) ? "debug" : "info"
+        if (!this.options.verbose) logger.silent = this.options.silent
+        logger.setLogLevel(debugLevel)
+    }
 
+    resolveTargetPath() {
+        this.appOptions.targetPath = this.options.target
+        if (this.options.target && !this.options.target.startsWith('/')) {
+            this.appOptions.targetPath = path.join(process.cwd(), this.options.target)
+        }
+    }
+
+
+
+    async interpret() {
+        this.setDebug()
+        // application, moduleDir, target, message = {}, flags = {}
+        /*
         var debugLevel = (flags.verbose || flags.test) ? "debug" : "info"
         if (!flags.verbose) logger.silent = flags.silent
         logger.setLogLevel(debugLevel)
+    */
+        logger.debug(`CommandUtils.begin ${this.toString()}`)
 
-        logger.debug('CommandUtils.begin')
-        logger.debug('   process.cwd() = ' + process.cwd())
-        logger.debug('   flags = ' + flags)
+        this.resolveTargetPath()
 
-        logger.debug('   application = ' + application)
-        logger.debug('   moduleDir = ' + moduleDir)
-        logger.debug('   target = ' + target)
-        logger.debug(`   message = ${message}`)
+        var split = CommandUtils.splitName(this.options.application)
+        Object.assign(this.appOptions, split)
+        // { appName, appPath, subtask } 
+        //  this.appOptions.appName, this.appOptions.appPath, this.appOptions.subtask
 
-
-        if (target && !target.startsWith('/')) {
-            target = path.join(process.cwd(), target)
+        if (this.appOptions.targetPath) { // TODO refactor
+            this.appOptions.appPath = path.join(this.appOptions.targetPath, this.appOptions.appName) // target
         }
 
-        var { appName, appPath, subtask } = CommandUtils.splitName(application)
-        if (target) { // TODO refactor
-            appPath = path.join(target, appName) // target
-            //    target = path.join(appPath, appName)
-        }
+        logger.debug(this)
 
-        logger.debug(`\n
-    after split :
-    appName = ${appName}
-    appPath = ${appPath}
-    subtask = ${subtask}
-    target = ${target}
-    moduleDir = ${moduleDir}`)
+        // process.exit()
 
-        this.#appManager = await this.#appManager.initialize(appName, appPath, subtask, target, moduleDir, flags)
+        //    this.appManager = await this.appManager.initialize(appName, appPath, subtask, this.appOptions.targetPath, moduleDir, flags)
+        this.appManager = await this.appManager.initialize(this.appOptions)
 
-        if (flags.web) {
-            const webRunner = new WebRunner(this.#appManager, flags.port)
+        if (this.options.web) {
+            const webRunner = new WebRunner(this.appManager, flags.port)
             await webRunner.start()
             return
         }
 
-        return await this.#appManager.start(message)
+        return await this.appManager.start(message)
     }
 
     /**
@@ -110,7 +117,7 @@ class CommandUtils {
     }
 
     async listApplications() {
-        return await this.#appManager.listApplications()
+        return await this.appManager.listApplications()
     }
 
 
@@ -127,6 +134,14 @@ class CommandUtils {
         }
         return message
     }
-}
 
+
+    toString() {
+        return `\n*** CommandUtils ***
+   process.cwd() = ${process.cwd()}
+   this.options =  \n     ${JSON.stringify(this.options).replaceAll(',', ',\n      ')}
+   this.appOptions = \n     ${JSON.stringify(this.appOptions).replaceAll(',', ',\n      ')}`
+    }
+
+}
 export default CommandUtils
