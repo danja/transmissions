@@ -24,6 +24,7 @@ class ApplicationManager {
 
         logger.debug(`ApplicationManager.initialize, ${this}`)
 
+
         if (appOptions.test) {
             const mock = new MockApplicationManager()
             await mock.initialize(appOptions)
@@ -80,10 +81,13 @@ class ApplicationManager {
         logger.debug(`Transmissions has length ${transmissions.length}`)
 
         // Get application context
-        const contextMessage = this.appResolver.toMessage()
+        const messageBits = this.appResolver.toMessage()
+        Object.assign(message, messageBits) // insert those bits
 
         // Modify the input message in place
-        _.merge(message, contextMessage)
+        //  _.merge(message, startMessage)
+
+
         message.appRunStart = (new Date()).toISOString()
         // message.target = this.app.target
         // HERERER

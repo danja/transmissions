@@ -97,9 +97,9 @@ class AppResolver {
 
     async resolveApplicationPath(appName) {
         logger.debug(`   resolveApplicationPath, appName = ${appName}`)
-        logger.log(`******** this.target = ${this.target}`)
+        logger.log(`******** this.target = ${this.targetPath}`)
 
-        const baseDir = this.target || path.join(process.cwd(), this.appsDir)
+        const baseDir = path.join(process.cwd(), this.appsDir)
 
         var appPath = await this.findInDirectory(baseDir, appName)
         //|| await this.findInDirectory(this.appsDir, appName)
@@ -119,7 +119,8 @@ class AppResolver {
                 baseDir : ${baseDir}
 (check the app dir is on local path and contains at least about.md and transmissions.ttl)`)
         }
-
+        logger.debug(`   appPath = ${appPath}`)
+        //   process.exit()
         return appPath
     }
 
@@ -150,13 +151,14 @@ class AppResolver {
     }
 
     toMessage() {
+        // TODO tidy this up
         return {
             appName: this.appName,
             appPath: this.appPath,
             subtask: this.subtask,
             rootDir: this.rootDir || this.appPath,
             workingDir: this.resolveDataDir(),
-            target: this.target,
+            targetPath: this.targetPath,
             dataset: this.dataset
         }
     }

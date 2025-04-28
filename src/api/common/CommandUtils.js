@@ -20,6 +20,7 @@ class CommandUtils {
     }
 
     resolveTargetPath() {
+        logger.debug(`??????????   resolveTargetPath, this.options.target = ${this.options.target}`)
         this.appOptions.targetPath = this.options.target
         if (this.options.target && !this.options.target.startsWith('/')) {
             this.appOptions.targetPath = path.join(process.cwd(), this.options.target)
