@@ -25,10 +25,10 @@
         "isValid": "probably not"
     },
     {
-        "command": "./trans config-setting-manifest tests/applications/config-setting-manifest",
-        "label": "config-setting-manifest",
-        "description": "test config-setting-manifest application UNTESTED",
-        "requiredMatchCount": 0
+        "command": "./trans config-setting-target-app tests/tests-support/config-setting-target-app",
+        "label": "config-setting-target-app",
+        "description": "test config-setting-target-app",
+        "requiredMatchCount": 2
     },
     {
         "command": "./trans dirwalker",

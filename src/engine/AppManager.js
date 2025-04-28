@@ -1,4 +1,4 @@
-// ApplicationManager.js
+// AppManager.js
 import path from 'path'
 import fs from 'fs/promises'
 import _ from 'lodash'
@@ -9,38 +9,76 @@ import Application from '../model/Application.js'
 import MockApplicationManager from '../utils/MockApplicationManager.js'
 import TransmissionBuilder from './TransmissionBuilder.js'
 import ModuleLoaderFactory from './ModuleLoaderFactory.js'
-import AppResolver from './AppResolver.js'
 
-class ApplicationManager {
+
+class AppManager {
     constructor() {
-        this.appResolver = new AppResolver()
+        //  this.appResolver = new AppResolver()
         this.moduleLoader = null
         this.app = new Application()
+
+        // Core paths (defaults)
+        this.appsDir = 'src/applications'
+
+        this.transmissionFilename = 'transmissions.ttl'
+        this.configFilename = 'config.ttl'
+        this.targetFilename = 'app.ttl'
+
+        this.moduleSubDir = 'processors'
+        this.dataSubDir = 'data'
+
+        /*
+        // Application identity
+        this.appName = appOptions.appName || null
+        this.appPath = appOptions.appPath || null
+        this.subtask = appOptions.subtask || null
+
+        // Runtime paths
+        this.rootDir = appOptions.rootDir || null
+        this.workingDir = appOptions.workingDir || null
+        this.targetDir = appOptions.target || null
+        */
     }
 
-    async initialize(appOptions) {
-
-        Object.assign(this, appOptions)
-
-        logger.debug(`ApplicationManager.initialize, ${this}`)
-
-
-        if (appOptions.test) {
+    async initializeApp(appOptions) {
+        logger.debug(`   initializeApp,`)
+        if (appOptions.test) { // TODO put this back into operation
             const mock = new MockApplicationManager()
             await mock.initialize(appOptions)
             return mock
         }
+        logger.log(`    appOptions = `)
+        logger.reveal(appOptions)
+        logger.log(`    this = ${this}`)
 
-        logger.debug(`ApplicationManager.initialize, this = ${this}`)
-        await this.appResolver.initialize(appOptions)
+        // resolve application path
+        // load transmissions.ttl
+        // load config.ttl
+        // load app.turtle
+
+        // load modules
+        // build transmissions
+        // run
+
+
+        process.exit()
+
+
+        logger.debug(`AppManager.initialize, this = ${this}`)
+        //  await this.appResolver.initialize(appOptions)
         this.moduleLoader = ModuleLoaderFactory.createApplicationLoader(this.appResolver.getModulePath())
         this.app.dataset = this.appResolver.dataset
 
         logger.debug(`   this.app = ${this.app}`)
         return this
+
     }
 
+
+
     async buildTransmissions(transmissionConfigFile, processorsConfigFile, moduleLoader, app) {
+
+
         logger.debug(`\nApplicationManager.build **************************************** `)
 
         const builder = new TransmissionBuilder(this.moduleLoader, this.appResolver)
@@ -67,13 +105,9 @@ class ApplicationManager {
     }
 
     async start(message = {}) {
-        logger.debug(`\n ||| ApplicationManager.start`)
+        logger.debug(`\n ||| AppManager.start`)
         message.app = this.app
         logger.debug(`this.app = ${this.app}`)
-        logger.debug(`
-            transmissionsFile = ${this.appResolver.getTransmissionsPath()}
-            configFile = ${this.appResolver.getConfigPath()}
-            subtask = ${this.appResolver.subtask}`)
 
         const transmissions = await this.buildTransmissions()
 
@@ -82,7 +116,7 @@ class ApplicationManager {
 
         // Get application context
         const messageBits = this.appResolver.toMessage()
-        Object.assign(message, messageBits) // insert those bits
+        Object.assign(message, messageBits) // ins
 
         // Modify the input message in place
         //  _.merge(message, startMessage)
@@ -99,7 +133,7 @@ class ApplicationManager {
                 await transmission.process(message)
             }
         }
-*/
+    */
         //       message.app = this.appResolver
         message.sessionNode = this.appResolver.sessionNode
 
@@ -135,10 +169,10 @@ class ApplicationManager {
     }
 
     toString() {
-        return `\n*** ApplicationManager ***
-   this =  \n     ${JSON.stringify(this).replaceAll(',', ',\n      ')}`
+        return `\n *** AppManager ***
+        this =  \n     ${JSON.stringify(this).replaceAll(',', ',\n      ')}`
     }
 }
 
 
-export default ApplicationManager
+export default AppManager

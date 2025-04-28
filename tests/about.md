@@ -1,3 +1,27 @@
+There are several layers of testing available. The full suite can be run with :
+
+```sh
+npm test
+```
+
+Or individually with eg. :
+
+```sh
+npm test -- tests/engine/TransmissionBuilder.spec.js
+```
+
+In addition to typical unit and integration tests, some additional low-level tests of processors are implemented using "_**simples**_". Here the classes implementing `Processor` are addressed in isolation, with local mock data in the _simples_ runner scripts.
+
+TODO : re-set up
+
+Also integration tests are provided using full application runners with :
+
+```sh
+npm test -- tests/applications/ApplicationRunner.spec.js
+```
+
+These tests are defined via `tests/applications/applications.json`.
+
 ```sh
 cd ~/hyperdata/transmissions # my local dir
 

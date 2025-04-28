@@ -1,7 +1,7 @@
 import path from 'path'
 import fs from 'fs/promises'
 import logger from '../../utils/Logger.js'
-import ApplicationManager from '../../engine/ApplicationManager.js'
+import AppManager from '../../engine/AppManager.js'
 import WebRunner from '../http/server/WebRunner.js'
 import EditorWebRunner from '../http/server/EditorWebRunner.js'
 
@@ -10,7 +10,7 @@ class CommandUtils {
     constructor(options) {
         this.options = options
         this.appOptions = {}
-        this.appManager = new ApplicationManager()
+        //    this.appManager = new AppManager()
     }
 
     setDebug() {
@@ -55,15 +55,17 @@ class CommandUtils {
 
 
         //    this.appManager = await this.appManager.initialize(appName, appPath, subtask, this.appOptions.targetPath, moduleDir, flags)
-        this.appManager = await this.appManager.initialize(this.appOptions)
+        //   this.appManager = await this.appManager.initialize(this.appOptions)
+        const appManager = new AppManager()
+        await appManager.initializeApp(this.appOptions)
 
         if (this.options.web) {
-            const webRunner = new WebRunner(this.appManager, this.options.port)
+            const webRunner = new WebRunner(appManager, this.options.port)
             await webRunner.start()
             return
         }
 
-        return await this.appManager.start(this.options.message)
+        return await appManager.start(this.options.message)
     }
 
     /**

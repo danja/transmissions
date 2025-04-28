@@ -9,8 +9,8 @@ class ProcessorSettings {
     constructor(parent) {
         this.parent = parent
         logger.debug(`   parent.app = ${parent.app}`)
-        this.appDataset = parent.app?.dataset
-        logger.debug(`   this.appDataset = ${this.appDataset}`)
+        this.targetDataset = parent.app?.dataset
+        logger.debug(`   this.targetDataset = ${this.targetDataset}`)
         this.transmissionConfig = parent.app?.transmissionConfig
         //   logger.debug(`this.transmissionConfig = ${this.transmissionConfig}`)
         this.configDataset = parent.configDataset
@@ -39,12 +39,12 @@ class ProcessorSettings {
             return fallback ? [fallback] : []
         }
 
-        this.appDataset = this.parent.app?.dataset
-        //  const appDataset = this.config.app.dataset; // TODO can we see app?
+        this.targetDataset = this.parent.app?.dataset
+        //  const targetDataset = this.config.app.dataset; // TODO can we see app?
 
-        var dataset = this.appDataset
-        logger.debug(`    * looking in APP dataset (app.ttl)`)
-        logger.trace(`${logger.shorter(dataset)}`)
+        var dataset = this.targetDataset
+        logger.debug(`    * looking in target dataset (app.ttl)`)
+        logger.log(`${logger.shorter(dataset)}`)
         var values = this.valuesFromDataset(dataset, property)
         if (values) return values
 
