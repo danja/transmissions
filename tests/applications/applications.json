@@ -25,9 +25,9 @@
         "isValid": "probably not"
     },
     {
-        "command": "./trans config-setting-manifest tests/applications/config-setting-manifest",
-        "label": "config-setting-manifest",
-        "description": "test config-setting-manifest application",
+        "command": "./trans config-setting-target tests/applications/config-setting-target",
+        "label": "config-setting-target",
+        "description": "remote tt.ttl target",
         "requiredMatchCount": 1
     },
     {

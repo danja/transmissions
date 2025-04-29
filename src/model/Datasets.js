@@ -7,13 +7,13 @@ import GrapoiHelpers from '../utils/GrapoiHelpers.js'
 /** 
  * Wrapper around dataset REFACTORHERE
  */
-class Models {
+class Datasets {
 
     constructor() {
-        const models = {}
+        const datasets = {}
     }
 
-    async loadModel(label, path) {
+    async loadDataset(label, path) {
         logger.debug(`   loadModel, 
         label = ${label}
         path = ${path}`)
@@ -25,8 +25,8 @@ class Models {
         return dataset
     }
 
-    async model(label) {
+    async dataset(label) {
         return this[label]
     }
 }
-export default Models
+export default Datasets

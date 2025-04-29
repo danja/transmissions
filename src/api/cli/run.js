@@ -48,9 +48,9 @@ async function main() {
             type: 'string',
             coerce: JSON.parse
         })
-        .option('directory', {
-            alias: 'd',
-            describe: chalk.yellow('Input message as JSON'),
+        .option('classpath', {
+            alias: 'cp',
+            describe: chalk.yellow('additional processor dir'),
             type: 'string'
         })
         .option('test', {

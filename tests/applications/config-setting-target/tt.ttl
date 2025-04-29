@@ -6,4 +6,4 @@
 @base <http://purl.org/stuff/path/> .
 
 :theSettingsNode a :ConfigSet ;
-    :theSettingProperty "the setting value from MANIFEST - TEST_PASSED" .
+    :theSettingProperty "the setting value from TARGET - TEST_PASSED" .
