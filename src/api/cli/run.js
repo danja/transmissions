@@ -28,7 +28,7 @@ async function main() {
     console.log(chalk.magentaBright(banner))
     console.log(chalk.cyan('Usage:'))
     console.log(chalk.cyanBright('./trans\n'))
-    const usageString = `${chalk.cyanBright('./trans [application][.subtask] [options] [target]')}}`
+    const usageString = `${chalk.cyanBright('./trans [app][.subtask] [options] [target]')}}`
 
     const yargsInstance = yargs(hideBin(process.argv))
         .usage(usageString)
@@ -76,32 +76,34 @@ async function main() {
             type: 'boolean'
         })
 
-    yargsInstance.command('$0 [application] [target]', chalk.green('runs the specified application\n'), (yargs) => {
+    yargsInstance.command('$0 [app] [target]', chalk.green('runs the specified app\n'), (yargs) => {
         return yargs
-            .positional('application', {
-                describe: chalk.yellow('the application to run')
+            //  .positional('app', {
+            //    describe: chalk.yellow('the app to run')
+            // })
+            .positional('target', {
+                describe: chalk.yellow('the target of the app')
             })
-        //     .positional('target', {
-        //       describe: chalk.yellow('the target of the application')
-        // })
     }, async (argv) => {
         // If editor flag is set, launch the editor and return
+
         if (argv.editor) {
             const flags = { "editor": true, "port": argv.port, "verbose": argv.verbose, "silent": argv.silent }
-            await commandUtils.launchEditor(flags)
+            await commandUtils.launchEditor(flags) // TODO use argv
             return
         }
 
-        if (!argv.application) {
-            console.log(chalk.cyan('Available applications:'))
-            const apps = await commandUtils.listApplications()
+        if (!argv.app) {
+            console.log(chalk.cyan('Available apps:'))
+            const apps = await commandUtils.listApps()
             console.log(chalk.green(`\t${apps.join('\n\t')}\n`))
 
             yargsInstance.showHelp()
             return
         } // argv.target,
-        const flags = { "web": argv.web, "port": argv.port, "verbose": argv.verbose, "silent": argv.silent, "test": argv.test }
-        await commandUtils.begin(argv.application, argv.directory, argv.message, flags)
+        //  const flags = { "web": argv.web, "port": argv.port, "verbose": argv.verbose, "silent": argv.silent, "test": argv.test }
+        // await commandUtils.begin(argv.app, argv.directory, argv.message, flags)
+        await commandUtils.handleOptions(argv)
     })
 
     await yargsInstance.argv

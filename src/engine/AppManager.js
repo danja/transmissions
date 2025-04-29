@@ -1,17 +1,17 @@
-// ApplicationManager.js
+// AppManager.js
 import path from 'path'
 import fs from 'fs/promises'
 import _ from 'lodash'
 import logger from '../utils/Logger.js'
 import RDFUtils from '../utils/RDFUtils.js'
 
-import Application from '../model/Application.js'
-import MockApplicationManager from '../utils/MockApplicationManager.js'
+import Application from '../model/App.js'
+import MockAppManager from '../utils/MockAppManager.js'
 import TransmissionBuilder from './TransmissionBuilder.js'
 import ModuleLoaderFactory from './ModuleLoaderFactory.js'
 import AppResolver from './AppResolver.js'
 
-class ApplicationManager {
+class AppManager {
     constructor() {
         this.appResolver = new AppResolver()
         this.moduleLoader = null
@@ -19,14 +19,10 @@ class ApplicationManager {
     }
 
     async initialize(appName, appPath, subtask, targetBaseDir, flags) {
-        logger.debug(`ApplicationManager.initialize
-    appName=${appName}
-    appPath=${appPath}
-    subtask=${subtask}
-    targetBaseDir=${targetBaseDir}`)
+        logger.debug(`AppManager.initialize ${this}`)
 
         if (flags && flags.test) {
-            const mock = new MockApplicationManager()
+            const mock = new MockAppManager()
             await mock.initialize(appName, appPath, subtask, targetBaseDir, flags)
             return mock
         }
@@ -34,13 +30,6 @@ class ApplicationManager {
         await this.appResolver.initialize(appName, appPath, subtask, targetBaseDir)
         this.moduleLoader = ModuleLoaderFactory.createApplicationLoader(this.appResolver.getModulePath())
 
-        // TODO refactor more
-
-        //   await this.app.initDataset(appName)
-        //    logger.log(`this.appResolver.dataset = ${this.appResolver.dataset}`)
-        //  logger.log(`this.app.dataset = ${this.app.dataset}`)
-
-        //     await this.app.mergeIn(this.appResolver.dataset)
         this.app.dataset = this.appResolver.dataset
 
         logger.debug(this.app.dataset)
@@ -48,7 +37,7 @@ class ApplicationManager {
     }
 
     async buildTransmissions(transmissionConfigFile, processorsConfigFile, moduleLoader, app) {
-        logger.debug(`\nApplicationManager.build ****************************************`)
+        logger.debug(`\nAppManager.build ****************************************`)
 
         const builder = new TransmissionBuilder(this.moduleLoader, this.appResolver)
 
@@ -74,7 +63,7 @@ class ApplicationManager {
     }
 
     async start(message = {}) {
-        logger.debug(`\n||| ApplicationManager.start`)
+        logger.debug(`\n||| AppManager.start`)
         message.app = this.app
         logger.debug(`this.app = ${this.app}`)
         logger.debug(`
@@ -83,9 +72,6 @@ class ApplicationManager {
             subtask=${this.appResolver.subtask}`)
 
         const transmissions = await this.buildTransmissions()
-
-        // TODO this is wrong
-        logger.debug(`Transmissions has length ${transmissions.length}`)
 
         // Get application context
         const contextMessage = this.appResolver.toMessage()
@@ -117,7 +103,7 @@ class ApplicationManager {
         return message //{ success: true }
     }
 
-    async listApplications() {
+    async listApps() {
         try {
             const entries = await fs.readdir(this.appResolver.appsDir, { withFileTypes: true })
             const subdirChecks = entries
@@ -135,6 +121,11 @@ class ApplicationManager {
             return []
         }
     }
+
+    toString() {
+        return `\n *** AppManager ***
+        this =  \n     ${JSON.stringify(this).replaceAll(',', ',\n      ')}`
+    }
 }
 
-export default ApplicationManager
+export default AppManager

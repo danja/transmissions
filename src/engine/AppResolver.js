@@ -4,7 +4,7 @@ import fs from 'fs/promises'
 import rdf from 'rdf-ext'
 import logger from '../utils/Logger.js'
 import RDFUtils from '../utils/RDFUtils.js'
-import Model from '../model/Model.js'
+
 
 class AppResolver {
     constructor(options = {}) {

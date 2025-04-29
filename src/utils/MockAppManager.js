@@ -1,13 +1,13 @@
 import logger from './Logger.js'
 
-class MockApplicationManager {
+class MockAppManager {
     constructor() {
         this.appsDir = 'src/applications'
-        logger.debug('MockApplicationManager: Created new instance')
+        logger.debug('MockAppManager: Created new instance')
     }
 
     async initialize(appName, appPath, subtask, targetBaseDir, flags) {
-        logger.debug(`MockApplicationManager.initialize(${appName}, ${appPath}, ${subtask}, ${targetBaseDir})`)
+        logger.debug(`MockAppManager.initialize(${appName}, ${appPath}, ${subtask}, ${targetBaseDir})`)
 
         if (!appName) {
             throw new Error('Application name is required')
@@ -26,7 +26,7 @@ class MockApplicationManager {
     }
 
     async start(message = {}) {
-        logger.debug('MockApplicationManager.start()')
+        logger.debug('MockAppManager.start()')
         logger.debug('Message:', message)
 
         if (!this.app) {
@@ -43,7 +43,7 @@ class MockApplicationManager {
     }
 
     async listApplications() {
-        logger.debug('MockApplicationManager.listApplications()')
+        logger.debug('MockAppManager.listApplications()')
 
         // Return mock list of applications
         return [
@@ -58,7 +58,7 @@ class MockApplicationManager {
             throw new Error('Application name is required')
         }
 
-        logger.debug(`MockApplicationManager.resolveApplicationPath(${appName})`)
+        logger.debug(`MockAppManager.resolveApplicationPath(${appName})`)
 
         if (appName.startsWith('/')) {
             return appName
@@ -72,4 +72,4 @@ class MockApplicationManager {
     }
 }
 
-export default MockApplicationManager
+export default MockAppManager

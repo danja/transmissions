@@ -1,7 +1,7 @@
 import path from 'path'
 import fs from 'fs/promises'
 import logger from '../../utils/Logger.js'
-import ApplicationManager from '../../engine/ApplicationManager.js'
+import AppManager from '../../engine/AppManager.js'
 import WebRunner from '../http/server/WebRunner.js'
 import EditorWebRunner from '../http/server/EditorWebRunner.js'
 
@@ -10,49 +10,49 @@ class CommandUtils {
     #appManager
 
     constructor() {
-        this.#appManager = new ApplicationManager()
+        this.#appManager = new AppManager()
     }
 
-    async begin(application, targetBaseDir, message = {}, flags = {}) {
+    async handleOptions(options) {
+        this.options = options
 
-        var debugLevel = (flags.verbose || flags.test) ? "debug" : "info"
-        if (!flags.verbose) logger.silent = flags.silent
+        var debugLevel = (options.verbose || options.test) ? "debug" : "info"
+        if (!options.verbose) logger.silent = options.silent
         logger.setLogLevel(debugLevel)
 
-        logger.debug('CommandUtils.begin')
-        logger.debug('   process.cwd() = ' + process.cwd())
-        logger.debug('   flags = ' + flags)
+        logger.debug('CommandUtils.handleOptions')
+        logger.debug(`${this}`)
+        // logger.reveal(options)
+        //        process.exit()
 
-        logger.debug('   application = ' + application)
-        logger.debug('   targetBaseDir = ' + targetBaseDir)
-        logger.debug(`   message = ${message}`)
+        const app = options.app
+        var target = options.target
 
-
-        if (targetBaseDir && !targetBaseDir.startsWith('/')) {
-            targetBaseDir = path.join(process.cwd(), targetBaseDir)
+        if (target && !target.startsWith('/')) {
+            target = path.join(process.cwd(), target)
         }
 
-        var { appName, appPath, subtask } = CommandUtils.splitName(application)
-        if (targetBaseDir) { // TODO refactor
-            appPath = path.join(targetBaseDir, appName) // targetBaseDir
-            //    targetBaseDir = path.join(appPath, appName)
-        }
+        var { appName, appPath, subtask } = CommandUtils.splitName(app)
+        //    if (target) { // TODO refactor
+        //      appPath = path.join(target, appName) // target
+        //    target = path.join(appPath, appName)
+        // }
 
         logger.debug(`\n
     after split :
     appName = ${appName}
     appPath = ${appPath}
     subtask = ${subtask}
-    targetBaseDir = ${targetBaseDir}`)
+    target = ${target}`)
 
-        this.#appManager = await this.#appManager.initialize(appName, appPath, subtask, targetBaseDir, flags)
+        this.#appManager = await this.#appManager.initialize(appName, appPath, subtask, target, options)
 
-        if (flags.web) {
-            const webRunner = new WebRunner(this.#appManager, flags.port)
+        if (options.web) {
+            const webRunner = new WebRunner(this.#appManager, options.port)
             await webRunner.start()
             return
         }
-
+        const message = this.parseOrLoadMessage(options.message)
         return await this.#appManager.start(message)
     }
 
@@ -61,17 +61,17 @@ class CommandUtils {
      * This method will build the editor if needed, start a web server,
      * and open the editor in a browser.
      *
-     * @param {Object} flags - Configuration flags
+     * @param {Object} options - Configuration options
      */
-    async launchEditor(flags = {}) {
-        var debugLevel = flags.verbose ? "debug" : "info"
-        if (!flags.verbose) logger.silent = flags.silent
+    async launchEditor(options = {}) {
+        var debugLevel = options.verbose ? "debug" : "info"
+        if (!options.verbose) logger.silent = options.silent
         logger.setLogLevel(debugLevel)
 
         logger.info('Launching Transmissions Editor...')
 
         // Create and start the editor web runner
-        const port = flags.port || 9000
+        const port = options.port || 9000
         const editorWebRunner = new EditorWebRunner(port)
         await editorWebRunner.start()
         // Keep the process running
@@ -107,23 +107,28 @@ class CommandUtils {
         return { appName: lastPart, appPath: appPath, subtask: subtask }
     }
 
-    async listApplications() {
-        return await this.#appManager.listApplications()
+    async listApps() {
+        return await this.#appManager.listApps()
     }
 
 
-    static async parseOrLoadContext(contextArg) {
-        logger.debug(`CommandUtils.parseOrLoadContext(), contextArg = ${contextArg}`)
+    static async parseOrLoadMessage(messageString) {
+        logger.debug(`CommandUtils.parseOrLoadMessage(), messageString = ${messageString}`)
         let message = {}
         try {
-            message.payload = JSON.parse(contextArg)
+            message.payload = JSON.parse(messageString)
         } catch (err) {
             logger.debug('*** Loading JSON from file...')
-            const filePath = path.resolve(contextArg)
+            const filePath = path.resolve(messageString)
             const fileContent = await fs.readFile(filePath, 'utf8')
             message.payload = JSON.parse(fileContent)
         }
         return message
+    }
+
+    toString() {
+        return `\n *** CommandUtils ***
+        this =  \n     ${JSON.stringify(this).replaceAll(',', ',\n      ')}`
     }
 }
 
