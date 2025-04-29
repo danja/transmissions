@@ -1,6 +1,7 @@
 import rdf from 'rdf-ext'
 import grapoi from 'grapoi'
 import ns from '../utils/ns.js'
+import RDFUtils from '../utils/RDFUtils.js'
 import logger from '../utils/Logger.js'
 import GrapoiHelpers from '../utils/GrapoiHelpers.js'
 

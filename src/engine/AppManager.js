@@ -10,9 +10,11 @@ import MockAppManager from '../utils/MockAppManager.js'
 import TransmissionBuilder from './TransmissionBuilder.js'
 import ModuleLoaderFactory from './ModuleLoaderFactory.js'
 import AppResolver from './AppResolver.js'
+import Datasets from '../model/Datasets.js'
 
 class AppManager {
     constructor() {
+        this.datasets = new Datasets()
         this.appResolver = new AppResolver()
         this.moduleLoader = null
         this.app = new Application()
@@ -46,10 +48,11 @@ class AppManager {
         //    const transmissionConfig = await RDFUtils.readDataset(this.appResolver.getTransmissionsPath())
         // REFACTORHERE
         // const processorsConfig = await RDFUtils.readDataset(this.appResolver.getConfigPath())
-        const configModel = await this.appResolver.loadModel('config', this.appResolver.getConfigPath())
+        //  const configModel = await this.appResolver.loadDataset('config', this.appResolver.getConfigPath())
 
+        const configModel = await this.datasets.loadDataset('config', this.appResolver.getConfigPath())
         //  const processorsConfig = configModel.dataset
-        //    logger.log(`LOADED configModel = ${configModel}`)
+        logger.log(`LOADED configModel = ${configModel}`)
 
         this.app.transmissionConfig = transmissionConfig
         // Merge with app dataset

@@ -52,7 +52,7 @@ class CommandUtils {
             await webRunner.start()
             return
         }
-        const message = this.parseOrLoadMessage(options.message)
+        const message = await CommandUtils.parseOrLoadMessage(options.message)
         return await this.#appManager.start(message)
     }
 
@@ -113,12 +113,14 @@ class CommandUtils {
 
 
     static async parseOrLoadMessage(messageString) {
+        if (!messageString) return {}
         logger.debug(`CommandUtils.parseOrLoadMessage(), messageString = ${messageString}`)
         let message = {}
         try {
-            message.payload = JSON.parse(messageString)
+            message.payload = JSON.parse(JSON.stringify(messageString)) // TODO wot?
         } catch (err) {
-            logger.debug('*** Loading JSON from file...')
+            logger.debug(`*** Loading JSON from file : ${JSON.stringify(messageString)}`)
+            process.exit()
             const filePath = path.resolve(messageString)
             const fileContent = await fs.readFile(filePath, 'utf8')
             message.payload = JSON.parse(fileContent)
@@ -128,7 +130,7 @@ class CommandUtils {
 
     toString() {
         return `\n *** CommandUtils ***
-        this =  \n     ${JSON.stringify(this).replaceAll(',', ',\n      ')}`
+            this =  \n     ${JSON.stringify(this).replaceAll(',', ',\n      ')}`
     }
 }
 

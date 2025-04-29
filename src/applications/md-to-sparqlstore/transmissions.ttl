@@ -11,7 +11,7 @@
 :SC a :ShowConfig . # verbose report, continues pipe             #
 :SM a :ShowMessage . # verbose report, continues pipe            #
 :N  a :NOP . # no operation (except for showing stage in pipe)   #
-:UF a :Unfork . # collapses all pipes but one                    #
+:UF a  :Unfork . # collapses all pipes but one                    #
 ##################################################################
 
 :md-to-sparqlstore a :Transmission ;

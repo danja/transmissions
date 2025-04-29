@@ -57,7 +57,10 @@ class AppResolver {
 
 
     // REFACTORHERE
-    async loadModel(shortName, path) {
+    async loadDataset(shortName, path) {
+        logger.debug(`${shortName}, ${path}`)
+        //    process.exit()
+
         //   const dataset = await RDFUtils.readDataset(path)
         const ru = new RDFUtils()
         const dataset = await ru.readDataset(path)
