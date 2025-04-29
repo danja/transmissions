@@ -15,7 +15,7 @@ class AppResolver {
         this.moduleSubDir = 'processors'
         this.dataSubDir = 'data'
 
-        this.appFilename = 'app.ttl' // this
+        this.appFilename = 'tt.ttl' // this
 
         // Application identity
         this.appName = options.appName || null
@@ -28,7 +28,7 @@ class AppResolver {
         this.targetBaseDir = options.targetBaseDir || null // TODO targetBaseDir???
 
 
-        // RDF dataset from app.ttl
+        // RDF dataset from tt.ttl
         this.dataset = options.dataset || null
     }
 

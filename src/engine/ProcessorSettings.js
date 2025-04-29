@@ -43,7 +43,7 @@ class ProcessorSettings {
         //  const appDataset = this.config.app.dataset; // TODO can we see app?
 
         var dataset = this.appDataset
-        logger.debug(`    * looking in APP dataset (app.ttl)`)
+        logger.debug(`    * looking in APP dataset (tt.ttl)`)
         logger.trace(`${logger.shorter(dataset)}`)
         var values = this.valuesFromDataset(dataset, property)
         if (values) return values

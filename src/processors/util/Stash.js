@@ -29,7 +29,7 @@ class Stash extends Processor {
      * @param {Object} message - .
      */
     async process(message) {
-        const appFilename = rootDir + '/app.ttl'
+        const appFilename = rootDir + '/tt.ttl'
         const stream = fromFile(appFilename)
 
         // should append RDF to incoming

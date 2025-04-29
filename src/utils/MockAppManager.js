@@ -19,7 +19,7 @@ class MockAppManager {
             subtask,
             targetPath: targetBaseDir,
             dataset: {},
-            appFilename: targetBaseDir ? `${targetBaseDir}/app.ttl` : null
+            appFilename: targetBaseDir ? `${targetBaseDir}/tt.ttl` : null
         }
 
         return Promise.resolve()
