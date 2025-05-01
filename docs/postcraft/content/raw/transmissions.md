@@ -4,6 +4,15 @@ Silly. The other day I moved some tests out of the way temporarily, forgot to pu
 
 Good prompt for a refactor.
 
+**HERE**
+The app has :
+
+app.configDataset
+app.transDataset
+app.targetDataset
+
+only **app** is passed around
+
 ## Terminology
 
 
