@@ -14,7 +14,7 @@ import Datasets from '../model/Datasets.js'
 
 class AppManager {
     constructor() {
-        this.datasets = new Datasets()
+        this.targetDatasets = new Datasets()
         this.appResolver = new AppResolver()
         this.moduleLoader = null
         this.app = new Application()
@@ -32,37 +32,30 @@ class AppManager {
         await this.appResolver.initialize(appName, appPath, subtask, targetBaseDir)
         this.moduleLoader = ModuleLoaderFactory.createApplicationLoader(this.appResolver.getModulePath())
 
-        this.app.dataset = this.appResolver.dataset
+        this.app.targetDataset = this.appResolver.targetDataset
 
-        logger.debug(this.app.dataset)
+        logger.debug(this.app.targetDataset)
         return this
     }
 
-    async buildTransmissions(transmissionConfigFile, processorsConfigFile, moduleLoader, app) {
+    async buildTransmissions(transmissionsDatasetFile, processorsConfigFile, moduleLoader, app) {
         logger.debug(`\nAppManager.build ****************************************`)
 
         const builder = new TransmissionBuilder(this.moduleLoader, this.appResolver)
 
         const ru = new RDFUtils() // TODO refactor
-        const transmissionConfig = await ru.readDataset(this.appResolver.getTransmissionsPath())
-        //    const transmissionConfig = await RDFUtils.readDataset(this.appResolver.getTransmissionsPath())
+       this.app.transmissionsDataset= await ru.readDataset(this.appResolver.getTransmissionsPath())
+        //    const transmissionsDataset= await RDFUtils.readDataset(this.appResolver.getTransmissionsPath())
         // REFACTORHERE
         // const processorsConfig = await RDFUtils.readDataset(this.appResolver.getConfigPath())
-        //  const configModel = await this.appResolver.loadDataset('config', this.appResolver.getConfigPath())
+        //  const configDataset = await this.appResolver.loadDataset('config', this.appResolver.getConfigPath())
 
-        const configModel = await this.datasets.loadDataset('config', this.appResolver.getConfigPath())
-        //  const processorsConfig = configModel.dataset
-        logger.log(`LOADED configModel = ${configModel}`)
+        this.app.configDataset = await this.targetDatasets.loadDataset('config', this.appResolver.getConfigPath())
+        //  const processorsConfig = configDataset.targetDataset
+        logger.log(`LOADED configDataset = ${this.app.configDataset}`)
 
-        this.app.transmissionConfig = transmissionConfig
-        // Merge with app dataset
-        /*
-            for (const quad of app.dataset) {
-              transmissionConfig.add(quad)
-              processorsConfig.add(quad)
-            }
-        */
-        return await builder.buildTransmissions(this.app, transmissionConfig, configModel)
+     
+        return await builder.buildTransmissions(this.app)
     }
 
     async start(message = {}) {

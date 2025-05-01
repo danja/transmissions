@@ -20,10 +20,14 @@ class TransmissionBuilder {
     this.currentDepth = 0
   }
 
-  async buildTransmissions(app, transmissionConfig, configModel) {
-    logger.debug(`\nTransmissionBuilder.buildTransmissions`)
-    // logger.debug(`transmissionConfig = \n${transmissionConfig}`)
-    const poi = grapoi({ dataset: transmissionConfig })
+  async buildTransmissions(app) {
+        logger.debug(`\nTransmissionBuilder.buildTransmissions`)
+    const transmissionsDataset = app.transmissionsDataset
+    const configDataset = app.configDataset
+
+
+    // logger.debug(`transmissionsDataset = \n${transmissionsDataset}`)
+    const poi = grapoi({ dataset: transmissionsDataset })
     const transmissions = []
 
     for (const q of poi.out(ns.rdf.type).quads()) {
@@ -32,9 +36,9 @@ class TransmissionBuilder {
         logger.debug(`\ntransmissionID = ${transmissionID.value}`)
 
         const transmission = await this.constructTransmission(
-          transmissionConfig,
+          transmissionsDataset,
           transmissionID,
-          configModel
+          configDataset
         )
         // logger.reveal(app)
         transmission.app = app
@@ -44,9 +48,9 @@ class TransmissionBuilder {
     return transmissions
   }
 
-  async constructTransmission(transmissionConfig, transmissionID, configModel) {
+  async constructTransmission(transmissionsDataset, transmissionID, configDataset) {
     // REFACTORHERE
-    const processorsConfig = configModel.dataset
+   // const processorsConfig = configDataset // .dataset
 
     logger.debug(`\nTransmissionBuilder.constructTransmission`)
 
@@ -67,27 +71,27 @@ class TransmissionBuilder {
     //  processorsConfig.whiteboard = {}
     transmission.label = ''
 
-    const transPoi = grapoi({ dataset: transmissionConfig, term: transmissionID })
-    const pipenodes = GrapoiHelpers.listToArray(transmissionConfig, transmissionID, ns.trn.pipe)
+    const transPoi = grapoi({ dataset: transmissionsDataset, term: transmissionID })
+    const pipenodes = GrapoiHelpers.listToArray(transmissionsDataset, transmissionID, ns.trn.pipe)
 
     for (const quad of transPoi.out(ns.rdfs.label).quads()) {
       transmission.label = quad.object.value
     }
     logger.log('\n+ ***** Construct Transmission : ' + transmission.label + ' <' + transmission.id + '>')
 
-    await this.createNodes(transmission, pipenodes, transmissionConfig, configModel)
+    await this.createNodes(transmission, pipenodes, transmissionsDataset, configDataset)
     this.connectNodes(transmission, pipenodes)
 
     this.currentDepth--
     return transmission
   }
 
-  async createNodes(transmission, pipenodes, transmissionConfig, configModel) {
+  async createNodes(transmission, pipenodes, transmissionsDataset, configDataset) {
     for (const node of pipenodes) {
       //  node.value is either the name of a processor or a nested transmission
 
       if (!transmission.get(node.value)) {
-        const np = rdf.grapoi({ dataset: transmissionConfig, term: node })
+        const np = rdf.grapoi({ dataset: transmissionsDataset, term: node })
         const processorType = np.out(ns.rdf.type).term
 
         const settingsNode = np.out(ns.trn.settings).term
@@ -99,18 +103,18 @@ class TransmissionBuilder {
           SettingsNode: :${ns.shortName(settingsNode?.value)}
         `)
         //    Config: \n${processorsConfig}
-        // Check if node is a nested transmission transmissionConfig
+        // Check if node is a nested transmission transmissionsDataset
         // if (processorType && this.isTransmissionReference(processorType)) {
-        if (processorType && this.isTransmissionReference(transmissionConfig, processorType)) {
+        if (processorType && this.isTransmissionReference(transmissionsDataset, processorType)) {
           const nestedTransmission = await this.constructTransmission(
-            transmissionConfig,
+            transmissionsDataset,
             processorType, // is used?
-            configModel
+            configDataset
           )
           transmission.register(node.value, nestedTransmission)
         } else {
           // Regular processor handling
-          const processorBase = await this.createProcessor(processorType, configModel)
+          const processorBase = await this.createProcessor(processorType, configDataset)
           processorBase.id = node.value
           processorBase.type = processorType
           if (settingsNode) {
@@ -127,8 +131,8 @@ class TransmissionBuilder {
     }
   }
 
-  isTransmissionReference(transmissionConfig, processorType) {
-    const processorPoi = grapoi({ dataset: transmissionConfig, term: processorType })
+  isTransmissionReference(transmissionsDataset, processorType) {
+    const processorPoi = grapoi({ dataset: transmissionsDataset, term: processorType })
     return processorPoi.out(ns.rdf.type).terms.some(t => t.equals(ns.trn.Transmission))
   }
 
@@ -139,8 +143,8 @@ class TransmissionBuilder {
   }
     */
 
-  getPipeNodes(transmissionConfig, transmissionID) {
-    const transPoi = grapoi({ dataset: transmissionConfig, term: transmissionID })
+  getPipeNodes(transmissionsDataset, transmissionID) {
+    const transPoi = grapoi({ dataset: transmissionsDataset, term: transmissionID })
     return transPoi.out(ns.trn.pipe).terms
   }
 
@@ -155,14 +159,14 @@ class TransmissionBuilder {
     }
   }
 
-  async createProcessor(type, configModel) {
+  async createProcessor(type, configDataset) {
     // REFACTOR HERE
-    // const config = configModel.dataset
-    logger.debug(`\n\nTransmissionBuilder.createProcessor, config = ${configModel}`)
+    // const config = configDataset.dataset
+    logger.debug(`\n\nTransmissionBuilder.createProcessor, config = ${configDataset}`)
 
-    const coreProcessor = AbstractProcessorFactory.createProcessor(type, configModel.dataset)
+    const coreProcessor = AbstractProcessorFactory.createProcessor(type, configDataset)
     if (coreProcessor) {
-      coreProcessor.configModel = configModel
+      coreProcessor.configDataset = configDataset
       return coreProcessor
     }
 
@@ -174,8 +178,8 @@ class TransmissionBuilder {
       const ProcessorClass = await this.moduleLoader.loadModule(shortName)
 
       logger.debug(`Module loaded successfully: ${shortName}`)
-      const moduleProcessor = new ProcessorClass.default(configModel.dataset)
-      moduleProcessor.configModel = configModel
+      const moduleProcessor = new ProcessorClass.default(configDataset.dataset)
+      moduleProcessor.configDataset = configDataset
     } catch (error) {
       logger.error(`TransmissionBuilder.createProcessor, failed to load ${type?.value} : ${error.message}`)
       process.exit(1)

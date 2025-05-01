@@ -29,7 +29,7 @@ class AppResolver {
 
 
         // RDF dataset from tt.ttl
-        this.dataset = options.dataset || null
+        this.targetDataset = options.targetDataset || null
     }
 
     async initialize(appName, appPath, subtask, targetBaseDir, flags = {}) {
@@ -50,8 +50,8 @@ class AppResolver {
             const appFilename = path.join(targetBaseDir, this.appName, this.appFilename)
             logger.debug(`AppResolver, reading : ${appFilename}`)
             const ru = new RDFUtils() // TODO refactor
-            //  this.dataset = await RDFUtils.readDataset(appFilename)
-            this.dataset = await ru.readDataset(appFilename)
+            //  this.targetDataset = await RDFUtils.readDataset(appFilename)
+            this.targetDataset = await ru.readDataset(appFilename)
         }
     }
 
@@ -153,7 +153,7 @@ class AppResolver {
             rootDir: this.rootDir || this.appPath,
             workingDir: this.resolveDataDir(),
             targetBaseDir: this.targetBaseDir,
-            dataset: this.dataset
+            dataset: this.targetDataset
         }
     }
 }
