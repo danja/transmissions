@@ -104,7 +104,7 @@ class AppResolver {
 
     async resolveApplicationPath(appName) {
 
-        logger.log(`******** this.targetBaseDir = ${this.targetBaseDir}`)
+        logger.log(` = ${this.targetBaseDir}`)
 
         const baseDir = this.targetBaseDir || path.join(process.cwd(), this.appsDir)
 

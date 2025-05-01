@@ -1,34 +1,41 @@
 [
     {
-        "command": "./trans accumulate -m '{\"foreach\": [\"first TEST_PASSED\", \"second TEST_PASSED\", \"third TEST_PASSED\"]}'",
-        "label": "stringops",
-        "description": "test accumulate application",
-        "requiredMatchCount": 6
-    },
-    {
-        "command": "./trans config-setting  --message '{\"theSettingProperty\": \"the setting value from message TEST_PASSED\"}'",
-        "label": "config-setting_message",
-        "description": "test config-setting application, setting in message",
-        "requiredMatchCount": 1
+        "command": "./trans nop",
+        "label": "nop",
+        "description": "minimal transmission",
+        "requiredMatchCount": 4
     },
     {
         "command": "./trans config-setting",
         "label": "config-setting_config",
-        "description": "test config-setting application, setting in config.ttl",
+        "description": "setting in config.ttl",
         "requiredMatchCount": 3
     },
     {
         "command": "./trans config-settings",
         "label": "config-settings",
-        "description": "test config-settings application",
+        "description": "multiple settings",
         "requiredMatchCount": 3,
         "isValid": "probably not"
     },
+    {
+        "command": "./trans config-setting  --message '{\"theSettingProperty\": \"the setting value from message TEST_PASSED\"}'",
+        "label": "config-setting_message",
+        "description": "setting in message",
+        "requiredMatchCount": 1
+    },
+
     {
         "command": "./trans config-setting-target tests/applications/config-setting-target",
         "label": "config-setting-target",
         "description": "remote tt.ttl target",
         "requiredMatchCount": 1
+    },
+    {
+        "command": "./trans accumulate -m '{\"foreach\": [\"first TEST_PASSED\", \"second TEST_PASSED\", \"third TEST_PASSED\"]}'",
+        "label": "stringops",
+        "description": "test accumulate application",
+        "requiredMatchCount": 6
     },
     {
         "command": "./trans dirwalker",

@@ -7,6 +7,7 @@ import GrapoiHelpers from '../utils/GrapoiHelpers.js'
 
 class ProcessorSettings {
     constructor(parent) {
+        logger.log(`ProcessorSettings constructor`)
         this.parent = parent
         logger.debug(`   parent.app = ${parent.app}`)
         this.appDataset = parent.app?.dataset
@@ -14,7 +15,8 @@ class ProcessorSettings {
         this.transmissionConfig = parent.app?.transmissionConfig
         //   logger.debug(`this.transmissionConfig = ${this.transmissionConfig}`)
         this.configDataset = parent.configDataset
-        logger.debug(`   this.config = ${this.config}`)
+        logger.debug(`   this.configDataset = ${this.configDataset}`)
+process.exit()
     }
 
     // rename...to what?
@@ -58,7 +60,7 @@ class ProcessorSettings {
         // check the general config (config.ttl)
         dataset = this.configDataset
         logger.debug(`    * looking in CONFIG dataset (config.ttl)`)
-        logger.trace(`${logger.shorter(dataset)}`)
+        logger.log(`${logger.shorter(dataset)}`)
         var values = this.valuesFromDataset(dataset, property)
         if (values) return values
 

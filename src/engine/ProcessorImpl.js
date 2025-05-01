@@ -9,6 +9,7 @@ class ProcessorImpl extends EventEmitter {
         super()
         this.configDataset = configDataset
         logger.debug(`ProcessorImpl.constructor : \n${this}`)
+        logger.log(`configDataset : ${configDataset}`)
         this.settee = new ProcessorSettings(this)
         logger.trace(`   configDataset : ${configDataset}`)
         this.messageQueue = []
