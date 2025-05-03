@@ -52,7 +52,7 @@ class AppManager {
 
         this.app.configDataset = await this.targetDatasets.loadDataset('config', this.appResolver.getConfigPath())
         //  const processorsConfig = configDataset.targetDataset
-        logger.log(`LOADED configDataset = ${this.app.configDataset}`)
+       // logger.log(`LOADED configDataset = ${this.app.configDataset}`)
 
      
         return await builder.buildTransmissions(this.app)

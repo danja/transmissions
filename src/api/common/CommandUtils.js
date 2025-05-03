@@ -117,7 +117,7 @@ class CommandUtils {
         logger.debug(`CommandUtils.parseOrLoadMessage(), messageString = ${messageString}`)
         let message = {}
         try {
-            message.payload = JSON.parse(JSON.stringify(messageString)) // TODO wot?
+            message = JSON.parse(JSON.stringify(messageString)) // TODO wot?
         } catch (err) {
             logger.debug(`*** Loading JSON from file : ${JSON.stringify(messageString)}`)
             process.exit()

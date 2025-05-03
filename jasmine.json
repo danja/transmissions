@@ -6,6 +6,6 @@
     "helpers": [
         "helpers/reporter.js"
     ],
-    "stopSpecOnExpectationFailure": false,
+    "stopSpecOnExpectationFailure": true,
     "random": false
 }

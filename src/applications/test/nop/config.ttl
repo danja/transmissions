@@ -8,7 +8,7 @@
 @prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances
 
 :exampleSettings1 a :ConfigSet ;
-    :me "exampleSettings1" ;
+    :me "TEST_PASSED" ;
     :common "common from 1"  ;
     :something1 "something1 from config" .
 

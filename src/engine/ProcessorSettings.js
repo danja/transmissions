@@ -16,7 +16,7 @@ class ProcessorSettings {
         //   logger.debug(`this.transmissionConfig = ${this.transmissionConfig}`)
         this.configDataset = parent.configDataset
         logger.debug(`   this.configDataset = ${this.configDataset}`)
-process.exit()
+// process.exit()
     }
 
     // rename...to what?
@@ -60,7 +60,7 @@ process.exit()
         // check the general config (config.ttl)
         dataset = this.configDataset
         logger.debug(`    * looking in CONFIG dataset (config.ttl)`)
-        logger.log(`${logger.shorter(dataset)}`)
+       // logger.log(`${logger.shorter(dataset)}`)
         var values = this.valuesFromDataset(dataset, property)
         if (values) return values
 

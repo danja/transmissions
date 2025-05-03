@@ -8,8 +8,9 @@ class ProcessorImpl extends EventEmitter {
     constructor(configDataset) {
         super()
         this.configDataset = configDataset
+        this.settingsNode = null // <-- add this line
         logger.debug(`ProcessorImpl.constructor : \n${this}`)
-        logger.log(`configDataset : ${configDataset}`)
+      //  logger.log(`configDataset : ${configDataset}`)
         this.settee = new ProcessorSettings(this)
         logger.trace(`   configDataset : ${configDataset}`)
         this.messageQueue = []
@@ -34,11 +35,19 @@ class ProcessorImpl extends EventEmitter {
     getValues(property, fallback) {
         this.settee.configDataset = this.configDataset
         logger.debug(`   ProcessorImpl.getValues, this.configDataset : ${this.configDataset}`)
+        // Defensive: ensure this.message is set if called directly
+        if (!this.message && arguments.length > 2 && typeof arguments[2] === 'object') {
+            this.message = arguments[2]
+        }
         return this.settee.getValues(this.settingsNode, property, fallback)
     }
 
 
     getProperty(property, fallback = undefined) {
+        // Defensive: ensure this.message is set if called directly
+        if (!this.message && arguments.length > 2 && typeof arguments[2] === 'object') {
+            this.message = arguments[2]
+        }
         logger.debug(`   ProcessorImpl.getProperty looking for ${property}`)
         // first check if the property is in the message
         var value = this.propertyInMessage(property)
@@ -46,6 +55,11 @@ class ProcessorImpl extends EventEmitter {
             logger.debug(`   property found in message : ${value}`)
             return value
         }
+      //  logger.reveal(this.message)
+
+
+
+        // If not found in message, check the settings
         logger.debug(`   this.settingsNode = ${this.settingsNode?.value}`)
         logger.debug(`   typeof this.settingsNode = ${typeof this.settingsNode}`)
 
@@ -83,7 +97,6 @@ class ProcessorImpl extends EventEmitter {
     async preProcess(message) {
         logger.debug('ProcessorImpl.preProcess')
         this.app = message.app
-        this.settee.app = this.app
         logger.trace(`   THIS APP = ${this.app}`)
 
         if (message.onProcess) { // Claude
@@ -113,24 +126,60 @@ class ProcessorImpl extends EventEmitter {
         this.message = message
     }
 
-    /*
-async process(message) {
-    throw new Error('process method not implemented')
-}
-*/
-
-    /* cLAUDE
-    // is useful?
+    /**
+     * Default process method for ProcessorImpl.
+     * Subclasses should override this method.
+     * @param {Object} message - The message object to process.
+     * @returns {Promise<Object>} The processed message (by default, just emits it).
+     */
     async process(message) {
-        if (message.onProcess) {
-            message.onProcess(this, message)
-        }
-        await this.emit('message', message)
+        logger.debug('ProcessorImpl.process: default implementation, just emits message')
+        // By default, just emit the message and return it
+        return super.emit('message', message)
     }
-*/
+
+    // Add default properties to avoid property errors in toString and getTag
+    id = ''
+    label = ''
+    type = undefined
+    description = ''
+    settings = undefined
+    config = undefined
+
+    // Patch: fix toString type property access
+    toString() {
+        const settingsNodeValue = this.settingsNode ? this.settingsNode.value : 'none'
+        let typeValue = ''
+        try {
+            if (
+                this.type &&
+                typeof this.type === 'object' &&
+                this.type !== null &&
+                Object.prototype.hasOwnProperty.call(this.type, 'value') &&
+                typeof this.type['value'] === 'string'
+            ) {
+                typeValue = this.type['value']
+            }
+        } catch (e) {
+            typeValue = ''
+        }
+        return `
+=== Processor ${this.constructor.name} ===
+    id = ${this.id || ''}
+    label = ${this.label || ''}
+    type = ${typeValue}
+    description = ${this.description || ''}
+    settingsNodeValue = ${settingsNodeValue}
+    settings = ${this.settings || ''}
+    config = ${this.config || ''}
+       `
+    }
 
     async postProcess(message) {
-        logger.setLogLevel(this.previousLogLevel)
+        // Only set log level if previousLogLevel is a string
+        if (typeof this.previousLogLevel === 'string' || typeof this.previousLogLevel === 'undefined') {
+            logger.setLogLevel(this.previousLogLevel)
+        }
         this.previousLogLevel = null
     }
 
@@ -150,24 +199,13 @@ async process(message) {
         this.processing = true
         while (this.messageQueue.length > 0) {
             let { message } = this.messageQueue.shift()
-
-            /* structuredClone makes a deep copy of the message object
-            *  so that the original message is not modified
-            *  except its depth doesn't appear to cover internal objects
-            *  so here the app.dataset is passed between messages
-            *  (which is fine)
-            */
-            //            const dataset = message.app.dataset
-            //          message = structuredClone(message)
-            //        message.app.dataset = dataset
             message = SysUtils.copyMessage(message)
-
             this.addTag(message)
             logger.debug(`  before`)
             await this.preProcess(message)
             logger.debug(`  after`)
             await this.process(message)
-            await this.postProcess(message)
+            await this.postProcess(message) // pass message argument
         }
         this.processing = false
     }
@@ -185,34 +223,10 @@ async process(message) {
         return ns.shortName(this.id)
     }
 
-    async emit(event, message) {
-        await new Promise(resolve => {
-            super.emit(event, message)
-            resolve()
-        })
-        return message
-    }
-
     getOutputs() {
         const results = this.outputs
         this.outputs = []
         return results
-    }
-
-    toString() {
-
-        const settingsNodeValue = this.settingsNode ? this.settingsNode.value : 'none'
-        return `
-=== Processor ${this.constructor.name} ===
-    id = ${this.id}
-    label = ${this.label}
-    type = ${this.type?.value}
-    description = ${this.description}
-
-        settingsNodeValue = ${settingsNodeValue}
-        settings = ${this.settings}
-        config = ${this.config}
-       `
     }
 }
 
