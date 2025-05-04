@@ -51,7 +51,8 @@ class RDFUtils {
                 const dataset = await rdfExt.dataset().import(stream)
                 return dataset
             } catch (error) {
-                logger.error(`Error loading dataset in Node.js: ${error.message}`)
+                logger.error(`RDFUtils (from Node.js): ${error.message}`)
+                console.trace()
                 throw error
             }
         }

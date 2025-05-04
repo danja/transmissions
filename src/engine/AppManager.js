@@ -11,6 +11,7 @@ import TransmissionBuilder from './TransmissionBuilder.js'
 import ModuleLoaderFactory from './ModuleLoaderFactory.js'
 import AppResolver from './AppResolver.js'
 import Datasets from '../model/Datasets.js'
+import { log } from 'console'
 
 class AppManager {
     constructor() {
@@ -20,21 +21,37 @@ class AppManager {
         this.app = new Application()
     }
 
-    async initialize(appName, appPath, subtask, targetBaseDir, flags) {
-        logger.debug(`AppManager.initialize ${this}`)
+    async initialize(appName, appPath, subtask, targetDir, flags) {
+        // logger.debug(`AppManager.initialize ${this}`)
 
+        /* TODO reinsert
         if (flags && flags.test) {
             const mock = new MockAppManager()
-            await mock.initialize(appName, appPath, subtask, targetBaseDir, flags)
+            await mock.initialize(appName, appPath, subtask, targetDir, flags)
             return mock
         }
+            */
+        logger.log(`AppManager.initialize, 
+            appName : ${appName} 
+            appPath : ${appPath}
+            subtask : ${subtask}
+            targetBaseDir : ${targetDir}`)
 
-        await this.appResolver.initialize(appName, appPath, subtask, targetBaseDir)
-        this.moduleLoader = ModuleLoaderFactory.createApplicationLoader(this.appResolver.getModulePath())
+        const tdName = targetDir + `/tt.ttl`
+        logger.debug(`AppManager.initialize, tdName : ${tdName}`)
+        //    await this.appResolver.initialize(appName, appPath, subtask, targetBaseDir)
+        //   process.exit
 
-        this.app.targetDataset = this.appResolver.targetDataset
+        const ru = new RDFUtils()
 
+        logger.log(`AppManager.initialize, tdName : ${tdName}`)
+        this.app.targetDataset = await ru.readDataset(tdName)
         logger.debug(this.app.targetDataset)
+
+        this.appResolver.appPath = appPath
+        const modulePath = this.appResolver.getModulePath()
+        logger.debug(`\nAppManager.initialize, modulePath : ${modulePath}`)
+        this.moduleLoader = ModuleLoaderFactory.createApplicationLoader(this.appResolver.getModulePath())
         return this
     }
 
@@ -44,7 +61,9 @@ class AppManager {
         const builder = new TransmissionBuilder(this.moduleLoader, this.appResolver)
 
         const ru = new RDFUtils() // TODO refactor
-       this.app.transmissionsDataset= await ru.readDataset(this.appResolver.getTransmissionsPath())
+        const tPath = this.appResolver.getTransmissionsPath()
+        logger.debug(`AppManager.buildTransmissions, tPath : ${tPath}`)
+        this.app.transmissionsDataset = await ru.readDataset(tPath)
         //    const transmissionsDataset= await RDFUtils.readDataset(this.appResolver.getTransmissionsPath())
         // REFACTORHERE
         // const processorsConfig = await RDFUtils.readDataset(this.appResolver.getConfigPath())
@@ -52,9 +71,9 @@ class AppManager {
 
         this.app.configDataset = await this.targetDatasets.loadDataset('config', this.appResolver.getConfigPath())
         //  const processorsConfig = configDataset.targetDataset
-       // logger.log(`LOADED configDataset = ${this.app.configDataset}`)
+        // logger.log(`LOADED configDataset = ${this.app.configDataset}`)
 
-     
+
         return await builder.buildTransmissions(this.app)
     }
 

@@ -32,28 +32,6 @@ class AppResolver {
         this.targetDataset = options.targetDataset || null
     }
 
-    async initialize(appName, appPath, subtask, targetBaseDir, flags = {}) {
-        logger.debug(`AppResolver.initialize,
-            appName : ${appName}
-            appPath : ${appPath}
-            subtask : ${subtask}
-            targetBaseDir : ${targetBaseDir}`)
-
-        this.subtask = subtask
-        this.targetBaseDir = targetBaseDir
-        this.appName = appName
-        this.appPath = await this.resolveApplicationPath(appName)
-
-        if (targetBaseDir) {
-
-            //  this.appFilename = path.join(targetBaseDir, this.appFilename)
-            const appFilename = path.join(targetBaseDir, this.appName, this.appFilename)
-            logger.debug(`AppResolver, reading : ${appFilename}`)
-            const ru = new RDFUtils() // TODO refactor
-            //  this.targetDataset = await RDFUtils.readDataset(appFilename)
-            this.targetDataset = await ru.readDataset(appFilename)
-        }
-    }
 
 
     // REFACTORHERE
@@ -70,6 +48,11 @@ class AppResolver {
 
 
     async findInDirectory(dir, targetName, depth = 0) {
+        logger.log(`AppResolver.findInDirectory
+    dir : ${dir}
+    targetName : ${targetName}
+    depth : ${depth}`)
+        // Check if the directory exists
         if (depth > 3) return null
 
         try {
@@ -102,14 +85,17 @@ class AppResolver {
         return null
     }
 
+    // remove
     async resolveApplicationPath(appName) {
 
         logger.log(` = ${this.targetBaseDir}`)
 
         const baseDir = this.targetBaseDir || path.join(process.cwd(), this.appsDir)
-
+        const filename = 'tt.ttl'
         const appPath = await this.findInDirectory(baseDir, appName)
-
+        logger.log(`APP PATH = ${appPath}`)
+        process.exit()
+        //  const appPath = await this.findInDirectory(baseDir, filename)
         if (!appPath) {
             throw new Error(`Could not find 
                 appName : ${appName}
@@ -121,6 +107,10 @@ class AppResolver {
     }
 
     getTransmissionsPath() {
+        logger.debug(`\nAppResolver.getTransmissionsPath`)
+        console.trace()
+        logger.reveal(this)
+
         return path.join(this.appPath, this.transmissionFilename)
     }
 

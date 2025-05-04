@@ -25,13 +25,17 @@ class CommandUtils {
         // logger.reveal(options)
         //        process.exit()
 
-        const app = options.app
+        var app = options.app
         var target = options.target
 
         if (target && !target.startsWith('/')) {
             target = path.join(process.cwd(), target)
         }
 
+        if (!app.startsWith('/') && !app.startsWith('.')) {
+            app = path.join(process.cwd(), app)
+        }
+        logger.debug(`CommandUtils.handleOptions, pre-split, app = ${app}`)
         var { appName, appPath, subtask } = CommandUtils.splitName(app)
         //    if (target) { // TODO refactor
         //      appPath = path.join(target, appName) // target
@@ -44,6 +48,7 @@ class CommandUtils {
     appPath = ${appPath}
     subtask = ${subtask}
     target = ${target}`)
+
 
         this.#appManager = await this.#appManager.initialize(appName, appPath, subtask, target, options)
 
