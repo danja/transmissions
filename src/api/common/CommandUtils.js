@@ -49,8 +49,24 @@ class CommandUtils {
     subtask = ${subtask}
     target = ${target}`)
 
+        const appOptions = {
+            appName: appName,
+            appPath: appPath,
+            subtask: subtask,
+            targetBaseDir: target,
+            modulePath: options.modulePath,
+            dataPath: options.dataPath,
+            verbose: options.verbose,
+            silent: options.silent,
+            test: options.test,
+            web: options.web,
+            port: options.port,
+            message: options.message
+        }
 
-        this.#appManager = await this.#appManager.initialize(appName, appPath, subtask, target, options)
+
+
+        this.#appManager = await this.#appManager.initialize(appOptions)
 
         if (options.web) {
             const webRunner = new WebRunner(this.#appManager, options.port)
