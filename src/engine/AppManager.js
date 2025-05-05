@@ -25,7 +25,7 @@ class AppManager {
     async initialize(options) {
         Object.assign(this.app, options)
         logger.log(`\nAppManager.initialize, options = `)
-        logger.reveal(options)
+        logger.vr(options)
         //    this.appPath = optappPath
         // this.appResolver.
         // logger.debug(`AppManager.initialize ${this}`)

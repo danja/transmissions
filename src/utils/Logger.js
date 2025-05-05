@@ -202,11 +202,15 @@ logger.sh = function (string) {
  * @returns {string} The shortened RDF string.
  */
 logger.shorter = function (rdfString) {
+    rdfString = rdfString.replaceAll('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', chalkImpl.white('a'))
     if (!rdfString) return chalkImpl.red ? chalkImpl.red('undefined') : 'undefined'
     rdfString = rdfString.toString()
     Object.entries(ns.prefixMap).forEach(([key, value]) => {
+
         rdfString = rdfString.replaceAll(key, chalkImpl.green ? chalkImpl.green(value) : value)
+
     })
+
     return chalkImpl.magentaBright ? chalkImpl.magentaBright(rdfString) : rdfString
 }
 
@@ -293,22 +297,33 @@ logger.reveal = function (instance, verbose = true) {
 }
 */
 
+
+
+LOG_LEVELS.forEach(level => {
+    logger[level] = (msg) => logger.log(msg, level)
+})
+
+
 /**
  * Reveals the properties of an object as a formatted string. Fancy version of JSON.stringify.
- * Handles circular references and large strings.
+ * Handles circular references, large strings, and optionally RDF datasets.
  * @param {Object} instance - The object to reveal.
  * @param {boolean} [verbose=true] - Whether to include detailed information.
  * @returns {string} The formatted string representation of the object.
  */
-logger.reveal = function (instance, verbose = true) {
+logger.reveal = function (instance, verbose = true, revealDatasets = false) {
     if (!instance) return ''
 
     try {
         const cache = new WeakSet()
 
         const customReplacer = (key, value) => {
-            if (key === 'transmission' || key === 'config' || key === 'dataset' || key === 'app') {
-                return `[${key}: circular ref]`
+            // Detect RDF datasets by checking for specific methods or properties
+            if (value && typeof value === 'object' && typeof value.match === 'function' && typeof value.add === 'function') {
+                if (logger.revealDatasets) {
+                    return logger.dataset(value) // Call Logger.dataset to reveal the dataset
+                }
+                return '[RDF Dataset: Skipped]'
             }
 
             if (typeof value === 'object' && value !== null) {
@@ -382,6 +397,28 @@ logger.reveal = function (instance, verbose = true) {
 }
 
 /**
+ * Reveals the contents of an RDF dataset as a formatted string.
+ * @param {Object} dataset - The RDF dataset to reveal.
+ * @returns {string} The formatted string representation of the dataset.
+ */
+logger.dataset = function (dataset) {
+    if (!dataset || typeof dataset.match !== 'function') {
+        logger.log('[Not a valid RDF Dataset]', 'warn')
+        return
+    }
+
+    logger.log('RDF Dataset:', 'info')
+    for (const quad of dataset) {
+        logger.log(
+            `${chalkImpl.red(logger.shorter(quad.subject.value))} ` +
+            `${chalkImpl.cyan(logger.shorter(quad.predicate.value))} ` +
+            `${chalkImpl.magenta(logger.shorter(quad.object.value))} .`,
+            'info'
+        )
+    }
+}
+
+/**
  * Logs the properties of an object using `logger.reveal`.
  * @param {Object} instance - The object to log.
  * @param {boolean} [verbose=true] - Whether to include detailed information.
@@ -391,9 +428,16 @@ logger.v = function (instance, verbose = true) {
     logger.log(output)
 }
 
-LOG_LEVELS.forEach(level => {
-    logger[level] = (msg) => logger.log(msg, level)
-})
+/**
+ * Logs the properties of an object using `logger.reveal`.
+ * @param {Object} instance - The object to log.
+ * @param {boolean} [verbose=true] - Whether to include detailed information.
+ */
+logger.vr = function (instance) {
+    logger.revealDatasets = true
+    const output = logger.reveal(instance, true, true)
+    logger.log(output)
+}
 
 /**
  * Explores and logs the properties of a Grapoi object and its path.
