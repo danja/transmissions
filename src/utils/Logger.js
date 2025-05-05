@@ -1,6 +1,18 @@
+/**
+ * Logger utility, wraps `loglevel` lib, does some formatting, and deals with output.
+ * Supports both Node.js and browser environments.
+ */
 import log from 'loglevel'
 import { isBrowser } from './BrowserUtils.js'
 import ns from './ns.js'
+
+// the global logger object
+const logger = {}
+
+// where it goes
+logger.logfile = 'run.log'
+
+logger.currentLogLevel = "warn"
 
 // Conditionally import Node.js modules
 let fs, chalk
@@ -34,8 +46,11 @@ const browserChalk = {
 // Use appropriate chalk implementation
 const chalkImpl = isBrowser() ? browserChalk : (chalk?.default || browserChalk)
 
-const logger = {}
 
+/**
+ * Log styles for different log levels.
+ * @type {Object<string, Function>}
+ */
 const LOG_STYLES = {
     "trace": chalkImpl.bgGray?.greenBright || ((text) => `%c${text}`),
     "debug": chalkImpl.cyanBright || ((text) => `%c${text}`),
@@ -43,17 +58,37 @@ const LOG_STYLES = {
     "warn": chalkImpl.red?.italic || ((text) => `%c${text}`),
     "error": chalkImpl.red?.bold || ((text) => `%c${text}`)
 }
-const LOG_LEVELS = ["trace", "debug", "info", "warn", "error"]
 
-logger.logfile = 'latest.log'
-logger.currentLogLevel = "warn"
+/**
+ * Supported log levels.
+ * @type {string[]}
+ */
+const LOG_LEVELS = ["trace", "debug", "info", "warn", "error"]
 
 log.setLevel(logger.currentLogLevel)
 
+/**
+ * Gets the current log level.
+ * @returns {string} The current log level.
+ */
 logger.getLevel = () => log.getLevel()
+
+/**
+ * Enables all log levels.
+ */
 logger.enableAll = () => log.enableAll()
+
+/**
+ * Disables all log levels.
+ */
 logger.disableAll = () => log.disableAll()
+
+/**
+ * Sets the default log level.
+ * @param {string} level - The log level to set as default.
+ */
 logger.setDefaultLevel = (level) => log.setDefaultLevel(level)
+
 logger.getLogger = (name) => {
     const namedLogger = log.getLogger(name)
     return wrapLogger(namedLogger, name)
@@ -63,6 +98,12 @@ logger.methodFactory = log.methodFactory
 
 logger.noConflict = () => log.noConflict()
 
+/**
+ * Wraps a base logger with additional functionality.
+ * @param {Object} baseLogger - The base logger to wrap.
+ * @param {string} [name='root'] - The name of the logger.
+ * @returns {Object} The wrapped logger.
+ */
 function wrapLogger(baseLogger, name = 'root') {
     const wrapped = {}
 
@@ -98,6 +139,10 @@ function wrapLogger(baseLogger, name = 'root') {
     return wrapped
 }
 
+/**
+ * Appends a log message to the log file.
+ * @param {string} message - The message to append.
+ */
 logger.appendLogToFile = function (message) {
     if (logger.logfile && !isBrowser() && fs) {
         try {
@@ -108,15 +153,30 @@ logger.appendLogToFile = function (message) {
     }
 }
 
+/**
+ * Sets the log level.
+ * @param {string} [logLevel="warn"] - The log level to set.
+ * @param {boolean} [persist=true] - Whether to persist the log level.
+ */
 logger.setLogLevel = function (logLevel = "warn", persist = true) {
     logger.currentLogLevel = logLevel
     log.setLevel(logLevel, persist)
 }
 
+
+/**
+ * Gets the current timestamp in ISO format.
+ * @returns {string} The current timestamp.
+ */
 logger.timestampISO = function () {
     return new Date().toISOString()
 }
 
+/**
+ * Logs a message at the specified level.
+ * @param {string} msg - The message to log.
+ * @param {string} [level="info"] - The log level.
+ */
 logger.log = function (msg, level = "info") {
     const levelStyle = LOG_STYLES[level] || LOG_STYLES["info"]
     const message = levelStyle(msg)
@@ -130,11 +190,17 @@ logger.log = function (msg, level = "info") {
     }
 }
 
+// shorter shortening
 logger.sh = function (string) {
     string = logger.shorter(string)
     logger.log(string)
 }
 
+/**
+ * Shortens an RDF string using namespace prefixes.
+ * @param {string} rdfString - The RDF string to shorten.
+ * @returns {string} The shortened RDF string.
+ */
 logger.shorter = function (rdfString) {
     if (!rdfString) return chalkImpl.red ? chalkImpl.red('undefined') : 'undefined'
     rdfString = rdfString.toString()
@@ -144,6 +210,7 @@ logger.shorter = function (rdfString) {
     return chalkImpl.magentaBright ? chalkImpl.magentaBright(rdfString) : rdfString
 }
 
+/*
 logger.reveal = function (instance, verbose = true) {
     if (!instance) return
 
@@ -224,11 +291,117 @@ logger.reveal = function (instance, verbose = true) {
         }
     }
 }
+*/
+
+/**
+ * Reveals the properties of an object as a formatted string. Fancy version of JSON.stringify.
+ * Handles circular references and large strings.
+ * @param {Object} instance - The object to reveal.
+ * @param {boolean} [verbose=true] - Whether to include detailed information.
+ * @returns {string} The formatted string representation of the object.
+ */
+logger.reveal = function (instance, verbose = true) {
+    if (!instance) return ''
+
+    try {
+        const cache = new WeakSet()
+
+        const customReplacer = (key, value) => {
+            if (key === 'transmission' || key === 'config' || key === 'dataset' || key === 'app') {
+                return `[${key}: circular ref]`
+            }
+
+            if (typeof value === 'object' && value !== null) {
+                if (cache.has(value)) {
+                    return '[Circular]'
+                }
+                cache.add(value)
+            }
+
+            if (isBrowser() && value instanceof ArrayBuffer) {
+                return '[ArrayBuffer]'
+            } else if (!isBrowser() && Buffer && Buffer.isBuffer(value)) {
+                return value.toString()
+            }
+
+            if (typeof value === 'string' && value.length > 100) {
+                try {
+                    return value.substring(0, 100) + '...'
+                } catch (e) {
+                    return value.slice(0, 99)
+                }
+            }
+
+            return value
+        }
+
+        const serialized = {}
+        let output = ''
+
+        for (const key in instance) {
+            if (key === 'app') {
+                output += `${chalkImpl.yellow ? chalkImpl.yellow(chalkImpl.bold('.app :')) : '.app :'}\n`
+                continue
+            }
+
+            if (key.startsWith('_')) {
+                output += `       ${key}\n`
+                continue
+            }
+
+            if (instance.hasOwnProperty(key)) {
+                serialized[key] = instance[key]
+            }
+        }
+
+        const props = JSON.stringify(serialized, customReplacer, 2)
+        if (verbose) {
+            const className = instance.constructor?.name || typeof instance
+            output += `Instance of ${chalkImpl.yellow ? chalkImpl.yellow(chalkImpl.bold(className)) : className} with properties - \n`
+        }
+        output += `${chalkImpl.yellow ? chalkImpl.yellow(props) : props}\n`
+
+        return output
+    } catch (error) {
+        let errorOutput = `Error in reveal: ${error.message}\n`
+        errorOutput += `Failed to stringify object of type: ${instance.constructor?.name || typeof instance}\n`
+
+        errorOutput += "Properties (keys only):\n"
+        try {
+            for (const key in instance) {
+                if (instance.hasOwnProperty(key)) {
+                    errorOutput += `- ${key}: [${typeof instance[key]}]\n`
+                }
+            }
+        } catch (e) {
+            errorOutput += `Even simple inspection failed: ${e.message}\n`
+        }
+
+        return errorOutput
+    }
+}
+
+/**
+ * Logs the properties of an object using `logger.reveal`.
+ * @param {Object} instance - The object to log.
+ * @param {boolean} [verbose=true] - Whether to include detailed information.
+ */
+logger.v = function (instance, verbose = true) {
+    const output = logger.reveal(instance, verbose)
+    logger.log(output)
+}
 
 LOG_LEVELS.forEach(level => {
     logger[level] = (msg) => logger.log(msg, level)
 })
 
+/**
+ * Explores and logs the properties of a Grapoi object and its path.
+ * @param {Object} grapoi - The Grapoi object to explore.
+ * @param {Array} predicates - The predicates to use for path exploration.
+ * @param {Array} objects - The objects to use for path exploration.
+ * @param {Array} subjects - The subjects to use for path exploration.
+ */
 logger.poi = function exploreGrapoi(grapoi, predicates, objects, subjects) {
     console.log(chalkImpl.bold ? chalkImpl.bold('Properties of the Grapoi object:') : 'Properties of the Grapoi object:')
     for (const prop in grapoi) {

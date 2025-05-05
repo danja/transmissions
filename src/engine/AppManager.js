@@ -163,8 +163,8 @@ class AppManager {
 
     getTransmissionsPath() {
         logger.debug(`\nAppResolver.getTransmissionsPath`)
-        console.trace()
-        logger.reveal(this.app)
+
+        logger.v(this.app)
 
         return path.join(this.app.path, this.app.appDir, this.app.transmissionFilename)
     }
