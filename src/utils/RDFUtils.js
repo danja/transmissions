@@ -1,9 +1,23 @@
 import * as BrowserUtils from './BrowserUtils.js'
 import logger from './Logger.js'
 import N3Parser from '@rdfjs/parser-n3'
+import rdfExt from 'rdf-ext'
 import { getFromFile, getToFile } from './rdfUtilsFsWrapper.node.js'
 
 class RDFUtils {
+    
+    // Creates an empty dataset with a dummy triple to prevent null issues
+    static createEmptyDataset() {
+        const dataset = rdfExt.dataset();
+        // Add a dummy triple to prevent null issues
+        const triple = rdfExt.triple(
+            rdfExt.namedNode('http://example.org/dummy'),
+            rdfExt.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
+            rdfExt.namedNode('http://example.org/App')
+        );
+        dataset.add(triple);
+        return dataset;
+    }
 
     async fromFile(filename) {
         if (BrowserUtils.isBrowser()) {
