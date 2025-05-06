@@ -6,6 +6,7 @@ import logger from '../utils/Logger.js'
 
 class App {
     constructor() {
+        /*
         this.targetDataset = rdf.dataset()
         this.dummy = 'dummy'
         this.targetDataset.add(rdf.quad(
@@ -18,7 +19,7 @@ class App {
         this.transmissionsModel = null
         this.appModel = null
         this.configModel = null
-
+*/
     }
 
     async initDataset(appName, sessionNode = rdf.blankNode()) {

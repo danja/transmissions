@@ -32,7 +32,7 @@ class CommandUtils {
         }
 
         logger.debug(`CommandUtils.handleOptions, pre-split, options.app = ${options.app}`)
-        var { appName, appPath, subtask } = CommandUtils.parseAppArg(options.app)
+        var { appName, appPath, subtask } = await CommandUtils.parseAppArg(options.app)
 
         logger.debug(`\n
     after split :
@@ -96,9 +96,9 @@ class CommandUtils {
         })
     }
 
-    static parseAppArg(appArg) {
+    static async parseAppArg(appArg) {
 
-        //  logger.log(`APPARG = ${appArg}`)
+        logger.log(`APPARG = ${appArg}`)
         if (!path.isAbsolute(appArg)) { // is relative 
             appArg = path.join(process.cwd(), Defaults.appsDir, appArg)
         }
@@ -116,6 +116,8 @@ class CommandUtils {
                 appName = split[0]
                 subtask = split[1]
             }
+
+            const appPath = await FSUtils.findInDirectory(options.appPath, appName)
 
             // For simple app names, we'll resolve the path later in AppManager
             logger.debug(`Simple app name: appName:${appName}, subtask:${subtask}`)

@@ -1,8 +1,9 @@
 // AppManager.js
 import path from 'path'
 import fs from 'fs/promises'
-import _ from 'lodash'
+// import _ from 'lodash'
 import logger from '../utils/Logger.js'
+import FSUtils from '../utils/FSUtils.js'
 import RDFUtils from '../utils/RDFUtils.js'
 
 import Application from '../model/App.js'
@@ -32,13 +33,14 @@ class AppManager {
 
         // in utils, might be needed :         // findInDirectory(dir, targetName, depth = 0) {
 
+        this.app.path = this.resolveApplicationPath(this.app.name)
         // load the transmissions dataset
         const transmissionsFilename = path.join(options.appPath, Defaults.transmissionsFilename)
         await this.app.datasets.loadDataset('transmissions', transmissionsFilename)
 
         // load the config dataset
         const configFilename = path.join(options.appPath, Defaults.configFilename)
-        await this.app.datasets.loadDataset('transmissions', transmissionsFilename)
+        await this.app.datasets.loadDataset('transmissions', configFilename)
 
         if (this.app.targetDir) {
             await this.app.datasets.loadDataset('target', this.app.targetDir)
@@ -51,9 +53,9 @@ class AppManager {
     }
 
 
-    initModuleLoader() {
+    async initModuleLoader() {
         logger.debug(`\nAppManager.initModuleLoader **************************************** `)
-        const modulePath = this.getModulePath()
+        const modulePath = await this.getModulePath()
         this.moduleLoader = ModuleLoaderFactory.createApplicationLoader(modulePath)
     }
 
@@ -96,11 +98,12 @@ class AppManager {
 
         const transmissions = await this.buildTransmissions()
 
+        logger.vr(transmissions)
         // Get application context
-        const contextMessage = this.appResolver.toMessage()
+        const contextMessage = this.toMessage()
 
         // Modify the input message in place
-        _.merge(message, contextMessage)
+        //  _.merge(message, contextMessage)
         message.appRunStart = (new Date()).toISOString()
         logger.debug('**************** Message with merged context:', message)
 
@@ -112,7 +115,7 @@ class AppManager {
         }
     */
         //       message.app = this.appResolver
-        message.sessionNode = this.appResolver.sessionNode
+        // message.sessionNode = this.appResolver.sessionNode
 
         for (const transmission of transmissions) {
             logger.debug(`transmission = \n${transmission} `)
@@ -130,9 +133,9 @@ class AppManager {
 
         logger.log(`this.appsDir = ${this.appsDir}`)
 
-        const baseDir = this.targetDir || path.join(process.cwd(), this.appsDir)
+        const baseDir = this.targetDir || path.join(process.cwd(), Defaults.appsDir)
 
-        const appPath = await this.findInDirectory(baseDir, appName)
+        const appPath = await FSUtils.findInDirectory(baseDir, appName)
         logger.log(`APP PATH = ${appPath}`)
         process.exit()
 
