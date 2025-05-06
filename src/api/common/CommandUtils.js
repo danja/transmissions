@@ -4,6 +4,7 @@ import logger from '../../utils/Logger.js'
 import AppManager from '../../engine/AppManager.js'
 import WebRunner from '../http/server/WebRunner.js'
 import EditorWebRunner from '../http/server/EditorWebRunner.js'
+import Defaults from './Defaults.js'
 
 class CommandUtils {
 
@@ -23,21 +24,15 @@ class CommandUtils {
         logger.debug('CommandUtils.handleOptions')
         logger.debug(`${this}`)
 
-        var app = options.app
         var target = options.target
 
-        // Resolve target path if it's relative
+        // Resolve target path if relative
         if (target && !target.startsWith('/')) {
             target = path.join(process.cwd(), target)
         }
 
-        // Resolve app path if it's not absolute or relative
-        if (app && !app.startsWith('/') && !app.startsWith('.')) {
-            app = path.join(process.cwd(), app)
-        }
-        
-        logger.debug(`CommandUtils.handleOptions, pre-split, app = ${app}`)
-        var { appName, appPath, subtask } = CommandUtils.splitName(app)
+        logger.debug(`CommandUtils.handleOptions, pre-split, options.app = ${options.app}`)
+        var { appName, appPath, subtask } = CommandUtils.parseAppArg(options.app)
 
         logger.debug(`\n
     after split :
@@ -61,9 +56,7 @@ class CommandUtils {
             message: options.message
         }
 
-
-
-        this.#appManager = await this.#appManager.initialize(appOptions)
+        this.#appManager = await this.#appManager.initApp(appOptions)
 
         if (options.web) {
             const webRunner = new WebRunner(this.#appManager, options.port)
@@ -73,6 +66,7 @@ class CommandUtils {
         const message = await CommandUtils.parseOrLoadMessage(options.message)
         return await this.#appManager.start(message)
     }
+
 
     /**
      * Launch the visual Transmissions editor
@@ -102,29 +96,34 @@ class CommandUtils {
         })
     }
 
-    static splitName(fullPath) {
-        logger.debug(`CommandUtils.splitName fullPath = ${fullPath}`)
-        
+    static parseAppArg(appArg) {
+
+        //  logger.log(`APPARG = ${appArg}`)
+        if (!path.isAbsolute(appArg)) { // is relative 
+            appArg = path.join(process.cwd(), Defaults.appsDir, appArg)
+        }
+        logger.debug(`CommandUtils.parseAppArg appArg = ${appArg}`)
+
         // Handle the case where the app name doesn't include a path
-        if (!fullPath.includes(path.sep)) {
+        if (!appArg.includes(path.sep)) {
             // This is just an app name like "nop" without a path
-            var appName = fullPath
+            var appName = appArg
             var subtask = false
-            
+
             // Check if there's a subtask specified
             if (appName.includes('.')) {
                 const split = appName.split('.')
-                subtask = split[1]
                 appName = split[0]
+                subtask = split[1]
             }
-            
+
             // For simple app names, we'll resolve the path later in AppManager
             logger.debug(`Simple app name: appName:${appName}, subtask:${subtask}`)
-            return { appName, appPath: null, subtask }
+            return { appName, appPath, subtask }
         }
-        
+
         // Handle full paths
-        const parts = fullPath.split(path.sep)
+        const parts = appArg.split(path.sep)
         logger.debug(`Path parts: ${parts}`)
         var lastPart = parts[parts.length - 1]
 
@@ -134,7 +133,7 @@ class CommandUtils {
             subtask = split[1]
             lastPart = split[0]
         }
-        
+
         // Build the app path
         var appPath = parts.slice(0, parts.length - 1).join(path.sep)
         appPath = path.join(appPath, lastPart)

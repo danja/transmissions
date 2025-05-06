@@ -8,6 +8,8 @@ import GrapoiHelpers from '../utils/GrapoiHelpers.js'
 class ProcessorSettings {
     constructor(parent) {
         logger.log(`ProcessorSettings constructor`)
+        this.app = parent.app
+        /*
         this.parent = parent
 
         // Get the app
@@ -24,6 +26,7 @@ class ProcessorSettings {
         // Get the config dataset
         this.configDataset = parent.configDataset
         logger.debug(`   this.configDataset = ${this.configDataset}`)
+        */
     }
 
     // rename...to what?
@@ -48,21 +51,21 @@ class ProcessorSettings {
             return fallback ? [fallback] : []
         }
 
-        this.appDataset = this.parent.app?.dataset
+        //   this.appDataset = this.parent.app?.dataset
         //  const appDataset = this.config.app.dataset; // TODO can we see app?
 
-        var dataset = this.appDataset
+        var dataset = this.app.targetDataset
         if (dataset) {
-            logger.debug(`    * looking in APP dataset (tt.ttl)`)
+            logger.debug(`    * looking in TARGET dataset (tt.ttl)`)
             logger.trace(`${logger.shorter(dataset.toString())}`)
             var values = this.valuesFromDataset(dataset, property)
             if (values) return values
         } else {
-            logger.debug(`    * APP dataset not available`)
+            logger.debug(`    * TARGET dataset not available`)
         }
 
         // Check the transmission config (transmissions.ttl)
-        dataset = this.transmissionConfig
+        dataset = this.app.transmissionsDataset
         if (dataset) {
             logger.debug(`    * looking in TRANSMISSIONS dataset (transmissions.ttl)`)
             logger.trace(`${logger.shorter(dataset)}`)
@@ -73,7 +76,7 @@ class ProcessorSettings {
         }
 
         // check the general config (config.ttl)
-        dataset = this.configDataset
+        dataset = this.app.configDataset
         if (dataset) {
             logger.debug(`    * looking in CONFIG dataset (config.ttl)`)
             // logger.log(`${logger.shorter(dataset)}`)
@@ -100,7 +103,7 @@ class ProcessorSettings {
 
     valuesFromDatasetWrapped(dataset, property) {
         if (!dataset) return undefined
-        logger.reveal(dataset)
+        logger.vr(dataset)
         logger.log(property)
         try {
 

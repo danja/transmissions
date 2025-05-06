@@ -9,44 +9,39 @@ import Application from '../model/App.js'
 import MockAppManager from '../utils/MockAppManager.js'
 import TransmissionBuilder from './TransmissionBuilder.js'
 import ModuleLoaderFactory from './ModuleLoaderFactory.js'
-import AppResolver from './AppResolver.js'
 import Datasets from '../model/Datasets.js'
-import { log } from 'console'
+import Defaults from '../api/common/Defaults.js'
+// import { log } from 'console'
 
 class AppManager {
     constructor() {
-        this.targetDatasets = new Datasets()
-        this.appResolver = new AppResolver()
+        this.targetDatasets
         this.moduleLoader = null
         this.app = new Application()
     }
 
-    //  this.#appManager = await this.#appManager.initialize(appName, appPath, subtask, target, options)
-    async initialize(options) {
-        //  logger.log(`\nAppManager.initialize, options = `)
-        // logger.vr(options)
+
+    async initApp(options) {
+        logger.log(`\nAppManager.initApp, options = `)
+        logger.vr(options)
 
         // Copy options to app
         Object.assign(this.app, options)
 
-        // Initialize appResolver with the same options
-        this.appResolver = new AppResolver(options)
+        this.app.datasets = new Datasets()
 
-        // Set necessary defaults if not provided
-        if (!this.app.path && this.app.appName) {
-            // Try to resolve from src/applications/test directory
-            this.app.path = path.join(process.cwd(), 'src', 'applications', 'test', this.app.appName)
-            logger.debug(`Resolved app path to: ${this.app.path}`)
-        }
+        // in utils, might be needed :         // findInDirectory(dir, targetName, depth = 0) {
 
-        // Set default filenames
-        this.app.transmissionFilename = 'transmissions.ttl'
-        this.app.configFilename = 'config.ttl'
-        this.app.moduleSubDir = 'processors'
+        // load the transmissions dataset
+        const transmissionsFilename = path.join(options.appPath, Defaults.transmissionsFilename)
+        await this.app.datasets.loadDataset('transmissions', transmissionsFilename)
 
-        // Initialize datasets if target directory provided
+        // load the config dataset
+        const configFilename = path.join(options.appPath, Defaults.configFilename)
+        await this.app.datasets.loadDataset('transmissions', transmissionsFilename)
+
         if (this.app.targetDir) {
-            await this.initTargetDataset(this.app.targetDir)
+            await this.app.datasets.loadDataset('target', this.app.targetDir)
         }
 
         // Initialize module loader
@@ -55,21 +50,6 @@ class AppManager {
         return this
     }
 
-
-    async initTargetDataset(targetDir) {
-        const tdName = path.join(targetDir, 'tt.ttl')
-        logger.debug(`AppManager.initTargetDataset, tdName : ${tdName} `)
-
-        try {
-            const ru = new RDFUtils()
-            this.app.targetDataset = await ru.readDataset(tdName)
-            logger.debug(`Target dataset loaded successfully from ${tdName}`)
-        } catch (error) {
-            logger.warn(`Could not load target dataset from ${tdName}: ${error.message}`)
-            // Create an empty dataset instead of failing
-            this.app.targetDataset = RDFUtils.createEmptyDataset()
-        }
-    }
 
     initModuleLoader() {
         logger.debug(`\nAppManager.initModuleLoader **************************************** `)
@@ -83,8 +63,9 @@ class AppManager {
         // Create a builder with our module loader and app resolver
         const builder = new TransmissionBuilder(this.moduleLoader, this.appResolver)
 
+        /*
         // Read the transmissions dataset
-        const ru = new RDFUtils()
+        const ru = new RDFUtils() // TODO REMOVE
         const tPath = this.getTransmissionsPath()
         logger.debug(`AppManager.buildTransmissions, tPath : ${tPath} `)
 
@@ -104,6 +85,7 @@ class AppManager {
             logger.error(`Could not read dataset from path: ${tPath}`)
             throw error
         }
+            */
     }
 
     async start(message = {}) {
@@ -148,7 +130,7 @@ class AppManager {
 
         logger.log(`this.appsDir = ${this.appsDir}`)
 
-        const baseDir = this.targetBaseDir || path.join(process.cwd(), this.appsDir)
+        const baseDir = this.targetDir || path.join(process.cwd(), this.appsDir)
 
         const appPath = await this.findInDirectory(baseDir, appName)
         logger.log(`APP PATH = ${appPath}`)
@@ -164,24 +146,7 @@ class AppManager {
         return appPath
     }
 
-    getTransmissionsPath() {
-        logger.debug(`\nAppManager.getTransmissionsPath`)
 
-        // Create a default path based on appName
-        if (!this.app.path) {
-            // Try to resolve from src/applications
-            const appPath = path.join(process.cwd(), 'src', 'applications', 'test', this.app.appName)
-            this.app.path = appPath
-            logger.debug(`Resolved app path to: ${appPath}`)
-        }
-
-        // We need both transmissionFilename and a path to work with
-        if (!this.app.transmissionFilename) {
-            this.app.transmissionFilename = 'transmissions.ttl'
-        }
-
-        return path.join(this.app.path, this.app.transmissionFilename)
-    }
 
     getConfigPath() {
         logger.debug(`\nAppManager.getConfigPath`)
@@ -203,6 +168,28 @@ class AppManager {
         }
 
         return path.join(this.app.path, this.app.moduleSubDir)
+    }
+
+    resolveDataDir() {
+        if (this.targetDir) {
+            this.workingDir = this.targetDir
+        }
+        if (!this.workingDir) {
+            this.workingDir = path.join(this.appPath, this.dataSubDir)
+        }
+        return this.workingDir
+    }
+
+    toMessage() {
+        return {
+            appName: this.app.name,
+            appPath: this.app.path,
+            subtask: this.app.subtask,
+            rootDir: this.app.rootDir,
+            workingDir: this.app.dataDir,
+            targetDir: this.app.targetDir,
+            dataset: this.targetDataset
+        }
     }
 
     async listApps() {
