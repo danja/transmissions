@@ -106,10 +106,29 @@ class CommandUtils {
     }
 
     static splitName(fullPath) {
-        logger.debug(`CommandUtils.splitName
-   fullPath  = ${fullPath}`)
+        logger.debug(`CommandUtils.splitName fullPath = ${fullPath}`)
+        
+        // Handle the case where the app name doesn't include a path
+        if (!fullPath.includes(path.sep)) {
+            // This is just an app name like "nop" without a path
+            var appName = fullPath
+            var subtask = false
+            
+            // Check if there's a subtask specified
+            if (appName.includes('.')) {
+                const split = appName.split('.')
+                subtask = split[1]
+                appName = split[0]
+            }
+            
+            // For simple app names, we'll resolve the path later in AppManager
+            logger.debug(`Simple app name: appName:${appName}, subtask:${subtask}`)
+            return { appName, appPath: null, subtask }
+        }
+        
+        // Handle full paths
         const parts = fullPath.split(path.sep)
-        logger.debug(`   parts  = ${parts}`)
+        logger.debug(`Path parts: ${parts}`)
         var lastPart = parts[parts.length - 1]
 
         var subtask = false
@@ -118,13 +137,12 @@ class CommandUtils {
             subtask = split[1]
             lastPart = split[0]
         }
+        
+        // Build the app path
         var appPath = parts.slice(0, parts.length - 1).join(path.sep)
         appPath = path.join(appPath, lastPart)
 
-
-
-        logger.debug(`   appName:${lastPart}, appPath:${appPath}, subtask:${subtask},`)
-
+        logger.debug(`Full path: appName:${lastPart}, appPath:${appPath}, subtask:${subtask}`)
         return { appName: lastPart, appPath: appPath, subtask: subtask }
     }
 

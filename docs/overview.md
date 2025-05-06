@@ -1,5 +1,7 @@
 # Transmissions Overview
 
+Transmissions is a workflow compositor designed to carry out data processing operations as a series of relatively simple steps.
+
 ## Terminology
 
 Keywords :

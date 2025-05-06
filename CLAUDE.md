@@ -42,3 +42,5 @@ The following libraries should be preferred to alternatives when their functiona
 - code editing : codemirror
 - templating : nunjucks
 - markdown : marked
+
+Read `docs/overview.md` for a description of core features of the Transmissions framework.
