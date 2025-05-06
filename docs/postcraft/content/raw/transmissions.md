@@ -4,6 +4,10 @@ Silly. The other day I moved some tests out of the way temporarily, forgot to pu
 
 Good prompt for a refactor.
 
+interesting :
+
+LOG_LEVEL=debug TRACE=1 ./trans config-setting-target tests/applications/config-setting-target
+
 **HERE**
 The app has :
 
@@ -38,7 +42,7 @@ Order of precedence,  :
 
 
 
-### Application
+### App
 
 * a runnable set of transmissions
 

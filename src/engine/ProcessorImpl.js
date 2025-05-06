@@ -8,11 +8,17 @@ class ProcessorImpl extends EventEmitter {
     constructor(configDataset) {
         super()
         this.configDataset = configDataset
-        this.settingsNode = null // <-- add this line
+        this.settingsNode = null
+        
+        // Initialize empty app property
+        this.app = null
+        
         logger.debug(`ProcessorImpl.constructor : \n${this}`)
-      //  logger.log(`configDataset : ${configDataset}`)
+        
+        // Initialize ProcessorSettings with this processor as parent
         this.settee = new ProcessorSettings(this)
         logger.trace(`   configDataset : ${configDataset}`)
+        
         this.messageQueue = []
         this.processing = false
         this.outputs = []
@@ -96,9 +102,16 @@ class ProcessorImpl extends EventEmitter {
 
     async preProcess(message) {
         logger.debug('ProcessorImpl.preProcess')
-        this.app = message.app
-        logger.trace(`   THIS APP = ${this.app}`)
-
+        
+        // Update app reference and reinitialize settings if app has changed
+        if (this.app !== message.app) {
+            this.app = message.app
+            logger.debug(`   App updated: ${this.app}`)
+            
+            // Re-initialize settings with new app context
+            this.settee = new ProcessorSettings(this)
+        }
+        
         if (message.onProcess) { // Claude
             message.onProcess(this, message)
         }

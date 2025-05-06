@@ -25,6 +25,8 @@ class TransmissionBuilder {
     const transmissionsDataset = app.transmissionsDataset
     const configDataset = app.configDataset
 
+    // Store app reference for use in processor creation
+    this.app = app
 
     // logger.debug(`transmissionsDataset = \n${transmissionsDataset}`)
     const poi = grapoi({ dataset: transmissionsDataset })
@@ -40,7 +42,7 @@ class TransmissionBuilder {
           transmissionID,
           configDataset
         )
-        // logger.reveal(app)
+        // Set app reference on transmission
         transmission.app = app
         transmissions.push(transmission)
       }
@@ -121,11 +123,13 @@ class TransmissionBuilder {
             processorBase.settingsNode = settingsNode
           }
 
-          //  logger.reveal(transmission) ///////////////////////////////////7
+          // Set the app reference on the processor
+          processorBase.app = transmission.app
+
+          // Connect to the transmission's whiteboard
           processorBase.whiteboard = transmission.whiteboard // feels redundant...
           processorBase.x = `X`
           const processorInstance = transmission.register(node.value, processorBase)
-          processorInstance.app = transmission.app
         }
       }
     }

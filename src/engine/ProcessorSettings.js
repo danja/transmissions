@@ -9,14 +9,21 @@ class ProcessorSettings {
     constructor(parent) {
         logger.log(`ProcessorSettings constructor`)
         this.parent = parent
+
+        // Get the app
         logger.debug(`   parent.app = ${parent.app}`)
-        this.appDataset = parent.app?.dataset
-        logger.debug(`   this.appDataset = ${this.appDataset}`)
-        this.transmissionConfig = parent.app?.transmissionConfig
-        //   logger.debug(`this.transmissionConfig = ${this.transmissionConfig}`)
+
+        // Get the target dataset from the app
+        this.appDataset = parent.app?.targetDataset
+        logger.debug(`   this.appDataset (target dataset) = ${this.appDataset}`)
+
+        // Get the transmissions dataset from the app
+        this.transmissionsDataset = parent.app?.transmissionsDataset
+        logger.debug(`   this.transmissionConfig = ${this.transmissionConfig}`)
+
+        // Get the config dataset
         this.configDataset = parent.configDataset
         logger.debug(`   this.configDataset = ${this.configDataset}`)
-        // process.exit()
     }
 
     // rename...to what?
@@ -93,20 +100,30 @@ class ProcessorSettings {
 
     valuesFromDatasetWrapped(dataset, property) {
         if (!dataset) return undefined
-        const ptr = grapoi({ dataset, term: this.settingsNode })
-
-        if (property.equals(ns.trn.rename)) {
-            try {
-                return GrapoiHelpers.listToArray(dataset, this.settingsNode, property)
-            } catch (err) {
-                logger.error(`Error extracting list values for ${property}: ${err}`)
-                return []
-            }
-        }
-
-        // Regular property handling
+        logger.reveal(dataset)
+        logger.log(property)
         try {
 
+            // Ensure dataset is a proper dataset with match method
+
+            if (!dataset.match || typeof dataset.match !== 'function') {
+                logger.warn(`Invalid dataset passed to valuesFromDatasetWrapped: ${typeof dataset}`)
+                process.exit()
+                return []
+            }
+
+            const ptr = grapoi({ dataset, term: this.settingsNode })
+
+            if (property.equals(ns.trn.rename)) {
+                try {
+                    return GrapoiHelpers.listToArray(dataset, this.settingsNode, property)
+                } catch (err) {
+                    logger.error(`Error extracting list values for ${property}: ${err}`)
+                    return []
+                }
+            }
+
+            // Regular property handling
             const value1 = ptr.out(property)
             logger.debug(`   value1 = ${value1.value}`)
 
@@ -118,12 +135,7 @@ class ProcessorSettings {
             const first = this.tryFirst(dataset, value1)
             if (first) {
                 const arr = GrapoiHelpers.listToArray(dataset, this.settingsNode, property)
-                //      logger.log(`\narr = ${arr}`)
-                for (var i = 0; i < arr.length; i++) {
-                    //        logger.log(`\narr[i] = `)
-                    //       logger.reveal(arr[i])
-                }
-                //    return arr
+                // Process any array values if needed
             }
 
             // Process value based on type
@@ -131,7 +143,6 @@ class ProcessorSettings {
                 return [value1.value]
             } else {
                 var values = value1.terms.map(term => term.value)
-                //   logger.reveal(values)
                 return values
             }
         } catch (e) {

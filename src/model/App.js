@@ -65,8 +65,7 @@ class App {
     }
 
     toString() {
-        return `\n *** App ***
-        this =  \n     ${JSON.stringify(this).replaceAll(',', ',\n      ')}`
+        return `\n *** App *** ${logger.reveal(this)}`
     }
 }
 export default App

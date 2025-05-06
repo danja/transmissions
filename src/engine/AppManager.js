@@ -23,35 +23,35 @@ class AppManager {
 
     //  this.#appManager = await this.#appManager.initialize(appName, appPath, subtask, target, options)
     async initialize(options) {
-        logger.log(`\nAppManager.initialize, options = `)
-        logger.vr(options)
-        
+        //  logger.log(`\nAppManager.initialize, options = `)
+        // logger.vr(options)
+
         // Copy options to app
         Object.assign(this.app, options)
-        
+
         // Initialize appResolver with the same options
         this.appResolver = new AppResolver(options)
-        
+
         // Set necessary defaults if not provided
         if (!this.app.path && this.app.appName) {
             // Try to resolve from src/applications/test directory
-            this.app.path = path.join(process.cwd(), 'src', 'applications', 'test', this.app.appName);
-            logger.debug(`Resolved app path to: ${this.app.path}`);
+            this.app.path = path.join(process.cwd(), 'src', 'applications', 'test', this.app.appName)
+            logger.debug(`Resolved app path to: ${this.app.path}`)
         }
-        
+
         // Set default filenames
-        this.app.transmissionFilename = 'transmissions.ttl';
-        this.app.configFilename = 'config.ttl';
-        this.app.moduleSubDir = 'processors';
-        
+        this.app.transmissionFilename = 'transmissions.ttl'
+        this.app.configFilename = 'config.ttl'
+        this.app.moduleSubDir = 'processors'
+
         // Initialize datasets if target directory provided
         if (this.app.targetDir) {
-            this.initTargetDataset(this.app.targetDir)
+            await this.initTargetDataset(this.app.targetDir)
         }
-        
+
         // Initialize module loader
         this.initModuleLoader()
-        
+
         return this
     }
 
@@ -59,7 +59,7 @@ class AppManager {
     async initTargetDataset(targetDir) {
         const tdName = path.join(targetDir, 'tt.ttl')
         logger.debug(`AppManager.initTargetDataset, tdName : ${tdName} `)
-        
+
         try {
             const ru = new RDFUtils()
             this.app.targetDataset = await ru.readDataset(tdName)
@@ -87,16 +87,16 @@ class AppManager {
         const ru = new RDFUtils()
         const tPath = this.getTransmissionsPath()
         logger.debug(`AppManager.buildTransmissions, tPath : ${tPath} `)
-        
+
         try {
             // Try to read the transmissions dataset
             this.app.transmissionsDataset = await ru.readDataset(tPath)
-            
+
             // Get the config path and read the config dataset
             const configPath = this.getConfigPath()
             logger.debug(`AppManager.buildTransmissions, configPath : ${configPath} `)
             this.app.configDataset = await ru.readDataset(configPath)
-            
+
             // Build the transmissions
             return await builder.buildTransmissions(this.app)
         } catch (error) {
@@ -167,44 +167,42 @@ class AppManager {
     getTransmissionsPath() {
         logger.debug(`\nAppManager.getTransmissionsPath`)
 
-        logger.v(this.app)
-
         // Create a default path based on appName
         if (!this.app.path) {
             // Try to resolve from src/applications
-            const appPath = path.join(process.cwd(), 'src', 'applications', 'test', this.app.appName);
-            this.app.path = appPath;
-            logger.debug(`Resolved app path to: ${appPath}`);
+            const appPath = path.join(process.cwd(), 'src', 'applications', 'test', this.app.appName)
+            this.app.path = appPath
+            logger.debug(`Resolved app path to: ${appPath}`)
         }
 
         // We need both transmissionFilename and a path to work with
         if (!this.app.transmissionFilename) {
-            this.app.transmissionFilename = 'transmissions.ttl';
+            this.app.transmissionFilename = 'transmissions.ttl'
         }
 
-        return path.join(this.app.path, this.app.transmissionFilename);
+        return path.join(this.app.path, this.app.transmissionFilename)
     }
 
     getConfigPath() {
         logger.debug(`\nAppManager.getConfigPath`)
-        
+
         // Make sure we have a configFilename
         if (!this.app.configFilename) {
-            this.app.configFilename = 'config.ttl';
+            this.app.configFilename = 'config.ttl'
         }
-        
-        return path.join(this.app.path, this.app.configFilename);
+
+        return path.join(this.app.path, this.app.configFilename)
     }
 
     getModulePath() {
         logger.debug(`AppManager.getModulePath`)
-        
+
         // Default moduleSubDir if not set
         if (!this.app.moduleSubDir) {
-            this.app.moduleSubDir = 'processors';
+            this.app.moduleSubDir = 'processors'
         }
-        
-        return path.join(this.app.path, this.app.moduleSubDir);
+
+        return path.join(this.app.path, this.app.moduleSubDir)
     }
 
     async listApps() {

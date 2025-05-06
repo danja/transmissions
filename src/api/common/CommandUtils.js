@@ -22,25 +22,22 @@ class CommandUtils {
 
         logger.debug('CommandUtils.handleOptions')
         logger.debug(`${this}`)
-        // logger.reveal(options)
-        //        process.exit()
 
         var app = options.app
         var target = options.target
 
+        // Resolve target path if it's relative
         if (target && !target.startsWith('/')) {
             target = path.join(process.cwd(), target)
         }
 
-        if (!app.startsWith('/') && !app.startsWith('.')) {
+        // Resolve app path if it's not absolute or relative
+        if (app && !app.startsWith('/') && !app.startsWith('.')) {
             app = path.join(process.cwd(), app)
         }
+        
         logger.debug(`CommandUtils.handleOptions, pre-split, app = ${app}`)
         var { appName, appPath, subtask } = CommandUtils.splitName(app)
-        //    if (target) { // TODO refactor
-        //      appPath = path.join(target, appName) // target
-        //    target = path.join(appPath, appName)
-        // }
 
         logger.debug(`\n
     after split :
@@ -53,7 +50,7 @@ class CommandUtils {
             appName: appName,
             appPath: appPath,
             subtask: subtask,
-            targetBaseDir: target,
+            targetDir: target,  // Changed from targetBaseDir to targetDir to match variable used in AppManager
             modulePath: options.modulePath,
             dataPath: options.dataPath,
             verbose: options.verbose,
