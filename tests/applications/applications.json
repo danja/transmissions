@@ -3,7 +3,7 @@
         "command": "./trans nop",
         "label": "nop",
         "description": "minimal transmission",
-        "requiredMatchCount": 4
+        "requiredMatchCount": 3
     },
     {
         "command": "./trans config-setting",

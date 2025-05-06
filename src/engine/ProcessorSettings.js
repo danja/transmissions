@@ -16,7 +16,7 @@ class ProcessorSettings {
         //   logger.debug(`this.transmissionConfig = ${this.transmissionConfig}`)
         this.configDataset = parent.configDataset
         logger.debug(`   this.configDataset = ${this.configDataset}`)
-// process.exit()
+        // process.exit()
     }
 
     // rename...to what?
@@ -45,24 +45,36 @@ class ProcessorSettings {
         //  const appDataset = this.config.app.dataset; // TODO can we see app?
 
         var dataset = this.appDataset
-        logger.debug(`    * looking in APP dataset (tt.ttl)`)
-        logger.trace(`${logger.shorter(dataset)}`)
-        var values = this.valuesFromDataset(dataset, property)
-        if (values) return values
+        if (dataset) {
+            logger.debug(`    * looking in APP dataset (tt.ttl)`)
+            logger.trace(`${logger.shorter(dataset.toString())}`)
+            var values = this.valuesFromDataset(dataset, property)
+            if (values) return values
+        } else {
+            logger.debug(`    * APP dataset not available`)
+        }
 
         // Check the transmission config (transmissions.ttl)
         dataset = this.transmissionConfig
-        logger.debug(`    * looking in TRANSMISSIONS dataset (transmissions.ttl)`)
-        logger.trace(`${logger.shorter(dataset)}`)
-        var values = this.valuesFromDataset(dataset, property)
-        if (values) return values
+        if (dataset) {
+            logger.debug(`    * looking in TRANSMISSIONS dataset (transmissions.ttl)`)
+            logger.trace(`${logger.shorter(dataset)}`)
+            var values = this.valuesFromDataset(dataset, property)
+            if (values) return values
+        } else {
+            logger.debug(`    * TRANSMISSIONS dataset not available`)
+        }
 
         // check the general config (config.ttl)
         dataset = this.configDataset
-        logger.debug(`    * looking in CONFIG dataset (config.ttl)`)
-       // logger.log(`${logger.shorter(dataset)}`)
-        var values = this.valuesFromDataset(dataset, property)
-        if (values) return values
+        if (dataset) {
+            logger.debug(`    * looking in CONFIG dataset (config.ttl)`)
+            // logger.log(`${logger.shorter(dataset)}`)
+            var values = this.valuesFromDataset(dataset, property)
+            if (values) return values
+        } else {
+            logger.debug(`    * CONFIG dataset not available`)
+        }
 
         return fallback ? [fallback] : []
     }

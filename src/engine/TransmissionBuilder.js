@@ -160,13 +160,13 @@ class TransmissionBuilder {
   }
 
   async createProcessor(type, configDataset) {
-    // REFACTOR HERE
-    // const config = configDataset.dataset
     logger.debug(`\n\nTransmissionBuilder.createProcessor, config = ${configDataset}`)
 
     const coreProcessor = AbstractProcessorFactory.createProcessor(type, configDataset)
     if (coreProcessor) {
       coreProcessor.configDataset = configDataset
+      // Make sure the transmissionConfig is set correctly
+      coreProcessor.transmissionConfig = this.app.transmissionsDataset
       return coreProcessor
     }
 
@@ -180,11 +180,12 @@ class TransmissionBuilder {
       logger.debug(`Module loaded successfully: ${shortName}`)
       const moduleProcessor = new ProcessorClass.default(configDataset.dataset)
       moduleProcessor.configDataset = configDataset
+      moduleProcessor.transmissionConfig = this.app.transmissionsDataset
+      return moduleProcessor
     } catch (error) {
       logger.error(`TransmissionBuilder.createProcessor, failed to load ${type?.value} : ${error.message}`)
-      process.exit(1)
+      throw new Error(`Failed to load processor module: ${error.message}`)
     }
-    return moduleProcessor
   }
 
 
