@@ -3,7 +3,6 @@ import grapoi from 'grapoi'
 import ns from '../utils/ns.js'
 import logger from '../utils/Logger.js'
 import GrapoiHelpers from '../utils/GrapoiHelpers.js'
-import { Dataset } from 'rdf-ext'
 
 class ProcessorSettings {
     constructor(parent) {
@@ -51,9 +50,6 @@ class ProcessorSettings {
             return fallback ? [fallback] : []
         }
 
-        //   this.appDataset = this.parent.app?.dataset
-        //  const appDataset = this.config.app.dataset; // TODO can we see app?
-
         var dataset = this.app.datasets['target']
         if (dataset) {
             logger.debug(`    * looking in TARGET dataset (tt.ttl)`)
@@ -68,7 +64,7 @@ class ProcessorSettings {
         dataset = this.app.datasets['transmissions']
         if (dataset) {
             logger.debug(`    * looking in TRANSMISSIONS dataset (transmissions.ttl)`)
-            logger.trace(`${logger.shorter(dataset)}`)
+            logger.log(`${logger.reveal(dataset)}`)
             var values = this.valuesFromDataset(dataset, property)
             if (values) return values
         } else {
@@ -89,38 +85,24 @@ class ProcessorSettings {
         return fallback ? [fallback] : []
     }
 
-    valuesFromDataset(dataset, property) { // TODO refactor
-        if (!dataset || !(dataset instanceof Dataset)) {
-            logger.error('Invalid dataset passed to valuesFromDataset')
-            return undefined
-        }
-        logger.debug('   ProcessorSettings.valuesFromDataset')
-        const values = this.valuesFromDatasetWrapped(dataset, property)
-        if (values && values.length > 0) {
-            logger.debug(`   values = 
-    ${values}`)
-            return values
-        }
-        logger.debug('    (not found)')
-        return undefined
-    }
-
-    valuesFromDatasetWrapped(dataset, property) {
-        if (!dataset) return undefined
-        //  logger.vr(dataset)
-        // logger.log(property)
+    /**
+     * Retrieves values for a given property from a dataset.
+     * Handles both single values and RDF lists.
+     * @param {Dataset} dataset - The RDF dataset to query
+     * @param {Term} property - The property to retrieve values for
+     * @returns {Array} - Array of values, empty array if none found
+     */
+    getValuesFromDataset(dataset, property) {
+        if (!dataset) return []
+        
         try {
-
-            // Ensure dataset is a proper dataset with match method
-
-            if (!dataset.match || typeof dataset.match !== 'function') {
-                logger.warn(`Invalid dataset passed to valuesFromDatasetWrapped: ${typeof dataset}`)
-                process.exit()
+            const ptr = grapoi({ dataset, term: this.settingsNode })
+            if (!ptr.dataset.match) {
+                logger.debug('No match found in dataset')
                 return []
             }
 
-            const ptr = grapoi({ dataset, term: this.settingsNode })
-
+            // Handle special case for rename property
             if (property.equals(ns.trn.rename)) {
                 try {
                     return GrapoiHelpers.listToArray(dataset, this.settingsNode, property)
@@ -130,28 +112,24 @@ class ProcessorSettings {
                 }
             }
 
-            // Regular property handling
-            const value1 = ptr.out(property)
-            logger.debug(`   value1 = ${value1.value}`)
-
-            // Check if property exists but doesn't have value1
-            if (value1.terms.length === 0) {
+            // Get the property value(s)
+            const value = ptr.out(property)
+            if (value.terms.length === 0) {
                 return []
             }
 
-            const first = this.tryFirst(dataset, value1)
-            if (first) {
-                const arr = GrapoiHelpers.listToArray(dataset, this.settingsNode, property)
-                // Process any array values if needed
+            // Check if this is an RDF list
+            const first = this.tryFirst(dataset, value)
+            if (first && first.terms.length > 0) {
+                return GrapoiHelpers.listToArray(dataset, this.settingsNode, property)
             }
 
-            // Process value based on type
-            if (value1.terms.length === 1) {
-                return [value1.value]
-            } else {
-                var values = value1.terms.map(term => term.value)
-                return values
+            // Handle single or multiple values
+            if (value.terms.length === 1) {
+                return [value.value]
             }
+            return value.terms.map(term => term.value)
+
         } catch (e) {
             logger.error(`Error getting values for ${property}: ${e}`)
             return []
