@@ -21,9 +21,11 @@ class TransmissionBuilder {
   }
 
   async buildTransmissions(app) {
-        logger.debug(`\nTransmissionBuilder.buildTransmissions`)
+    logger.debug(`\nTransmissionBuilder.buildTransmissions`)
     const transmissionsDataset = app.transmissionsDataset
     const configDataset = app.configDataset
+
+
 
     // Store app reference for use in processor creation
     this.app = app
@@ -52,7 +54,7 @@ class TransmissionBuilder {
 
   async constructTransmission(transmissionsDataset, transmissionID, configDataset) {
     // REFACTORHERE
-   // const processorsConfig = configDataset // .dataset
+    // const processorsConfig = configDataset // .dataset
 
     logger.debug(`\nTransmissionBuilder.constructTransmission`)
 

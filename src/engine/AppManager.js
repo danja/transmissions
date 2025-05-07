@@ -63,8 +63,8 @@ class AppManager {
         logger.debug(`\nAppManager.buildTransmissions **************************************** `)
 
         // Create a builder with our module loader and app resolver
-        const builder = new TransmissionBuilder(this.moduleLoader, this.appResolver)
-
+        const builder = new TransmissionBuilder(this.moduleLoader, this.app)
+        return await builder.buildTransmissions(this.app)
         /*
         // Read the transmissions dataset
         const ru = new RDFUtils() // TODO REMOVE

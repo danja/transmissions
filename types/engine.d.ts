@@ -43,31 +43,31 @@ export interface AppResolver {
 
 export interface TransmissionBuilder {
   moduleLoader: ModuleLoader;
-  app: AppResolver;
+  app: Application;
   transmissionCache: Map<string, Transmission>;
   MAX_NESTING_DEPTH: number;
   currentDepth: number;
 
-  buildTransmissions(transmissionConfig: Dataset, processorsConfig: Dataset): Promise<Transmission[]>;
-  constructTransmission(transmissionConfig: Dataset, transmissionID: Term, processorsConfig: Dataset): Promise<Transmission>;
-  createNodes(transmission: Transmission, pipenodes: Term[], transmissionConfig: Dataset, processorsConfig: Dataset): Promise<void>;
+  buildTransmissions(app: Application): Promise<Transmission[]>;
+  constructTransmission(transmissionsDataset: Dataset, transmissionID: Term, configDataset: Dataset): Promise<Transmission>;
+  createNodes(transmission: Transmission, pipenodes: Term[], transmissionsDataset: Dataset, configDataset: Dataset): Promise<void>;
   connectNodes(transmission: Transmission, pipenodes: Term[]): Promise<void>;
-  createProcessor(type: Term, config: ProcessorConfig): Promise<Processor>;
-  isTransmissionReference(transmissionConfig: Dataset, processorType: Term): boolean;
-  getPipeNodes(transmissionConfig: Dataset, transmissionID: Term): Term[];
+  createProcessor(type: Term, configDataset: Dataset): Promise<Processor>;
+  isTransmissionReference(transmissionsDataset: Dataset, processorType: Term): boolean;
+  getPipeNodes(transmissionsDataset: Dataset, transmissionID: Term): Term[];
 }
 
 export interface Transmission {
   id: string;
-  label?: string;
+  label: string;
   comment?: string;
   processors: Record<string, Processor | Transmission>;
   connectors: Connector[];
   parent: Transmission | null;
   children: Set<Transmission>;
   path: string[];
-  app?: any;
-  whiteboard?: any;
+  app: Application;
+  whiteboard: Whiteboard;
 
   process(message: ProcessorMessage): Promise<ProcessorMessage>;
   register(processorName: string, instance: Processor | Transmission): Processor | Transmission;
@@ -101,21 +101,37 @@ export interface ModuleLoader {
 }
 
 export interface Application {
-  dataset: Dataset;
-  appNode?: Term;
-  sessionNode?: Term;
+  name: string;
+  path: string;
+  subtask: string | null;
+  rootDir: string | null;
+  dataDir: string | null;
+  targetDir: string | null;
+  targetDataset: Dataset | null;
+  
+  datasets: Datasets;
   
   initDataset(appName: string, sessionNode?: Term): Promise<void>;
   mergeIn(dataset: Dataset): Promise<void>;
 }
 
 export interface ApplicationManager {
-  appResolver: AppResolver;
+  targetDatasets: any;
   moduleLoader: ModuleLoader | null;
   app: Application;
 
-  initialize(appName: string, appPath?: string, subtask?: string, target?: string, flags?: any): Promise<ApplicationManager>;
-  buildTransmissions(transmissionConfigFile?: string, processorsConfigFile?: string, moduleLoader?: ModuleLoader, app?: Application): Promise<Transmission[]>;
+  initApp(options: AppResolverOptions): Promise<ApplicationManager>;
+  initModuleLoader(): Promise<void>;
+  buildTransmissions(): Promise<Transmission[]>;
   start(message?: ProcessorMessage): Promise<ProcessorMessage>;
-  listApplications(): Promise<string[]>;
+  resolveApplicationPath(appName: string): Promise<string>;
+  getConfigPath(): string;
+  getModulePath(): string;
+  resolveDataDir(): string;
+  toMessage(): any;
+  listApps(): Promise<string[]>;
+}
+
+export interface Whiteboard {
+  [key: string]: any;
 }
