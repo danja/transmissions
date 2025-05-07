@@ -1,9 +1,9 @@
-// import Dataset from '@rdfjs/dataset/DatasetCore.js'
 import rdf from 'rdf-ext'
 import grapoi from 'grapoi'
 import ns from '../utils/ns.js'
 import logger from '../utils/Logger.js'
 import GrapoiHelpers from '../utils/GrapoiHelpers.js'
+import { Dataset } from 'rdf-ext'
 
 class ProcessorSettings {
     constructor(parent) {
@@ -54,7 +54,7 @@ class ProcessorSettings {
         //   this.appDataset = this.parent.app?.dataset
         //  const appDataset = this.config.app.dataset; // TODO can we see app?
 
-        var dataset = this.app.targetDataset
+        var dataset = this.app.datasets['target']
         if (dataset) {
             logger.debug(`    * looking in TARGET dataset (tt.ttl)`)
             logger.trace(`${logger.shorter(dataset.toString())}`)
@@ -65,7 +65,7 @@ class ProcessorSettings {
         }
 
         // Check the transmission config (transmissions.ttl)
-        dataset = this.app.transmissionsDataset
+        dataset = this.app.datasets['transmissions']
         if (dataset) {
             logger.debug(`    * looking in TRANSMISSIONS dataset (transmissions.ttl)`)
             logger.trace(`${logger.shorter(dataset)}`)
@@ -76,7 +76,7 @@ class ProcessorSettings {
         }
 
         // check the general config (config.ttl)
-        dataset = this.app.configDataset
+        dataset = this.app.datasets['config']
         if (dataset) {
             logger.debug(`    * looking in CONFIG dataset (config.ttl)`)
             // logger.log(`${logger.shorter(dataset)}`)
@@ -90,6 +90,10 @@ class ProcessorSettings {
     }
 
     valuesFromDataset(dataset, property) { // TODO refactor
+        if (!dataset || !(dataset instanceof Dataset)) {
+            logger.error('Invalid dataset passed to valuesFromDataset')
+            return undefined
+        }
         logger.debug('   ProcessorSettings.valuesFromDataset')
         const values = this.valuesFromDatasetWrapped(dataset, property)
         if (values && values.length > 0) {
