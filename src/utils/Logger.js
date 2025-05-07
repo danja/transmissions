@@ -25,6 +25,24 @@ if (!isBrowser()) {
     }
 }
 
+/**
+ * Resets the log file by truncating it to zero length.
+ */
+logger.resetLogFile = () => {
+    if (!isBrowser() && fs) {
+        try {
+            fs.writeFileSync(logger.logfile, '')
+        } catch (error) {
+            console.error('Error resetting log file:', error)
+        }
+    }
+}
+
+// Reset log file at startup
+if (!isBrowser()) {
+    logger.resetLogFile()
+}
+
 // Fallback chalk for browser
 const browserChalk = {
     cyan: (text) => `%c${text}`,
