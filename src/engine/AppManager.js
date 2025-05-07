@@ -1,7 +1,6 @@
 // AppManager.js
 import path from 'path'
 import fs from 'fs/promises'
-// import _ from 'lodash'
 import logger from '../utils/Logger.js'
 import FSUtils from '../utils/FSUtils.js'
 import RDFUtils from '../utils/RDFUtils.js'
@@ -23,8 +22,8 @@ class AppManager {
 
 
     async initApp(options) {
-        logger.log(`\nAppManager.initApp, options = `)
-        logger.vr(options)
+        logger.log(`\nAppManager.initApp`)
+        //   logger.vr(options)
 
         // Copy options to app
         Object.assign(this.app, options)
@@ -33,21 +32,24 @@ class AppManager {
 
         // in utils, might be needed :         // findInDirectory(dir, targetName, depth = 0) {
 
-        this.app.path = this.resolveApplicationPath(this.app.name)
+        this.app.path = await this.resolveAppPath(options.appName)
         // load the transmissions dataset
-        const transmissionsFilename = path.join(options.appPath, Defaults.transmissionsFilename)
+        const transmissionsFilename = path.join(this.app.path, Defaults.transmissionsFilename)
         await this.app.datasets.loadDataset('transmissions', transmissionsFilename)
 
         // load the config dataset
-        const configFilename = path.join(options.appPath, Defaults.configFilename)
-        await this.app.datasets.loadDataset('transmissions', configFilename)
+        const configFilename = path.join(this.app.path, Defaults.configFilename)
+        await this.app.datasets.loadDataset('config', configFilename)
 
         if (this.app.targetDir) {
             await this.app.datasets.loadDataset('target', this.app.targetDir)
         }
 
+        //    logger.log(`${this.app}`)
+        //  process.exit()
+
         // Initialize module loader
-        this.initModuleLoader()
+        await this.initModuleLoader()
 
         return this
     }
@@ -59,51 +61,23 @@ class AppManager {
         this.moduleLoader = ModuleLoaderFactory.createApplicationLoader(modulePath)
     }
 
-    async buildTransmissions() {
-        logger.debug(`\nAppManager.buildTransmissions **************************************** `)
-
-        // Create a builder with our module loader and app resolver
-        const builder = new TransmissionBuilder(this.moduleLoader, this.app)
-        return await builder.buildTransmissions(this.app)
-        /*
-        // Read the transmissions dataset
-        const ru = new RDFUtils() // TODO REMOVE
-        const tPath = this.getTransmissionsPath()
-        logger.debug(`AppManager.buildTransmissions, tPath : ${tPath} `)
-
-        try {
-            // Try to read the transmissions dataset
-            this.app.transmissionsDataset = await ru.readDataset(tPath)
-
-            // Get the config path and read the config dataset
-            const configPath = this.getConfigPath()
-            logger.debug(`AppManager.buildTransmissions, configPath : ${configPath} `)
-            this.app.configDataset = await ru.readDataset(configPath)
-
-            // Build the transmissions
-            return await builder.buildTransmissions(this.app)
-        } catch (error) {
-            logger.error(`Error building transmissions: ${error.message}`)
-            logger.error(`Could not read dataset from path: ${tPath}`)
-            throw error
-        }
-            */
-    }
 
     async start(message = {}) {
         logger.debug(`\n ||| AppManager.start`)
         message.app = this.app
         logger.debug(`this.app = ${this.app} `)
 
+        const builder = new TransmissionBuilder(this.moduleLoader, this.app)
+        const transmissions = await builder.buildTransmissions(this.app)
 
-        const transmissions = await this.buildTransmissions()
-
-        logger.vr(transmissions)
+        //   logger.vr(transmissions)
+        // process.exit()
         // Get application context
         const contextMessage = this.toMessage()
 
         // Modify the input message in place
         //  _.merge(message, contextMessage)
+        Object.assign(message, contextMessage)
         message.appRunStart = (new Date()).toISOString()
         logger.debug('**************** Message with merged context:', message)
 
@@ -119,7 +93,7 @@ class AppManager {
 
         for (const transmission of transmissions) {
             logger.debug(`transmission = \n${transmission} `)
-            if (!this.appResolver.subtask || this.appResolver.subtask === transmission.label) {
+            if (!this.app.subtask || this.app.subtask === transmission.label) {
                 //     await transmission.process(message)
                 message = await transmission.process(message)
             }
@@ -129,15 +103,16 @@ class AppManager {
         return message //{ success: true }
     }
 
-    async resolveApplicationPath(appName) {
+    async resolveAppPath(appName) {
 
         logger.log(`this.appsDir = ${this.appsDir}`)
 
         const baseDir = this.targetDir || path.join(process.cwd(), Defaults.appsDir)
+        logger.log(baseDir)
 
-        const appPath = await FSUtils.findInDirectory(baseDir, appName)
+        const appPath = await FSUtils.findSubdir(baseDir, appName)
         logger.log(`APP PATH = ${appPath}`)
-        process.exit()
+
 
         if (!appPath) {
             throw new Error(`Could not find 
@@ -169,7 +144,7 @@ class AppManager {
         if (!this.app.moduleSubDir) {
             this.app.moduleSubDir = 'processors'
         }
-
+        //   logger.vr(this.app)
         return path.join(this.app.path, this.app.moduleSubDir)
     }
 

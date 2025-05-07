@@ -7,7 +7,7 @@ import GrapoiHelpers from '../utils/GrapoiHelpers.js'
 
 class ProcessorSettings {
     constructor(parent) {
-        logger.log(`ProcessorSettings constructor`)
+        logger.debug(`ProcessorSettings constructor`)
         this.app = parent.app
         /*
         this.parent = parent
@@ -103,8 +103,8 @@ class ProcessorSettings {
 
     valuesFromDatasetWrapped(dataset, property) {
         if (!dataset) return undefined
-        logger.vr(dataset)
-        logger.log(property)
+        //  logger.vr(dataset)
+        // logger.log(property)
         try {
 
             // Ensure dataset is a proper dataset with match method

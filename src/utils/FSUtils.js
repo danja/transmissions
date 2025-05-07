@@ -4,40 +4,32 @@ import logger from './Logger.js'
 
 class FSUtils {
 
-    static async findInDirectory(dir, targetName, depth = 0) {
-        logger.log(`AppResolver.findInDirectory
+    static async findSubdir(dir, targetName, depth = 0) {
+        logger.trace(`AppResolver.findInDirectory
     dir : ${dir}
     targetName : ${targetName}
     depth : ${depth}`)
         // Check if the directory exists
         if (depth > 3) return null
 
-        try {
-            const entries = await fs.readdir(dir, { withFileTypes: true })
 
-            for (const entry of entries) {
-                if (!entry.isDirectory()) continue
+        const entries = await fs.readdir(dir, { withFileTypes: true })
 
-                const fullPath = path.join(dir, entry.name)
+        for (const entry of entries) {
+            if (!entry.isDirectory()) continue
 
-                // Check if this directory matches
-                if (entry.name === targetName) {
-                    const transmissionsFile = path.join(fullPath, this.transmissionFilename)
-                    try {
-                        await fs.access(transmissionsFile)
-                        return fullPath
-                    } catch {
-                        // Has matching name but no transmissions.ttl
-                    }
-                }
+            const fullPath = path.join(dir, entry.name)
 
-                // Recurse into subdirectories
-                const found = await this.findInDirectory(fullPath, targetName, depth + 1)
-                if (found) return found
+            // Check if this directory matches
+            if (entry.name === targetName) {
+                return fullPath
             }
-        } catch (err) {
-            logger.debug(`Error scanning directory ${dir}: ${err.message}`)
+
+            // Recurse into subdirectories
+            const found = await this.findSubdir(fullPath, targetName, depth + 1)
+            if (found) return found
         }
+
 
         return null
     }

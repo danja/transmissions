@@ -22,8 +22,8 @@ class TransmissionBuilder {
 
   async buildTransmissions(app) {
     logger.debug(`\nTransmissionBuilder.buildTransmissions`)
-    const transmissionsDataset = app.transmissionsDataset
-    const configDataset = app.configDataset
+    const transmissionsDataset = app.datasets.transmissions
+    const configDataset = app.datasets.config
 
 
 
@@ -166,7 +166,8 @@ class TransmissionBuilder {
   }
 
   async createProcessor(type, configDataset) {
-    logger.debug(`\n\nTransmissionBuilder.createProcessor, config = ${configDataset}`)
+    logger.debug(`\n\nTransmissionBuilder.createProcessor`)
+    logger.trace(`config = ${configDataset}`)
 
     const coreProcessor = AbstractProcessorFactory.createProcessor(type, configDataset)
     if (coreProcessor) {
