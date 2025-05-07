@@ -26,8 +26,8 @@ async function main() {
     const commandUtils = new CommandUtils()
 
     console.log(chalk.magentaBright(banner))
-    console.log(chalk.cyan('Usage:'))
-    console.log(chalk.cyanBright('./trans\n'))
+    //  console.log(chalk.cyan('Usage:'))
+    // console.log(chalk.cyanBright('./trans\n'))
     const usageString = `${chalk.cyanBright('./trans [app][.subtask] [options] [target]')}}`
 
     const yargsInstance = yargs(hideBin(process.argv))

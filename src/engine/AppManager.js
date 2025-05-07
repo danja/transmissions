@@ -22,7 +22,7 @@ class AppManager {
 
 
     async initApp(options) {
-        logger.log(`\nAppManager.initApp`)
+        logger.debug(`\nAppManager.initApp`)
         //   logger.vr(options)
 
         // Copy options to app
@@ -94,24 +94,24 @@ class AppManager {
         for (const transmission of transmissions) {
             logger.debug(`transmission = \n${transmission} `)
             if (!this.app.subtask || this.app.subtask === transmission.label) {
-                //     await transmission.process(message)
+
                 message = await transmission.process(message)
+                //   logger.rv(message)
             }
         }
         message.success = true
-        //     logger.reveal(message)
+        // logger.reveal(message)
         return message //{ success: true }
     }
 
     async resolveAppPath(appName) {
 
-        logger.log(`this.appsDir = ${this.appsDir}`)
 
         const baseDir = this.targetDir || path.join(process.cwd(), Defaults.appsDir)
-        logger.log(baseDir)
+        logger.debug(baseDir)
 
         const appPath = await FSUtils.findSubdir(baseDir, appName)
-        logger.log(`APP PATH = ${appPath}`)
+        // logger.log(`APP PATH = ${appPath}`)
 
 
         if (!appPath) {

@@ -434,7 +434,7 @@ logger.v = function (instance, verbose = true) {
  * @param {Object} instance - The object to log.
  * @param {boolean} [verbose=true] - Whether to include detailed information.
  */
-logger.vr = function (instance) {
+logger.rv = function (instance) {
     logger.revealDatasets = true
     const output = logger.reveal(instance, true, true)
     logger.log(output)

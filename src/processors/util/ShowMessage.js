@@ -13,7 +13,7 @@ class ShowMessage extends Processor {
         //   if (this.verbose) logger.log("\n***  Show Message ***")
 
         logger.log(chalk.bgYellow.black('\nMessage vvvvvvvvvvvvvvvvvvvvvvvv'))
-        logger.reveal(message)
+        logger.rv(message)
         logger.log(chalk.bgYellow.black('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^'))
         //     logger.log("***  Trace")
         //   console.trace() // move to Logger, only when debugging

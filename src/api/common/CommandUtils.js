@@ -98,7 +98,7 @@ class CommandUtils {
 
     static async parseAppArg(appArg) {
 
-        logger.log(`APPARG = ${appArg}`)
+        logger.debug(`CommandUtils.parseAppArg, appArg = ${appArg}`)
         if (!path.isAbsolute(appArg)) { // is relative 
             appArg = path.join(process.cwd(), Defaults.appsDir, appArg)
         }
