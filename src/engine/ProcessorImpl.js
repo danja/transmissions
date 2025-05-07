@@ -5,20 +5,20 @@ import SysUtils from '../utils/SysUtils.js'
 import ProcessorSettings from './ProcessorSettings.js'
 
 class ProcessorImpl extends EventEmitter {
-    constructor(configDataset) {
+    constructor(configDataset) { // TODO pass app instead
         super()
         this.configDataset = configDataset
         this.settingsNode = null
-        
+
         // Initialize empty app property
-        this.app = null
-        
+        this.app = {}
+
         logger.debug(`ProcessorImpl.constructor : \n${this}`)
-        
+
         // Initialize ProcessorSettings with this processor as parent
-        this.settee = new ProcessorSettings(this)
+        this.settee = new ProcessorSettings(this.app)
         logger.trace(`   configDataset : ${configDataset}`)
-        
+
         this.messageQueue = []
         this.processing = false
         this.outputs = []
@@ -61,7 +61,7 @@ class ProcessorImpl extends EventEmitter {
             logger.debug(`   property found in message : ${value}`)
             return value
         }
-      //  logger.reveal(this.message)
+        //  logger.reveal(this.message)
 
 
 
@@ -102,16 +102,16 @@ class ProcessorImpl extends EventEmitter {
 
     async preProcess(message) {
         logger.debug('ProcessorImpl.preProcess')
-        
+
         // Update app reference and reinitialize settings if app has changed
         if (this.app !== message.app) {
             this.app = message.app
             logger.debug(`   App updated: ${this.app}`)
-            
+
             // Re-initialize settings with new app context
             this.settee = new ProcessorSettings(this)
         }
-        
+
         if (message.onProcess) { // Claude
             message.onProcess(this, message)
         }

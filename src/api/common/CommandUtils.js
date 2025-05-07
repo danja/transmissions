@@ -34,7 +34,7 @@ class CommandUtils {
         logger.debug(`CommandUtils.handleOptions, pre-split, options.app = ${options.app}`)
         var { appName, appPath, subtask } = await CommandUtils.parseAppArg(options.app)
 
-        logger.debug(`\n
+        logger.debug(`\n // TODO this shows the wrong value for appPath, later corrected by AppManager...
     after split :
     appName = ${appName}
     appPath = ${appPath}

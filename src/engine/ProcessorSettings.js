@@ -5,9 +5,9 @@ import logger from '../utils/Logger.js'
 import GrapoiHelpers from '../utils/GrapoiHelpers.js'
 
 class ProcessorSettings {
-    constructor(parent) {
+    constructor(app) {
         logger.debug(`ProcessorSettings constructor`)
-        this.app = parent.app
+        this.app = app
         /*
         this.parent = parent
 
@@ -54,8 +54,8 @@ class ProcessorSettings {
         if (dataset) {
             logger.debug(`    * looking in TARGET dataset (tt.ttl)`)
             logger.trace(`${logger.shorter(dataset.toString())}`)
-            var values = this.valuesFromDataset(dataset, property)
-            if (values) return values
+            var values = this.getValuesFromDataset(dataset, property)
+            if (values && values.length > 0) return values
         } else {
             logger.debug(`    * TARGET dataset not available`)
         }
@@ -65,8 +65,8 @@ class ProcessorSettings {
         if (dataset) {
             logger.debug(`    * looking in TRANSMISSIONS dataset (transmissions.ttl)`)
             logger.log(`${logger.reveal(dataset)}`)
-            var values = this.valuesFromDataset(dataset, property)
-            if (values) return values
+            var values = this.getValuesFromDataset(dataset, property)
+            if (values && values.length > 0) return values
         } else {
             logger.debug(`    * TRANSMISSIONS dataset not available`)
         }
@@ -75,9 +75,9 @@ class ProcessorSettings {
         dataset = this.app.datasets['config']
         if (dataset) {
             logger.debug(`    * looking in CONFIG dataset (config.ttl)`)
-            // logger.log(`${logger.shorter(dataset)}`)
-            var values = this.valuesFromDataset(dataset, property)
-            if (values) return values
+            logger.rv(dataset)
+            var values = this.getValuesFromDataset(dataset, property)
+            if (values && values.length > 0) return values
         } else {
             logger.debug(`    * CONFIG dataset not available`)
         }
@@ -94,7 +94,7 @@ class ProcessorSettings {
      */
     getValuesFromDataset(dataset, property) {
         if (!dataset) return []
-        
+
         try {
             const ptr = grapoi({ dataset, term: this.settingsNode })
             if (!ptr.dataset.match) {
