@@ -161,11 +161,11 @@ class TransmissionBuilder {
     logger.debug(`\n\nTransmissionBuilder.createProcessor`)
     logger.trace(`config = ${configDataset}`)
 
-    const coreProcessor = AbstractProcessorFactory.createProcessor(type, configDataset)
+    const coreProcessor = AbstractProcessorFactory.createProcessor(type, this.app)
     if (coreProcessor) {
-      coreProcessor.configDataset = configDataset
+      coreProcessor.configDataset = this.app.datasets.dataset('config')
       // Make sure the transmissionConfig is set correctly
-      coreProcessor.transmissionConfig = this.app.transmissionsDataset
+      coreProcessor.transmissionConfig = this.app.datasets.dataset('transmissions')
       return coreProcessor
     }
 

@@ -21,11 +21,11 @@ class Datasets {
             const ru = new RDFUtils()
             const dataset = await ru.readDataset(path)
             this.datasets.set(label, dataset)
-            logger.log(`Datasets.loadDataset : loaded dataset ${label} from ${path}`)
+            logger.debug(`Datasets.loadDataset : loaded dataset ${label} from ${path}`)
             return dataset
         } catch (error) {
             logger.warn(`Error loading dataset ${label} from ${path}: ${error.message}`)
-            logger.debug('Creating empty dataset instead')
+            logger.warn('Creating empty dataset instead')
             const emptyDataset = RDFUtils.createEmptyDataset()
             this.datasets.set(label, emptyDataset)
             return emptyDataset
@@ -35,14 +35,14 @@ class Datasets {
     dataset(label) {
         const dataset = this.datasets.get(label)
         if (!dataset) {
-            logger.warn(`No dataset found for label: ${label}`)
+            logger.warn(`No dataset found for label: ${label}, returning an empty dataset`)
             return RDFUtils.createEmptyDataset()
         }
         return dataset
     }
 
     toString() {
-        return `*** Datasets *** ${logger.reveal(this)}`
+        return `*** Datasets *** ${logger.reveal(this.datasets)}`
     }
 }
 

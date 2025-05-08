@@ -2,10 +2,12 @@ import rdf from 'rdf-ext'
 
 import ns from '../utils/ns.js'
 import logger from '../utils/Logger.js'
+import Datasets from './Datasets.js'
 // import Transmission from './Transmission.js'
 
 class App {
     constructor() {
+        this.datasets = new Datasets()
         /*
         this.targetDataset = rdf.dataset()
         this.dummy = 'dummy'
@@ -22,11 +24,13 @@ class App {
 */
     }
 
+    static #instance = null;
+
     static instance() {
-        if (!App.instance) {
-            App.instance = new App()
+        if (!App.#instance) {
+            App.#instance = new App()
         }
-        return App.instance
+        return App.#instance
     }
 
     async initDataset(appName, sessionNode = rdf.blankNode()) {
@@ -73,7 +77,13 @@ class App {
     }
 
     toString() {
-        return `\n *** App *** ${logger.reveal(this)}`
+        const datasetsInfo = Array.from(this.datasets.datasets.entries())
+            .map(([label, dataset]) => `${label}: ${dataset.size} triples`)
+            .join(',\n      ')
+        const otherProps = JSON.stringify(this)
+            .replace(/"datasets":{.*?}/, '') // Remove the datasets object
+            .replaceAll(',', ',\n      ')
+        return `\n *** App *** ${otherProps}\n      datasets: {\n      ${datasetsInfo}\n      }`
     }
 }
 export default App

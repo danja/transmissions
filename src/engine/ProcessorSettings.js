@@ -32,8 +32,11 @@ class ProcessorSettings {
             return fallback ? [fallback] : []
         }
 
-        logger.log(`    this.app.datasets = ${this.app.datasets}`)
-        process.exit()
+        //   logger.log(`    this.app = ${this.app}`)
+        // logger.log(`    this.app.datasets = ${this.app.datasets}`)
+        //  process.exit()
+
+
         var dataset = this.app.datasets.dataset('target')
         if (dataset) {
             logger.debug(`    * looking in TARGET dataset (tt.ttl)`)

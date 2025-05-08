@@ -15,20 +15,17 @@ import Defaults from '../api/common/Defaults.js'
 
 class AppManager {
     constructor() {
-        this.targetDatasets
         this.moduleLoader = null
-        this.app = App.instance()
+        this.app = null
     }
 
 
     async initApp(options) {
         logger.debug(`\nAppManager.initApp`)
         //   logger.vr(options)
-
+        this.app = App.instance()
         // Copy options to app
-        Object.assign(this.app, options)
-
-        this.app.datasets = new Datasets()
+        Object.assign(this.app, options) // TODO better just calculated options
 
         // in utils, might be needed :         // findInDirectory(dir, targetName, depth = 0) {
 
@@ -45,8 +42,8 @@ class AppManager {
             await this.app.datasets.loadDataset('target', this.app.targetDir)
         }
 
-        //    logger.log(`${this.app}`)
-        //  process.exit()
+        //logger.log(`THIS APP = ${this.app}`)
+        //process.exit()
 
         // Initialize module loader
         await this.initModuleLoader()
@@ -115,14 +112,14 @@ class AppManager {
         logger.debug(baseDir)
 
         const appPath = await FSUtils.findSubdir(baseDir, appName)
-        // logger.log(`APP PATH = ${appPath}`)
+        // logger.log(`APP PATH = ${ appPath }`)
 
 
         if (!appPath) {
             throw new Error(`Could not find 
                     appName : ${appName}
                     baseDir : ${baseDir}
-    (check the app dir is on local path and contains at least about.md and transmissions.ttl)`)
+            (check the app dir is on local path and contains at least about.md and transmissions.ttl)`)
         }
 
         return appPath
@@ -195,7 +192,7 @@ class AppManager {
 
     toString() {
         return `\n *** AppManager ***
-    this =  \n     ${JSON.stringify(this).replaceAll(',', ',\n      ')} `
+        this =  \n     ${JSON.stringify(this).replaceAll(',', ',\n      ')} `
     }
 }
 
