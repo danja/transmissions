@@ -40,7 +40,7 @@ class ProcessorSettings {
         var dataset = this.app.datasets.dataset('target')
         if (dataset) {
             logger.debug(`    * looking in TARGET dataset (tt.ttl)`)
-            logger.trace(`${logger.shorter(dataset.toString())}`)
+            logger.debug(`DS = ${logger.shorter(dataset.toString())}`)
             var values = this.getValuesFromDataset(dataset, property)
             if (values && values.length > 0) return values
         } else {

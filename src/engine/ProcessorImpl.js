@@ -32,9 +32,6 @@ class ProcessorImpl extends EventEmitter {
             logger.debug(`   property found in message : ${value}`)
             return value
         }
-        //  logger.reveal(this.message)
-
-
 
         // If not found in message, check the settings
         logger.debug(`   this.settingsNode = ${this.settingsNode?.value}`)

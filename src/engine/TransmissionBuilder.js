@@ -25,7 +25,7 @@ class TransmissionBuilder {
     const transmissionsDataset = await this.app.datasets.dataset('transmissions')
     const configDataset = await this.app.datasets.dataset('config')
 
-    logger.debug(`transmissionsDataset = \n${transmissionsDataset}`)
+    logger.trace(`transmissionsDataset = \n${transmissionsDataset}`)
     const poi = new grapoi({ dataset: transmissionsDataset })
     const transmissions = []
 
