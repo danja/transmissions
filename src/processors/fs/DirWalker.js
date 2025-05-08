@@ -19,16 +19,13 @@ class DirWalker extends Processor {
         logger.trace(`\nDirWalker.process, this = ${this}`)
         message.done = false
 
-        var sourceDir = this.getProperty(ns.trn.sourceDir)
+        //logger.v(this.app)
+        //  process.exit()
+
+        var sourceDir = this.getProperty(ns.trn.sourceDir, './')
         logger.trace(`--------------- DirWalker sourceDir from config = ${sourceDir}`)
 
-        if (!message.sourceDir) {
-            message.sourceDir = sourceDir
-        }
 
-        if (!sourceDir) {
-            sourceDir = message.workingDir
-        }
 
         this.includePatterns = this.getProperty(ns.trn.includePattern, ['*.md', '*.js', '*.json', '*.ttl'])
         this.excludePatterns = this.getProperty(ns.trn.excludePattern, ['*.', '.git', 'node_modules'])
@@ -37,19 +34,23 @@ class DirWalker extends Processor {
         logger.trace('DirWalker, message.rootDir = ' + message.rootDir)
         logger.trace('DirWalker, message.sourceDir = ' + message.sourceDir)
 
-        //    logger.log(`DirWalker.sourceDir = ${sourceDir}`)
-        //  logger.reveal(sourceDir)
+        logger.log(`DirWalker.sourceDir = ${sourceDir}`)
+
+        logger.log(`APP = ${this.app}`)
+
         let dirPath
         if (path.isAbsolute(sourceDir)) {
             dirPath = sourceDir
         } else {
+            /*
             if (message.targetPath) {
                 dirPath = path.join(message.targetPath, sourceDir)
             } else {
                 dirPath = path.join(message.rootDir, sourceDir)
-            }
+            }*/
+            dirPath = path.join(this.app.path, sourceDir)
         }
-        logger.trace(`DirWalker resolved dirPath = ${dirPath}`)
+        logger.debug(`DirWalker resolved dirPath = ${dirPath}`)
 
         await this.walkDirectory(dirPath, message)
 
@@ -96,7 +97,9 @@ class DirWalker extends Processor {
 
         for (const entry of entries) {
             const fullPath = path.join(dir, entry.name)
-            const targetPath = super.getProperty(ns.trn.targetPath, this.message.workingDir)
+
+            logger.log(`APP = ${this.app}`)
+            const targetPath = super.getProperty(ns.trn.targetPath, this.app.path)
             //   if (entry.isDirectory() && !this.excludePatterns.includes(entry.name[0])) {
 
             // should be dir? what about added includes?
@@ -113,7 +116,7 @@ class DirWalker extends Processor {
                     message.subdir = path.dirname(path.relative(targetPath, fullPath)).split(path.sep)[1]
                     //     message.subdir = path.dirname(path.relative(message.targetPath, fullPath)).split(path.sep)[1]
                     message.fullPath = fullPath
-                    message.filepath = path.relative(baseMessage.targetPath || baseMessage.rootDir, fullPath)
+                    message.filepath = path.relative(targetPath, fullPath)
                     message.done = false
                     message.count = this.count++
 

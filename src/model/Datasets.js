@@ -11,7 +11,7 @@ class Datasets {
         logger.debug(`Datasets.loadDataset: label = ${label}, path = ${path}`)
 
         if (!path) {
-            logger.warn(`No file path provided for ${label}, creating empty dataset`)
+            logger.debug(`No file path provided for ${label}, creating empty dataset`)
             const emptyDataset = RDFUtils.createEmptyDataset()
             this.datasets.set(label, emptyDataset)
             return emptyDataset
@@ -24,8 +24,8 @@ class Datasets {
             logger.debug(`      dataset loaded.`)
             return dataset
         } catch (error) {
-            logger.warn(`Error loading dataset ${label} from ${path}: ${error.message}`)
-            logger.warn('Creating empty dataset instead')
+            logger.debug(`Error loading dataset ${label} from ${path}: ${error.message}`)
+            logger.debug('Creating empty dataset instead')
             const emptyDataset = RDFUtils.createEmptyDataset()
             this.datasets.set(label, emptyDataset)
             return emptyDataset
@@ -35,7 +35,7 @@ class Datasets {
     dataset(label) {
         const dataset = this.datasets.get(label)
         if (!dataset) {
-            logger.warn(`No dataset found for label: ${label}, returning an empty dataset`)
+            logger.debug(`No dataset found for label: ${label}, returning an empty dataset`)
             return RDFUtils.createEmptyDataset()
         }
         return dataset

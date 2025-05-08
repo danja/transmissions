@@ -32,8 +32,8 @@ class ProcessorSettings {
             return fallback ? [fallback] : []
         }
 
-        //   logger.log(`    this.app = ${this.app}`)
-        // logger.log(`    this.app.datasets = ${this.app.datasets}`)
+        //  logger.log(`    this.app = ${this.app}`)
+        //logger.log(`    this.app.datasets = ${this.app.datasets}`)
         //  process.exit()
 
 

@@ -52,7 +52,7 @@ class TestSettings extends Processor {
 
         // property values pulled from message | config settings | fallback
 
-        message.settingValue = this.getProperty(ns.trn.theSettingProperty)
+        message.settingValue = await this.getProperty(ns.trn.theSettingProperty)
 
         logger.log(`\nmessage.settingValue ${message.settingValue}`)
 

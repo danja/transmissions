@@ -4,4 +4,4 @@
 
 
 :dirWalker a :ConfigSet ;
-    :sourcePath "." .
+    :sourceDir "./" .

@@ -38,9 +38,12 @@ class AppManager {
         const configFilename = path.join(this.app.path, Defaults.configFilename)
         await this.app.datasets.loadDataset('config', configFilename)
 
+        logger.debug(`this.app = ${this.app}`)
+        //process.exit()
+
         if (this.app.targetDir) {
             const targetFilename = path.join(this.app.targetDir, Defaults.targetFilename)
-            await this.app.datasets.loadDataset('target', this.app.targetFilename)
+            await this.app.datasets.loadDataset('target', targetFilename)
         }
 
         //logger.log(`THIS APP = ${this.app}`)

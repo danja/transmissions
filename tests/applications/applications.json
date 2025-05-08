@@ -1,7 +1,7 @@
 [
     {
         "command": "./trans nop",
-        "label": "nop",
+        "label": "./trans nop",
         "description": "minimal transmission",
         "requiredMatchCount": 4
     },

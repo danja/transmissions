@@ -37,8 +37,8 @@ class ProcessorImpl extends EventEmitter {
         logger.debug(`   this.settingsNode = ${this.settingsNode?.value}`)
         logger.debug(`   typeof this.settingsNode = ${typeof this.settingsNode}`)
 
-        this.settee.configDataset = this.configDataset // TODO probably not needed
-        logger.trace(`   this.configDataset : ${this.configDataset}`)
+        // this.settee.configDataset = this.configDataset // TODO probably not needed
+        //logger.trace(`   this.configDataset : ${this.configDataset}`)
         // Get values from settings
         const values = this.settee.getValues(this.settingsNode, property, fallback)
 
@@ -68,19 +68,9 @@ class ProcessorImpl extends EventEmitter {
         return undefined
     }
 
-    async preProcess(message) {
+    preProcess(message) {
         logger.debug('ProcessorImpl.preProcess')
 
-        // Update app reference and reinitialize settings if app has changed
-        /*
-        if (this.app !== message.app) {
-            this.app = message.app
-            logger.debug(`   App updated: ${this.app}`)
-
-            // Re-initialize settings with new app context
-            this.settee = new ProcessorSettings(this.app)
-        }
-            */
 
         if (message.onProcess) { // Claude
             message.onProcess(this, message)
@@ -173,7 +163,7 @@ class ProcessorImpl extends EventEmitter {
     async enqueue(message) {
         this.messageQueue.push({ message })
         if (!this.processing) {
-            this.executeQueue()
+            await this.executeQueue()
         }
     }
 
