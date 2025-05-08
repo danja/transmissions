@@ -426,7 +426,7 @@ logger.dataset = function (dataset) {
         return
     }
 
-    logger.log('RDF Dataset:', 'info')
+    logger.log(chalkImpl.blueBright('\n* RDF Dataset *'))
     for (const quad of dataset) {
         logger.log(
             `${chalkImpl.red(logger.shorter(quad.subject.value))} ` +

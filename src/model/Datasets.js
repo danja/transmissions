@@ -4,6 +4,7 @@ import logger from '../utils/Logger.js'
 class Datasets {
 
     constructor() {
+        this.datasets = new Map()
     }
 
     async loadDataset(label, path) {
@@ -12,27 +13,37 @@ class Datasets {
         if (!path) {
             logger.warn(`No file path provided for ${label}, creating empty dataset`)
             const emptyDataset = RDFUtils.createEmptyDataset()
-            this[label] = emptyDataset
+            this.datasets.set(label, emptyDataset)
             return emptyDataset
         }
 
         try {
             const ru = new RDFUtils()
             const dataset = await ru.readDataset(path)
-            this[label] = dataset
+            this.datasets.set(label, dataset)
             logger.log(`Datasets.loadDataset : loaded dataset ${label} from ${path}`)
             return dataset
         } catch (error) {
             logger.warn(`Error loading dataset ${label} from ${path}: ${error.message}`)
             logger.debug('Creating empty dataset instead')
             const emptyDataset = RDFUtils.createEmptyDataset()
-            this[label] = emptyDataset
+            this.datasets.set(label, emptyDataset)
             return emptyDataset
         }
     }
 
-    async dataset(label) {
-        return this[label]
+    dataset(label) {
+        const dataset = this.datasets.get(label)
+        if (!dataset) {
+            logger.warn(`No dataset found for label: ${label}`)
+            return RDFUtils.createEmptyDataset()
+        }
+        return dataset
+    }
+
+    toString() {
+        return `*** Datasets *** ${logger.reveal(this)}`
     }
 }
+
 export default Datasets

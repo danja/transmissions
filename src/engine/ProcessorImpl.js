@@ -5,49 +5,20 @@ import SysUtils from '../utils/SysUtils.js'
 import ProcessorSettings from './ProcessorSettings.js'
 
 class ProcessorImpl extends EventEmitter {
-    constructor(configDataset) { // TODO pass app instead
+    constructor(app) {
         super()
-        this.configDataset = configDataset
+        this.app = app
         this.settingsNode = null
-
-        // Initialize empty app property
-        this.app = {}
-
-        logger.debug(`ProcessorImpl.constructor : \n${this}`)
-
-        // Initialize ProcessorSettings with this processor as parent
         this.settee = new ProcessorSettings(this.app)
-        logger.trace(`   configDataset : ${configDataset}`)
-
         this.messageQueue = []
         this.processing = false
         this.outputs = []
+        logger.debug(`ProcessorImpl.constructor : \n${this}`)
     }
-
-    // TODO needed?
-    /*
-    getAppPath(relativePath) {
-        if (!this.app?.rootDir) {
-            throw new Error('Application context not available')
-        }
-        return path.join(this.app.rootDir, relativePath)
-    }
-        */
-
-    // TODO tidy up
-
-
 
     getValues(property, fallback) {
-        this.settee.configDataset = this.configDataset
-        logger.debug(`   ProcessorImpl.getValues, this.configDataset : ${this.configDataset}`)
-        // Defensive: ensure this.message is set if called directly
-        if (!this.message && arguments.length > 2 && typeof arguments[2] === 'object') {
-            this.message = arguments[2]
-        }
         return this.settee.getValues(this.settingsNode, property, fallback)
     }
-
 
     getProperty(property, fallback = undefined) {
         // Defensive: ensure this.message is set if called directly
@@ -104,13 +75,15 @@ class ProcessorImpl extends EventEmitter {
         logger.debug('ProcessorImpl.preProcess')
 
         // Update app reference and reinitialize settings if app has changed
+        /*
         if (this.app !== message.app) {
             this.app = message.app
             logger.debug(`   App updated: ${this.app}`)
 
             // Re-initialize settings with new app context
-            this.settee = new ProcessorSettings(this)
+            this.settee = new ProcessorSettings(this.app)
         }
+            */
 
         if (message.onProcess) { // Claude
             message.onProcess(this, message)

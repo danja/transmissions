@@ -21,7 +21,15 @@ subclass of Processor. Demo :Merge - somehow messages are combined
 
 content/raw/prompts/2025-04-17_combo.md
 
+### About flag
+
+`-a, --about` gives description of what's being called - #:selfie, check tinyspy
+
+
+
 ### Workers
+
+use tinyworker? whatever it is, with vitest
 
 Some implementation, not yet working `examples/worker`
 

@@ -5,7 +5,7 @@ import logger from '../utils/Logger.js'
 import FSUtils from '../utils/FSUtils.js'
 import RDFUtils from '../utils/RDFUtils.js'
 
-import Application from '../model/App.js'
+import App from '../model/App.js'
 import MockAppManager from '../utils/MockAppManager.js'
 import TransmissionBuilder from './TransmissionBuilder.js'
 import ModuleLoaderFactory from './ModuleLoaderFactory.js'
@@ -17,7 +17,7 @@ class AppManager {
     constructor() {
         this.targetDatasets
         this.moduleLoader = null
-        this.app = new Application()
+        this.app = App.instance()
     }
 
 
@@ -64,13 +64,16 @@ class AppManager {
 
     async start(message = {}) {
         logger.debug(`\n ||| AppManager.start`)
-        message.app = this.app
+
+        // TODO the meta of App needs copying
+        // message.app = this.app 
+
         logger.debug(`this.app = ${this.app} `)
 
-        const builder = new TransmissionBuilder(this.moduleLoader, this.app)
-        const transmissions = await builder.buildTransmissions(this.app)
+        const builder = new TransmissionBuilder(this.app, this.moduleLoader)
+        const transmissions = await builder.buildTransmissions()
 
-        //   logger.vr(transmissions)
+        //   logger.rv(transmissions)
         // process.exit()
         // Get application context
         const contextMessage = this.toMessage()
@@ -92,6 +95,7 @@ class AppManager {
         // message.sessionNode = this.appResolver.sessionNode
 
         for (const transmission of transmissions) {
+            transmission.app = this.app
             logger.debug(`transmission = \n${transmission} `)
             if (!this.app.subtask || this.app.subtask === transmission.label) {
 

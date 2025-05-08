@@ -6,9 +6,9 @@ class SysUtils {
 
     /* Workaround for structuredClone limitation (bits get lost) */
     static copyMessage(message) {
-        const dataset = message.app.dataset
+        const dataset = message.dataset
         message = structuredClone(message)
-        message.app.dataset = dataset
+        message.dataset = dataset
         return message
     }
 

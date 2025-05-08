@@ -12,7 +12,7 @@ import Transmission from '../model/Transmission.js'
 import Whiteboard from '../model/Whiteboard.js'
 
 class TransmissionBuilder {
-  constructor(moduleLoader, app) {
+  constructor(app, moduleLoader) {
     this.moduleLoader = moduleLoader
     this.app = app
     this.transmissionCache = new Map()
@@ -20,18 +20,13 @@ class TransmissionBuilder {
     this.currentDepth = 0
   }
 
-  async buildTransmissions(app) {
+  async buildTransmissions() {
     logger.debug(`\nTransmissionBuilder.buildTransmissions`)
-    const transmissionsDataset = app.datasets.transmissions
-    const configDataset = app.datasets.config
+    const transmissionsDataset = await this.app.datasets.dataset('transmissions')
+    const configDataset = await this.app.datasets.dataset('config')
 
-
-
-    // Store app reference for use in processor creation
-    this.app = app
-
-    // logger.debug(`transmissionsDataset = \n${transmissionsDataset}`)
-    const poi = grapoi({ dataset: transmissionsDataset })
+    logger.debug(`transmissionsDataset = \n${transmissionsDataset}`)
+    const poi = new grapoi({ dataset: transmissionsDataset })
     const transmissions = []
 
     for (const q of poi.out(ns.rdf.type).quads()) {
@@ -45,7 +40,7 @@ class TransmissionBuilder {
           configDataset
         )
         // Set app reference on transmission
-        transmission.app = app
+        transmission.app = this.app
         transmissions.push(transmission)
       }
     }
@@ -53,9 +48,6 @@ class TransmissionBuilder {
   }
 
   async constructTransmission(transmissionsDataset, transmissionID, configDataset) {
-    // REFACTORHERE
-    // const processorsConfig = configDataset // .dataset
-
     logger.debug(`\nTransmissionBuilder.constructTransmission`)
 
     if (++this.currentDepth > this.MAX_NESTING_DEPTH) {

@@ -8,24 +8,6 @@ class ProcessorSettings {
     constructor(app) {
         logger.debug(`ProcessorSettings constructor`)
         this.app = app
-        /*
-        this.parent = parent
-
-        // Get the app
-        logger.debug(`   parent.app = ${parent.app}`)
-
-        // Get the target dataset from the app
-        this.appDataset = parent.app?.targetDataset
-        logger.debug(`   this.appDataset (target dataset) = ${this.appDataset}`)
-
-        // Get the transmissions dataset from the app
-        this.transmissionsDataset = parent.app?.transmissionsDataset
-        logger.debug(`   this.transmissionConfig = ${this.transmissionConfig}`)
-
-        // Get the config dataset
-        this.configDataset = parent.configDataset
-        logger.debug(`   this.configDataset = ${this.configDataset}`)
-        */
     }
 
     // rename...to what?
@@ -50,7 +32,9 @@ class ProcessorSettings {
             return fallback ? [fallback] : []
         }
 
-        var dataset = this.app.datasets['target']
+        logger.log(`    this.app.datasets = ${this.app.datasets}`)
+        process.exit()
+        var dataset = this.app.datasets.dataset('target')
         if (dataset) {
             logger.debug(`    * looking in TARGET dataset (tt.ttl)`)
             logger.trace(`${logger.shorter(dataset.toString())}`)
@@ -60,11 +44,12 @@ class ProcessorSettings {
             logger.debug(`    * TARGET dataset not available`)
         }
 
+
         // Check the transmission config (transmissions.ttl)
-        dataset = this.app.datasets['transmissions']
+        dataset = this.app.datasets.dataset('transmissions')
         if (dataset) {
             logger.debug(`    * looking in TRANSMISSIONS dataset (transmissions.ttl)`)
-            logger.log(`${logger.reveal(dataset)}`)
+            //logger.log(`${logger.reveal(dataset)}`)
             var values = this.getValuesFromDataset(dataset, property)
             if (values && values.length > 0) return values
         } else {
@@ -72,10 +57,10 @@ class ProcessorSettings {
         }
 
         // check the general config (config.ttl)
-        dataset = this.app.datasets['config']
+        dataset = this.app.datasets.dataset('config')
         if (dataset) {
             logger.debug(`    * looking in CONFIG dataset (config.ttl)`)
-            logger.rv(dataset)
+            //  logger.rv(dataset)
             var values = this.getValuesFromDataset(dataset, property)
             if (values && values.length > 0) return values
         } else {

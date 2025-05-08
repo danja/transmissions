@@ -35,71 +35,71 @@ class AbstractProcessorFactory {
 
     // looks until it finds
 
-    static createProcessor(type, config) {
+    static createProcessor(type, app) {
 
         if (!type) {
             throw new Error(`Processor type undefined (typo in 'transmission.ttl'..?)`)
         }
         logger.trace(`\nAbstractProcessorFactory.createProcessor : type.value = ${type.value}`)
-        logger.trace(`AbstractProcessorFactory.createProcessor : config = ${config}`)
+        logger.trace(`AbstractProcessorFactory.createProcessor : app = ${app}`)
 
-        var processor = ExampleProcessorsFactory.createProcessor(type, config)
-        if (processor) return processor
-
-        var processor = UnsafeProcessorsFactory.createProcessor(type, config)
-        if (processor) return processor
-        var processor = HttpProcessorsFactory.createProcessor(type, config)
-        if (processor) return processor
-        var processor = McpProcessorsFactory.createProcessor(type, config)
-        if (processor) return processor
-        var processor = XmppProcessorsFactory.createProcessor(type, config)
+        var processor = ExampleProcessorsFactory.createProcessor(type, app)
         if (processor) return processor
 
-        var processor = TestProcessorsFactory.createProcessor(type, config)
+        var processor = UnsafeProcessorsFactory.createProcessor(type, app)
         if (processor) return processor
-        var processor = UtilProcessorsFactory.createProcessor(type, config)
+        var processor = HttpProcessorsFactory.createProcessor(type, app)
         if (processor) return processor
-
-        processor = FsProcessorsFactory.createProcessor(type, config)
+        var processor = McpProcessorsFactory.createProcessor(type, app)
         if (processor) return processor
-
-        processor = MarkupProcessorsFactory.createProcessor(type, config)
+        var processor = XmppProcessorsFactory.createProcessor(type, app)
         if (processor) return processor
 
-        processor = TextProcessorsFactory.createProcessor(type, config)
+        var processor = TestProcessorsFactory.createProcessor(type, app)
+        if (processor) return processor
+        var processor = UtilProcessorsFactory.createProcessor(type, app)
         if (processor) return processor
 
-        processor = ProtocolsProcessorsFactory.createProcessor(type, config)
+        processor = FsProcessorsFactory.createProcessor(type, app)
         if (processor) return processor
 
-        processor = RDFProcessorsFactory.createProcessor(type, config)
+        processor = MarkupProcessorsFactory.createProcessor(type, app)
         if (processor) return processor
 
-        processor = PostcraftProcessorsFactory.createProcessor(type, config)
+        processor = TextProcessorsFactory.createProcessor(type, app)
         if (processor) return processor
 
-        processor = SystemProcessorsFactory.createProcessor(type, config)
+        processor = ProtocolsProcessorsFactory.createProcessor(type, app)
         if (processor) return processor
 
-        processor = FlowProcessorsFactory.createProcessor(type, config)
+        processor = RDFProcessorsFactory.createProcessor(type, app)
         if (processor) return processor
 
-        processor = GitHubProcessorsFactory.createProcessor(type, config)
+        processor = PostcraftProcessorsFactory.createProcessor(type, app)
         if (processor) return processor
 
-        processor = StagingProcessorsFactory.createProcessor(type, config)
+        processor = SystemProcessorsFactory.createProcessor(type, app)
         if (processor) return processor
 
-        processor = JSONProcessorsFactory.createProcessor(type, config)
+        processor = FlowProcessorsFactory.createProcessor(type, app)
         if (processor) return processor
 
-        var processor = TerrapackProcessorsFactory.createProcessor(type, config)
+        processor = GitHubProcessorsFactory.createProcessor(type, app)
         if (processor) return processor
 
-        var processor = SPARQLProcessorsFactory.createProcessor(type, config)
+        processor = StagingProcessorsFactory.createProcessor(type, app)
         if (processor) return processor
 
-        var processor = MediaProcessorsFactory.createProcessor(type, config)
+        processor = JSONProcessorsFactory.createProcessor(type, app)
+        if (processor) return processor
+
+        var processor = TerrapackProcessorsFactory.createProcessor(type, app)
+        if (processor) return processor
+
+        var processor = SPARQLProcessorsFactory.createProcessor(type, app)
+        if (processor) return processor
+
+        var processor = MediaProcessorsFactory.createProcessor(type, app)
         if (processor) return processor
     }
 }

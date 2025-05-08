@@ -10,8 +10,7 @@ class Processor extends ProcessorImpl {
      * @param {Dataset} configDataset - RDF dataset containing configuration
      */
     constructor(app) {
-        super(app.configDataset) // TODO pass app instead
-        this.app = app
+        super(app)
     }
 
     async process(message) {

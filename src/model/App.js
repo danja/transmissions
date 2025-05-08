@@ -22,6 +22,13 @@ class App {
 */
     }
 
+    static instance() {
+        if (!App.instance) {
+            App.instance = new App()
+        }
+        return App.instance
+    }
+
     async initDataset(appName, sessionNode = rdf.blankNode()) {
 
         // TODO validate syntax of appName

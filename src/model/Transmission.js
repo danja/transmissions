@@ -3,8 +3,8 @@ import Connector from './Connector.js'
 import ns from '../utils/ns.js'
 
 class Transmission {
-  constructor(transmissionConfig) {
-    this.transmissionConfig = transmissionConfig
+  constructor(app) {
+    this.app = app // is needed?
     this.processors = {}
     this.connectors = []
     this.parent = null
