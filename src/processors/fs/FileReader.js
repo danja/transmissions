@@ -42,8 +42,25 @@ class FileReader extends Processor {
             // Resolve relative to targetPath or rootDir
 
             if (!path.isAbsolute(filePath)) {
-                //     filePath = path.join(message.targetPath || message.rootDir, filePath)
-                filePath = path.join(message.targetPath || message.workingDir, filePath)
+                // First try with workingDir
+                const workingDir = this.app.workingDir
+                
+                // Try the file path as is
+                const possiblePath = path.join(workingDir, filePath)
+                
+                try {
+                    await access(possiblePath, constants.R_OK)
+                    filePath = possiblePath
+                } catch (err) {
+                    // If not found, try with data/ prefix
+                    const dataPath = path.join(workingDir, 'data', filePath)
+                    try {
+                        await access(dataPath, constants.R_OK)
+                        filePath = dataPath
+                    } catch (err) {
+                        throw new Error(`File not found in expected locations: ${possiblePath}, ${dataPath}`)
+                    }
+                }
             }
         }
 

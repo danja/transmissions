@@ -1,7 +1,7 @@
 class Defaults {
     static appsDir = 'src/applications'
     static moduleSubDir = 'processors'
-    static dataSubDir = 'data'
+    static workingDir = 'data'
 
     static transmissionsFilename = 'transmissions.ttl'
     static configFilename = 'config.ttl'

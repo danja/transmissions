@@ -42,6 +42,11 @@ async function main() {
             describe: chalk.yellow('Suppress all output'),
             type: 'boolean'
         })
+        .option('directory', {
+            alias: 'd',
+            describe: chalk.yellow('Working directory for file operations'),
+            type: 'string'
+        })
         .option('message', {
             alias: 'm',
             describe: chalk.yellow('Input message as JSON'),

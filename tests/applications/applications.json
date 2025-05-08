@@ -24,7 +24,6 @@
         "description": "setting in message",
         "requiredMatchCount": 1
     },
-
     {
         "command": "./trans config-setting-target tests/applications/config-setting-target",
         "label": "config-setting-target",
@@ -68,9 +67,9 @@
         "requiredMatchCount": 1
     },
     {
-        "command": "./trans restructure src/applications/test/restructure/manifest",
-        "label": "restructurer+manifest",
-        "description": "test restructure application with manifest",
+        "command": "./trans restructure src/applications/test/restructure/target",
+        "label": "restructurer+target",
+        "description": "test restructure application with target",
         "requiredMatchCount": 2
     },
     {

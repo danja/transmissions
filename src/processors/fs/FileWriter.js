@@ -67,7 +67,7 @@ class FileWriter extends Processor {
 
         // Resolve relative to targetPath or rootDir
         if (!path.isAbsolute(filePath)) {
-            filePath = path.join(message.targetPath || message.workingDir, filePath)
+            filePath = path.join(message.targetPath || this.app.workingDir, filePath)
         }
 
         logger.trace(`Filewriter, filepath = ${filePath}`)

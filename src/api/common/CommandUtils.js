@@ -49,6 +49,7 @@ class CommandUtils {
             modulePath: options.modulePath,
             dataPath: options.dataPath,
             verbose: options.verbose,
+            workingDir: options.directory,
             silent: options.silent,
             test: options.test,
             web: options.web,
