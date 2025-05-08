@@ -21,7 +21,7 @@ class Datasets {
             const ru = new RDFUtils()
             const dataset = await ru.readDataset(path)
             this.datasets.set(label, dataset)
-            logger.debug(`Datasets.loadDataset : loaded dataset ${label} from ${path}`)
+            logger.debug(`      dataset loaded.`)
             return dataset
         } catch (error) {
             logger.warn(`Error loading dataset ${label} from ${path}: ${error.message}`)
