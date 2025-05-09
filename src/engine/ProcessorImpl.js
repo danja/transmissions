@@ -13,7 +13,7 @@ class ProcessorImpl extends EventEmitter {
         this.messageQueue = []
         this.processing = false
         this.outputs = []
-        logger.debug(`ProcessorImpl.constructor : \n${this}`)
+        logger.trace(`ProcessorImpl.constructor : \n${this}`)
     }
 
     getValues(property, fallback) {
@@ -58,8 +58,8 @@ class ProcessorImpl extends EventEmitter {
         logger.debug(`   ProcessorImpl.propertyInMessage
             property = ${property}`)
         const shortName = ns.getShortname(property)
-        logger.debug(`   shortName = ${shortName}`)
-        logger.debug(`   this.message = ${logger.reveal(this.message)}`)
+     //   logger.debug(`   shortName = ${shortName}`)
+     //   logger.debug(`   this.message = ${logger.reveal(this.message)}`)
 
         if (this.message && this.message[shortName]) {
             logger.debug(`   Found in message: ${this.message[shortName]}`)

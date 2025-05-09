@@ -34,10 +34,11 @@ class Datasets {
 
     dataset(label) {
         const dataset = this.datasets.get(label)
+        /*
         if (!dataset) {
             logger.debug(`No dataset found for label: ${label}, returning an empty dataset`)
             return RDFUtils.createEmptyDataset()
-        }
+        }*/
         return dataset
     }
 

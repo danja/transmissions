@@ -158,7 +158,7 @@ class TransmissionBuilder {
   }
 
   async createProcessor(type, configDataset) {
-    logger.debug(`\n\nTransmissionBuilder.createProcessor`)
+    logger.debug(`TransmissionBuilder.createProcessor`)
     logger.trace(`config = ${configDataset}`)
 
     const coreProcessor = AbstractProcessorFactory.createProcessor(type, this.app)

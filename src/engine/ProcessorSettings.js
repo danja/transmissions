@@ -40,11 +40,11 @@ class ProcessorSettings {
         var dataset = this.app.datasets.dataset('target')
         if (dataset) {
             logger.debug(`    * looking in TARGET dataset (tt.ttl)`)
-            logger.debug(`DS = ${logger.shorter(dataset.toString())}`)
+         //   logger.debug(`DS = ${logger.shorter(dataset.toString())}`)
             var values = this.getValuesFromDataset(dataset, property)
             if (values && values.length > 0) return values
         } else {
-            logger.debug(`    * TARGET dataset not available`)
+            logger.debug(`       not available`)
         }
 
 
@@ -56,7 +56,7 @@ class ProcessorSettings {
             var values = this.getValuesFromDataset(dataset, property)
             if (values && values.length > 0) return values
         } else {
-            logger.debug(`    * TRANSMISSIONS dataset not available`)
+            logger.debug(`       not available`)
         }
 
         // check the general config (config.ttl)
@@ -67,7 +67,7 @@ class ProcessorSettings {
             var values = this.getValuesFromDataset(dataset, property)
             if (values && values.length > 0) return values
         } else {
-            logger.debug(`    * CONFIG dataset not available`)
+            logger.debug(`       not available`)
         }
 
         return fallback ? [fallback] : []
