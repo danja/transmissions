@@ -32,30 +32,38 @@ class FileReader extends Processor {
             }
         } else {
             // Fall back to getting path from config
-            filePath = await this.getProperty(ns.trn.sourceFile)
+            filePath = this.getProperty(ns.trn.sourceFile, null)
             if (!filePath) {
                 logger.warn(`No source file path provided, defaulting to ${this.defaultFilePath}`)
                 filePath = this.defaultFilePath
             }
 
-            logger.trace(`filePath = ${filePath}`)
+            logger.debug(`filePath = ${filePath}`)
             // Resolve relative to targetPath or rootDir
 
-            if (!path.isAbsolute(filePath)) {
+            if (typeof filePath === 'string' && !path.isAbsolute(filePath)) {
                 // First try with workingDir
                 const workingDir = this.app.workingDir
-                
+                logger.debug(`this.app.workingDir = ${this.app.workingDir}`)
                 // Try the file path as is
                 const possiblePath = path.join(workingDir, filePath)
-                
+
                 try {
-                    await access(possiblePath, constants.R_OK)
+                    access(possiblePath, constants.R_OK, (err) => {
+                        if (err) {
+                            throw new Error(`File not accessible: ${possiblePath}`)
+                        }
+                    })
                     filePath = possiblePath
                 } catch (err) {
                     // If not found, try with data/ prefix
                     const dataPath = path.join(workingDir, 'data', filePath)
                     try {
-                        await access(dataPath, constants.R_OK)
+                        access(dataPath, constants.R_OK, (err) => {
+                            if (err) {
+                                throw new Error(`File not accessible: ${dataPath}`)
+                            }
+                        })
                         filePath = dataPath
                     } catch (err) {
                         throw new Error(`File not found in expected locations: ${possiblePath}, ${dataPath}`)
@@ -72,18 +80,22 @@ class FileReader extends Processor {
             access(filePath, constants.R_OK, (err) => {
                 if (err) {
                     reject(new Error(`File ${filePath} is not readable: ${err.message}`))
+                } else {
+                    resolve(undefined) // Explicitly resolve with undefined
                 }
-                resolve()
             })
         })
 
         // Handle metadata if requested
-        const metaField = await super.getProperty(ns.trn.metaField)
+        const metaField = await super.getProperty(ns.trn.metaField, null)
         if (metaField) {
             const metadata = this.getFileMetadata(filePath)
-            message[metaField] = metadata
+            if (typeof metaField === 'string') {
+                message[metaField] = metadata
+            } else {
+                logger.warn(`metaField is not a string, skipping metadata assignment.`)
+            }
         }
-
 
         // Read and return file content
         const content = await readFile(filePath, 'utf8')
@@ -91,13 +103,17 @@ class FileReader extends Processor {
 
         message.filePath = filePath
 
-        const mediaType = super.getProperty(ns.trn.mediaType)
+        const mediaType = super.getProperty(ns.trn.mediaType, null)
         logger.trace(`mediaType = ${mediaType}`)
         const targetField = super.getProperty(ns.trn.targetField, `content`)
-        if (mediaType === 'application/json') {
-            message[targetField] = JSON.parse(content)
+        if (typeof targetField === 'string') {
+            if (mediaType === 'application/json') {
+                message[targetField] = JSON.parse(content)
+            } else {
+                message[targetField] = content
+            }
         } else {
-            message[targetField] = content
+            logger.warn(`targetField is not a string, skipping content assignment.`)
         }
         return this.emit('message', message)
     }
@@ -121,7 +137,11 @@ class FileReader extends Processor {
                 group: stats.gid
             }
         } catch (error) {
-            logger.error(`Error getting file metadata: ${error.message}`)
+            if (error instanceof Error) {
+                logger.error(`Error getting file metadata: ${error.message}`)
+            } else {
+                logger.error(`Unknown error getting file metadata.`)
+            }
             return null
         }
     }

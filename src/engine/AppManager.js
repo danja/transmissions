@@ -20,16 +20,17 @@ class AppManager {
     }
 
 
+
     async initApp(options) {
         logger.debug(`\nAppManager.initApp`)
         //   logger.vr(options)
         this.app = App.instance()
         // Copy options to app
         Object.assign(this.app, options) // TODO better just calculated options
-
-        // in utils, might be needed :         // findInDirectory(dir, targetName, depth = 0) {
-
+      
+        // starting point
         this.app.path = await this.resolveAppPath(options.appName)
+          
         // load the transmissions dataset
         const transmissionsFilename = path.join(this.app.path, Defaults.transmissionsFilename)
         await this.app.datasets.loadDataset('transmissions', transmissionsFilename)
@@ -38,20 +39,19 @@ class AppManager {
         const configFilename = path.join(this.app.path, Defaults.configFilename)
         await this.app.datasets.loadDataset('config', configFilename)
 
-        logger.debug(`this.app = ${this.app}`)
-        //process.exit()
-
         if (this.app.targetDir) {
+             this.app.workingDir = this.app.targetDir
             const targetFilename = path.join(this.app.targetDir, Defaults.targetFilename)
             await this.app.datasets.loadDataset('target', targetFilename)
         }
+        
+        if (!this.app.workingDir) {
+            this.app.workingDir = path.join(this.app.path, Defaults.workingDir)
+        }
 
-        //logger.log(`THIS APP = ${this.app}`)
-        //process.exit()
-
-        // Initialize module loader
         await this.initModuleLoader()
 
+         logger.debug(`this.app = ${this.app}`)
         return this
     }
 
@@ -153,14 +153,8 @@ class AppManager {
         return path.join(this.app.path, this.app.moduleSubDir)
     }
 
-    resolveDataDir() {
-        if (this.targetDir) {
-            this.workingDir = this.targetDir
-        }
-        if (!this.workingDir) {
-            this.workingDir = path.join(this.appPath, this.dataSubDir)
-        }
-        return this.workingDir
+    resolveWorkingDir() {
+
     }
 
     toMessage() {
