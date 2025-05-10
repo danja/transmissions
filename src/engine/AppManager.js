@@ -19,8 +19,6 @@ class AppManager {
         this.app = null
     }
 
-
-
     async initApp(options) {
         logger.debug(`\nAppManager.initApp`)
         //   logger.vr(options)

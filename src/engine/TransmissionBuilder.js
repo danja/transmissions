@@ -163,7 +163,7 @@ class TransmissionBuilder {
 
     const coreProcessor = AbstractProcessorFactory.createProcessor(type, this.app)
     if (coreProcessor) {
-      coreProcessor.configDataset = this.app.datasets.dataset('config')
+      coreProcessor.configDataset = this.app.datasets.dataset('config') // TODO this looks wrong
       // Make sure the transmissionConfig is set correctly
       coreProcessor.transmissionConfig = this.app.datasets.dataset('transmissions')
       return coreProcessor
