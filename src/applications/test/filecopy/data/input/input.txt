@@ -1,1 +1,1 @@
-Sample filecopy input content.
+TEST_PASSED

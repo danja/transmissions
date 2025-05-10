@@ -15,10 +15,12 @@
 :filecopy a :Transmission ;
 :pipe (:p10 :p20 :p30) .
 
-:p10 a :ShowMessage .
 
-:p20 a :FileCopy ;
+:p10 a :FileCopy ;
      :settings :copySet .
+
+:p20 a :FileReader ;
+     :settings :readerSet .
 
 :p30 a :ShowMessage .
 
@@ -26,4 +28,5 @@
     :source "input/input.txt" ;
     :destination "output/output.txt" .
 
-
+:readerSet a :Settings ;
+    :sourceFile "output/output.txt" .
