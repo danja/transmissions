@@ -53,12 +53,13 @@ class FileCopy extends Processor {
         logger.debug("FileCopy.process")
         logger.debug("   message.rootDir = " + message.rootDir)
 
-        // Use PathResolver to resolve source and destination
+        // Use PathResolver to resolve source only
         const app = this.app || { workingDir: message.applicationRootDir || message.rootDir || process.cwd() }
         const getProperty = (prop, def) => this.getProperty(prop, def)
         const defaultSource = 'input/input.txt'
         const defaultDestination = 'output/output.txt'
 
+        // Resolve source (must exist)
         const source = await PathResolver.resolveFilePath({
             message,
             app,
@@ -66,13 +67,15 @@ class FileCopy extends Processor {
             defaultFilePath: defaultSource,
             sourceOrDest: ns.trn.source
         })
-        const destination = await PathResolver.resolveFilePath({
-            message: { ...message, filepath: undefined, fullPath: undefined }, // avoid confusion with source
-            app,
-            getProperty,
-            defaultFilePath: defaultDestination,
-            sourceOrDest: ns.trn.destination
-        })
+
+        // Resolve destination (do not check existence, just join to workingDir if not absolute)
+        let destination = await getProperty(ns.trn.destination)
+        if (!destination) destination = defaultDestination
+        // If destination is an array, use the first element
+        if (Array.isArray(destination)) destination = destination[0]
+        if (!path.isAbsolute(destination)) {
+            destination = path.join(app.workingDir, destination)
+        }
 
         logger.debug(`Source: ${source} `)
         logger.debug(`Destination: ${destination} `)
