@@ -19,6 +19,20 @@ class AppManager {
         this.app = null
     }
 
+    static simpleApp(config){
+        logger.debug(`\nAppManager.simpleApp`)
+        const app = App.instance()
+        app.simple = true
+        app.simpleConfig = config
+        if(config.workingDir) {
+            app.workingDir = path.join(process.cwd(),config.workingDir)
+        } else {
+            app.workingDir = path.join(process.cwd(), Defaults.workingDir)
+        }
+     //   app.datasets = new Datasets(app)
+        return app
+    }
+
     async initApp(options) {
         logger.debug(`\nAppManager.initApp`)
         //   logger.vr(options)

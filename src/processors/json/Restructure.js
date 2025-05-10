@@ -29,7 +29,7 @@ class Restructure extends Processor {
 
     async getRenames() {
         logger.debug(`\nRestructure.getRenames`)
-        logger.debug(`this.settingsNode.value = ${this.settingsNode.value}`)
+  //      logger.debug(`this.settingsNode.value = ${this.settingsNode.value}`)
 
         // Get renamesRDF as an array of NamedNode terms
         const renamesRDF = super.getValues(ns.trn.rename)

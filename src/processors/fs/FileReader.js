@@ -32,7 +32,7 @@ class FileReader extends Processor {
             }
         } else {
             // Fall back to getting path from config
-            filePath = this.getProperty(ns.trn.sourceFile, null)
+            filePath = this.getProperty(ns.trn.sourceFile)
             if (!filePath) {
                 logger.warn(`No source file path provided, defaulting to ${this.defaultFilePath}`)
                 filePath = this.defaultFilePath
@@ -51,7 +51,7 @@ class FileReader extends Processor {
                 try {
                     access(possiblePath, constants.R_OK, (err) => {
                         if (err) {
-                            throw new Error(`File not accessible: ${possiblePath}`)
+                            throw new Error(`File not accessible: ${possiblePath}\n${err.message}`)
                         }
                     })
                     filePath = possiblePath

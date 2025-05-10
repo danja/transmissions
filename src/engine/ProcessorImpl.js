@@ -21,17 +21,30 @@ class ProcessorImpl extends EventEmitter {
     }
 
     getProperty(property, fallback = undefined) {
-        // Defensive: ensure this.message is set if called directly
+        // Defensive: ensure this.message is set if called directly - needed?
         if (!this.message && arguments.length > 2 && typeof arguments[2] === 'object') {
             this.message = arguments[2]
         }
         logger.debug(`   ProcessorImpl.getProperty looking for ${property}`)
-        // first check if the property is in the message
-        var value = this.propertyInMessage(property)
+
+
+        // check if the property is in message
+        //  logger.v(this.message)
+        var value = this.propertyInObject(this.message, property)
         if (value) {
             logger.debug(`   property found in message : ${value}`)
             return value
         }
+
+        // TODO not propery tested
+        // check if the property is in simpleConfig
+      //  logger.v(this.app.simpleConfig)
+        value = this.propertyInObject(this.app.simpleConfig, property)
+        if (value) {
+              logger.debug(`   property found in simpleConfig : ${value}`)
+            return value
+        }
+
 
         // If not found in message, check the settings
         logger.debug(`   this.settingsNode = ${this.settingsNode?.value}`)
@@ -54,18 +67,32 @@ class ProcessorImpl extends EventEmitter {
         return fallback
     }
 
+    propertyInObject(object, property) {
+        logger.debug(`   ProcessorImpl.propertyInObject`)
+        const shortName = ns.getShortname(property)
+         logger.debug(`   shortName = ${shortName}`)
+        if (object && object[shortName]) {
+            logger.debug(`   Found in object: ${object[shortName]}`)
+            return object[shortName]
+        } else {
+            // logger.debug(`   Not found in object: ${object}`)
+            return undefined
+        }
+    }
+
     propertyInMessage(property) {
         logger.debug(`   ProcessorImpl.propertyInMessage
             property = ${property}`)
         const shortName = ns.getShortname(property)
-     //   logger.debug(`   shortName = ${shortName}`)
-     //   logger.debug(`   this.message = ${logger.reveal(this.message)}`)
+        //   logger.debug(`   shortName = ${shortName}`)
+        //   logger.debug(`   this.message = ${logger.reveal(this.message)}`)
 
         if (this.message && this.message[shortName]) {
             logger.debug(`   Found in message: ${this.message[shortName]}`)
             return this.message[shortName]
         }
-        return undefined
+        return this.propertyInObject(this.message, property)
+        //  return undefined
     }
 
     preProcess(message) {

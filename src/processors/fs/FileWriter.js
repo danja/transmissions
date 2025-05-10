@@ -100,7 +100,7 @@ class FileWriter extends Processor {
 
                 }
         */
-
+logger.trace(`content = ${content}`)
         // maybe stat first, check validity - the intended target dir was blocked by a of the same name
         await writeFile(f, content)
         //writeFileSync(f, content)

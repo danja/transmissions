@@ -1,12 +1,17 @@
 // src/applications/test_restructure/simple.js
 
+import AppManager from '../../../engine/AppManager.js'
+import logger from '../../../utils/Logger.js'
 import FileReader from '../../../processors/fs/FileReader.js'
 import Restructure from '../../../processors/json/Restructure.js'
 import FileWriter from '../../../processors/fs/FileWriter.js'
 
+logger.setLogLevel('debug')
+
 const config = {
     "simples": "true",
-    "sourceFile": "input/input-01.json",
+    "workingDir": "src/applications/test/restructure/data",
+            "sourceFile": "input/input-01.json",
     "destinationFile": "output/output-01.json",
     "mediaType": "application/json",
     "rename": [{
@@ -21,13 +26,17 @@ const config = {
     }]
 }
 
-var message = { "workingDir": "src/applications/test_restructure/data" }
+const app = AppManager.simpleApp(config)
 
-const read = new FileReader(config)
+var message = { 
+
+ }
+
+const read = new FileReader(app)
 message = await read.process(message)
 
-const restructure = new Restructure(config)
+const restructure = new Restructure(app)
 message = await restructure.process(message)
 
-const write = new FileWriter(config)
+const write = new FileWriter(app)
 await write.process(message)
