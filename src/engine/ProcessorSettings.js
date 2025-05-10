@@ -52,8 +52,10 @@ class ProcessorSettings {
         dataset = this.app.datasets.dataset('transmissions')
         if (dataset) {
             logger.debug(`    * looking in TRANSMISSIONS dataset (transmissions.ttl)`)
-            //logger.log(`${logger.reveal(dataset)}`)
+            logger.trace(`\n\n   Transmissions dataset = ${dataset}`)
             var values = this.getValuesFromDataset(dataset, property)
+               logger.rv(`    values = ${values}`)
+
             if (values && values.length > 0) return values
         } else {
             logger.debug(`       not available`)
@@ -63,6 +65,7 @@ class ProcessorSettings {
         dataset = this.app.datasets.dataset('config')
         if (dataset) {
             logger.debug(`    * looking in CONFIG dataset (config.ttl)`)
+                    logger.trace(`\n\n   Config dataset = ${dataset}`)
             //  logger.rv(dataset)
             var values = this.getValuesFromDataset(dataset, property)
             if (values && values.length > 0) return values
@@ -109,6 +112,7 @@ class ProcessorSettings {
             // Check if this is an RDF list
             const first = this.tryFirst(dataset, value)
             if (first && first.terms.length > 0) {
+                logger.debug(`   found a list`)
                 return GrapoiHelpers.listToArray(dataset, this.settingsNode, property)
             }
 

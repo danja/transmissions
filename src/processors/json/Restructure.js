@@ -33,6 +33,18 @@ class Restructure extends Processor {
 
         // Get renamesRDF as an array of NamedNode terms
         const renamesRDF = super.getValues(ns.trn.rename)
+const renameNode = super.getProperty(ns.trn.rename)
+        if (renameNode) {
+            logger.debug(`   renameNode = ${JSON.stringify(renameNode)}`)
+            logger.debug(`   renameNode.value = ${renameNode.value}`)
+       //     logger.debug(`   typeof renameNode = ${typeof renameNode}`)
+         //   logger.debug(`   renameNode.termType = ${renameNode.termType}`)
+           // logger.debug(`   renameNode.id = ${renameNode.id}`)
+         //   logger.debug(`   renameNode.toString() = ${renameNode.toString()}`)
+           // logger.debug(`   renameNode.toNT() = ${renameNode.toNT()}`)
+        }
+        logger.log(`   renamesRDF = ${JSON.stringify(renamesRDF)}`)
+
 
         if (!renamesRDF || !Array.isArray(renamesRDF) || renamesRDF.length === 0) {
             logger.debug('No rename values found')

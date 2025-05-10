@@ -332,7 +332,9 @@ LOG_LEVELS.forEach(level => {
  */
 logger.reveal = function (instance, verbose = true, revealDatasets = false) {
     if (!instance) return ''
-
+if(typeof instance === 'string') {
+        return instance
+    }
     try {
         const cache = new WeakSet()
 
