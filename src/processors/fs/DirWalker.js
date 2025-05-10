@@ -12,20 +12,14 @@ class DirWalker extends Processor {
         this.count = 0
     }
 
-
-
     async process(message) {
         logger.trace('\nDirWalker.process')
         logger.trace(`\nDirWalker.process, this = ${this}`)
         message.done = false
 
-        //logger.v(this.app)
-        //  process.exit()
-
-        var sourceDir = this.getProperty(ns.trn.sourceDir, './')
-        logger.trace(`--------------- DirWalker sourceDir from config = ${sourceDir}`)
-
-
+        // Prefer message.targetDir if present, else use config
+        let sourceDir = message.targetDir || this.getProperty(ns.trn.sourceDir, './')
+        logger.trace(`--------------- DirWalker sourceDir resolved = ${sourceDir}`)
 
         this.includePatterns = this.getProperty(ns.trn.includePattern, ['*.md', '*.js', '*.json', '*.ttl'])
         this.excludePatterns = this.getProperty(ns.trn.excludePattern, ['*.', '.git', 'node_modules'])
@@ -33,28 +27,19 @@ class DirWalker extends Processor {
         logger.trace('\n\nDirWalker, message.targetPath = ' + message.targetPath)
         logger.trace('DirWalker, message.rootDir = ' + message.rootDir)
         logger.trace('DirWalker, message.sourceDir = ' + message.sourceDir)
-
         logger.log(`DirWalker.sourceDir = ${sourceDir}`)
-
         logger.log(`APP = ${this.app}`)
 
         let dirPath
         if (path.isAbsolute(sourceDir)) {
             dirPath = sourceDir
         } else {
-            /*
-            if (message.targetPath) {
-                dirPath = path.join(message.targetPath, sourceDir)
-            } else {
-                dirPath = path.join(message.rootDir, sourceDir)
-            }*/
             dirPath = path.join(this.app.path, sourceDir)
         }
         logger.debug(`DirWalker resolved dirPath = ${dirPath}`)
 
         await this.walkDirectory(dirPath, message)
 
-        //   const finalMessage = structuredClone(message)
         const finalMessage = SysUtils.copyMessage(message)
         finalMessage.done = true
         finalMessage.count = this.count
@@ -113,10 +98,12 @@ class DirWalker extends Processor {
                     //     const message = structuredClone(baseMessage)
                     const message = SysUtils.copyMessage(baseMessage)
                     message.filename = entry.name
-                    message.subdir = path.dirname(path.relative(targetPath, fullPath)).split(path.sep)[1]
-                    //     message.subdir = path.dirname(path.relative(message.targetPath, fullPath)).split(path.sep)[1]
+                    // Ensure targetPath is a string
+                    let relTargetPath = Array.isArray(targetPath) ? targetPath[0] : targetPath
+                    if (typeof relTargetPath !== 'string' || !relTargetPath) relTargetPath = ''
+                    message.subdir = path.dirname(path.relative(relTargetPath, fullPath)).split(path.sep)[1]
                     message.fullPath = fullPath
-                    message.filepath = path.relative(targetPath, fullPath)
+                    message.filepath = path.relative(relTargetPath, fullPath)
                     message.done = false
                     message.count = this.count++
 

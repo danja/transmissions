@@ -1,5 +1,4 @@
 import path from 'path'
-import crypto from 'crypto'
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
 
@@ -21,8 +20,8 @@ class MakeEntry extends Processor {
     const dates = this.extractDates(message)
 
     // rootDir
-    const basePath = message.targetPath
-    // ? message.targetPath : message.sourceDir
+    let basePath = message.targetPath || message.sourceDir || process.cwd()
+    if (!basePath) basePath = process.cwd()
     const { rel, slug } = this.extractRelSlug(basePath, dates, message.filePath)
 
     logger.debug(`message.meta.filepath = ${message.meta.filepath}`)

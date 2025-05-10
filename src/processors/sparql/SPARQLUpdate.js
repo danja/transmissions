@@ -20,25 +20,30 @@ class SPARQLUpdate extends SlowableProcessor {
         logger.debug(`\n[[SPARQLUpdate.process]]`)
 
         const endpoint = await this.getUpdateEndpoint(message)
-        const dir = super.getProperty(ns.trn.targetPath, message.rootDir)
-        const dataField = super.getProperty(ns.trn.dataBlock)
+        // Ensure dir is always a string: prefer targetPath, then rootDir, then targetDir, then appPath, then cwd
+        const dir = super.getProperty(ns.trn.targetPath, message.rootDir) || message.targetDir || message.appPath || process.cwd()
+        const dataField = super.getProperty(ns.trn.dataBlock, null)
         message.graph = await super.getProperty(ns.trn.graph, 'default')
         logger.debug(`  message.graph = ${message.graph}`)
-        const escape = super.getProperty(ns.trn.escape)
-        const templateFilename = await this.getProperty(ns.trn.templateFilename)
+        const escape = super.getProperty(ns.trn.escape, false)
+        const templateFilename = await this.getProperty(ns.trn.templateFilename, null)
 
         logger.trace(`   endpoint = ${endpoint}`)
 
         const template = await this.env.getTemplate(dir, templateFilename)
         //  message.contentBlocks.graph = graph
 
-        logger.debug(`   process template = ${template}`)
+        logger.trace(`   process template = ${template}`)
 
-        const now = new Date().toISOString()
-        const updateID = crypto.randomUUID()
+        // Remove unused variables
+        // const now = new Date().toISOString()
+        // const updateID = crypto.randomUUID()
 
-
-        const updateData = message[dataField] || message
+        // Fix: dataField may be array or undefined
+        let updateData = message
+        if (typeof dataField === 'string' && dataField in message) {
+            updateData = message[dataField]
+        }
         logger.debug(`---   updateData = ${updateData}`)
         //  logger.reveal(message)
         // process.exit()
@@ -57,8 +62,6 @@ class SPARQLUpdate extends SlowableProcessor {
         //  logger.reveal(updateData)
         logger.debug(`update = ${update}`)
 
-
-
         const response = await axios.post(endpoint.url, update, {
             headers: await this.makeHeaders(endpoint)
         })
@@ -73,16 +76,15 @@ class SPARQLUpdate extends SlowableProcessor {
         //    logger.reveal(response)
     }
 
-
     async getUpdateEndpoint(message) {
         if (!this.env.endpoints) {
-            const dir = this.getProperty(ns.trn.targetPath, message.rootDir)
+            // Ensure dir is always a string
+            const dir = this.getProperty(ns.trn.targetPath, message.rootDir) || message.targetDir || message.appPath || process.cwd()
             logger.debug(`SPARQLUpdate.getUpdateEndpoint, dir = ${dir}`)
             await this.env.loadEndpoints(dir)
         }
         return this.env.getUpdateEndpoint()
     }
-
 
     async makeHeaders(endpoint) {
         return {

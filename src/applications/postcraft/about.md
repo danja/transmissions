@@ -2,6 +2,17 @@
 
 `src/applications/example-application/about.md`
 
+smaller
+```sh
+cd ~/hyperdata/transmissions # my local path
+./del2.sh
+./trans postcraft-statics ~/sites/strandz.it/postcraft #
+./trans md-to-sparqlstore ~/sites/strandz.it/postcraft
+./trans sparqlstore-to-html ~/sites/strandz.it/postcraft
+./trans sparqlstore-to-site-indexes ~/sites/strandz.it/postcraft
+```
+
+
 ```sh
 cd ~/hyperdata/transmissions # my local path
 ./del2.sh

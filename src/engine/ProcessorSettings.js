@@ -54,7 +54,7 @@ class ProcessorSettings {
             logger.debug(`    * looking in TRANSMISSIONS dataset (transmissions.ttl)`)
             logger.trace(`\n\n   Transmissions dataset = ${dataset}`)
             var values = this.getValuesFromDataset(dataset, property)
-               logger.rv(`    values = ${values}`)
+            //   logger.rv(`    values = ${values}`)
 
             if (values && values.length > 0) return values
         } else {
