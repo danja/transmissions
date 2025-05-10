@@ -7,6 +7,7 @@ import { mkdir, mkdirSync } from 'node:fs'
 import logger from '../../utils/Logger.js'
 import Processor from '../../model/Processor.js'
 import JSONUtils from '../../utils/JSONUtils.js'
+import PathResolver from '../../utils/PathResolver.js'
 /**
  * FileWriter class that extends Processor
  * Write data to a file.
@@ -39,7 +40,7 @@ class FileWriter extends Processor {
     async process(message) {
         logger.trace(`\n\nFileWriter.process, message.done = ${message.done}`)
         logger.trace(`FileWriter.process, count = ${message.eachCount}`)
-        if (message.done) { // TODO fix this bloody thing
+        if (message.done) {
             logger.trace(`\n\nFileWriter.process, message.done = ${message.done} SKIPPING!!`)
             return
         }
@@ -60,28 +61,25 @@ class FileWriter extends Processor {
             return this.doWrite(f, content, message)
         }
 
-        var filePath = await this.getProperty(ns.trn.destinationFile)
-        if (!filePath) {
-            filePath = await this.getProperty(ns.trn.workingDir)
-        }
-
-        // Resolve relative to targetPath or rootDir
-        if (!path.isAbsolute(filePath)) {
-            filePath = path.join(message.targetPath || this.app.workingDir, filePath)
-        }
+        // Use PathResolver for file path resolution
+        const filePath = await PathResolver.resolveFilePath({
+            message,
+            app: this.app,
+            getProperty: (prop, def) => this.getProperty(prop, def),
+            defaultFilePath: this.defaultFilePath,
+            sourceOrDest: ns.trn.destinationFile
+        })
 
         logger.trace(`Filewriter, filepath = ${filePath}`)
         const dirName = dirname(filePath)
         logger.trace("Filewriter, dirName = " + dirName)
 
         const contentPath = super.getProperty(ns.trn.contentField, 'content')
-        //  var content = message.content // generalise, see above
         logger.trace(`Filewriter, contentPath = ${contentPath}`)
         const content = JSONUtils.get(message, contentPath)
         logger.trace(`Filewriter, content = ${content}`)
 
-
-        this.mkdirs(dirName) // sync - see below
+        this.mkdirs(dirName)
         await this.doWrite(filePath, content, message)
         return this.emit('message', message)
     }

@@ -5,6 +5,7 @@ import mime from 'node-mime-types'
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
 import Processor from '../../model/Processor.js'
+import PathResolver from '../../utils/PathResolver.js'
 
 class FileReader extends Processor {
     constructor(config) {
@@ -12,65 +13,19 @@ class FileReader extends Processor {
         this.defaultFilePath = 'input/input.md'
     }
 
-    // TODO use src/utils/SysUtils.js  resolveFilePath(message, property, default)
     async process(message) {
         logger.trace(`FileReader.process, done=${message.done}`)
 
         if (message.done) return
 
-        let filePath
-
-        // TODO tidy up
-        // First try deriving path from message properties
-        if (message.fullPath) {
-            filePath = message.fullPath
-        } else if (message.filepath) {
-            if (message.targetPath && !path.isAbsolute(message.filepath)) {
-                filePath = path.join(message.targetPath, message.filepath)
-            } else {
-                filePath = message.filepath
-            }
-        } else {
-            // Fall back to getting path from config
-            filePath = this.getProperty(ns.trn.sourceFile)
-            if (!filePath) {
-                logger.warn(`No source file path provided, defaulting to ${this.defaultFilePath}`)
-                filePath = this.defaultFilePath
-            }
-
-            logger.debug(`filePath = ${filePath}`)
-            // Resolve relative to targetPath or rootDir
-
-            if (typeof filePath === 'string' && !path.isAbsolute(filePath)) {
-                // First try with workingDir
-                const workingDir = this.app.workingDir
-                logger.debug(`this.app.workingDir = ${this.app.workingDir}`)
-                // Try the file path as is
-                const possiblePath = path.join(workingDir, filePath)
-
-                try {
-                    access(possiblePath, constants.R_OK, (err) => {
-                        if (err) {
-                            throw new Error(`File not accessible: ${possiblePath}\n${err.message}`)
-                        }
-                    })
-                    filePath = possiblePath
-                } catch (err) {
-                    // If not found, try with data/ prefix
-                    const dataPath = path.join(workingDir, 'data', filePath)
-                    try {
-                        access(dataPath, constants.R_OK, (err) => {
-                            if (err) {
-                                throw new Error(`File not accessible: ${dataPath}`)
-                            }
-                        })
-                        filePath = dataPath
-                    } catch (err) {
-                        throw new Error(`File not found in expected locations: ${possiblePath}, ${dataPath}`)
-                    }
-                }
-            }
-        }
+        // Use PathResolver for file path resolution
+        let filePath = await PathResolver.resolveFilePath({
+            message,
+            app: this.app,
+            getProperty: (prop, def) => this.getProperty(prop, def),
+            defaultFilePath: this.defaultFilePath,
+            sourceOrDest: ns.trn.sourceFile
+        })
 
         logger.trace(`FileReader.process(), reading file: ${filePath}`)
         logger.trace(`FileReader.process(), process.cwd() = ${process.cwd()}`)

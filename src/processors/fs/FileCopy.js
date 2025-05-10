@@ -38,7 +38,7 @@ import path from 'path'
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
 import Processor from '../../model/Processor.js'
-
+import PathResolver from '../../utils/PathResolver.js'
 
 class FileCopy extends Processor {
     constructor(config) {
@@ -53,26 +53,27 @@ class FileCopy extends Processor {
         logger.debug("FileCopy.process")
         logger.debug("   message.rootDir = " + message.rootDir)
 
-        const wd = super.getProperty(ns.trn.workingDir)
-        logger.debug(`   wd = ${wd}`)
+        // Use PathResolver to resolve source and destination
+        const app = this.app || { workingDir: message.applicationRootDir || message.rootDir || process.cwd() }
+        const getProperty = (prop, def) => this.getProperty(prop, def)
+        const defaultSource = 'input/input.txt'
+        const defaultDestination = 'output/output.txt'
 
-        var source = super.getProperty(ns.trn.source)
-        var destination = super.getProperty(ns.trn.destination)
+        const source = await PathResolver.resolveFilePath({
+            message,
+            app,
+            getProperty,
+            defaultFilePath: defaultSource,
+            sourceOrDest: ns.trn.source
+        })
+        const destination = await PathResolver.resolveFilePath({
+            message: { ...message, filepath: undefined, fullPath: undefined }, // avoid confusion with source
+            app,
+            getProperty,
+            defaultFilePath: defaultDestination,
+            sourceOrDest: ns.trn.destination
+        })
 
-        // TODO fixme
-        if (typeof source !== 'string') {
-            logger.warn(`   typeof source  = ${typeof source}`)
-            logger.reveal(source)
-            source = source[0]
-        }
-        if (typeof destination !== 'string') {
-            logger.warn(`   Warningtypeof destination  = ${typeof destination}`)
-            logger.reveal(destination)
-            destination = destination[0]
-        }
-
-        source = path.join(wd, source)
-        destination = path.join(wd, destination)
         logger.debug(`Source: ${source} `)
         logger.debug(`Destination: ${destination} `)
 
@@ -88,7 +89,11 @@ class FileCopy extends Processor {
                 await this.copyDirectory(source, destination)
             }
         } catch (err) {
-            logger.error(`Error in FileCopy: ${err.message} `)
+            if (err instanceof Error) {
+                logger.error(`Error in FileCopy: ${err.message} `)
+            } else {
+                logger.error(`Unknown error in FileCopy.`)
+            }
             logger.error(`Source: ${source} `)
             logger.error(`Destination: ${destination} `)
         }
@@ -106,7 +111,11 @@ class FileCopy extends Processor {
             await mkdir(dirPath, { recursive: true })
             logger.debug(`Directory created / ensured: ${dirPath} `)
         } catch (err) {
-            logger.debug(`Error creating directory ${dirPath}: ${err.message} `)
+            if (err instanceof Error) {
+                logger.debug(`Error creating directory ${dirPath}: ${err.message} `)
+            } else {
+                logger.debug(`Unknown error creating directory ${dirPath}.`)
+            }
             throw err
         }
     }
@@ -136,7 +145,11 @@ class FileCopy extends Processor {
                 }
             }
         } catch (err) {
-            logger.debug(`Error in copyDirectory: ${err.message} `)
+            if (err instanceof Error) {
+                logger.debug(`Error in copyDirectory: ${err.message} `)
+            } else {
+                logger.debug(`Unknown error in copyDirectory.`)
+            }
             throw err
         }
     }
