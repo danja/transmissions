@@ -23,6 +23,7 @@
           :p80 :p90 :p100) .
 
 :p10 a :SPARQLSelect ;
+:loglevel "debug" ;
      :settings :selectArticles .
 
 :p20 a :ForEach ;

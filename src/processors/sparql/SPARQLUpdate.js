@@ -16,6 +16,10 @@ class SPARQLUpdate extends SlowableProcessor {
         this.escaper = new Escaper()
     }
 
+    // maybe later
+    // const now = new Date().toISOString()
+    // const updateID = crypto.randomUUID()
+
     async process(message) {
         logger.debug(`\n[[SPARQLUpdate.process]]`)
 
@@ -23,22 +27,9 @@ class SPARQLUpdate extends SlowableProcessor {
         // Ensure dir is always a string: prefer targetPath, then rootDir, then targetDir, then appPath, then cwd
         const dir = super.getProperty(ns.trn.targetPath, message.rootDir) || message.targetDir || message.appPath || process.cwd()
 
-
-
         const templateFilename = await this.getProperty(ns.trn.templateFilename, null)
-
-        logger.trace(`   endpoint = ${endpoint}`)
-
         const template = await this.env.getTemplate(dir, templateFilename)
-        //  message.contentBlocks.graph = graph
-
         logger.trace(`   process template = ${template}`)
-
-        // maybe later
-        // const now = new Date().toISOString()
-        // const updateID = crypto.randomUUID()
-
-
 
         const dataField = super.getProperty(ns.trn.dataBlock, 'contentBlocks')
         let updateData = message
@@ -47,7 +38,6 @@ class SPARQLUpdate extends SlowableProcessor {
         }
         updateData.graph = await super.getProperty(ns.trn.graph, 'http://example.org/graph')
         logger.debug(`  updateData.graph = ${message.graph}`)
-
         //  logger.v(updateData)
 
         const escape = super.getProperty(ns.trn.escape, false)

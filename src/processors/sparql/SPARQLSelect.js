@@ -13,7 +13,9 @@ class SPARQLSelect extends Processor {
 
     async getQueryEndpoint(message) {
         if (!this.env.endpoints) {
-            const dir = this.getProperty(ns.trn.targetPath, message.rootDir)
+            // Ensure dir is always a string
+            const dir = this.getProperty(ns.trn.targetPath, message.rootDir) || message.targetDir || message.appPath || process.cwd()
+            logger.debug(`SPARQLUpdate.getQueryEndpoint, dir = ${dir}`)
             await this.env.loadEndpoints(dir)
         }
         return this.env.getQueryEndpoint()
@@ -22,12 +24,15 @@ class SPARQLSelect extends Processor {
     async process(message) {
 
         const endpoint = await this.getQueryEndpoint(message)
-        const dir = await this.getProperty(ns.trn.targetPath, message.rootDir)
-        const templateFilename = await this.getProperty(ns.trn.templateFilename)
-        const dataField = await this.getProperty(ns.trn.dataField)
-        const graph = await this.getProperty(ns.trn.graph, '?g')
 
+        const dir = super.getProperty(ns.trn.targetPath, message.rootDir) || message.targetDir || message.appPath || process.cwd()
+
+        const templateFilename = await this.getProperty(ns.trn.templateFilename)
         const template = await this.env.getTemplate(dir, templateFilename)
+        logger.trace(`   process template = ${template}`)
+
+        const dataField = this.getProperty(ns.trn.dataField)
+        const graph = this.getProperty(ns.trn.graph, '?g')
 
         const queryData = message[dataField] || message
         queryData.graph = graph
