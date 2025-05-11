@@ -35,7 +35,7 @@ class Restructure extends Processor {
         //  const renamesRDF = super.getValues(ns.trn.rename)
         const renamesRDF = super.getProperty(ns.trn.rename)
 
-        logger.log(`   renamesRDF = ${JSON.stringify(renamesRDF)}`)
+        logger.debug(`   renamesRDF = ${JSON.stringify(renamesRDF)}`)
 
 
         if (!renamesRDF || !Array.isArray(renamesRDF) || renamesRDF.length === 0) {

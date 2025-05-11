@@ -51,7 +51,7 @@ class Templater extends Processor {
 
         logger.debug(`\n\nTemplater.process`)
         logger.debug(`\nTemplater.process, message.contentBlocks = ${JSON.stringify(message.contentBlocks)}`)
-        //      var templateFilename = await this.getProperty(ns.trn.templateFilename)
+
 
         let filePath = await PathResolver.resolveFilePath({
             message,
@@ -63,9 +63,13 @@ class Templater extends Processor {
 
         logger.debug(`Templater.process(), using template file: ${filePath}`)
 
-        // TODO sort out fields
+        const dir = path.dirname(filePath); // '/danny/sites/danny.ayers.name/postcraft/layout/base/templates'
+        const filename = path.basename(filePath); // 'article-content.njk'
 
-        message.content = nunjucks.render(filePath, message.data)
+        // TODO sort out fields
+        nunjucks.configure(dir, { autoescape: false })
+
+        message.content = await nunjucks.render(filename, message.data)
 
         //
         logger.debug(`content POST = ${message.content}`)
@@ -75,7 +79,7 @@ class Templater extends Processor {
         // TODO priorities
         //      message.content = nunjucks.renderString(message.template, message.contentBlocks)
 
-        nunjucks.configure({ autoescape: false })
+        //  nunjucks.configure({ autoescape: false })
 
         return this.emit('message', message)
     }
