@@ -13,24 +13,22 @@
 ##################################################################
 
 :templater-test a :Transmission ;
-    :pipe (:p10 :p20 :p30 :p40 :p50) .
+    :pipe (:p10 :p20 :SM) .
 
-:p10 a :ShowMessage .
 
-:p20 a :FileReader ;
-     :settings :readerSet .
-     # Reads data.json
-     :target "data.json" .
+:p10 a :FileReader ;
+     :settings [
+         :sourceFile "input/data.json" ;
+         :mediaType "application/json" ;
+         :targetField "data" ;
+     ] .
 
-:p30 a :FileReader ;
-     :settings :readerSet .
-     # Reads template.njk
-     :target "template.njk" .
+:p20 a :Templater ;
+     :settings [
+         :templateFilename "data/input/template.njk" ;
+         :targetField "content" ;
+         :dataField "data" 
+     ] .
 
-:p40 a :Templater ;
-     :settings :templaterSet .
 
-:p50 a :ShowMessage .
 
-:readerSet a :Settings .
-:templaterSet a :Settings .
