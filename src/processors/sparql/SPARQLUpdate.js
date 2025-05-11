@@ -22,10 +22,9 @@ class SPARQLUpdate extends SlowableProcessor {
         const endpoint = await this.getUpdateEndpoint(message)
         // Ensure dir is always a string: prefer targetPath, then rootDir, then targetDir, then appPath, then cwd
         const dir = super.getProperty(ns.trn.targetPath, message.rootDir) || message.targetDir || message.appPath || process.cwd()
-        const dataField = super.getProperty(ns.trn.dataBlock, null)
-        message.graph = await super.getProperty(ns.trn.graph, 'default')
-        logger.debug(`  message.graph = ${message.graph}`)
-        const escape = super.getProperty(ns.trn.escape, false)
+
+
+
         const templateFilename = await this.getProperty(ns.trn.templateFilename, null)
 
         logger.trace(`   endpoint = ${endpoint}`)
@@ -35,23 +34,28 @@ class SPARQLUpdate extends SlowableProcessor {
 
         logger.trace(`   process template = ${template}`)
 
-        // Remove unused variables
+        // maybe later
         // const now = new Date().toISOString()
         // const updateID = crypto.randomUUID()
 
-        // Fix: dataField may be array or undefined
+
+
+        const dataField = super.getProperty(ns.trn.dataBlock, 'contentBlocks')
         let updateData = message
         if (typeof dataField === 'string' && dataField in message) {
             updateData = message[dataField]
         }
-        logger.debug(`---   updateData = ${updateData}`)
-        //  logger.reveal(message)
-        // process.exit()
+        updateData.graph = await super.getProperty(ns.trn.graph, 'http://example.org/graph')
+        logger.debug(`  updateData.graph = ${message.graph}`)
 
+        //  logger.v(updateData)
+
+        const escape = super.getProperty(ns.trn.escape, false)
         if (escape) { // TODO unhackify
             logger.debug(`---   escaping`)
             const replacements = this.escaper.getReplacementList('SPARQL')
-            message.contentBlocks.content = this.escaper.escape(message.contentBlocks.content, replacements)
+            message.contentBlocks.content =
+                this.escaper.escape(message.contentBlocks.content, replacements)
         }
 
         nunjucks.configure({ autoescape: true })
@@ -61,6 +65,7 @@ class SPARQLUpdate extends SlowableProcessor {
         logger.trace(`updateData = `)
         //  logger.reveal(updateData)
         logger.debug(`update = ${update}`)
+        logger.debug(`endpoint.url = ${endpoint.url}`)
 
         const response = await axios.post(endpoint.url, update, {
             headers: await this.makeHeaders(endpoint)
@@ -68,6 +73,7 @@ class SPARQLUpdate extends SlowableProcessor {
 
         // https://axios-http.com/docs/res_schema
         if (response.status === 200 || response.status === 204) {
+            logger.debug(`SPARQLUpdate success: ${response.status} ${response.statusText}`)
             message.updateStatus = 'success'
             return this.emit('message', message)
         }

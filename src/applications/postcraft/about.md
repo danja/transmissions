@@ -22,6 +22,16 @@ cd ~/hyperdata/transmissions # my local path
 ./trans sparqlstore-to-site-indexes ~/sites/danny.ayers.name/postcraft
 ```
 
+```sh
+cd ~/hyperdata/transmissions # my local path
+./del2.sh
+./trans postcraft-statics tests/applications/example.org
+./trans md-to-sparqlstore tests/applications/example.org
+./trans sparqlstore-to-html tests/applications/example.org
+./trans sparqlstore-to-site-indexes tests/applications/example.org
+```
+
+
 # Example Application `about.md`
 
 ## Runner

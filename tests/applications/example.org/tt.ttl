@@ -1,0 +1,17 @@
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+:dirWalker a :ConfigSet ;
+   :sourceDir "content/raw" .
+
+:storeArticle a :ConfigSet ;
+    :loglevel "debug" ;
+    :delay "100" ;
+    :dataBlock "contentBlocks" ;
+    :templateFilename "system/sparql-templates/store-article.njk" ;
+    :endpointSettings "system/endpoints.json" ;
+    :graph <http://danny.ayers.name/content> .

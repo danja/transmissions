@@ -10,6 +10,7 @@ class MakeEntry extends Processor {
 
   constructor(config) {
     super(config)
+    logger.debug('MakeEntry constructor config:', config)
   }
 
   async process(message) {
@@ -29,9 +30,15 @@ class MakeEntry extends Processor {
 
     var uri = this.getEntryURI(rel, slug)
     const relMap = super.getProperty(ns.trn.relMap, '')
-    uri = uri.replace(message.sourceDir, relMap)
+    logger.debug(`relMap (from config) = ${relMap}`)
+    if (typeof message.sourceDir === 'string' && uri.includes(message.sourceDir)) {
+      uri = uri.replace(message.sourceDir, relMap)
+    }
 
-    const relative = rel.replace(message.sourceDir, relMap)
+    let relative = rel
+    if (typeof message.sourceDir === 'string' && rel.includes(message.sourceDir)) {
+      relative = rel.replace(message.sourceDir, relMap)
+    }
 
     const title = this.extractTitle(message)
 
@@ -45,7 +52,6 @@ class MakeEntry extends Processor {
       title: title,
       content: message.content,
       slug: slug,
-      title: this.extractTitle(message),
       dates: dates,
       creator: this.getCreator()
     }
@@ -54,25 +60,25 @@ class MakeEntry extends Processor {
   }
 
   getEntryURI(rel, slug) {
-    const baseURI = super.getProperty(ns.trn.baseURI)
-    logger.debug(`baseURI = ${baseURI}`)
-    //  process.exit()
-    //  const id = crypto.randomUUID()
-    //  return path.join(baseURI, rel, slug)
+    const baseURI = super.getProperty(ns.trn.baseURI, '')
+    logger.debug(`getEntryURI: baseURI = ${baseURI}`)
     return baseURI + '/' + rel + '/' + slug
   }
 
   getCreator() {
+    const creatorName = super.getProperty(ns.trn.creatorName, '')
+    const creatorURI = super.getProperty(ns.trn.creatorURI, '')
+    logger.debug(`getCreator: creatorName = ${creatorName}, creatorURI = ${creatorURI}`)
     return {
-      name: super.getProperty(ns.trn.creatorName),
-      uri: super.getProperty(ns.trn.creatorURI)
+      name: creatorName,
+      uri: creatorURI
     }
   }
 
   // filePath - appPath
   // (message.sourceDir, dates, message.filePath)
   extractRelSlug(basePath, dates, filePath) {
-    logger.debug(`\n\nMakeEntry.extractRelSlug`)
+    logger.debug(`MakeEntry.extractRelSlug`)
     logger.debug(`basePath = ${basePath}`)
     logger.debug(`filePath = ${filePath}`)
 
@@ -121,34 +127,6 @@ class MakeEntry extends Processor {
     //dates.created = shreds[0]
     //}
     return dates
-  }
-
-  // first heading in the markdown
-  // or formatted from filename
-  // or raw filename
-  extractTitle(message) {
-    let title = 'Title'
-    let match = message.content.toString().match(/^#(.*)$/m)
-    let contentTitle = match ? match[1].trim() : null
-    if (contentTitle) {
-      title = contentTitle.replaceAll('#', '') // TODO make nicer
-      return title
-    }
-
-    // derive from filename
-    // eg. 2024-04-19_hello-postcraft.md
-    try {
-      const nonExt = message.filename.split('.').slice(0, -1).join()
-      const shreds = nonExt.split('_')
-
-      // let title = shreds[1] // fallback, get it from filename
-      title = shreds[1].split('-') // split the string into words
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // capitalize the first letter of each word
-        .join(' ') // join the words back together with spaces
-    } catch (err) {
-      title = message.filename
-    }
-    return title
   }
 
   // first heading in the markdown

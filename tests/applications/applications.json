@@ -37,12 +37,6 @@
         "requiredMatchCount": 6
     },
     {
-        "command": "./trans dirwalker",
-        "label": "dirwalker",
-        "description": "test dirwalker application",
-        "requiredMatchCount": 2
-    },
-    {
         "command": "./trans system/echo -m '{\"message\":\"Hello, World, TEST_PASSED!\"}'",
         "label": "echo",
         "description": "test echo application",
@@ -54,11 +48,23 @@
         "description": "test filereader application",
         "requiredMatchCount": 1
     },
-     {
+    {
         "command": "./trans filecopy",
         "label": "filecopy",
         "description": "test filecopy application",
         "requiredMatchCount": 1
+    },
+    {
+        "command": "./trans dirwalker",
+        "label": "dirwalker",
+        "description": "test dirwalker application",
+        "requiredMatchCount": 2
+    },
+    {
+        "command": " ./trans dirwalker tests/applications/example.org",
+        "label": "dirwalker with target",
+        "description": "test dirwalker with target",
+        "requiredMatchCount": 2
     },
     {
         "command": "./trans foreach -m '{\"foreach\": [\"first TEST_PASSED\", \"second TEST_PASSED\", \"third TEST_PASSED\"]}'",

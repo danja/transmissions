@@ -38,10 +38,10 @@ class ProcessorImpl extends EventEmitter {
 
         // TODO not propery tested
         // check if the property is in simpleConfig
-      //  logger.v(this.app.simpleConfig)
+        //  logger.v(this.app.simpleConfig)
         value = this.propertyInObject(this.app.simpleConfig, property)
         if (value) {
-              logger.debug(`   property found in simpleConfig : ${value}`)
+            logger.debug(`   property found in simpleConfig : ${value}`)
             return value
         }
 
@@ -68,9 +68,9 @@ class ProcessorImpl extends EventEmitter {
     }
 
     propertyInObject(object, property) {
-        logger.debug(`   ProcessorImpl.propertyInObject`)
+        logger.debug(`    propertyInObject`)
         const shortName = ns.getShortname(property)
-         logger.debug(`   shortName = ${shortName}`)
+        logger.trace(`       shortName = ${shortName}`)
         if (object && object[shortName]) {
             logger.debug(`   Found in object: ${object[shortName]}`)
             return object[shortName]

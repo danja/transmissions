@@ -18,7 +18,7 @@
    :pipe (:mts10 :mts20 :mts25 :mts30 :mts40) .
 
 :mts10 a :DirWalker ;
-   :settings :mts10-dirWalker .
+   :settings :dirWalker .
 
 :mts20 a :FileReader ;
      :settings :readerSet .
@@ -29,4 +29,4 @@
      :settings :entryExtras .
 
 :mts40 a :SPARQLUpdate ;
-     :settings :mts40-storeArticle .
+     :settings :storeArticle .

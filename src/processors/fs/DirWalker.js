@@ -17,32 +17,28 @@ class DirWalker extends Processor {
         logger.trace(`\nDirWalker.process, this = ${this}`)
         message.done = false
 
+        // typically relative
+        var walkDir = this.getProperty(ns.trn.sourceDir, this.app.path)
+        logger.debug(`    walkDir = ${walkDir}`)
+
+        logger.debug(`    message.targetDir = ${message.targetDir}`)
         // Prefer message.targetDir if present, else use config
-        let sourceDir = message.targetDir || this.getProperty(ns.trn.sourceDir, './')
-        logger.trace(`--------------- DirWalker sourceDir resolved = ${sourceDir}`)
-        logger.trace(`this.app.path = ${this.app && this.app.path}`)
-        logger.trace(`process.cwd() = ${process.cwd()}`)
-
-        this.includePatterns = this.getProperty(ns.trn.includePattern, ['*.md', '*.js', '*.json', '*.ttl'])
-        this.excludePatterns = this.getProperty(ns.trn.excludePattern, ['*.', '.git', 'node_modules'])
-
-        logger.trace('\n\nDirWalker, message.targetPath = ' + message.targetPath)
-        logger.trace('DirWalker, message.rootDir = ' + message.rootDir)
-        logger.trace('DirWalker, message.sourceDir = ' + message.sourceDir)
-        logger.log(`DirWalker.sourceDir = ${sourceDir}`)
-        logger.log(`APP = ${JSON.stringify(this.app)}`)
-
-        let dirPath
-        if (path.isAbsolute(sourceDir)) {
-            dirPath = sourceDir
-        } else if (this.app && this.app.path) {
-            dirPath = path.join(this.app.path, sourceDir)
+        if (message.targetDir) {
+            walkDir = path.join(message.targetDir, walkDir)
         } else {
-            dirPath = path.join(process.cwd(), sourceDir)
+            if (!path.isAbsolute(walkDir)) {
+                walkDir = path.join(this.app.path, walkDir)
+            }
         }
-        logger.debug(`DirWalker resolved dirPath = ${dirPath}`)
 
-        await this.walkDirectory(dirPath, message)
+        logger.debug(`DirWalker resolved walkDir = ${walkDir}`)
+
+        this.includePatterns =
+            this.getProperty(ns.trn.includePattern, ['*.md', '*.js', '*.json', '*.ttl'])
+        this.excludePatterns =
+            this.getProperty(ns.trn.excludePattern, ['*.', '.git', 'node_modules'])
+
+        await this.walkDirectory(walkDir, message)
 
         const finalMessage = SysUtils.copyMessage(message)
         finalMessage.done = true
