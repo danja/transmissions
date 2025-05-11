@@ -20,6 +20,11 @@ class ProcessorImpl extends EventEmitter {
         return this.settee.getValues(this.settingsNode, property, fallback)
     }
 
+    // TODO naming!!!
+    getPropertyObject(subject, property, fallback) {
+        return this.settee.getValues(subject, property, fallback)[0] // TODO defend
+    }
+
     getProperty(property, fallback = undefined) {
         // Defensive: ensure this.message is set if called directly - needed?
         if (!this.message && arguments.length > 2 && typeof arguments[2] === 'object') {
@@ -36,7 +41,7 @@ class ProcessorImpl extends EventEmitter {
             return value
         }
 
-        // TODO not propery tested
+        // TODO not properly tested
         // check if the property is in simpleConfig
         //  logger.v(this.app.simpleConfig)
         value = this.propertyInObject(this.app.simpleConfig, property)

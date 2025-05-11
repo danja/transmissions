@@ -45,7 +45,7 @@ class MarkdownToHTML extends Processor {
                 })
                 .parse(input.toString())
 
-        const outputFieldPath = await this.getProperty(ns.trn.outputField, 'content')
+        const outputFieldPath = this.getProperty(ns.trn.outputField, 'content')
         logger.debug(`\nMarkdownToHTML.process, outputField = ${outputFieldPath}`)
         message = JSONUtils.set(message, outputFieldPath, html)
 

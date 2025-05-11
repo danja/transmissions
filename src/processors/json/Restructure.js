@@ -29,20 +29,12 @@ class Restructure extends Processor {
 
     async getRenames() {
         logger.debug(`\nRestructure.getRenames`)
-  //      logger.debug(`this.settingsNode.value = ${this.settingsNode.value}`)
+        //      logger.debug(`this.settingsNode.value = ${this.settingsNode.value}`)
 
         // Get renamesRDF as an array of NamedNode terms
-        const renamesRDF = super.getValues(ns.trn.rename)
-const renameNode = super.getProperty(ns.trn.rename)
-        if (renameNode) {
-            logger.debug(`   renameNode = ${JSON.stringify(renameNode)}`)
-            logger.debug(`   renameNode.value = ${renameNode.value}`)
-       //     logger.debug(`   typeof renameNode = ${typeof renameNode}`)
-         //   logger.debug(`   renameNode.termType = ${renameNode.termType}`)
-           // logger.debug(`   renameNode.id = ${renameNode.id}`)
-         //   logger.debug(`   renameNode.toString() = ${renameNode.toString()}`)
-           // logger.debug(`   renameNode.toNT() = ${renameNode.toNT()}`)
-        }
+        //  const renamesRDF = super.getValues(ns.trn.rename)
+        const renamesRDF = super.getProperty(ns.trn.rename)
+
         logger.log(`   renamesRDF = ${JSON.stringify(renamesRDF)}`)
 
 
@@ -55,22 +47,27 @@ const renameNode = super.getProperty(ns.trn.rename)
         logger.debug(JSON.stringify(renamesRDF))
 
         // Determine which dataset to use based on targetPath
+        /*
         var dataset = this.config
         if (this.message && this.message.targetPath) {
             dataset = this.app.dataset || this.config
         }
-
+*/
         var renames = []
         for (let i = 0; i < renamesRDF.length; i++) {
             logger.debug(`renamesRDF[i] = ${JSON.stringify(renamesRDF[i])}`)
             logger.debug(`typeof renamesRDF[i] = ${typeof renamesRDF[i]}`)
             try {
-                let rename = typeof renamesRDF[i] === 'string' ?
-                    rdf.namedNode(renamesRDF[i]) : renamesRDF[i]
-
-                let poi = rdf.grapoi({ dataset: dataset, term: rename })
-                let pre = poi.out(ns.trn.pre).value
-                let post = poi.out(ns.trn.post).value
+                //let rename = typeof renamesRDF[i] === 'string' ?
+                //rdf.namedNode(renamesRDF[i]) : renamesRDF[i]
+                // let rename = renamesRDF[i]
+                let pre = super.getPropertyObject(renamesRDF[i], ns.trn.pre)
+                let post = super.getPropertyObject(renamesRDF[i], ns.trn.post)
+                /*
+           let poi = rdf.grapoi({ dataset: dataset, term: rename })
+           let pre = poi.out(ns.trn.pre).value
+           let post = poi.out(ns.trn.post).value
+*/
 
                 logger.debug(`Found mapping: PRE: ${pre}, POST: ${post}`)
 

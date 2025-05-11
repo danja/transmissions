@@ -7,6 +7,7 @@
     :mediaType "application/json" .
 
 :retree a :ConfigSet ;
+   :remove "queryResults" ; # dummy
     :rename (:pp1 :pp2 :pp3) . # consider using blank nodes
     :pp1   :pre     "content.item.chat_messages" ;
             :post    "content.channel"  .
@@ -18,4 +19,3 @@
 
 :writer a :ConfigSet ;
     :destinationFile "output/output-01.json" .
-

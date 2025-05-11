@@ -40,7 +40,7 @@ class ProcessorSettings {
         var dataset = this.app.datasets.dataset('target')
         if (dataset) {
             logger.debug(`    * looking in TARGET dataset (tt.ttl)`)
-         //   logger.debug(`DS = ${logger.shorter(dataset.toString())}`)
+            //   logger.debug(`DS = ${logger.shorter(dataset.toString())}`)
             var values = this.getValuesFromDataset(dataset, property)
             if (values && values.length > 0) return values
         } else {
@@ -65,7 +65,7 @@ class ProcessorSettings {
         dataset = this.app.datasets.dataset('config')
         if (dataset) {
             logger.debug(`    * looking in CONFIG dataset (config.ttl)`)
-                    logger.trace(`\n\n   Config dataset = ${dataset}`)
+            logger.trace(`\n\n   Config dataset = ${dataset}`)
             //  logger.rv(dataset)
             var values = this.getValuesFromDataset(dataset, property)
             if (values && values.length > 0) return values
@@ -94,6 +94,7 @@ class ProcessorSettings {
             }
 
             // Handle special case for rename property
+            /*
             if (property.equals(ns.trn.rename)) {
                 try {
                     return GrapoiHelpers.listToArray(dataset, this.settingsNode, property)
@@ -102,6 +103,7 @@ class ProcessorSettings {
                     return []
                 }
             }
+*/
 
             // Get the property value(s)
             const value = ptr.out(property)

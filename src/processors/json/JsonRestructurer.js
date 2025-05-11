@@ -15,41 +15,43 @@ class JsonRestructurer {
     }
 
     getValueByPath(obj, path, caller) {
-        logger.debug('JsonRestructurer, path = ' + path)
+        logger.debug(`JsonRestructurer.getValueByPath, \n    path = ` + path)
 
         try {
             const sp = path.split('.')
-            logger.debug('JsonRestructurer, sp = ' + sp)
+            logger.debug('    sp = ' + sp)
             const reduced = sp.reduce((acc, part) => acc[part], obj)
-            logger.debug('JsonRestructurer, reduced = ' + reduced)
+            logger.debug('    reduced = ' + reduced)
             return reduced
         } catch (e) {
             logger.reveal(obj)
             logger.warn(`${e},
-                caused by : JsonRestructurer.getValueByPath, path ${path} not found,
-                message above.
+    path ${path} not found.
                 `)
-            logger.debug(`JsonRestructurer.setValueByPath caller : ${caller}`)
-            //  process.exit(1)
-            //const err = new Error().stack
-
+            logger.debug(`    caller : ${caller}`)
             return undefined
         }
     }
 
     setValueByPath(obj, path, value) {
-        logger.debug(`JsonRestructurer.setValueByPath, obj = ${obj}, path = ${path}, value = ${value}`)
+        logger.debug(`JsonRestructurer.setValueByPath 
+    obj = ${obj} 
+    path = ${path} 
+    value = ${value}`)
         const parts = path.split('.')
         const last = parts.pop()
         const target = parts.reduce((acc, part) => {
             acc[part] = acc[part] || {}
             return acc[part]
         }, obj)
-        logger.debug(`JsonRestructurer.setValueByPath, target = ${target}, last = ${last}, value = ${value}`)
+        logger.debug(`    target = ${JSON.stringify(target)}
+    last = ${last}
+    value = ${value}`)
         target[last] = value
     }
 
     restructure(inputData, caller) {
+        logger.debug(`\nJsonRestructurer.restructure, \n    inputData = ${inputData}`)
         if (typeof inputData === 'string') {
             try {
                 inputData = JSON.parse(inputData)
@@ -60,9 +62,10 @@ class JsonRestructurer {
 
         const result = {}
         this.mappings.forEach(({ pre, post }) => {
-            logger.debug(`PRE = ${pre}, POST = ${post}`)
             const value = this.getValueByPath(inputData, pre, caller)
-            // logger.log(`PRE = ${pre}, POST = ${post} value = ${value}`)
+            logger.debug(`    pre = ${pre}
+    post = ${post}
+    value = ${value}`)
             if (value !== undefined) {
                 this.setValueByPath(result, post, value)
             }

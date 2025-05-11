@@ -19,17 +19,17 @@ class AppManager {
         this.app = null
     }
 
-    static simpleApp(config){
+    static simpleApp(config) {
         logger.debug(`\nAppManager.simpleApp`)
         const app = App.instance()
         app.simple = true
         app.simpleConfig = config
-        if(config.workingDir) {
-            app.workingDir = path.join(process.cwd(),config.workingDir)
+        if (config.workingDir) {
+            app.workingDir = path.join(process.cwd(), config.workingDir)
         } else {
             app.workingDir = path.join(process.cwd(), Defaults.workingDir)
         }
-     //   app.datasets = new Datasets(app)
+        //   app.datasets = new Datasets(app)
         return app
     }
 
@@ -39,10 +39,10 @@ class AppManager {
         this.app = App.instance()
         // Copy options to app
         Object.assign(this.app, options) // TODO better just calculated options
-      
+
         // starting point
         this.app.path = await this.resolveAppPath(options.appName)
-          
+
         // load the transmissions dataset
         const transmissionsFilename = path.join(this.app.path, Defaults.transmissionsFilename)
         await this.app.datasets.loadDataset('transmissions', transmissionsFilename)
@@ -52,18 +52,18 @@ class AppManager {
         await this.app.datasets.loadDataset('config', configFilename)
 
         if (this.app.targetDir) {
-             this.app.workingDir = this.app.targetDir
+            this.app.workingDir = this.app.targetDir
             const targetFilename = path.join(this.app.targetDir, Defaults.targetFilename)
             await this.app.datasets.loadDataset('target', targetFilename)
         }
-        
+
         if (!this.app.workingDir) {
             this.app.workingDir = path.join(this.app.path, Defaults.workingDir)
         }
 
         await this.initModuleLoader()
 
-         logger.debug(`this.app = ${this.app}`)
+        logger.debug(`this.app = ${this.app}`)
         return this
     }
 
@@ -95,21 +95,11 @@ class AppManager {
         //  _.merge(message, contextMessage)
         Object.assign(message, contextMessage)
         message.appRunStart = (new Date()).toISOString()
-        logger.debug('**************** Message with merged context:', message)
 
-        /*
-        for (const transmission of transmissions) {
-            if (!this.appResolver.subtask || this.appResolver.subtask === transmission.label) {
-                await transmission.process(message)
-            }
-        }
-    */
-        //       message.app = this.appResolver
-        // message.sessionNode = this.appResolver.sessionNode
 
         for (const transmission of transmissions) {
             transmission.app = this.app
-            logger.debug(`transmission = \n${transmission} `)
+            //   logger.debug(`transmission = \n${transmission} `)
             if (!this.app.subtask || this.app.subtask === transmission.label) {
 
                 message = await transmission.process(message)
