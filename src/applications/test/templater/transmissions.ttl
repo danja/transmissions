@@ -25,7 +25,7 @@
 
 :p20 a :Templater ;
      :settings [
-         :templateFilename "data/input/template.njk" ;
+         :templateFilename "input/template.njk" ;
          :targetField "content" ;
          :dataField "data" 
      ] .

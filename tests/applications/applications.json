@@ -85,6 +85,12 @@
         "requiredMatchCount": 2
     },
     {
+        "command": "./trans templater",
+        "label": "templater",
+        "description": "test templater",
+        "requiredMatchCount": 2
+    },
+    {
         "command": "./trans file-remove-copy",
         "label": "file-remove-copy",
         "description": "file-remove-copy VALUES NOT TESTED",

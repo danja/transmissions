@@ -61,12 +61,11 @@ class Templater extends Processor {
             sourceOrDest: ns.trn.templateFilename
         })
 
+        logger.debug(`Templater.process(), using template file: ${filePath}`)
 
-        // Configure Nunjucks with the template path
-        //    nunjucks.configure(templatePath, { autoescape: false })
+        // TODO sort out fields
 
-
-        message.content = nunjucks.render(filePath, message.contentBlocks)
+        message.content = nunjucks.render(filePath, message.data)
 
         //
         logger.debug(`content POST = ${message.content}`)
