@@ -23,7 +23,6 @@
           :p80 :p90 :p100) .
 
 :p10 a :SPARQLSelect ;
-:loglevel "debug" ;
      :settings :selectArticles .
 
 :p20 a :ForEach ;
@@ -31,7 +30,6 @@
 
 :p30 a :Restructure ;
     :settings :prepArticle .
-
 
 :p40 a :MarkdownToHTML ;
     :settings :mdHTML .
@@ -48,7 +46,8 @@
     :settings :articlePageTemplate .
 
 :p70 a :StringOps ;
-  :settings :filenameConstructor .
+  :settings :filenameConstructor ;
+  :loglevel "debug" .
 
 :p80 a :StringOps ;
   :settings :filenameExtension .

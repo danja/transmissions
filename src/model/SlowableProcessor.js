@@ -11,8 +11,8 @@ class SlowableProcessor extends Processor {
     }
 
     async preProcess(message) {
-        const delay = super.getProperty(ns.trn.delay, '0') //  default if unspecified elsewhere
-        logger.trace(`SPEEPIES`)
+        const delay = super.getProperty(ns.trn.delay, '50') //  default if unspecified elsewhere
+        logger.trace(`SLEEPIES`)
         await SysUtils.sleep(delay)
         return super.preProcess(message)
     }
