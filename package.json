@@ -7,7 +7,7 @@
   "author": "Danny Ayers <danny.ayers@gmail.com> (https://danny.ayers.name)",
   "license": "MIT",
   "scripts": {
-    "test": "vitest",
+    "test": "PAGER=cat LESS=F vitest --run",
     "test:ed": "npx http-server -c-1 -o tests/browser/transmission-editor-test.html",
     "cov": "nyc -a --include=src --reporter=lcov npm run test",
     "docs": "jsdoc -c jsdoc.json",
