@@ -68,16 +68,22 @@ class PathOps extends Processor {
      */
     async process(message) {
         logger.debug(`PathOps.process`)
-        logger.warn('TODO PathOps.process, message not checked')
+        
+        if (!message) {
+            logger.error("PathOps.process: No message provided")
+            return
+        }
+
+        if (message.done) return
 
         const targetField = super.getProperty(ns.trn.targetField, 'concat')
         logger.debug(`     targetField = ${targetField}`)
 
-        if (message.done) return
-
-
         const segments = GrapoiHelpers.listToArray(this.app.loadedDataset, this.settingsNode, ns.trn.values)
-
+        if (!segments || !segments.length) {
+            logger.error("PathOps.process: No segments found in configuration")
+            return this.emit('message', message)
+        }
 
         // Check if segments should be joined as a path
         const asPath = super.getProperty(ns.trn.asPath) === 'true'
@@ -105,10 +111,26 @@ class PathOps extends Processor {
         logger.debug(`PathOps.combineSegments,
     segments = ${logger.reveal(segments)}
     asPath = ${asPath}`)
+        
+        if (!dataset) {
+            logger.error("combineSegments: No dataset provided")
+            return ''
+        }
+        
+        if (!segments) {
+            logger.error("combineSegments: No segments provided")
+            return ''
+        }
+        
         var combined = ''
         var segment
+        
         for (var i = 0; i < segments.length; i++) {
             segment = segments[i]
+            if (!segment) {
+                logger.warn(`Segment at index ${i} is undefined, skipping`)
+                continue
+            }
 
             // Try to extract a static string value
             let stringSegment = rdf.grapoi({ dataset: dataset, term: segment })
@@ -125,33 +147,42 @@ class PathOps extends Processor {
             // Try to extract a field value from the message
             let fieldSegment = rdf.grapoi({ dataset: dataset, term: segment })
             let fieldProperty = fieldSegment.out(ns.trn.field)
-            logger.debug(`    fieldProperty = ${fieldProperty.value}`)
-
-            if (fieldProperty && fieldProperty.value) {
-                let fieldValue = JSONUtils.get(message, fieldProperty.value)
-                logger.debug(`    fieldValue = ${fieldValue}`)
-                if (!fieldValue) {
-                    logger.warn(`No fieldValue for ${fieldProperty.value}`)
-                    continue
-                }
-                if (asPath) {
-                    try {
-                        combined = path.join(combined, fieldValue)
-                    } catch (e) {
-                        logger.error(`fieldProperty = ${fieldProperty.value}`)
-                        logger.error(`fieldValue = ${fieldValue}`)
-                        logger.error(`combined = ${combined}`)
-                        throw new Error(e)
-                    }
-                    continue
-                }
-                if ('string' != typeof fieldValue) {
-                    fieldValue = JSON.stringify(fieldValue)
-                }
-                combined = combined + fieldValue
+            
+            if (!fieldProperty || !fieldProperty.value) {
+                logger.warn(`Segment ${segment.value} has neither string nor field property`)
                 continue
             }
+            
+            logger.debug(`    fieldProperty = ${fieldProperty.value}`)
+            let fieldValue = JSONUtils.get(message, fieldProperty.value)
+            logger.debug(`    fieldValue = ${fieldValue}`)
+            
+            if (fieldValue === undefined || fieldValue === null) {
+                logger.warn(`Missing field value for '${fieldProperty.value}' in message`)
+                continue
+            }
+            
+            if (asPath) {
+                try {
+                    combined = path.join(combined, fieldValue)
+                } catch (e) {
+                    logger.error(`Path join error with field '${fieldProperty.value}'`)
+                    logger.error(`fieldValue = ${fieldValue}`)
+                    logger.error(`combined = ${combined}`)
+                    logger.error(`Error: ${e.message}`)
+                    continue
+                }
+                continue
+            }
+            
+            if (typeof fieldValue !== 'string') {
+                fieldValue = JSON.stringify(fieldValue)
+            }
+            
+            combined = combined + fieldValue
+            continue
         }
+        
         return combined
     }
 }

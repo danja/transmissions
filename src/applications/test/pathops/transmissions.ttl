@@ -17,7 +17,9 @@
 ##################################################################
 
 :pathops a :Transmission ;
-    :pipe (:setup  :SM :pFilename :pString) .
+    :pipe (:setup  :SM :pFilename :pString :finalSM) .
+
+:finalSM a :ShowMessage .
 
 :setup a :SetMessage ;
   :loglevel 'debug' ;

@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(./trans:*)",
-      "Bash(LOG_LEVEL=debug TRACE=1 ./trans config-setting-target tests/applications/config-setting-target)"
+      "Bash(LOG_LEVEL=debug TRACE=1 ./trans config-setting-target tests/applications/config-setting-target)",
+      "Bash(./trans:*)"
     ],
     "deny": []
   }

@@ -97,6 +97,12 @@
         "requiredMatchCount": 1
     },
     {
+        "command": "./trans  pathops -m '{\"fields\": {\"fieldB\" : \"TEST\",\"fieldC\":\"_PASSED\"}}'",
+        "label": "pathops",
+        "description": "test pathops application",
+        "requiredMatchCount": 4
+    },
+    {
         "command": "./del-fuseki-test.sh && ./trans file-to-sparqlstore",
         "label": "file-to-sparqlstore",
         "description": "file-to-sparqlstore - fuseki.hyperdata.it/test",

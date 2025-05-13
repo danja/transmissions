@@ -12,7 +12,7 @@
 
 :filenameConstructor a :ConfigSet ;
   :asPath true ;
-  :targetField "aFilepath" ;
+  :targetField "aPath" ;
   :values (:a1 :b1 :c1 :d1) .
   :a1 :string "TEST_PASSED" .
   :b1 :field "fields.fieldB" .
