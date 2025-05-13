@@ -19,10 +19,15 @@
 :cleanTarget a :Transmission ;
     rdfs:label "clear public" ;
     rdfs:comment "directory cleaner" ;
-    :pipe (:ct10 :ct20 :SM ) .
+    :pipe (:ct10 :ct20 :ct30 :SM ) .
 
 :ct10 a :FileRemove ;
     :settings :removePublic .
 
 :ct20 a :FileCopy ;
     :settings :copyLayout .
+
+:ct30 a :FileReader ;
+    :settings [
+        :sourceFile "output/file1.md"
+    ] .

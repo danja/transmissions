@@ -10,4 +10,4 @@
 
 :copyLayout a :ConfigSet ;
     :source "raw" ;
-    :destination "public" .
+    :destination "output" .

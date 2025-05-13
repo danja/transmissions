@@ -93,8 +93,8 @@
     {
         "command": "./trans file-remove-copy",
         "label": "file-remove-copy",
-        "description": "file-remove-copy VALUES NOT TESTED",
-        "requiredMatchCount": 0
+        "description": "file-remove-copy ONLY COPY TESTED",
+        "requiredMatchCount": 1
     },
     {
         "command": "./del-fuseki-test.sh && ./trans file-to-sparqlstore",
