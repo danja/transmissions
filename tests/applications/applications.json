@@ -97,9 +97,9 @@
         "requiredMatchCount": 0
     },
     {
-        "command": "./del-3030-test.sh && ./trans file-to-sparqlstore",
+        "command": "./del-fuseki-test.sh && ./trans file-to-sparqlstore",
         "label": "file-to-sparqlstore",
-        "description": "file-to-sparqlstore - 3030",
-        "requiredMatchCount": 8
+        "description": "file-to-sparqlstore - fuseki.hyperdata.it/test",
+        "requiredMatchCount": 12
     }
 ]

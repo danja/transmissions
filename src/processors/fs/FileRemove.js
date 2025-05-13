@@ -33,6 +33,7 @@ import path from 'path'
 import ns from '../../utils/ns.js'
 import logger from '../../utils/Logger.js'
 import Processor from '../../model/Processor.js'
+import PathResolver from '../../utils/PathResolver.js'
 
 class FileRemove extends Processor {
     constructor(config) {
@@ -44,19 +45,19 @@ class FileRemove extends Processor {
      * @param {Object} message - The input message
      */
     async process(message) {
-
-            // TODO use src/utils/SysUtils.js  resolveFilePath(message, property, default)
-            
         //  logger.setLogLevel('debug')
-
         this.ignoreDotfiles = true // default, simplify ".gitinclude"
 
-        var target = await this.getProperty(ns.trn.target)
-        const wd = super.getProperty(ns.trn.workingDir)
-        target = path.join(wd, target)
+        // Use PathResolver for file path resolution (consistent with FileReader/FileWriter)
+        const target = await PathResolver.resolveFilePath({
+            message,
+            app: this.app,
+            getProperty: (prop, def) => this.getProperty(prop, def),
+            defaultFilePath: null, // No default, must be provided
+            sourceOrDest: ns.trn.target
+        })
         logger.debug('FileRemove, target = ' + target)
 
-        //   return this.emit('message', message)
         try {
             const removeStat = await stat(target)
 

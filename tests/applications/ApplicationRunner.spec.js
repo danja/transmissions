@@ -2,18 +2,16 @@
 // RENAMED: legacy, out-of-sync with codebase after Jasmine->Vitest migration
 import path from 'path'
 import { fileURLToPath } from 'url'
-import { expect } from 'chai'
+import { expect, describe, it } from 'vitest'
 import { exec } from 'child_process'
 import fs from 'fs'
 import chalk from 'chalk'
 
-describe('', function () {
+describe('ApplicationRunner', () => {
     const __filename = fileURLToPath(import.meta.url)
     const __dirname = path.dirname(__filename)
     const logFile = path.join(__dirname, '../../latest.log')
     const commandsFile = path.join(__dirname, 'applications.json') // JSON file for commands
-
-    this.timeout(5000)
 
     const testRegex = /TEST_PASSED/g
 
@@ -23,28 +21,31 @@ describe('', function () {
     commands.forEach((test, index) => {
         const { command, label, description, requiredMatchCount } = test
 
-        it(`run ${label}`, (done) => {
-            console.log(`${chalk.bold(description)}, command :\n   ${chalk.yellow(command)}`) // Print description to console
-            exec(command, async (error, stdout, stderr) => {
-                if (error) {
-                    console.error(chalk.red('Exec error:'), error)
-                    done(error)
-                    return
-                }
-                try {
-                    // Parse console log file
-                    const logs = stdout.toString()
-                    // console.log(`LOGS = \n${logs}`);
-                    const matches = logs.match(testRegex)
-                    const matchCount = matches ? matches.length : 0
-                    expect(matchCount).to.equal(requiredMatchCount)
-                    done()
-                } catch (err) {
-                    console.error(chalk.red('Test error:'), err)
-                    //  console.log('Logs:\n', err)
-                    done(err)
-                }
-            })
-        })
+        it(
+            `run ${label}`,
+            async () => {
+                console.log(`${chalk.bold(description)}, command :\n   ${chalk.yellow(command)}`)
+                await new Promise((resolve, reject) => {
+                    exec(command, (error, stdout, stderr) => {
+                        if (error) {
+                            console.error(chalk.red('Exec error:'), error)
+                            reject(error)
+                            return
+                        }
+                        try {
+                            const logs = stdout.toString()
+                            const matches = logs.match(testRegex)
+                            const matchCount = matches ? matches.length : 0
+                            expect(matchCount).to.equal(requiredMatchCount)
+                            resolve()
+                        } catch (err) {
+                            console.error(chalk.red('Test error:'), err)
+                            reject(err)
+                        }
+                    })
+                })
+            },
+            5000 // <-- Vitest: set timeout for this test (ms)
+        )
     })
 })
