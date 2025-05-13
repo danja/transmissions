@@ -5,6 +5,11 @@
 
 @prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances
 
+:setupMessage a :ConfigSet ;
+    :setters (:setter1)  . # consider using blank nodes
+        :setter1    :key    "myKey" ;
+                    :value  "myValueTEST_PASSED"  .
+
 :filenameConstructor a :ConfigSet ;
   :asPath true ;
   :targetField "aFilepath" ;

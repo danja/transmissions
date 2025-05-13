@@ -48,7 +48,7 @@
      :settings :htmlIndex .
 
 # builds the path
-:p110 a :StringOps ;
+:p110 a :PathOps ;
   :settings :htmlFilepath .
 
 :p120 a :FileWriter .
@@ -61,7 +61,7 @@
 :p200 a :Templater ;
      :settings :atomIndex .
 
-:p210 a :StringOps ;
+:p210 a :PathOps ;
   :settings :atomFilepath .
 
 :p220 a :FileWriter .

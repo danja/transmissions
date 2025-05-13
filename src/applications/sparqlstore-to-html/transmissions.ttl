@@ -45,11 +45,11 @@
 :p60 a :Templater ;
     :settings :articlePageTemplate .
 
-:p70 a :StringOps ;
+:p70 a :PathOps ;
   :settings :filenameConstructor ;
   :loglevel "debug" .
 
-:p80 a :StringOps ;
+:p80 a :PathOps ;
   :settings :filenameExtension .
 
 :p90 a :FileWriter ;

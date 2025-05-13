@@ -16,11 +16,15 @@
 :UF a :Unfork . # collapses all pipes but one                    #
 ##################################################################
 
-:stringops a :Transmission ;
-    :pipe (:pFilename :pString :SM) .
+:pathops a :Transmission ;
+    :pipe (:setup  :SM :pFilename :pString) .
 
-:pFilename a :StringOps ;
+:setup a :SetMessage ;
+  :loglevel 'debug' ;
+    :settings :setupMessage .
+
+:pFilename a :PathOps ;
   :settings :filenameConstructor .
 
-:pString a :StringOps ;
+:pString a :PathOps ;
   :settings :stringConstructor .
