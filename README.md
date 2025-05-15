@@ -1,6 +1,6 @@
 # Transmissions
 
-A mini-framework for data processing workflows. Potentially useful release planned for Summer Solstice 2025.
+A pipeliney thing, aka mini-framework for data processing workflows. Potentially useful release planned for Summer Solstice 2025.
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/danja/transmissions)
 
