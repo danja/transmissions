@@ -2,6 +2,37 @@
 
 `src/applications/example-application/about.md`
 
+```sh
+cd ~/hyperdata/transmissions # my local path
+./del2.sh
+./trans postcraft-statics tests/applications/example.org
+./trans md-to-sparqlstore tests/applications/example.org
+./trans sparqlstore-to-html tests/applications/example.org
+./trans sparqlstore-to-site-indexes tests/applications/example.org
+```
+
+```sh
+cd ~/hyperdata/transmissions # my local path
+./del2.sh
+./trans postcraft-statics ~/sites/danny.ayers.name/postcraft #
+./trans md-to-sparqlstore ~/sites/danny.ayers.name/postcraft
+./trans sparqlstore-to-html ~/sites/danny.ayers.name/postcraft
+./trans sparqlstore-to-site-indexes ~/sites/danny.ayers.name/postcraft
+```
+
+ok above
+
+```sh
+cd ~/hyperdata/transmissions # my local path
+./del2.sh
+./trans postcraft-statics ~/hyperdata/transmissions/docs/postcraft #
+./trans md-to-sparqlstore ~/hyperdata/transmissions/docs/postcraft
+./trans sparqlstore-to-html ~/hyperdata/transmissions/docs/postcraft
+./trans sparqlstore-to-site-indexes ~/hyperdata/transmissions/docs/postcraft
+```
+
+---
+
 smaller
 ```sh
 cd ~/hyperdata/transmissions # my local path
@@ -13,23 +44,7 @@ cd ~/hyperdata/transmissions # my local path
 ```
 
 
-```sh
-cd ~/hyperdata/transmissions # my local path
-./del2.sh
-./trans postcraft-statics ~/sites/danny.ayers.name/postcraft #
-./trans md-to-sparqlstore ~/sites/danny.ayers.name/postcraft
-./trans sparqlstore-to-html ~/sites/danny.ayers.name/postcraft
-./trans sparqlstore-to-site-indexes ~/sites/danny.ayers.name/postcraft
-```
 
-```sh
-cd ~/hyperdata/transmissions # my local path
-./del2.sh
-./trans postcraft-statics tests/applications/example.org
-./trans md-to-sparqlstore tests/applications/example.org
-./trans sparqlstore-to-html tests/applications/example.org
-./trans sparqlstore-to-site-indexes tests/applications/example.org
-```
 
 
 # Example Application `about.md`
