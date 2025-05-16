@@ -14,7 +14,7 @@ class PathResolver {
      * @param {string} [params.sourceOrDest] - ns.trn.sourceFile or ns.trn.destinationFile
      * @returns {Promise<string>} - The resolved file path.
      */
-    static async resolveFilePath({ message, app, getProperty, defaultFilePath, sourceOrDest }) {
+    static async resolveFilePath({ message, app, getProperty, defaultFilePath, sourceOrDest, isWriter }) {
         let filePath
         // Try message properties first
         if (message.fullPath) {
@@ -38,6 +38,10 @@ class PathResolver {
                 const workingDir = app.workingDir
                 logger.debug(`app.workingDir = ${workingDir}`)
                 const possiblePath = path.join(workingDir, filePath)
+                //  logger.log(`sourceOrDest = ${sourceOrDest}`)
+                if (isWriter) {
+                    return possiblePath
+                }
                 try {
                     await new Promise((resolve, reject) => {
                         access(possiblePath, constants.R_OK, (err) => {
@@ -47,7 +51,7 @@ class PathResolver {
                     })
                     filePath = possiblePath
                 } catch (err) {
-                    // Try with data/ prefix
+
                     const dataPath = path.join(workingDir, 'data', filePath)
                     try {
                         await new Promise((resolve, reject) => {
@@ -58,6 +62,7 @@ class PathResolver {
                         })
                         filePath = dataPath
                     } catch (err2) {
+
                         throw new Error(`File not found in expected locations: ${possiblePath}, ${dataPath}`)
                     }
                 }

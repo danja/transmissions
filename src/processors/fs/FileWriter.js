@@ -61,13 +61,15 @@ class FileWriter extends Processor {
             return this.doWrite(f, content, message)
         }
 
+
         // Use PathResolver for file path resolution
         const filePath = await PathResolver.resolveFilePath({
             message,
             app: this.app,
             getProperty: (prop, def) => this.getProperty(prop, def),
             defaultFilePath: this.defaultFilePath,
-            sourceOrDest: ns.trn.destinationFile
+            sourceOrDest: ns.trn.destinationFile,
+            isWriter: true
         })
 
         logger.trace(`Filewriter, filepath = ${filePath}`)
@@ -98,7 +100,7 @@ class FileWriter extends Processor {
 
                 }
         */
-logger.trace(`content = ${content}`)
+        logger.trace(`content = ${content}`)
         // maybe stat first, check validity - the intended target dir was blocked by a of the same name
         await writeFile(f, content)
         //writeFileSync(f, content)

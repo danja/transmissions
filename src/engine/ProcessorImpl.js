@@ -73,7 +73,7 @@ class ProcessorImpl extends EventEmitter {
     }
 
     propertyInObject(object, property) {
-        logger.debug(`    propertyInObject`)
+      //  logger.debug(`    propertyInObject`)
         const shortName = ns.getShortname(property)
         logger.trace(`       shortName = ${shortName}`)
         if (object && object[shortName]) {

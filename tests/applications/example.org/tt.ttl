@@ -20,6 +20,7 @@
 ### for sparqlstore-to-html
 
 :resultIterator a :ConfigSet ;
+   
     :forEach "queryResults.results.bindings" ;
     :remove "queryResults" ;
     :graph <http://danny.ayers.name/content> .
@@ -45,7 +46,13 @@
         :graph <http://danny.ayers.name/content> .
 
 :articleContentTemplate a :ConfigSet ;
+ # :loglevel "debug" ;
     :templateFilename "layout/base/templates/article-content.njk" .
+
+:updateArticleHTML a :ConfigSet ;
+    :dataBlock "contentBlocks" ;
+    :templateFilename "system/sparql-templates/save-html-chunk.njk" ;
+    :endpointSettings "system/endpoints.json" .
 
 :articlePageTemplate a :ConfigSet ;
     :templateFilename "layout/base/templates/article-page.njk" .

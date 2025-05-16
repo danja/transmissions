@@ -46,6 +46,8 @@ class Restructure extends Processor {
         logger.debug(`Found ${renamesRDF.length} rename values`)
         logger.debug(JSON.stringify(renamesRDF))
 
+        // TODO IF THERE IS ONLY ONE RENAME IT DOESN'T GET APPLIED
+
         // Determine which dataset to use based on targetPath
         /*
         var dataset = this.config

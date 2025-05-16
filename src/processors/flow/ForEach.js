@@ -11,23 +11,25 @@ class ForEach extends SlowableProcessor {
     }
 
     async process(message) {
-        logger.trace('ForEach execute method called')
+        logger.debug('\nForEach.process')
 
         // TODO default?
-        const forEach = super.getProperty(ns.trn.forEach, 'foreach')
+        const forEach = super.getProperty(ns.trn.forEach, 'forEach')
 
-        // TODO add suport for removeOrigin - see Restructure, RDFUtils
+        logger.debug(`   forEach = ${forEach}`)
+        // TODO add support for removeOrigin - see Restructure, RDFUtils
 
         const remove = super.getProperty(ns.trn.remove, false)
-        //  logger.warn(`REMOVE = ${remove}`)
+        logger.debug(`    remove = ${remove}`)
+
         const split = forEach.split('.')
 
         // TODO is similar in 'processors/json/JsonRestructurer.js' - move to utils?
         const reduced = split.reduce((acc, part) => acc[part], message)
 
-        logger.trace(`ForEach, reduced.length = ${reduced.length}`)
+        logger.debug(`    reduced.length = ${reduced.length}`)
 
-        //  logger.reveal(reduced)
+      //    logger.v(reduced)
 
         const delay = super.getProperty(ns.trn.delay, '100')
 

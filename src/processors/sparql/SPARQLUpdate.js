@@ -54,7 +54,7 @@ class SPARQLUpdate extends SlowableProcessor {
         logger.trace(`dataField = ${dataField}`)
         logger.trace(`updateData = `)
         //  logger.reveal(updateData)
-        logger.debug(`update = ${update}`)
+        logger.trace(`update = ${update}`)
         logger.debug(`endpoint.url = ${endpoint.url}`)
 
         const response = await axios.post(endpoint.url, update, {

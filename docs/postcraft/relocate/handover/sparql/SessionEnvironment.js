@@ -38,9 +38,8 @@ class SessionEnvironment {
     }
 
     async getTemplate(dir, templateFilename) {
-        logger.setLogLevel('debug')
-        logger.debug(`SessionEnvironment.getTemplate dir = ${dir}`)
-        logger.debug(`SessionEnvironment.getTemplate templateFilename = ${templateFilename}`)
+        logger.debug(`\nSessionEnvironment.getTemplate dir = ${dir}`)
+        logger.debug(`    templateFilename = ${templateFilename}`)
 
         const cacheKey = path.join(dir, templateFilename)
 
@@ -50,8 +49,8 @@ class SessionEnvironment {
 
         const template = await fs.readFile(cacheKey, 'utf8')
         this.templateCache.set(cacheKey, template)
-        logger.debug(`SessionEnvironment.getTemplate cacheKey = ${cacheKey}`)
-        logger.debug(`SessionEnvironment.getTemplate template = ${template}`)
+        logger.debug(`    cacheKey = ${cacheKey}`)
+        logger.debug(`    template = ${template}`)
         return template
     }
 

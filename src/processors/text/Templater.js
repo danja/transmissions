@@ -66,10 +66,11 @@ class Templater extends Processor {
         const dir = path.dirname(filePath); // '/danny/sites/danny.ayers.name/postcraft/layout/base/templates'
         const filename = path.basename(filePath); // 'article-content.njk'
 
-        // TODO sort out fields
+
         nunjucks.configure(dir, { autoescape: false })
 
-        message.content = await nunjucks.render(filename, message.data)
+        message.content =  // TODO sort out fields HERE
+            await nunjucks.render(filename, message.contentBlocks)
 
         //
         logger.debug(`content POST = ${message.content}`)

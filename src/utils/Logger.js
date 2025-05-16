@@ -220,6 +220,9 @@ logger.sh = function (string) {
  * @returns {string} The shortened RDF string.
  */
 logger.shorter = function (rdfString) {
+    if (!rdfString) {
+        return '[empty]'
+    }
     rdfString = rdfString.toString() // defensive
     rdfString = rdfString.replaceAll('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', chalkImpl.white('a'))
     if (!rdfString) return chalkImpl.red ? chalkImpl.red('undefined') : 'undefined'
@@ -332,7 +335,7 @@ LOG_LEVELS.forEach(level => {
  */
 logger.reveal = function (instance, verbose = true, revealDatasets = false) {
     if (!instance) return ''
-if(typeof instance === 'string') {
+    if (typeof instance === 'string') {
         return instance
     }
     try {
@@ -361,6 +364,7 @@ if(typeof instance === 'string') {
             }
 
             if (typeof value === 'string' && value.length > 100) {
+                //      if (typeof value === 'string' && value.length > 100) {
                 try {
                     return value.substring(0, 100) + '...'
                 } catch (e) {
