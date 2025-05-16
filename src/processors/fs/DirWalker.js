@@ -58,7 +58,7 @@ class DirWalker extends Processor {
         for (const entry of entries) {
             const fullPath = path.join(dir, entry.name)
 
-            logger.log(`APP = ${this.app}`)
+            //   logger.log(`APP = ${this.app}`)
             const targetPath = super.getProperty(ns.trn.targetPath, this.app.path)
 
             if (entry.isDirectory() && !this.matchPatterns(fullPath, this.excludePatterns)) {

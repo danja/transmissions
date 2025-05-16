@@ -13,7 +13,7 @@ cd ~/hyperdata/transmissions # my local path
 
 ```sh
 cd ~/hyperdata/transmissions # my local path
-./del2.sh
+./del-dan.sh
 ./trans postcraft-statics ~/sites/danny.ayers.name/postcraft #
 ./trans md-to-sparqlstore ~/sites/danny.ayers.name/postcraft
 ./trans sparqlstore-to-html ~/sites/danny.ayers.name/postcraft
@@ -31,6 +31,9 @@ cd ~/hyperdata/transmissions # my local path
 ./trans sparqlstore-to-site-indexes ~/hyperdata/transmissions/docs/postcraft
 ```
 
+```sh
+./trans md-to-sparqlstore ~/hyperdata
+```
 ---
 
 smaller
