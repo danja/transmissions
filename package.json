@@ -81,6 +81,7 @@
     "markmap-render": "^0.17.0",
     "markmap-toolbar": "^0.17.0",
     "markmap-view": "^0.17.0",
+    "minimatch": "^10.0.1",
     "node-mime-types": "^1.1.2",
     "nunjucks": "^3.2.4",
     "queue": "^7.0.0",

@@ -4,6 +4,7 @@
             "**/*.md"
         ],
         "exclude": [
+            "**/no/**",
             "**/*.log",
             "**/node_modules",
             "**/test",

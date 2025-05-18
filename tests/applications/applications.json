@@ -67,6 +67,12 @@
         "requiredMatchCount": 2
     },
     {
+        "command": "./trans filefilter",
+        "label": "filefilter",
+        "description": "test filefilter application",
+        "requiredMatchCount": 5
+    },
+    {
         "command": "./trans foreach -m '{\"foreach\": [\"first TEST_PASSED\", \"second TEST_PASSED\", \"third TEST_PASSED\"]}'",
         "label": "foreach",
         "description": "test foreach application",
