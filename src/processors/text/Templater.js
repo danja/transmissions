@@ -1,4 +1,12 @@
 // src/processors/text/Templater.js
+
+import Processor from '../../model/Processor.js'
+import nunjucks from 'nunjucks'
+import path from 'path'
+import logger from '../../utils/Logger.js'
+import ns from '../../utils/ns.js'
+import PathResolver from '../../utils/PathResolver.js'
+
 /**
  * @class Templater
  * @extends Processor
@@ -27,32 +35,32 @@
  * * Add test information here
  * * Cache templates - cache in utils?
  */
-
-import Processor from '../../model/Processor.js'
-import nunjucks from 'nunjucks'
-import path from 'path'
-import logger from '../../utils/Logger.js'
-import ns from '../../utils/ns.js'
-import PathResolver from '../../utils/PathResolver.js'
-
-// TODO cache templates
-// in a singleton this.app.cache?
-
 class Templater extends Processor {
+    /**
+     * Constructs a Templater processor.
+     * @param {Object} config - Configuration object.
+     */
     constructor(config) {
         super(config)
     }
 
     /**
-     * Executes the templating process
-     * @param {Object} message - The message object containing template and content information
+     * Executes the templating process.
+     * Resolves the template file path, configures Nunjucks, and renders the template
+     * using the data field specified in `ns.trn.dataField` (default: 'contentBlocks').
+     * Emits the message with rendered content.
+     * @param {Object} message - The message object containing template and content information.
+     * @returns {Promise<void>}
      */
     async process(message) {
 
         logger.debug(`\n\nTemplater.process`)
-        logger.debug(`\nTemplater.process, message.contentBlocks = ${JSON.stringify(message.contentBlocks)}`)
 
+        // Determine which field on the message contains the template data (default: 'contentBlocks')
+        var dataField = this.getProperty(ns.trn.dataField, 'contentBlocks')
+        logger.debug(`    dataField = ${dataField}`)
 
+        // Resolve the template file path using PathResolver utility
         let filePath = await PathResolver.resolveFilePath({
             message,
             app: this.app,
@@ -61,26 +69,22 @@ class Templater extends Processor {
             sourceOrDest: ns.trn.templateFilename
         })
 
-        logger.debug(`Templater.process(), using template file: ${filePath}`)
+        logger.debug(`    using template file: ${filePath}`)
 
-        const dir = path.dirname(filePath); // '/danny/sites/danny.ayers.name/postcraft/layout/base/templates'
-        const filename = path.basename(filePath); // 'article-content.njk'
+        const dir = path.dirname(filePath);
+        const filename = path.basename(filePath);
 
-
+        // Configure Nunjucks to use the template directory
         nunjucks.configure(dir, { autoescape: false })
 
-        message.content =  // TODO sort out fields HERE
-            await nunjucks.render(filename, message.contentBlocks)
+        // Render the template file with the chosen data field
+        message.content =
+            await nunjucks.render(filename, message[dataField])
 
-        //
         logger.debug(`content POST = ${message.content}`)
 
-
-        // Configure Nunjucks for string templates
-        // TODO priorities
-        //      message.content = nunjucks.renderString(message.template, message.contentBlocks)
-
-        //  nunjucks.configure({ autoescape: false })
+        // Alternative: render from a template string if needed
+        // message.content = nunjucks.renderString(message.template, message.contentBlocks)
 
         return this.emit('message', message)
     }

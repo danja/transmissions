@@ -16,18 +16,19 @@
 :UF a :Unfork . # collapses all pipes but one                    #
 ##################################################################
 
-:cleanTarget a :Transmission ;
+:file-copy-remove a :Transmission ;
     rdfs:label "clear public" ;
     rdfs:comment "directory cleaner" ;
-    :pipe (:ct10 :ct20 :ct30 :SM ) .
+    :pipe (:ct10 :ct20 :ct30 :ct40 :SM ) .
 
-:ct10 a :FileRemove ;
-    :settings :removePublic .
+:ct10 a :FileCopy ;
+    :settings :copyFile0 .
 
 :ct20 a :FileCopy ;
-    :settings :copyLayout .
+    :settings :copyFile1 .
 
-:ct30 a :FileReader ;
-    :settings [
-        :sourceFile "output/file1.md"
-    ] .
+:ct30 a :FileRemove ;
+    :settings :removeFile1 .
+
+:ct40 a :FileReader ;
+    :settings :readFile2 .

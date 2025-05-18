@@ -68,7 +68,7 @@ class RDFUtils {
                 return dataset
             } catch (error) {
                 logger.warn(`Warning : RDFUtils.readDataset (from Node.js): ${error.message}`)
-                console.trace()
+                // console.trace()
                 throw error
             }
         }

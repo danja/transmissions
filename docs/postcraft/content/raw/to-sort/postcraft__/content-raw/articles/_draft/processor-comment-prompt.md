@@ -35,10 +35,13 @@ At the top of the file, include details following the form of this example:
  *
  * #### __*Side Effects*__
  * * File creation
- * 
+ *
  * #### __Tests__
  * * **`./run file-copy-remove-test`**
  * * **`npm test -- tests/integration/file-copy-remove-test.spec.js`**
+ *
+ * * #### __TODO__
+ * test in other environments
  */
  ---
 ```

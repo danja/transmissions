@@ -5,9 +5,17 @@
 
 @prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances
 
-:removePublic a :ConfigSet ;
-    :target "public" .
+:copyFile0 a :ConfigSet ;
+    :source "file0.md" ;
+    :destination "file1.md" .
 
-:copyLayout a :ConfigSet ;
-    :source "raw" ;
-    :destination "output" .
+:copyFile1 a :ConfigSet ;
+    :source "file1.md" ;
+    :destination "file2.md" .
+
+:removeFile1 a :ConfigSet ;
+    :target "file1.md" .
+
+:readFile2 a :ConfigSet ;
+    :sourceFile "file2.md" .
+    
