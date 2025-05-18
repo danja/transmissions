@@ -8,6 +8,7 @@ import FileCopy from './FileCopy.js'
 import FileRemove from './FileRemove.js'
 import FilenameMapper from './FilenameMapper.js'
 import PathOps from './PathOps.js'
+import FileFilter from './FileFilter.js'
 
 class FsProcessorsFactory {
     static createProcessor(type, config) {
@@ -29,8 +30,11 @@ class FsProcessorsFactory {
         if (type.equals(ns.trn.FilenameMapper)) {
             return new FilenameMapper(config)
         }
-                if (type.equals(ns.trn.PathOps)) {
+        if (type.equals(ns.trn.PathOps)) {
             return new PathOps(config)
+        }
+        if (type.equals(ns.trn.FileFilter)) {
+            return new FileFilter(config)
         }
         return false
     }

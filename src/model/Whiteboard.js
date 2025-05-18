@@ -15,6 +15,9 @@ class Whiteboard {
             case 'object':
                 this.accumulators[label].push(value)
                 break
+            case 'array':
+                this.accumulators[label].push(value)
+                break
             default:
                 this.accumulators[label] = `${acc}${value}`
         }
@@ -24,7 +27,10 @@ class Whiteboard {
     getAccumulator(label, type) {
         if (!this.accumulators[label]) {
             switch (type) {
-                case 'object':
+                case 'object': // is needed?
+                    this.accumulators[label] = []
+                    break
+                case 'array':
                     this.accumulators[label] = []
                     break
                 default:

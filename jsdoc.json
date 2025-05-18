@@ -12,7 +12,7 @@
     "opts": {
         "verbose": true,
         "recurse": true,
-        "destination": "../docs/jsdoc"
+        "destination": "./docs/jsdoc"
     },
     "plugins": [
         "plugins/markdown"
