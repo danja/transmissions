@@ -10,8 +10,7 @@ class ShowConfig extends Processor {
     async process(message) {
 
         logger.log("***************************")
-        logger.log("***   Config Triples   ***")
-        logger.log(this.config)
+        logger.v(this)
         logger.log("***************************")
         return this.emit('message', message)
     }

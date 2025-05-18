@@ -1,0 +1,19 @@
+{
+    "output": {
+        "filePath": "./test-terrapack.md",
+        "headerText": "terrapack test"
+    },
+    "fileFilter": {
+        "include": [
+            "**/*.md"
+        ],
+        "exclude": [
+            "**/*.log",
+            "**/node_modules",
+            "**/test",
+            "**/docs",
+            "**/*terrapack.md",
+            "**/*repomix.md"
+        ]
+    }
+}

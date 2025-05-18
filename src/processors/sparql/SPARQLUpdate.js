@@ -4,6 +4,7 @@ import crypto from 'crypto'
 import logger from '../../utils/Logger.js'
 import SlowableProcessor from '../../model/SlowableProcessor.js'
 import ns from '../../utils/ns.js'
+import RDFUtils from '../../utils/RDFUtils.js'
 import SessionEnvironment from './SessionEnvironment.js'
 // TODO unhack
 import Escaper from '../text/Escaper.js'
@@ -49,7 +50,7 @@ class SPARQLUpdate extends SlowableProcessor {
         }
 
         nunjucks.configure({ autoescape: true })
-        const update = nunjucks.renderString(template, updateData)
+        var update = nunjucks.renderString(template, updateData)
 
         logger.trace(`dataField = ${dataField}`)
         logger.trace(`updateData = `)
@@ -57,9 +58,18 @@ class SPARQLUpdate extends SlowableProcessor {
         logger.trace(`update = ${update}`)
         logger.debug(`endpoint.url = ${endpoint.url}`)
 
-        const response = await axios.post(endpoint.url, update, {
-            headers: await this.makeHeaders(endpoint)
-        })
+        update = RDFUtils.escapeAngleBracketURIs(update) // TODO unhackify
+
+        let response
+        try {
+            response = await axios.post(endpoint.url, update, {
+                headers: await this.makeHeaders(endpoint)
+            })
+        } catch (e) {
+            logger.error('Update failed with :\n${e.message}')
+            logger.log(update)
+            return
+        }
 
         // https://axios-http.com/docs/res_schema
         if (response.status === 200 || response.status === 204) {

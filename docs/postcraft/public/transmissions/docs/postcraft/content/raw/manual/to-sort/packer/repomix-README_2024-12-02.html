@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="/css/fonts.css" type="text/css"/>
+        <link rel="stylesheet" href="/css/grid-columns.css" type="text/css"/>
+        <link rel="stylesheet" href="/css/style.css" type="text/css"/>
+        <title>📦 Repomix (formerly Repopack)</title>
+    </head>
+    <!-- POST PAGE TEMPLATE -->
+    <body>
+        <header id="entry-header">
+            <h1 class="post-title h-cinzel">
+                
+            </h1>
+        </header>
+        <h1>📦 Repomix (formerly Repopack)</h1>
+<p><a href=\"https://github.com/yamadashy/repomix/actions?query=workflow%3A%22ci%22\"><img src=\"https://github.com/yamadashy/repomix/actions/workflows/ci.yml/badge.svg\" alt=\"Actions Status\"></a>
+<a href=\"https://www.npmjs.com/package/repomix\"><img src=\"https://img.shields.io/npm/v/repomix.svg?maxAge=1000\" alt=\"npm\"></a>
+<a href=\"https://www.npmjs.com/package/repomix\"><img src=\"https://img.shields.io/npm/d18m/repomix\" alt=\"npm\"></a>
+<a href=\"https://github.com/yamadashy/repomix/blob/main/LICENSE\"><img src=\"https://img.shields.io/npm/l/repomix.svg?maxAge=1000\" alt=\"npm\"></a>
+<a href=\"https://www.npmjs.com/package/repomix\"><img src=\"https://img.shields.io/node/v/repomix.svg?maxAge=1000\" alt=\"node\"></a>
+<a href=\"https://codecov.io/github/yamadashy/repomix\"><img src=\"https://codecov.io/github/yamadashy/repomix/graph/badge.svg\" alt=\"codecov\"></a></p>
+<p>Repomix is a powerful tool that packs your entire repository into a single, AI-friendly file.<br>It is perfect for when you need to feed your codebase to Large Language Models (LLMs) or other AI tools like Claude, ChatGPT, and Gemini.</p>
+<blockquote>
+<p>[!NOTE]
+Due to legal considerations, this project has been renamed from &quot;Repopack&quot; to &quot;Repomix&quot;. Only the name is changing; Repomix all functionality and maintainer (<a href=\"https://github.com/yamadashy\">@yamadashy</a>) remain the same.
+For detailed information about this transition and migration guide, please visit our <a href=\"https://github.com/yamadashy/repomix/discussions/188\">Discussion</a>.</p>
+</blockquote>
+<h2>🌟 Features</h2>
+<ul>
+<li><strong>AI-Optimized</strong>: Formats your codebase in a way that&#39;s easy for AI to understand and process.</li>
+<li><strong>Token Counting</strong>: Provides token counts for each file and the entire repository, useful for LLM context limits.</li>
+<li><strong>Simple to Use</strong>: You need just one command to pack your entire repository.</li>
+<li><strong>Customizable</strong>: Easily configure what to include or exclude.</li>
+<li><strong>Git-Aware</strong>: Automatically respects your .gitignore files.</li>
+<li><strong>Security-Focused</strong>: Incorporates <a href=\"https://github.com/secretlint/secretlint\">Secretlint</a> for robust security checks to detect and prevent inclusion of sensitive information.</li>
+</ul>
+<h2>🚀 Quick Start</h2>
+<p>You can try Repomix instantly in your project directory without installation:</p>
+<pre><code class=\"language-bash\">npx repomix
+</code></pre>
+<p>Or install globally for repeated use:</p>
+<pre><code class=\"language-bash\"># Install using npm
+npm install -g repomix
+
+# Alternatively using yarn
+yarn global add repomix
+
+# Alternatively using Homebrew (macOS)
+brew install repomix
+
+# Then run in any project directory
+repomix
+</code></pre>
+<p>That&#39;s it! Repomix will generate a <code>repomix-output.txt</code> file in your current directory, containing your entire repository in an AI-friendly format.</p>
+<h2>📊 Usage</h2>
+<p>To pack your entire repository:</p>
+<pre><code class=\"language-bash\">repomix
+</code></pre>
+<p>To pack a specific directory:</p>
+<pre><code class=\"language-bash\">repomix path/to/directory
+</code></pre>
+<p>To pack specific files or directories using <a href=\"https://github.com/mrmlnc/fast-glob?tab=readme-ov-file#pattern-syntax\">glob patterns</a>:</p>
+<pre><code class=\"language-bash\">repomix --include \\&quot;src/**/*.ts,**/*.md\\&quot;
+</code></pre>
+<p>To exclude specific files or directories:</p>
+<pre><code class=\"language-bash\">repomix --ignore \\&quot;**/*.log,tmp/\\&quot;
+</code></pre>
+<p>To pack a remote repository:</p>
+<pre><code class=\"language-bash\">repomix --remote https://github.com/yamadashy/repomix
+
+# You can also use GitHub shorthand:
+repomix --remote yamadashy/repomix
+</code></pre>
+<p>To initialize a new configuration file (<code>repomix.config.json</code>):</p>
+<pre><code class=\"language-bash\">repomix --init
+</code></pre>
+<p>Once you have generated the packed file, you can use it with Generative AI tools like Claude, ChatGPT, and Gemini.</p>
+<h3>Prompt Examples</h3>
+<p>Once you have generated the packed file with Repomix, you can use it with AI tools like Claude, ChatGPT, and Gemini. Here are some example prompts to get you started:</p>
+<h4>Code Review and Refactoring</h4>
+<p>For a comprehensive code review and refactoring suggestions:</p>
+<pre><code>This file contains my entire codebase. Please review the overall structure and suggest any improvements or refactoring opportunities, focusing on maintainability and scalability.
+</code></pre>
+<h4>Documentation Generation</h4>
+<p>To generate project documentation:</p>
+<pre><code>Based on the codebase in this file, please generate a detailed README.md that includes an overview of the project, its main features, setup instructions, and usage examples.
+</code></pre>
+<h4>Test Case Generation</h4>
+<p>For generating test cases:</p>
+<pre><code>Analyze the code in this file and suggest a comprehensive set of unit tests for the main functions and classes. Include edge cases and potential error scenarios.
+</code></pre>
+<h4>Code Quality Assessment</h4>
+<p>Evaluate code quality and adherence to best practices:</p>
+<pre><code>Review the codebase for adherence to coding best practices and industry standards. Identify areas where the code could be improved in terms of readability, maintainability, and efficiency. Suggest specific changes to align the code with best practices.
+</code></pre>
+<h4>Library Overview</h4>
+<p>Get a high-level understanding of the library</p>
+<pre><code>This file contains the entire codebase of library. Please provide a comprehensive overview of the library, including its main purpose, key features, and overall architecture.
+</code></pre>
+<p>Feel free to modify these prompts based on your specific needs and the capabilities of the AI tool you&#39;re using.</p>
+<h3>Community Discussion</h3>
+<p>Check out our <a href=\"https://github.com/yamadashy/repomix/discussions/154\">community discussion</a> where users share:</p>
+<ul>
+<li>Which AI tools they&#39;re using with Repomix</li>
+<li>Effective prompts they&#39;ve discovered</li>
+<li>How Repomix has helped them</li>
+<li>Tips and tricks for getting the most out of AI code analysis</li>
+</ul>
+<p>Feel free to join the discussion and share your own experiences! Your insights could help others make better use of Repomix.</p>
+<h3>Output File Format</h3>
+<p>Repomix generates a single file with clear separators between different parts of your codebase.<br>To enhance AI comprehension, the output file begins with an AI-oriented explanation, making it easier for AI models to understand the context and structure of the packed repository.</p>
+<h4>Plain Text Format (default)</h4>
+<pre><code class=\"language-text\">This file is a merged representation of the entire codebase, combining all repository files into a single document.
+
+================================================================
+File Summary
+================================================================
+(Metadata and usage AI instructions)
+
+================================================================
+Repository Structure
+================================================================
+src/
+  cli/
+    cliOutput.ts
+    index.ts
+  config/
+    configLoader.ts
+
+(...remaining directories)
+
+================================================================
+Repository Files
+================================================================
+
+================
+File: src/index.js
+================
+// File contents here
+
+================
+File: src/utils.js
+================
+// File contents here
+
+(...remaining files)
+
+================================================================
+Instruction
+================================================================
+(Custom instructions from `output.instructionFilePath`)
+</code></pre>
+<h4>XML Format</h4>
+<p>To generate output in XML format, use the <code>--style xml</code> option:</p>
+<pre><code class=\"language-bash\">repomix --style xml
+</code></pre>
+<p>The XML format structures the content in a hierarchical manner:</p>
+<pre><code class=\"language-xml\">This file is a merged representation of the entire codebase, combining all repository files into a single document.
+
+&lt;file_summary&gt;
+(Metadata and usage AI instructions)
+&lt;/file_summary&gt;
+
+&lt;repository_structure&gt;
+src/
+  cli/
+    cliOutput.ts
+    index.ts
+
+(...remaining directories)
+&lt;/repository_structure&gt;
+
+&lt;repository_files&gt;
+&lt;file path=\\&quot;src/index.js\\&quot;&gt;
+// File contents here
+&lt;/file&gt;
+
+(...remaining files)
+&lt;/repository_files&gt;
+
+&lt;instruction&gt;
+(Custom instructions from `output.instructionFilePath`)
+&lt;/instruction&gt;
+</code></pre>
+<p>For those interested in the potential of XML tags in AI contexts:<br><a href=\"https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags\">https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags</a></p>
+<blockquote>
+<p>When your prompts involve multiple components like context, instructions, and examples, XML tags can be a game-changer. They help Claude parse your prompts more accurately, leading to higher-quality outputs.</p>
+</blockquote>
+<p>This means that the XML output from Repomix is not just a different format, but potentially a more effective way to feed your codebase into AI systems for analysis, code review, or other tasks.</p>
+<h4>Markdown Format</h4>
+<p>To generate output in Markdown format, use the <code>--style markdown</code> option:</p>
+<pre><code class=\"language-bash\">repomix --style markdown
+</code></pre>
+<p>The Markdown format structures the content in a hierarchical manner:</p>
+<pre><code class=\"language-markdown\">This file is a merged representation of the entire codebase, combining all repository files into a single document.
+
+# File Summary
+(Metadata and usage AI instructions)
+
+# Repository Structure
+```
+src/
+  cli/
+    cliOutput.ts
+    index.ts
+```
+(...remaining directories)
+
+# Repository Files
+
+## File: src/index.js
+```
+// File contents here
+```
+
+(...remaining files)
+
+# Instruction
+(Custom instructions from `output.instructionFilePath`)
+</code></pre>
+<p>This format provides a clean, readable structure that is both human-friendly and easily parseable by AI systems.</p>
+<h3>Command Line Options</h3>
+<ul>
+<li><code>-v, --version</code>: Show tool version</li>
+<li><code>-o, --output &lt;file&gt;</code>: Specify the output file name</li>
+<li><code>--include &lt;patterns&gt;</code>: List of include patterns (comma-separated)</li>
+<li><code>-i, --ignore &lt;patterns&gt;</code>: Additional ignore patterns (comma-separated)</li>
+<li><code>-c, --config &lt;path&gt;</code>: Path to a custom config file</li>
+<li><code>--style &lt;style&gt;</code>: Specify the output style (<code>plain</code>, <code>xml</code>, <code>markdown</code>)</li>
+<li><code>--top-files-len &lt;number&gt;</code>: Number of top files to display in the summary</li>
+<li><code>--output-show-line-numbers</code>: Show line numbers in the output</li>
+<li><code>--copy</code>: Additionally copy generated output to system clipboard</li>
+<li><code>--remote &lt;url&gt;</code>: Process a remote Git repository</li>
+<li><code>--verbose</code>: Enable verbose logging</li>
+</ul>
+<p>Examples:</p>
+<pre><code class=\"language-bash\">repomix -o custom-output.txt
+repomix -i \\&quot;*.log,tmp\\&quot; -v
+repomix -c ./custom-config.json
+repomix --style xml
+repomix --remote https://github.com/user/repo.git
+npx repomix src
+</code></pre>
+<h3>Updating Repomix</h3>
+<p>To update a globally installed Repomix:</p>
+<pre><code class=\"language-bash\"># Using npm
+npm update -g repomix
+
+# Using yarn
+yarn global upgrade repomix
+</code></pre>
+<p>Using <code>npx repomix</code> is generally more convenient as it always uses the latest version.</p>
+<h3>Remote Repository Processing</h3>
+<p>Repomix supports processing remote Git repositories without the need for manual cloning. This feature allows you to quickly analyze any public Git repository with a single command.</p>
+<p>To process a remote repository, use the <code>--remote</code> option followed by the repository URL:</p>
+<pre><code class=\"language-bash\">repomix --remote https://github.com/user/repo.git
+</code></pre>
+<p>You can also use GitHub&#39;s shorthand format:</p>
+<pre><code class=\"language-bash\">repomix --remote user/repo
+</code></pre>
+<h2>⚙️ Configuration</h2>
+<p>Create a <code>repomix.config.json</code> file in your project root for custom configurations.</p>
+<pre><code class=\"language-bash\">repomix --init
+</code></pre>
+<p>Here&#39;s an explanation of the configuration options:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>output.filePath</code></td>
+<td>The name of the output file</td>
+<td><code>\\&quot;repomix-output.txt\\&quot;</code></td>
+</tr>
+<tr>
+<td><code>output.style</code></td>
+<td>The style of the output (<code>plain</code>, <code>xml</code>, <code>markdown</code>)</td>
+<td><code>\\&quot;plain\\&quot;</code></td>
+</tr>
+<tr>
+<td><code>output.headerText</code></td>
+<td>Custom text to include in the file header</td>
+<td><code>null</code></td>
+</tr>
+<tr>
+<td><code>output.instructionFilePath</code></td>
+<td>Path to a file containing detailed custom instructions</td>
+<td><code>null</code></td>
+</tr>
+<tr>
+<td><code>output.removeComments</code></td>
+<td>Whether to remove comments from supported file types</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>output.removeEmptyLines</code></td>
+<td>Whether to remove empty lines from the output</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>output.showLineNumbers</code></td>
+<td>Whether to add line numbers to each line in the output</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>output.copyToClipboard</code></td>
+<td>Whether to copy the output to system clipboard in addition to saving the file</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>output.topFilesLength</code></td>
+<td>Number of top files to display in the summary. If set to 0, no summary will be displayed</td>
+<td><code>5</code></td>
+</tr>
+<tr>
+<td><code>output.includeEmptyDirectories</code></td>
+<td>Whether to include empty directories in the repository structure</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>include</code></td>
+<td>Patterns of files to include (using <a href=\"https://github.com/mrmlnc/fast-glob?tab=readme-ov-file#pattern-syntax\">glob patterns</a>)</td>
+<td><code>[]</code></td>
+</tr>
+<tr>
+<td><code>ignore.useGitignore</code></td>
+<td>Whether to use patterns from the project&#39;s <code>.gitignore</code> file</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>ignore.useDefaultPatterns</code></td>
+<td>Whether to use default ignore patterns</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>ignore.customPatterns</code></td>
+<td>Additional patterns to ignore (using <a href=\"https://github.com/mrmlnc/fast-glob?tab=readme-ov-file#pattern-syntax\">glob patterns</a>)</td>
+<td><code>[]</code></td>
+</tr>
+<tr>
+<td><code>security.enableSecurityCheck</code></td>
+<td>Whether to perform security checks on files</td>
+<td><code>true</code></td>
+</tr>
+</tbody></table>
+<p>Example configuration:</p>
+<pre><code class=\"language-json\">{
+  \\&quot;output\\&quot;: {
+    \\&quot;filePath\\&quot;: \\&quot;repomix-output.xml\\&quot;,
+    \\&quot;style\\&quot;: \\&quot;xml\\&quot;,
+    \\&quot;headerText\\&quot;: \\&quot;Custom header information for the packed file.\\&quot;,
+    \\&quot;removeComments\\&quot;: false,
+    \\&quot;removeEmptyLines\\&quot;: false,
+    \\&quot;showLineNumbers\\&quot;: false,
+    \\&quot;copyToClipboard\\&quot;: true,
+    \\&quot;topFilesLength\\&quot;: 5,
+    \\&quot;includeEmptyDirectories\\&quot;: false
+  },
+  \\&quot;include\\&quot;: [\\&quot;**/*\\&quot;],
+  \\&quot;ignore\\&quot;: {
+    \\&quot;useGitignore\\&quot;: true,
+    \\&quot;useDefaultPatterns\\&quot;: true,
+    \\&quot;customPatterns\\&quot;: [\\&quot;additional-folder\\&quot;, \\&quot;**/*.log\\&quot;]
+  },
+  \\&quot;security\\&quot;: {
+    \\&quot;enableSecurityCheck\\&quot;: true
+  }
+}
+</code></pre>
+<h3>Global Configuration</h3>
+<p>To create a global configuration file:</p>
+<pre><code class=\"language-bash\">repomix --init --global
+</code></pre>
+<p>The global configuration file will be created in:</p>
+<ul>
+<li>Windows: <code>%LOCALAPPDATA%\\\\Repomix\\\\repomix.config.json</code></li>
+<li>macOS/Linux: <code>$XDG_CONFIG_HOME/repomix/repomix.config.json</code> or <code>~/.config/repomix/repomix.config.json</code></li>
+</ul>
+<p>Note: Local configuration (if present) takes precedence over global configuration.</p>
+<h3>Include and Ignore</h3>
+<h4>Include Patterns</h4>
+<p>Repomix now supports specifying files to include using <a href=\"https://github.com/mrmlnc/fast-glob?tab=readme-ov-file#pattern-syntax\">glob patterns</a>. This allows for more flexible and powerful file selection:</p>
+<ul>
+<li>Use <code>**/*.js</code> to include all JavaScript files in any directory</li>
+<li>Use <code>src/**/*</code> to include all files within the <code>src</code> directory and its subdirectories</li>
+<li>Combine multiple patterns like <code>[\\&quot;src/**/*.js\\&quot;, \\&quot;**/*.md\\&quot;]</code> to include JavaScript files in <code>src</code> and all Markdown files</li>
+</ul>
+<h4>Ignore Patterns</h4>
+<p>Repomix offers multiple methods to set ignore patterns for excluding specific files or directories during the packing process:</p>
+<ul>
+<li><strong>.gitignore</strong>: By default, patterns listed in your project&#39;s <code>.gitignore</code> file are used. This behavior can be controlled with the <code>ignore.useGitignore</code> setting.</li>
+<li><strong>Default patterns</strong>: Repomix includes a default list of commonly excluded files and directories (e.g., node_modules, .git, binary files). This feature can be controlled with the <code>ignore.useDefaultPatterns</code> setting. Please see <a href=\"src/config/defaultIgnore.ts\">defaultIgnore.ts</a> for more details.</li>
+<li><strong>.repomixignore</strong>: You can create a <code>.repomixignore</code> file in your project root to define Repomix-specific ignore patterns. This file follows the same format as <code>.gitignore</code>.</li>
+<li><strong>Custom patterns</strong>: Additional ignore patterns can be specified using the <code>ignore.customPatterns</code> option in the configuration file. You can overwrite this setting with the <code>-i, --ignore</code> command line option.</li>
+</ul>
+<p>Priority Order (from highest to lowest):</p>
+<ol>
+<li>Custom patterns <code>ignore.customPatterns</code></li>
+<li><code>.repomixignore</code></li>
+<li><code>.gitignore</code> (if <code>ignore.useGitignore</code> is true)</li>
+<li>Default patterns (if <code>ignore.useDefaultPatterns</code> is true)</li>
+</ol>
+<p>This approach allows for flexible file exclusion configuration based on your project&#39;s needs. It helps optimize the size of the generated pack file by ensuring the exclusion of security-sensitive files and large binary files, while preventing the leakage of confidential information.</p>
+<p>Note: Binary files are not included in the packed output by default, but their paths are listed in the &quot;Repository Structure&quot; section of the output file. This provides a complete overview of the repository structure while keeping the packed file efficient and text-based.</p>
+<h3>Custom Instruction</h3>
+<p>The <code>output.instructionFilePath</code> option allows you to specify a separate file containing detailed instructions or context about your project. This allows AI systems to understand the specific context and requirements of your project, potentially leading to more relevant and tailored analysis or suggestions.</p>
+<p>Here&#39;s an example of how you might use this feature:</p>
+<ol>
+<li>Create a file named <code>repomix-instruction.md</code> in your project root:</li>
+</ol>
+<pre><code class=\"language-markdown\"># Coding Guidelines
+- Follow the Airbnb JavaScript Style Guide
+- Suggest splitting files into smaller, focused units when appropriate
+- Add comments for non-obvious logic. Keep all text in English
+- All new features should have corresponding unit tests
+
+# Generate Comprehensive Output
+- Include all content without abbreviation, unless specified otherwise
+- Optimize for handling large codebases while maintaining output quality
+</code></pre>
+<ol start=\"2\">
+<li>In your <code>repomix.config.json</code>, add the <code>instructionFilePath</code> option:</li>
+</ol>
+<pre><code class=\"language-json5\">{
+  \\&quot;output\\&quot;: {
+    \\&quot;instructionFilePath\\&quot;: \\&quot;repomix-instruction.md\\&quot;,
+    // other options...
+  }
+}
+</code></pre>
+<p>When Repomix generates the output, it will include the contents of <code>repomix-instruction.md</code> in a dedicated section.</p>
+<p>Note: The instruction content is appended at the end of the output file. This placement can be particularly effective for AI systems. For those interested in understanding why this might be beneficial, Anthropic provides some insights in their documentation:<br><a href=\"https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/long-context-tips\">https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/long-context-tips</a></p>
+<blockquote>
+<p>Put long-form data at the top: Place your long documents and inputs (~20K+ tokens) near the top of your prompt, above your query, instructions, and examples. This can significantly improve Claude&#39;s performance across all models.
+Queries at the end can improve response quality by up to 30% in tests, especially with complex, multi-document inputs.</p>
+</blockquote>
+<h3>Comment Removal</h3>
+<p>When <code>output.removeComments</code> is set to <code>true</code>, Repomix will attempt to remove comments from supported file types. This feature can help reduce the size of the output file and focus on the essential code content.</p>
+<p>Supported languages include:<br>HTML, CSS, JavaScript, TypeScript, Vue, Svelte, Python, PHP, Ruby, C, C#, Java, Go, Rust, Swift, Kotlin, Dart, Shell, and YAML.</p>
+<p>Note: The comment removal process is conservative to avoid accidentally removing code. In complex cases, some comments might be retained.</p>
+<h2>🔍 Security Check</h2>
+<p>Repomix includes a security check feature that uses <a href=\"https://github.com/secretlint/secretlint\">Secretlint</a> to detect potentially sensitive information in your files. This feature helps you identify possible security risks before sharing your packed repository.</p>
+<p>The security check results will be displayed in the CLI output after the packing process is complete. If any suspicious files are detected, you&#39;ll see a list of these files along with a warning message.</p>
+<p>Example output:</p>
+<pre><code>🔍 Security Check:
+──────────────────
+2 suspicious file(s) detected:
+1. src/utils/test.txt
+2. tests/utils/secretLintUtils.test.ts
+
+Please review these files for potentially sensitive information.
+</code></pre>
+<p>By default, Repomix&#39;s security check feature is enabled. You can disable it by setting <code>security.enableSecurityCheck</code> to <code>false</code> in your configuration file:</p>
+<pre><code class=\"language-json\">{
+  \\&quot;security\\&quot;: {
+    \\&quot;enableSecurityCheck\\&quot;: false
+  }
+}
+</code></pre>
+<h2>🤝 Contribution</h2>
+<p>We welcome contributions from the community! To get started, please refer to our <a href=\"CONTRIBUTING.md\">Contributing Guide</a>.</p>
+<h3>Contributors</h3>
+<p>&lt;a href=&quot;<a href=\"https://github.com/yamadashy/repomix/graphs/contributors%5C%22%3E\">https://github.com/yamadashy/repomix/graphs/contributors\\&quot;&gt;</a>
+  &lt;img alt=&quot;contributors&quot; src=&quot;<a href=\"https://contrib.rocks/image?repo=yamadashy/repomix%5C%22/%3E\">https://contrib.rocks/image?repo=yamadashy/repomix\\&quot;/&gt;</a>
+</a></p>
+<h2>📜 License</h2>
+<p>This project is licensed under the <a href=\"LICENSE\">MIT License</a>.</p>
+<p align=\\\"center\\\">
+  &nbsp;&nbsp;&nbsp;
+  <a href=\\\"#-repomix\\\" target=\\\"_blank\\\">
+    Back To Top
+  </a>
+
+</p>
+ 
+        <div class="entry-footer">
+            <h2>About</h2>
+            
+        </div>
+    </body>
+</html>

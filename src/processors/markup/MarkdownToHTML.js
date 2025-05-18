@@ -26,25 +26,30 @@ class MarkdownToHTML extends Processor {
         } else { // default
             input = message.content
         }
-
+        var html = ''
         // new Marked()
-        const html = await
-            marked
-                .use(markedFootnote())
-                .use(
-                    markedCodeFormat({
+        try {
+            html = await
+                marked
+                    .use(markedFootnote())
+                    .use(
+                        markedCodeFormat({
+                        })
+                    )
+                    .setOptions({
+                        gfm: true,  // GitHub-Flavored Markdown
+                        breaks: false,  // Disable line breaks
+                        sanitize: false,  // Ensure raw HTML is allowed (sanitization disables this)
+                        smartypants: false, // Disable smart quotes
+                        headerIds: true, // Optional: prevent auto generation of header ids
+                        mangle: false, // Optional: disable mangle for links and email
                     })
-                )
-                .setOptions({
-                    gfm: true,  // GitHub-Flavored Markdown
-                    breaks: false,  // Disable line breaks
-                    sanitize: false,  // Ensure raw HTML is allowed (sanitization disables this)
-                    smartypants: false, // Disable smart quotes
-                    headerIds: true, // Optional: prevent auto generation of header ids
-                    mangle: false, // Optional: disable mangle for links and email
-                })
-                .parse(input.toString())
-
+                    .parse(input.toString())
+        } catch (e) {
+            logger.warn(`Error reported by marked in MarkdownToHTML :\n${e.message}\n[[\n${input}\n]]`)
+            return
+            //  process.exit(1)
+        }
         const outputFieldPath = this.getProperty(ns.trn.outputField, 'content')
         logger.debug(`\nMarkdownToHTML.process, outputField = ${outputFieldPath}`)
         message = JSONUtils.set(message, outputFieldPath, html)

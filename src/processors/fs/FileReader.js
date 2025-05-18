@@ -1,3 +1,40 @@
+// src/processors/fs/FileReader.js
+/**
+ * @class FileReader
+ * @extends Processor
+ * @classdesc
+ * **a Transmissions Processor**
+ *
+ * Reads the contents of a file from the local filesystem and attaches it to the message.
+ *
+ * ### Processor Signature
+ *
+ * #### __*Settings*__
+ * * **`ns.trn.sourceFile`** - Path to the source file (relative to application root, or absolute)
+ * * **`ns.trn.metaField`** (optional) - Message field to store file metadata
+ * * **`ns.trn.mediaType`** (optional) - MIME type to interpret file content (e.g., `application/json`)
+ * * **`ns.trn.targetField`** (optional) - Message field to store file content (default: `content`)
+ *
+ * #### __*Input*__
+ * * **`message`** - Message containing any fields required for file path resolution
+ *
+ * #### __*Output*__
+ * * **`message`** - Message with file content and optionally file metadata attached
+ *
+ * #### __*Behavior*__
+ * * Resolves the file path using `PathResolver`
+ * * Verifies that the file is readable
+ * * Optionally attaches file metadata to the message
+ * * Reads the file content and attaches it to the message, parsing as JSON if specified
+ * * Emits the updated message
+ *
+ * #### __*Side Effects*__
+ * * Reads from the filesystem
+ *
+ * #### __Tests__
+ * * **`./run file-reader-test`**
+ * * **`npm test -- tests/integration/file-reader-test.spec.js`**
+ */
 import { readFile } from 'node:fs/promises'
 import { access, constants, statSync } from 'node:fs'
 import path from 'path'
@@ -8,11 +45,24 @@ import Processor from '../../model/Processor.js'
 import PathResolver from '../../utils/PathResolver.js'
 
 class FileReader extends Processor {
+    /**
+     * Constructs a FileReader processor.
+     * @param {object} config - Processor configuration object.
+     */
     constructor(config) {
         super(config)
+        /**
+         * @type {string}
+         * Default file path used if none is provided in the message or config.
+         */
         this.defaultFilePath = 'input/input.md'
     }
 
+    /**
+     * Reads a file and attaches its content (and optionally metadata) to the message.
+     * @param {object} message - The message being processed.
+     * @returns {Promise<void>}
+     */
     async process(message) {
         logger.trace(`FileReader.process, done=${message.done}`)
 
@@ -73,6 +123,11 @@ class FileReader extends Processor {
         return this.emit('message', message)
     }
 
+    /**
+     * Retrieves metadata for a given file path.
+     * @param {string} filePath - The path to the file.
+     * @returns {object|null} File metadata, or null if retrieval fails.
+     */
     getFileMetadata(filePath) {
         try {
             const stats = statSync(filePath)

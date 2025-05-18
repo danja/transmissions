@@ -36,7 +36,7 @@ class DirWalker extends Processor {
         this.includePatterns =
             this.getProperty(ns.trn.includePattern, ['*.md', '*.js', '*.json', '*.ttl'])
         this.excludePatterns =
-            this.getProperty(ns.trn.excludePattern, ['*.', '.git', 'node_modules'])
+            this.getProperty(ns.trn.excludePattern, ['.git', 'node_modules', 'lib'])
 
         await this.walkDirectory(walkDir, message)
 

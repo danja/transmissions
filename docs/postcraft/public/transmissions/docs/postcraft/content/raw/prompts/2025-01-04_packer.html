@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="/css/fonts.css" type="text/css"/>
+        <link rel="stylesheet" href="/css/grid-columns.css" type="text/css"/>
+        <link rel="stylesheet" href="/css/style.css" type="text/css"/>
+        <title>Packer</title>
+    </head>
+    <!-- POST PAGE TEMPLATE -->
+    <body>
+        <header id="entry-header">
+            <h1 class="post-title h-cinzel">
+                
+            </h1>
+        </header>
+        <p> There&#39;s a problem with the new application in <code>src/applications/packer</code> which uses processors from <code>src/processors/packer</code>, see console log below.</p>
+<p>I suspect it may lie in part with the flow logic in <code>src/applications/packer/transmissions.ttl</code>, perhaps a <code>src/processors/util/Unfork.js</code> or use of a whiteboard (as in <code>src/processors/util/WhiteboardToMessage.js</code>) is needed? Almost certainly <code>src/processors/packer/FileContainer.js</code> needs work.
+Unless there are very silly mistakes elsewhere, any changes should be confined to the new application.</p>
+<pre><code class=\"language-sh\">danny@danny-desktop:~/hyperdata/transmissions$ ./trans packer ../hyperdata/packages/hoard
+
+  _____
+ |_   _| __ __ _ _ __  ___
+   | || \\&#39;__/ _` | \\&#39;_ \\\\/ __|
+   | || | | (_| | | | \\\\__ \\\\
+   |_||_|  \\\\__,_|_| |_|___/
+             1.0.0 (dev)
+         2025-01-04
+
+In run.js :
+application : packer
+target : ../hyperdata/packages/hoard
+message : undefined
+
++ ***** Construct Transmission : Repository Packer &lt;http://hyperdata.it/transmissions/packer&gt;
+| Create processor :p10 of type :DirWalker
+| Create processor :p20 of type :StringFilter
+| Create processor :p30 of type :FileReader
+| Create processor :p40 of type :FileContainer
+| Create processor :SM of type :ShowMessage
+| Create processor :p50 of type :FileWriter
+  &gt; Connect #0 [p10] =&gt; [p20]
+Transmission.connect from http://hyperdata.it/transmissions/p10 to http://hyperdata.it/transmissions/p10
+Connector.connect this.fromName = http://hyperdata.it/transmissions/p10 this.toName =  http://hyperdata.it/transmissions/p20
+  &gt; Connect #1 [p20] =&gt; [p30]
+Transmission.connect from http://hyperdata.it/transmissions/p20 to http://hyperdata.it/transmissions/p20
+Connector.connect this.fromName = http://hyperdata.it/transmissions/p20 this.toName =  http://hyperdata.it/transmissions/p30
+  &gt; Connect #2 [p30] =&gt; [p40]
+Transmission.connect from http://hyperdata.it/transmissions/p30 to http://hyperdata.it/transmissions/p30
+Connector.connect this.fromName = http://hyperdata.it/transmissions/p30 this.toName =  http://hyperdata.it/transmissions/p40
+  &gt; Connect #3 [p40] =&gt; [SM]
+Transmission.connect from http://hyperdata.it/transmissions/p40 to http://hyperdata.it/transmissions/p40
+Connector.connect this.fromName = http://hyperdata.it/transmissions/p40 this.toName =  http://hyperdata.it/transmissions/SM
+  &gt; Connect #4 [SM] =&gt; [p50]
+Transmission.connect from http://hyperdata.it/transmissions/SM to http://hyperdata.it/transmissions/SM
+Connector.connect this.fromName = http://hyperdata.it/transmissions/SM this.toName =  http://hyperdata.it/transmissions/p50
+
++ ***** Execute Transmission : Repository Packer &lt;http://hyperdata.it/transmissions/packer&gt;
+| Running : http://hyperdata.it/transmissions/p10 a DirWalker
+***    hidden keys :
+[[dataset found, skipping]]
+Instance of Object with properties -
+{
+  \\&quot;appName\\&quot;: \\&quot;packer\\&quot;,
+  \\&quot;appPath\\&quot;: \\&quot;packer\\&quot;,
+  \\&quot;subtask\\&quot;: \\&quot;[no key]\\&quot;,
+  \\&quot;manifestFilename\\&quot;: \\&quot;/home/danny/github-danny/hyperdata/packages/hoard/manifest.ttl\\&quot;,
+  \\&quot;targetPath\\&quot;: \\&quot;/home/danny/github-danny/hyperdata/packages/hoard\\&quot;,
+  \\&quot;rootDir\\&quot;: \\&quot;/home/danny/github-danny/transmissions/src/applications/packer\\&quot;,
+  \\&quot;dataDir\\&quot;: \\&quot;/home/danny/github-danny/transmissions/src/applications/packer/data\\&quot;,
+  \\&quot;tags\\&quot;: \\&quot;p10\\&quot;
+}
+| Running &gt;&gt;&gt; :  (p10) p20 a StringFilter
+StringFilter, relative path = README.md
+| Running &gt;&gt;&gt; :  (p10.p20) p30 a FileReader
+***    hidden keys :
+[[dataset found, skipping]]
+Instance of Object with properties -
+{
+  \\&quot;appName\\&quot;: \\&quot;packer\\&quot;,
+  \\&quot;appPath\\&quot;: \\&quot;packer\\&quot;,
+  \\&quot;subtask\\&quot;: \\&quot;[no key]\\&quot;,
+  \\&quot;manifestFilename\\&quot;: \\&quot;/home/danny/github-danny/hyperdata/packages/hoard/manifest.ttl\\&quot;,
+  \\&quot;targetPath\\&quot;: \\&quot;/home/danny/github-danny/hyperdata/packages/hoard\\&quot;,
+  \\&quot;rootDir\\&quot;: \\&quot;/home/danny/github-danny/transmissions/src/applications/packer\\&quot;,
+  \\&quot;dataDir\\&quot;: \\&quot;/home/danny/github-danny/transmissions/src/applications/packer/data\\&quot;,
+  \\&quot;tags\\&quot;: \\&quot;p10\\&quot;,
+  \\&quot;sourceDir\\&quot;: \\&quot;src\\&quot;,
+  \\&quot;counter\\&quot;: \\&quot;[no key]\\&quot;,
+  \\&quot;slugs\\&quot;: [],
+  \\&quot;done\\&quot;: \\&quot;[no key]\\&quot;
+}
+***    hidden keys :
+[[dataset found, skipping]]
+Instance of Object with properties -
+{
+  \\&quot;appName\\&quot;: \\&quot;packer\\&quot;,
+  \\&quot;appPath\\&quot;: \\&quot;packer\\&quot;,
+  \\&quot;subtask\\&quot;: \\&quot;[no key]\\&quot;,
+  \\&quot;manifestFilename\\&quot;: \\&quot;/home/danny/github-danny/hyperdata/packages/hoard/manifest.ttl\\&quot;,
+  \\&quot;targetPath\\&quot;: \\&quot;/home/danny/github-danny/hyperdata/packages/hoard\\&quot;,
+  \\&quot;rootDir\\&quot;: \\&quot;/home/danny/github-danny/transmissions/src/applications/packer\\&quot;,
+  \\&quot;dataDir\\&quot;: \\&quot;/home/danny/github-danny/transmissions/src/applications/packer/data\\&quot;,
+  \\&quot;tags\\&quot;: \\&quot;p10\\&quot;,
+  \\&quot;sourceDir\\&quot;: \\&quot;src/html\\&quot;,
+  \\&quot;counter\\&quot;: \\&quot;[no key]\\&quot;,
+  \\&quot;slugs\\&quot;: [],
+  \\&quot;done\\&quot;: \\&quot;[no key]\\&quot;
+}
+| Running &gt;&gt;&gt; :  (p10) p20 a StringFilter
+| Running &gt;&gt;&gt; :  (p10.p20) p30 a FileReader
+***    hidden keys :
+[[dataset found, skipping]]
+Instance of Object with properties -
+{
+  \\&quot;appName\\&quot;: \\&quot;packer\\&quot;,
+  \\&quot;appPath\\&quot;: \\&quot;packer\\&quot;,
+  \\&quot;subtask\\&quot;: \\&quot;[no key]\\&quot;,
+  \\&quot;manifestFilename\\&quot;: \\&quot;/home/danny/github-danny/hyperdata/packages/hoard/manifest.ttl\\&quot;,
+  \\&quot;targetPath\\&quot;: \\&quot;/home/danny/github-danny/hyperdata/packages/hoard\\&quot;,
+  \\&quot;rootDir\\&quot;: \\&quot;/home/danny/github-danny/transmissions/src/applications/packer\\&quot;,
+  \\&quot;dataDir\\&quot;: \\&quot;/home/danny/github-danny/transmissions/src/applications/packer/data\\&quot;,
+  \\&quot;tags\\&quot;: \\&quot;p10\\&quot;,
+  \\&quot;sourceDir\\&quot;: \\&quot;src/js\\&quot;,
+  \\&quot;counter\\&quot;: \\&quot;[no key]\\&quot;,
+  \\&quot;slugs\\&quot;: [],
+  \\&quot;done\\&quot;: \\&quot;[no key]\\&quot;
+}
+| Running &gt;&gt;&gt; :  (p10.p20.p30) p40 a FileContainer
+| Running &gt;&gt;&gt; :  (p10.p20.p30.p40) SM a ShowMessage
+***************************
+***  Message
+***    hidden keys :
+[[dataset found, skipping]]
+Instance of Object with properties -
+{
+  \\&quot;appName\\&quot;: \\&quot;packer\\&quot;,
+  \\&quot;appPath\\&quot;: \\&quot;packer\\&quot;,
+  \\&quot;subtask\\&quot;: \\&quot;[no key]\\&quot;,
+  \\&quot;manifestFilename\\&quot;: \\&quot;/home/danny/github-danny/hyperdata/packages/hoard/manifest.ttl\\&quot;,
+  \\&quot;targetPath\\&quot;: \\&quot;/home/danny/github-danny/hyperdata/packages/hoard\\&quot;,
+  \\&quot;rootDir\\&quot;: \\&quot;/home/danny/github-danny/transmissions/src/applications/packer\\&quot;,
+  \\&quot;dataDir\\&quot;: \\&quot;/home/danny/github-danny/transmissions/src/applications/packer/data\\&quot;,
+  \\&quot;tags\\&quot;: \\&quot;p10.p20.p30.p40.SM\\&quot;,
+  \\&quot;sourceDir\\&quot;: \\&quot;.\\&quot;,
+  \\&quot;counter\\&quot;: 1,
+  \\&quot;slugs\\&quot;: [],
+  \\&quot;done\\&quot;: \\&quot;[no key]\\&quot;,
+  \\&quot;filename\\&quot;: \\&quot;README.md\\&quot;,
+  \\&quot;filepath\\&quot;: \\&quot;README.md\\&quot;,
+  \\&quot;content\\&quot;: \\&quot;[no key]\\&quot;
+}
+***************************
+| Running &gt;&gt;&gt; :  (p10.p20.p30.p40.SM) p50 a FileWriter
+ - FileWriter writing : /home/danny/github-danny/hyperdata/packages/hoard/README.md
+TypeError [ERR_INVALID_ARG_TYPE]: The \\&quot;path\\&quot; argument must be of type string. Received an instance of Literal
+    at validateString (node:internal/validators:162:11)
+    at Object.join (node:path:1175:7)
+    at FileReader.process (file:///home/danny/github-danny/transmissions/src/processors/fs/FileReader.js:45:22)
+    at FileReader.executeQueue (file:///home/danny/github-danny/transmissions/src/processors/base/Processor.js:187:24) {
+  code: \\&#39;ERR_INVALID_ARG_TYPE\\&#39;
+}
+0
+</code></pre>
+
+        <div class="entry-footer">
+            <h2>About</h2>
+            
+        </div>
+    </body>
+</html>

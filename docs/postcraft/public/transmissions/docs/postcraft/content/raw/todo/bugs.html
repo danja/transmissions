@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="/css/fonts.css" type="text/css"/>
+        <link rel="stylesheet" href="/css/grid-columns.css" type="text/css"/>
+        <link rel="stylesheet" href="/css/style.css" type="text/css"/>
+        <title>Transmissions Known Bugs</title>
+    </head>
+    <!-- POST PAGE TEMPLATE -->
+    <body>
+        <header id="entry-header">
+            <h1 class="post-title h-cinzel">
+                
+            </h1>
+        </header>
+        <h1>Transmissions Known Bugs</h1>
+<h3>simples properties not being picked up</h3>
+<h3>forward tree pipes should be joinable</h3>
+<p>src/applications/test/multi-pipe</p>
+<h3>stringops processor test removed for now</h3>
+<pre><code class=\"language-json\">{
+    \\&quot;command\\&quot;: \\&quot;./trans -v stringops -m \\&#39;{\\\\\\&quot;fields\\\\\\&quot;: {\\\\\\&quot;fieldB\\\\\\&quot; : \\\\\\&quot;TEST\\\\\\&quot;,\\\\\\&quot;fieldC\\\\\\&quot;:\\\\\\&quot;_PASSED\\\\\\&quot;}}\\&#39;\\&quot;,
+    \\&quot;label\\&quot;: \\&quot;stringops\\&quot;,
+    \\&quot;description\\&quot;: \\&quot;test stringops application\\&quot;,
+    \\&quot;requiredMatchCount\\&quot;: 4
+}
+</code></pre>
+<hr>
+<p>reset 2025-04-17</p>
+<p>:ForEach / :Restructure remove might be broken</p>
+<ul>
+<li><p>check       const values = this.getValues(ns.trn.items)</p>
+</li>
+<li><p>maybe move <code>workingDir</code> up into processor.app
+<strong>RUN TESTS!!!</strong></p>
+</li>
+</ul>
+<p>When a settings field wasn&#39;t associated with a <code>:FileWriter</code> it picked up an unrelated one from the manifest</p>
+<h4>Fixed ?</h4>
+<p>import Application from &#39;../engine/AppResolver.js&#39;</p>
+<p>class ApplicationManager {
+    constructor() {
+        this.app = new Application()
+        this.moduleLoader = null
+        this.dataset = rdf.dataset()
+    }
+ </p>
+
+        <div class="entry-footer">
+            <h2>About</h2>
+            
+        </div>
+    </body>
+</html>

@@ -112,6 +112,43 @@ class RDFUtils {
             throw error
         }
     }
+
+    /** HACK!!!!
+     * Escapes any URIs enclosed in angle brackets in the input string
+     * <http://example.org/here a space> becomes <http://example.org/here%20a%20space>
+     * @param {string} inputText - Text containing URIs in angle brackets
+     * @return {string} Text with properly escaped URIs
+     */
+    static escapeAngleBracketURIs(inputText) {
+        // Regular expression to match URIs in angle brackets
+        // Captures the entire URI including the angle brackets
+        return inputText.replace(/<(https?:\/\/[^>]+)>/g, (match, uri) => {
+            try {
+                // Create URL object to handle the URI
+                const url = new URL(uri);
+
+                // Properly encode the pathname and search portions
+                // This preserves the structure of the URL while escaping spaces and special chars
+                url.pathname = encodeURI(url.pathname);
+
+                // Handle query parameters if they exist
+                if (url.search) {
+                    // Remove the leading ? before encoding
+                    const searchParams = url.search.substring(1);
+                    // Encode the search parameters and add the ? back
+                    url.search = '?' + encodeURIComponent(searchParams).replace(/%3D/g, '=').replace(/%26/g, '&');
+                }
+
+                // Return the escaped URI within angle brackets
+                return `<${url.toString()}>`;
+            } catch (e) {
+                // If URL parsing fails, use a more basic approach
+                const escapedUri = encodeURI(uri);
+                return `<${escapedUri}>`;
+            }
+        });
+    }
+
 }
 
 export default RDFUtils

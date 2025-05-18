@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="/css/fonts.css" type="text/css"/>
+        <link rel="stylesheet" href="/css/grid-columns.css" type="text/css"/>
+        <link rel="stylesheet" href="/css/style.css" type="text/css"/>
+        <title>2024 12 02</title>
+    </head>
+    <!-- POST PAGE TEMPLATE -->
+    <body>
+        <header id="entry-header">
+            <h1 class="post-title h-cinzel">
+                
+            </h1>
+        </header>
+        <p> I&#39;ve been using s/repopack/repomix extensively with Claude Projects. I&#39;ve found it incredibly useful, many thanks @yamadashy, excellent work! (if you would like praise expressed more formally/for promotional materials, let me know).</p>
+<p>The main project &#39;Transmissions&#39; I&#39;m working on at the moment has LOC &amp; repomix stats as below. I&#39;m predominantly using node, occasional bits of browser stuff (also a toy language &#39;sheltopusik&#39; I have in-progress, the less said about that the better - hence the instantly forgettable name).
+Transmissions is still lacking key features and is neither nor stable nor documented enough for anyone else to have a use for it. But there is some intersection with repomix, in that I&#39;m trying to find a sweetspot for working with LLMs. It&#39;s a pipeliney thing with major decoupling, the intention being that any part that needs work on can be comfortably understood in the current size of context windows. This also means I&#39;ve got a ton of other related projects, each with their own repo, varying sizes.</p>
+<p>The repomix config for transmissions isn&#39;t far off defaults regarding code, except I do have several additions to the ignore section - like a docs dir that currently includes masses of irrelevant (and redundant) styling stuff. But the (hopefully) useful stuff takes up 55% of the Claude Project knowledge (funny, it was 63% but just now I noticed there was another irrelevant dir - the Top 5 is a great feature!). In addition to this I have a smaller associated repo that notches it up to 73%. This, with a fairly verbose system prompt, seems to push the limits of utility. So trying to connect another project, which may also produce a sizable repomix, with Transmissions was a problem.</p>
+<p>My dev workflow for a New Feature (more or less) is figuring out a prompt describing my requirements for it, repomixing (good verb) and replacing the project&#39;s current knowledge, starting a new chat session in the project. This I follow for maybe a dozen interactions, 6 or so artifacts, then halt, however prematurely, and ask for a handover document (I have a bunch of commands in the system prompt, ho gives me a summary as an artifact, including metadata in RDF/Turtle). Even being careful, with the Big Knowledge, I often hit the token limit. Claudio gets another walk.
+Something I&#39;ve found useful when working with the other project as the main context, but still wishing Claude to have knowledge of Transmissions for integration purposes, is to have this in my package.json :</p>
+<p>{
+...
+  &quot;scripts&quot;: {
+    &quot;rp&quot;: &quot;repomix -c repomix.config-small.json . &amp;&amp; repomix -c repomix.config-large.json . &quot;,
+   ...
+   }
+}
+repomix.config-small.json has a lot more in the ignore section, stripping things back to a bare minimum, used in auxiliary projects. repomix.config-large.json has everything relevant, used in &#39;transmissions&#39; itself.</p>
+<p>(I&#39;m leaving it as legacy rp, I&#39;m all-Linux here rm is rarely wise :)</p>
+<p>fyi @yamadashy, I plan to use chunks of repomix, pulled apart into small pieces, in my Transmissions pipeliney thing. I&#39;ve not actually looked yet how things are exposed, but ideally I&#39;d like to use it as a lib, so one node on my processing pipeline loads the config, another build the path filters, aother does the treewalking etc etc.</p>
+<p>Whatever, thanks again, keep up the good work!
+  Pack Summary:
+────────────────
+  Total Files: 264
+  Total Chars: 314527
+ Total Tokens: 73062
+       Output: ./repopack-transmissions-large.txt
+     Security: ✔ No suspicious files detected</p>
+<p>transmissions$ cloc src
+     231 text files.
+     166 unique files.<br>      65 files ignored.</p>
+<h2>github.com/AlDanial/cloc v 1.98  T=3.00 s (55.4 files/s, 2928.8 lines/s)</h2>
+<h2>Language                     files          blank        comment           code</h2>
+<h2>JavaScript                     115           1035           1082           3971
+Markdown                        28            461              5           1113
+HTML                             2             17              0            763
+JSON                            14              0              0            292
+Bourne Shell                     1              8              9              9
+Text                             6              0              0              7</h2>
+<h2>SUM:                           166           1521           1096           6155</h2>
+
+        <div class="entry-footer">
+            <h2>About</h2>
+            
+        </div>
+    </body>
+</html>

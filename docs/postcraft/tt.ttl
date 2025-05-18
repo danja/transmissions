@@ -28,6 +28,7 @@
    :sourceDir "content/raw" .
 
 :storeArticle a :ConfigSet ;
+    :escape "true" ;
     :delay "100" ;
     :dataBlock "contentBlocks" ;
     :templateFilename "system/sparql-templates/store-article.njk" ;
