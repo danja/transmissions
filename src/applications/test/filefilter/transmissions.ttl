@@ -17,7 +17,7 @@
 ##################################################################
 
 :filefilter a :Transmission ;
-    :pipe (:p10 :SM) .
+    :pipe (:p10 :p20 :p30 :SM) .
 
 :p10 a :FileReader ;
      :settings [
@@ -27,4 +27,9 @@
      ] .
 
 :p20 a :DirWalker .
+
+:p30 a :FileFilter .
+
+:
+     
 
