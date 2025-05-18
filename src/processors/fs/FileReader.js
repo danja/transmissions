@@ -1,4 +1,14 @@
 // src/processors/fs/FileReader.js
+
+import { readFile } from 'node:fs/promises'
+import { access, constants, statSync } from 'node:fs'
+import path from 'path'
+import mime from 'node-mime-types'
+import logger from '../../utils/Logger.js'
+import ns from '../../utils/ns.js'
+import Processor from '../../model/Processor.js'
+import PathResolver from '../../utils/PathResolver.js'
+
 /**
  * @class FileReader
  * @extends Processor
@@ -35,15 +45,6 @@
  * * **`./run file-reader-test`**
  * * **`npm test -- tests/integration/file-reader-test.spec.js`**
  */
-import { readFile } from 'node:fs/promises'
-import { access, constants, statSync } from 'node:fs'
-import path from 'path'
-import mime from 'node-mime-types'
-import logger from '../../utils/Logger.js'
-import ns from '../../utils/ns.js'
-import Processor from '../../model/Processor.js'
-import PathResolver from '../../utils/PathResolver.js'
-
 class FileReader extends Processor {
     /**
      * Constructs a FileReader processor.
