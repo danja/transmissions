@@ -3,6 +3,8 @@
 **/*repomix*.md
 **/*terrapack*.md
 
+docs/jsdocs
+
 # Logs
 logs
 *.log
