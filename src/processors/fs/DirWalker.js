@@ -1,3 +1,40 @@
+// src/processors/fs/DirWalker.js
+/**
+ * @class DirWalker
+ * @extends Processor
+ * @classdesc
+ * **a Transmissions Processor**
+ *
+ * Recursively walks a directory tree, emitting a message for each file found that matches include/exclude patterns.
+ *
+ * ### Processor Signature
+ *
+ * #### __*Settings*__
+ * * **`ns.trn.sourceDir`** - Path to the source directory (relative to application root, or absolute)
+ * * **`ns.trn.includePattern`** (optional) - Glob patterns for files to include (default: ['*.md', '*.js', '*.json', '*.ttl'])
+ * * **`ns.trn.excludePattern`** (optional) - Glob patterns for files/directories to exclude (default: ['.git', 'node_modules', 'lib'])
+ * * **`ns.trn.targetPath`** (optional) - Path used to compute relative file paths
+ *
+ * #### __*Input*__
+ * * **`message`** - Message containing any fields required for directory resolution
+ *
+ * #### __*Output*__
+ * * **`message`** - Message emitted for each matching file, with file details attached
+ *
+ * #### __*Behavior*__
+ * * Resolves the directory to walk
+ * * Recursively traverses subdirectories
+ * * Emits a message for each file matching the include/exclude patterns
+ * * Attaches file details (filename, fullPath, subdir, filepath, slug, etc.) to each message
+ * * Emits a final message with `done=true` after traversal
+ *
+ * #### __*Side Effects*__
+ * * Reads directory and file structure from the filesystem
+ *
+ * #### __Tests__
+ * * **`./run dirwalker-test`**
+ * * **`npm test -- tests/integration/dirwalker-test.spec.js`**
+ */
 import { readdir } from 'fs/promises'
 import path from 'path'
 import ns from '../../utils/ns.js'
@@ -7,11 +44,24 @@ import Processor from '../../model/Processor.js'
 import StringUtils from '../../utils/StringUtils.js'
 
 class DirWalker extends Processor {
+    /**
+     * Constructs a DirWalker processor.
+     * @param {object} config - Processor configuration object.
+     */
     constructor(config) {
         super(config)
+        /**
+         * @type {number}
+         * Counter for files processed during traversal.
+         */
         this.count = 0
     }
 
+    /**
+     * Walks the directory tree, emitting a message for each matching file.
+     * @param {object} message - The message being processed.
+     * @returns {Promise<void>}
+     */
     async process(message) {
         logger.trace('\nDirWalker.process')
         logger.trace(`\nDirWalker.process, this = ${this}`)
@@ -47,10 +97,22 @@ class DirWalker extends Processor {
         return this.emit('message', finalMessage)
     }
 
+    /**
+     * Checks if a string matches any of the provided glob patterns.
+     * @param {string} str - The string to test.
+     * @param {string[]} patterns - Array of glob patterns.
+     * @returns {boolean}
+     */
     matchPatterns(str, patterns) {
         return StringUtils.matchPatterns(str, patterns)
     }
 
+    /**
+     * Recursively walks a directory, emitting a message for each matching file.
+     * @param {string} dir - Directory to walk.
+     * @param {object} baseMessage - The base message to copy and augment for each file.
+     * @returns {Promise<void>}
+     */
     async walkDirectory(dir, baseMessage) {
         logger.trace(`DirWalker.walkDirectory, dir = ${dir}`)
         const entries = await readdir(dir, { withFileTypes: true })
