@@ -26,7 +26,10 @@
           :targetField "fileFilter"
      ] .
 
-:p20 a :DirWalker .
+:p20 a :DirWalker ;
+     :settings [
+          :sourceDir "data" 
+     ] .
 
 :p30 a :FileFilter .
 
