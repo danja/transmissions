@@ -8,7 +8,7 @@ import Halt from '../flow/Halt.js'
 import Unfork from '../flow/Unfork.js'
 import Fork from '../flow/Fork.js'
 import Accumulate from '../flow/Accumulate.js'
-import Filter from '../flow/Filter.js'
+import Filter from './Filter.js'
 
 class FlowProcessorsFactory {
     static createProcessor(type, config) {

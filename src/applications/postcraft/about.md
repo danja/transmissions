@@ -24,7 +24,7 @@ ok above
 
 ```sh
 cd ~/hyperdata/transmissions # my local path
-./del2.sh
+./del2.shzxczxcz
 ./trans postcraft-statics ~/hyperdata/transmissions/docs/postcraft #
 ./trans md-to-sparqlstore ~/hyperdata/transmissions/docs/postcraft
 ./trans sparqlstore-to-html ~/hyperdata/transmissions/docs/postcraft
