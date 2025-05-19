@@ -2,12 +2,22 @@ import logger from '../utils/Logger.js'
 
 class Whiteboard {
     constructor() {
+        this.cache = {}
         this.accumulators = {}
         if (Whiteboard.singleInstance) {
             return Whiteboard.singleInstance
         }
         Whiteboard.singleInstance = this
     }
+
+    put(key, value) {
+        this.cache[key] = value
+    }
+
+    get(key) {
+        return this.cache[key]
+    }
+
 
     accumulate(label, value) {
         var acc = this.accumulators[label]

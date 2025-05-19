@@ -93,7 +93,7 @@ class FileReader extends Processor {
         })
 
         // Handle metadata if requested
-        const metaField = await super.getProperty(ns.trn.metaField, null)
+        const metaField = super.getProperty(ns.trn.metaField, null)
         if (metaField) {
             const metadata = this.getFileMetadata(filePath)
             if (typeof metaField === 'string') {
@@ -103,8 +103,23 @@ class FileReader extends Processor {
             }
         }
 
-        // Read and return file content
-        const content = await readFile(filePath, 'utf8')
+        let content
+
+        // whiteboard is a singleton shared between processors, it has a simple map for cache
+        // TODO test
+        const useCache = super.getProperty(ns.trn.cache)
+        if (useCache) {
+            content = this.whiteboard.get(filepath)
+            if (!content) {
+                content = await readFile(filePath, 'utf8')
+                this.whiteboard.put(filePath, content)
+            }
+        } else {
+            content = await readFile(filePath, 'utf8')
+        }
+
+
+
         logger.debug(` - FileReader read: ${filePath}`)
 
         message.filePath = filePath
