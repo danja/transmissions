@@ -1,3 +1,4 @@
+// src/processors/markup/MarkdownToHTML.js
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
 import JSONUtils from '../../utils/JSONUtils.js'
@@ -9,6 +10,42 @@ import { marked } from 'marked'
 import markedFootnote from 'marked-footnote'
 import markedCodeFormat from 'marked-code-format'
 // import customHeadingId from "marked-custom-heading-id";
+
+/**
+ * @class MarkdownToHTML
+ * @extends Processor
+ * @classdesc
+ * **a Transmissions Processor**
+ *
+ * Converts Markdown content in the message to HTML using the `marked` library and relevant extensions.
+ *
+ * ### Processor Signature
+ *
+ * #### __*Settings*__
+ * * None specific (uses message fields and optional config for input/output fields)
+ *
+ * #### __*Input*__
+ * * **`message`** - The message object containing Markdown content (e.g., `contentBlocks.content` or other fields)
+ *
+ * #### __*Output*__
+ * * **`message`** - The message object with new/updated HTML content fields
+ *
+ * #### __*Behavior*__
+ * * Reads Markdown from the message (supports templated and direct content)
+ * * Converts Markdown to HTML using `marked` and its extensions
+ * * Attaches the resulting HTML to the message
+ * * Logs key actions for debugging
+ *
+ * #### __*Side Effects*__
+ * * Mutates the message object in place
+ *
+ * #### __*Tests*__
+ * * (Add test references here if available)
+ *
+ * #### __*ToDo*__
+ * * Use config to control input/output fields
+ * * Add tests for edge cases and custom extensions
+ */
 
 class MarkdownToHTML extends Processor {
 
