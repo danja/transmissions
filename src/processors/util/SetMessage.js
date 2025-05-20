@@ -11,29 +11,34 @@ import rdf from 'rdf-ext'
  * @classdesc
  * **a Transmissions Processor**
  *
- * Sets fields on the message object using key/value pairs defined in RDF configuration.
+ * Sets or updates fields on the message object using key/value pairs defined in RDF configuration.
  *
  * ### Processor Signature
  *
  * #### __*Settings*__
- * * **`ns.trn.setValue`** - RDF list of setter nodes, each with a key and value
+ * * **`ns.trn.setValue`** - RDF list of setter nodes, each specifying a message key and value to set
  *
  * #### __*Input*__
  * * **`message`** - The message object to update
  *
  * #### __*Output*__
- * * **`message`** - The message object with new/updated fields set
+ * * **`message`** - The message object with new or updated fields set from RDF
  *
  * #### __*Behavior*__
- * * Reads key/value pairs from RDF configuration
- * * Sets each key/value on the message object
+ * * Reads key/value setter nodes from RDF configuration (using `ns.trn.setValue`)
+ * * Sets each key/value pair onto the message object
  * * Emits the updated message
+ * * Logs actions for debugging
  *
  * #### __*Side Effects*__
- * * None (message is modified in place)
+ * * Mutates the message object in place
  *
- * #### __Tests__
- * * (Add test command here if available)
+ * #### __*Tests*__
+ * * (Add or update test command here if available)
+ *
+ * #### __*ToDo*__
+ * * Add tests for RDF edge cases
+ * * Improve error handling for invalid RDF data
  */
 class SetMessage extends Processor {
 
