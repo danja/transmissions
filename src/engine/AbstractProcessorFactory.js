@@ -20,7 +20,6 @@ import TerrapackProcessorsFactory from '../processors/terrapack/TerrapackProcess
 import UnsafeProcessorsFactory from '../processors/unsafe/UnsafeProcessorsFactory.js'
 import HttpProcessorsFactory from '../processors/http/HttpProcessorsFactory.js'
 import McpProcessorsFactory from '../processors/mcp/McpProcessorsFactory.js'
-import XmppProcessorsFactory from '../processors/xmpp/XmppProcessorsFactory.js'
 
 // added 2025-01-14 : Happy Birthday to me!
 import ExampleProcessorsFactory from '../processors/example-group/ExampleProcessorsFactory.js'
@@ -52,9 +51,6 @@ class AbstractProcessorFactory {
         if (processor) return processor
         var processor = McpProcessorsFactory.createProcessor(type, app)
         if (processor) return processor
-        var processor = XmppProcessorsFactory.createProcessor(type, app)
-        if (processor) return processor
-
         var processor = TestProcessorsFactory.createProcessor(type, app)
         if (processor) return processor
         var processor = UtilProcessorsFactory.createProcessor(type, app)
