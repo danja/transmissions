@@ -1,31 +1,46 @@
 // src/processors/fs/FileRemove.js
 /**
- * FileRemove Processor
+ * @class FileRemove
+ * @extends Processor
+ * @classdesc
+ * **a Transmissions Processor**
  *
  * Removes files or directory contents on the local filesystem.
- * @extends Processor
+ *
+ * ### Processor Signature
+ *
+ * #### __*Settings*__
+ * * **`ns.trn.target`** - The target path to remove (relative to `applicationRootDir` or absolute)
  *
  * #### __*Input*__
- * * message.applicationRootDir (optional) - The root directory of the application
- * * message.target (if no settings) - The path of the file or directory to remove
- *
- * #### __*Configuration*__
- * If a settings is provided in the transmission:
- * * ns.trn.target - The target path relative to applicationRootDir
+ * * **`message`** - The message object
+ * * **`message.applicationRootDir`** (optional) - The root directory of the application
+ * * **`message.target`** - The path of the file or directory to remove (if not using `ns.trn.target`)
  *
  * #### __*Output*__
- * * Removes the specified file or directory contents
- * * message (unmodified) - The input message is passed through
+ * * **`message`** - The input message, unmodified
  *
  * #### __*Behavior*__
- * * Removes individual files directly
- * * Recursively removes directory contents
+ * * Removes individual files directly using `fs.unlink`
+ * * Recursively removes directory contents while preserving the directory itself
+ * * Skips dotfiles by default (configurable via `ignoreDotfiles`)
+ * * Gracefully handles already-removed files
  * * Logs debug information about the removal process
  *
- * #### __Tests__
- * `./run file-copy-remove-test`
- * `npm test -- tests/integration/file-copy-remove-test.spec.js`
+ * #### __*Side Effects*__
+ * * Deletes files and directories from the filesystem
  *
+ * #### __*Tests*__
+ * * `./run file-copy-remove-test`
+ * * `npm test -- tests/integration/file-copy-remove-test.spec.js`
+ *
+ * @example
+ * // Remove a file
+ * const remover = new FileRemove({});
+ * await remover.process({ target: '/path/to/file.txt' });
+ *
+ * // Remove a directory's contents
+ * await remover.process({ target: '/path/to/directory' });
  */
 
 import { unlink, readdir, stat, rm } from 'node:fs/promises'
@@ -36,8 +51,14 @@ import Processor from '../../model/Processor.js'
 import PathResolver from '../../utils/PathResolver.js'
 
 class FileRemove extends Processor {
+    /**
+     * Creates a new FileRemove processor instance.
+     * @param {Object} config - Processor configuration object
+     */
     constructor(config) {
         super(config)
+        /** @private */
+        this.ignoreDotfiles = true // Controls whether to ignore dotfiles during removal
     }
 
     /**
@@ -78,6 +99,12 @@ class FileRemove extends Processor {
      * Removes a file
      * @param {string} filePath - The path to the file to remove
      */
+    /**
+     * Removes a single file.
+     * @param {string} filePath - The absolute path to the file to remove
+     * @returns {Promise<void>} Resolves when the file is removed
+     * @private
+     */
     async removeFile(filePath) {
         await unlink(filePath)
     }
@@ -85,6 +112,12 @@ class FileRemove extends Processor {
     /**
      * Recursively removes the contents of a directory
      * @param {string} dirPath - The path to the directory
+     */
+    /**
+     * Recursively removes all contents of a directory.
+     * @param {string} dirPath - The absolute path to the directory
+     * @returns {Promise<void>} Resolves when all contents are removed
+     * @private
      */
     async removeDirectoryContents(dirPath) {
         logger.debug('FileRemove, dirPath = ' + dirPath)
