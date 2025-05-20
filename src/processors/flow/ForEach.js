@@ -4,12 +4,61 @@ import SysUtils from '../../utils/SysUtils.js'
 import SlowableProcessor from '../../model/SlowableProcessor.js'
 import JSONUtils from '../../utils/JSONUtils.js'
 
+// src/processors/flow/ForEach.js
+/**
+ * @class ForEach
+ * @extends SlowableProcessor
+ * @classdesc
+ * **a Transmissions Processor**
+ *
+ * Iterates over an array in a message and processes each item individually.
+ *
+ * ### Processor Signature
+ *
+ * #### __*Settings*__
+ * * **`ns.trn.forEach`** - Dot-notation path to the array in the message (default: 'forEach')
+ * * **`ns.trn.remove`** - Optional path to remove from each message (default: false)
+ * * **`ns.trn.delay`** - Delay between processing items in milliseconds (default: '100')
+ *
+ * #### __*Input*__
+ * * **`message`** - The message object containing an array to iterate over
+ * * **`message[forEach]`** - The array to iterate over (path specified by `ns.trn.forEach`)
+ *
+ * #### __*Output*__
+ * * **`message`** - Original message with `done=true` after all items are processed
+ * * **`message`** - Multiple messages (one per array item) with `currentItem` set to the current array item
+ *
+ * #### __*Behavior*__
+ * * Iterates over each item in the specified array
+ * * For each item, creates a new message with `currentItem` set to the current array item
+ * * Optionally removes specified paths from each message
+ * * Maintains an internal counter for each processed item
+ * * Emits the original message with `done=true` after all items are processed
+ *
+ * #### __*Side Effects*__
+ * * Modifies the input message by adding/updating properties
+ * * Creates new message objects for each array item
+ * * Logs debug and trace information during processing
+ *
+ * #### __*Tests*__
+ * * TODO: Add test coverage
+ */
 class ForEach extends SlowableProcessor {
+    /**
+     * Creates a new ForEach processor instance.
+     * @param {Object} config - Processor configuration object
+     */
     constructor(config) {
         super(config)
+        /** @private */
         this.eachCounter = 0
     }
 
+    /**
+     * Processes the message by iterating over the specified array and processing each item.
+     * @param {Object} message - The message containing the array to process
+     * @returns {Promise<void>}
+     */
     async process(message) {
         logger.debug('\nForEach.process')
 

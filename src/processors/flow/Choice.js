@@ -1,45 +1,46 @@
 // src/processors/flow/Choice.js
+// TODO implement
 
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
 import Processor from '../../model/Processor.js'
+
 /**
- * @class Escaper
+ * @class Choice
  * @extends Processor
  * @classdesc
  * **a Transmissions Processor**
  *
- * Escapes string characters
+ * Processes messages by applying conditional logic and property transformations.
  *
- * #### __*Input*__
- * * **`message.content`** - default field for input/output
- * * **`message.* `** - input/output field defined in settings
- *
- * #### __*Output*__
- * * **`message.content`** - default field for input/output
- * * **`message.* `** - input/output field defined in settings
- *
- * #### __*Behavior*__
- * * retrieve input field from message
- * * replace characters according to rules determined by format
- * * place output field in message
+ * ### Processor Signature
  *
  * #### __*Settings*__
- * * **`format`** - SPARQL, Turtle... [default : 'SPARQL']
- * * **`inputField`** - field in message to use as input [default : 'content']
- * * **`outputField`** - field in message to use as output
+ * * **`ns.trn.me`** - Identifier for the processor instance
+ * * **`ns.trn.common`** - Common value to be added to the message
+ * * **`ns.trn.something1`** - First value to be processed
+ * * **`ns.trn.something2`** - Second value to be processed
+ * * **`ns.trn.added`** - Optional string to append to something1
+ * * **`ns.trn.notavalue`** - Fallback value if not provided in config
+ *
+ * #### __*Input*__
+ * * **`message`** - The message object to be processed
+ *
+ * #### __*Output*__
+ * * **`message`** - The modified message object with added/updated fields
+ *
+ * #### __*Behavior*__
+ * * Forwards message immediately if `message.done` is true
+ * * Retrieves and processes configuration properties
+ * * Appends optional values to message fields
+ * * Handles fallback values for missing properties
  *
  * #### __*Side Effects*__
- * * none
+ * * Modifies the input message object
+ * * Logs processing information
  *
- * #### __*References*__
- * * tests : TBD
- * * docs : TBD
- *
- * #### __*TODO*__
- * * create code
- * * create tests
- * * create docs
+ * #### __*Tests*__
+ * * TODO: Add test coverage
  */
 class Choice extends Processor {
     constructor(config) {
@@ -47,9 +48,10 @@ class Choice extends Processor {
     }
 
     /**
-      * Does something with the message and emits a 'message' event with the processed message.
-      * @param {Object} message - The message object.
-      */
+     * Processes the message by applying property transformations and conditional logic.
+     * @param {Object} message - The message object to process
+     * @returns {Promise} Resolves when processing is complete
+     */
     async process(message) {
         logger.debug(`\n\nChoice.process`)
 

@@ -8,7 +8,7 @@ import Halt from '../flow/Halt.js'
 import Unfork from '../flow/Unfork.js'
 import Fork from '../flow/Fork.js'
 import Accumulate from '../flow/Accumulate.js'
-import Filter from './Filter.js'
+import Choice from './Choice.js'
 
 class FlowProcessorsFactory {
     static createProcessor(type, config) {
@@ -38,8 +38,8 @@ class FlowProcessorsFactory {
         if (type.equals(ns.trn.Accumulate)) {
             return new Accumulate(config)
         }
-        if (type.equals(ns.trn.Filter)) {
-            return new Filter(config)
+        if (type.equals(ns.trn.Choice)) {
+            return new Choice(config)
         }
         return false
     }
