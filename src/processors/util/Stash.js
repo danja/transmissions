@@ -1,17 +1,43 @@
+// src/processors/util/Stash.js
 import rdf from 'rdf-ext'
 import { fromFile, toFile } from 'rdf-utils-fs'
 import Processor from '../../model/Processor.js'
 
 /**
- * Takes the input and stashes it in the message as told by processors.ttl
+ * @class Stash
+ * @extends Processor
+ * @classdesc
+ * **a Transmissions Processor**
+ *
+ * Stashes data from the input into the message object according to configuration in `processors.ttl` (RDF).
+ *
+ * ### Processor Signature
+ *
+ * #### __*Settings*__
+ * * Configuration in `processors.ttl` determines which key/value pairs are stashed
  *
  * #### __*Input*__
- * **data** : any
- * **message** : any
+ * * **`data`** - Any data to be stashed
+ * * **`message`** - The message object to receive stashed data
+ *
  * #### __*Output*__
- * **data** : as Input
- * **message** : adds key:value determined by processors.ttl
- * @extends Processor
+ * * **`data`** - Unchanged
+ * * **`message`** - The message object with additional key/value pairs as determined by configuration
+ *
+ * #### __*Behavior*__
+ * * Reads stash instructions from configuration (RDF)
+ * * Adds or updates fields on the message object
+ * * Emits the updated message
+ *
+ * #### __*Side Effects*__
+ * * Mutates the message object in place
+ *
+ * #### __*Tests*__
+ * * (Add test references here if available)
+ *
+ * #### __*ToDo*__
+ * * Add support for advanced stash patterns
+ * * Add tests for various RDF configurations
  */
 class Stash extends Processor {
 
