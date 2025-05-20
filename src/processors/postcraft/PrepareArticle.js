@@ -1,27 +1,43 @@
-// src/processors/example-group/PrepareArticle.js
+// src/processors/postcraft/PrepareArticle.js
 
 // NOT USED
 /**
  * @class PrepareArticle
  * @extends Processor
  * @classdesc
- * **a Basic Transmissions Processor**
+ * **a Transmissions Processor**
  *
- * Provides a template for creating new processors, demonstrates use of config settings.
+ * Provides a template for creating new processors and demonstrates use of config settings and message templating.
+ *
+ * ### Processor Signature
+ *
+ * #### __*Settings*__
+ * * None specific (template settings may be added as needed)
  *
  * #### __*Input*__
- * * **`message.common`** - addressed by all instances of this PrepareArticle (optional, default undefined)
+ * * **`message.common`** - Shared value for all PrepareArticle instances (optional)
  * * **`message.something1`** - Template string (used if templateFilename is not provided)
  * * **`message.something2`** - Object with properties for template rendering (e.g., title, body)
- * * **`message.notavalue`** - Object with properties for template rendering (e.g., title, body)
+ * * **`message.notavalue`** - Object with properties for template rendering
  *
  * #### __*Output*__
  * * **`message.content`** - The rendered template content
  *
- * #### __*Processing*__
- * * Uses Nunjucks to render templates
- * * Can render from a template file or a template string
- * * Applies content from message.contentBlocks to the template
+ * #### __*Behavior*__
+ * * Demonstrates template rendering from message fields
+ * * Shows how to use config settings in a processor
+ * * Intended as a starting point for new processors
+ *
+ * #### __*Side Effects*__
+ * * None (message is transformed, not mutated in place)
+ *
+ * #### __*Tests*__
+ * * (Add test references here if available)
+ *
+ * #### __*ToDo*__
+ * * Implement actual processing logic
+ * * Add tests for template scenarios
+ */
  *
 * #### __*Side Effects*__
  *
