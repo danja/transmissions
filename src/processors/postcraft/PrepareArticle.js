@@ -38,16 +38,6 @@
  * * Implement actual processing logic
  * * Add tests for template scenarios
  */
- *
-* #### __*Side Effects*__
- *
- * #### __Tests__
- * *
- *
-  * #### __*ToDo*__
- * * Add test information here
- * * Cache templates - cache in utils?
- */
 
 import { readFile } from 'node:fs/promises'
 import { access, constants } from 'node:fs'
