@@ -11,18 +11,13 @@ export interface ProcessorConfig {
   [key: string]: any;
 }
 
-export interface ProcessorMessage {
-  app?: any;
-  content?: any;
-  filepath?: string;
-  fullPath?: string;
-  done?: boolean;
-  tags?: string;
-  workingDir?: string;
-  targetPath?: string;
-  rootDir?: string;
+/**
+ * Represents a message that can be passed between processors.
+ * This is an arbitrary non-null object that can have any properties.
+ */
+export type ProcessorMessage = {
   [key: string]: any;
-}
+};
 
 export interface Processor extends EventEmitter {
   id: string;
@@ -41,11 +36,11 @@ export interface Processor extends EventEmitter {
   getProperty(property: Term, fallback?: any): string | undefined;
   preProcess(message: ProcessorMessage): Promise<void>;
   postProcess(message: ProcessorMessage): Promise<void>;
-  process(message: ProcessorMessage): Promise<ProcessorMessage>;
+  process(message: ProcessorMessage): Promise<any>;
   receive(message: ProcessorMessage): Promise<void>;
   enqueue(message: ProcessorMessage): Promise<void>;
   executeQueue(): Promise<void>;
-  emit(event: string, message: ProcessorMessage): Promise<ProcessorMessage>;
+  emit(event: string, message: any): Promise<any>;
   getOutputs(): any[];
   getTag(): string;
 }
