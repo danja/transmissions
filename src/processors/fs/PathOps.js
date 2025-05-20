@@ -15,56 +15,101 @@ import Processor from '../../model/Processor.js'
  * **a Transmissions Processor**
  *
  * Performs path operations by combining segments from settings, supporting both path and string concatenation.
+ * Can extract values from message fields or use static strings as segments.
  *
  * ### Processor Signature
  *
  * #### __*Settings*__
- * * **`ns.trn.targetField`** - The target field in the message to set the result
- * * **`ns.trn.values`** - List of segments to combine (as RDF list)
- * * **`ns.trn.asPath`** - If true, segments are joined as a path; otherwise, concatenated as strings
+ * * **`ns.trn.targetField`** - (string, default: 'concat') The target field in the message to store the result
+ * * **`ns.trn.values`** - (RDF list) List of segments to combine
+ * * **`ns.trn.asPath`** - (boolean) If true, segments are joined as a filesystem path; otherwise concatenated as strings
  *
  * #### __*Input*__
- * * **`message`** - The message object, expected to contain fields referenced by segments
+ * * **`message`** - The message object containing fields that may be referenced by segments
+ * * **`message.*`** - Any fields referenced in segment definitions
  *
  * #### __*Output*__
- * * **`message`** - The message object with the combined string/path set at the target field
+ * * **`message[targetField]`** - The combined string or path
+ * * **`message`** - The original message with the result added to the target field
  *
  * #### __*Behavior*__
- * * Reads segment definitions from RDF dataset, config, or transmissionConfig
- * * Combines segments as a path or string based on settings
- * * Supports extracting values from message fields or static strings
- * * Logs debug information about the process and segments
+ * * Processes segments in the order they appear in the values list
+ * * Each segment can be either:
+ *   - A static string (using `:string` predicate)
+ *   - A reference to a message field (using `:field` predicate)
+ * * Handles path normalization when `asPath` is true
+ * * Automatically converts non-string field values to strings
+ * * Skips invalid or missing segments with appropriate warnings
  *
  * #### __*Side Effects*__
- * * None (message is modified in place)
+ * * Modifies the input message by adding/updating the target field
+ * * Logs debug information about the combination process
  *
- * #### __Tests__
- * * **`./trans -v stringops -m '{"fields": {"fieldB" : "TEST","fieldC":"_PASSED"}}'`**
- 
- * #### __Example Usage__
- * :asPath true ;
- * :values (:a :b :c :d) .
- * :a :string "/home/danny/sites/strandz.it/postcraft/public" .
- * :b :field "currentItem.relPath.value" .
- * :c :field "currentItem.slug.value" .
- * :d :string ".html" .
+ * #### __*Example Configuration*__
+ * ```turtle
+ * :pathOps a :Processor ;
+ *   :asPath true ;
+ *   :targetField "outputPath" ;
+ *   :values ( :segment1 :segment2 :segment3 ) .
+ *
+ * :segment1 :string "/base/path" .
+ * :segment2 :field "relative.path" .  # Extracts from message.relative.path
+ * :segment3 :string "file.txt" .
+ * ```
+ *
+ * #### __*Tests*__
+ * * `./trans -v stringops -m '{"fields": {"fieldB": "TEST", "fieldC": "_PASSED"}}'`
+ * * `npm test -- tests/unit/PathOps.spec.js`
+ *
+ * @example
+ * // Basic string concatenation
+ * const processor = new PathOps({
+ *   [ns.trn.targetField]: 'fullPath',
+ *   [ns.trn.values]: [
+ *     { [ns.trn.string]: 'base' },
+ *     { [ns.trn.field]: 'subpath' },
+ *     { [ns.trn.string]: 'file.txt' }
+ *   ]
+ * });
+ * await processor.process({ subpath: 'sub/dir' });
+ * // Result: { subpath: 'sub/dir', fullPath: 'basesub/dirfile.txt' }
+ *
+ * @example
+ * // Path joining with asPath
+ * const pathProcessor = new PathOps({
+ *   [ns.trn.targetField]: 'outputFile',
+ *   [ns.trn.asPath]: true,
+ *   [ns.trn.values]: [
+ *     { [ns.trn.string]: '/base/dir' },
+ *     { [ns.trn.field]: 'relative.path' },
+ *     { [ns.trn.string]: 'file.txt' }
+ *   ]
+ * });
+ * await pathProcessor.process({ 'relative.path': 'sub/dir' });
+ * // Result: { 'relative.path': 'sub/dir', outputFile: '/base/dir/sub/dir/file.txt' }
  */
 class PathOps extends Processor {
 
     /**
-     * Constructs a PathOps processor.
-     * @param {Object} config - Processor configuration.
+     * Creates a new PathOps processor instance.
+     * @param {Object} config - Processor configuration
+     * @param {string} [config.targetField='concat'] - Field to store the result
+     * @param {Array} [config.values=[]] - List of segments to combine
+     * @param {boolean} [config.asPath=false] - Whether to join as a filesystem path
      */
     constructor(config) {
         super(config)
+        /** @private */
         this.config = undefined
+        /** @private */
         this.settingsNode = undefined
     }
 
     /**
-     * Processes the message by combining segments as a string or path and sets the result in the target field.
-     * @param {Object} message - The message object to process.
-     * @returns {Promise<Object|undefined>} The processed message, or undefined if already done.
+     * Processes the message by combining segments as specified in the configuration.
+     * @param {Object} message - The message object to process
+     * @returns {Promise<Object|undefined>} The processed message, or undefined if processing should stop
+     * @throws {Error} If required configuration is missing
      */
     async process(message) {
         logger.debug(`PathOps.process`)
@@ -100,12 +145,13 @@ class PathOps extends Processor {
 
 
     /**
-     * Combines segments from the dataset as a string or path, extracting values from message or static strings.
-     * @param {Object} dataset - The RDF dataset or config object.
-     * @param {Object} message - The message object.
-     * @param {Array} segments - The list of segment terms to combine.
-     * @param {boolean} asPath - Whether to join segments as a path.
-     * @returns {string} The combined string or path.
+     * Combines segments from the dataset as a string or path.
+     * @param {Object} dataset - The RDF dataset containing segment definitions
+     * @param {Object} message - The message object containing field values
+     * @param {Array} segments - The list of segment terms to process
+     * @param {boolean} asPath - Whether to join segments as a filesystem path
+     * @returns {string} The combined result
+     * @private
      */
     combineSegments(dataset, message, segments, asPath) {
         logger.debug(`PathOps.combineSegments,
