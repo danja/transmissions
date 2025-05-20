@@ -82,7 +82,7 @@ class FileWriter extends Processor {
         logger.trace(`FileWriter.process, count = ${message.eachCount}`)
         if (message.done) {
             logger.trace(`\n\nFileWriter.process, message.done = ${message.done} SKIPPING!!`)
-            return
+            return this.emit('message', message)
         }
 
         if (message.dump) {
@@ -134,24 +134,23 @@ class FileWriter extends Processor {
      * @private
      */
     async doWrite(filePath, content, message) {
-        logger.trace(`FileWriter.doWrite, file = ${f}`)
+        logger.trace(`FileWriter.doWrite, file = ${filePath}`)
         logger.trace(`typeof content = ${typeof content}`)
-        if (typeof content != 'string') {
-            content = JSON.stringify(content)
+        if (typeof content !== 'string') {
+            content = JSON.stringify(content, null, 2) // Pretty print JSON
         }
-        logger.log(' - FileWriter writing : ' + f)
+        logger.log(` - FileWriter writing: ${filePath}`)
 
         /*
-                if (f.includes(`[object Object]`)) {
-                    logger.reveal(message)
-
-                }
+        if (filePath.includes(`[object Object]`)) {
+            logger.reveal(message)
+        }
         */
+        
         logger.trace(`content = ${content}`)
-        // maybe stat first, check validity - the intended target dir was blocked by a of the same name
-        await writeFile(f, content)
-        //writeFileSync(f, content)
-        logger.trace(' - FileWriter written : ' + f)
+        // maybe stat first, check validity - the intended target dir was blocked by a file of the same name
+        await writeFile(filePath, content)
+        logger.trace(` - FileWriter written: ${filePath}`)
     }
 
     /**
