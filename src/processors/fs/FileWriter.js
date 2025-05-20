@@ -8,34 +8,74 @@ import logger from '../../utils/Logger.js'
 import Processor from '../../model/Processor.js'
 import JSONUtils from '../../utils/JSONUtils.js'
 import PathResolver from '../../utils/PathResolver.js'
+
+// src/processors/fs/FileWriter.js
 /**
- * FileWriter class that extends Processor
- * Write data to a file.
+ * @class FileWriter
+ * @extends Processor
+ * @classdesc
+ * **a Transmissions Processor**
  *
- * First checks `message.targetFilepath` and if not set, uses the value from `processors.ttl` using `settings` for this processor instance.
+ * Writes data to files on the local filesystem with automatic directory creation.
+ * Supports writing both string and JSON content to files.
+ *
+ * ### Processor Signature
+ *
+ * #### __*Settings*__
+ * * **`ns.trn.destinationFile`** - The target file path (relative to `applicationRootDir` or absolute)
+ * * **`ns.trn.contentField`** - Field in the message containing the content to write (default: 'content')
  *
  * #### __*Input*__
- * * message.filepath
- * * message.content
- * #### __*Output*__
- * * as Input
+ * * **`message`** - The message object
+ * * **`message.filepath`** - Alternative to `ns.trn.destinationFile`
+ * * **`message.content`** - The content to write (if not using `ns.trn.contentField`)
+ * * **`message.dump`** - If true, saves the entire message as JSON
+ * * **`message.workingDir`** - Working directory for dump files
  *
- * if message.loadContext is set, that is used as a name in the message for the file content
+ * #### __*Output*__
+ * * **`message`** - The input message, unmodified
+ *
+ * #### __*Behavior*__
+ * * Automatically creates parent directories if they don't exist
+ * * Converts non-string content to JSON when needed
+ * * Handles both direct content writing and full message dumps
+ * * Uses `PathResolver` for flexible file path resolution
+ * * Logs detailed debug information about write operations
+ *
+ * #### __*Side Effects*__
+ * * Creates directories and files on the filesystem
+ * * Overwrites existing files without warning
+ *
+ * @example
+ * // Basic usage with content field
+ * const writer = new FileWriter({});
+ * await writer.process({
+ *   content: 'Hello, world!',
+ *   filepath: '/path/to/output.txt'
+ * });
+ *
+ * // Using configuration for content field
+ * const configuredWriter = new FileWriter({
+ *   [ns.trn.contentField]: 'data.payload',
+ *   [ns.trn.destinationFile]: 'output/data.json'
+ * });
  */
 class FileWriter extends Processor {
 
     /**
-     * Constructs a new FileWriter object.
-     * @param {Object} config - The configuration object for the FileWriter.
+     * Creates a new FileWriter processor instance.
+     * @param {Object} config - Processor configuration object
      */
     constructor(config) {
         super(config)
-        this.defaultFilePath = 'output/output.md'
+        /** @private */
+        this.defaultFilePath = 'output/output.md' // Default output path if none specified
     }
 
     /**
-     * Executes the write operation.
-     * @param {Object} message - The execution message.
+     * Processes the message and writes content to a file.
+     * @param {Object} message - The message containing content and file information
+     * @returns {Promise<boolean>} Resolves when the write operation is complete
      */
     async process(message) {
         logger.trace(`\n\nFileWriter.process, message.done = ${message.done}`)
@@ -86,7 +126,14 @@ class FileWriter extends Processor {
         return this.emit('message', message)
     }
 
-    async doWrite(f, content, message) {
+    /**
+     * Internal method to perform the actual file write operation.
+     * @param {string} filePath - The path to write the file to
+     * @param {*} content - The content to write (will be stringified if not a string)
+     * @param {Object} message - The original message (for logging)
+     * @private
+     */
+    async doWrite(filePath, content, message) {
         logger.trace(`FileWriter.doWrite, file = ${f}`)
         logger.trace(`typeof content = ${typeof content}`)
         if (typeof content != 'string') {
@@ -107,6 +154,11 @@ class FileWriter extends Processor {
         logger.trace(' - FileWriter written : ' + f)
     }
 
+    /**
+     * Creates directories recursively if they don't exist.
+     * @param {string} dir - The directory path to create
+     * @private
+     */
     mkdirs(dir) {
         logger.trace(`FileWriter.mkdirs, dir = ${dir}`)
         try {
