@@ -1,8 +1,46 @@
+// src/processors/rdf/RDFConfig.js
+
 import rdf from 'rdf-ext'
 import grapoi from 'grapoi'
 import ns from '../../utils/ns.js'
 import logger from '../../utils/Logger.js'
 import Processor from '../../model/Processor.js'
+
+/**
+ * @class RDFConfig
+ * @extends Processor
+ * @classdesc
+ * **A Transmissions Processor**
+ *
+ * Extracts and maps configuration data from RDF datasets into structured message fields for further processing.
+ *
+ * ### Processor Signature
+ *
+ * #### __*Settings*__
+ * * None specific (may use config for mapping rules or vocabularies)
+ *
+ * #### __*Input*__
+ * * **`message.dataset`** - The RDF dataset to extract configuration from (required)
+ *
+ * #### __*Output*__
+ * * **`message`** - The message object with extracted configuration mappings
+ *
+ * #### __*Behavior*__
+ * * Parses RDF dataset for configuration groups and property mappings
+ * * Maps RDF properties to message fields using ConfigGroup logic
+ * * Throws error if no dataset is provided
+ * * Emits enriched message for downstream processors
+ *
+ * #### __*Side Effects*__
+ * * None (operates in-memory)
+ *
+ * #### __*Tests*__
+ * * (Add test references here if available)
+ *
+ * #### __*ToDo*__
+ * * Add support for custom mapping vocabularies
+ * * Improve error handling and validation
+ */
 
 class RDFConfig extends Processor {
   constructor(config) {
