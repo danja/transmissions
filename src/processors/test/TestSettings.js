@@ -1,14 +1,19 @@
-// src/processors/example-group/TestSettings.js
+// src/processors/test/TestSettings.js
 /**
  * @class TestSettings
  * @extends Processor
  * @classdesc
  * **a Basic Transmissions Processor**
  *
- * Provides a template for creating new processors, demonstrates use of config settings.
+ * Provides a template for creating new processors and demonstrates the use of config settings and template rendering with Nunjucks.
+ *
+ * ### Processor Signature
+ *
+ * #### __*Settings*__
+ * * None specific; inherits from base Processor
  *
  * #### __*Input*__
- * * **`message.common`** - addressed by all instances of this TestSettings (optional, default undefined)
+ * * **`message.common`** (optional) - Value addressed by all instances
  * * **`message.something1`** - Template string (used if templateFilename is not provided)
  * * **`message.something2`** - Object with properties for template rendering (e.g., title, body)
  * * **`message.notavalue`** - Object with properties for template rendering (e.g., title, body)
@@ -19,14 +24,14 @@
  * #### __*Behavior*__
  * * Uses Nunjucks to render templates
  * * Can render from a template file or a template string
- * * Applies content from message.contentBlocks to the template
+ * * Applies content from `message.contentBlocks` to the template
  *
- * #### __Tests__
- * *
+ * #### __*Side Effects*__
+ * * None (template rendering is in-memory)
  *
-  * #### __*ToDo*__
- * * Add test information here
- * * Cache templates - cache in utils?
+ * #### __*ToDo*__
+ * Cache templates for efficiency (possibly in utils)
+ * Add more test coverage and documentation
  */
 
 import { readFile } from 'node:fs/promises'
