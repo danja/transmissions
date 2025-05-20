@@ -12,7 +12,7 @@ class DatasetReader extends Processor {
 
     async process(message) {
         try {
-            const datasetFile = this.getPropertyFromMyConfig(ns.trn.datasetFile)
+            const datasetFile = super.getProperty(ns.trn.datasetFile)
             const datasetPath = path.join(message.rootDir, datasetFile)
 
             logger.debug(`Reading dataset from ${datasetPath}`)

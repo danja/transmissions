@@ -1,9 +1,50 @@
+// src/processors/rdf/ConfigMap.js
+
 import rdf from 'rdf-ext'
 import grapoi from 'grapoi'
 import path from 'path'
 import ns from '../../utils/ns.js'
 import logger from '../../utils/Logger.js'
 import Processor from '../../model/Processor.js'
+
+/**
+ * @class ConfigMap
+ * @extends Processor
+ * @classdesc
+ * **A Transmissions Processor**
+ *
+ * Maps RDF configuration data into message fields for downstream processing.
+ *
+ * ### Processor Signature
+ *
+ * #### __*Settings*__
+ * * **`rdfConfigPath`** - Path to the RDF configuration file (optional)
+ * * **`baseIRI`** - Base IRI for resolving relative paths (optional)
+ *
+ * #### __*Input*__
+ * * **`message.dataset`** - The RDF dataset to map from (required)
+ * * **`message.targetPath`** - The target path for mapping (optional)
+ * * **`message.rootDir`** - Root directory for resolving paths (optional)
+ *
+ * #### __*Output*__
+ * * **`message`** - The message object with mapped fields from RDF config
+ *
+ * #### __*Behavior*__
+ * * Loads and parses RDF configuration
+ * * Maps RDF properties to message fields
+ * * Logs debug information about mapping process
+ * * Emits enriched message for further processing
+ *
+ * #### __*Side Effects*__
+ * * File system access (if loading RDF config from file)
+ *
+ * #### __*Tests*__
+ * * (Add test references here if available)
+ *
+ * #### __*ToDo*__
+ * * Add error handling for missing/invalid RDF
+ * * Add more mapping strategies for complex RDF structures
+ */
 
 class ConfigMap extends Processor {
   constructor(config) {
