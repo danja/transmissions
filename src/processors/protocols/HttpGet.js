@@ -1,4 +1,6 @@
-// src/processors/http/HttpGet.js
+// src/processors/protocols/HttpGet.js
+
+// TODO - remove 
 /**
  * @class HttpGet
  * @extends Processor
@@ -9,20 +11,33 @@
  *
  * ### Processor Signature
  *
- * #### ***Input***
- * ***`url`** - The HTTP URL to fetch content from
- * ***`message`** - A message object that will be enriched with response data
+ * #### __*Settings*__
+ * * None specific (may use config for headers, timeouts, etc.)
  *
- * #### ***Output***
- * ***`message`** - Original message with added sourceURL property
- * ***`content`** - The retrieved content from the URL
+ * #### __*Input*__
+ * * **`url`** - The HTTP URL to fetch content from
+ * * **`message`** - Message object to be enriched with response data
  *
- * #### ***Behavior***
+ * #### __*Output*__
+ * * **`message`** - Original message with added `sourceURL` property
+ * * **`content`** - The retrieved content from the URL
+ *
+ * #### __*Behavior*__
  * * Fetches content from specified HTTP URL
  * * Adds source URL to message object
  * * Handles special '~~done~~' URL marker
  * * Emits retrieved content along with enriched message
  * * Logs detailed debug information during operation
+ *
+ * #### __*Side Effects*__
+ * * Network requests (HTTP GET)
+ *
+ * #### __*Tests*__
+ * * (Add test references here if available)
+ *
+ * #### __*ToDo*__
+ * * Add support for custom headers and timeouts
+ * * Add error handling tests
  */
 
 import axios from 'axios'
