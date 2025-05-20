@@ -4,7 +4,43 @@ import ns from '../../utils/ns.js'
 
 import Processor from '../../model/Processor.js'
 
-// Hacky placeholder!!
+// src/processors/postcraft/MakeEntry.js
+
+/**
+ * @class MakeEntry
+ * @extends Processor
+ * @classdesc
+ * **a Transmissions Processor**
+ *
+ * Generates entry metadata and paths for a given message, extracting dates and computing relative/slug paths for post-processing workflows.
+ *
+ * ### Processor Signature
+ *
+ * #### __*Settings*__
+ * * None specific (uses message fields and config for logic)
+ *
+ * #### __*Input*__
+ * * **`message`** - The message object containing file and path info
+ *
+ * #### __*Output*__
+ * * **`message`** - The message object with computed entry metadata (e.g., rel, slug, dates)
+ *
+ * #### __*Behavior*__
+ * * Extracts dates from the message
+ * * Computes relative and slug paths for the entry
+ * * Emits the updated message
+ * * Logs key actions for debugging
+ *
+ * #### __*Side Effects*__
+ * * Mutates the message object in place
+ *
+ * #### __*Tests*__
+ * * (Add test references here if available)
+ *
+ * #### __*ToDo*__
+ * * Refactor to remove hacky logic
+ * * Add tests for various path/date scenarios
+ */
 
 class MakeEntry extends Processor {
 
