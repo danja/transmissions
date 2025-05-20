@@ -6,18 +6,42 @@ import logger from '../../utils/Logger.js'
 import Processor from '../../model/Processor.js' // maybe more specific
 
 
+// src/processors/system/EnvLoader.js
 /**
- * FileReader class that extends xxxxxProcessor.
- * DESCRIPTION
+ * @class EnvLoader
+ * @extends Processor
+ * @classdesc
+ * **a Transmissions Processor**
+ *
+ * Loads environment variables from `.env` files into `process.env` using the `dotenv` package, making them available to the application and downstream processors.
+ *
+ * ### Processor Signature
+ *
+ * #### __*Settings*__
+ * * None specific; relies on standard `.env` configuration and inheritance from `Processor`.
+ *
  * #### __*Input*__
- * **message.INPUT**
+ * * **`message`** - The message object to be processed (any shape, not modified by this processor).
+ *
  * #### __*Output*__
- * **message.OUTPUT**
+ * * **`message`** - Unmodified message, but with `this.config.whiteboard.env` set to the current `process.env`.
+ *
+ * #### __*Behavior*__
+ * * Loads environment variables using `dotenv` (via import).
+ * * Attaches the full `process.env` to `this.config.whiteboard.env` for downstream use.
+ * * Emits the (unmodified) message event.
+ *
+ * #### __*Side Effects*__
+ * * None (modifies in-memory config only).
+ *
+ * #### __*ToDo*__
+ * Consider supporting custom `.env` file locations via settings.
+ * Add validation or logging for loaded environment variables as needed.
  *
  * ### References
  * * https://dotenvx.com/
  * * https://github.com/motdotla/dotenv
-*/
+ */
 class EnvLoader extends Processor {
 
     /**
