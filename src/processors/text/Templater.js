@@ -13,27 +13,41 @@ import PathResolver from '../../utils/PathResolver.js'
  * @classdesc
  * **a Transmissions Processor**
  *
- * Provides templating functionality using Nunjucks.
+ * Provides Nunjucks-based templating functionality, supporting both file-based and string templates.
+ *
+ * ### Service Signature
+ *
+ * #### __*Settings*__
+ * * **`ns.trn.templateFilename`** - Path to the template file (optional if template is provided in message)
+ * * **`ns.trn.dataField`** - (optional) Field containing template data (default: 'contentBlocks')
  *
  * #### __*Input*__
- * * **`message.templateFilename`** - Path to the template file (optional)
- * * **`message.template`** - Template string (used if templateFilename is not provided)
- * * **`message.contentBlocks`** - Object with properties for template rendering (e.g., title, body)
+ * * **`message.templateFilename`** - Overrides the configured template file path
+ * * **`message.template`** - Template string (used if no templateFilename is provided)
+ * * **`message[dataField]`** - Data object for template rendering (default field: 'contentBlocks')
+ * * **`message.applicationRootDir`** - (optional) Root directory for template path resolution
  *
  * #### __*Output*__
  * * **`message.content`** - The rendered template content
  *
  * #### __*Behavior*__
- * * Uses Nunjucks to render templates
- * * Can render from a template file or a template string
- * * Applies content from message.contentBlocks to the template
+ * * Renders templates using Nunjucks templating engine
+ * * Supports both file-based and string templates
+ * * Auto-escapes content by default
+ * * Resolves template paths relative to application root
+ * * Configures Nunjucks to use the template's directory for includes/extends
  *
- * #### __Tests__
- * *
+ * #### __*Side Effects*__
+ * * Modifies the message object by setting the rendered content
+ * * Configures Nunjucks environment for template directory
  *
-  * #### __TODO__
- * * Add test information here
- * * Cache templates - cache in utils?
+ * #### __*Tests*__
+ * * TODO: Add test information
+ *
+ * #### __*ToDo*__
+ * * Implement template caching
+ * * Add support for custom Nunjucks filters and extensions
+ * * Add test cases for various template scenarios
  */
 class Templater extends Processor {
     /**

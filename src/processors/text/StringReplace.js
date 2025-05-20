@@ -5,24 +5,41 @@
  * @classdesc
  * **a Transmissions Processor**
  *
- * Replaces all occurrences of a specified substring in the content with a replacement string.
+ * Performs string replacement operations on message content or specified fields.
  *
- * ### Signature
+ * ### Service Signature
+ *
+ * #### __*Settings*__
+ * * **`ns.trn.match`** - The substring to be replaced (can be overridden by message.match)
+ * * **`ns.trn.replace`** - The replacement string (can be overridden by message.replace)
+ * * **`ns.trn.inputField`** - (optional) Field containing the input string (defaults to 'content')
+ * * **`ns.trn.outputField`** - (optional) Field to store the result (defaults to 'content')
  *
  * #### __*Input*__
- * * **`message.content`** - The original string content
- * * **`message.match`** - The substring to be replaced
- * * **`message.replace`** - The replacement string
+ * * **`message.content`** - The input string if no inputField is specified
+ * * **`message.match`** - (optional) Overrides the configured match string
+ * * **`message.replace`** - (optional) Overrides the configured replacement string
+ * * **`message[inputField]`** - The input string if inputField is specified
  *
  * #### __*Output*__
- * * **`message.content`** - The modified string with replacements
+ * * **`message[outputField]`** - The modified string with all replacements made
+ * * **`message.content`** - The modified string if outputField is not specified
  *
  * #### __*Behavior*__
- * * Replaces every exact occurrence of `message.match` in `message.content` with `message.replace`
- * * If `message.match` is not found, the content remains unchanged
+ * * Replaces all occurrences of the match string with the replacement string
+ * * If no match is found, the input remains unchanged
+ * * Supports both global and instance-level configuration
+ * * Falls back to message.content if no input field is specified
  *
- * #### __Tests__
+ * #### __*Side Effects*__
+ * * Modifies the message object by adding/updating the output field
+ *
+ * #### __*Tests*__
  * * TODO: Add test information
+ *
+ * #### __*ToDo*__
+ * * Add test cases for edge cases
+ * * Add support for regular expressions
  */
 
 import ns from '../../utils/ns.js'
@@ -40,11 +57,11 @@ class StringReplace extends Processor {
      */
     async process(message) {
         // logger.setLogLevel('debug')
-        const inputField = await this.getProperty(ns.trn.inputField)
-        const outputField = await this.getProperty(ns.trn.outputField)
+        const inputField = super.getProperty(ns.trn.inputField)
+        const outputField = super.getProperty(ns.trn.outputField)
 
-        var match = message.match ? message.match : await this.getProperty(ns.trn.match)
-        var replace = message.replace ? message.replace : await this.getProperty(ns.trn.replace)
+        var match = message.match ? message.match : super.getProperty(ns.trn.match)
+        var replace = message.replace ? message.replace : super.getProperty(ns.trn.replace)
 
         var input = message.input ? message.input : message[inputField]
         if (!input) {

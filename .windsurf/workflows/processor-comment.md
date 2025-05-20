@@ -2,7 +2,7 @@
 description: Creates a custom comments block for Transmissions Processors
 ---
 
-Do not modify program code. Generate comments for the processor identified. These should follow jsdoc conventions and be concise, appearing only when the functionality isn't obvious from the code. Favour purpose description over implementation details.
+Do not modify program code. Generate comments for the processor identified. These should follow jsdoc conventions and be concise, appearing only when the functionality isn't obvious from the code. Beware of syntax errors with escaped slashes. Favour purpose description over implementation details.
 At the top of the file give the file name and relative path, then following the imports, immediately before the class definition, include a signature following the form of this example:
 
 // src/services/fs/FileCopy.js
