@@ -1,3 +1,5 @@
+// src/processors/sparql/SPARQLUpdate.js
+
 import axios from 'axios'
 import nunjucks from 'nunjucks'
 import crypto from 'crypto'
@@ -8,6 +10,48 @@ import RDFUtils from '../../utils/RDFUtils.js'
 import SessionEnvironment from './SessionEnvironment.js'
 // TODO unhack
 import Escaper from '../text/Escaper.js'
+
+/**
+ * @class SPARQLUpdate
+ * @extends SlowableProcessor
+ * @classdesc
+ * **A Transmissions Processor**
+ *
+ * Executes SPARQL UPDATE queries (INSERT/DELETE) against a configured endpoint, optionally templating queries and supporting slow/batch operations.
+ *
+ * ### Processor Signature
+ *
+ * #### __*Settings*__
+ * * **`ns.trn.sparqlEndpoint`** - The SPARQL endpoint URL (optional, can be resolved from environment)
+ * * **`ns.trn.updateTemplate`** - Nunjucks template for update query construction (optional)
+ * * **`ns.trn.batchSize`** - Number of updates to send per batch (optional)
+ *
+ * #### __*Input*__
+ * * **`message.update`** - The SPARQL UPDATE query or template data
+ * * **`message.rootDir`** - The root directory for resolving endpoint configs (optional)
+ *
+ * #### __*Output*__
+ * * **`message.result`** - The result/status of the update operation
+ * * **`message`** - The original message, enriched with update results
+ *
+ * #### __*Behavior*__
+ * * Loads SPARQL endpoint configuration if not already set
+ * * Renders update query with Nunjucks if template provided
+ * * Executes UPDATE query via HTTP
+ * * Supports batching and slow-mode for large operations
+ * * Logs and emits enriched message
+ *
+ * #### __*Side Effects*__
+ * * Network requests to SPARQL endpoint
+ *
+ * #### __*Tests*__
+ * * (Add test references here if available)
+ *
+ * #### __*ToDo*__
+ * * Add error handling for endpoint/network failures
+ * * Improve batching and slow-mode logic
+ * * Remove 'unhack' code and refactor Escaper usage
+ */
 
 class SPARQLUpdate extends SlowableProcessor {
     constructor(config) {
