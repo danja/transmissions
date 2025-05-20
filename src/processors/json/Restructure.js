@@ -1,3 +1,4 @@
+// src/processors/json/Restructure.js
 // TODO extract reusable bits to 'src/utils'
 import JsonRestructurer from './JsonRestructurer.js'
 import GrapoiHelpers from '../../utils/GrapoiHelpers.js'
@@ -7,6 +8,42 @@ import logger from '../../utils/Logger.js'
 import Processor from '../../model/Processor.js'
 import ns from '../../utils/ns.js'
 import rdf from 'rdf-ext'
+
+/**
+ * @class Restructure
+ * @extends Processor
+ * @classdesc
+ * **a Transmissions Processor**
+ *
+ * Performs restructuring of JSON messages by renaming and removing fields according to configuration or RDF-based mappings.
+ *
+ * ### Processor Signature
+ *
+ * #### __*Settings*__
+ * * **`ns.trn.rename`** - Array of rename mapping objects or RDF terms
+ * * **`ns.trn.remove`** - Array of paths to remove from the message
+ *
+ * #### __*Input*__
+ * * **`message`** - The JSON object to be restructured
+ *
+ * #### __*Output*__
+ * * **`message`** - The restructured JSON object with fields renamed and/or removed
+ *
+ * #### __*Behavior*__
+ * * Renames fields in the message according to mappings (from config or RDF)
+ * * Removes specified fields/paths from the message
+ * * Logs detailed information about restructuring actions
+ *
+ * #### __*Side Effects*__
+ * * None
+ *
+ * #### __*Tests*__
+ * * (Add test references here if available)
+ *
+ * #### __*ToDo*__
+ * * Extract reusable bits to 'src/utils'
+ * * Add more robust error handling and test coverage
+ */
 
 class Restructure extends Processor {
     constructor(config) {

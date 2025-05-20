@@ -27,6 +27,15 @@
 * * Creates separate message for each value in payload
 * * Clones messages to prevent cross-contamination
 * * Signals completion with done flag
+*
+* #### ***Side Effects***
+* * None
+*
+* #### ***Tests***
+* * **`npm test -- tests/unit/json-walker-test.spec.js`**
+*
+* #### ***ToDo***
+* * (Add any planned improvements or refactors here)
 */
 
 import path from 'path'

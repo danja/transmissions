@@ -4,6 +4,40 @@
 
 import logger from '../../utils/Logger.js'
 
+// src/processors/json/JsonRestructurer.js
+/**
+ * @class JsonRestructurer
+ * @classdesc
+ * **Helper for Restructure.js**
+ *
+ * Maps and restructures JSON objects according to a set of mapping rules.
+ *
+ * ### Processor Signature
+ *
+ * #### __*Settings*__
+ * * **`mappings`** - Array of mapping rules specifying how to restructure the JSON object
+ *
+ * #### __*Input*__
+ * * **`obj`** - JSON object to be restructured
+ * * **`path`** - Dot-separated path string for value lookup
+ *
+ * #### __*Output*__
+ * * **`obj`** - JSON object with fields potentially restructured or values extracted
+ *
+ * #### __*Behavior*__
+ * * Uses mapping rules to extract and restructure fields from the input object
+ * * Provides utility to get values by path
+ *
+ * #### __*Side Effects*__
+ * * None
+ *
+ * #### __*Tests*__
+ * * **`npm test -- tests/unit/json-restructurer-test.spec.js`**
+ *
+ * #### __*ToDo*__
+ * * Move to utils/JSONUtils.js
+ */
+
 class JsonRestructurer {
     constructor(mappings) {
         if (!mappings?.mappings || !Array.isArray(mappings.mappings)) {

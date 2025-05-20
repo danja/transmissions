@@ -2,6 +2,43 @@ import logger from '../../utils/Logger.js'
 import Processor from '../../model/Processor.js'
 import ns from '../../utils/ns.js'
 
+// src/processors/json/Blanker.js
+/**
+ * @class Blanker
+ * @extends Processor
+ * @classdesc
+ * **a Transmissions Processor**
+ *
+ * Blanks (removes) values from specified fields in a JSON message, or from all fields if no pointer is provided.
+ *
+ * ### Processor Signature
+ *
+ * #### __*Settings*__
+ * * **`ns.trn.pointer`** (optional) - Dot-separated path to the field(s) to blank
+ * * **`ns.trn.preserve`** (optional) - Dot-separated path to a field or subtree to preserve
+ * * **`blankValue`** (optional) - Value to use as the blanked value (default: empty string)
+ *
+ * #### __*Input*__
+ * * **`message`** - JSON object to be processed
+ *
+ * #### __*Output*__
+ * * **`message`** - JSON object with specified fields blanked
+ *
+ * #### __*Behavior*__
+ * * Blanks the value at the pointer path, or all values if no pointer is set
+ * * Preserves the value at the preserve path, if set
+ * * Recursively traverses objects and arrays
+ *
+ * #### __*Side Effects*__
+ * * None
+ *
+ * #### __*Tests*__
+ * * **`npm test -- tests/unit/blanker-test.spec.js`**
+ *
+ * #### __*ToDo*__
+ * * Add support for more complex preserve rules
+ */
+
 class Blanker extends Processor {
     constructor(config) {
         super(config)
@@ -11,8 +48,8 @@ class Blanker extends Processor {
     }
 
     async process(message) {
-        const pointer = this.getPropertyFromMyConfig(ns.trn.pointer)
-        const preserve = this.getPropertyFromMyConfig(ns.trn.preserve)
+        const pointer = super.getProperty(ns.trn.pointer)
+        const preserve = super.getProperty(ns.trn.preserve)
 
         var preservePath = preserve.value ? preserve.value : 'nonono'
 
