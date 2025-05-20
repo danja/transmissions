@@ -1,7 +1,46 @@
+// src/processors/markup/MetadataExtractor.js
 import * as cheerio from 'cheerio'
 
 import logger from '../../utils/Logger.js'
 import Processor from '../../model/Processor.js'
+
+/**
+ * @class MetadataExtractor
+ * @extends Processor
+ * @classdesc
+ * **a Transmissions Processor**
+ *
+ * Extracts metadata from file content (e.g., emails), converts it to JSON, and emits a new message with the processed content and a new filename.
+ *
+ * ### Processor Signature
+ *
+ * #### __*Settings*__
+ * * None specific (uses message fields and config for processing logic)
+ *
+ * #### __*Input*__
+ * * **`data.filename`** - The original filename
+ * * **`data.content`** - The file content to extract metadata from
+ *
+ * #### __*Output*__
+ * * **`output.filename`** - The target filename, typically with a new extension
+ * * **`output.content`** - The extracted metadata as a JSON string
+ *
+ * #### __*Behavior*__
+ * * Reads file content and filename from the input
+ * * Extracts metadata and converts it to JSON
+ * * Emits a new message with updated filename and JSON content
+ * * Logs key actions for debugging
+ *
+ * #### __*Side Effects*__
+ * * None (message is transformed, not mutated in place)
+ *
+ * #### __*Tests*__
+ * * (Add test references here if available)
+ *
+ * #### __*ToDo*__
+ * * Add support for more metadata formats
+ * * Add tests for various file types and edge cases
+ */
 
 class MetadataExtractor extends Processor {
 
