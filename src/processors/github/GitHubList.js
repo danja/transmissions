@@ -1,9 +1,64 @@
+// src/processors/github/GitHubList.js
+
 import { Octokit } from '@octokit/rest'
 import dotenv from 'dotenv'
 import Processor from '../../model/Processor.js'
 import logger from '../../../../transmissions/src/utils/Logger.js'
 
 dotenv.config({ path: './trans-apps/applications/git-apps/.env' })
+
+/**
+ * @class GitHubList
+ * @extends Processor
+ * @classdesc
+ * **a Transmissions Processor**
+ *
+ * Fetches a list of GitHub repositories for a specified user using the GitHub API.
+ * This implementation includes pagination to fetch all available repositories.
+ *
+ * ### Processor Signature
+ *
+ * #### __*Environment Variables*__
+ * - **`GITHUB_TOKEN`** - Required GitHub Personal Access Token with `public_repo` scope
+ *
+ * #### __*Input*__
+ * - **`message`** - The message object
+ * - **`message.payload.github.username`** - GitHub username to fetch repositories for (required)
+ *
+ * #### __*Output*__
+ * - **`message.payload.github.repositories`** - Array of repository names for the specified user
+ *
+ * #### __*Behavior*__
+ * - Fetches all public repositories for the specified GitHub user using pagination
+ * - Handles GitHub API rate limiting and authentication
+ * - Returns repository names in the format: `owner/repo`
+ * - Automatically handles pagination to fetch all available repositories
+ *
+ * #### __*Side Effects*__
+ * - Makes HTTP requests to the GitHub API
+ * - Requires a valid GitHub token with appropriate permissions
+ *
+ * @example
+ * // Basic usage
+ * const processor = new GitHubList()
+ * await processor.process({
+ *   payload: {
+ *     github: {
+ *       username: 'octocat'  // GitHub username
+ *     }
+ *   }
+ * })
+ * // Result: { payload: { github: { username: 'octocat', repositories: ['octocat/Hello-World', ...] } } }
+ *
+ * @example
+ * // With error handling
+ * try {
+ *   await processor.process({ payload: { github: { username: 'nonexistent-user' } } });
+ * } catch (error) {
+ *   console.error(error.message)
+ *   console.error(error.details) // Additional error details
+ * }
+ */
 
 class GitHubList extends Processor {
     constructor(config) {
