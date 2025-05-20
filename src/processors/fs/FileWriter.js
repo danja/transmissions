@@ -75,14 +75,14 @@ class FileWriter extends Processor {
     /**
      * Processes the message and writes content to a file.
      * @param {Object} message - The message containing content and file information
-     * @returns {Promise<boolean>} Resolves when the write operation is complete
+     * @returns {Promise<boolean>} Resolves to true when the write operation is complete
      */
     async process(message) {
         logger.trace(`\n\nFileWriter.process, message.done = ${message.done}`)
         logger.trace(`FileWriter.process, count = ${message.eachCount}`)
         if (message.done) {
             logger.trace(`\n\nFileWriter.process, message.done = ${message.done} SKIPPING!!`)
-            return this.emit('message', message)
+            return Promise.resolve(this.emit('message', message))
         }
 
         if (message.dump) {
@@ -98,7 +98,8 @@ class FileWriter extends Processor {
                     logger.reveal(message)
                 }
             })
-            return this.doWrite(f, content, message)
+            await this.doWrite(f, content, message)
+            return true
         }
 
 
@@ -123,7 +124,7 @@ class FileWriter extends Processor {
 
         this.mkdirs(dirName)
         await this.doWrite(filePath, content, message)
-        return this.emit('message', message)
+        return true
     }
 
     /**

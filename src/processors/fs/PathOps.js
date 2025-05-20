@@ -99,10 +99,6 @@ class PathOps extends Processor {
      */
     constructor(config) {
         super(config)
-        /** @private */
-        this.config = undefined
-        /** @private */
-        this.settingsNode = undefined
     }
 
     /**

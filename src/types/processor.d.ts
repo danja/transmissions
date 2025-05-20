@@ -31,7 +31,7 @@ export interface IProcessor {
     message?: ProcessorMessage;
 
     getValues(property: Term, fallback?: any): string[];
-    getProperty(property: Term, fallback?: any): string | undefined;
+    getProperty(property: Term, fallback?: any): string | string[] | any;
     preProcess(message: ProcessorMessage): Promise<void>;
     postProcess(message: ProcessorMessage): Promise<void>;
     process(message: ProcessorMessage): Promise<void>;
