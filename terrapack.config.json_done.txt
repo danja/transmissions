@@ -1,16 +1,16 @@
 {
   "files": {
     "../../../../terrapack.config.json": {
-      "content": "this is src/applications/terrapack/data/input/subdir/subby.md\n",
+      "content": "{\n    \"output\": {\n        \"filePath\": \"./test-terrapack.md\",\n        \"headerText\": \"terrapack test\"\n    },\n    \"fileFilter\": {\n        \"include\": [\n            \"**/*.md\"\n        ],\n        \"exclude\": [\n            \"**/*.log\",\n            \"**/node_modules\",\n            \"**/test\",\n            \"**/docs\",\n            \"**/*terrapack.md\",\n            \"**/*repomix.md\"\n        ]\n    }\n}",
       "type": ".json",
-      "timestamp": "2025-05-21T11:23:55.685Z"
+      "timestamp": "2025-05-23T10:55:07.941Z"
     }
   },
   "summary": {
-    "totalFiles": 4,
+    "totalFiles": 13,
     "fileTypes": {
-      ".json": 4
+      ".json": 13
     },
-    "timestamp": "2025-05-21T11:23:55.605Z"
+    "timestamp": "2025-05-23T10:55:07.722Z"
   }
 }

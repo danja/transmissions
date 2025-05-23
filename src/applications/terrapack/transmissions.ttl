@@ -14,7 +14,7 @@
 
 :terrapack a :Transmission ;
     rdfs:label "Repository terrapack" ;
-    :pipe (:p10 :p20 :p30  :p40 :p50  :p70 :p80 :SM) .
+    :pipe (:p10 :p20 :p30   :p50  :p70 :p80 ) .
 
 :p10 a :DirWalker ;
     :settings :dirWalker .
@@ -25,8 +25,8 @@
 :p30 a :FileReader ;
     :settings :readConfig .
 
-:p40 a :FileContainer ;
-    :settings :containerConfig .
+#:p40 a :FileContainer ;
+ #   :settings :containerConfig .
 
 :p50  a :Accumulate ;
     :settings :accumulator .

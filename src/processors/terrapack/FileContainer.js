@@ -74,7 +74,7 @@ class FileContainer extends Processor {
 
         // Store relative path from target directory
         //   const targetDir = message.targetPath || message.rootDir
-        const targetDir = super.getProperty(ns.trn.targetDir)
+        const targetDir = super.getProperty(ns.trn.targetDir, this.app.workingDir)
         const relativePath = path.relative(targetDir, message.filepath)
 
         // Add file to container

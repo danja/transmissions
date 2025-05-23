@@ -19,9 +19,13 @@
 :readConfig a :ConfigSet ;
     :mediaType "text/plain" .
 
-:containerConfig a :ConfigSet ;
-    :destination "terrapack.config.json" .
+#:containerConfig a :ConfigSet ;
+ #   :destination "terrapack.config.json" .
+
+:accumulator a :ConfigSet ;
+    :sourceField "content" .
 
 :writeConfig a :ConfigSet ;
     :loglevel "debug" ;
+    :contentField "accumulate" ;
     :destinationFile "terrapack-output.txt" .

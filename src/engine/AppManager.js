@@ -17,6 +17,7 @@ class AppManager {
     constructor() {
         this.moduleLoader = null
         this.app = null
+
     }
 
     static simpleApp(config) {
@@ -90,10 +91,12 @@ class AppManager {
         // process.exit()
         // Get application context
         const contextMessage = this.toMessage()
-
-        // Modify the input message in place
-        //  _.merge(message, contextMessage)
+        // merge
         Object.assign(message, contextMessage)
+
+        //   if (!message.targetDir) { // TODO move
+        //     message.targetDir = this.app.workingDir
+        //}
         message.appRunStart = (new Date()).toISOString()
 
 
