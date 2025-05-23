@@ -82,7 +82,8 @@ class FileWriter extends Processor {
         logger.trace(`FileWriter.process, count = ${message.eachCount}`)
         if (message.done) {
             logger.trace(`\n\nFileWriter.process, message.done = ${message.done} SKIPPING!!`)
-            return Promise.resolve(this.emit('message', message))
+            // return Promise.resolve(this.emit('message', message))
+            return this.emit('message', message)
         }
 
         if (message.dump) {
@@ -147,7 +148,7 @@ class FileWriter extends Processor {
             logger.reveal(message)
         }
         */
-        
+
         logger.trace(`content = ${content}`)
         // maybe stat first, check validity - the intended target dir was blocked by a file of the same name
         await writeFile(filePath, content)

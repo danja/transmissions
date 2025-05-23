@@ -77,16 +77,18 @@ class CommandUtils {
      * @param {Object} options - Configuration options
      */
     async launchEditor(options = {}) {
-        var debugLevel = options.verbose ? "debug" : "info"
-        if (!options.verbose) logger.silent = options.silent
-        logger.setLogLevel(debugLevel)
+        //  logger.log(options)
+        //var debugLevel = options.verbose ? "debug" : "info"
+        //if (!options.verbose) logger.silent = options.silent
+        logger.setLogLevel("debug")
 
         logger.info('Launching Transmissions Editor...')
 
         // Create and start the editor web runner
         const port = options.port || 9000
         const editorWebRunner = new EditorWebRunner(port)
-        await editorWebRunner.start()
+        await editorWebRunner.setupEditor()
+        //   await editorWebRunner.start()
         // Keep the process running
         return new Promise((resolve) => {
             process.on('SIGINT', async () => {

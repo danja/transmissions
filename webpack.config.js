@@ -23,25 +23,41 @@ export default {
     extensions: ['.js'],
     alias: {
       '@nodeflow': path.resolve(__dirname, 'src/tools/nodeflow/'),
-      '@src': path.resolve(__dirname, 'src/'),
-      'rdfUtilsFsWrapper': path.resolve(__dirname, 'src/utils/rdfUtilsFsWrapper.browser.js')
+      '@src': path.resolve(__dirname, 'src/')
     },
     fallback: {
       fs: false,
       path: false,
+      util: false,
       stream: false,
-      buffer: false
+      buffer: false,
+      crypto: false,
+      http: false,
+      https: false,
+      os: false,
+      url: false,
+      zlib: false,
+      assert: false,
+      querystring: false,
+      'rdf-utils-fs': false
     }
   },
   module: {
     rules: [
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: /node_modules\/(?!rdf-utils-fs)/, // Exclude node_modules except rdf-utils-fs
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env']
+            presets: [
+              ['@babel/preset-env', {
+                targets: '> 0.25%, not dead',
+                modules: false,
+                useBuiltIns: 'usage',
+                corejs: 3
+              }]
+            ]
           }
         }
       },
@@ -51,9 +67,22 @@ export default {
       },
       {
         test: /\.js$/,
-        include: /node_modules/,
+        include: /node_modules\/(rdf-utils-fs)/, // Only apply to rdf-utils-fs
         resolve: {
           fullySpecified: false
+        },
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              ['@babel/preset-env', {
+                targets: '> 0.25%, not dead',
+                modules: 'commonjs', // Force CommonJS for this module
+                useBuiltIns: 'usage',
+                corejs: 3
+              }]
+            ]
+          }
         }
       }
     ]

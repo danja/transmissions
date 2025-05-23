@@ -73,7 +73,7 @@ async function main() {
             alias: 'p',
             describe: chalk.yellow('Port for web interface'),
             type: 'number',
-            default: 4200
+            default: 4500
         })
         .option('editor', {
             alias: 'e',

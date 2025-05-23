@@ -1,4 +1,5 @@
 import { Worker } from 'worker_threads'
+import logger from '../utils/Logger.js'
 
 class WorkerPool {
     constructor(module, size) {

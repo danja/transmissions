@@ -1,0 +1,16 @@
+{
+  "files": {
+    "../../../../terrapack.config.json": {
+      "content": "this is src/applications/terrapack/data/input/subdir/subby.md\n",
+      "type": ".json",
+      "timestamp": "2025-05-21T11:23:55.685Z"
+    }
+  },
+  "summary": {
+    "totalFiles": 4,
+    "fileTypes": {
+      ".json": 4
+    },
+    "timestamp": "2025-05-21T11:23:55.605Z"
+  }
+}

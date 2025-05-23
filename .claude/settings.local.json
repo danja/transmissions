@@ -3,7 +3,10 @@
     "allow": [
       "Bash(./trans:*)",
       "Bash(LOG_LEVEL=debug TRACE=1 ./trans config-setting-target tests/applications/config-setting-target)",
-      "Bash(./trans:*)"
+      "Bash(./trans:*)",
+      "Bash(ls:*)",
+      "Bash(npm run build:*)",
+      "Bash(timeout:*)"
     ],
     "deny": []
   }

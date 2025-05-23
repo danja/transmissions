@@ -23,4 +23,5 @@
     :destination "terrapack.config.json" .
 
 :writeConfig a :ConfigSet ;
+    :loglevel "debug" ;
     :destinationFile "terrapack-output.txt" .
