@@ -8,7 +8,14 @@
       "Bash(npm run build:*)",
       "Bash(timeout:*)",
       "Bash(npm test:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(chmod:*)",
+      "Bash(curl:*)",
+      "Bash(pkill:*)",
+      "Bash(examples/http/echo-curl.sh 4400)",
+      "Bash(node:*)",
+      "Bash(examples/http/stop-curl.sh 4400)"
     ],
     "deny": []
   }

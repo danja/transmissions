@@ -10,7 +10,7 @@ Should start a server on `http://localhost:5000/echo`. The HTTP API version of `
 
 If the calling message contains the single value `{ "system":"stop"}` the HTTP server should shut down gracefully.
 
-There is also a simple command-line test client as well as unit and integration tests using Vitest (ES modules).
+There are also simple command-line test clients running against `echo` and the stop call (two versions : using curl & programmatic with node) under examples/http/ as well as unit and integration tests using Vitest (ES modules) in the existing test infrastructure.
 
 ### Notes
 Other options include :
@@ -21,6 +21,9 @@ cd ~/hyperdata/transmissions/
 ./trans -v -w -p 4200 echo
 
 ./trans -v -w -t -p 4200 echo
+
+cd /flow/hyperdata/transmissions && ./trans -w -p 4400 echo && examples/http/echo-curl.sh
+
 ```
 
 compare with :
@@ -29,6 +32,7 @@ compare with :
 ./trans  -v echo
 ```
 
+TODO add HTTP GET where the response is the app's associated `about.md` file.
 
 
 

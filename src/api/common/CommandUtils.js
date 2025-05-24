@@ -60,7 +60,7 @@ class CommandUtils {
         this.#appManager = await this.#appManager.initApp(appOptions)
 
         if (options.web) {
-            const webRunner = new WebRunner(this.#appManager, options.port)
+            const webRunner = new WebRunner(this.#appManager, { port: options.port })
             await webRunner.start()
             return
         }

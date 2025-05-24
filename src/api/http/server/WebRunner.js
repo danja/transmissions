@@ -81,7 +81,7 @@ class WebRunner {
         const router = express.Router()
 
         // Only set up API routes if we have an appManager
-        if (this.appManager && typeof this.appManager.initialize === 'function') {
+        if (this.appManager && typeof this.appManager.start === 'function') {
             router.post('/:application', async (req, res) => {
                 const requestId = Math.random().toString(36).substring(7)
                 const { application } = req.params
@@ -91,13 +91,28 @@ class WebRunner {
                 logger.debug(`[${requestId}] Message payload:`, message)
 
                 try {
+                    // Check for graceful shutdown command
+                    if (message && message.system === 'stop') {
+                        logger.info(`[${requestId}] Graceful shutdown requested`)
+                        res.json({
+                            success: true,
+                            requestId: requestId,
+                            message: 'Shutdown initiated'
+                        })
+                        // Give time for response to be sent before shutting down
+                        setTimeout(() => {
+                            logger.info('Shutting down server gracefully...')
+                            this.stop().then(() => process.exit(0))
+                        }, 100)
+                        return
+                    }
+
                     if (!this.appManager) {
                         throw new Error('Application manager not initialized')
                     }
-                    logger.debug(`[${requestId}] Initializing application ${application}`)
-                    await this.appManager.initialize(application)
                     message.requestId = requestId
-                    logger.debug(`[${requestId}] Starting application with message:`, message)
+                    message.application = application
+                    logger.debug(`[${requestId}] Starting application ${application} with message:`, message)
                     const result = await this.appManager.start(message)
                     if (!result) {
                         throw new Error('Application returned no result')
