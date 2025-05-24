@@ -1,4 +1,4 @@
-import 'dotenv/config'
+import { config } from '@dotenvx/dotenvx'
 
 // import { readFile } from 'node:fs/promises' // whatever else
 
@@ -58,8 +58,11 @@ class EnvLoader extends Processor {
      */
     async process(message) {
         //   logger.setLogLevel('debug')
+        
+        // Load environment variables from .env files
+        config()
+        
         // console.log(process.env)
-
         this.config.whiteboard.env = process.env
 
         return this.emit("message", message)

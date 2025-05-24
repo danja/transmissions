@@ -1,6 +1,7 @@
 // AppManager.js
 import path from 'path'
 import fs from 'fs/promises'
+import { config } from '@dotenvx/dotenvx'
 import logger from '../utils/Logger.js'
 import FSUtils from '../utils/FSUtils.js'
 import RDFUtils from '../utils/RDFUtils.js'
@@ -9,15 +10,18 @@ import App from '../model/App.js'
 import MockAppManager from '../utils/MockAppManager.js'
 import TransmissionBuilder from './TransmissionBuilder.js'
 import ModuleLoaderFactory from './ModuleLoaderFactory.js'
+import WorkerPool from './WorkerPool.js'
 import Datasets from '../model/Datasets.js'
 import Defaults from '../api/common/Defaults.js'
 // import { log } from 'console'
 
 class AppManager {
     constructor() {
+        // Load environment variables from .env files
+        config()
+        
         this.moduleLoader = null
         this.app = null
-
     }
 
     static simpleApp(config) {
@@ -63,6 +67,7 @@ class AppManager {
         }
 
         await this.initModuleLoader()
+        await this.initWorkerPool()
 
         logger.debug(`this.app = ${this.app}`)
         return this
@@ -73,6 +78,30 @@ class AppManager {
         logger.debug(`\nAppManager.initModuleLoader **************************************** `)
         const modulePath = await this.getModulePath()
         this.moduleLoader = ModuleLoaderFactory.createApplicationLoader(modulePath)
+    }
+
+    async initWorkerPool() {
+        logger.debug(`\nAppManager.initWorkerPool`)
+        
+        // Check environment variables for worker configuration
+        const useWorkers = process.env.TRANSMISSIONS_USE_WORKERS === 'true'
+        const workerModule = process.env.TRANSMISSIONS_WORKER_MODULE
+        const workerPoolSize = parseInt(process.env.TRANSMISSIONS_WORKER_POOL_SIZE) || 2
+        
+        if (useWorkers && workerModule) {
+            try {
+                // Resolve worker module path relative to project root
+                const workerModulePath = path.resolve(workerModule)
+                logger.debug(`Creating WorkerPool with module: ${workerModulePath}, size: ${workerPoolSize}`)
+                this.app.workerPool = new WorkerPool(workerModulePath, workerPoolSize)
+                logger.info(`WorkerPool initialized with ${workerPoolSize} workers using module: ${workerModulePath}`)
+            } catch (error) {
+                logger.warn(`Failed to initialize WorkerPool: ${error.message}`)
+                logger.debug('Continuing without worker pool - will use sequential processing')
+            }
+        } else {
+            logger.debug('WorkerPool not configured - using sequential processing')
+        }
     }
 
 
@@ -110,6 +139,13 @@ class AppManager {
             }
         }
         message.success = true
+        
+        // Clean up worker pool if it exists
+        if (this.app.workerPool) {
+            logger.debug('Terminating worker pool...')
+            this.app.workerPool.terminate()
+        }
+        
         // logger.reveal(message)
         return message //{ success: true }
     }

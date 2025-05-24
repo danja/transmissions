@@ -3,6 +3,7 @@ import logger from '../utils/Logger.js'
 import ns from '../utils/ns.js'
 import SysUtils from '../utils/SysUtils.js'
 import ProcessorSettings from './ProcessorSettings.js'
+import WorkerPool from './WorkerPool.js'
 
 class ProcessorImpl extends EventEmitter {
     constructor(app) {
@@ -13,6 +14,7 @@ class ProcessorImpl extends EventEmitter {
         this.messageQueue = []
         this.processing = false
         this.outputs = []
+        this.workerPool = null
         logger.trace(`ProcessorImpl.constructor : \n${this}`)
     }
 
@@ -201,18 +203,41 @@ class ProcessorImpl extends EventEmitter {
 
     async executeQueue() {
         logger.debug(`ProcessorImpl.executeQueue`)
-        this.processing = true
-        while (this.messageQueue.length > 0) {
-            let { message } = this.messageQueue.shift()
-            message = SysUtils.copyMessage(message)
-            this.addTag(message)
-            logger.debug(`  before`)
-            await this.preProcess(message)
-            logger.debug(`  after`)
-            await this.process(message)
-            await this.postProcess(message) // pass message argument
+        
+        // Check if app has worker pool configuration
+        const appWorkerPool = this.app.workerPool
+        
+        if (appWorkerPool) {
+            // TODO: Workers need full processor execution, not just pass-through
+            // Currently workers only do message pass-through without executing actual processor logic
+            // This causes transmission chains to not work properly (e.g., ShowMessage doesn't display, FileReader doesn't read files)
+            // For now, fall back to sequential processing when workers are enabled
+            logger.debug('Workers detected but falling back to sequential processing - worker integration incomplete')
+            this.processing = true
+            while (this.messageQueue.length > 0) {
+                let { message } = this.messageQueue.shift()
+                message = SysUtils.copyMessage(message)
+                this.addTag(message)
+                await this.preProcess(message)
+                await this.process(message)
+                await this.postProcess(message)
+            }
+            this.processing = false
+        } else {
+            // Use traditional sequential processing
+            this.processing = true
+            while (this.messageQueue.length > 0) {
+                let { message } = this.messageQueue.shift()
+                message = SysUtils.copyMessage(message)
+                this.addTag(message)
+                logger.debug(`  before`)
+                await this.preProcess(message)
+                logger.debug(`  after`)
+                await this.process(message)
+                await this.postProcess(message) // pass message argument
+            }
+            this.processing = false
         }
-        this.processing = false
     }
 
     addTag(message) {

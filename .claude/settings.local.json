@@ -6,7 +6,9 @@
       "Bash(./trans:*)",
       "Bash(ls:*)",
       "Bash(npm run build:*)",
-      "Bash(timeout:*)"
+      "Bash(timeout:*)",
+      "Bash(npm test:*)",
+      "Bash(grep:*)"
     ],
     "deny": []
   }
