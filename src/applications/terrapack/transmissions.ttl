@@ -14,19 +14,23 @@
 
 :terrapack a :Transmission ;
     rdfs:label "Repository terrapack" ;
-    :pipe (:p10 :p20 :p30   :p50  :p70 :p80 ) .
+    :pipe (:p10 :p15  :p20   :p50  :p70 :p80 ) .
 
-:p10 a :DirWalker ;
-    :settings :dirWalker .
+:p10 a :FileReader ;
+     :settings [
+          :sourceFile "input/files.spec.json" ;
+          :mediaType "application/json" ;
+          :targetField "fileSpec"
+     ] .
 
-:p20 a :StringFilter ;
-    :settings :filterConfig .
+:p15 a :Restructure ;
+     :settings :shiftTarget .
 
-:p30 a :FileReader ;
-    :settings :readConfig .
+:p20 a :DirWalker .
 
-#:p40 a :FileContainer ;
- #   :settings :containerConfig .
+#     :settings [
+ #         :sourceDir "data/input" 
+  #   ] .
 
 :p50  a :Accumulate ;
     :settings :accumulator .

@@ -29,7 +29,7 @@
  * * None
  *
  * #### __Tests__
- * * **`./run filefilter-test`**
+ * * **`./trans filefilter`**
  * * **`npm test -- tests/integration/filefilter-test.spec.js`**
  */
 

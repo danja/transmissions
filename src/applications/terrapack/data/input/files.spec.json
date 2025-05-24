@@ -1,0 +1,17 @@
+{
+    "fileFilter": {
+        "include": [
+            "**/*.md"
+        ],
+        "exclude": [
+            "**/*.json",
+            "**/no/**",
+            "**/*.log",
+            "**/node_modules",
+            "**/test",
+            "**/docs",
+            "**/*terrapack.md",
+            "**/*repomix.md"
+        ]
+    }
+}

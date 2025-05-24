@@ -2,19 +2,11 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix : <http://purl.org/stuff/transmissions/> .
 
-:dirWalker a :ConfigSet ;
-    :sourceDir "." ;
-    :includeExtension ".md", ".js", ".ttl" .
-
-:filterConfig a :ConfigSet ;
-    :settings :filterDefaults ;
-    :includePattern "*.txt", "*.md", "*.js", "*.jsx", "*.ts", "*.tsx", "*.json", "*.html", "*.css" ;
-    :excludePattern
-        "node_modules/*",
-        "dist/*",
-        "build/*",
-        ".git/*"
-    .
+:shiftTarget a :ConfigSet ;
+   # :remove "queryResults" ; # dummy
+    :rename (:st1) . # consider using blank nodes
+    :st1   :pre     "targetDir" ;
+            :post    "targetPath"  .
 
 :readConfig a :ConfigSet ;
     :mediaType "text/plain" .

@@ -20,6 +20,8 @@
             "**/.env",
             "**/old",
             "docs",
+            "docs/terrapacks",
+            "docs/**",
             "**/*repopack*",
             "**/*repomix*",
             ".git",
