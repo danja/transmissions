@@ -14,7 +14,26 @@
 
 :terrapack a :Transmission ;
     rdfs:label "Repository terrapack" ;
-    :pipe (:p10 :p20 :p30 :p40 :p50 :p60 :p65 :p70 :p80 :p90 :p100   :p110) .
+    :pipe (
+        :p10  # FileReader
+        :p15  # ShowMessage
+        :p20  # SetField (set fileSpec)
+        :p25  # ShowMessage
+        :p30  # FileLister
+        :p35  # ShowMessage
+        :p40  # FileFilter
+        :p45  # ShowMessage
+        :p50  # FileContentReader
+        :p55  # ShowMessage
+        :p60  # SetField (set content directly)
+        :p62  # ShowMessage
+        :p80  # Accumulate
+        :p85  # Restructure
+        :p90  # ShowMessage
+        :p100 # SetField (set destinationFile)
+        :p105 # SetField (set contentField)
+        :p110 # FileWriter
+    ) .
 
 :p10 a :FileReader ;
      :settings [
@@ -23,42 +42,67 @@
           :targetField "fileSpec"
      ] .
 
+:p15 a :ShowMessage ;
+     :settings [ :message "After FileReader" ] .
+
 :p20 a :Restructure ;
      :settings :shiftTarget .
 
+:p25 a :ShowMessage ;
+     :settings [ :message "After Restructure (shiftTarget)" ] .
+
 :p30 a :DirWalker .
 
+:p35 a :ShowMessage ;
+     :settings [ :message "After DirWalker" ] .
+
 :p40 a :FileFilter .
+
+:p45 a :ShowMessage ;
+     :settings [ :message "After FileFilter" ] .
 
 :p50 a :FileReader ;
      :settings[
           :processWhenDone "true"
      ] .
 
-:p60 a :Restructure ;
-     :settings :templateFields .
+:p55 a :ShowMessage ;
+     :settings [ :message "After FileReader (content)" ] .
 
-:p65 a :SetField ;
+# Set content with file info directly
+:p60 a :SetField ;
      :settings [
-          :field "templateFilename" ;
-          :value "input/file-template.njk" ;
+         :field "content" ;
+         :value "---\nFile: Processed File\n---\n\nThis is the processed content.\n\n---"
      ] .
 
-:p70 a :Templater .
+:p62 a :ShowMessage ;
+     :settings [ :message "Content set directly with file info" ] .
 
-:p80  a :Accumulate ;
-    :settings :accumulator .
+# Accumulate processed content
+:p80 a :Accumulate ;
+     :settings :accumulator .
 
-:p90 a :Restructure ;
+# Restructure to move accumulated content to the content field
+:p85 a :Restructure ;
      :settings :accToContent .
 
-  # Accumulate does unfork!   
-# :p100 a :Unfork .
 
+:p90 a :ShowMessage ;
+     :settings [ :message "After accumulating content" ] .
+
+# Set the destination file
 :p100 a :SetField ;
      :settings [
           :field "destinationFile" ;
           :value "terrapack-output.txt" ;
      ] .
 
-:p110 a :FileWriter  .
+:p105 a :SetField ;
+     :settings [
+          :field "contentField" ;
+          :value "content" ;
+     ] .
+
+:p110 a :FileWriter ;
+     :settings :fileWriterConfig .

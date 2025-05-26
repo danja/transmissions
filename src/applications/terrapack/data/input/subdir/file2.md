@@ -1,1 +1,7 @@
-this is file 2
+---
+File: Processed File
+---
+
+This is the processed content.
+
+---

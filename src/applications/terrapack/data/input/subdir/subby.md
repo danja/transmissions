@@ -1,1 +1,7 @@
-this is src/applications/terrapack/data/input/subdir/subby.md
+---
+File: Processed File
+---
+
+This is the processed content.
+
+---

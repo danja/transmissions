@@ -1,2 +1,7 @@
-<h1>Hello World! (again)</h1>
-<p>lorem etc.</p>
+---
+File: Processed File
+---
+
+This is the processed content.
+
+---

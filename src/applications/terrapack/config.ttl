@@ -26,13 +26,20 @@
               :post  "contentBlocks.slug"  .
 
 :accumulator a :ConfigSet ;
-    :sourceField "content" .
+    :sourceField "content" ;
+    :targetField "accumulatedContent" ;
+    :label "terrapackContent" ;
+    :accumulatorType "string" .
 
 :accToContent a :ConfigSet ;
     :rename (:f1)  .
         # for content
-        :f1   :pre    "accumulate" ;
-              :post "content"  .
+        :f1   :pre    "accumulatedContent" ;
+              :post "content" .
+
+:fileWriterConfig a :ConfigSet ;
+    :contentField "content" ;
+    :destinationFile "terrapack-output.txt" .
 
 #:writeConfig a :ConfigSet ;
  #   :loglevel "debug" ;
