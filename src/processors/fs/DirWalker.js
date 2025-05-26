@@ -73,10 +73,11 @@ class DirWalker extends Processor {
 
         logger.debug(`    message.targetDir = ${message.targetDir}`)
         // Prefer message.targetDir if present, else use config
-        if (message.targetDir) {
-            walkDir = path.join(message.targetDir, walkDir)
-        } else {
-            if (!path.isAbsolute(walkDir)) {
+
+        if (!path.isAbsolute(walkDir)) {
+            if (message.targetDir) {
+                walkDir = path.join(message.targetDir, walkDir)
+            } else {
                 walkDir = path.join(this.app.path, walkDir)
             }
         }
