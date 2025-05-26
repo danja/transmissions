@@ -51,17 +51,23 @@ class Restructure extends Processor {
     }
 
     async process(message) {
+        logger.debug(`\nRestructure.process`)
+        /*
         try {
             if (!message.done) { // TODO refactor
                 message = await this.doRenames(message)
                 message = await this.doRemoves(message)
             }
-            return this.emit('message', message)
+            
         } catch (err) {
             logger.error("Restructure processor error: " + err.message)
             logger.error(err.stack)
             throw err
         }
+        */
+        message = await this.doRenames(message)
+        message = await this.doRemoves(message)
+        return this.emit('message', message)
     }
 
     async getRenames() {

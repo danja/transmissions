@@ -14,8 +14,23 @@
 #:containerConfig a :ConfigSet ;
  #   :destination "terrapack.config.json" .
 
+:templateFields a :ConfigSet  ;
+   # :remove "content" ; # tidy
+    :rename (:f1 :f2 :f3)  .
+        # for content
+        :f1   :pre    "relPath" ;
+              :post "contentBlocks.filename"  .
+        :f2   :pre    "content" ;
+              :post  "contentBlocks.content"  .
+        :f3   :pre    "slug" ;
+              :post  "contentBlocks.slug"  .
+
 :accumulator a :ConfigSet ;
     :sourceField "content" .
+
+:accToContent a :ConfigSet ;
+    :sourceField "accumulate" ;
+    :targetField "content" .
 
 :writeConfig a :ConfigSet ;
     :loglevel "debug" ;

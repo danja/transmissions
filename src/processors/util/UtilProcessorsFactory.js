@@ -8,7 +8,7 @@ import ShowConfig from './ShowConfig.js'
 import WhiteboardToMessage from './WhiteboardToMessage.js'
 import SetMessage from './SetMessage.js'
 import ShowSettings from './ShowSettings.js'
-ShowSettings
+import SetField from './SetField.js'
 
 class UtilProcessorsFactory {
     static createProcessor(type, config) {
@@ -33,6 +33,9 @@ class UtilProcessorsFactory {
         }
         if (type.equals(ns.trn.ShowSettings)) {
             return new ShowSettings(config)
+        }
+        if (type.equals(ns.trn.SetField)) {
+            return new SetField(config)
         }
         return false
     }

@@ -95,7 +95,7 @@ class Templater extends Processor {
         message.content =
             await nunjucks.render(filename, message[dataField])
 
-        logger.debug(`content POST = ${message.content}`)
+        //    logger.debug(`content POST = ${message.content}`)
 
         // Alternative: render from a template string if needed
         // message.content = nunjucks.renderString(message.template, message.contentBlocks)

@@ -14,7 +14,7 @@
 
 :terrapack a :Transmission ;
     rdfs:label "Repository terrapack" ;
-    :pipe (:p10 :p15  :p20   :p50  :p70 :p80 ) .
+    :pipe (:p10 :p20 :p30 :p40 :p50 :p60 :p65 :p70 :p80 :p90 :p100 :p110) .
 
 :p10 a :FileReader ;
      :settings [
@@ -23,21 +23,33 @@
           :targetField "fileSpec"
      ] .
 
-:p15 a :Restructure ;
+:p20 a :Restructure ;
      :settings :shiftTarget .
 
-:p20 a :DirWalker .
+:p30 a :DirWalker .
 
-#     :settings [
- #         :sourceDir "data/input" 
-  #   ] .
+:p40 a :FileFilter .
 
-:p50  a :Accumulate ;
+:p50 a :FileReader .
+
+:p60 a :Restructure ;
+     :settings :templateFields .
+
+:p65 a :SetField ;
+     :settings [
+          :field "templateFilename" ;
+          :value "input/file-template.njk" ;
+     ] .
+
+:p70 a :Templater .
+
+:p80  a :Accumulate ;
     :settings :accumulator .
 
-:p60 a :WhiteboardToMessage .
+:p90 a :Restructure ;
+     :settings :accToContent .
+     
+:p100 a :Unfork .
 
-:p70 a :Unfork .
-
-:p80 a :FileWriter ;
+:p110 a :FileWriter ;
     :settings :writeConfig .

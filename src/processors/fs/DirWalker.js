@@ -135,6 +135,10 @@ class DirWalker extends Processor {
                     let relTargetPath = Array.isArray(targetPath) ? targetPath[0] : targetPath
                     if (typeof relTargetPath !== 'string' || !relTargetPath) relTargetPath = ''
                     message.subdir = path.dirname(path.relative(relTargetPath, fullPath)).split(path.sep)[1]
+                    ////
+
+                    message.relPath = path.relative(relTargetPath, fullPath)
+                    ////
                     message.fullPath = fullPath
                     message.filepath = path.relative(relTargetPath, fullPath)
                     message.done = false
