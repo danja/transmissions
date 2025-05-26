@@ -75,7 +75,7 @@ class ProcessorImpl extends EventEmitter {
     }
 
     propertyInObject(object, property) {
-      //  logger.debug(`    propertyInObject`)
+        //  logger.debug(`    propertyInObject`)
         const shortName = ns.getShortname(property)
         logger.trace(`       shortName = ${shortName}`)
         if (object && object[shortName]) {
@@ -102,7 +102,7 @@ class ProcessorImpl extends EventEmitter {
         //  return undefined
     }
 
-    preProcess(message) {
+    async preProcess(message) {
         logger.debug('ProcessorImpl.preProcess')
 
 
@@ -203,10 +203,10 @@ class ProcessorImpl extends EventEmitter {
 
     async executeQueue() {
         logger.debug(`ProcessorImpl.executeQueue`)
-        
+
         // Check if app has worker pool configuration
         const appWorkerPool = this.app.workerPool
-        
+
         if (appWorkerPool) {
             // TODO: Workers need full processor execution, not just pass-through
             // Currently workers only do message pass-through without executing actual processor logic
@@ -219,7 +219,12 @@ class ProcessorImpl extends EventEmitter {
                 message = SysUtils.copyMessage(message)
                 this.addTag(message)
                 await this.preProcess(message)
-                await this.process(message)
+
+                // handle the final message from spawning processors (DirWalker, ForEach...)
+                const processWhenDone = this.getProperty(ns.trn.processWhenDone, "true")
+                if (!message.done || (message.done && processWhenDone)) {
+                    await this.process(message)
+                }
                 await this.postProcess(message)
             }
             this.processing = false
