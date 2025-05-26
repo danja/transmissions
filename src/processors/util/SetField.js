@@ -60,7 +60,7 @@ class SetField extends Processor {
      * @returns {Promise<boolean>} Resolves when processing is complete
      */
     async process(message) {
-        logger.debug(`\n\nExample.process`)
+        logger.debug(`\n\nSetField.process`)
 
         const field = this.getProperty(ns.trn.field)
         const value = this.getProperty(ns.trn.value)

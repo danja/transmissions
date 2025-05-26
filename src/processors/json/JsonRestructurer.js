@@ -55,7 +55,7 @@ class JsonRestructurer {
             const sp = path.split('.')
             logger.debug('    sp = ' + sp)
             const reduced = sp.reduce((acc, part) => acc[part], obj)
-            logger.debug('    reduced = ' + reduced)
+            //         logger.debug('    reduced = ' + reduced)
             return reduced
         } catch (e) {
             logger.reveal(obj)

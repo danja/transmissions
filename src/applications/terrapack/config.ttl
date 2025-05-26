@@ -29,8 +29,10 @@
     :sourceField "content" .
 
 :accToContent a :ConfigSet ;
-    :sourceField "accumulate" ;
-    :targetField "content" .
+    :rename (:f1)  .
+        # for content
+        :f1   :pre    "accumulate" ;
+              :post "content"  .
 
 #:writeConfig a :ConfigSet ;
  #   :loglevel "debug" ;

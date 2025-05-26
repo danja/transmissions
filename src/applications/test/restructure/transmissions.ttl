@@ -16,7 +16,7 @@
 
 :cjc a trn:Transmission ;
 
- trn:pipe (:read :restructure :SM :DE  :write) .
+ trn:pipe (:read :restructure :write :SM) .
 # trn:pipe (:read  :SM) .
 
 :read a :FileReader ;

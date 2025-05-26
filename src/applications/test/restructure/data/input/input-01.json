@@ -1,7 +1,7 @@
 {
     "item": {
         "uuid": "convo1",
-        "name": "Name of this convo",
+        "name": "Was on item",
         "created_at": "2024-10-29T17:57:50.229169Z",
         "chat_messages": [
             {
@@ -13,5 +13,6 @@
                 "text": "Text two TEST_PASSED"
             }
         ]
-    }
+    },
+    "label": "was on root"
 }

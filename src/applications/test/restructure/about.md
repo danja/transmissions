@@ -1,4 +1,6 @@
-# Application : test_restructure
+# Application : restructure
+
+Reads the sample input into content fields, restructures it, then writes the result to the output file.
 
 Run with :
 

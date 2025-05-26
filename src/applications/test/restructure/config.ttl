@@ -8,13 +8,17 @@
 
 :retree a :ConfigSet ;
    :remove "queryResults" ; # dummy
-    :rename (:pp1 :pp2 :pp3) . # consider using blank nodes
+    :rename (:pp1 :pp2 :pp3 :pp4 :pp5) . # consider using blank nodes
     :pp1   :pre     "content.item.chat_messages" ;
             :post    "content.channel"  .
     :pp2   :pre     "content.item.uuid" ;
             :post    "content.filename"  .
     :pp3   :pre     "content.item.name" ;
             :post    "content.title"  .
+    :pp4   :pre     "content.label" ;
+            :post    "content.item.label"  .
+    :pp5   :pre     "content.item.name" ;
+            :post    "name"  .
 
 
 :writer a :ConfigSet ;
