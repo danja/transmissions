@@ -32,7 +32,7 @@
     :sourceField "accumulate" ;
     :targetField "content" .
 
-:writeConfig a :ConfigSet ;
-    :loglevel "debug" ;
-    :contentField "accumulate" ;
-    :destinationFile "terrapack-output.txt" .
+#:writeConfig a :ConfigSet ;
+ #   :loglevel "debug" ;
+  #  :contentField "accumulate" ;
+   # :destinationFile "terrapack-output.txt" .

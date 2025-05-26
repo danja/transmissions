@@ -14,7 +14,7 @@
 
 :terrapack a :Transmission ;
     rdfs:label "Repository terrapack" ;
-    :pipe (:p10 :p20 :p30 :p40 :p50 :p60 :p65 :p70 :p80 :p90 :p100 :p110) .
+    :pipe (:p10 :p20 :p30 :p40 :p50 :p60 :p65 :p70 :p80 :p90 :p100 :SM  :p110) .
 
 :p10 a :FileReader ;
      :settings [
@@ -30,7 +30,10 @@
 
 :p40 a :FileFilter .
 
-:p50 a :FileReader .
+:p50 a :FileReader ;
+     :settings[
+          :processWhenDone "true"
+     ] .
 
 :p60 a :Restructure ;
      :settings :templateFields .
@@ -48,8 +51,14 @@
 
 :p90 a :Restructure ;
      :settings :accToContent .
-     
-:p100 a :Unfork .
 
-:p110 a :FileWriter ;
-    :settings :writeConfig .
+  # Accumulate does unfork!   
+# :p100 a :Unfork .
+
+:p100 a :SetField ;
+     :settings [
+          :field "destinationFile" ;
+          :value "terrapack-output.txt" ;
+     ] .
+
+:p110 a :FileWriter  .

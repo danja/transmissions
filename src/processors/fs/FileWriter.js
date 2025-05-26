@@ -80,11 +80,12 @@ class FileWriter extends Processor {
     async process(message) {
         logger.trace(`\n\nFileWriter.process, message.done = ${message.done}`)
         logger.trace(`FileWriter.process, count = ${message.eachCount}`)
+        /*
         if (message.done) {
             logger.trace(`\n\nFileWriter.process, message.done = ${message.done} SKIPPING!!`)
             // return Promise.resolve(this.emit('message', message))
             return this.emit('message', message)
-        }
+        }*/
 
         if (message.dump) {
             // TODO make optional (on done?) - is a pain for multi

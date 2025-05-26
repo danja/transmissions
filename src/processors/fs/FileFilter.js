@@ -48,6 +48,7 @@ class FileFilter extends Processor {
      */
     constructor(config) {
         super(config)
+        this.noProcessWhenDone = true
     }
 
     /**
@@ -58,9 +59,9 @@ class FileFilter extends Processor {
      */
     async process(message) {
         logger.debug(`\n\nFileFilter.process`)
-        if (message.done) {
-            return this.emit('message', message)
-        }
+        // if (message.done) {
+        //   return this.emit('message', message)
+        //}
 
         message.match = this.checkFileSpec(message)
 

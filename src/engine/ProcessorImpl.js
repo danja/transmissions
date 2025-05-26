@@ -13,6 +13,7 @@ class ProcessorImpl extends EventEmitter {
         this.settee = new ProcessorSettings(this.app)
         this.messageQueue = []
         this.processing = false
+        this.noProcessWhenDone = false // default to process when message.done, double negative is easier with defaults!
         this.outputs = []
         this.workerPool = null
         logger.trace(`ProcessorImpl.constructor : \n${this}`)
@@ -219,12 +220,7 @@ class ProcessorImpl extends EventEmitter {
                 message = SysUtils.copyMessage(message)
                 this.addTag(message)
                 await this.preProcess(message)
-
-                // handle the final message from spawning processors (DirWalker, ForEach...)
-                const processWhenDone = this.getProperty(ns.trn.processWhenDone, "true")
-                if (!message.done || (message.done && processWhenDone)) {
-                    await this.process(message)
-                }
+                await this.doProcess(message)
                 await this.postProcess(message)
             }
             this.processing = false
@@ -238,10 +234,23 @@ class ProcessorImpl extends EventEmitter {
                 logger.debug(`  before`)
                 await this.preProcess(message)
                 logger.debug(`  after`)
-                await this.process(message)
+                //  await this.process(message)
+                await this.doProcess(message)
                 await this.postProcess(message) // pass message argument
             }
             this.processing = false
+        }
+    }
+
+    // TODO move outside preProcess/postProcess?
+    async doProcess(message) {
+        // handle the final message from spawning processors (DirWalker, ForEach...)
+        const processWhenDone = !this.noProcessWhenDone && this.getProperty(ns.trn.processWhenDone, "true") // usually true
+
+        if (!message.done || (message.done && processWhenDone)) {
+            await this.process(message)
+        } else {
+            return this.emit('message', message)
         }
     }
 
