@@ -14,7 +14,7 @@
 
 :terrapack a :Transmission ;
     rdfs:label "Repository terrapack" ;
-    :pipe (:p10 :p20 :p30 :p40 :p50 :p60 :p65 :p70  :p80 :p90 :p100   :p110) .
+    :pipe (:p10 :p20 :p30 :p40 :p50 :p60 :p65 :p70 :SM :DE :p80 :p90 :p100   :p110) .
 
 :p10 a :FileReader ;
      :settings [

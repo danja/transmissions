@@ -75,8 +75,9 @@ class Restructure extends Processor {
         //      logger.debug(`this.settingsNode.value = ${this.settingsNode.value}`)
 
         // Get renamesRDF as an array of NamedNode terms
-        //  const renamesRDF = super.getValues(ns.trn.rename)
-        const renamesRDF = super.getProperty(ns.trn.rename)
+
+        const renamesRDF = super.getValues(ns.trn.rename) // HERE
+        //    const renamesRDF = super.getProperty(ns.trn.rename)
 
         logger.debug(`   renamesRDF = ${JSON.stringify(renamesRDF)}`)
 

@@ -126,7 +126,8 @@ class FileWriter extends Processor {
 
         this.mkdirs(dirName)
         await this.doWrite(filePath, content, message)
-        return true
+        // return true
+        return this.emit('message', message)
     }
 
     /**
