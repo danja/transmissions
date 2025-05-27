@@ -333,7 +333,7 @@ LOG_LEVELS.forEach(level => {
  * @param {boolean} [verbose=true] - Whether to include detailed information.
  * @returns {string} The formatted string representation of the object.
  */
-logger.reveal = function (instance, verbose = true, revealDatasets = false) {
+logger.reveal = function (instance, verbose = true, revealDatasets = false, stringLimit = 100) {
     if (!instance) return ''
     if (typeof instance === 'string') {
         return instance
@@ -363,12 +363,12 @@ logger.reveal = function (instance, verbose = true, revealDatasets = false) {
                 return value.toString()
             }
 
-            if (typeof value === 'string' && value.length > 100) {
+            if (typeof value === 'string' && value.length > stringLimit) {
                 //      if (typeof value === 'string' && value.length > 100) {
                 try {
-                    return value.substring(0, 100) + '...'
+                    return value.substring(0, stringLimit) + '...'
                 } catch (e) {
-                    return value.slice(0, 99)
+                    return value.slice(0, stringLimit - 1)
                 }
             }
 
@@ -448,8 +448,8 @@ logger.dataset = function (dataset) {
  * @param {Object} instance - The object to log.
  * @param {boolean} [verbose=true] - Whether to include detailed information.
  */
-logger.v = function (instance, verbose = true) {
-    const output = logger.reveal(instance, verbose)
+logger.v = function (instance, verbose = true, stringLimit = 100) {
+    const output = logger.reveal(instance, verbose, false, stringLimit)
     logger.log(output)
 }
 

@@ -27,14 +27,14 @@
 
 :accumulator a :ConfigSet ;
     :sourceField "content" ;
-    :targetField "accumulatedContent" ;
+    :targetField "accumulate" ;
     :label "terrapackContent" ;
     :accumulatorType "string" .
 
 :accToContent a :ConfigSet ;
     :rename (:f1)  .
         # for content
-        :f1   :pre    "accumulatedContent" ;
+        :f1   :pre    "accumulate" ;
               :post "content" .
 
 :fileWriterConfig a :ConfigSet ;

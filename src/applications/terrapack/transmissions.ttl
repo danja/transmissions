@@ -16,22 +16,18 @@
     rdfs:label "Repository terrapack" ;
     :pipe (
         :p10  # FileReader
-        :p15  # ShowMessage
         :p20  # SetField (set fileSpec)
-        :p25  # ShowMessage
         :p30  # FileLister
-        :p35  # ShowMessage
+       
         :p40  # FileFilter
-        :p45  # ShowMessage
+           
         :p50  # FileContentReader
         :p55  # ShowMessage
-        :p60  # SetField (set content directly)
-        :p62  # ShowMessage
+     :SM :DE
         :p80  # Accumulate
         :p85  # Restructure
         :p90  # ShowMessage
         :p100 # SetField (set destinationFile)
-        :p105 # SetField (set contentField)
         :p110 # FileWriter
     ) .
 
@@ -42,46 +38,23 @@
           :targetField "fileSpec"
      ] .
 
-:p15 a :ShowMessage ;
-     :settings [ :message "After FileReader" ] .
-
 :p20 a :Restructure ;
      :settings :shiftTarget .
 
-:p25 a :ShowMessage ;
-     :settings [ :message "After Restructure (shiftTarget)" ] .
-
 :p30 a :DirWalker .
-
-:p35 a :ShowMessage ;
-     :settings [ :message "After DirWalker" ] .
 
 :p40 a :FileFilter .
 
-:p45 a :ShowMessage ;
-     :settings [ :message "After FileFilter" ] .
-
-:p50 a :FileReader ;
-     :settings[
-          :processWhenDone "true"
-     ] .
+:p50 a :FileReader .
 
 :p55 a :ShowMessage ;
-     :settings [ :message "After FileReader (content)" ] .
-
-# Set content with file info directly
-:p60 a :SetField ;
-     :settings [
-         :field "content" ;
-         :value "---\nFile: Processed File\n---\n\nThis is the processed content.\n\n---"
+     :settings [ 
+          :alert "After FileReader (content)" 
      ] .
 
-:p62 a :ShowMessage ;
-     :settings [ :message "Content set directly with file info" ] .
-
 # Accumulate processed content
-:p80 a :Accumulate ;
-     :settings :accumulator .
+:p80 a :Accumulate .
+  #   :settings :accumulator .
 
 # Restructure to move accumulated content to the content field
 :p85 a :Restructure ;
@@ -89,7 +62,10 @@
 
 
 :p90 a :ShowMessage ;
-     :settings [ :message "After accumulating content" ] .
+     :settings [ 
+          :alert "After accumulating content" ;
+          :stringLimit "1000" 
+     ] .
 
 # Set the destination file
 :p100 a :SetField ;
@@ -98,11 +74,6 @@
           :value "terrapack-output.txt" ;
      ] .
 
-:p105 a :SetField ;
-     :settings [
-          :field "contentField" ;
-          :value "content" ;
-     ] .
 
 :p110 a :FileWriter ;
      :settings :fileWriterConfig .
