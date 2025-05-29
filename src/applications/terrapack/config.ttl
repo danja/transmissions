@@ -26,13 +26,14 @@
               :post  "contentBlocks.slug"  .
 
 :accumulator a :ConfigSet ;
-    :loglevel "debug" ;
+   # :loglevel "debug" ;
     :sourceField "content" ;
     :targetField "accumulate" ;
     :label "terrapackContent" ;
     :accumulatorType "string" .
 
 :accToContent a :ConfigSet ;
+ :loglevel "debug" ;
     :rename (:f1)  .
         # for content
         :f1   :pre    "accumulate" ;
