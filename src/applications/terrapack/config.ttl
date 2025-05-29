@@ -8,11 +8,8 @@
     :st1   :pre     "targetDir" ;
             :post    "targetPath"  .
 
-:readConfig a :ConfigSet ;
-    :mediaType "text/plain" .
-
-#:containerConfig a :ConfigSet ;
- #   :destination "terrapack.config.json" .
+:templateFile a :ConfigSet ;
+    :templateFilename "file-template.njk" .
 
 :templateFields a :ConfigSet  ;
    # :remove "content" ; # tidy
@@ -34,16 +31,11 @@
 
 :accToContent a :ConfigSet ;
  :loglevel "debug" ;
-    :rename (:f1)  .
+    :rename (:a1)  .
         # for content
-        :f1   :pre    "accumulate" ;
+        :a1   :pre    "accumulate" ;
               :post "content" .
 
-:fileWriterConfig a :ConfigSet ;
-    :contentField "content" ;
-    :destinationFile "terrapack-output.txt" .
-
-#:writeConfig a :ConfigSet ;
- #   :loglevel "debug" ;
-  #  :contentField "accumulate" ;
-   # :destinationFile "terrapack-output.txt" .
+#fileWriterConfig a :ConfigSet ;
+#    :contentField "content" ;
+ #   :destinationFile "terrapack-output.txt" .

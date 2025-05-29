@@ -15,23 +15,20 @@
 :terrapack a :Transmission ;
     rdfs:label "Repository terrapack" ;
     :pipe (
-        :p10  # FileReader
-        :p20  # SetField (set fileSpec)
-        :p30  # FileLister
-       
-        :p40  # FileFilter
-           
-        :p50  # FileContentReader
-        :p55  # ShowMessage
-    
+        :p10  # FileReader read filter spec
+        :p20  # Restructure shift targetDir to targetPath
+        :p30  # DirWalker scan dirs
+        :p40  # FileFilter filter files
+        :p50  # FileReader read files
+        :p60  # Restructure set template fields
+        :p70  # Templater
         :p80  # Accumulate
-       #  :SM :DE
-        :p85  # Restructure
-        :p90  # ShowMessage
-        :p100 # SetField (set destinationFile)
+        :p90  # Restructure set content
+        :p100 # SetField set destinationFile
         :p110 # FileWriter
     ) .
 
+# Read the filter spec
 :p10 a :FileReader ;
      :settings [
           :sourceFile "input/files.spec.json" ;
@@ -39,6 +36,7 @@
           :targetField "fileSpec"
      ] .
 
+# targetDir -> targetPath TODO
 :p20 a :Restructure ;
      :settings :shiftTarget .
 
@@ -48,25 +46,19 @@
 
 :p50 a :FileReader .
 
-:p55 a :ShowMessage ;
-     :settings [ 
-          :alert "After FileReader (content)" 
-     ] .
+:p60 a :Restructure ;
+     :settings :templateFields .
+
+:p70 a :Templater ;
+     :settings :templateFile .
 
 # Accumulate processed content
 :p80 a :Accumulate ;
      :settings :accumulator .
 
 # Restructure to move accumulated content to the content field
-:p85 a :Restructure ;
+:p90 a :Restructure ;
      :settings :accToContent .
-
-
-:p90 a :ShowMessage ;
-     :settings [ 
-          :alert "After accumulating content" ;
-          :stringLimit "1000" 
-     ] .
 
 # Set the destination file
 :p100 a :SetField ;
@@ -75,6 +67,4 @@
           :value "terrapack-output.txt" ;
      ] .
 
-
-:p110 a :FileWriter ;
-     :settings :fileWriterConfig .
+:p110 a :FileWriter .
