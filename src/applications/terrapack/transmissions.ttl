@@ -23,8 +23,9 @@
            
         :p50  # FileContentReader
         :p55  # ShowMessage
-     :SM :DE
+    
         :p80  # Accumulate
+         :SM :DE
         :p85  # Restructure
         :p90  # ShowMessage
         :p100 # SetField (set destinationFile)
