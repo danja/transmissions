@@ -17,7 +17,7 @@
 ##################################################################
 
 :filefilter a :Transmission ;
-    :pipe (:p10 :p20 :p30 :p40 :SM) .
+    :pipe (:p10 :p20 :p30 :p40 :UF :SM) .
 
 :p10 a :FileReader ;
      :settings [
