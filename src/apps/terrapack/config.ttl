@@ -8,17 +8,17 @@
     :st1   :pre     "targetDir" ;
             :post    "targetPath"  .
 
-:templateContent a :ConfigSet ;
-    :templateFilename "input/file-template.njk" ;
-    :targetField "content" ;
-    :dataField "contentBlocks" .
+#:templateContent a :ConfigSet ;
+ #   :templateFilename "input/file-template.njk" ;
+  #  :targetField "content" ;
+   # :dataField "contentBlocks" .
 
 :templateFields a :ConfigSet  ;
    # :remove "content" ; # tidy
     :rename (:f1 :f2 :f3)  .
         # for content
-        :f1   :pre    "relPath" ;
-              :post "contentBlocks.filename"  .
+        :f1   :pre    "filepath" ;
+              :post "contentBlocks.filepath"  .
         :f2   :pre    "content" ;
               :post  "contentBlocks.content"  .
         :f3   :pre    "slug" ;

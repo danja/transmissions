@@ -1,1 +1,84 @@
-1HELLO12hello again2file2 content
+---
+File: input/2023-10-27_hello.md
+---
+
+---
+File: 
+---
+
+---
+File: 
+---
+
+1HELLO1
+
+---
+
+
+---
+
+
+---
+---
+File: input/2025-01-08_hello-again.md
+---
+
+---
+File: 
+---
+
+---
+File: 
+---
+
+2hello again2
+
+---
+
+
+---
+
+
+---
+---
+File: input/subdir/file2.md
+---
+
+---
+File: 
+---
+
+---
+File: 
+---
+
+file2 content
+
+---
+
+
+---
+
+
+---
+---
+File: input/subdir/subby.md
+---
+
+---
+File: 
+---
+
+---
+File: 
+---
+
+
+
+---
+
+
+---
+
+
+---

@@ -71,23 +71,45 @@ class Templater extends Processor {
         logger.debug(`\n\nTemplater.process`)
 
         // Determine which field on the message contains the template data (default: 'contentBlocks')
-        var dataField = this.getProperty(ns.trn.dataField, 'contentBlocks')
+        var dataField = super.getProperty(ns.trn.dataField, 'contentBlocks')
         logger.debug(`    dataField = ${dataField}`)
 
-        // Resolve the template file path using PathResolver utility
-        let filePath = await PathResolver.resolveFilePath({
-            message,
-            app: this.app,
-            getProperty: (prop, def) => this.getProperty(prop, def),
-            defaultFilePath: this.defaultFilePath,
-            sourceOrDest: ns.trn.templateFilename
-        })
+        // First try to get the template path directly from config
+        let filePath = super.getProperty(ns.trn.templateFilename, '')
 
-        logger.debug(`    using template file: ${filePath}`)
+        // If not found in config, try resolving through PathResolver
+        if (!filePath) {
+            const resolvedPath = await PathResolver.resolveFilePath({
+                message,
+                app: this.app,
+                getProperty: (prop, def) => super.getProperty(prop, def),
+                defaultFilePath: this.defaultFilePath,
+                sourceOrDest: ns.trn.templateFilename
+            });
+            filePath = resolvedPath || '';
+        }
+
+        logger.debug(`    using dataField: ${dataField}`);
+
+        // Ensure we have a valid file path
+        if (!filePath) {
+            throw new Error('No template file path specified');
+        }
+
+        // Ensure filePath is a string
+        const templatePath = Array.isArray(filePath) ? filePath[0] : filePath;
+
+        // Resolve the path relative to the working directory if it's not absolute
+        if (!path.isAbsolute(templatePath)) {
+            filePath = path.join(this.app.workingDir, templatePath);
+        } else {
+            filePath = templatePath;
+        }
 
         const dir = path.dirname(filePath);
         const filename = path.basename(filePath);
-
+        logger.debug(`    using template dir: ${dir}`)
+        logger.debug(`    using template filename: ${filename}`)
         // Configure Nunjucks to use the template directory
         nunjucks.configure(dir, { autoescape: false })
 
