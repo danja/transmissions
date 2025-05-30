@@ -1,4 +1,4 @@
-// src/index.js
+// src/index.js TODO complete jsdoc, do bundling
 /**
  * @fileoverview Transmissions Framework - Main namespace declarations
  * @author Danny Ayers <danny.ayers@gmail.com>
