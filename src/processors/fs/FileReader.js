@@ -1,3 +1,9 @@
+/**
+ * @module FileReader
+ * @memberof Transmissions.Processors.FileSystem
+ * @description Reads file contents from the filesystem and attaches them to the message.
+ */
+
 // src/processors/fs/FileReader.js
 
 import { readFile } from 'node:fs/promises'

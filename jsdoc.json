@@ -1,20 +1,58 @@
 {
     "source": {
         "include": [
-            "src"
+            "src",
+            "README.md"
         ],
         "exclude": [
-            "src/node_modules"
+            "src/node_modules",
+            "src/applications/*/data",
+            "src/tools/nodeflow/samples",
+            "**/node_modules/**",
+            "**/test/**",
+            "**/tests/**",
+            "**/spec/**",
+            "**/examples/**"
         ],
-        "includePattern": ".+\\.js(doc|x)?$",
-        "excludePattern": "(^|\\/|\\\\)_"
+        "includePattern": "\\.(js|mjs|jsx|ts|tsx|md)$",
+        "excludePattern": "(^|\\/|\\\\)(_|test|spec|copy|example|samples?)"
     },
     "opts": {
-        "verbose": true,
+        "template": "node_modules/better-docs",
+        "destination": "./docs/jsdoc",
+        "readme": "README.md",
         "recurse": true,
-        "destination": "./docs/jsdoc"
+        "verbose": true,
+        "tutorials": "./docs/jsdoc-tutorials"
     },
     "plugins": [
-        "plugins/markdown"
-    ]
+        "plugins/markdown",
+        "better-docs/category",
+        "better-docs/component"
+    ],
+    "templates": {
+        "better-docs": {
+            "name": "Transmissions Framework",
+            "title": "Transmissions - Dataflow Processing Framework",
+            "navigation": [
+                {
+                    "label": "GitHub",
+                    "href": "https://github.com/danja/transmissions"
+                }
+            ]
+        },
+        "search": true
+    },
+    "markdown": {
+        "parser": "gfm",
+        "hardwrap": false
+    },
+    "tags": {
+        "allowUnknownTags": [
+            "category",
+            "component",
+            "namespace",
+            "memberof"
+        ]
+    }
 }
