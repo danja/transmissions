@@ -60,6 +60,8 @@ class Accumulate extends Processor {
         const type = super.getProperty(ns.trn.accumulatorType, 'string')
         const acc = this.whiteboard.getAccumulator(label, type)
 
+        // should use ns.trn.processWhenDone somehow?
+
         if (message.done) {
             const targetField = super.getProperty(ns.trn.targetField, "accumulate")
             logger.trace(`targetField = ${targetField}`)

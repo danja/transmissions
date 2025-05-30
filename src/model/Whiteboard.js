@@ -20,18 +20,38 @@ class Whiteboard {
 
 
     accumulate(label, value) {
-        var acc = this.accumulators[label]
-        switch (typeof acc) {
-            case 'object':
-                this.accumulators[label].push(value)
-                break
-            case 'array':
-                this.accumulators[label].push(value)
-                break
-            default:
-                this.accumulators[label] = `${acc}${value}`
+        if (value === undefined || value === null) {
+            return this.accumulators[label];
         }
-        return this.accumulators[label]
+        
+        const acc = this.accumulators[label];
+        
+        // Handle array/object accumulation
+        if (Array.isArray(acc)) {
+            acc.push(value);
+        } 
+        // Handle string accumulation
+        else if (typeof acc === 'string' || acc === undefined) {
+            // Initialize if undefined
+            if (acc === undefined) {
+                this.accumulators[label] = '';
+            }
+            // Convert value to string and append
+            this.accumulators[label] += String(value);
+        } 
+        // Handle other object types
+        else if (acc !== null && typeof acc === 'object') {
+            if (Array.isArray(acc)) {
+                acc.push(value);
+            } else if (acc.push) {
+                acc.push(value);
+            } else {
+                // For plain objects, merge properties
+                Object.assign(acc, value);
+            }
+        }
+        
+        return this.accumulators[label];
     }
 
     getAccumulator(label, type) {
