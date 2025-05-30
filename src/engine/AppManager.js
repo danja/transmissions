@@ -19,7 +19,7 @@ class AppManager {
     constructor() {
         // Load environment variables from .env files
         config()
-        
+
         this.moduleLoader = null
         this.app = null
     }
@@ -82,12 +82,12 @@ class AppManager {
 
     async initWorkerPool() {
         logger.debug(`\nAppManager.initWorkerPool`)
-        
+
         // Check environment variables for worker configuration
         const useWorkers = process.env.TRANSMISSIONS_USE_WORKERS === 'true'
         const workerModule = process.env.TRANSMISSIONS_WORKER_MODULE
         const workerPoolSize = parseInt(process.env.TRANSMISSIONS_WORKER_POOL_SIZE) || 2
-        
+
         if (useWorkers && workerModule) {
             try {
                 // Resolve worker module path relative to project root
@@ -139,13 +139,13 @@ class AppManager {
             }
         }
         message.success = true
-        
+
         // Clean up worker pool if it exists
         if (this.app.workerPool) {
             logger.debug('Terminating worker pool...')
             this.app.workerPool.terminate()
         }
-        
+
         // logger.reveal(message)
         return message //{ success: true }
     }
@@ -224,7 +224,7 @@ class AppManager {
             const validApps = (await Promise.all(subdirChecks)).filter(Boolean)
             return validApps
         } catch (err) {
-            logger.error('Error listing applications:', err)
+            logger.error('Error listing apps:', err)
             return []
         }
     }

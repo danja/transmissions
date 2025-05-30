@@ -2,7 +2,7 @@ import logger from './Logger.js'
 
 class MockAppManager {
     constructor() {
-        this.appsDir = 'src/applications'
+        this.appsDir = 'src/apps'
         logger.debug('MockAppManager: Created new instance')
     }
 
@@ -42,10 +42,10 @@ class MockAppManager {
         }
     }
 
-    async listApplications() {
-        logger.debug('MockAppManager.listApplications()')
+    async listapps() {
+        logger.debug('MockAppManager.listapps()')
 
-        // Return mock list of applications
+        // Return mock list of apps
         return [
             'test_app1',
             'test_app2',

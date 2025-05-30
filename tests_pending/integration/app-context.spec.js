@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename)
 
 describe('Application Context Integration', () => {
     let manager
-    const testAppRoot = path.join(__dirname, '../../src/applications/test_app_context')
+    const testAppRoot = path.join(__dirname, '../../src/apps/test_app_context')
     const testTarget = path.join(testAppRoot, 'target')
 
     beforeEach(async () => {

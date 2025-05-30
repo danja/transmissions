@@ -50,8 +50,8 @@ async function runCommand(command, options) {
 }
 
 describe('Application Integration Tests', function () {
-    it('should run test applications', async function () {
-        const testApps = await glob(path.join(rootDir, 'src/applications/test_*'))
+    it('should run test apps', async function () {
+        const testApps = await glob(path.join(rootDir, 'src/apps/test_*'))
         expect(testApps.length).to.be.greaterThan(0)
 
         for (const appDir of testApps) {

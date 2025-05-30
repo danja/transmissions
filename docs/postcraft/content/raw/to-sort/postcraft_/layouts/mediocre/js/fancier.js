@@ -15,7 +15,7 @@ themeSelect.addEventListener('change', () => {
     }
 });
 
-// https://www.freecodecamp.org/news/use-local-storage-in-modern-applications/#heading-code-example-for-local-storage
+// https://www.freecodecamp.org/news/use-local-storage-in-modern-apps/#heading-code-example-for-local-storage
 
 /*
 themeSelect.addEventListener('change', () => {

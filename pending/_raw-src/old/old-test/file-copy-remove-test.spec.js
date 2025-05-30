@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const testDir = path.resolve(__dirname, '../../src/applications/file-copy-remove-test/data');
+const testDir = path.resolve(__dirname, '../../src/apps/file-copy-remove-test/data');
 
 async function setupInitialStructure() {
     const startDir = path.join(testDir, 'start');

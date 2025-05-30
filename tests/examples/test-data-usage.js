@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename);
 async function generateTestData() {
     // Create generator instance
     const generator = new TestDataGenerator(
-        path.join(__dirname, '../../src/applications/test_markmap/data')
+        path.join(__dirname, '../../src/apps/test_markmap/data')
     );
 
     try {

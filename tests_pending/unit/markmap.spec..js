@@ -1,9 +1,9 @@
-import MarkMap from '../../../src/applications/markmap/processors/MarkMap.js';
+import MarkMap from '../../../src/apps/markmap/processors/MarkMap.js';
 import { expect } from 'chai';
 
 describe('MarkMap', () => {
     let markMap;
-    
+
     beforeEach(() => {
         markMap = new MarkMap({});
     });

@@ -25,7 +25,7 @@
         "requiredMatchCount": 1
     },
     {
-        "command": "./trans config-setting-target tests/applications/config-setting-target",
+        "command": "./trans config-setting-target tests/apps/config-setting-target",
         "label": "config-setting-target",
         "description": "remote tt.ttl target",
         "requiredMatchCount": 1
@@ -33,35 +33,35 @@
     {
         "command": "./trans accumulate -m '{\"foreach\": [\"first TEST_PASSED\", \"second TEST_PASSED\", \"third TEST_PASSED\"]}'",
         "label": "stringops",
-        "description": "test accumulate application",
+        "description": "test accumulate app",
         "requiredMatchCount": 6
     },
     {
         "command": "./trans system/echo -m '{\"message\":\"Hello, World, TEST_PASSED!\"}'",
         "label": "echo",
-        "description": "test echo application",
+        "description": "test echo app",
         "requiredMatchCount": 1
     },
     {
         "command": "./trans filereader",
         "label": "filereader",
-        "description": "test filereader application",
+        "description": "test filereader app",
         "requiredMatchCount": 1
     },
     {
         "command": "./trans filecopy",
         "label": "filecopy",
-        "description": "test filecopy application",
+        "description": "test filecopy app",
         "requiredMatchCount": 1
     },
     {
         "command": "./trans dirwalker",
         "label": "dirwalker",
-        "description": "test dirwalker application",
+        "description": "test dirwalker app",
         "requiredMatchCount": 2
     },
     {
-        "command": " ./trans dirwalker tests/applications/example.org",
+        "command": " ./trans dirwalker tests/apps/example.org",
         "label": "dirwalker with target",
         "description": "test dirwalker with target",
         "requiredMatchCount": 2
@@ -69,25 +69,25 @@
     {
         "command": "./trans filefilter",
         "label": "filefilter",
-        "description": "test filefilter application",
+        "description": "test filefilter app",
         "requiredMatchCount": 6
     },
     {
         "command": "./trans foreach -m '{\"foreach\": [\"first TEST_PASSED\", \"second TEST_PASSED\", \"third TEST_PASSED\"]}'",
         "label": "foreach",
-        "description": "test foreach application",
+        "description": "test foreach app",
         "requiredMatchCount": 3
     },
     {
         "command": "./trans restructure",
         "label": "restructurer",
-        "description": "test restructure application",
+        "description": "test restructure app",
         "requiredMatchCount": 1
     },
     {
-        "command": "./trans restructure src/applications/test/restructure/target",
+        "command": "./trans restructure src/apps/test/restructure/target",
         "label": "restructurer+target",
-        "description": "test restructure application with target",
+        "description": "test restructure app with target",
         "requiredMatchCount": 2
     },
     {
@@ -105,7 +105,7 @@
     {
         "command": "./trans  pathops -m '{\"fields\": {\"fieldB\" : \"TEST\",\"fieldC\":\"_PASSED\"}}'",
         "label": "pathops",
-        "description": "test pathops application",
+        "description": "test pathops app",
         "requiredMatchCount": 4
     },
     {

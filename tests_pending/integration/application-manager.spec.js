@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename)
 
 describe('ApplicationManager Integration', () => {
     let manager
-    const testAppRoot = path.join(__dirname, '../../src/applications/test_app_manager')
+    const testAppRoot = path.join(__dirname, '../../src/apps/test_app_manager')
     const testTarget = path.join(testAppRoot, 'target')
 
     beforeEach(async () => {

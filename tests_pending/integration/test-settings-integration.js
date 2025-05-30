@@ -4,10 +4,10 @@ import { fileURLToPath } from 'url'
 import { exec } from 'child_process'
 import fs from 'fs/promises'
 
-describe('TestSettings Integration', function() {
+describe('TestSettings Integration', function () {
     const __filename = fileURLToPath(import.meta.url)
     const __dirname = path.dirname(__filename)
-    const testDir = path.join(__dirname, '../../src/applications/test_config-settings')
+    const testDir = path.join(__dirname, '../../src/apps/test_config-settings')
 
     // Verify test files exist before running
     beforeAll(async () => {
@@ -55,7 +55,7 @@ describe('TestSettings Integration', function() {
     // Test configuration error cases
     it('should handle missing configuration gracefully', (done) => {
         const badConfigPath = path.join(testDir, 'missing-config.ttl')
-        
+
         exec(`node src/api/cli/run.js test_config-settings -c ${badConfigPath}`, {
             cwd: path.resolve(__dirname, '../..')
         }, (error, stdout, stderr) => {
@@ -75,7 +75,7 @@ describe('TestSettings Integration', function() {
                 expect(stdout).to.include('inherited setting')
                 done()
             } catch (err) {
-                done(err) 
+                done(err)
             }
         })
     })

@@ -6,7 +6,7 @@
 
 /**
  * @namespace Transmissions
- * @description Dataflow processing framework for JavaScript applications.
+ * @description Dataflow processing framework for JavaScript apps.
  * 
  * Transmissions provides a pipeline-based architecture for processing data through
  * chains of interconnected processors defined using RDF/Turtle configuration files.

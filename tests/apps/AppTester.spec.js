@@ -13,7 +13,7 @@ describe('AppTester', () => {
     const __filename = fileURLToPath(import.meta.url)
     const __dirname = path.dirname(__filename)
     const logFile = path.join(__dirname, '../../latest.log')
-    const commandsFile = path.join(__dirname, 'applications.json') // JSON file for commands
+    const commandsFile = path.join(__dirname, 'apps.json') // JSON file for commands
 
     const testRegex = /TEST_PASSED/g
 

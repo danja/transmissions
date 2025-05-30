@@ -11,7 +11,7 @@ describe('Application', () => {
 
     describe('constructor', () => {
         it('should initialize with default values', () => {
-            expect(app.appsDir).to.equal('src/applications')
+            expect(app.appsDir).to.equal('src/apps')
             expect(app.transmissionFilename).to.equal('transmissions.ttl')
             expect(app.configFilename).to.equal('config.ttl')
             expect(app.appName).to.be.null

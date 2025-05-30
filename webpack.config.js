@@ -97,9 +97,9 @@ export default {
     }),
     new CopyPlugin({
       patterns: [
-        { from: 'src/applications/intro', to: 'samples' },
+        { from: 'src/apps/intro', to: 'samples' },
         { from: path.resolve(__dirname, 'src/tools/nodeflow/samples'), to: 'samples' },
-        { from: 'src/applications/example-application', to: 'samples/example-application' }
+        { from: 'src/apps/example-application', to: 'samples/example-application' }
       ]
     })
   ],

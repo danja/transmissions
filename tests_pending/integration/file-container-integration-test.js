@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 describe('FileContainer Integration', () => {
-    const testDir = path.join(__dirname, '../../src/applications/test_file-container/data');
+    const testDir = path.join(__dirname, '../../src/apps/test_file-container/data');
     const inputDir = path.join(testDir, 'input');
     const outputDir = path.join(testDir, 'output');
 

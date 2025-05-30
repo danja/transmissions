@@ -1,5 +1,5 @@
 class Defaults {
-    static appsDir = 'src/applications'
+    static appsDir = 'src/apps'
     static moduleSubDir = 'processors'
     static workingDir = 'data'
 

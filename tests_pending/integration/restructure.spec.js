@@ -8,7 +8,7 @@ import fs from 'fs/promises'
 describe('test_restructure', function () {
     const __filename = fileURLToPath(import.meta.url)
     const __dirname = path.dirname(__filename)
-    const workingDir = path.join(__dirname, '../../src/applications/test_restructure/data')
+    const workingDir = path.join(__dirname, '../../src/apps/test_restructure/data')
 
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000
 

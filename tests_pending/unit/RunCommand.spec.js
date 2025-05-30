@@ -5,7 +5,7 @@ import path from 'path'
 
 describe('RunCommand', function () {
     let runCommand
-    const workingDir = 'src/applications/test_runcommand/data'
+    const workingDir = 'src/apps/test_runcommand/data'
 
     beforeEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 3000

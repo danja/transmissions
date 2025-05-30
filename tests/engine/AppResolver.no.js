@@ -20,7 +20,7 @@ describe('AppResolver', () => {
 
     describe('#constructor', () => {
         it('should initialize with default paths', () => {
-            expect(resolver.appsDir).toBe('src/applications')
+            expect(resolver.appsDir).toBe('src/apps')
             expect(resolver.transmissionFilename).toBe('transmissions.ttl')
             expect(resolver.configFilename).toBe('config.ttl')
             expect(resolver.appName).toBeNull()
@@ -155,7 +155,7 @@ describe('AppResolver', () => {
             const result = await resolver.resolveApplicationPath('test-app')
 
             expect(result).toBe('/found/app/path')
-            expect(resolver.findInDirectory).toHaveBeenCalledWith('/current/dir/src/applications', 'test-app')
+            expect(resolver.findInDirectory).toHaveBeenCalledWith('/current/dir/src/apps', 'test-app')
         })
 
         it('should throw if application cannot be found', async () => {

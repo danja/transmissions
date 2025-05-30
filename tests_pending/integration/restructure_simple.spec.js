@@ -9,8 +9,8 @@ describe('restructure simple test', function () {
     const __dirname = path.dirname(__filename)
     const rootDir = path.resolve(__dirname, '../../')
 
-    const outputFile = path.join(rootDir, 'src/applications/test_restructure/data/output/output-01.json')
-    const requiredFile = path.join(rootDir, 'src/applications/test_restructure/data/output/required-01.json')
+    const outputFile = path.join(rootDir, 'src/apps/test_restructure/data/output/output-01.json')
+    const requiredFile = path.join(rootDir, 'src/apps/test_restructure/data/output/required-01.json')
 
     beforeEach(async () => {
         try {
@@ -23,7 +23,7 @@ describe('restructure simple test', function () {
     it('should process JSON file correctly', async () => {
         console.log('Running restructure test')
         // Run the simple restructure script
-        await import('../../src/applications/test_restructure/simple.js')
+        await import('../../src/apps/test_restructure/simple.js')
 
         // Read and parse both files
         const output = JSON.parse(await fs.readFile(outputFile, 'utf8'))

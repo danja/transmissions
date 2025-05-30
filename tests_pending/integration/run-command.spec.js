@@ -7,7 +7,7 @@ import fs from 'fs/promises'
 describe('run-command test', function () {
     const __filename = fileURLToPath(import.meta.url)
     const __dirname = path.dirname(__filename)
-    const testDir = path.resolve(__dirname, '../../src/applications/test_run-command')
+    const testDir = path.resolve(__dirname, '../../src/apps/test_run-command')
 
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000
 

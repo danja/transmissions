@@ -12,7 +12,7 @@ describe('file-transmission', function () {
     const __dirname = path.dirname(__filename)
     const rootDir = path.resolve(__dirname, '../../')
 
-    const dataFile = footpath.resolve(import.meta.url, '../../src/applications/file-transmission/data/', 'output.txt')
+    const dataFile = footpath.resolve(import.meta.url, '../../src/apps/file-transmission/data/', 'output.txt')
     console.log('in file-transmission.spec.js dataFile = ' + dataFile)
     it('produces correct output', function (done) {
         // Delete the output file if it exists

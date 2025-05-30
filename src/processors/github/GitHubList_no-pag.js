@@ -6,7 +6,7 @@ import logger from '../../utils/Logger.js'
 import Processor from '../../model/Processor.js'
 
 // Load environment variables
-dotenv.config({ path: './trans-apps/applications/git-apps/.env' })
+dotenv.config({ path: './trans-apps/apps/git-apps/.env' })
 
 if (!process.env.GITHUB_TOKEN) {
     throw new Error('GITHUB_TOKEN environment variable is required')
@@ -110,7 +110,7 @@ class GitHubList extends Processor {
         if (!message?.github?.name) {
             const errorMsg = 'GitHub username not provided in the message. Expected message.github.name'
             logger.error(errorMsg)
-            throw new GitHubError(errorMsg, { 
+            throw new GitHubError(errorMsg, {
                 code: 'MISSING_USERNAME',
                 details: { field: 'message.github.name' }
             })
@@ -143,16 +143,16 @@ class GitHubList extends Processor {
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : String(error)
             const errorStatus = typeof error === 'object' && error !== null ? (error as any).status : undefined
-            
+
             let githubError;
             const errorMsg = `Failed to fetch repositories for ${username}: ${errorMessage}`
             logger.error(errorMsg)
-            
+
             if (errorStatus === 403) {
                 const rateLimitMsg = 'GitHub API rate limit exceeded. Please check your token limits.'
                 logger.warn(rateLimitMsg)
                 githubError = new GitHubError(
-                    `${errorMessage}. ${rateLimitMsg}`, 
+                    `${errorMessage}. ${rateLimitMsg}`,
                     {
                         status: errorStatus,
                         code: 'RATE_LIMIT_EXCEEDED',
@@ -176,14 +176,14 @@ class GitHubList extends Processor {
                     {
                         status: errorStatus,
                         code: 'API_ERROR',
-                        details: { 
+                        details: {
                             username,
                             message: errorMessage
                         }
                     }
                 )
             }
-            
+
             throw githubError
         }
     }

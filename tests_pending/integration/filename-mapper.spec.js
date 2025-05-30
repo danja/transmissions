@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 describe('filename-mapper test', () => {
-    const workingDir = path.join(__dirname, '../../src/applications/test_filename-mapper/data');
+    const workingDir = path.join(__dirname, '../../src/apps/test_filename-mapper/data');
     const inputDir = path.join(workingDir, 'input');
     const outputDir = path.join(workingDir, 'output');
 

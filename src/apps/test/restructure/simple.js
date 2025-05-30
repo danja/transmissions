@@ -1,4 +1,4 @@
-// src/applications/test_restructure/simple.js
+// src/apps/test_restructure/simple.js
 
 import AppManager from '../../../engine/AppManager.js'
 import logger from '../../../utils/Logger.js'
@@ -10,8 +10,8 @@ logger.setLogLevel('debug')
 
 const config = {
     "simples": "true",
-    "workingDir": "src/applications/test/restructure/data",
-            "sourceFile": "input/input-01.json",
+    "workingDir": "src/apps/test/restructure/data",
+    "sourceFile": "input/input-01.json",
     "destinationFile": "output/output-01.json",
     "mediaType": "application/json",
     "rename": [{
@@ -28,9 +28,9 @@ const config = {
 
 const app = AppManager.simpleApp(config)
 
-var message = { 
+var message = {
 
- }
+}
 
 const read = new FileReader(app)
 message = await read.process(message)
