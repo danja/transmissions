@@ -8,8 +8,10 @@
     :st1   :pre     "targetDir" ;
             :post    "targetPath"  .
 
-:templateFile a :ConfigSet ;
-    :templateFilename "file-template.njk" .
+:templateContent a :ConfigSet ;
+    :templateFilename "input/file-template.njk" ;
+    :targetField "content" ;
+    :dataField "contentBlocks" .
 
 :templateFields a :ConfigSet  ;
    # :remove "content" ; # tidy

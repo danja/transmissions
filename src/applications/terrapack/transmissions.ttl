@@ -22,6 +22,7 @@
         :p50  # FileReader read files
         :p60  # Restructure set template fields
         :p70  # Templater
+        :SM :DE
         :p80  # Accumulate
         :p90  # Restructure set content
         :p100 # SetField set destinationFile
@@ -50,7 +51,7 @@
      :settings :templateFields .
 
 :p70 a :Templater ;
-     :settings :templateFile .
+     :settings :templateContent .
 
 # Accumulate processed content
 :p80 a :Accumulate ;

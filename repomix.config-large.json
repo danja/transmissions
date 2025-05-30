@@ -11,6 +11,7 @@
         "useGitignore": true,
         "useDefaultPatterns": true,
         "customPatterns": [
+            "tests",
             "references",
             "tests_pending",
             "src/applications/test",
