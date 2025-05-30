@@ -1,4 +1,4 @@
-`src/applications/md-to-sparqlstore/data/input/input.md`
+`src/apps/md-to-sparqlstore/data/input/input.md`
 
 # First Article
 

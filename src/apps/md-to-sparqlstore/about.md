@@ -1,4 +1,4 @@
-`src/applications/md-to-sparqlstore/about.md`
+`src/apps/md-to-sparqlstore/about.md`
 
 # Application 'md-to-sparqlstore'
 
@@ -39,7 +39,7 @@ Data looks something like :
 
 TODO complete -
 
-src/applications/test_file-to-sparqlstore
+src/apps/test_file-to-sparqlstore
 ├── about.md
 ├── config.ttl
 ├── data

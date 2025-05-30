@@ -8,7 +8,7 @@
 - **SPARQLProcessorsFactory.js**: Factory for processor instantiation
 
 ### 2. Test Application
-- Location: src/applications/test_file-to-sparqlstore/
+- Location: src/apps/test_file-to-sparqlstore/
 - Purpose: End-to-end testing of SPARQL integration
 - Integration with FileReader for markdown processing
 

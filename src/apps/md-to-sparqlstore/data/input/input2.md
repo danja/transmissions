@@ -1,4 +1,4 @@
-`src/applications/md-to-sparqlstore/data/input/input2.md`
+`src/apps/md-to-sparqlstore/data/input/input2.md`
 
 # Second Article
 

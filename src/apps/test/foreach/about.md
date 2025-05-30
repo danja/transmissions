@@ -57,8 +57,8 @@ Each message emitted will be a structuredClone of the input message.
 Once this code is completed, create application definitions in the form of these examples :
 
 ```sh
-transmissions/src/applications/test_fork/transmissions.ttl
-transmissions/src/applications/test_fork/processors-config.ttl
+transmissions/src/apps/test_fork/transmissions.ttl
+transmissions/src/apps/test_fork/processors-config.ttl
 ```
 
 After you have finished all these, re-read the high level Goal and taking each of your derived subgoals in turn, review your code to ensure that it fulfils the requirements.

@@ -2,7 +2,7 @@
 
 The server components start a long-running http process. When called with a HTTP POST the payload will be processed by the app. 
 
-For example using the app defined in `src/applications/test/echo`, the command 
+For example using the app defined in `src/apps/test/echo`, the command 
 ```sh
 ./trans -w -p 5000 echo
 ```

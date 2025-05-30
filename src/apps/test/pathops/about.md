@@ -1,4 +1,4 @@
-`src/applications/test/stringops/about.md`
+`src/apps/test/stringops/about.md`
 
 # Test Transmissions for StringOps Processor
 

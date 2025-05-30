@@ -1,4 +1,4 @@
-`src/applications/example-application/about.md`
+`src/apps/example-application/about.md`
 
 # Example Application `about.md`
 

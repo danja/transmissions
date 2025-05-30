@@ -1,4 +1,4 @@
-`src/applications/test/nop/about.md`
+`src/apps/test/nop/about.md`
 
 # About test/nop
 

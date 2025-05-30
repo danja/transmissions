@@ -1,4 +1,4 @@
-# src/applications/example-application/config.ttl
+# src/apps/example-application/config.ttl
 
 # MOST SETTINGS WILL BE FILLED IN WITH TARGET tt.ttl
 # BEWARE OF NAMED CRUFT!!!

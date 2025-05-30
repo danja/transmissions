@@ -1,4 +1,4 @@
-# src/applications/test/nop/config.ttl
+# src/apps/test/nop/config.ttl
 
 # UNUSED
 

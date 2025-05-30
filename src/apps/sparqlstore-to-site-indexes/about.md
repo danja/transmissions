@@ -1,4 +1,4 @@
-`src/applications/sparqlstore-to-site-indexes/about.md`
+`src/apps/sparqlstore-to-site-indexes/about.md`
 
 # sparqlstore-to-site-indexes Application `about.md`
 

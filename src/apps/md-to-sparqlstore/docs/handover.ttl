@@ -41,7 +41,7 @@ trn:SPARQLUpdate a code:Processor ;
 # Test Application
 trn:TestApp a code:Application ;
     dcterms:title "SPARQL Store Test" ;
-    code:location "/src/applications/test_file-to-sparqlstore/" ;
+    code:location "/src/apps/test_file-to-sparqlstore/" ;
     code:uses trn:SPARQLSelect, trn:SPARQLUpdate ;
     code:hasConfig trn:EndpointConfig .
 

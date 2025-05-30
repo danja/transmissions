@@ -1,4 +1,4 @@
-`src/applications/test/file-to-sparqlstore/about.md`
+`src/apps/test/file-to-sparqlstore/about.md`
 
 NOT IN INTEGRATION TESTS
 
@@ -43,7 +43,7 @@ Data looks something like :
 
 TODO complete -
 
-src/applications/test_file-to-sparqlstore
+src/apps/test_file-to-sparqlstore
 ├── about.md
 ├── config.ttl
 ├── data

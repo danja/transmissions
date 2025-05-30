@@ -23,7 +23,7 @@
 /**
  * @namespace Transmissions.Engine
  * @memberof Transmissions
- * @description Core engine components for managing applications and transmissions.
+ * @description Core engine components for managing apps and transmissions.
  * 
  * Contains the fundamental classes that handle application lifecycle,
  * transmission building, module loading, and execution coordination.

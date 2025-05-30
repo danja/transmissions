@@ -1,4 +1,4 @@
-`src/applications/sparqlstore-to-html/about.md`
+`src/apps/sparqlstore-to-html/about.md`
 
 # sparqlstore-to-html
 

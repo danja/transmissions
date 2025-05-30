@@ -1,4 +1,4 @@
-when I do Load TTL in the editor and point it to @src/applications/trial/transmissions.ttl it should refresh the view with the loaded data
+when I do Load TTL in the editor and point it to @src/apps/trial/transmissions.ttl it should refresh the view with the loaded data
 
 # Transmission Pipeline Editor
 

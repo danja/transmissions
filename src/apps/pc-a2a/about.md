@@ -2,7 +2,7 @@
 
 publish a2a
 
-`src/applications/postcraft-statics/about.md`
+`src/apps/postcraft-statics/about.md`
 
 # Example Application `about.md`
 

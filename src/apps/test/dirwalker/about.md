@@ -8,7 +8,7 @@ cd ~/hyperdata/transmissions  # my local path
 ./trans dirwalker
 ```
 
-Defaults to `dataDir`, which defaults to `src/applications/test/dirwalker/data`
+Defaults to `dataDir`, which defaults to `src/apps/test/dirwalker/data`
 
 ```sh
  ./trans -v dirwalker |grep message.filepath

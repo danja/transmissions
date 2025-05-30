@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Transmissions API
   version: '1.0.0'
-  description: API for running Transmissions applications
+  description: API for running Transmissions apps
 
 servers:
   - url: http://localhost:4200/api
@@ -30,12 +30,12 @@ paths:
                     type: string
                     example: 'running'
 
-  /applications:
+  /apps:
     get:
-      summary: List available applications
+      summary: List available apps
       responses:
         '200':
-          description: List of available applications
+          description: List of available apps
           content:
             application/json:
               schema:
@@ -43,13 +43,13 @@ paths:
                 properties:
                   success:
                     type: boolean
-                  applications:
+                  apps:
                     type: array
                     items:
                       type: string
                 example:
                   success: true
-                  applications: ['system/echo', 'test/example']
+                  apps: ['system/echo', 'test/example']
         '500':
           $ref: '#/components/responses/Error'
 

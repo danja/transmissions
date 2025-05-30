@@ -1,6 +1,6 @@
-`src/applications/system/echo/about.md`
+`src/apps/system/echo/about.md`
 
-src/applications/system/echo
+src/apps/system/echo
 
 # Example Application `about.md`
 

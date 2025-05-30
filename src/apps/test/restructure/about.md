@@ -8,7 +8,7 @@ Run with :
 cd ~/hyperdata/transmissions/ # local path of repo
 ./trans restructure
 
-./trans  restructure src/applications/test/restructure/manifest
+./trans  restructure src/apps/test/restructure/manifest
 
 ```
 
@@ -20,19 +20,19 @@ cd ~/hyperdata/transmissions/ # local path of repo
 Reads :
 
 ```sh
-src/applications/test_restructure/data/output/input-01.json
+src/apps/test_restructure/data/output/input-01.json
 ```
 
 as a message, restructures it according to config, then writes the result to :
 
 ```sh
-src/applications/test_restructure/data/output/output-01.json
+src/apps/test_restructure/data/output/output-01.json
 ```
 
 the tests compare the new file with :
 
 ```sh
-src/applications/test_restructure/data/output/required-01.json
+src/apps/test_restructure/data/output/required-01.json
 ```
 
 ```sh
@@ -42,7 +42,7 @@ cd ~/hyperdata/transmissions/ # my local path
 ./trans test_restructure
 
 # run as simples
-node src/applications/test_restructure/simple.js
+node src/apps/test_restructure/simple.js
 
 ## Tests in tests/integration
 
@@ -57,7 +57,7 @@ npm test -- --filter="restructure_simple test"
 
 ```sh
 cd ~/hyperdata/transmissions/
-./trans test_restructure -P ./src/applications/test_restructure/input/input-01.json
+./trans test_restructure -P ./src/apps/test_restructure/input/input-01.json
 ```
 
 ---

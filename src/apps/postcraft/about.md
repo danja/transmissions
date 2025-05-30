@@ -1,14 +1,14 @@
 #:todo combine the separate transmissions here
 
-`src/applications/example-application/about.md`
+`src/apps/example-application/about.md`
 
 ```sh
 cd ~/hyperdata/transmissions # my local path
 ./del2.sh
-./trans postcraft-statics tests/applications/example.org
-./trans md-to-sparqlstore tests/applications/example.org
-./trans sparqlstore-to-html tests/applications/example.org
-./trans sparqlstore-to-site-indexes tests/applications/example.org
+./trans postcraft-statics tests/apps/example.org
+./trans md-to-sparqlstore tests/apps/example.org
+./trans sparqlstore-to-html tests/apps/example.org
+./trans sparqlstore-to-site-indexes tests/apps/example.org
 ```
 
 ```sh
