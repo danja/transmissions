@@ -32,7 +32,7 @@
     :accumulatorType "string" .
 
 :accToContent a :ConfigSet ;
- :loglevel "debug" ;
+# :loglevel "debug" ;
     :rename (:a1)  .
         # for content
         :a1   :pre    "accumulate" ;

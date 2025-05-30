@@ -22,8 +22,6 @@
         :p50  # FileReader read files
         :p60  # Restructure set template fields
         :p70  # Templater
-        :p75  # ShowMessage
-    #    :DE
         :p80  # Accumulate
         :p90  # Restructure set content
         :p100 # SetField set destinationFile
@@ -53,20 +51,17 @@
 
 :p70 a :Templater ;
      :settings [
-          :loglevel "debug" ;
+      #    :loglevel "debug" ;
           :templateFilename "input/file-template.njk" ;
           :targetField "content" ;
           :dataField "contentBlocks"
      ] .
 
-:p75 a :ShowMessage ;
-     :settings [
-          :alert "After Templater"
-     ] .
-
 # Accumulate processed content
 :p80 a :Accumulate ;
      :settings :accumulator .
+
+:p85 a :Unfork .
 
 # Restructure to move accumulated content to the content field
 :p90 a :Restructure ;

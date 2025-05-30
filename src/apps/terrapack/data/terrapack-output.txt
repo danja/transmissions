@@ -2,139 +2,27 @@
 File: input/2023-10-27_hello.md
 ---
 
----
-File: input/2023-10-27_hello.md
----
-
----
-File: input/2023-10-27_hello.md
----
-
----
-File: 
----
-
----
-File: 
----
-
-1HELLO1
-
----
-
-
----
-
-
----
-
-
----
-
+hello
 
 ---
 ---
 File: input/2025-01-08_hello-again.md
 ---
 
----
-File: input/2025-01-08_hello-again.md
----
-
----
-File: input/2025-01-08_hello-again.md
----
-
----
-File: 
----
-
----
-File: 
----
-
-2hello again2
-
----
-
-
----
-
-
----
-
-
----
-
+hello again
 
 ---
 ---
 File: input/subdir/file2.md
 ---
 
----
-File: input/subdir/file2.md
----
-
----
-File: input/subdir/file2.md
----
-
----
-File: 
----
-
----
-File: 
----
-
-file2 content
-
----
-
-
----
-
-
----
-
-
----
-
+FILE2
 
 ---
 ---
 File: input/subdir/subby.md
 ---
 
----
-File: input/subdir/subby.md
----
-
----
-File: input/subdir/subby.md
----
-
----
-File: 
----
-
----
-File: 
----
-
-
-
----
-
-
----
-
-
----
-
-
----
-
+SUBBY
 
 ---

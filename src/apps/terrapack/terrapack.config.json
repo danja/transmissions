@@ -8,6 +8,7 @@
             "**/*.md"
         ],
         "exclude": [
+            "**/*.txt",
             "**/*.log",
             "**/node_modules",
             "**/test",

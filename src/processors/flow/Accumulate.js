@@ -73,7 +73,7 @@ class Accumulate extends Processor {
         const sourceField = super.getProperty(ns.trn.sourceField, "currentItem")
         const sourceValue = JSONUtils.get(message, sourceField)
         this.whiteboard.accumulate(label, sourceValue)
-        logger.trace(`partial acc = ${acc}`)
+        logger.log(`partial acc = ${acc}`)
         return this.emit('message', message)
     }
 }
