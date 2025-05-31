@@ -1,0 +1,63 @@
+classDiagram
+    class App {
+        <<singleton>>
+        +datasets: Datasets
+        +appNode: NamedNode
+        +sessionNode: Term
+        +initDataset(appName, sessionNode)
+        +mergeIn(dataset)
+    }
+    
+    class Datasets {
+        +datasets: Map
+        +loadDataset(label, path)
+        +dataset(label)
+    }
+    
+    class Transmission {
+        +processors: Object
+        +connectors: Connector[]
+        +parent: Transmission
+        +children: Set~Transmission~
+        +whiteboard: Whiteboard
+        +process(message)
+        +register(name, instance)
+        +connect(from, to)
+    }
+    
+    class Connector {
+        +fromName: string
+        +toName: string
+        +connect(processors)
+    }
+    
+    class Processor {
+        +app: App
+        +whiteboard: Whiteboard
+        +process(message)
+        +receive(message)
+        +emit(event, message)
+    }
+    
+    class SlowableProcessor {
+        +preProcess(message)
+    }
+    
+    class Whiteboard {
+        <<singleton>>
+        +cache: Object
+        +accumulators: Object
+        +put(key, value)
+        +get(key)
+        +accumulate(label, value)
+    }
+    
+    App ||--o Datasets : contains
+    Transmission ||--o{ Connector : manages
+    Transmission ||--o{ Processor : contains
+    Transmission ||--o{ Transmission : nested
+    Transmission ||--|| Whiteboard : shares
+    Processor ||--|| App : references
+    Processor ||--|| Whiteboard : accesses
+    SlowableProcessor --|> Processor : extends
+    Connector --> Processor : links

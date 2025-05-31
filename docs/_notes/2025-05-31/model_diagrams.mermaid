@@ -1,0 +1,99 @@
+---
+title: Model Class Relationships
+---
+classDiagram
+    class App {
+        <<singleton>>
+        +datasets: Datasets
+        +appNode: NamedNode
+        +sessionNode: Term
+        +initDataset(appName, sessionNode)
+        +mergeIn(dataset)
+    }
+    
+    class Datasets {
+        +datasets: Map
+        +loadDataset(label, path)
+        +dataset(label)
+    }
+    
+    class Transmission {
+        +processors: Object
+        +connectors: Connector[]
+        +parent: Transmission
+        +children: Set~Transmission~
+        +whiteboard: Whiteboard
+        +process(message)
+        +register(name, instance)
+        +connect(from, to)
+    }
+    
+    class Connector {
+        +fromName: string
+        +toName: string
+        +connect(processors)
+    }
+    
+    class Processor {
+        +app: App
+        +whiteboard: Whiteboard
+        +process(message)
+        +receive(message)
+        +emit(event, message)
+    }
+    
+    class SlowableProcessor {
+        +preProcess(message)
+    }
+    
+    class Whiteboard {
+        <<singleton>>
+        +cache: Object
+        +accumulators: Object
+        +put(key, value)
+        +get(key)
+        +accumulate(label, value)
+    }
+    
+    App ||--o Datasets : contains
+    Transmission ||--o{ Connector : manages
+    Transmission ||--o{ Processor : contains
+    Transmission ||--o{ Transmission : nested
+    Transmission ||--|| Whiteboard : shares
+    Processor ||--|| App : references
+    Processor ||--|| Whiteboard : accesses
+    SlowableProcessor --|> Processor : extends
+    Connector --> Processor : links
+
+---
+title: Message Flow Sequence
+---
+sequenceDiagram
+    participant Client
+    participant App
+    participant Transmission
+    participant Connector
+    participant ProcessorA
+    participant ProcessorB
+    participant Whiteboard
+    
+    Client->>App: start(message)
+    App->>Transmission: process(message)
+    
+    Transmission->>ProcessorA: receive(message)
+    ProcessorA->>ProcessorA: preProcess(message)
+    ProcessorA->>Whiteboard: get/put data
+    Whiteboard-->>ProcessorA: shared state
+    ProcessorA->>ProcessorA: process(message)
+    ProcessorA->>ProcessorA: emit('message', result)
+    
+    ProcessorA->>Connector: message event
+    Connector->>ProcessorB: receive(message)
+    ProcessorB->>ProcessorB: preProcess(message)
+    ProcessorB->>Whiteboard: accumulate(label, value)
+    ProcessorB->>ProcessorB: process(message)
+    ProcessorB->>ProcessorB: emit('message', result)
+    
+    ProcessorB-->>Transmission: final result
+    Transmission-->>App: processed message
+    App-->>Client: result
