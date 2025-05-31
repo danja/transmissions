@@ -13,6 +13,14 @@ The `src/api` directory provides three interface modes for the Transmissions fra
 - **`openapi-spec.yaml`** - OpenAPI specification for the HTTP API
 - **`about.md`** - HTTP API documentation and usage examples
 
+## File System Utilities (`fs/`)
+- **`FileWatcher.js`** - A filesystem monitoring utility that watches for changes in a directory tree and sends notifications to a specified URL. Features include:
+  - Recursive directory watching
+  - Configurable debouncing of rapid changes
+  - Pattern-based file exclusion (e.g., node_modules, .git)
+  - Graceful error handling and validation
+  - Signal handling for clean shutdown
+
 ## Common Utilities (`common/`)
 - **`CommandUtils.js`** - Core command processing, application initialization, argument parsing, and execution coordination
 - **`Defaults.js`** - Default configuration constants for directories and filenames
