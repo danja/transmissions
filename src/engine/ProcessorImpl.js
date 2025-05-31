@@ -1,9 +1,13 @@
+// src/engine/ProcessorImpl.js
 import { EventEmitter } from 'events'
+import { trace, SpanStatusCode } from '@opentelemetry/api'
 import logger from '../utils/Logger.js'
 import ns from '../utils/ns.js'
 import SysUtils from '../utils/SysUtils.js'
 import ProcessorSettings from './ProcessorSettings.js'
 import WorkerPool from './WorkerPool.js'
+
+const tracer = trace.getTracer('transmissions-processor', '1.0.0')
 
 class ProcessorImpl extends EventEmitter {
     constructor(app) {
@@ -13,7 +17,7 @@ class ProcessorImpl extends EventEmitter {
         this.settee = new ProcessorSettings(this.app)
         this.messageQueue = []
         this.processing = false
-        this.noProcessWhenDone = false // default to process when message.done, double negative is easier with defaults!
+        this.noProcessWhenDone = false
         this.outputs = []
         this.workerPool = null
         logger.trace(`ProcessorImpl.constructor : \n${this}`)
@@ -23,47 +27,33 @@ class ProcessorImpl extends EventEmitter {
         return this.settee.getValues(this.settingsNode, property, fallback)
     }
 
-    // TODO naming!!!
     getPropertyObject(subject, property, fallback) {
-        return this.settee.getValues(subject, property, fallback)[0] // TODO defend
+        return this.settee.getValues(subject, property, fallback)[0]
     }
 
     getProperty(property, fallback = undefined) {
-        // Defensive: ensure this.message is set if called directly - needed?
         if (!this.message && arguments.length > 2 && typeof arguments[2] === 'object') {
             this.message = arguments[2]
         }
         logger.debug(`   ProcessorImpl.getProperty looking for ${property}`)
 
-
-        // check if the property is in message
-        //  logger.v(this.message)
         var value = this.propertyInObject(this.message, property)
         if (value) {
             logger.debug(`   property found in message : ${value}`)
             return value
         }
 
-        // TODO not properly tested
-        // check if the property is in simpleConfig
-        //  logger.v(this.app.simpleConfig)
         value = this.propertyInObject(this.app.simpleConfig, property)
         if (value) {
             logger.debug(`   property found in simpleConfig : ${value}`)
             return value
         }
 
-
-        // If not found in message, check the settings
         logger.debug(`   this.settingsNode = ${this.settingsNode?.value}`)
         logger.debug(`   typeof this.settingsNode = ${typeof this.settingsNode}`)
 
-        // this.settee.configDataset = this.configDataset // TODO probably not needed
-        //logger.trace(`   this.configDataset : ${this.configDataset}`)
-        // Get values from settings
         const values = this.settee.getValues(this.settingsNode, property, fallback)
 
-        // If it's a single value, return it directly, otherwise return the array
         if (values && Array.isArray(values)) {
             if (values.length === 1) {
                 return values[0]
@@ -76,14 +66,12 @@ class ProcessorImpl extends EventEmitter {
     }
 
     propertyInObject(object, property) {
-        //  logger.debug(`    propertyInObject`)
         const shortName = ns.getShortname(property)
         logger.trace(`       shortName = ${shortName}`)
         if (object && object[shortName]) {
             logger.debug(`   Found in object: ${object[shortName]}`)
             return object[shortName]
         } else {
-            // logger.debug(`   Not found in object: ${object}`)
             return undefined
         }
     }
@@ -92,28 +80,23 @@ class ProcessorImpl extends EventEmitter {
         logger.debug(`   ProcessorImpl.propertyInMessage
             property = ${property}`)
         const shortName = ns.getShortname(property)
-        //   logger.debug(`   shortName = ${shortName}`)
-        //   logger.debug(`   this.message = ${logger.reveal(this.message)}`)
 
         if (this.message && this.message[shortName]) {
             logger.debug(`   Found in message: ${this.message[shortName]}`)
             return this.message[shortName]
         }
         return this.propertyInObject(this.message, property)
-        //  return undefined
     }
 
     async preProcess(message) {
         logger.debug('ProcessorImpl.preProcess')
 
-
-        if (message.onProcess) { // Claude
+        if (message.onProcess) {
             message.onProcess(this, message)
         }
 
         this.previousLogLevel = logger.getLevel()
 
-        // TODO make it loglevel value
         const loglevel = this.getProperty(ns.trn.loglevel)
 
         if (loglevel) {
@@ -121,32 +104,14 @@ class ProcessorImpl extends EventEmitter {
         }
         logger.debug(`   loglevel = ${loglevel}`)
 
-        /* TODO uncomment after config sorted
-        const messageType = this.getProperty(ns.trn.messageType)
-        if (messageType) {
-            if (messageType.value) {
-                message.messageType = messageType.value
-            } else {
-                message.messageType = messageType
-            }
-        }
-            */
         this.message = message
     }
 
-    /**
-     * Default process method for ProcessorImpl.
-     * Subclasses should override this method.
-     * @param {Object} message - The message object to process.
-     * @returns {Promise<Object>} The processed message (by default, just emits it).
-     */
     async process(message) {
         logger.debug('ProcessorImpl.process: default implementation, just emits message')
-        // By default, just emit the message and return it
         return super.emit('message', message)
     }
 
-    // Add default properties to avoid property errors in toString and getTag
     id = ''
     label = ''
     type = undefined
@@ -154,7 +119,6 @@ class ProcessorImpl extends EventEmitter {
     settings = undefined
     config = undefined
 
-    // Patch: fix toString type property access
     toString() {
         const settingsNodeValue = this.settingsNode ? this.settingsNode.value : 'none'
         let typeValue = ''
@@ -184,7 +148,6 @@ class ProcessorImpl extends EventEmitter {
     }
 
     async postProcess(message) {
-        // Only set log level if previousLogLevel is a string
         if (typeof this.previousLogLevel === 'string' || typeof this.previousLogLevel === 'undefined') {
             logger.setLogLevel(this.previousLogLevel)
         }
@@ -203,49 +166,129 @@ class ProcessorImpl extends EventEmitter {
     }
 
     async executeQueue() {
-        logger.debug(`ProcessorImpl.executeQueue`)
-
-        // Check if app has worker pool configuration
-        const appWorkerPool = this.app.workerPool
-
-        if (appWorkerPool) {
-            // TODO: Workers need full processor execution, not just pass-through
-            // Currently workers only do message pass-through without executing actual processor logic
-            // This causes transmission chains to not work properly (e.g., ShowMessage doesn't display, FileReader doesn't read files)
-            // For now, fall back to sequential processing when workers are enabled
-            logger.debug('Workers detected but falling back to sequential processing - worker integration incomplete')
-            this.processing = true
-            while (this.messageQueue.length > 0) {
-                let { message } = this.messageQueue.shift()
-                message = SysUtils.copyMessage(message)
-                this.addTag(message)
-                await this.preProcess(message)
-                await this.doProcess(message)
-                await this.postProcess(message)
+        return await tracer.startActiveSpan('processor.executeQueue', {
+            attributes: {
+                'processor.class': this.constructor.name,
+                'processor.id': this.id || 'unknown',
+                'queue.initial_length': this.messageQueue.length
             }
-            this.processing = false
-        } else {
-            // Use traditional sequential processing
-            this.processing = true
-            while (this.messageQueue.length > 0) {
-                let { message } = this.messageQueue.shift()
-                message = SysUtils.copyMessage(message)
-                this.addTag(message)
-                logger.debug(`  before`)
-                await this.preProcess(message)
-                logger.debug(`  after`)
-                //  await this.process(message)
-                await this.doProcess(message)
-                await this.postProcess(message) // pass message argument
+        }, async (queueSpan) => {
+            try {
+                logger.debug(`ProcessorImpl.executeQueue`)
+
+                const appWorkerPool = this.app.workerPool
+
+                if (appWorkerPool) {
+                    logger.debug('Workers detected but falling back to sequential processing - worker integration incomplete')
+                    queueSpan.addEvent('worker_pool_fallback')
+                    await this.processSequentially(queueSpan)
+                } else {
+                    queueSpan.addEvent('sequential_processing')
+                    await this.processSequentially(queueSpan)
+                }
+
+                queueSpan.setStatus({ code: SpanStatusCode.OK })
+                queueSpan.setAttribute('queue.processed_count', this.messageQueue.length)
+            } catch (error) {
+                queueSpan.recordException(error)
+                queueSpan.setStatus({
+                    code: SpanStatusCode.ERROR,
+                    message: error.message
+                })
+                throw error
+            } finally {
+                queueSpan.end()
             }
-            this.processing = false
-        }
+        })
     }
 
-    // TODO move outside preProcess/postProcess?
+    async processSequentially(parentSpan) {
+        this.processing = true
+        let messageIndex = 0
+
+        while (this.messageQueue.length > 0) {
+            const { message } = this.messageQueue.shift()
+            const copiedMessage = SysUtils.copyMessage(message)
+            this.addTag(copiedMessage)
+
+            await this.processMessage(copiedMessage, messageIndex++, parentSpan)
+        }
+
+        this.processing = false
+    }
+
+    async processMessage(message, index, parentSpan) {
+        return await tracer.startActiveSpan('processor.processMessage', {
+            parent: parentSpan,
+            attributes: {
+                'processor.class': this.constructor.name,
+                'processor.id': this.id || 'unknown',
+                'message.index': index,
+                'message.done': message.done || false,
+                'message.tags': message.tags || 'none'
+            }
+        }, async (messageSpan) => {
+            try {
+                messageSpan.addEvent('message_processing_start')
+
+                await this.spanMethod('preProcess', message, messageSpan)
+                await this.spanMethod('doProcess', message, messageSpan)
+                await this.spanMethod('postProcess', message, messageSpan)
+
+                messageSpan.addEvent('message_processing_complete')
+                messageSpan.setStatus({ code: SpanStatusCode.OK })
+            } catch (error) {
+                messageSpan.recordException(error)
+                messageSpan.setStatus({
+                    code: SpanStatusCode.ERROR,
+                    message: error.message
+                })
+                throw error
+            } finally {
+                messageSpan.end()
+            }
+        })
+    }
+
+    async spanMethod(methodName, message, parentSpan) {
+        return await tracer.startActiveSpan(`processor.${methodName}`, {
+            parent: parentSpan,
+            attributes: {
+                'processor.class': this.constructor.name,
+                'processor.method': methodName,
+                'message.done': message.done || false
+            }
+        }, async (methodSpan) => {
+            const startTime = Date.now()
+
+            try {
+                methodSpan.addEvent(`${methodName}_start`)
+
+                if (methodName === 'doProcess') {
+                    await this.doProcess(message)
+                } else {
+                    await this[methodName](message)
+                }
+
+                const duration = Date.now() - startTime
+                methodSpan.setAttribute('method.duration_ms', duration)
+                methodSpan.addEvent(`${methodName}_complete`)
+                methodSpan.setStatus({ code: SpanStatusCode.OK })
+            } catch (error) {
+                methodSpan.recordException(error)
+                methodSpan.setStatus({
+                    code: SpanStatusCode.ERROR,
+                    message: error.message
+                })
+                throw error
+            } finally {
+                methodSpan.end()
+            }
+        })
+    }
+
     async doProcess(message) {
-        // handle the final message from spawning processors (DirWalker, ForEach...)
-        const processWhenDone = !this.noProcessWhenDone && this.getProperty(ns.trn.processWhenDone, "true") // usually true
+        const processWhenDone = !this.noProcessWhenDone && this.getProperty(ns.trn.processWhenDone, "true")
 
         if (!message.done || (message.done && processWhenDone)) {
             await this.process(message)
