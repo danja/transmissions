@@ -52,12 +52,12 @@ classDiagram
         +accumulate(label, value)
     }
     
-    App ||--o Datasets : contains
-    Transmission ||--o{ Connector : manages
-    Transmission ||--o{ Processor : contains
-    Transmission ||--o{ Transmission : nested
-    Transmission ||--|| Whiteboard : shares
-    Processor ||--|| App : references
-    Processor ||--|| Whiteboard : accesses
+    App "1" *-- "1" Datasets : contains
+    Transmission "1" *-- "*" Connector : manages
+    Transmission "1" *-- "*" Processor : contains
+    Transmission "1" *-- "*" Transmission : children
+    Transmission "1" *-- "1" Whiteboard : has
+    Processor "*" --* "1" App : uses
+    Processor "*" --* "1" Whiteboard : accesses
     SlowableProcessor --|> Processor : extends
-    Connector --> Processor : links
+    Connector "*" -- "*" Processor : links

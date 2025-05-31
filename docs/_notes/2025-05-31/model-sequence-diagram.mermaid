@@ -1,0 +1,32 @@
+---
+title: Message Flow Sequence
+---
+sequenceDiagram
+    participant Client
+    participant App
+    participant Transmission
+    participant Connector
+    participant ProcessorA
+    participant ProcessorB
+    participant Whiteboard
+    
+    Client->>App: start(message)
+    App->>Transmission: process(message)
+    
+    Transmission->>ProcessorA: receive(message)
+    ProcessorA->>ProcessorA: preProcess(message)
+    ProcessorA->>Whiteboard: get/put data
+    Whiteboard-->>ProcessorA: shared state
+    ProcessorA->>ProcessorA: process(message)
+    ProcessorA->>ProcessorA: emit('message', result)
+    
+    ProcessorA->>Connector: message event
+    Connector->>ProcessorB: receive(message)
+    ProcessorB->>ProcessorB: preProcess(message)
+    ProcessorB->>Whiteboard: accumulate(label, value)
+    ProcessorB->>ProcessorB: process(message)
+    ProcessorB->>ProcessorB: emit('message', result)
+    
+    ProcessorB-->>Transmission: final result
+    Transmission-->>App: processed message
+    App-->>Client: result
