@@ -33,7 +33,80 @@
         </div>
         <div class="main-grid-item articles">
             <article>
-                
+                  <p> const themeSelect = document.getElementById(&#39;theme-select&#39;);</p>
+<p>themeSelect.addEventListener(&#39;change&#39;, () =&gt; {
+    const bodyStyle = window.getComputedStyle(document.body);
+    console.log(bodyStyle);
+    const backgroundColor = bodyStyle.getPropertyValue(&#39;--background&#39;);
+    const textColor = bodyStyle.getPropertyValue(&#39;--text-color&#39;);</p>
+<pre><code>if (themeSelect.value === &#39;dark&#39;) {
+    document.body.style.background = &#39;black&#39;;
+    document.body.style.color = &#39;white&#39;;
+} else {
+    document.body.style.background = &#39;white&#39;;
+    document.body.style.color = &#39;black&#39;;
+}
+</code></pre>
+<p>});</p>
+<p>// <a href="https://www.freecodecamp.org/news/use-local-storage-in-modern-apps/#heading-code-example-for-local-storage">https://www.freecodecamp.org/news/use-local-storage-in-modern-apps/#heading-code-example-for-local-storage</a></p>
+<p>/*
+themeSelect.addEventListener(&#39;change&#39;, () =&gt; {
+    document.body.classList.remove(&#39;dark-theme&#39;);
+    document.body.classList.remove(&#39;light-theme&#39;);
+    if (themeSelect.value === &#39;dark&#39;) {
+        document.body.classList.add(&#39;dark-theme&#39;);
+    }
+    if (themeSelect.value === &#39;light&#39;) {
+        document.body.classList.add(&#39;light-theme&#39;);
+    }
+});
+*/
+ </p>
+<h1>About</h1>
+<p> Needed by me :</p>
+<h3>Site/blog engine : Postcraft</h3>
+<h3>Link aggregator : Strandz</h3>
+<h3>Dataset generator : (Datacraft, nope. Churn!)</h3>
+<p>toki pona corpus generator
+ </p>
+<p> In a graph-shaped data flow transmission system, here are 30 words that could describe a service node:</p>
+<ol>
+<li>Vertex</li>
+<li>Hub</li>
+<li>Gateway</li>
+<li>Junction</li>
+<li>Router</li>
+<li>Processor</li>
+<li>Handler</li>
+<li>Intermediary</li>
+<li>Connector</li>
+<li>Endpoint</li>
+<li>Relay</li>
+<li>Interface</li>
+<li>Provider</li>
+<li>Switch</li>
+<li>Dispatcher</li>
+<li>Link</li>
+<li>Coordinator</li>
+<li>Access Point</li>
+<li>Mediator</li>
+<li>Facilitator</li>
+<li>Translator</li>
+<li>Broker</li>
+<li>Manager</li>
+<li>Director</li>
+<li>Controller</li>
+<li>Organizer</li>
+<li>Emitter</li>
+<li>Receiver</li>
+<li>Conduit</li>
+<li>Aggregator</li>
+</ol>
+<p>Q1: How do service nodes manage data flow in a network?
+Q2: What is the function of a router as a service node?
+Q3: Can you explain the role of a switch in a graph-based network system?
+ </p>
+
             </article>
         </div>
         <div class="main-grid-item about">
