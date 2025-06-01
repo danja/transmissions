@@ -97,12 +97,12 @@ class ProcessorImpl extends EventEmitter {
 
         this.previousLogLevel = logger.getLevel()
 
-        const loglevel = this.getProperty(ns.trn.loglevel)
+        const loglevel = this.getProperty(ns.trn.loglevel, undefined)
 
         if (loglevel) {
             logger.setLogLevel(loglevel)
         }
-        logger.debug(`   loglevel = ${loglevel}`)
+        //   logger.debug(`   loglevel = ${loglevel}`)
 
         this.message = message
     }
@@ -148,10 +148,10 @@ class ProcessorImpl extends EventEmitter {
     }
 
     async postProcess(message) {
-        if (typeof this.previousLogLevel === 'string' || typeof this.previousLogLevel === 'undefined') {
-            logger.setLogLevel(this.previousLogLevel)
-        }
-        this.previousLogLevel = null
+        //   if (typeof this.previousLogLevel === 'string' || typeof this.previousLogLevel === 'undefined') {
+        logger.setLogLevel(this.previousLogLevel)
+        // }
+        //this.previousLogLevel = null
     }
 
     async receive(message) {

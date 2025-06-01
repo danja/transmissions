@@ -12,11 +12,11 @@
 :readerSet a :ConfigSet ;
     :metaField "meta" .
 
-:entryExtras a :ConfigSet ;
-    :relMap "blog" ; # relPath goes to this
-    :baseURI <http://danny.ayers.name> ;
-    :creatorName "Danny" ;
-    :creatorURI <http://danny.ayers.name/me> .
+#:entryExtras a :ConfigSet ;
+ #   :relMap "blog" ; # relPath goes to this
+  #  :baseURI <http://danny.ayers.name> ;
+   # :creatorName "Danny" ;
+    #:creatorURI <http://danny.ayers.name/me> .
 
 # need sensible/test defaults
 #:mts40-storeArticle a :ConfigSet ;
