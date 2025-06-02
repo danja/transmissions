@@ -6,11 +6,11 @@
 @prefix : <http://purl.org/stuff/transmissions/> .
 
 
-:mts10-dirWalker a :ConfigSet .
+#:mts10-dirWalker a :ConfigSet .
  # :sourceDir "." .
 
-:readerSet a :ConfigSet ;
-    :metaField "meta" .
+#:readerSet a :ConfigSet ;
+ #   :metaField "meta" .
 
 #:entryExtras a :ConfigSet ;
  #   :relMap "blog" ; # relPath goes to this
