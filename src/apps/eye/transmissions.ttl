@@ -1,0 +1,29 @@
+# src/apps/eye/transmissions.ttl
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+:eye a :Transmission ;
+    :pipe (:p10 :p20 :p30 :p40) .
+
+:p10 a :FileReader ;
+     :settings [
+          :sourceFile  "input/data.n3" ;
+          :targetField "data" 
+     ] .
+
+:p20 a :FileReader ;
+     :settings [
+          :sourceFile  "input/query.n3" ;
+          :targetField "query" 
+     ] .
+
+:p30 a :Eye  .
+
+:p40 a :ShowMessage ;
+     :settings [
+          :stringLimit "200" ;
+          :alert "Eye Reasoner"
+     ] .
+
