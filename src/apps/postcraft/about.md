@@ -13,7 +13,7 @@ cd ~/hyperdata/transmissions # my local path
 
 ```sh
 cd ~/hyperdata/transmissions # my local path
-./del-dan.sh
+./del-dan.sh # clear SPARQL graphs
 ./trans postcraft-statics ~/sites/danny.ayers.name/postcraft #
 ./trans md-to-sparqlstore ~/sites/danny.ayers.name/postcraft
 ./trans sparqlstore-to-html ~/sites/danny.ayers.name/postcraft
@@ -22,7 +22,7 @@ cd ~/hyperdata/transmissions # my local path
 
 ```sh
 cd ~/hyperdata/transmissions # my local path
-# ./del-dan.sh
+./scripts/del-semem.sh
 ./trans postcraft-statics ~/hyperdata/semem/docs/postcraft
 ./trans md-to-sparqlstore ~/hyperdata/semem/docs/postcraft
 ./trans sparqlstore-to-html ~/hyperdata/semem/docs/postcraft

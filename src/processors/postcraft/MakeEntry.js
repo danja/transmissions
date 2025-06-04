@@ -46,35 +46,46 @@ class MakeEntry extends Processor {
 
   constructor(config) {
     super(config)
-    logger.debug('MakeEntry constructor config:', config)
+    // logger.debug('MakeEntry constructor config:', config)
   }
 
   async process(message) {
-
+    logger.debug(`\n\n[MakeEntry.process]`)
     if (message.done) {
       return this.emit('message', message)
     }
     const dates = this.extractDates(message)
 
     // rootDir
-    let basePath = message.targetPath || message.sourceDir || process.cwd()
-    if (!basePath) basePath = process.cwd()
-    const { rel, slug } = this.extractRelSlug(basePath, dates, message.filePath)
+    // let basePath = message.targetPath || message.sourceDir || process.cwd()
+    //if (!basePath) basePath = process.cwd()
+
+
+    var { rel, slug } = this.extractRelSlug(message.targetDir, message.filePath)
+    logger.log(`    message.targetDir = ${message.targetDir}`)
+    logger.log(`    message.filePath = ${message.filePath}`)
+    logger.log(`    rel = ${rel}`)
+    logger.log(`    slug = ${slug}`)
+
+    const rawDir = super.getProperty(ns.trn.rawDir, '') // eg. content/raw
+    const renderPath = super.getProperty(ns.trn.renderPath, '') // eg. docs
+
+    rel = rel.replace(rawDir, renderPath)
+    logger.debug(`renderPath = ${renderPath}`)
+    const newPath = path.join(rel, slug)
+
+    logger.log(`newPath = ${newPath}`)
+
+    //  message.filePath = newPath
 
     logger.debug(`message.meta.filepath = ${message.meta.filepath}`)
     logger.debug(`slug = ${slug}`)
 
-    var uri = this.getEntryURI(rel, slug)
-    const relMap = super.getProperty(ns.trn.relMap, '')
-    logger.debug(`relMap (from config) = ${relMap}`)
-    if (typeof message.sourceDir === 'string' && uri.includes(message.sourceDir)) {
-      uri = uri.replace(message.sourceDir, relMap)
-    }
+    //    var uri = this.getEntryURI(rel, slug)
+    const uri = super.getProperty(ns.trn.baseURI, 'http://example.it') + newPath
+    // uri = 'http:/' + uri
 
     let relative = rel
-    if (typeof message.sourceDir === 'string' && rel.includes(message.sourceDir)) {
-      relative = rel.replace(message.sourceDir, relMap)
-    }
 
     const title = this.extractTitle(message)
 
@@ -83,8 +94,8 @@ class MakeEntry extends Processor {
       sourcePath: message.meta.filepath,
       mediaType: message.meta.mediaType,
       relative: relative,
-      relPath: rel,
-      relMap: relMap,
+      // relPath: rel,
+      // relMap: relMap,
       title: title,
       content: message.content,
       slug: slug,
@@ -113,7 +124,7 @@ class MakeEntry extends Processor {
 
   // filePath - appPath
   // (message.sourceDir, dates, message.filePath)
-  extractRelSlug(basePath, dates, filePath) {
+  extractRelSlug(basePath, filePath) {
     logger.debug(`MakeEntry.extractRelSlug`)
     logger.debug(`basePath = ${basePath}`)
     logger.debug(`filePath = ${filePath}`)
