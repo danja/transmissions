@@ -44,7 +44,6 @@
  */
 
 import logger from '../../utils/Logger.js'
-import ns from '../../utils/ns.js'
 import Processor from '../../model/Processor.js'
 import { n3reasoner } from 'eyereasoner';
 
@@ -66,11 +65,8 @@ class Eye extends Processor {
         logger.debug(`\n\nEye.process`)
 
         message.result = await n3reasoner(message.data, message.query);
-
-        // All inferred data
         message.inferred = await n3reasoner(message.data);
 
-        // message forwarded
         return this.emit('message', message)
     }
 }
