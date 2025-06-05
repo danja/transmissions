@@ -7,14 +7,15 @@ import Commands from './Commands.js';
 import logger from '../../utils/Logger.js';
 
 export class REPL {
-    constructor(app) {
-        this.app = app;
+    constructor(appManager) {
+        this.appManager = appManager;
         this.previousLogLevel = 'info'; // within this
         this.verbosity = 0 // within the transmission, is quieter
     }
 
     async start() {
         logger.setLogLevel('info', true);
+        logger.log('Welcome to the REPL!\n')
         this.rl = readline.createInterface({
             input: process.stdin,
             output: process.stdout,
@@ -36,25 +37,22 @@ export class REPL {
                 continue;
             }
 
-            //if (input.toLowerCase() === 'exit' || input.toLowerCase() === 'quit') {
-            //  this.rl.close();
-            // break;
-            //}
             var message = { content: input };
             //  try {
 
             this.setVerbosity()
             logger.log(`loglevel = ${logger.getLevel()}`)
-            const response = await this.app.start(message);
-            logger.error(`message = ${JSON.stringify(message)}`)
+            const response = await this.appManager.start(message);
+
             this.resetVerbosity()
-            logger.error(`response = ${JSON.stringify(response)}`)
+            //   logger.log(`response = ${JSON.stringify(response)}`)
             // logger.error(JSON.stringify(response.content))
             // logger.debug('App response:');
             // logger.debug(JSON.stringify(result, null, 2));
             // } catch (err) {
             //   logger.error('Error: ' + (err && err.message ? err.message : String(err)));
             //}
+            logger.log(response.content)
             this.rl.prompt();
         }
     }
@@ -65,10 +63,10 @@ export class REPL {
             case 0:
                 logger.setLogLevel('silent');
                 break;
-            case 1:
+            case 2:
                 logger.setLogLevel('debug');
                 break;
-            case 2:
+            case 1: // Yuck!
                 logger.setLogLevel('info');
                 break;
             case 3:

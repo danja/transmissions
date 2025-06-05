@@ -81,7 +81,7 @@ class AppManager {
         await this.initModuleLoader()
         await this.initWorkerPool()
 
-        logger.debug(`this.app = ${this.app}`)
+        // logger.debug(`this.app = ${this.app}`)
         return this
     }
 
@@ -123,7 +123,7 @@ class AppManager {
         // TODO the meta of App needs copying
         // message.app = this.app 
 
-        logger.debug(`this.app = ${this.app} `)
+        //  logger.debug(`this.app = ${this.app} `)
 
         const builder = new TransmissionBuilder(this.app, this.moduleLoader)
         const transmissions = await builder.buildTransmissions()
@@ -131,6 +131,7 @@ class AppManager {
         //   logger.rv(transmissions)
         // process.exit()
         // Get application context
+
         const contextMessage = this.toMessage()
         // merge
         Object.assign(message, contextMessage)
@@ -140,17 +141,21 @@ class AppManager {
         //}
         message.appRunStart = (new Date()).toISOString()
 
-
+        // logger.debug(`BEFORE = ${message}`)
         for (const transmission of transmissions) {
             transmission.app = this.app
             //   logger.debug(`transmission = \n${transmission} `)
             if (!this.app.subtask || this.app.subtask === transmission.label) {
 
                 message = await transmission.process(message)
-                //   logger.rv(message)
+                //  logger.rv(message)
+                //message =
             }
         }
+
         message.success = true
+        // logger.debug(`AFTER = ${JSON.stringify(message)}`)
+        // logger.v(message)
 
         // Clean up worker pool if it exists
         if (this.app.workerPool) {
@@ -158,8 +163,16 @@ class AppManager {
             this.app.workerPool.terminate()
         }
 
-        // logger.reveal(message)
-        return message //{ success: true }
+        // Get the final output from the last processor if available
+        const lastTransmission = transmissions[transmissions.length - 1]
+        if (lastTransmission && lastTransmission.processor) {
+            const outputs = lastTransmission.processor.getOutputs()
+            if (outputs && outputs.length > 0) {
+                message.processorOutputs = outputs
+            }
+        }
+        // logger.debug(`FINAL = ${JSON.stringify(message)}`)
+        return message
     }
 
     async resolveAppPath(appName) {

@@ -21,7 +21,7 @@ class Transmission {
       let processor = this.get(processorName)
       if (processor) {
         logger.log(`|-> ${ns.shortName(processorName)} a ${processor.constructor.name}`)
-        await processor.receive(message)
+        message = await processor.receive(message)
       } else {
         throw new Error("No valid processor found to execute")
       }
