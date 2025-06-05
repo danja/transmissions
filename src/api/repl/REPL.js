@@ -9,12 +9,12 @@ import logger from '../../utils/Logger.js';
 export class REPL {
     constructor(app) {
         this.app = app;
-        //    this.previousLogLevel = 'info'; // within this
+        this.previousLogLevel = 'info'; // within this
         this.verbosity = 0 // within the transmission, is quieter
     }
 
     async start() {
-        logger.setLogLevel('info');
+        logger.setLogLevel('info', true);
         this.rl = readline.createInterface({
             input: process.stdin,
             output: process.stdout,
@@ -28,7 +28,7 @@ export class REPL {
             if (input.startsWith('/')) {
                 const [cmd, ...args] = input.slice(1).split(/\s+/);
                 if (typeof Commands[cmd] === 'function') {
-                    await Commands[cmd](this, ...args);
+                    await Commands[cmd](this, args);
                 } else {
                     logger.warn(`[Unknown command: /${cmd}]`);
                 }
@@ -43,6 +43,7 @@ export class REPL {
             //  try {
 
             this.setVerbosity()
+            logger.log(`loglevel = ${logger.getLevel()}`)
             message = await this.app.start(message);
             this.resetVerbosity()
             logger.log(message.content)
@@ -56,7 +57,7 @@ export class REPL {
     }
 
     setVerbosity() {
-        this.previousLogLevel = logger.currentLogLevel
+        this.previousLogLevel = logger.getLevel()
         switch (this.verbosity) {
             case 0:
                 logger.setLogLevel('silent');
@@ -79,6 +80,7 @@ export class REPL {
     }
 
     resetVerbosity() {
+        //   logger.log(`resetVerbosity, previousLogLevel = ${this.previousLogLevel}`)
         logger.setLogLevel(this.previousLogLevel);
     }
 }
