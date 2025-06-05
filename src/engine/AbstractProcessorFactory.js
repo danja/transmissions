@@ -15,6 +15,7 @@ import StagingProcessorsFactory from '../processors/staging/StagingProcessorsFac
 import GitHubProcessorsFactory from '../processors/github/GitHubProcessorsFactory.js'
 import JSONProcessorsFactory from '../processors/json/JSONProcessorsFactory.js'
 import TerrapackProcessorsFactory from '../processors/terrapack/TerrapackProcessorsFactory.js' // 2025-01-01
+import LLMProcessorsFactory from '../processors/llm/LLMProcessorsFactory.js' // 2025-06-05
 
 // added 2024-11-28
 import UnsafeProcessorsFactory from '../processors/unsafe/UnsafeProcessorsFactory.js'
@@ -100,6 +101,8 @@ class AbstractProcessorFactory {
         var processor = MediaProcessorsFactory.createProcessor(type, app)
         if (processor) return processor
         var processor = ReasonProcessorsFactory.createProcessor(type, app)
+        if (processor) return processor
+        var processor = LLMProcessorsFactory.createProcessor(type, app)
         if (processor) return processor
     }
 }

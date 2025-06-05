@@ -1,11 +1,11 @@
-// src/processors/example-group/Example.js
+// src/processors/example-group/Chat.js
 /**
- * @class Example
+ * @class Chat
  * @extends Processor
  * @classdesc
  * **a Transmissions Processor**
  *
- * Example processor demonstrating basic processor structure and property handling.
+ * Chat processor demonstrating basic processor structure and property handling.
  *
  * ### Processor Signature
  *
@@ -46,11 +46,15 @@
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
 import Processor from '../../model/Processor.js'
+import dotenv from 'dotenv'
 
 
-class Example extends Processor {
+// Load environment variables from .env file
+dotenv.config()
+
+class Chat extends Processor {
     /**
-     * Creates a new Example processor instance.
+     * Creates a new Chat processor instance.
      * @param {Object} config - Processor configuration object
      */
     constructor(config) {
@@ -63,33 +67,28 @@ class Example extends Processor {
      * @returns {Promise<boolean>} Resolves when processing is complete
      */
     async process(message) {
-        logger.debug(`\n\nExample.process`)
+        logger.debug(`\n\n[Chat.process]`)
 
-        // TODO figure this out better
-        // may be needed if preceded by a spawning processor, eg. fs/DirWalker
-        if (message.done) {
-            return this.emit('message', message)
-            // or simply return
+        const provider = this.getProperty(ns.trn.provider, 'mistral')
+        const modelName = this.getProperty(ns.trn.model, 'mistral-7b-instruct-v0.1')
+        const clientOptions = {
+            model: modelName
         }
 
-        // message is processed here :
+        logger.debug(`    Using API: ${provider}`)
+        logger.debug(`    Model: ${modelName}`)
+        logger.debug(`    Prompt: ${message.content}`)
 
-        // property values pulled from message | config settings | fallback
-        const me = this.getProperty(ns.trn.me)
-        logger.log(`\nI am ${me}`)
+        // Create client using environment variables for API key
+        const client = await ClientFactory.createAPIClient(provider, clientOptions)
+        const response = await client.chat([
+            { role: 'user', content: message.content }
+        ])
 
-        message.common = this.getProperty(ns.trn.common)
-        message.something1 = this.getProperty(ns.trn.something1)
-
-        message.something2 = this.getProperty(ns.trn.something2)
-
-        var added = this.getProperty(ns.trn.added, '')
-        message.something1 = message.something1 + added
-
-        message.notavalue = this.getProperty(ns.trn.notavalue, 'fallback value')
+        message.content = response.content
 
         // message forwarded
         return this.emit('message', message)
     }
 }
-export default Example
+export default Chat
