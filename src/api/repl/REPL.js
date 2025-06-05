@@ -9,6 +9,8 @@ import logger from '../../utils/Logger.js';
 export class REPL {
     constructor(app) {
         this.app = app;
+        //    this.previousLogLevel = 'info'; // within this
+        this.verbosity = 0 // within the transmission, is quieter
     }
 
     async start() {
@@ -37,16 +39,46 @@ export class REPL {
                 this.rl.close();
                 break;
             }
-            const message = { content: input };
-            try {
-                const result = await this.app.start(message);
-                logger.info(message.content)
-                logger.debug('App response:');
-                logger.debug(JSON.stringify(result, null, 2));
-            } catch (err) {
-                logger.error('Error: ' + (err && err.message ? err.message : String(err)));
-            }
+            var message = { content: input };
+            //  try {
+
+            this.setVerbosity()
+            message = await this.app.start(message);
+            this.resetVerbosity()
+            logger.log(message.content)
+            // logger.debug('App response:');
+            // logger.debug(JSON.stringify(result, null, 2));
+            // } catch (err) {
+            //   logger.error('Error: ' + (err && err.message ? err.message : String(err)));
+            //}
             this.rl.prompt();
         }
+    }
+
+    setVerbosity() {
+        this.previousLogLevel = logger.currentLogLevel
+        switch (this.verbosity) {
+            case 0:
+                logger.setLogLevel('silent');
+                break;
+            case 1:
+                logger.setLogLevel('debug');
+                break;
+            case 2:
+                logger.setLogLevel('info');
+                break;
+            case 3:
+                logger.setLogLevel('warn');
+                break;
+            case 4:
+                logger.setLogLevel('error');
+                break;
+            default:
+                logger.setLogLevel('info');
+        }
+    }
+
+    resetVerbosity() {
+        logger.setLogLevel(this.previousLogLevel);
     }
 }
