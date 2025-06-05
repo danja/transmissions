@@ -220,13 +220,28 @@ class AppManager {
         return path.join(this.app.path, this.app.moduleSubDir)
     }
 
-    resolveWorkingDir() {
-        // Implementation here
+    resolveWorkingDir() { // HERE MAYBE 
+        if (this.targetDir) {
+            this.workingDir = this.targetDir
+        }
+        if (!this.workingDir) { // ?????????????
+            this.workingDir = path.join(this.app.path, this.dataDir)
+        }
+        return this.workingDir
     }
 
     toMessage() {
-        return 'Default message';
-    } // Add a default implementation for toMessage
+        return {
+            appName: this.app.name,
+            appPath: this.app.path,
+            subtask: this.app.subtask,
+            rootDir: this.app.rootDir,
+            dataDir: this.app.dataDir,
+            workingDir: this.app.workingDir,
+            targetDir: this.app.targetDir,
+            dataset: this.targetDataset
+        }
+    }
 }
 
 export default AppManager
