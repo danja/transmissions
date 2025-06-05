@@ -2,6 +2,8 @@
 @prefix : <http://example.org/socrates#>.
 
 :Socrates a :Human.
-:Human rdfs:subClassOf :Mortal.
+:Human rdfs:subClassOf :TEST_PASSED.
+
+# :Mortal
 
 {?A rdfs:subClassOf ?B. ?S a ?A} => {?S a ?B}.

@@ -109,6 +109,12 @@
         "requiredMatchCount": 4
     },
     {
+        "command": "./trans eye",
+        "label": "eye",
+        "description": "eye reasoner",
+        "requiredMatchCount": 3
+    },
+    {
         "command": "./scripts/del-fuseki-test-store.sh && ./trans file-to-sparqlstore",
         "label": "file-to-sparqlstore",
         "description": "file-to-sparqlstore - fuseki.hyperdata.it/test",

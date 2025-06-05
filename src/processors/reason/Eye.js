@@ -1,21 +1,21 @@
 // src/processors/example-group/Eye.js
+import logger from '../../utils/Logger.js'
+import Processor from '../../model/Processor.js'
+import { n3reasoner } from 'eyereasoner';
+
 /**
  * @class Eye
  * @extends Processor
  * @classdesc
- * **a Transmissions Processor**
+ * **Eye Processor**
  *
- * Eye processor demonstrating basic processor structure and property handling.
+ * The Eye processor integrates with the Eye reasoner to perform logical inference on RDF data.
+ * It processes input messages by applying reasoning queries and generating inferred data.
  *
  * ### Processor Signature
  *
  * #### __*Settings*__
- * * **`ns.trn.me`** - Identifier for the processor instance
- * * **`ns.trn.common`** - Common value to be added to the message
- * * **`ns.trn.something1`** - First value to be processed
- * * **`ns.trn.something2`** - Second value to be processed
- * * **`ns.trn.added`** - Optional string to append to something1
- * * **`ns.trn.notavalue`** - Fallback value if not provided in config
+ * * **`none`**
  *
  * #### __*Input*__
  * * **`message`** - The message object to be processed
@@ -24,29 +24,20 @@
  * * **`message`** - The modified message object with added/updated fields
  *
  * #### __*Behavior*__
- * * Forwards message immediately if `message.done` is true
- * * Retrieves and processes configuration properties
- * * Appends optional values to message fields
- * * Handles fallback values for missing properties
+ * * Applies reasoning queries to RDF data
+ * * Generates inferred data from the input
  *
  * #### __*Side Effects*__
- * * Modifies the input message object
- * * Logs processing information
  *
  * #### __*Notes*__
- * This is an example implementation demonstrating:
- *   - Basic processor structure
+ * This implementation demonstrates:
+ *   - Integration with the Eye reasoner
+ *   - Logical inference on RDF data
  *   - Property retrieval with fallbacks
  *   - Message modification
  *   - Logging
  *
- * Use this as a template when creating new processors.
  */
-
-import logger from '../../utils/Logger.js'
-import Processor from '../../model/Processor.js'
-import { n3reasoner } from 'eyereasoner';
-
 class Eye extends Processor {
     /**
      * Creates a new Eye processor instance.
