@@ -10,12 +10,8 @@
  * ### Processor Signature
  *
  * #### __*Settings*__
- * * **`ns.trn.me`** - Identifier for the processor instance
- * * **`ns.trn.common`** - Common value to be added to the message
- * * **`ns.trn.something1`** - First value to be processed
- * * **`ns.trn.something2`** - Second value to be processed
- * * **`ns.trn.added`** - Optional string to append to something1
- * * **`ns.trn.notavalue`** - Fallback value if not provided in config
+ * * **`ns.trn.provider`** - API provider (default: 'mistral')
+ * * **`ns.trn.model`** - Model name (default: 'mistral-7b-instruct-v0.1')
  *
  * #### __*Input*__
  * * **`message`** - The message object to be processed
@@ -47,7 +43,7 @@ import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
 import Processor from '../../model/Processor.js'
 import dotenv from 'dotenv'
-
+import clients from 'hyperdata-clients';
 
 // Load environment variables from .env file
 dotenv.config()
@@ -70,22 +66,27 @@ class Chat extends Processor {
         logger.debug(`\n\n[Chat.process]`)
 
         const provider = this.getProperty(ns.trn.provider, 'mistral')
-        const modelName = this.getProperty(ns.trn.model, 'mistral-7b-instruct-v0.1')
+        const modelName = this.getProperty(ns.trn.model, 'open-codestral-mamba') // mistral-7b-instruct-v0.1
         const clientOptions = {
-            model: modelName
+            model: modelName,
+            apiKey: process.env.MISTRAL_API_KEY
         }
 
-        logger.debug(`    Using API: ${provider}`)
-        logger.debug(`    Model: ${modelName}`)
-        logger.debug(`    Prompt: ${message.content}`)
 
-        // Create client using environment variables for API key
-        const client = await ClientFactory.createAPIClient(provider, clientOptions)
+        logger.debug(`    Using API: ${provider} `)
+        logger.debug(`    Model: ${modelName} `)
+        logger.debug(`    Prompt: ${message.content} `)
+
+        const client = await clients.ClientFactory.createAPIClient(provider, clientOptions)
+
+        const prompt = message.content || "hello"
         const response = await client.chat([
-            { role: 'user', content: message.content }
+            { role: 'user', content: prompt }
         ])
 
-        message.content = response.content
+        logger.debug(`    Response: ${response} `)
+
+        message.content = response
 
         // message forwarded
         return this.emit('message', message)

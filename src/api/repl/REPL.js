@@ -35,18 +35,21 @@ export class REPL {
                 this.rl.prompt();
                 continue;
             }
-            if (input.toLowerCase() === 'exit' || input.toLowerCase() === 'quit') {
-                this.rl.close();
-                break;
-            }
+
+            //if (input.toLowerCase() === 'exit' || input.toLowerCase() === 'quit') {
+            //  this.rl.close();
+            // break;
+            //}
             var message = { content: input };
             //  try {
 
             this.setVerbosity()
             logger.log(`loglevel = ${logger.getLevel()}`)
-            message = await this.app.start(message);
+            const response = await this.app.start(message);
+            logger.error(`message = ${JSON.stringify(message)}`)
             this.resetVerbosity()
-            logger.log(message.content)
+            logger.error(`response = ${JSON.stringify(response)}`)
+            // logger.error(JSON.stringify(response.content))
             // logger.debug('App response:');
             // logger.debug(JSON.stringify(result, null, 2));
             // } catch (err) {

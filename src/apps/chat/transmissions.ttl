@@ -1,0 +1,22 @@
+# src/apps/example-application/transmissions.ttl
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+@prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances
+
+#############################################################
+# insert into pipe for debugging
+# :DE a :DeadEnd . # ends the current pipe quietly
+# :H  a :Halt . # kills everything
+# :SC a :ShowConfig . # verbose report, continues pipe
+# :SM a :ShowMessage . # verbose report, continues pipe
+# :N  a :NOP . # no operation (except for showing stage in pipe)
+# :UF a :Unfork . # collapses all pipes but one
+#############################################################
+
+:echo a :Transmission ;
+    :pipe (:p10 :p20) .
+
+:p10  a :Chat .
+:p20 a :ShowMessage .
