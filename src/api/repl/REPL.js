@@ -3,6 +3,7 @@
 
 
 import readline from 'readline';
+import Commands from './Commands.js';
 
 export class REPL {
     constructor(app) {
@@ -10,30 +11,38 @@ export class REPL {
     }
 
     async start() {
-        const rl = readline.createInterface({
+        this.rl = readline.createInterface({
             input: process.stdin,
             output: process.stdout,
             prompt: 'transmit> '
         });
 
-        rl.prompt();
+        this.rl.prompt();
 
-        for await (const line of rl) {
+        for await (const line of this.rl) {
             const input = line.trim();
+            if (input.startsWith('/')) {
+                const [cmd, ...args] = input.slice(1).split(/\s+/);
+                if (typeof Commands[cmd] === 'function') {
+                    await Commands[cmd](this, ...args);
+                } else {
+                    console.log(`[Unknown command: /${cmd}]`);
+                }
+                this.rl.prompt();
+                continue;
+            }
             if (input.toLowerCase() === 'exit' || input.toLowerCase() === 'quit') {
-                rl.close();
+                this.rl.close();
                 break;
             }
             const message = { content: input };
             try {
-                // Use app.start instead of runTransmissions
                 const result = await this.app.start(message);
                 console.log(result?.content ?? '[No response]');
             } catch (err) {
-                // 'err' is unknown in ES modules, so print as string
                 console.error('Error:', err && err.message ? err.message : String(err));
             }
-            rl.prompt();
+            this.rl.prompt();
         }
     }
 }
