@@ -4,6 +4,7 @@
 
 import readline from 'readline';
 import Commands from './Commands.js';
+import logger from '../../utils/Logger.js';
 
 export class REPL {
     constructor(app) {
@@ -11,6 +12,7 @@ export class REPL {
     }
 
     async start() {
+        logger.setLogLevel('info');
         this.rl = readline.createInterface({
             input: process.stdin,
             output: process.stdout,
@@ -26,7 +28,7 @@ export class REPL {
                 if (typeof Commands[cmd] === 'function') {
                     await Commands[cmd](this, ...args);
                 } else {
-                    console.log(`[Unknown command: /${cmd}]`);
+                    logger.warn(`[Unknown command: /${cmd}]`);
                 }
                 this.rl.prompt();
                 continue;
@@ -38,9 +40,11 @@ export class REPL {
             const message = { content: input };
             try {
                 const result = await this.app.start(message);
-                console.log(result?.content ?? '[No response]');
+                logger.info(message.content)
+                logger.debug('App response:');
+                logger.debug(JSON.stringify(result, null, 2));
             } catch (err) {
-                console.error('Error:', err && err.message ? err.message : String(err));
+                logger.error('Error: ' + (err && err.message ? err.message : String(err)));
             }
             this.rl.prompt();
         }
