@@ -109,7 +109,7 @@
         "requiredMatchCount": 4
     },
     {
-        "command": "./del-fuseki-test.sh && ./trans file-to-sparqlstore",
+        "command": "./scripts/del-fuseki-test-store.sh && ./trans file-to-sparqlstore",
         "label": "file-to-sparqlstore",
         "description": "file-to-sparqlstore - fuseki.hyperdata.it/test",
         "requiredMatchCount": 3
