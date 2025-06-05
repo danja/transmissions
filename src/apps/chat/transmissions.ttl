@@ -6,7 +6,20 @@
 @prefix : <http://purl.org/stuff/transmissions/> . 
 
 :echo a :Transmission ;
-    :pipe (:p10 :p20) .
+    :pipe (:p10 :p20 :p30 :p40) .
 
-:p10  a :Chat .
+:p10  a :Chat ;
+    :settings [
+        :provider "mistral";
+        :model "mistral-7b-instruct-v0.1";
+    ] .
+
 :p20 a :ShowMessage .
+
+:p30  a :Chat ;
+    :settings [
+        :provider "ollama";
+        :model "qwen2:1.5b";
+    ] .
+
+:p40 a :ShowMessage .

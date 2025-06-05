@@ -1,5 +1,12 @@
 {
     "TRANSMISSIONS_USE_WORKERS": false,
     "TRANSMISSIONS_WORKER_MODULE": "./examples/worker/transmission-worker.js",
-    "TRANSMISSIONS_WORKER_POOL_SIZE": 5
+    "TRANSMISSIONS_WORKER_POOL_SIZE": 5,
+    "API_KEYS": {
+        "ollama": "OLLAMA_API_KEY",
+        "mistral": "MISTRAL_API_KEY",
+        "openai": "OPENAI_API_KEY",
+        "anthropic": "ANTHROPIC_API_KEY",
+        "cohere": "COHERE_API_KEY"
+    }
 }
