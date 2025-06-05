@@ -168,6 +168,27 @@ class CommandUtils {
         return message
     }
 
+    async runRepl(appArg, argv) {
+        const { appName, appPath, subtask } = await CommandUtils.parseAppArg(appArg)
+        const appOptions = {
+            appName,
+            appPath,
+            subtask,
+            targetDir: argv.target,
+            modulePath: argv.modulePath,
+            dataPath: argv.dataPath,
+            verbose: argv.verbose,
+            workingDir: argv.directory,
+            silent: argv.silent,
+            test: argv.test,
+            web: false,
+            port: argv.port,
+            message: argv.message
+        }
+        const appManager = await this.#appManager.initApp(appOptions)
+        return appManager
+    }
+
     toString() {
         return `\n *** CommandUtils ***
             this =  \n     ${JSON.stringify(this).replaceAll(',', ',\n      ')}`

@@ -26,8 +26,8 @@ export class REPL {
             }
             const message = { content: input };
             try {
-                // Assume app.runTransmissions returns a Promise with a result
-                const result = await this.app.runTransmissions(message);
+                // Use app.start instead of runTransmissions
+                const result = await this.app.start(message);
                 console.log(result?.content ?? '[No response]');
             } catch (err) {
                 // 'err' is unknown in ES modules, so print as string

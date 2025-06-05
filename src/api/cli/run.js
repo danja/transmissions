@@ -6,6 +6,7 @@ import chalk from 'chalk'
 import { readFileSync } from 'fs'
 import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
+import { REPL } from '../repl/REPL.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const packageJson = JSON.parse(readFileSync(join(__dirname, '../../../package.json')))
@@ -80,6 +81,12 @@ async function main() {
             describe: chalk.yellow('Launch the visual Transmissions editor'),
             type: 'boolean'
         })
+        .option('repl', {
+            alias: 'r',
+            describe: chalk.yellow('Run in REPL mode'),
+            type: 'boolean',
+            default: false
+        })
 
     yargsInstance.command('$0 [app] [target]', chalk.green('runs the specified app\n'), (yargs) => {
         return yargs
@@ -95,6 +102,14 @@ async function main() {
         if (argv.editor) {
             const flags = { "editor": true, "port": argv.port, "verbose": argv.verbose, "silent": argv.silent }
             await commandUtils.launchEditor(flags) // TODO use argv
+            return
+        }
+
+        if (argv.repl) {
+            // Initialize the app as usual, then start REPL
+            const appManager = await commandUtils.runRepl(argv.app, argv)
+            const repl = new REPL(appManager)
+            await repl.start()
             return
         }
 
