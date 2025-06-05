@@ -99,7 +99,7 @@ async function main() {
         }
 
         if (!argv.app) {
-            console.log(chalk.cyan('Available apps:'))
+            console.log(chalk.cyan('Core apps:'))
             const apps = await commandUtils.listApps()
             console.log(chalk.green(`\t${apps.join('\n\t')}\n`))
 

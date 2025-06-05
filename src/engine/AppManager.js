@@ -1,5 +1,6 @@
 // AppManager.js
 import path from 'path'
+import * as fs from 'node:fs/promises'
 import logger from '../utils/Logger.js'
 import FSUtils from '../utils/FSUtils.js'
 import Config from './Config.js'
@@ -180,22 +181,23 @@ class AppManager {
     }
 
     async listApps() {
-        try {
-            const entries = await fs.readdir(this.appResolver.appsDir, { withFileTypes: true })
-            const subdirChecks = entries
-                .filter(dirent => dirent.isDirectory())
-                .map(async (dirent) => {
-                    const subdirPath = path.join(this.appResolver.appsDir, dirent.name)
-                    const files = await fs.readdir(subdirPath)
-                    return files.includes('about.md') ? dirent.name : null
-                })
+        const appsDir = this.appResolver.appsDir || path.join(process.cwd(), Defaults.appsDir)
+        // try {
+        const entries = await fs.readdir(appsDir, { withFileTypes: true })
+        const subdirChecks = entries
+            .filter(dirent => dirent.isDirectory())
+            .map(async (dirent) => {
+                const subdirPath = path.join(appsDir, dirent.name)
+                const files = await fs.readdir(subdirPath)
+                return files.includes('about.md') ? dirent.name : null
+            })
 
-            const validApps = (await Promise.all(subdirChecks)).filter(Boolean)
-            return validApps
-        } catch (err) {
-            logger.error('Error listing applications:', err)
-            return []
-        }
+        const validApps = (await Promise.all(subdirChecks)).filter(Boolean)
+        return validApps
+        //     } catch (err) {
+        //      logger.error('Error listing applications:', err)
+        //    return []
+        // }
     }
 
     getConfigPath() {
