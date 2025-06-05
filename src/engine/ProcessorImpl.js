@@ -9,7 +9,17 @@ import WorkerPool from './WorkerPool.js'
 
 const tracer = trace.getTracer('transmissions-processor', '1.0.0')
 
+
 class ProcessorImpl extends EventEmitter {
+
+    // why these properties are not defined in the constructor?
+    id = ''
+    label = ''
+    type = undefined
+    description = ''
+    settings = undefined
+    config = undefined
+
     constructor(app) {
         super()
         this.app = app
@@ -112,40 +122,7 @@ class ProcessorImpl extends EventEmitter {
         return super.emit('message', message)
     }
 
-    id = ''
-    label = ''
-    type = undefined
-    description = ''
-    settings = undefined
-    config = undefined
 
-    toString() {
-        const settingsNodeValue = this.settingsNode ? this.settingsNode.value : 'none'
-        let typeValue = ''
-        try {
-            if (
-                this.type &&
-                typeof this.type === 'object' &&
-                this.type !== null &&
-                Object.prototype.hasOwnProperty.call(this.type, 'value') &&
-                typeof this.type['value'] === 'string'
-            ) {
-                typeValue = this.type['value']
-            }
-        } catch (e) {
-            typeValue = ''
-        }
-        return `
-=== Processor ${this.constructor.name} ===
-    id = ${this.id || ''}
-    label = ${this.label || ''}
-    type = ${typeValue}
-    description = ${this.description || ''}
-    settingsNodeValue = ${settingsNodeValue}
-    settings = ${this.settings || ''}
-    config = ${this.config || ''}
-       `
-    }
 
     async postProcess(message) {
         //   if (typeof this.previousLogLevel === 'string' || typeof this.previousLogLevel === 'undefined') {
@@ -314,6 +291,34 @@ class ProcessorImpl extends EventEmitter {
         const results = this.outputs
         this.outputs = []
         return results
+    }
+
+    toString() {
+        const settingsNodeValue = this.settingsNode ? this.settingsNode.value : 'none'
+        let typeValue = ''
+        try {
+            if (
+                this.type &&
+                typeof this.type === 'object' &&
+                this.type !== null &&
+                Object.prototype.hasOwnProperty.call(this.type, 'value') &&
+                typeof this.type['value'] === 'string'
+            ) {
+                typeValue = this.type['value']
+            }
+        } catch (e) {
+            typeValue = ''
+        }
+        return `
+=== Processor ${this.constructor.name} ===
+    id = ${this.id || ''}
+    label = ${this.label || ''}
+    type = ${typeValue}
+    description = ${this.description || ''}
+    settingsNodeValue = ${settingsNodeValue}
+    settings = ${this.settings || ''}
+    config = ${this.config || ''}
+       `
     }
 }
 

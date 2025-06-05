@@ -3,11 +3,14 @@ import rdf from 'rdf-ext'
 import ns from '../utils/ns.js'
 import logger from '../utils/Logger.js'
 import Datasets from './Datasets.js'
-// import Transmission from './Transmission.js'
+import Config from '../engine/Config.js'
 
 class App {
     constructor() {
         this.datasets = new Datasets()
+        this.config = Config.getInstance() // Load configuration on startup
+        this.targetDataset = rdf.dataset(); // Initialize targetDataset in the constructor
+        this.workingDir = null; // Initialize workingDir
         /*
         this.targetDataset = rdf.dataset()
         this.dummy = 'dummy'
@@ -24,7 +27,7 @@ class App {
 */
     }
 
-    static #instance = null;
+    static #instance = null; // Explicitly allowing null or App type
 
     static instance() {
         if (!App.#instance) {
@@ -34,8 +37,11 @@ class App {
     }
 
     async initDataset(appName, sessionNode = rdf.blankNode()) {
+        const appConfig = this.config.get('appSettings'); // Example usage of config
+        if (appConfig) {
+            console.log('App settings loaded:', appConfig);
+        }
 
-        // TODO validate syntax of appName
         this.appNode = rdf.namedNode(`http://purl.org/stuff/transmissions/${appName}`)
         this.sessionNode = sessionNode
 
@@ -82,7 +88,7 @@ class App {
             .join(',\n      ')
         const otherProps = JSON.stringify(this)
             .replace(/"datasets":{.*?}/, '') // Remove the datasets object
-            .replaceAll(',', ',\n      ')
+            .split(',').join(',\n      '); // Replace replaceAll with split and join
         return `\n *** App *** ${otherProps}\n      datasets: {\n      ${datasetsInfo}\n      }`
     }
 }

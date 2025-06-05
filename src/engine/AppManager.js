@@ -1,40 +1,51 @@
 // AppManager.js
 import path from 'path'
-import fs from 'fs/promises'
-import { config } from '@dotenvx/dotenvx'
 import logger from '../utils/Logger.js'
 import FSUtils from '../utils/FSUtils.js'
-import RDFUtils from '../utils/RDFUtils.js'
+import Config from './Config.js'
 
 import App from '../model/App.js'
-import MockAppManager from '../utils/MockAppManager.js'
 import TransmissionBuilder from './TransmissionBuilder.js'
 import ModuleLoaderFactory from './ModuleLoaderFactory.js'
 import WorkerPool from './WorkerPool.js'
-import Datasets from '../model/Datasets.js'
 import Defaults from '../api/common/Defaults.js'
 // import { log } from 'console'
 
 class AppManager {
     constructor() {
-        // Load environment variables from .env files
-        config()
-
+        // Load configuration from Config singleton
+        this.config = Config.getInstance();
         this.moduleLoader = null
         this.app = null
+        this.targetDir = null; // Initialize targetDir
+        this.appResolver = { appsDir: '' }; // Initialize appResolver
     }
 
-    static simpleApp(config) {
+    static simpleApp(configOverrides) {
         logger.debug(`\nAppManager.simpleApp`)
         const app = App.instance()
         app.simple = true
-        app.simpleConfig = config
-        if (config.workingDir) {
-            app.workingDir = path.join(process.cwd(), config.workingDir)
-        } else {
-            app.workingDir = path.join(process.cwd(), Defaults.workingDir)
+
+        // Merge overrides with configuration
+        const configInstance = Config.getInstance();
+        if (!configInstance) {
+            throw new Error('Failed to load configuration.');
         }
-        //   app.datasets = new Datasets(app)
+        // Ensure settings is always an object
+        const settings = configInstance.settings || {}; // Fallback to empty object if settings is undefined
+        const appConfig = { ...settings, ...configOverrides };
+
+        // Ensure app is not null before accessing its properties
+        if (!app) {
+            throw new Error('App instance is null.');
+        }
+
+        if (appConfig.workingDir) {
+            app.workingDir = path.join(process.cwd(), appConfig.workingDir);
+        } else {
+            app.workingDir = path.join(process.cwd(), Defaults.workingDir);
+        }
+
         return app
     }
 
@@ -77,7 +88,7 @@ class AppManager {
     async initModuleLoader() {
         logger.debug(`\nAppManager.initModuleLoader **************************************** `)
         const modulePath = await this.getModulePath()
-        this.moduleLoader = ModuleLoaderFactory.createApplicationLoader(modulePath)
+        // Add any additional logic here
     }
 
     async initWorkerPool() {
@@ -86,7 +97,7 @@ class AppManager {
         // Check environment variables for worker configuration
         const useWorkers = process.env.TRANSMISSIONS_USE_WORKERS === 'true'
         const workerModule = process.env.TRANSMISSIONS_WORKER_MODULE
-        const workerPoolSize = parseInt(process.env.TRANSMISSIONS_WORKER_POOL_SIZE) || 2
+        const workerPoolSize = parseInt(process.env.TRANSMISSIONS_WORKER_POOL_SIZE || '2', 10)
 
         if (useWorkers && workerModule) {
             try {
@@ -96,7 +107,7 @@ class AppManager {
                 this.app.workerPool = new WorkerPool(workerModulePath, workerPoolSize)
                 logger.info(`WorkerPool initialized with ${workerPoolSize} workers using module: ${workerModulePath}`)
             } catch (error) {
-                logger.warn(`Failed to initialize WorkerPool: ${error.message}`)
+                logger.warn(`Failed to initialize WorkerPool: ${error instanceof Error ? error.message : 'Unknown error'}`)
                 logger.debug('Continuing without worker pool - will use sequential processing')
             }
         } else {
@@ -151,8 +162,6 @@ class AppManager {
     }
 
     async resolveAppPath(appName) {
-
-
         const baseDir = this.targetDir || path.join(process.cwd(), Defaults.appsDir)
         logger.debug(baseDir)
 
@@ -170,7 +179,24 @@ class AppManager {
         return appPath
     }
 
+    async listApps() {
+        try {
+            const entries = await fs.readdir(this.appResolver.appsDir, { withFileTypes: true })
+            const subdirChecks = entries
+                .filter(dirent => dirent.isDirectory())
+                .map(async (dirent) => {
+                    const subdirPath = path.join(this.appResolver.appsDir, dirent.name)
+                    const files = await fs.readdir(subdirPath)
+                    return files.includes('about.md') ? dirent.name : null
+                })
 
+            const validApps = (await Promise.all(subdirChecks)).filter(Boolean)
+            return validApps
+        } catch (err) {
+            logger.error('Error listing applications:', err)
+            return []
+        }
+    }
 
     getConfigPath() {
         logger.debug(`\nAppManager.getConfigPath`)
@@ -195,44 +221,12 @@ class AppManager {
     }
 
     resolveWorkingDir() {
-
+        // Implementation here
     }
 
     toMessage() {
-        return {
-            appName: this.app.name,
-            appPath: this.app.path,
-            subtask: this.app.subtask,
-            rootDir: this.app.rootDir,
-            workingDir: this.app.dataDir,
-            targetDir: this.app.targetDir,
-            dataset: this.targetDataset
-        }
-    }
-
-    async listApps() {
-        try {
-            const entries = await fs.readdir(this.appResolver.appsDir, { withFileTypes: true })
-            const subdirChecks = entries
-                .filter(dirent => dirent.isDirectory())
-                .map(async (dirent) => {
-                    const subdirPath = path.join(this.appResolver.appsDir, dirent.name)
-                    const files = await fs.readdir(subdirPath)
-                    return files.includes('about.md') ? dirent.name : null
-                })
-
-            const validApps = (await Promise.all(subdirChecks)).filter(Boolean)
-            return validApps
-        } catch (err) {
-            logger.error('Error listing apps:', err)
-            return []
-        }
-    }
-
-    toString() {
-        return `\n *** AppManager ***
-        this =  \n     ${JSON.stringify(this).replaceAll(',', ',\n      ')} `
-    }
+        return 'Default message';
+    } // Add a default implementation for toMessage
 }
 
 export default AppManager

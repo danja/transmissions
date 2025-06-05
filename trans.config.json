@@ -1,0 +1,5 @@
+{
+    "TRANSMISSIONS_USE_WORKERS": false,
+    "TRANSMISSIONS_WORKER_MODULE": "./examples/worker/transmission-worker.js",
+    "TRANSMISSIONS_WORKER_POOL_SIZE": 5
+}

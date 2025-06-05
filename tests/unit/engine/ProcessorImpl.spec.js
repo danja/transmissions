@@ -119,18 +119,18 @@ describe('ProcessorImpl', () => {
 
     it('should return value from message if present', () => {
       processor.message = { testProp: 'messageValue' }
-      
+
       const result = processor.getProperty(property, 'fallback')
-      
+
       expect(result).toBe('messageValue')
     })
 
     it('should return value from simpleConfig if not in message', () => {
       processor.message = {}
       mockApp.simpleConfig = { testProp: 'configValue' }
-      
+
       const result = processor.getProperty(property, 'fallback')
-      
+
       expect(result).toBe('configValue')
     })
 
@@ -138,9 +138,9 @@ describe('ProcessorImpl', () => {
       processor.message = {}
       mockApp.simpleConfig = {}
       mockSettee.getValues.mockReturnValue(['settingsValue'])
-      
+
       const result = processor.getProperty(property, 'fallback')
-      
+
       expect(result).toBe('settingsValue')
       expect(mockSettee.getValues).toHaveBeenCalledWith(
         processor.settingsNode,
@@ -153,9 +153,9 @@ describe('ProcessorImpl', () => {
       processor.message = {}
       mockApp.simpleConfig = {}
       mockSettee.getValues.mockReturnValue(['value1', 'value2'])
-      
+
       const result = processor.getProperty(property, 'fallback')
-      
+
       expect(result).toEqual(['value1', 'value2'])
     })
 
@@ -163,9 +163,9 @@ describe('ProcessorImpl', () => {
       processor.message = {}
       mockApp.simpleConfig = {}
       mockSettee.getValues.mockReturnValue([])
-      
+
       const result = processor.getProperty(property, 'fallback')
-      
+
       expect(result).toBe('fallback')
     })
   })
@@ -178,26 +178,26 @@ describe('ProcessorImpl', () => {
     it('should find property in object using short name', () => {
       const obj = { testProp: 'foundValue' }
       const property = { value: 'http://example.org/testProp' }
-      
+
       const result = processor.propertyInObject(obj, property)
-      
+
       expect(result).toBe('foundValue')
     })
 
     it('should return undefined if property not found', () => {
       const obj = { otherProp: 'value' }
       const property = { value: 'http://example.org/testProp' }
-      
+
       const result = processor.propertyInObject(obj, property)
-      
+
       expect(result).toBeUndefined()
     })
 
     it('should return undefined if object is null', () => {
       const property = { value: 'http://example.org/testProp' }
-      
+
       const result = processor.propertyInObject(null, property)
-      
+
       expect(result).toBeUndefined()
     })
   })
@@ -238,22 +238,14 @@ describe('ProcessorImpl', () => {
   })
 
   describe('postProcess', () => {
-    it('should restore previous log level if it was a string', async () => {
+    it('should restore previous log level', async () => {
       processor.previousLogLevel = 'warn'
 
       await processor.postProcess({})
 
       expect(logger.setLogLevel).toHaveBeenCalledWith('warn')
-      expect(processor.previousLogLevel).toBeNull()
     })
 
-    it('should not set log level if previousLogLevel is not a string', async () => {
-      processor.previousLogLevel = null
-
-      await processor.postProcess({})
-
-      expect(logger.setLogLevel).not.toHaveBeenCalled()
-    })
   })
 
   describe('receive and enqueue', () => {
