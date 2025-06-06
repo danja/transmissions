@@ -1,11 +1,11 @@
-// src/processors/example-group/Example.js
+// src/processors/example-group/Reverse.js
 /**
- * @class Example
+ * @class Reverse
  * @extends Processor
  * @classdesc
  * **a Transmissions Processor**
  *
- * Example processor demonstrating basic processor structure and property handling.
+ * Reverse processor demonstrating basic processor structure and property handling.
  *
  * ### Processor Signature
  *
@@ -48,9 +48,9 @@ import ns from '../../utils/ns.js'
 import Processor from '../../model/Processor.js'
 
 
-class Example extends Processor {
+class Reverse extends Processor {
     /**
-     * Creates a new Example processor instance.
+     * Creates a new Reverse processor instance.
      * @param {Object} config - Processor configuration object
      */
     constructor(config) {
@@ -63,33 +63,15 @@ class Example extends Processor {
      * @returns {Promise<boolean>} Resolves when processing is complete
      */
     async process(message) {
-        logger.debug(`\n\nExample.process`)
+        logger.debug(`\n\nReverse.process`)
 
-        // TODO figure this out better
-        // may be needed if preceded by a spawning processor, eg. fs/DirWalker
-        if (message.done) {
-            return this.emit('message', message)
-            // or simply return
-        }
-
-        // message is processed here :
-
-        // property values pulled from message | config settings | fallback
-        const me = super.getProperty(ns.trn.me)
-        logger.log(`\nI am ${me}`)
-
-        message.common = super.getProperty(ns.trn.common)
-        message.something1 = super.getProperty(ns.trn.something1)
-
-        message.something2 = super.getProperty(ns.trn.something2)
-
-        var added = super.getProperty(ns.trn.added, '')
-        message.something1 = message.something1 + added
-
-        message.notavalue = super.getProperty(ns.trn.notavalue, 'fallback value')
-
+        const sourceField = super.getProperty(ns.trn.sourceField, 'content')
+        const targetField = super.getProperty(ns.trn.targetField, 'test')
+        const string = message[sourceField]
+        message[targetField] = string.reverse()
+        message.test = "test"
         // message forwarded
         return this.emit('message', message)
     }
 }
-export default Example
+export default Reverse

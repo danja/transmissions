@@ -5,6 +5,8 @@ import StringFilter from './StringFilter.js'
 import StringReplace from './StringReplace.js'
 import Templater from './Templater.js'
 import Escaper from './Escaper.js'
+import Concat from './Concat.js'
+import Reverse from './Reverse.js'
 
 class TextProcessorsFactory {
     static createProcessor(type, config) {
@@ -24,6 +26,12 @@ class TextProcessorsFactory {
         }
         if (type.equals(ns.trn.Escaper)) {
             return new Escaper(config)
+        }
+        if (type.equals(ns.trn.Concat)) {
+            return new Concat(config)
+        }
+        if (type.equals(ns.trn.Reverse)) {
+            return new Reverse(config)
         }
         return false
     }

@@ -21,8 +21,11 @@ class Transmission {
       let processor = this.get(processorName)
       if (processor) {
         logger.log(`|-> ${ns.shortName(processorName)} a ${processor.constructor.name}`)
-        message = await processor.receive(message)
-      } else {
+        // Capture the result of processor.receive() and return it
+        const result = await processor.receive(message)
+        // Return the processed message, falling back to the original message if undefined
+        return result !== undefined ? result : message
+      } else { //   message = await processor.receive(message)
         throw new Error("No valid processor found to execute")
       }
     } catch (error) {
@@ -30,7 +33,6 @@ class Transmission {
       error.transmissionStack.push(this.id)
       throw error
     }
-    return message
   }
 
   register(processorName, instance) {

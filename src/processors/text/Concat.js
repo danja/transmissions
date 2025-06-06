@@ -1,11 +1,11 @@
-// src/processors/example-group/Example.js
+// src/processors/example-group/Concat.js
 /**
- * @class Example
+ * @class Concat
  * @extends Processor
  * @classdesc
  * **a Transmissions Processor**
  *
- * Example processor demonstrating basic processor structure and property handling.
+ * Concat processor demonstrating basic processor structure and property handling.
  *
  * ### Processor Signature
  *
@@ -48,9 +48,9 @@ import ns from '../../utils/ns.js'
 import Processor from '../../model/Processor.js'
 
 
-class Example extends Processor {
+class Concat extends Processor {
     /**
-     * Creates a new Example processor instance.
+     * Creates a new Concat processor instance.
      * @param {Object} config - Processor configuration object
      */
     constructor(config) {
@@ -63,33 +63,17 @@ class Example extends Processor {
      * @returns {Promise<boolean>} Resolves when processing is complete
      */
     async process(message) {
-        logger.debug(`\n\nExample.process`)
+        logger.debug(`\n\nConcat.process`)
 
-        // TODO figure this out better
-        // may be needed if preceded by a spawning processor, eg. fs/DirWalker
-        if (message.done) {
-            return this.emit('message', message)
-            // or simply return
-        }
+        const sourceFieldA = super.getProperty(ns.trn.sourceFieldA, 'content')
+        const sourceFieldB = super.getProperty(ns.trn.sourceFieldB, 'content')
+        const targetField = super.getProperty(ns.trn.targetField, 'content')
+        const separator = super.getProperty(ns.trn.separator, '')
 
-        // message is processed here :
-
-        // property values pulled from message | config settings | fallback
-        const me = super.getProperty(ns.trn.me)
-        logger.log(`\nI am ${me}`)
-
-        message.common = super.getProperty(ns.trn.common)
-        message.something1 = super.getProperty(ns.trn.something1)
-
-        message.something2 = super.getProperty(ns.trn.something2)
-
-        var added = super.getProperty(ns.trn.added, '')
-        message.something1 = message.something1 + added
-
-        message.notavalue = super.getProperty(ns.trn.notavalue, 'fallback value')
+        message[targetField] = message[sourceFieldA] + separator + message[sourceFieldB]
 
         // message forwarded
         return this.emit('message', message)
     }
 }
-export default Example
+export default Concat
