@@ -132,19 +132,17 @@ class ProcessorImpl extends EventEmitter {
     }
 
     async receive(message) {
-        return await this.enqueue(message)
+        await this.enqueue(message)
     }
 
     async enqueue(message) {
         this.messageQueue.push({ message })
         if (!this.processing) {
-            message = await this.executeQueue()
+            await this.executeQueue()
         }
-        return message
     }
 
     async executeQueue() {
-        var message = null
         return await tracer.startActiveSpan('processor.executeQueue', {
             attributes: {
                 'processor.class': this.constructor.name,
@@ -160,10 +158,10 @@ class ProcessorImpl extends EventEmitter {
                 if (appWorkerPool) {
                     logger.debug('Workers detected but falling back to sequential processing - worker integration incomplete')
                     queueSpan.addEvent('worker_pool_fallback')
-                    message = await this.processSequentially(queueSpan)
+                    await this.processSequentially(queueSpan)
                 } else {
                     queueSpan.addEvent('sequential_processing')
-                    message = await this.processSequentially(queueSpan)
+                    await this.processSequentially(queueSpan)
                 }
 
                 queueSpan.setStatus({ code: SpanStatusCode.OK })
@@ -177,26 +175,23 @@ class ProcessorImpl extends EventEmitter {
                 throw error
             } finally {
                 queueSpan.end()
-                return message
             }
         })
-
     }
 
     async processSequentially(parentSpan) {
         this.processing = true
         let messageIndex = 0
-        var copiedMessage = null
+
         while (this.messageQueue.length > 0) {
             const { message } = this.messageQueue.shift()
-            copiedMessage = SysUtils.copyMessage(message)
+            const copiedMessage = SysUtils.copyMessage(message)
             this.addTag(copiedMessage)
 
             await this.processMessage(copiedMessage, messageIndex++, parentSpan)
         }
 
         this.processing = false
-        return copiedMessage
     }
 
     async processMessage(message, index, parentSpan) {
@@ -273,8 +268,7 @@ class ProcessorImpl extends EventEmitter {
         const processWhenDone = !this.noProcessWhenDone && this.getProperty(ns.trn.processWhenDone, "true")
 
         if (!message.done || (message.done && processWhenDone)) {
-            return await this.process(message)
-
+            await this.process(message)
         } else {
             return this.emit('message', message)
         }
