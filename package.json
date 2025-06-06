@@ -7,9 +7,11 @@
   "author": "Danny Ayers <danny.ayers@gmail.com> (https://danny.ayers.name)",
   "license": "MIT",
   "scripts": {
-    "test": "PAGER=cat LESS=F vitest --run",
-    "test:ed": "npx http-server -c-1 -o tests/browser/transmission-editor-test.html",
+    "test": "PAGER=cat LESS=F vitest --run --exclude=tests/browser/**/*",
+    "test:gui": "PAGER=cat LESS=F vitest --run tests/browser/**/*",
+    "test:all": "PAGER=cat LESS=F vitest --run",
     "cov": "nyc -a --include=src --reporter=lcov npm run test",
+    "cov:all": "nyc -a --include=src --reporter=lcov npm run test:all",
     "docs": "jsdoc -c jsdoc.json",
     "build": "webpack --config webpack.config.js --mode=production",
     "dev": "webpack serve --config webpack.config.js --mode=development",
