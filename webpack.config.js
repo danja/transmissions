@@ -99,7 +99,7 @@ export default {
       patterns: [
         { from: 'src/apps/intro', to: 'samples' },
         { from: path.resolve(__dirname, 'src/tools/nodeflow/samples'), to: 'samples' },
-        { from: 'src/apps/example-application', to: 'samples/example-application' }
+        { from: 'src/apps/example-app', to: 'samples/example-app' }
       ]
     })
   ],
