@@ -22,15 +22,41 @@ class Transmission {
       let processor = this.get(processorName)
       if (processor) {
         logger.log(`|-> ${ns.shortName(processorName)} a ${processor.constructor.name}`)
-        // Capture the result of processor.receive() and return it
-        const result = await processor.receive(message)
-        // Return the processed message, falling back to the original message if undefined
-        if (result) {
-          return result
-        } else {
-          return message
+        
+        // If there are no connectors, just process with the single processor
+        if (this.connectors.length === 0) {
+          const result = await processor.receive(message)
+          return result || message
         }
-      } else { //   message = await processor.receive(message)
+        
+        // For connected processors, we need to wait for the final result
+        return new Promise((resolve, reject) => {
+          // Find the last processor in the chain
+          let lastProcessor = processor
+          let currentProcessor = processor
+          
+          // Follow the connector chain to find the last processor
+          while (true) {
+            const connector = this.connectors.find(c => c.fromName === currentProcessor.id)
+            if (!connector) break
+            currentProcessor = this.get(connector.toName)
+            if (currentProcessor) {
+              lastProcessor = currentProcessor
+            }
+          }
+          
+          // Listen for the final result from the last processor
+          const handleFinalMessage = (finalMessage) => {
+            lastProcessor.off('message', handleFinalMessage)
+            resolve(finalMessage)
+          }
+          
+          lastProcessor.on('message', handleFinalMessage)
+          
+          // Start the chain by sending message to first processor
+          processor.receive(message).catch(reject)
+        })
+      } else {
         throw new Error("No valid processor found to execute")
       }
     } catch (error) {
