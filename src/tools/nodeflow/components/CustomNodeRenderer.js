@@ -1,5 +1,3 @@
-// CustomNodeRenderer.js - Add to src/tools/nodeflow/components/
-
 class CustomNodeRenderer {
   constructor(graph) {
     this.graph = graph
@@ -8,20 +6,29 @@ class CustomNodeRenderer {
   }
 
   setupCustomRenderer() {
-    /*
-    if (!this.graph || !this.graph.nodeRenderer) {
-      console.log(`graph = ${this.graph}`)
-      console.log(`graph.nodeRenderer = ${this.graph.nodeRenderer}`)
-      console.error('Cannot access graph or node renderer')
-      return
-    }
-*/
     try {
-      // Store the original render function
+      // Check if graph exists
+      if (!this.graph) {
+        console.warn('CustomNodeRenderer: Graph is undefined')
+        return
+      }
 
+      // Check if nodeRenderer exists
+      if (!this.graph.nodeRenderer) {
+        console.warn('CustomNodeRenderer: Graph nodeRenderer is undefined')
+        return
+      }
+
+      // Check if renderNode method exists
+      if (!this.graph.nodeRenderer.renderNode || typeof this.graph.nodeRenderer.renderNode !== 'function') {
+        console.warn('CustomNodeRenderer: Graph nodeRenderer.renderNode is not available')
+        return
+      }
+
+      // Store original render function
       this.originalRenderFunction = this.graph.nodeRenderer.renderNode
 
-      // Replace with our custom render function
+      // Override with custom renderer
       this.graph.nodeRenderer.renderNode = this.customRenderNode.bind(this)
 
       console.log('Custom node renderer installed')
@@ -32,17 +39,17 @@ class CustomNodeRenderer {
 
   customRenderNode(node, ctx) {
     try {
-      // Call the original render function first to draw the basic node
+      // Call original renderer first
       if (this.originalRenderFunction) {
         this.originalRenderFunction.call(this.graph.nodeRenderer, node, ctx)
       }
 
-      // Now add our custom rendering for settings
+      // Add custom settings section
       this.renderSettingsSection(node, ctx)
     } catch (error) {
       console.error('Error in custom node rendering:', error)
 
-      // Fallback to original render if available
+      // Fallback to original renderer only
       if (this.originalRenderFunction) {
         this.originalRenderFunction.call(this.graph.nodeRenderer, node, ctx)
       }
@@ -50,45 +57,43 @@ class CustomNodeRenderer {
   }
 
   renderSettingsSection(node, ctx) {
-    // Get settings data from node metadata or data
+    // Get settings data
     const settingsData = node.getMetadataProperty ?
       node.getMetadataProperty('settingsData') :
       (node.data && node.data.settingsData)
 
     if (!settingsData) return
 
-    // Get node position and dimensions
+    // Get node position and size
     const pos = node.position()
     const size = node.size()
 
-    // Calculate settings section position (below the title)
-    const titleHeight = 30 // Approximate height of title
+    // Settings area positioning
+    const titleHeight = 30
     const settingsY = pos.y + titleHeight
 
-    // Set up text properties
     ctx.save()
     ctx.font = '10px Arial'
     ctx.fillStyle = '#afb9bb'
     ctx.textAlign = 'left'
 
-    // Draw settings background
+    // Background for settings
     ctx.fillStyle = 'rgba(7, 33, 42, 0.6)'
     ctx.fillRect(pos.x, settingsY, size.width, size.height - titleHeight)
 
-    // Draw border between title and settings
+    // Border line
     ctx.strokeStyle = 'rgba(175, 185, 187, 0.2)'
     ctx.beginPath()
     ctx.moveTo(pos.x, settingsY)
     ctx.lineTo(pos.x + size.width, settingsY)
     ctx.stroke()
 
-    // Draw settings text
+    // Render settings text
     ctx.fillStyle = '#afb9bb'
-    let textY = settingsY + 15 // Start position for text
+    let textY = settingsY + 15
     const lineHeight = 12
     const padding = 8
 
-    // Render each setting as a line of text
     Object.entries(settingsData)
       .filter(([key]) => key !== 'type')
       .forEach(([key, values], index) => {
@@ -96,12 +101,10 @@ class CustomNodeRenderer {
           values.join(', ') :
           values}`
 
-        // Check if we should truncate for long settings lists
         if (textY + lineHeight <= pos.y + size.height - 5) {
           ctx.fillText(text, pos.x + padding, textY)
           textY += lineHeight
         } else if (index === Object.keys(settingsData).length - 1) {
-          // Show "..." if we have more settings than can fit
           ctx.fillText('...', pos.x + padding, textY)
         }
       })
@@ -109,7 +112,7 @@ class CustomNodeRenderer {
     ctx.restore()
   }
 
-  // Call this to restore the original renderer
+  // Restore original renderer
   restoreOriginalRenderer() {
     if (this.graph && this.graph.nodeRenderer && this.originalRenderFunction) {
       this.graph.nodeRenderer.renderNode = this.originalRenderFunction

@@ -7,6 +7,7 @@ import Templater from './Templater.js'
 import Escaper from './Escaper.js'
 import Concat from './Concat.js'
 import Reverse from './Reverse.js'
+import SetText from './SetText.js'
 
 class TextProcessorsFactory {
     static createProcessor(type, config) {
@@ -32,6 +33,9 @@ class TextProcessorsFactory {
         }
         if (type.equals(ns.trn.Reverse)) {
             return new Reverse(config)
+        }
+        if (type.equals(ns.trn.SetText)) {
+            return new SetText(config)
         }
         return false
     }

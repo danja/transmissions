@@ -6,8 +6,9 @@ class TransmissionsLoader {
   async loadFromFile(filePath) {
     try {
       logger.debug(`TransmissionsLoader: Loading from ${filePath}`)
-      const dataset = await RDFUtils.readDataset(filePath)
-      return this.parseDataset(dataset, filePath)
+      const dataset = await RDFUtils.fromFile(filePath)
+      //  return this.parseDataset(dataset, filePath)
+      return dataset
     } catch (error) {
       logger.error(`TransmissionsLoader: Error loading file: ${error.message}`)
       throw error
