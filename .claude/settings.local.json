@@ -18,5 +18,6 @@
       "Bash(examples/http/stop-curl.sh 4400)"
     ],
     "deny": []
-  }
+  },
+  "enableAllProjectMcpServers": false
 }

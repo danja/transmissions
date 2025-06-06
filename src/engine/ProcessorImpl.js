@@ -28,7 +28,6 @@ class ProcessorImpl extends EventEmitter {
         this.messageQueue = []
         this.processing = false
         this.noProcessWhenDone = false
-        this.outputs = []
         this.workerPool = null
         logger.trace(`ProcessorImpl.constructor : \n${this}`)
     }
@@ -132,13 +131,13 @@ class ProcessorImpl extends EventEmitter {
     }
 
     async receive(message) {
-        await this.enqueue(message)
+        return await this.enqueue(message)
     }
 
     async enqueue(message) {
         this.messageQueue.push({ message })
         if (!this.processing) {
-            await this.executeQueue()
+            return await this.executeQueue()
         }
     }
 
@@ -161,7 +160,7 @@ class ProcessorImpl extends EventEmitter {
                     await this.processSequentially(queueSpan)
                 } else {
                     queueSpan.addEvent('sequential_processing')
-                    await this.processSequentially(queueSpan)
+                    return await this.processSequentially(queueSpan)
                 }
 
                 queueSpan.setStatus({ code: SpanStatusCode.OK })
@@ -182,16 +181,18 @@ class ProcessorImpl extends EventEmitter {
     async processSequentially(parentSpan) {
         this.processing = true
         let messageIndex = 0
-
+        var result = null
         while (this.messageQueue.length > 0) {
             const { message } = this.messageQueue.shift()
             const copiedMessage = SysUtils.copyMessage(message)
             this.addTag(copiedMessage)
 
-            await this.processMessage(copiedMessage, messageIndex++, parentSpan)
+            result = await this.processMessage(copiedMessage, messageIndex++, parentSpan)
         }
-
+        //  logger.debug(`\n\n\nProcessorImpl.processSequentially copied`)
+        //logger.v(result)
         this.processing = false
+        return result
     }
 
     async processMessage(message, index, parentSpan) {
@@ -210,7 +211,8 @@ class ProcessorImpl extends EventEmitter {
 
                 await this.spanMethod('preProcess', message, messageSpan)
                 await this.spanMethod('doProcess', message, messageSpan)
-                await this.spanMethod('postProcess', message, messageSpan)
+
+                message = await this.spanMethod('postProcess', message, messageSpan)
 
                 messageSpan.addEvent('message_processing_complete')
                 messageSpan.setStatus({ code: SpanStatusCode.OK })
@@ -223,6 +225,7 @@ class ProcessorImpl extends EventEmitter {
                 throw error
             } finally {
                 messageSpan.end()
+                return message
             }
         })
     }
@@ -237,20 +240,21 @@ class ProcessorImpl extends EventEmitter {
             }
         }, async (methodSpan) => {
             const startTime = Date.now()
-
+            var result = null
             try {
                 methodSpan.addEvent(`${methodName}_start`)
 
                 if (methodName === 'doProcess') {
-                    await this.doProcess(message)
+                    result = await this.doProcess(message)
                 } else {
-                    await this[methodName](message)
+                    result = await this[methodName](message)
                 }
 
                 const duration = Date.now() - startTime
                 methodSpan.setAttribute('method.duration_ms', duration)
                 methodSpan.addEvent(`${methodName}_complete`)
                 methodSpan.setStatus({ code: SpanStatusCode.OK })
+                return result
             } catch (error) {
                 methodSpan.recordException(error)
                 methodSpan.setStatus({
@@ -260,6 +264,7 @@ class ProcessorImpl extends EventEmitter {
                 throw error
             } finally {
                 methodSpan.end()
+                return result
             }
         })
     }
@@ -268,7 +273,7 @@ class ProcessorImpl extends EventEmitter {
         const processWhenDone = !this.noProcessWhenDone && this.getProperty(ns.trn.processWhenDone, "true")
 
         if (!message.done || (message.done && processWhenDone)) {
-            await this.process(message)
+            return await this.process(message)
         } else {
             return this.emit('message', message)
         }
@@ -285,12 +290,6 @@ class ProcessorImpl extends EventEmitter {
 
     getTag() {
         return ns.shortName(this.id)
-    }
-
-    getOutputs() {
-        const results = this.outputs
-        this.outputs = []
-        return results
     }
 
     toString() {

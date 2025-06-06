@@ -20,6 +20,7 @@ class AppManager {
         this.app = null
         this.targetDir = null; // Initialize targetDir
         this.appResolver = { appsDir: '' }; // Initialize appResolver
+        this.previousMessage = null
     }
 
     static simpleApp(configOverrides) {
@@ -142,14 +143,19 @@ class AppManager {
         message.appRunStart = (new Date()).toISOString()
 
         // logger.debug(`BEFORE = ${message}`)
-        for (const transmission of transmissions) {
+        var result = null
+        //    for (const transmission of transmissions) {
+        for (var i = 0; i < transmissions.length; i++) {
+            const transmission = transmissions[i]
             transmission.app = this.app
             //   logger.debug(`transmission = \n${transmission} `)
             if (!this.app.subtask || this.app.subtask === transmission.label) {
 
-                message = await transmission.process(message)
-                //  logger.rv(message)
-                //message =
+                result = await transmission.process(message)
+                // Update message for next transmission with the processed result
+                if (result) {
+                    message = result
+                }
             }
         }
 
@@ -164,14 +170,15 @@ class AppManager {
         }
 
         // Get the final output from the last processor if available
+        /*
         const lastTransmission = transmissions[transmissions.length - 1]
         if (lastTransmission && lastTransmission.processor) {
             const outputs = lastTransmission.processor.getOutputs()
             if (outputs && outputs.length > 0) {
                 message.processorOutputs = outputs
             }
-        }
-        // logger.debug(`FINAL = ${JSON.stringify(message)}`)
+        }*/
+        //  logger.debug(`FINAL = ${JSON.stringify(message)}`)
         return message
     }
 

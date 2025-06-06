@@ -10,6 +10,7 @@ class Transmission {
     this.parent = null
     this.children = new Set()
     this.path = []
+    // this.previousMessage = null
   }
 
   async process(message) {
@@ -24,7 +25,11 @@ class Transmission {
         // Capture the result of processor.receive() and return it
         const result = await processor.receive(message)
         // Return the processed message, falling back to the original message if undefined
-        return result !== undefined ? result : message
+        if (result) {
+          return result
+        } else {
+          return message
+        }
       } else { //   message = await processor.receive(message)
         throw new Error("No valid processor found to execute")
       }

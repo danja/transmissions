@@ -49,7 +49,7 @@ export class REPL {
             const response = await this.appManager.start(message);
 
             this.resetVerbosity()
-            //   logger.log(`response = ${JSON.stringify(response)}`)
+            logger.log(`DEBUG: response = ${JSON.stringify(response, null, 2)}`)
             // logger.error(JSON.stringify(response.content))
             // logger.debug('App response:');
             // logger.debug(JSON.stringify(result, null, 2));
@@ -57,7 +57,8 @@ export class REPL {
             //   logger.error('Error: ' + (err && err.message ? err.message : String(err)));
             //}
             // Format the response with a nice border and color
-            const responseLines = response.content.split('\n');
+            const responseContent = response.content || response.message?.content || JSON.stringify(response);
+            const responseLines = responseContent.split('\n');
             const maxLength = responseLines.reduce((max, line) => Math.max(max, line.length), 0);
             const border = '─'.repeat(Math.min(maxLength, 80));
 

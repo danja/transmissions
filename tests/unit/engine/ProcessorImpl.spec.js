@@ -84,7 +84,6 @@ describe('ProcessorImpl', () => {
       expect(processor.messageQueue).toEqual([])
       expect(processor.processing).toBe(false)
       expect(processor.noProcessWhenDone).toBe(false)
-      expect(processor.outputs).toEqual([])
       expect(processor.workerPool).toBeNull()
     })
 
@@ -398,16 +397,7 @@ describe('ProcessorImpl', () => {
     })
   })
 
-  describe('getOutputs', () => {
-    it('should return outputs and clear array', () => {
-      processor.outputs = ['output1', 'output2']
 
-      const result = processor.getOutputs()
-
-      expect(result).toEqual(['output1', 'output2'])
-      expect(processor.outputs).toEqual([])
-    })
-  })
 
   describe('process', () => {
     it('should emit message by default', async () => {
