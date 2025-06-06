@@ -66,10 +66,10 @@ class Reverse extends Processor {
         logger.debug(`\n\nReverse.process`)
 
         const sourceField = super.getProperty(ns.trn.sourceField, 'content')
-        const targetField = super.getProperty(ns.trn.targetField, 'test')
+        const targetField = super.getProperty(ns.trn.targetField, 'content')
         const string = message[sourceField]
-        message[targetField] = string.reverse()
-        message.test = "test"
+        message[targetField] = string.split('').reverse().join('')
+
         // message forwarded
         return this.emit('message', message)
     }
