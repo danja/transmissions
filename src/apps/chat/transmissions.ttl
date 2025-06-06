@@ -5,8 +5,8 @@
 
 @prefix : <http://purl.org/stuff/transmissions/> . 
 
-:echo a :Transmission ;
-    :pipe (:p10 :p20 :p30 :p40) .
+:chat a :Transmission ;
+    :pipe (:p10 :p20 ) . # :p10 :p20 :p30 :p40 :p50 :p60
 
 :p10  a :Chat ;
     :settings [
@@ -18,8 +18,17 @@
 
 :p30  a :Chat ;
     :settings [
+        :provider "claude";
+        :model "claude-3-5-haiku-latest";
+
+    ] .
+
+:p40 a :ShowMessage .
+
+:p50  a :Chat ;
+    :settings [
         :provider "ollama";
         :model "qwen2:1.5b";
     ] .
 
-:p40 a :ShowMessage .
+:p60 a :ShowMessage .

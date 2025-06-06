@@ -78,7 +78,7 @@
     "cors": "^2.8.5",
     "d3": "^7.9.0",
     "eyereasoner": "^18.18.0",
-    "hyperdata-clients": "^0.10.1",
+    "hyperdata-clients": "^0.10.4",
     "ignore": "^7.0.0",
     "jsdom": "^25.0.0",
     "loglevel": "^1.9.2",

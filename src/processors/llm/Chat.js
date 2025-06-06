@@ -43,7 +43,7 @@ import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
 import Processor from '../../model/Processor.js'
 import dotenv from 'dotenv'
-import clients from 'hyperdata-clients';
+import { createClient } from 'hyperdata-clients';
 import Config from '../../engine/Config.js';
 
 // Load environment variables from .env file
@@ -73,7 +73,7 @@ class Chat extends Processor {
         // Get API key mapping from config
         const config = Config.getInstance();
         const apiKeyVars = config.get('API_KEYS') || {};
-        
+
         // Get the appropriate API key from environment variables
         const apiKeyVar = apiKeyVars[provider] || 'MISTRAL_API_KEY';
         const apiKey = process.env[apiKeyVar];
@@ -92,8 +92,8 @@ class Chat extends Processor {
         logger.debug(`    Model: ${modelName} `)
         logger.debug(`    Prompt: ${message.content} `)
 
-        const client = await clients.ClientFactory.createAPIClient(provider, clientOptions)
-
+        //    const client = await clients.ClientFactory.createAPIClient(provider, clientOptions)
+        const client = await createClient(provider, clientOptions)
         const prompt = message.content || "hello"
         const response = await client.chat([
             { role: 'user', content: prompt }
