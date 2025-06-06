@@ -23,8 +23,8 @@ class RDFUtils {
 
     async fromFile(filename) {
         if (BrowserUtils.isBrowser()) {
-            const browser = await import('./RDFUtilsBrowser.js')
-            return browser.fromFile(filename)
+            const { fromFile: browserFromFile } = await import('./RDFUtilsBrowser.js')
+            return browserFromFile(filename)
         }
         const fromFile = await getFromFile()
         return fromFile(filename)
@@ -32,8 +32,8 @@ class RDFUtils {
 
     async toFile(dataset, filename) {
         if (BrowserUtils.isBrowser()) {
-            const browser = await import('./RDFUtilsBrowser.js')
-            return browser.toFile(dataset, filename)
+            const { toFile: browserToFile } = await import('./RDFUtilsBrowser.js')
+            return browserToFile(dataset, filename)
         }
         const toFile = await getToFile()
         return toFile(dataset, filename)
@@ -47,9 +47,43 @@ class RDFUtils {
                     throw new Error(`Failed to load dataset from ${path}`)
                 }
                 const text = await response.text()
-                //  const parseFunction = (await import('@rdfjs/parser-turtle')).default
-                //   return parseFunction(text)
-                return N3Parser.parse(text)
+                
+                // Parse using N3 library directly
+                try {
+                    const { Parser } = await import('n3')
+                    const parser = new Parser()
+                    const dataset = rdfExt.dataset()
+                    
+                    const quads = parser.parse(text)
+                    quads.forEach(quad => dataset.add(quad))
+                    
+                    return dataset
+                } catch (n3Error) {
+                    // Fallback: try with @rdfjs/parser-n3
+                    try {
+                        const parser = new N3Parser()
+                        const dataset = rdfExt.dataset()
+                        
+                        // Create a simple stream-like interface
+                        const readable = new ReadableStream({
+                            start(controller) {
+                                controller.enqueue(new TextEncoder().encode(text))
+                                controller.close()
+                            }
+                        })
+                        
+                        // Convert to async iterator manually
+                        const quadStream = parser.import(readable)
+                        
+                        return new Promise((resolve, reject) => {
+                            quadStream.on('data', quad => dataset.add(quad))
+                            quadStream.on('end', () => resolve(dataset))
+                            quadStream.on('error', reject)
+                        })
+                    } catch (fallbackError) {
+                        throw new Error(`Failed to parse TTL: ${n3Error.message}`)
+                    }
+                }
 
             } catch (error) {
                 logger.error(`Error loading dataset in browser: ${error.message}`)

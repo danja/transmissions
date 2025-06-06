@@ -46,7 +46,6 @@ class RDFUtilsBrowser {
   }
 }
 
-const browserRdfUtils = new RDFUtilsBrowser()
-
-export const { fromFile, toFile, MockDataset } = browserRdfUtils
+export const fromFile = RDFUtilsBrowser.fromFile
+export const toFile = RDFUtilsBrowser.toFile
 export default RDFUtilsBrowser

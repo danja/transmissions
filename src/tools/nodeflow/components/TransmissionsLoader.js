@@ -1,16 +1,26 @@
 import { isBrowser } from '../../../utils/BrowserUtils.js'
-import RDFUtils from '../../../utils/RDFUtils.js'
 import logger from '../../../utils/Logger.js'
+import RDFUtils from '../../../utils/RDFUtils.js'
 
 class TransmissionsLoader {
   async loadFromFile(filePath) {
     try {
       logger.debug(`TransmissionsLoader: Loading from ${filePath}`)
-      const dataset = await RDFUtils.fromFile(filePath)
-      //  return this.parseDataset(dataset, filePath)
-      return dataset
+      console.log(`TransmissionsLoader: Loading from ${filePath}`)
+      
+      // Use RDFUtils to read the dataset
+      const rdfUtils = new RDFUtils()
+      const dataset = await rdfUtils.readDataset(filePath)
+      console.log(`Dataset parsed, quad count:`, dataset?.size || 'unknown')
+      
+      // Extract transmission objects from dataset
+      const transmissions = this.parseDataset(dataset, filePath)
+      console.log(`Transmissions found: ${transmissions?.length || 0}`)
+      
+      return transmissions
     } catch (error) {
       logger.error(`TransmissionsLoader: Error loading file: ${error.message}`)
+      console.error(`TransmissionsLoader: Error loading file:`, error)
       throw error
     }
   }
