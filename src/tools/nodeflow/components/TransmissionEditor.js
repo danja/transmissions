@@ -58,7 +58,19 @@ class TransmissionEditor {
 
     // Delay custom renderer setup until graph is ready
     setTimeout(() => {
-      this.customRenderer = new CustomNodeRenderer(this.graph)
+      try {
+        this.customRenderer = new CustomNodeRenderer(this.graph)
+      } catch (error) {
+        console.warn('CustomNodeRenderer initialization delayed:', error.message)
+        // Try again later if it fails
+        setTimeout(() => {
+          try {
+            this.customRenderer = new CustomNodeRenderer(this.graph)
+          } catch (retryError) {
+            console.warn('CustomNodeRenderer initialization failed:', retryError.message)
+          }
+        }, 500)
+      }
     }, 100)
 
     console.log('TransmissionEditor: Initialized')
@@ -201,11 +213,248 @@ class TransmissionEditor {
         })
       }
 
-      if (typeof this.graph.organize === 'function') {
-        this.graph.organize()
-      }
+      // Skip organize to preserve our initial centered positioning
+      // organize() tends to reposition nodes and break our centering
+      console.log('Skipping organize to preserve centering - connections should still work')
+      
+      // Give the graph a moment to settle and render
+      setTimeout(() => {
+        console.log('Graph should be rendered and centered')
+      }, 100)
     } catch (error) {
       console.error('Error redrawing graph:', error)
+    }
+  }
+
+  repositionNodesAfterOrganize() {
+    try {
+      console.log('Repositioning nodes to center after organize')
+      
+      const canvas = this.canvas
+      const canvasWidth = canvas.width
+      const canvasHeight = canvas.height
+      const canvasCenterX = canvasWidth / 2
+      const canvasCenterY = canvasHeight / 2
+      
+      const nodes = this.graph.getNodes()
+      if (!nodes || nodes.length === 0) {
+        console.log('No nodes to reposition')
+        return
+      }
+      
+      console.log(`Centering ${nodes.length} nodes in ${canvasWidth}x${canvasHeight} canvas`)
+      
+      // Calculate new centered positions
+      const totalWidth = nodes.length * 250
+      const startX = canvasCenterX - (totalWidth / 2) + 125
+      const centerY = canvasCenterY
+      
+      console.log(`New start position: (${startX}, ${centerY})`)
+      
+      // Reposition each node to be centered
+      nodes.forEach((node, index) => {
+        const newX = startX + (index * 250)
+        const newY = centerY
+        
+        console.log(`Repositioning node ${index} to (${newX}, ${newY})`)
+        
+        // Try multiple approaches to set node position
+        try {
+          // Method 1: Direct property access (if available)
+          if (node.x !== undefined) {
+            node.x = newX
+            node.y = newY
+          }
+          
+          // Method 2: Position property
+          if (node.position) {
+            node.position.x = newX
+            node.position.y = newY
+          }
+          
+          // Method 3: setPosition method (if available)
+          if (typeof node.setPosition === 'function') {
+            node.setPosition(newX, newY)
+          }
+          
+          // Method 4: moveTo method (if available)
+          if (typeof node.moveTo === 'function') {
+            node.moveTo(newX, newY)
+          }
+          
+          // Force a re-render if possible
+          if (typeof node.render === 'function') {
+            node.render()
+          }
+          
+        } catch (nodeError) {
+          console.log(`Failed to reposition node ${index}:`, nodeError.message)
+        }
+      })
+      
+      // Force graph redraw
+      try {
+        if (typeof this.graph.render === 'function') {
+          this.graph.render()
+        }
+        if (typeof this.graph.redraw === 'function') {
+          this.graph.redraw()
+        }
+      } catch (redrawError) {
+        console.log('Could not force graph redraw:', redrawError.message)
+      }
+      
+      console.log('Node repositioning completed')
+      
+    } catch (error) {
+      console.error('Error repositioning nodes after organize:', error)
+    }
+  }
+
+  centerViewportWithOffset(offsetX, offsetY) {
+    try {
+      console.log(`Applying viewport offset: (${offsetX}, ${offsetY})`)
+      
+      // Try various methods to pan the viewport
+      if (this.graph.camera) {
+        console.log('Using graph.camera to apply offset')
+        this.graph.camera.x = offsetX
+        this.graph.camera.y = offsetY
+      } else if (this.graph.viewport) {
+        console.log('Using graph.viewport to apply offset')
+        this.graph.viewport.x = -offsetX
+        this.graph.viewport.y = -offsetY
+      } else {
+        console.log('No viewport control found for offset')
+      }
+    } catch (error) {
+      console.error('Error applying viewport offset:', error)
+    }
+  }
+
+  centerViewport() {
+    try {
+      console.log('Attempting to center viewport')
+      
+      // Simple approach: try to pan the graph to show centered content
+      const canvas = this.canvas
+      const canvasWidth = canvas.width
+      const canvasHeight = canvas.height
+      
+      // Estimate where nodes are positioned (around canvas center)
+      const nodesCenterX = canvasWidth / 2
+      const nodesCenterY = canvasHeight / 2
+      
+      // Check for various pan/transform methods
+      if (this.graph.camera) {
+        console.log('Using graph.camera to center viewport')
+        this.graph.camera.x = -nodesCenterX + canvasWidth / 2
+        this.graph.camera.y = -nodesCenterY + canvasHeight / 2
+      } else if (this.graph.viewport) {
+        console.log('Using graph.viewport to center')
+        this.graph.viewport.x = nodesCenterX - canvasWidth / 2
+        this.graph.viewport.y = nodesCenterY - canvasHeight / 2
+      } else {
+        console.log('No viewport control found, nodes should be visible at their positions')
+      }
+    } catch (error) {
+      console.error('Error centering viewport:', error)
+    }
+  }
+
+  centerGraph() {
+    try {
+      const nodes = this.graph.getNodes()
+      if (!nodes || nodes.length === 0) return
+
+      console.log('Attempting to center graph with', nodes.length, 'nodes')
+      
+      // Try using the graph's built-in panning capabilities first
+      try {
+        // Check if the graph has a viewport or camera that can be moved
+        if (this.graph.pan) {
+          console.log('Using graph.pan to center')
+          // Get canvas dimensions
+          const canvas = this.canvas
+          const canvasCenterX = canvas.width / 2
+          const canvasCenterY = canvas.height / 2
+          
+          // Pan to center the view on the typical node positions
+          // Nodes are placed at y: 200, so center around that
+          this.graph.pan(canvasCenterX - 450, canvasCenterY - 200)
+          return
+        }
+        
+        // Try graph transform methods
+        if (this.graph.setTransform) {
+          console.log('Using graph.setTransform to center')
+          const canvas = this.canvas
+          const canvasCenterX = canvas.width / 2
+          const canvasCenterY = canvas.height / 2
+          
+          this.graph.setTransform(canvasCenterX - 450, canvasCenterY - 200, 1)
+          return
+        }
+        
+        // Try graph translation
+        if (this.graph.translate) {
+          console.log('Using graph.translate to center')
+          const canvas = this.canvas
+          const canvasCenterX = canvas.width / 2
+          const canvasCenterY = canvas.height / 2
+          
+          this.graph.translate(canvasCenterX - 450, canvasCenterY - 200)
+          return
+        }
+      } catch (graphError) {
+        console.log('Graph-level centering failed, trying node-level:', graphError.message)
+      }
+
+      // Fallback: force re-layout with centered positions
+      console.log('Using manual node repositioning to center')
+      
+      // Get canvas dimensions
+      const canvas = this.canvas
+      const canvasCenterX = canvas.width / 2
+      const canvasCenterY = canvas.height / 2
+      
+      // Re-position nodes manually centered around canvas
+      const startX = canvasCenterX - (nodes.length * 125) // Center the sequence
+      const centerY = canvasCenterY
+      
+      nodes.forEach((node, index) => {
+        const newX = startX + (index * 250)
+        const newY = centerY
+        
+        console.log(`Repositioning node ${index} to (${newX}, ${newY})`)
+        
+        // Try to access internal position data
+        try {
+          if (node._data) {
+            node._data.x = newX
+            node._data.y = newY
+          }
+          if (node.data) {
+            node.data.x = newX
+            node.data.y = newY
+          }
+          // Force a re-render
+          if (typeof node.render === 'function') {
+            node.render()
+          }
+        } catch (nodeError) {
+          console.log(`Failed to reposition node ${index}:`, nodeError.message)
+        }
+      })
+      
+      // Force graph redraw
+      if (typeof this.graph.render === 'function') {
+        this.graph.render()
+      }
+      
+      console.log('Manual centering completed')
+    } catch (error) {
+      console.error('Error centering graph:', error)
     }
   }
 

@@ -18,15 +18,30 @@ class TransmissionsGraphBuilder {
   buildTransmission(transmission) {
     logger.debug(`TransmissionsGraphBuilder: Building transmission: ${transmission.label}`)
 
+    // Get canvas dimensions for centering
+    const canvas = this.graph.canvas || document.querySelector('canvas')
+    const canvasWidth = canvas ? canvas.width : 1200
+    const canvasHeight = canvas ? canvas.height : 800
+    
+    // Calculate centered starting position
+    const totalWidth = transmission.processors.length * 250
+    const startX = (canvasWidth - totalWidth) / 2 + 125  // Center horizontally
+    const centerY = canvasHeight / 2  // Center vertically
+    
+    console.log(`Centering ${transmission.processors.length} nodes in ${canvasWidth}x${canvasHeight} canvas`)
+    console.log(`Start position: (${startX}, ${centerY})`)
+
     const nodes = new Map()
     for (let i = 0; i < transmission.processors.length; i++) {
       const processor = transmission.processors[i]
 
-      // Position nodes in a sensible layout
+      // Position nodes centered in the canvas
       const position = {
-        x: 200 + (i * 250),
-        y: 200
+        x: startX + (i * 250),
+        y: centerY
       }
+      
+      console.log(`Node ${i} positioned at (${position.x}, ${position.y})`)
 
       const node = this.createProcessorNode(processor, position, transmission)
       if (!node) {
