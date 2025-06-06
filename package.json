@@ -16,7 +16,7 @@
     "build": "webpack --config webpack.config.js --mode=production",
     "dev": "webpack serve --config webpack.config.js --mode=development",
     "watch": "webpack --config webpack.config.js --watch",
-    "rp": "repomix -c repomix.config-large.json ."
+    "rp": "repomix -c repomix.config-large.json . && repomix -c repomix.config-gui.json ."
   },
   "nyc": {
     "report-dir": "spec/coverage",

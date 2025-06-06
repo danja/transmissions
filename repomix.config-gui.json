@@ -1,0 +1,32 @@
+{
+    "output": {
+        "filePath": "./docs/terrapacks/repomix-transmissions-gui.md",
+        "headerText": "Transmissions GUI Tools Source Code",
+        "removeComments": true
+    },
+    "include": [
+        "src/tools/**/*",
+        "src/api/**/*",
+        "src/model/**/*",
+        "src/engine/**/*",
+        "src/processors/example-group/**/*",
+        "src/utils/**/*"
+    ],
+    "ignore": {
+        "useGitignore": true,
+        "useDefaultPatterns": true,
+        "customPatterns": [
+            "**/node_modules/**",
+            "**/test*/**",
+            "**/*.test.js",
+            "**/*.spec.js",
+            "**/*.md",
+            "**/*.json",
+            "**/*.css",
+            "**/*.html",
+            "**/_*",
+            "**/.git",
+            "**/*.log"
+        ]
+    }
+}
