@@ -108,12 +108,13 @@ class PathOps extends Processor {
      * @throws {Error} If required configuration is missing
      */
     async process(message) {
-        logger.debug(`PathOps.process`)
+        logger.debug(`[PathOps.process]`)
 
+        /*
         if (!message) {
             logger.error("PathOps.process: No message provided")
             return
-        }
+        }*/
 
         if (message.done) return
 
@@ -122,7 +123,7 @@ class PathOps extends Processor {
 
         const segments = GrapoiHelpers.listToArray(this.app.loadedDataset, this.settingsNode, ns.trn.values)
         if (!segments || !segments.length) {
-            logger.error("PathOps.process: No segments found in configuration")
+            logger.error("    no segments found in configuration")
             return this.emit('message', message)
         }
 
@@ -150,9 +151,7 @@ class PathOps extends Processor {
      * @private
      */
     combineSegments(dataset, message, segments, asPath) {
-        logger.debug(`PathOps.combineSegments,
-    segments = ${logger.reveal(segments)}
-    asPath = ${asPath}`)
+        logger.debug(`    combineSegments, asPath = ${asPath}`)
 
         if (!dataset) {
             logger.error("combineSegments: No dataset provided")
@@ -201,6 +200,7 @@ class PathOps extends Processor {
 
             if (fieldValue === undefined || fieldValue === null) {
                 logger.warn(`Warn: missing field value for '${fieldProperty.value}' in message`)
+
                 continue
             }
 
