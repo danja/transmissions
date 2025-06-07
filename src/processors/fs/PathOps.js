@@ -109,7 +109,7 @@ class PathOps extends Processor {
      */
     async process(message) {
         logger.debug(`PathOps.process`)
-        
+
         if (!message) {
             logger.error("PathOps.process: No message provided")
             return
@@ -153,20 +153,20 @@ class PathOps extends Processor {
         logger.debug(`PathOps.combineSegments,
     segments = ${logger.reveal(segments)}
     asPath = ${asPath}`)
-        
+
         if (!dataset) {
             logger.error("combineSegments: No dataset provided")
             return ''
         }
-        
+
         if (!segments) {
             logger.error("combineSegments: No segments provided")
             return ''
         }
-        
+
         var combined = ''
         var segment
-        
+
         for (var i = 0; i < segments.length; i++) {
             segment = segments[i]
             if (!segment) {
@@ -189,21 +189,21 @@ class PathOps extends Processor {
             // Try to extract a field value from the message
             let fieldSegment = rdf.grapoi({ dataset: dataset, term: segment })
             let fieldProperty = fieldSegment.out(ns.trn.field)
-            
+
             if (!fieldProperty || !fieldProperty.value) {
                 logger.warn(`Segment ${segment.value} has neither string nor field property`)
                 continue
             }
-            
+
             logger.debug(`    fieldProperty = ${fieldProperty.value}`)
             let fieldValue = JSONUtils.get(message, fieldProperty.value)
             logger.debug(`    fieldValue = ${fieldValue}`)
-            
+
             if (fieldValue === undefined || fieldValue === null) {
-                logger.warn(`Missing field value for '${fieldProperty.value}' in message`)
+                logger.warn(`Warn: missing field value for '${fieldProperty.value}' in message`)
                 continue
             }
-            
+
             if (asPath) {
                 try {
                     combined = path.join(combined, fieldValue)
@@ -216,15 +216,15 @@ class PathOps extends Processor {
                 }
                 continue
             }
-            
+
             if (typeof fieldValue !== 'string') {
                 fieldValue = JSON.stringify(fieldValue)
             }
-            
+
             combined = combined + fieldValue
             continue
         }
-        
+
         return combined
     }
 }

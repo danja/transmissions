@@ -160,7 +160,7 @@ class CommandUtils {
             message = JSON.parse(JSON.stringify(messageString)) // TODO wot?
         } catch (err) {
             logger.debug(`*** Loading JSON from file : ${JSON.stringify(messageString)}`)
-            process.exit()
+            //  process.exit()
             const filePath = path.resolve(messageString)
             const fileContent = await fs.readFile(filePath, 'utf8')
             message.payload = JSON.parse(fileContent)

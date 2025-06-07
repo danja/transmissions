@@ -15,7 +15,7 @@
 ##################################################################
 
 :md-to-sparqlstore a :Transmission ;
-   :pipe (:p10 :p20 :p25 :p30 :p40) .
+   :pipe (:p10 :p20 :p30 :p40 :p50) .
 
 :p10 a :DirWalker ;
    :settings :dirWalker .
@@ -23,10 +23,10 @@
 :p20 a :FileReader ;
      :settings :readerSet .
 
-:p25 a :Escaper .
+:p30 a :Escaper .
 
-:p30 a :MakeEntry ;
+:p40 a :MakeEntry ;
      :settings :entryExtras .
 
-:p40 a :SPARQLUpdate ;
+:p50 a :SPARQLUpdate ;
      :settings :storeArticle .

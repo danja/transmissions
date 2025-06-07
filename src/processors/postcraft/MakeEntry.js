@@ -51,33 +51,30 @@ class MakeEntry extends Processor {
 
   async process(message) {
     logger.debug(`\n\n[MakeEntry.process]`)
-    if (message.done) {
+
+    // skip empties  || !message.content || message.content == ''
+    if (message.done || !message.content || message.content == '') {
       return this.emit('message', message)
     }
-    const dates = this.extractDates(message)
-
-    // rootDir
-    // let basePath = message.targetPath || message.sourceDir || process.cwd()
-    //if (!basePath) basePath = process.cwd()
 
 
-    var { rel, slug } = this.extractRelSlug(message.targetDir, message.filePath)
-    logger.log(`    message.targetDir = ${message.targetDir}`)
-    logger.log(`    message.filePath = ${message.filePath}`)
-    logger.log(`    rel = ${rel}`)
-    logger.log(`    slug = ${slug}`)
+
+    var { relative, slug } = this.extractRelSlug(message.targetDir, message.filePath)
+    logger.debug(`    message.targetDir = ${message.targetDir}`)
+    logger.debug(`    message.filePath = ${message.filePath}`)
+    logger.debug(`    relative = ${relative}`)
+    logger.debug(`    slug = ${slug}`)
 
     const rawDir = super.getProperty(ns.trn.rawDir, '') // eg. content/raw
     const renderPath = super.getProperty(ns.trn.renderPath, '') // eg. docs
 
-    rel = rel.replace(rawDir, renderPath)
+    relative = relative.replace(rawDir, renderPath)
+
     logger.debug(`renderPath = ${renderPath}`)
-    const newPath = path.join(rel, slug)
 
-    logger.log(`newPath = ${newPath}`)
+    const newPath = path.join(relative, slug)
 
-    //  message.filePath = newPath
-
+    logger.debug(`newPath = ${newPath}`)
     logger.debug(`message.meta.filepath = ${message.meta.filepath}`)
     logger.debug(`slug = ${slug}`)
 
@@ -85,32 +82,43 @@ class MakeEntry extends Processor {
     const uri = super.getProperty(ns.trn.baseURI, 'http://example.it') + newPath
     // uri = 'http:/' + uri
 
-    let relative = rel
 
     const title = this.extractTitle(message)
+    const dates = this.extractDates(message)
+
+    //   logger.log(`\n\nDATES = ${JSON.stringify(dates)}`)
 
     message.contentBlocks = {
       uri: uri,
       sourcePath: message.meta.filepath,
       mediaType: message.meta.mediaType,
       relative: relative,
-      // relPath: rel,
-      // relMap: relMap,
       title: title,
       content: message.content,
       slug: slug,
-      dates: dates,
+      //  dates: dates,
+      read: dates.now,
+      created: dates.created,
+      modified: dates.modified,
       creator: this.getCreator()
     }
-    logger.log(` - made entry : ${uri}`)
+
+    /*
+         read: now,
+      created: created,
+      modified: modified
+      */
+    logger.debug(` - made entry : ${uri}`)
     return this.emit('message', message)
   }
 
+  /*
   getEntryURI(rel, slug) {
     const baseURI = super.getProperty(ns.trn.baseURI, '')
     logger.debug(`getEntryURI: baseURI = ${baseURI}`)
     return baseURI + '/' + rel + '/' + slug
   }
+*/
 
   getCreator() {
     const creatorName = super.getProperty(ns.trn.creatorName, '')
@@ -151,9 +159,9 @@ class MakeEntry extends Processor {
     const day = dates.created.split('T')[0]
     const rel = path.join(dirs.join(path.sep), day)
     */
-    const rel = dirs.join(path.sep)
-    logger.debug(`rel = ${rel}`)
-    return { rel, slug }
+    const relative = dirs.join(path.sep)
+    logger.debug(`relative = ${relative}`)
+    return { relative, slug }
   }
 
   extractDates(message) {

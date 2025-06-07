@@ -82,7 +82,7 @@ class SPARQLUpdate extends SlowableProcessor {
             updateData = message[dataField]
         }
         updateData.graph = await super.getProperty(ns.trn.graph, 'http://example.org/graph')
-        logger.debug(`  updateData.graph = ${message.graph}`)
+        logger.debug(`  updateData.graph = ${updateData.graph}`)
         //  logger.v(updateData)
 
         const escape = super.getProperty(ns.trn.escape, false)
@@ -97,9 +97,9 @@ class SPARQLUpdate extends SlowableProcessor {
         var update = nunjucks.renderString(template, updateData)
 
         logger.trace(`dataField = ${dataField}`)
-        logger.trace(`updateData = `)
-        //  logger.reveal(updateData)
-        logger.trace(`update = ${update}`)
+        //logger.debug(`updateData = `)
+        // logger.v(updateData)
+        //  logger.log(`update = ${update}`)
         logger.debug(`endpoint.url = ${endpoint.url}`)
 
         update = RDFUtils.escapeAngleBracketURIs(update) // TODO unhackify
