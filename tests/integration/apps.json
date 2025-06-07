@@ -25,7 +25,7 @@
         "requiredMatchCount": 1
     },
     {
-        "command": "./trans config-setting-target tests/apps/config-setting-target",
+        "command": "./trans config-setting-target tests/integration/config-setting-target",
         "label": "config-setting-target",
         "description": "remote tt.ttl target",
         "requiredMatchCount": 1
@@ -61,7 +61,7 @@
         "requiredMatchCount": 2
     },
     {
-        "command": " ./trans dirwalker tests/apps/example.org",
+        "command": " ./trans dirwalker tests/integration/example.org",
         "label": "dirwalker with target",
         "description": "test dirwalker with target",
         "requiredMatchCount": 2
@@ -106,6 +106,12 @@
         "command": "./trans  pathops -m '{\"fields\": {\"fieldB\" : \"TEST\",\"fieldC\":\"_PASSED\"}}'",
         "label": "pathops",
         "description": "test pathops app",
+        "requiredMatchCount": 4
+    },
+    {
+        "command": "./trans  settext",
+        "label": "settext",
+        "description": "settext app",
         "requiredMatchCount": 4
     },
     {

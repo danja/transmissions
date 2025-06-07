@@ -31,7 +31,7 @@
 
 :p30  a :SetText ;
     :settings [
-        :targetField "test.TEST_PASSED" ;
+        :targetField "TEST_PASSED.test" ;
         :text "TEST_PASSED"
     ] .
 
