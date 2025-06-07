@@ -68,8 +68,8 @@ class SetText extends Processor {
 
         const text = super.getProperty(ns.trn.text, 'text')
         const targetField = super.getProperty(ns.trn.targetField, 'content')
-        message.contentBlocks = {}
-        message = JSONUtils.set(message, "contentBlocks.test", "TEST")
+        // message.contentBlocks = {}
+        // message = JSONUtils.set(message, "contentBlocks.test", "TEST")
         message = JSONUtils.set(message, targetField, text)
 
         // message forwarded
