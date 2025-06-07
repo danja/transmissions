@@ -56,13 +56,19 @@ class MarkdownToHTML extends Processor {
 
         // logger.reveal(message)
         // TODO use config to point to I/O fields, add sensible defaults
-        var input
+        //   var input
+        /*
         if (message.contentBlocks) { // using templating
             input = message.contentBlocks.content
             logger.debug(`MarkdownToHTML.process, using contentBlocks: ${input}`)
         } else { // default
             input = message.content
-        }
+        }*/
+        const sourceField = super.getProperty(ns.trn.sourceField, 'content')
+        //    logger.v(message)
+        const input = JSONUtils.find(message, sourceField)
+        logger.debug(`   source value = "${input}"`)
+
         var html = ''
         // new Marked()
         try {
@@ -83,14 +89,16 @@ class MarkdownToHTML extends Processor {
                     })
                     .parse(input.toString())
         } catch (e) {
-            logger.warn(`Error reported by marked in MarkdownToHTML :\n${e.message}\n[[\n${input}\n]]`)
+            logger.warn(`Warn : error reported in MarkdownToHTML :\n${e.message}\n[[\n${input}\n]]`)
+            logger.warn(`    sourceField = ${sourceField}`)
+            logger.warn(`    input = ${input}`)
             return
             //  process.exit(1)
         }
         const outputFieldPath = this.getProperty(ns.trn.outputField, 'content')
         logger.debug(`\nMarkdownToHTML.process, outputField = ${outputFieldPath}`)
         message = JSONUtils.set(message, outputFieldPath, html)
-
+        message = JSONUtils.set(message, "contentBlocks.test", "TEST")
         logger.debug(`message.content = ${message.content}`)
         return this.emit('message', message)
     }

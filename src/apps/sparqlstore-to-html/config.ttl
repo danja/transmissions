@@ -31,8 +31,8 @@
         :u1     :pre    "currentItem.article.value" ;
                 :post   "contentBlocks.uri"  .
 
-:mdHTML a :ConfigSet ;
-    :outputField "contentBlocks.content" .
+#:mdHTML a :ConfigSet ;
+ #   :outputField "contentBlocks.content" .
 
 #:articleContentTemplate a :ConfigSet ;
  #   :templateFilename "system/sparql-templates/article-content.njk" .

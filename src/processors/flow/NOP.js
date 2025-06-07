@@ -55,9 +55,9 @@ class NOP extends Processor {
         const done = message.done ? `done = true` : `done = false`
 
         logger.debug(`\nNOP at [${message.tags}] ${this.getTag()} (${done})`)
-        const test = await super.getProperty(ns.trn.test, "TEST_FAILED")
+        const test = await super.getProperty(ns.trn.test, null)
         if (test) {
-            //      logger.log(test)
+            logger.log(test)
         }
         // logger.log(this)
 

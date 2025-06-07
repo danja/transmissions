@@ -19,7 +19,7 @@
 ##################################################################
 
 :sparqlstore-to-html a :Transmission ;
-   :pipe (:p10 :p20 :p30  :p40 :p50  :p55  :p60 :p70
+   :pipe (:p10 :p20 :p30 :p40 :SM :DE :p50 :p55  :p60  :p70
           :p80  :p90 :p100) .
 
 :p10 a :SPARQLSelect ;
@@ -32,7 +32,7 @@
     :settings :prepArticle .
 
 :p40 a :MarkdownToHTML ;
-    :settings :mdHTML .
+    :settings :markdown .
 
 :p50 a :Templater ;
     :settings :articleContentTemplate .

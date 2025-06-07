@@ -45,6 +45,7 @@
 
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
+import JSONUtils from '../../utils/JSONUtils.js'
 import Processor from '../../model/Processor.js'
 
 
@@ -67,8 +68,9 @@ class SetText extends Processor {
 
         const text = super.getProperty(ns.trn.text, 'text')
         const targetField = super.getProperty(ns.trn.targetField, 'content')
-
-        message[targetField] = text
+        message.contentBlocks = {}
+        message = JSONUtils.set(message, "contentBlocks.test", "TEST")
+        message = JSONUtils.set(message, targetField, text)
 
         // message forwarded
         return this.emit('message', message)
