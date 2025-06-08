@@ -9,11 +9,17 @@
 
 **Status 2025-06-08 :** mostly functional, in active dev, potentially useful release planned for Summer Solstice 2025. Docs to follow (below is largely AI slop).
 
-![REPL demo](images/chain.png)
+Typical use :
+
+![REPL demo](https://github.com/danja/transmissions/blob/main/docs/images/eye-runner.png)
+
+A REPL has just been added :
+
+![REPL demo](https://github.com/danja/transmissions/blob/main/docs/images/chain.png)
 
 It has the beginnings of a GUI, I've not had need to use it yet :
 
-![REPL demo](images/trans-view.png)
+![REPL demo](https://github.com/danja/transmissions/blob/main/docs/images/trans-view.png)
 
 ### Key Concepts
 
@@ -94,7 +100,7 @@ Settings are resolved in order of priority:
 3. Transmissions definition (`transmissions.ttl`)
 4. Default configuration (`config.ttl`)
 
-![Nonsense poster](images/transmissions-poster.png)
+![Nonsense poster](https://github.com/danja/transmissions/blob/main/docs/images/transmissions-poster.png)
 
 ## License
 
