@@ -1,6 +1,5 @@
 # Transmissions
 
-[![Tests](https://github.com/danja/transmissions/workflows/Tests/badge.svg)](https://github.com/danja/transmissions/actions)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/danja/transmissions)
 
 ## Overview
@@ -13,7 +12,7 @@ Typical use :
 
 ![REPL demo](https://github.com/danja/transmissions/blob/main/docs/images/eye-runner.png)
 
-A REPL has just been added :
+A REPL has just been added, running the Transmission on the left :
 
 ![REPL demo](https://github.com/danja/transmissions/blob/main/docs/images/chain.png)
 
