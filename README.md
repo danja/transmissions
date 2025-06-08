@@ -12,7 +12,7 @@ Typical use :
 
 ![REPL demo](https://github.com/danja/transmissions/blob/main/docs/images/eye-runner.png)
 
-A REPL has just been added, running the Transmission on the left :
+A REPL has just been added, here running the Transmission on the left :
 
 ![REPL demo](https://github.com/danja/transmissions/blob/main/docs/images/chain.png)
 
