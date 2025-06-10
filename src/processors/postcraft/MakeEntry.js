@@ -96,7 +96,7 @@ class MakeEntry extends Processor {
       title: title,
       content: message.content,
       slug: slug,
-      //  dates: dates,
+      dates: dates, // redundant, TODO remove
       read: dates.now,
       created: dates.created,
       modified: dates.modified,

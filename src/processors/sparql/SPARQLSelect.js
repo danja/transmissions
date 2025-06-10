@@ -91,9 +91,12 @@ class SPARQLSelect extends Processor {
                 }
             })
 
-            logger.debug(`response.data = ${response.data}`)
+            //  logger.error(`response.data = ${response.data}`)
+            //    logger.v(response.data)
+            logger.log(`    ${response.data.results.bindings.length} query hits`)
             //  logger.reveal(response.data)
             message.queryResults = response.data
+
             return this.emit('message', message)
         } catch (error) {
             logger.error('SPARQL query error:', error)

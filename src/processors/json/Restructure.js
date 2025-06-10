@@ -52,6 +52,9 @@ class Restructure extends Processor {
 
     async process(message) {
         logger.debug(`\nRestructure.process`)
+        if (message.done) {
+            return this.emit('message', message) // 2025-06-10
+        }
         /*
         try {
             if (!message.done) { // TODO refactor
@@ -181,9 +184,9 @@ class Restructure extends Processor {
         const restructured = this.restructurer.restructure(input, this)
 
         const type = typeof restructured
-        logger.debug(`Restructuring output type: ${type}`)
-        logger.debug('Restructuring result:')
-        logger.debug(JSON.stringify(restructured))
+        logger.trace(`Restructuring output type: ${type}`)
+        logger.trace('Restructuring result:')
+        logger.trace(JSON.stringify(restructured))
 
         for (const key of Object.keys(restructured)) {
             message[key] = restructured[key]

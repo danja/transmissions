@@ -19,9 +19,9 @@
 ##################################################################
 
 :sparqlstore-to-indexes a :Transmission ;
-  :pipe ( :p10  :p20  :p30  :p40 :p50 # Query call
+  :pipe ( :p10 :p20   :p30 :p40  :p50 # Query call
           :p90 :p100 :p110    :p120 # HTML rendering
-          :p130 :p200 :p210 :p220) . # Atom rendering
+          ) . # Atom rendering :p130 :p200 :p210 :p220
 
 # most recent 5 (+pinned?)
 :p10 a :SPARQLSelect ;

@@ -68,7 +68,7 @@ class JsonRestructurer {
     }
 
     setValueByPath(obj, path, value) {
-        logger.debug(`JsonRestructurer.setValueByPath 
+        logger.trace(`JsonRestructurer.setValueByPath 
     obj = ${obj} 
     path = ${path} 
     value = ${value}`)
@@ -78,14 +78,14 @@ class JsonRestructurer {
             acc[part] = acc[part] || {}
             return acc[part]
         }, obj)
-        logger.debug(`    target = ${JSON.stringify(target)}
+        logger.trace(`    target = ${JSON.stringify(target)}
     last = ${last}
     value = ${value}`)
         target[last] = value
     }
 
     restructure(inputData, caller) {
-        logger.debug(`\nJsonRestructurer.restructure, \n    inputData = ${inputData}`)
+        logger.trace(`\nJsonRestructurer.restructure, \n    inputData = ${inputData}`)
         if (typeof inputData === 'string') {
             try {
                 inputData = JSON.parse(inputData)
@@ -98,8 +98,7 @@ class JsonRestructurer {
         this.mappings.forEach(({ pre, post }) => {
             const value = this.getValueByPath(inputData, pre, caller)
             logger.debug(`    pre = ${pre}
-    post = ${post}
-    value = ${value}`)
+    post = ${post}`) // value = ${value}
             if (value !== undefined) {
                 this.setValueByPath(result, post, value)
             }
