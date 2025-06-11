@@ -78,13 +78,22 @@ class ForEach extends SlowableProcessor {
 
         logger.debug(`    reduced.length = ${reduced.length}`)
 
-      //    logger.v(reduced)
+        //    logger.v(reduced)
 
         const delay = super.getProperty(ns.trn.delay, '100')
 
+        let limit = 0
+        const limitString = super.getProperty(ns.trn.limit, null)
+        if (limitString) {
+            limit = parseInt(limitString)
+            logger.debug(`   ForEach limit = ${limit}`)
+        }
+        let counter = 0
+
         message.done = false
         for (const item of reduced) {
-            //  const clonedMessage = structuredClone(message)
+
+            if (limitString && ++counter > limit) continue
 
             var clonedMessage = SysUtils.copyMessage(message)
             if (remove) {
@@ -96,13 +105,13 @@ class ForEach extends SlowableProcessor {
 
             logger.trace(`ForEach: Emitting message for item: ${item}`)
             clonedMessage.eachCounter = this.eachCounter++
-            this.emit('message', clonedMessage)
-            //  await SysUtils.sleep(delay)
+            return this.emit('message', clonedMessage)
         }
         message.done = true
-        /////////////////// TODO put back in
-        this.emit('message', message)
         logger.trace('ForEach: Finished processing all items')
+
+        return this.emit('message', message)
+
     }
 }
 export default ForEach

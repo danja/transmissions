@@ -118,6 +118,14 @@ class DirWalker extends Processor {
         logger.trace(`DirWalker.walkDirectory, dir = ${dir}`)
         const entries = await readdir(dir, { withFileTypes: true })
 
+        let limit = 0
+        const limitString = super.getProperty(ns.trn.limit, null)
+        if (limitString) {
+            limit = parseInt(limitString)
+            logger.error(`   ForEach limit = ${limit}`)
+        }
+        let counter = 0
+
         for (const entry of entries) {
             const fullPath = path.join(dir, entry.name)
 
@@ -127,10 +135,17 @@ class DirWalker extends Processor {
             if (entry.isDirectory() && !this.matchPatterns(fullPath, this.excludePatterns)) {
                 await this.walkDirectory(fullPath, baseMessage)
             } else if (entry.isFile()) {
+
                 if (!this.matchPatterns(fullPath, this.excludePatterns) &&
                     this.matchPatterns(fullPath, this.includePatterns)) {
 
                     const message = SysUtils.copyMessage(baseMessage)
+
+                    logger.error(counter)
+                    if (limitString && ++counter > limit) {
+                        return this.emit('message', message)
+                    }
+
                     message.filename = entry.name
                     let relTargetPath = Array.isArray(targetPath) ? targetPath[0] : targetPath
                     if (typeof relTargetPath !== 'string' || !relTargetPath) relTargetPath = ''

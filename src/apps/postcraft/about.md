@@ -26,7 +26,7 @@ cd ~/hyperdata/transmissions # my local path
 ./trans postcraft-statics ~/hyperdata/hyperdata/docs/postcraft
 
 ./trans md-to-sparqlstore ~/hyperdata/hyperdata/docs/postcraft
-./trans md-to-sparqlstore ~/hyperdata/semem/docs/postcraft
+# ./trans md-to-sparqlstore ~/hyperdata/semem/docs/postcraft
 
 ./trans sparqlstore-to-html ~/hyperdata/hyperdata/docs/postcraft
 ./trans sparqlstore-to-site-indexes ~/hyperdata/hyperdata/docs/postcraft

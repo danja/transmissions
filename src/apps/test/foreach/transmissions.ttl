@@ -16,7 +16,7 @@
 
 
 :foreach_test a trn:Transmission ;
-    trn:pipe (:fe10 :fe15 :SM1) .
+    trn:pipe (:fe10 :fe15 :SM2) .
 
 :fe10 a :ForEach ;
     :settings :forEachTarget .

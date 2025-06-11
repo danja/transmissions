@@ -2,6 +2,7 @@
 
 ## Symptoms
 * Unexpected settings value
+* Mysteriously hangs
 
 ### Unexpected settings value
 
@@ -9,9 +10,32 @@
 
 #### Diagnostic
 
+Use -v in the command line, grep for Warning - possible Turtle syntax error (broken Turtle files are ignored). The `rapper` utility can be helpful :
+```sh
+rapper -c -i turtle <filename>
+```
+
 #### Fix
 
-Use -v in the command line, grep for Warning - possible Turtle syntax error (broken are ignored)
+
+
+---
+
+
+### Mysteriously hangs
+
+After generally working, the transmission hangs for no apparent reason when run.
+
+#### Possible Cause
+
+Duplicate processor in pipeline, eg. `:p1 :SM :p2 :SM`
+
+#### Diagnostic
+
+#### Fix
+
+
+
 
 check with
 ```sh
@@ -19,7 +43,7 @@ check with
 ```
 
  :loglevel "debug" ;
- 
+
 Insert :SE :DE in the transmission
 
 :TEST a :NOP ;
