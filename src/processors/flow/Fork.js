@@ -1,4 +1,5 @@
 import logger from '../../utils/Logger.js'
+import ns from '../../utils/ns.js'
 import Processor from '../../model/Processor.js'
 
 // src/processors/flow/Fork.js
@@ -53,7 +54,8 @@ class Fork extends Processor {
      * @returns {Promise<void>}
      */
     async process(message) {
-        const nForks = message.nForks || 2
+        const forksString = super.getProperty(ns.trn.forks, "2")
+        const nForks = parseInt(forksString)
 
         logger.debug('forks = ' + nForks)
 
