@@ -105,13 +105,12 @@ class ForEach extends SlowableProcessor {
 
             logger.trace(`ForEach: Emitting message for item: ${item}`)
             clonedMessage.eachCounter = this.eachCounter++
-            return this.emit('message', clonedMessage)
+            this.emit('message', clonedMessage)
         }
         message.done = true
-        logger.trace('ForEach: Finished processing all items')
+        logger.error('ForEach: Finished processing all items')
 
         return this.emit('message', message)
-
     }
 }
 export default ForEach

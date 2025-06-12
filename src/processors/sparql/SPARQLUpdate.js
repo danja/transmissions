@@ -72,7 +72,7 @@ class SPARQLUpdate extends SlowableProcessor {
         // Ensure dir is always a string: prefer targetPath, then rootDir, then targetDir, then appPath, then cwd
         const dir = super.getProperty(ns.trn.targetPath, message.rootDir) || message.targetDir || message.appPath || process.cwd()
 
-        const templateFilename = await this.getProperty(ns.trn.templateFilename, null)
+        const templateFilename = super.getProperty(ns.trn.templateFilename, null)
         const template = await this.env.getTemplate(dir, templateFilename)
         logger.trace(`   process template = ${template}`)
 
@@ -81,7 +81,7 @@ class SPARQLUpdate extends SlowableProcessor {
         if (typeof dataField === 'string' && dataField in message) {
             updateData = message[dataField]
         }
-        updateData.graph = await super.getProperty(ns.trn.graph, 'http://example.org/graph')
+        updateData.graph = super.getProperty(ns.trn.graph, 'http://example.org/graph')
         logger.debug(`  updateData.graph = ${updateData.graph}`)
         //  logger.v(updateData)
 
@@ -95,6 +95,9 @@ class SPARQLUpdate extends SlowableProcessor {
 
         nunjucks.configure({ autoescape: true })
         var update = nunjucks.renderString(template, updateData)
+
+        // logger.v(updateData)
+        // process.exit()
 
         logger.trace(`dataField = ${dataField}`)
         //logger.debug(`updateData = `)
@@ -110,8 +113,9 @@ class SPARQLUpdate extends SlowableProcessor {
                 headers: await this.makeHeaders(endpoint)
             })
         } catch (e) {
-            logger.error('Update failed with :\n${e.message}')
+            logger.error(`Update ${this.id} \n${e.message}\nvvvvvvvv`)
             logger.log(update)
+            logger.error(`^^^^^^^^`)
             return
         }
 

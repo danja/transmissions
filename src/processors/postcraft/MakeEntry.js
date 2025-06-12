@@ -78,6 +78,7 @@ class MakeEntry extends Processor {
 
     //    var uri = this.getEntryURI(rel, slug)
     const uri = super.getProperty(ns.trn.baseURI, 'http://example.it') + newPath
+    const graph = super.getProperty(ns.trn.graph, 'http://example.it')
     // uri = 'http:/' + uri
 
 
@@ -88,17 +89,18 @@ class MakeEntry extends Processor {
 
     message.contentBlocks = {
       uri: uri,
+      graph: graph,
       sourcePath: message.meta.filepath,
       mediaType: message.meta.mediaType,
       relative: relative,
       title: title,
       content: message.content,
       slug: slug,
-      dates: dates, // redundant, TODO remove
-      read: dates.now,
-      created: dates.created,
-      modified: dates.modified,
-      creator: this.getCreator()
+      dates: dates // redundant, TODO remove
+      //read: dates.now,
+      //created: dates.created,
+      // modified: dates.modified,
+      // creator: this.getCreator()
     }
 
     /*
