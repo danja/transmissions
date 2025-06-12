@@ -59,9 +59,9 @@ class Escaper extends Processor {
         }
 
         // load settings
-        const format = await this.getProperty(ns.trn.format, 'SPARQL')
-        const inputField = await this.getProperty(ns.trn.inputField, 'content')
-        const outputField = await this.getProperty(ns.trn.outputField, 'content')
+        const format = super.getProperty(ns.trn.format, 'SPARQL')
+        const inputField = super.getProperty(ns.trn.inputField, 'content')
+        const outputField = super.getProperty(ns.trn.outputField, 'content')
         //if (!message[outputField]) message.outputField = ''
 
         logger.debug(`

@@ -57,8 +57,6 @@ class MakeEntry extends Processor {
       return this.emit('message', message)
     }
 
-
-
     var { relative, slug } = this.extractRelSlug(message.targetDir, message.filePath)
     logger.debug(`    message.targetDir = ${message.targetDir}`)
     logger.debug(`    message.filePath = ${message.filePath}`)
