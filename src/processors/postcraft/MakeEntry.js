@@ -77,7 +77,8 @@ class MakeEntry extends Processor {
     logger.debug(`slug = ${slug}`)
 
     //    var uri = this.getEntryURI(rel, slug)
-    const uri = super.getProperty(ns.trn.baseURI, 'http://example.it') + newPath
+    const root = super.getProperty(ns.trn.baseURI, 'http://example.it')
+    const uri = new URL(newPath, root).toString()
     const graph = super.getProperty(ns.trn.graph, 'http://example.it')
     // uri = 'http:/' + uri
 

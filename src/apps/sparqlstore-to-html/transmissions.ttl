@@ -28,6 +28,7 @@
 :p20 a :ForEach ;
     :settings :resultIterator .
 
+########## bug here somewhere
 :p30 a :Restructure ;
     :settings :prepArticle .
 
@@ -36,6 +37,7 @@
 
 :p50 a :Templater ;
     :settings :articleContentTemplate .
+#############
 
 :p54 a :Restructure ;
     :settings :shiftHTML .

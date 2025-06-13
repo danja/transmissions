@@ -1,13 +1,12 @@
 // src/processors/json/Restructure.js
 // TODO extract reusable bits to 'src/utils'
 import JsonRestructurer from './JsonRestructurer.js'
-import GrapoiHelpers from '../../utils/GrapoiHelpers.js'
 import JSONUtils from '../../utils/JSONUtils.js'
 
 import logger from '../../utils/Logger.js'
 import Processor from '../../model/Processor.js'
 import ns from '../../utils/ns.js'
-import rdf from 'rdf-ext'
+
 
 /**
  * @class Restructure

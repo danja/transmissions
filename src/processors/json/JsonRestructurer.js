@@ -52,11 +52,24 @@ class JsonRestructurer {
         logger.debug(`JsonRestructurer.getValueByPath, \n    path = ` + path)
 
         try {
-            const sp = path.split('.')
-            logger.debug('    sp = ' + sp)
-            const reduced = sp.reduce((acc, part) => acc[part], obj)
-            //         logger.debug('    reduced = ' + reduced)
-            return reduced
+            const parts = path.split('.')
+            logger.debug('    parts = ' + parts)
+            
+            // Prevent infinite loops by tracking visited objects
+            const visited = new WeakSet()
+            let current = obj
+            
+            for (const part of parts) {
+                if (visited.has(current)) {
+                    logger.warn(`Circular reference detected in path: ${path}`)
+                    return undefined
+                }
+                visited.add(current)
+                current = current[part]
+                if (current === undefined) break
+            }
+            
+            return current
         } catch (e) {
             logger.reveal(obj)
             logger.warn(`${e},
@@ -74,14 +87,25 @@ class JsonRestructurer {
     value = ${value}`)
         const parts = path.split('.')
         const last = parts.pop()
-        const target = parts.reduce((acc, part) => {
-            acc[part] = acc[part] || {}
-            return acc[part]
-        }, obj)
-        logger.trace(`    target = ${JSON.stringify(target)}
+        
+        // Prevent infinite loops by limiting depth and tracking visited objects
+        const visited = new WeakSet()
+        let current = obj
+        
+        for (const part of parts) {
+            if (visited.has(current)) {
+                logger.warn(`Circular reference detected in path: ${path}`)
+                return
+            }
+            visited.add(current)
+            current[part] = current[part] || {}
+            current = current[part]
+        }
+        
+        logger.trace(`    target = ${JSON.stringify(current)}
     last = ${last}
     value = ${value}`)
-        target[last] = value
+        current[last] = value
     }
 
     restructure(inputData, caller) {

@@ -110,7 +110,7 @@ class ForEach extends SlowableProcessor {
         message.done = true
         logger.error('ForEach: Finished processing all items')
 
-        return this.emit('message', message)
+        this.emit('message', message)
     }
 }
 export default ForEach
