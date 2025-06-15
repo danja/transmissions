@@ -3,7 +3,8 @@
 @prefix : <http://purl.org/stuff/transmissions/> .
 
 :forEachTarget a :ConfigSet ;
-    :forEach  "foreach" .
+    :forEach  "foreach" ;
+    :remove "true" .
 
 :removo a :ConfigSet ;
     :remove  "foreach" .

@@ -98,8 +98,9 @@ class MarkdownToHTML extends Processor {
         const outputFieldPath = this.getProperty(ns.trn.outputField, 'content')
         logger.debug(`\nMarkdownToHTML.process, outputField = ${outputFieldPath}`)
         message = JSONUtils.set(message, outputFieldPath, html)
-        message = JSONUtils.set(message, "contentBlocks.test", "TEST")
+        //  message = JSONUtils.set(message, "contentBlocks.test", "TEST")
         logger.debug(`message.content = ${message.content}`)
+
         return this.emit('message', message)
     }
 }

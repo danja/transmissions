@@ -1,17 +1,31 @@
 {
-  "channel": [
-    {
+  "item": {
+    "uuid": "convo1",
+    "name": "Was on item",
+    "created_at": "2024-10-29T17:57:50.229169Z",
+    "chat_messages": [
+      {
+        "uuid": "id1",
+        "text": "Text one"
+      },
+      {
+        "uuid": "id2",
+        "text": "Text two TEST_PASSED"
+      }
+    ],
+    "label": "was on root"
+  },
+  "label": "was on root",
+  "channel": {
+    "0": {
       "uuid": "id1",
       "text": "Text one"
     },
-    {
+    "1": {
       "uuid": "id2",
       "text": "Text two TEST_PASSED"
     }
-  ],
+  },
   "filename": "convo1",
-  "title": "Was on item",
-  "item": {
-    "label": "was on root"
-  }
+  "title": "Was on item"
 }

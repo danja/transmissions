@@ -187,9 +187,36 @@ class Restructure extends Processor {
         logger.trace('Restructuring result:')
         logger.trace(JSON.stringify(restructured))
 
-        for (const key of Object.keys(restructured)) {
-            message[key] = restructured[key]
+        // Safely merge restructured properties back to message
+        const visited = new WeakSet()
+
+        function safeMerge(target, source, depth = 0) {
+            if (depth > 100) { // Prevent excessive recursion
+                logger.warn('Maximum merge depth reached, stopping merge')
+                return target
+            }
+
+            if (visited.has(source)) {
+                logger.warn('Circular reference detected during merge, skipping')
+                return target
+            }
+
+            if (source && typeof source === 'object') {
+                visited.add(source)
+            }
+
+            for (const key of Object.keys(source)) {
+                if (typeof source[key] === 'object' && source[key] !== null) {
+                    target[key] = safeMerge(target[key] || {}, source[key], depth + 1)
+                } else {
+                    target[key] = source[key]
+                }
+            }
+
+            return target
         }
+
+        safeMerge(message, restructured)
         return message
     }
 }

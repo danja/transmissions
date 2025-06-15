@@ -68,13 +68,28 @@ class ForEach extends SlowableProcessor {
         logger.debug(`   forEach = ${forEach}`)
         // TODO add support for removeOrigin - see Restructure, RDFUtils
 
-        const remove = super.getProperty(ns.trn.remove, false)
+        const remove = super.getProperty(ns.trn.remove, null)
         logger.debug(`    remove = ${remove}`)
 
         const split = forEach.split('.')
 
         // TODO is similar in 'processors/json/JsonRestructurer.js' - move to utils?
-        const reduced = split.reduce((acc, part) => acc[part], message)
+        // Prevent infinite loops by tracking visited objects
+        const visited = new WeakSet()
+        let current = message
+
+        for (const part of split) {
+            if (visited.has(current)) {
+                logger.warn(`Circular reference detected in forEach path: ${forEach}`)
+                //   return this.emit('message', { ...message, done: true })
+            } else {
+                visited.add(current)
+                current = current[part]
+                //  if (current === undefined) break
+            }
+        }
+
+        const reduced = current
 
         logger.debug(`    reduced.length = ${reduced.length}`)
 
@@ -84,12 +99,16 @@ class ForEach extends SlowableProcessor {
 
         let limit = 0
         const limitString = super.getProperty(ns.trn.limit, null)
+        logger.log(`   ForEach limitString = ${limitString}`)
         if (limitString) {
             limit = parseInt(limitString)
             logger.debug(`   ForEach limit = ${limit}`)
         }
         let counter = 0
 
+        if (remove) {
+            message = JSONUtils.remove(message, forEach)
+        }
         message.done = false
         for (const item of reduced) {
 
@@ -102,8 +121,9 @@ class ForEach extends SlowableProcessor {
             }
             clonedMessage.currentItem = item
             //    delete clonedMessage.foreach // Remove the original array to prevent infinite loops TODO needed?
+            clonedMessage.foreach = null
 
-            logger.trace(`ForEach: Emitting message for item: ${item}`)
+            logger.log(`ForEach: Emitting message for item: ${item}`)
             clonedMessage.eachCounter = this.eachCounter++
             this.emit('message', clonedMessage)
         }
