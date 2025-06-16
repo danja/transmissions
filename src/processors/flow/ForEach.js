@@ -128,7 +128,7 @@ class ForEach extends SlowableProcessor {
             this.emit('message', clonedMessage)
         }
         message.done = true
-        logger.error('ForEach: Finished processing all items')
+        logger.log('ForEach: all messages dispatched')
 
         this.emit('message', message)
     }
