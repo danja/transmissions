@@ -1,6 +1,6 @@
 [
     {
-        "name": "remote query",
+        "name": "hyperdata.it query",
         "type": "query",
         "url": "https://fuseki.hyperdata.it/hyperdata.it/query",
         "credentials": {
@@ -9,7 +9,7 @@
         }
     },
     {
-        "name": "remote update",
+        "name": "hyperdata.it update",
         "type": "update",
         "url": "https://fuseki.hyperdata.it/hyperdata.it/update",
         "credentials": {
