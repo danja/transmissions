@@ -20,7 +20,7 @@ endpoint https://fuseki.hyperdata.it/hyperdata.it/query
 
 ```sh
 cd ~/hyperdata/transmissions # my local path
-# ./scripts/del-hyperdata.sh
+./scripts/del-hyperdata.sh
 ./trans postcraft-statics ~/hyperdata/hyperdata/docs/postcraft
 
 ./trans md-to-sparqlstore ~/hyperdata/hyperdata/docs/postcraft
