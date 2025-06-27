@@ -52,7 +52,7 @@
   :settings :htmlFilepath .
 
 :p120 a :FileWriter .
-# :settings :contentLocation .
+
 
 # Atom
 :p130 a :Restructure ;
@@ -65,4 +65,3 @@
   :settings :atomFilepath .
 
 :p220 a :FileWriter .
- # :settings :contentLocationB .
