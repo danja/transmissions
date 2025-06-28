@@ -1,14 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <title></title>
-    
-    <link href=""/>
-    <updated></updated>
-    <id></id>
+    <title>Hyperdata Recent Articles</title>
+    <subtitle>Latest articles from the knowledge base</subtitle>
+    <link href="{{ contentBlocks.baseUrl | default('https://hyperdata.it') }}/atom.xml" rel="self" />
+    <link href="{{ contentBlocks.baseUrl | default('https://hyperdata.it') }}" />
+    <id>{{ contentBlocks.baseUrl | default('https://hyperdata.it') }}/atom.xml</id>
+    <updated>{{ contentBlocks.published | date('YYYY-MM-DDTHH:mm:ssZ') }}</updated>
     <author>
-        <name></name>
-        
+        <name>Danny Ayers</name>
+        <email>danny.ayers@gmail.com</email>
     </author>
-
     
+    {% for article in contentBlocks.content %}
+    <entry>
+        <title>{{ article.title }}</title>
+        <link href="{{ contentBlocks.baseUrl | default('https://hyperdata.it') }}/articles/{{ article.uri | replace('http://', '') | replace('https://', '') | replace('/', '-') }}" />
+        <link rel="alternate" type="text/html" href="{{ article.uri }}" />
+        <id>{{ article.uri }}</id>
+        <published>{{ article.published | default(contentBlocks.published) | date('YYYY-MM-DDTHH:mm:ssZ') }}</published>
+        <updated>{{ article.published | default(contentBlocks.published) | date('YYYY-MM-DDTHH:mm:ssZ') }}</updated>
+        <summary>{{ article.title }}</summary>
+        <content type="xhtml">
+            <div xmlns="http://www.w3.org/1999/xhtml">
+                {{ article.content | safe }}
+            </div>
+        </content>
+        <author>
+            <name>Danny Ayers</name>
+            <email>danny.ayers@gmail.com</email>
+        </author>
+    </entry>
+    {% endfor %}
 </feed>
