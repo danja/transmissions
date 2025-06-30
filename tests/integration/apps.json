@@ -34,7 +34,7 @@
         "command": "./trans accumulate -m '{\"foreach\": [\"first TEST_PASSED\", \"second TEST_PASSED\", \"third TEST_PASSED\"]}'",
         "label": "accumulate",
         "description": "test accumulate app",
-        "requiredMatchCount": 6
+        "requiredMatchCount": 9
     },
     {
         "command": "./trans system/echo -m '{\"message\":\"Hello, World, TEST_PASSED!\"}'",
@@ -76,19 +76,19 @@
         "command": "./trans foreach -m '{\"foreach\": [\"first TEST_PASSED\", \"second TEST_PASSED\", \"third TEST_PASSED\"]}'",
         "label": "foreach",
         "description": "test foreach app",
-        "requiredMatchCount": 3
+        "requiredMatchCount": 6
     },
     {
         "command": "./trans restructure",
         "label": "restructurer",
         "description": "test restructure app",
-        "requiredMatchCount": 1
+        "requiredMatchCount": 2
     },
     {
         "command": "./trans restructure src/apps/test/restructure/target",
         "label": "restructurer+target",
         "description": "test restructure app with target",
-        "requiredMatchCount": 2
+        "requiredMatchCount": 3
     },
     {
         "command": "./trans templater",

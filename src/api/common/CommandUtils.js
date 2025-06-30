@@ -32,20 +32,15 @@ class CommandUtils {
         }
 
         logger.debug(`CommandUtils.handleOptions, pre-split, options.app = ${options.app}`)
-        var { appName, appPath, subtask } = await CommandUtils.parseAppArg(options.app)
+        const { appName, appPath, subtask } = await CommandUtils.parseAppArg(options.app)
 
-        logger.debug(`\n // TODO this shows the wrong value for appPath, later corrected by AppManager...
-    after split :
-    appName = ${appName}
-    appPath = ${appPath}
-    subtask = ${subtask}
-    target = ${target}`)
+        logger.debug(`CommandUtils.handleOptions, post-split, appName = ${appName}, appPath = ${appPath}, subtask = ${subtask}`)
 
         const appOptions = {
-            appName: appName,
-            appPath: appPath,
-            subtask: subtask,
-            targetDir: target,  // Changed from targetBaseDir to targetDir to match variable used in AppManager
+            appName,
+            appPath,
+            subtask,
+            targetDir: target,
             modulePath: options.modulePath,
             dataPath: options.dataPath,
             verbose: options.verbose,
@@ -54,7 +49,8 @@ class CommandUtils {
             test: options.test,
             web: options.web,
             port: options.port,
-            message: options.message
+            message: options.message,
+            classpath: options.classpath ? options.classpath.split(path.delimiter) : []
         }
 
         this.#appManager = await this.#appManager.initApp(appOptions)
