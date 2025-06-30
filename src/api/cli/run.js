@@ -56,7 +56,12 @@ async function main() {
         })
         .option('classpath', {
             alias: 'cp',
-            describe: chalk.yellow('additional processor dir'),
+            describe: chalk.yellow('Additional processor dir'),
+            type: 'string'
+        })
+        .option('appDir', {
+            alias: 'a',
+            describe: chalk.yellow('App'),
             type: 'string'
         })
         .option('test', {
@@ -113,7 +118,7 @@ async function main() {
             return
         }
 
-        if (!argv.app) {
+        if (!argv.app && !argv.appDir) {
             console.log(chalk.cyan('Core apps:'))
             const apps = await commandUtils.listApps()
             console.log(chalk.green(`\t${apps.join('\n\t')}\n`))

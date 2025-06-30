@@ -89,8 +89,8 @@ class AppManager {
 
     async initModuleLoader() {
         logger.debug(`\nAppManager.initModuleLoader **************************************** `)
-        const modulePath = await this.getModulePath()
-        // Add any additional logic here
+        const modulePath = this.getModulePath()
+        logger.log(`*** Module path = ${modulePath}`)
     }
 
     async initWorkerPool() {
@@ -187,7 +187,7 @@ class AppManager {
         logger.debug(baseDir)
 
         const appPath = await FSUtils.findSubdir(baseDir, appName)
-        // logger.log(`APP PATH = ${ appPath }`)
+        logger.log(`APP PATH = ${appName}`)
 
 
         if (!appPath) {

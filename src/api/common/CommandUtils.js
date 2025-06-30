@@ -17,6 +17,13 @@ class CommandUtils {
     async handleOptions(options) {
         this.options = options
 
+        if (options.appDir) {
+            logger.log(`path.parse(options.appDir) = ${path.parse(options.appDir)}`)
+        }
+        // logger.log(`options.appDir = ${options}`)
+
+        // process.exit()
+
         var debugLevel = (options.verbose || options.test) ? "debug" : "info"
         if (!options.verbose) logger.silent = options.silent
         logger.setLogLevel(debugLevel)
@@ -35,6 +42,8 @@ class CommandUtils {
         const { appName, appPath, subtask } = await CommandUtils.parseAppArg(options.app)
 
         logger.debug(`CommandUtils.handleOptions, post-split, appName = ${appName}, appPath = ${appPath}, subtask = ${subtask}`)
+
+
 
         const appOptions = {
             appName,
