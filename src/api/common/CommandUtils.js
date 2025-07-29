@@ -17,9 +17,7 @@ class CommandUtils {
     async handleOptions(options) {
         this.options = options
 
-        if (options.appDir) {
-            logger.log(`path.parse(options.appDir) = ${path.parse(options.appDir)}`)
-        }
+     
         // logger.log(`options.appDir = ${options}`)
 
         // process.exit()
