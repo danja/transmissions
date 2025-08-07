@@ -95,11 +95,11 @@
     <div class="container">
         <h1>📌 Squirt Bookmarklet</h1>
         
-        <p>Save the current webpage to your Squirt posts with one click! This bookmarklet captures the page URL and title, then opens Squirt with the data pre-filled.</p>
+        <p>Save the current webpage to your Squirt system with one click! This bookmarklet captures the page URL and title, then sends it to your local Squirt API for processing.</p>
 
         <div class="demo">
             <h3>👆 Drag this button to your bookmarks bar:</h3>
-            <a href="javascript:(function(){var url=encodeURIComponent(window.location.href);var title=encodeURIComponent(document.title||'');var squirtUrl='https://tensegrity.it/squirt/share-target.html?url='+url+'&title='+title;window.open(squirtUrl,'_blank');})();" class="bookmarklet">
+            <a href="javascript:(function(){var url=encodeURIComponent(window.location.href);var title=encodeURIComponent(document.title||'');fetch('http://localhost:4500/api/squirt',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:url,title:title})}).then(response=>response.json()).then(data=>{alert('URL saved to Squirt: '+data.success);}).catch(error=>{alert('Error saving to Squirt: '+error);});})();" class="bookmarklet">
                 📝 Save to Squirt
             </a>
         </div>
@@ -109,8 +109,8 @@
             <ul>
                 <li><strong>Captures current page URL</strong> - The webpage you're viewing</li>
                 <li><strong>Extracts page title</strong> - Automatically fills the title field</li>
-                <li><strong>Opens Squirt</strong> - Opens in a new tab with data pre-filled</li>
-                <li><strong>Ready to post</strong> - Just add content and hit "Post"</li>
+                <li><strong>Sends to Squirt API</strong> - Posts data to your local Transmissions server</li>
+                <li><strong>Shows confirmation</strong> - Displays success/error message</li>
             </ul>
         </div>
 
@@ -126,10 +126,10 @@
         <div class="instructions">
             <h3>🚀 How to use:</h3>
             <ol>
+                <li><strong>Start your Transmissions server</strong> with <code>./trans -w</code></li>
                 <li><strong>Visit any webpage</strong> you want to save to Squirt</li>
                 <li><strong>Click the "Save to Squirt" bookmark</strong> in your bookmarks bar</li>
-                <li><strong>Squirt opens</strong> with the URL and title pre-filled</li>
-                <li><strong>Add your content</strong> and click "Post" to save</li>
+                <li><strong>See confirmation</strong> that the URL was saved successfully</li>
             </ol>
         </div>
 
@@ -138,11 +138,11 @@
         </div>
 
         <div class="note">
-            <strong>🔒 Privacy:</strong> This bookmarklet only sends the current page URL and title to Squirt. No other data is collected or transmitted.
+            <strong>🔒 Privacy:</strong> This bookmarklet only sends the current page URL and title to your local Transmissions server. No data is sent to external servers.
         </div>
 
-        <div style="text-align: center; margin-top: 40px;">
-            <p><a href="https://tensegrity.it/squirt" style="color: #3498db; text-decoration: none;">← Back to Squirt</a></p>
+        <div class="note">
+            <strong>⚠️ Important:</strong> Make sure your Transmissions server is running on <code>http://localhost:4500</code> before using the bookmarklet.
         </div>
     </div>
 

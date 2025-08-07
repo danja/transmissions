@@ -1,4 +1,4 @@
-# src/apps/example-application/transmissions.ttl
+# src/apps/squirt/transmissions.ttl
 
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -20,6 +20,6 @@
     :pipe (:p10 :p20) .
 
 :p10 a :SquirtReceiver ;
-     :settings :exampleSettings1 .
+     :settings :squirtSettings .
 
 :p20 a :ShowMessage .

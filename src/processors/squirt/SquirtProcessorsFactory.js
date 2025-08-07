@@ -9,7 +9,7 @@ import SquirtReceiver from './SquirtReceiver.js'
 
 // import OtherProcessor from './SquirtReceiverProcessor.js'
 
-class SquirtReceiverProcessorsFactory {
+class SquirtProcessorsFactory {
 
     static createProcessor(type, config) {
 
@@ -29,4 +29,4 @@ class SquirtReceiverProcessorsFactory {
         return false
     }
 }
-export default SquirtReceiverProcessorsFactory
+export default SquirtProcessorsFactory

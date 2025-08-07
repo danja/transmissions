@@ -5,42 +5,39 @@
  * @classdesc
  * **a Transmissions Processor**
  *
- * SquirtReceiver processor demonstrating basic processor structure and property handling.
+ * SquirtReceiver processor for receiving URLs from bookmarklets and web requests.
  *
  * ### Processor Signature
  *
  * #### __*Settings*__
  * * **`ns.trn.me`** - Identifier for the processor instance
- * * **`ns.trn.common`** - Common value to be added to the message
- * * **`ns.trn.something1`** - First value to be processed
- * * **`ns.trn.something2`** - Second value to be processed
- * * **`ns.trn.added`** - Optional string to append to something1
- * * **`ns.trn.notavalue`** - Fallback value if not provided in config
+ * * **`ns.trn.appName`** - Application name
+ * * **`ns.trn.description`** - Description of the processor
  *
  * #### __*Input*__
+ * * **`message.url`** - URL to be processed (from bookmarklet or API request)
+ * * **`message.title`** - Page title (optional, from bookmarklet)
  * * **`message`** - The message object to be processed
  *
  * #### __*Output*__
- * * **`message`** - The modified message object with added/updated fields
+ * * **`message`** - The modified message object with processed URL data
  *
  * #### __*Behavior*__
  * * Forwards message immediately if `message.done` is true
- * * Retrieves and processes configuration properties
- * * Appends optional values to message fields
- * * Handles fallback values for missing properties
+ * * Extracts and validates URL from message
+ * * Processes URL and adds metadata to message
+ * * Logs URL processing information
  *
  * #### __*Side Effects*__
  * * Modifies the input message object
- * * Logs processing information
+ * * Logs URL processing information
  *
  * #### __*Notes*__
- * This is an SquirtReceiver implementation demonstrating:
- *   - Basic processor structure
- *   - Property retrieval with fallbacks
- *   - Message modification
- *   - Logging
- *
- * Use this as a template when creating new processors.
+ * This processor is designed to work with the Squirt bookmarklet system:
+ *   - Receives URLs from browser bookmarklets
+ *   - Validates and processes URL data
+ *   - Adds URL metadata to the message
+ *   - Suitable for URL bookmarking and processing workflows
  */
 
 import logger from '../../utils/Logger.js'
@@ -58,35 +55,55 @@ class SquirtReceiver extends Processor {
     }
 
     /**
-     * Processes the message by applying property transformations.
+     * Processes the message by extracting and validating URL data.
      * @param {Object} message - The message to process
      * @returns {Promise<boolean>} Resolves when processing is complete
      */
     async process(message) {
         logger.debug(`\n\nSquirtReceiver.process`)
 
-        // TODO figure this out better
         // may be needed if preceded by a spawning processor, eg. fs/DirWalker
         if (message.done) {
             return this.emit('message', message)
-            // or simply return
         }
 
-        // message is processed here :
-
-        // property values pulled from message | config settings | fallback
+        // Get processor identity
         const me = super.getProperty(ns.trn.me)
-        logger.log(`\nI am ${me}`)
+        const appName = super.getProperty(ns.trn.appName, 'Squirt')
+        logger.log(`\n${appName} processor: ${me}`)
 
-        message.common = super.getProperty(ns.trn.common)
-        message.something1 = super.getProperty(ns.trn.something1)
+        // Extract URL from message (could come from bookmarklet or API request)
+        const url = message.url
+        const title = message.title || ''
 
-        message.something2 = super.getProperty(ns.trn.something2)
+        if (!url) {
+            logger.error('No URL provided in message')
+            message.error = 'No URL provided'
+            return this.emit('message', message)
+        }
 
-        var added = super.getProperty(ns.trn.added, '')
-        message.something1 = message.something1 + added
-
-        message.notavalue = super.getProperty(ns.trn.notavalue, 'fallback value')
+        // Basic URL validation
+        try {
+            const urlObj = new URL(url)
+            message.processedUrl = {
+                url: url,
+                title: title,
+                hostname: urlObj.hostname,
+                protocol: urlObj.protocol,
+                pathname: urlObj.pathname,
+                receivedAt: new Date().toISOString()
+            }
+            
+            logger.log(`Processed URL: ${url}`)
+            logger.log(`Title: ${title}`)
+            logger.log(`Hostname: ${urlObj.hostname}`)
+            
+            message.success = true
+        } catch (error) {
+            logger.error(`Invalid URL: ${url}`, error.message)
+            message.error = `Invalid URL: ${error.message}`
+            message.success = false
+        }
 
         // message forwarded
         return this.emit('message', message)
