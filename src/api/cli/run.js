@@ -118,6 +118,12 @@ async function main() {
             return
         }
 
+        // Check for web flag first, before app validation
+        if (argv.web) {
+            await commandUtils.handleOptions(argv)
+            return
+        }
+
         if (!argv.app && !argv.appDir) {
             console.log(chalk.cyan('Core apps:'))
             const apps = await commandUtils.listApps()

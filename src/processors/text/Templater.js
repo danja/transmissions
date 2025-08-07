@@ -112,11 +112,14 @@ class Templater extends Processor {
         logger.debug(`    using template filename: ${filename}`)
         // Configure Nunjucks to use the template directory
         nunjucks.configure(dir, { autoescape: false })
-
+        //    logger.debug(`dataField = ${JSON.stringify(dataField)}`)
+        logger.debug(`filename = ${filename}`)
+        //    logger.debug(`message[dataField] = ${JSON.stringify(message[dataField])}`)
         // Render the template file with the chosen data field
         message.content =
             await nunjucks.render(filename, message[dataField])
 
+        logger.debug('BBB')
         //    logger.debug(`content POST = ${message.content}`)
 
         // Alternative: render from a template string if needed

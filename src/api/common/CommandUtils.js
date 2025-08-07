@@ -43,6 +43,13 @@ class CommandUtils {
 
 
 
+        // If web mode and no app specified, skip app initialization
+        if (options.web && !appName) {
+            const webRunner = new WebRunner(null, { port: options.port })
+            await webRunner.start()
+            return
+        }
+
         const appOptions = {
             appName,
             appPath,
@@ -105,6 +112,12 @@ class CommandUtils {
     static async parseAppArg(appArg) {
 
         logger.debug(`CommandUtils.parseAppArg, appArg = ${appArg}`)
+        
+        // Handle undefined/null appArg (e.g., when using web mode without app)
+        if (!appArg) {
+            return { appName: null, appPath: null, subtask: null }
+        }
+        
         if (!path.isAbsolute(appArg)) { // is relative 
             appArg = path.join(process.cwd(), Defaults.appsDir, appArg)
         }
