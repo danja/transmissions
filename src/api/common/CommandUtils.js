@@ -43,9 +43,10 @@ class CommandUtils {
 
 
 
-        // If web mode and no app specified, skip app initialization
+        // If web mode and no app specified, use web-only AppManager
         if (options.web && !appName) {
-            const webRunner = new WebRunner(null, { port: options.port })
+            const webOnlyAppManager = AppManager.createWebOnly()
+            const webRunner = new WebRunner(webOnlyAppManager, { port: options.port })
             await webRunner.start()
             return
         }

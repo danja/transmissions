@@ -51,6 +51,16 @@ class AppManager {
         return app
     }
 
+    static createWebOnly() {
+        logger.debug(`\nAppManager.createWebOnly`)
+        const appManager = new AppManager()
+        
+        // Set up basic configuration for web-only mode
+        appManager.appResolver.appsDir = path.join(process.cwd(), Defaults.appsDir)
+        
+        return appManager
+    }
+
     async initApp(options) {
         logger.debug(`\nAppManager.initApp`)
         //   logger.vr(options)
@@ -91,6 +101,9 @@ class AppManager {
         logger.debug(`\nAppManager.initModuleLoader **************************************** `)
         const modulePath = this.getModulePath()
         logger.log(`*** Module path = ${modulePath}`)
+        
+        // Create the module loader using the factory
+        this.moduleLoader = ModuleLoaderFactory.createApplicationLoader(modulePath)
     }
 
     async initWorkerPool() {
@@ -120,6 +133,32 @@ class AppManager {
 
     async start(message = {}) {
         logger.debug(`\n ||| AppManager.start`)
+
+        // Handle dynamic app loading for web-only mode
+        if (!this.app && message.application) {
+            logger.debug(`Dynamic loading of app: ${message.application}`)
+            const appOptions = {
+                appName: message.application,
+                appPath: null,
+                subtask: null,
+                targetDir: null,
+                modulePath: null,
+                dataPath: null,
+                verbose: false,
+                workingDir: null,
+                silent: false,
+                test: false,
+                web: true,
+                port: null,
+                message: null,
+                classpath: []
+            }
+            await this.initApp(appOptions)
+        }
+
+        if (!this.app) {
+            throw new Error('No application loaded. Specify app name in request.')
+        }
 
         // TODO the meta of App needs copying
         // message.app = this.app 
@@ -239,7 +278,16 @@ class AppManager {
             this.app.moduleSubDir = 'processors'
         }
         //   logger.vr(this.app)
-        return path.join(this.app.path, this.app.moduleSubDir)
+        const appProcessorsPath = path.join(this.app.path, this.app.moduleSubDir)
+        
+        // Check if app-specific processors directory exists, if not just return app path
+        try {
+            require('fs').statSync(appProcessorsPath)
+            return appProcessorsPath
+        } catch (e) {
+            // No app-specific processors, return app path for factory to handle
+            return this.app.path
+        }
     }
 
     resolveWorkingDir() { // HERE MAYBE 

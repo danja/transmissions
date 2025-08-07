@@ -19,10 +19,10 @@
 :example a :Transmission ;
     :pipe (:p10 :N :p20 :p30) .
 
-:p10 a :ExampleProcessor ;
+:p10 a :Example ;
      :settings :exampleSettings1 .
 
-:p20 a :ExampleProcessor ;
+:p20 a :Example ;
      :settings :exampleSettings2 .
 
 :p30 a :ShowMessage .
