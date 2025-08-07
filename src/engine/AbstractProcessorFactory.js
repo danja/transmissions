@@ -32,6 +32,8 @@ import SPARQLProcessorsFactory from '../processors/sparql/SPARQLProcessorsFactor
 import MediaProcessorsFactory from '../processors/media/MediaProcessorsFactory.js'
 // 2025-06-04
 import ReasonProcessorsFactory from '../processors/reason/ReasonProcessorsFactory.js'
+// 2025-08-07
+import SquirtProcessorsFactory from '../processors/squirt/SquirtProcessorsFactory.js'
 
 class AbstractProcessorFactory {
 
@@ -103,6 +105,8 @@ class AbstractProcessorFactory {
         var processor = ReasonProcessorsFactory.createProcessor(type, app)
         if (processor) return processor
         var processor = LLMProcessorsFactory.createProcessor(type, app)
+        if (processor) return processor
+        var processor = SquirtProcessorsFactory.createProcessor(type, app)
         if (processor) return processor
     }
 }
