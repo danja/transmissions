@@ -25,7 +25,34 @@ class Watch {
             /\.log$/
         ]
         this.transPath = options.transPath || this.findTransExecutable()
+        this.setupWatchLogger()
         this.setupSignalHandlers()
+    }
+
+    setupWatchLogger() {
+        // Set up dedicated watch logger that logs to logs/watch.log
+        const logsDir = path.resolve('logs')
+        if (!fs.existsSync(logsDir)) {
+            fs.mkdirSync(logsDir, { recursive: true })
+        }
+        
+        this.watchLogFile = path.join(logsDir, 'watch.log')
+        
+        // Create a custom logger method for watch-specific logging
+        this.logWatch = (message, level = 'info') => {
+            const timestamp = new Date().toISOString()
+            const logMessage = `[${timestamp}] [WATCH] [${level.toUpperCase()}] ${message}`
+            
+            // Log to console via standard logger
+            logger[level](message)
+            
+            // Also log to dedicated watch log file
+            try {
+                fs.appendFileSync(this.watchLogFile, logMessage + '\n', 'utf8')
+            } catch (error) {
+                logger.error(`Failed to write to watch log file: ${error.message}`)
+            }
+        }
     }
 
     findTransExecutable() {
@@ -44,19 +71,19 @@ class Watch {
             }
         }
         
-        logger.warn('Trans executable not found, using "./trans" as fallback')
+        this.logWatch('Trans executable not found, using "./trans" as fallback', 'warn')
         return './trans'
     }
 
     async start() {
-        logger.info('Starting Transmissions file watcher...')
+        this.logWatch('Starting Transmissions file watcher...')
         
         try {
             await this.watchConfig.load()
             const watchSets = this.watchConfig.getWatchSets()
             
             if (watchSets.length === 0) {
-                logger.warn('No valid watch sets found in configuration')
+                this.logWatch('No valid watch sets found in configuration', 'warn')
                 return
             }
             
@@ -64,22 +91,22 @@ class Watch {
                 await this.startWatchSet(watchSet)
             }
             
-            logger.info(`File watcher started successfully with ${watchSets.length} watch sets`)
+            this.logWatch(`File watcher started successfully with ${watchSets.length} watch sets`)
         } catch (error) {
-            logger.error('Failed to start file watcher:', error.message)
+            this.logWatch(`Failed to start file watcher: ${error.message}`, 'error')
             process.exit(1)
         }
     }
 
     async startWatchSet(watchSet) {
-        logger.info(`Setting up watch set: ${watchSet.name}`)
+        this.logWatch(`Setting up watch set: ${watchSet.name}`)
         
         for (const dir of watchSet.dirs) {
             try {
                 await this.watchRecursively(dir, watchSet)
-                logger.debug(`Watching directory: ${dir}`)
+                this.logWatch(`Watching directory: ${dir}`, 'debug')
             } catch (error) {
-                logger.error(`Failed to watch directory ${dir}:`, error.message)
+                this.logWatch(`Failed to watch directory ${dir}: ${error.message}`, 'error')
             }
         }
     }
@@ -106,7 +133,7 @@ class Watch {
                 }
             }
         } catch (error) {
-            logger.warn(`Failed to watch directory ${dir}:`, error.message)
+            this.logWatch(`Failed to watch directory ${dir}: ${error.message}`, 'warn')
         }
     }
 
@@ -151,13 +178,13 @@ class Watch {
                     timestamp: new Date().toISOString()
                 })
             } catch (error) {
-                logger.error(`Error handling change for ${fullPath}:`, error.message)
+                this.logWatch(`Error handling change for ${fullPath}: ${error.message}`, 'error')
             }
         }, this.debounceMs))
     }
 
     async executeAppsForWatchSet(watchSet, changedDir, changeInfo) {
-        logger.info(`File changed in watch set "${watchSet.name}": ${changeInfo.path}`)
+        this.logWatch(`File changed in watch set "${watchSet.name}": ${changeInfo.path}`)
         
         // Execute apps for each directory in the watch set
         for (const watchDir of watchSet.dirs) {
@@ -165,7 +192,7 @@ class Watch {
                 try {
                     await this.executeTransApp(app, watchDir)
                 } catch (error) {
-                    logger.error(`Failed to execute ${app} on ${watchDir}:`, error.message)
+                    this.logWatch(`Failed to execute ${app} on ${watchDir}: ${error.message}`, 'error')
                 }
             }
         }
@@ -173,7 +200,7 @@ class Watch {
 
     async executeTransApp(appName, targetDir) {
         return new Promise((resolve, reject) => {
-            logger.info(`Executing: ${this.transPath} ${appName} ${targetDir}`)
+            this.logWatch(`Executing: ${this.transPath} ${appName} ${targetDir}`)
             
             const child = spawn(this.transPath, [appName, targetDir], {
                 stdio: 'pipe',
@@ -193,22 +220,22 @@ class Watch {
             
             child.on('close', (code) => {
                 if (code === 0) {
-                    logger.info(`✓ ${appName} completed successfully for ${targetDir}`)
+                    this.logWatch(`✓ ${appName} completed successfully for ${targetDir}`)
                     if (stdout.trim()) {
-                        logger.debug(`${appName} output:`, stdout.trim())
+                        this.logWatch(`${appName} output: ${stdout.trim()}`, 'debug')
                     }
                     resolve(stdout)
                 } else {
                     const error = `${appName} failed with exit code ${code}`
                     if (stderr.trim()) {
-                        logger.error(`${appName} stderr:`, stderr.trim())
+                        this.logWatch(`${appName} stderr: ${stderr.trim()}`, 'error')
                     }
                     reject(new Error(error))
                 }
             })
             
             child.on('error', (error) => {
-                logger.error(`Failed to start ${appName}:`, error.message)
+                this.logWatch(`Failed to start ${appName}: ${error.message}`, 'error')
                 reject(error)
             })
         })
@@ -231,7 +258,7 @@ class Watch {
                     watcher.close()
                     toDelete.push(key)
                 } catch (error) {
-                    logger.warn(`Error closing watcher ${key}:`, error.message)
+                    this.logWatch(`Error closing watcher ${key}: ${error.message}`, 'warn')
                 }
             }
         }
@@ -240,7 +267,7 @@ class Watch {
 
     setupSignalHandlers() {
         const cleanup = () => {
-            logger.info('\nShutting down file watcher...')
+            this.logWatch('\nShutting down file watcher...')
             this.stop()
             process.exit(0)
         }
@@ -250,13 +277,13 @@ class Watch {
     }
 
     stop() {
-        logger.info('Closing file watchers...')
+        this.logWatch('Closing file watchers...')
         
         for (const [key, watcher] of this.watchers) {
             try {
                 watcher.close()
             } catch (error) {
-                logger.warn(`Error closing watcher ${key}:`, error.message)
+                this.logWatch(`Error closing watcher ${key}: ${error.message}`, 'warn')
             }
         }
         this.watchers.clear()
@@ -314,13 +341,13 @@ async function main() {
         // Keep the process running
         process.stdin.resume()
     } catch (error) {
-        logger.error('Fatal error:', error.message)
+        console.error('Fatal error:', error.message)
         process.exit(1)
     }
 }
 
-// Only run if this file is executed directly (not when imported)
-if (import.meta.url === `file://${fileURLToPath(import.meta.url)}`) {
+// Only run if this file is executed directly (not when imported or during tests)
+if (import.meta.url === `file://${process.argv[1]}` && process.env.NODE_ENV !== 'test') {
     main()
 }
 

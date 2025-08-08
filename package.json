@@ -7,7 +7,7 @@
   "author": "Danny Ayers <danny.ayers@gmail.com> (https://danny.ayers.name)",
   "license": "MIT",
   "scripts": {
-    "test": "PAGER=cat LESS=F vitest --run --exclude=tests/browser/**/*",
+    "test": "NODE_ENV=test PAGER=cat LESS=F vitest --run --exclude=tests/browser/**/*",
     "test:gui": "PAGER=cat LESS=F vitest --run tests/browser/**/*",
     "test:all": "PAGER=cat LESS=F vitest --run",
     "cov": "nyc -a --include=src --reporter=lcov npm run test",

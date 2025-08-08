@@ -1,0 +1,30 @@
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<http://example.com/posts/fb5e0595-2e98-4c5c-9876-7f402c6439a2> 
+    a schema:BlogPosting ;
+    schema:headline "Test Blog Post" ;
+    schema:description """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor 
+incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis 
+nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.""" ;
+    schema:datePublished "2024-01-16T15:55:43.049Z"^^xsd:dateTime ;
+    schema:dateModified "2024-01-16T15:55:43.049Z"^^xsd:dateTime ;
+    schema:author [
+        a schema:Person ;
+        schema:name "Test User" ;
+        schema:email "test@example.com"
+    ] ;
+    schema:articleBody """# Test Blog Post
+
+This is a test blog post that will be converted to RDF and stored in the SPARQL database.
+
+## Metadata
+- Title: Test Blog Post  
+- Author: Test User
+- Email: test@example.com
+
+## Content
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor 
+incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis 
+nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.""" .

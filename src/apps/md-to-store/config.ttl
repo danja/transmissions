@@ -1,0 +1,27 @@
+# src/apps/test_file-to-sparqlstore/config.ttl
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+
+#:mts10-dirWalker a :ConfigSet .
+ # :sourceDir "." .
+
+#:readerSet a :ConfigSet ;
+ #   :metaField "meta" .
+
+#:entryExtras a :ConfigSet ;
+ #   :relMap "blog" ; # relPath goes to this
+  #  :baseURI <http://danny.ayers.name> ;
+   # :creatorName "Danny" ;
+    #:creatorURI <http://danny.ayers.name/me> .
+
+# need sensible/test defaults
+#:mts40-storeArticle a :ConfigSet ;
+ #   :dataBlock "contentBlocks" ;
+ #   :templateFilename "layouts/base/templates/store-article.njk" ;
+  #  :endpointSettings "endpoint.json" .
+
+

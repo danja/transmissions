@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
-import logger from '../../src/utils/Logger.js';
+import logger from '../../../src/utils/Logger.js';
 
 class FileTestHelper {
     constructor(baseDir) {
