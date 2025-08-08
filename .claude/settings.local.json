@@ -17,7 +17,8 @@
       "Bash(node:*)",
       "Bash(examples/http/stop-curl.sh 4400)",
       "mcp__ide__getDiagnostics",
-      "Bash(pgrep:*)"
+      "Bash(pgrep:*)",
+      "Bash(mkdir:*)"
     ],
     "deny": []
   },

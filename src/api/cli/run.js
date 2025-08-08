@@ -93,6 +93,44 @@ async function main() {
             default: false
         })
 
+    // Add watch command
+    yargsInstance.command('watch [config]', chalk.green('starts file watcher for continuous processing'), (yargs) => {
+        return yargs
+            .positional('config', {
+                describe: chalk.yellow('path to watch configuration file'),
+                type: 'string'
+            })
+            .option('debounce', {
+                describe: chalk.yellow('debounce delay in milliseconds'),
+                type: 'number',
+                default: 1000
+            })
+            .option('trans-path', {
+                describe: chalk.yellow('path to trans executable'),
+                type: 'string'
+            })
+    }, async (argv) => {
+        try {
+            // Dynamic import to avoid module loading issues
+            const { default: Watch } = await import('../watch/Watch.js')
+            
+            const watchOptions = {
+                debounceMs: argv.debounce,
+                transPath: argv.transPath
+            }
+            
+            const watcher = new Watch(argv.config, watchOptions)
+            console.log(chalk.green('Starting file watcher...'))
+            await watcher.start()
+            
+            // Keep the process running
+            process.stdin.resume()
+        } catch (error) {
+            console.error(chalk.red('Watch failed:'), error.message)
+            process.exit(1)
+        }
+    })
+
     yargsInstance.command('$0 [app] [target]', chalk.green('runs the specified app\n'), (yargs) => {
         return yargs
             //  .positional('app', {
