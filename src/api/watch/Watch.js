@@ -1,5 +1,6 @@
 // src/api/watch/Watch.js
 import fs from 'fs'
+import os from 'os'
 import path from 'path'
 import { spawn } from 'child_process'
 import { fileURLToPath } from 'url'
@@ -172,8 +173,8 @@ class Watch {
 
                 await this.executeAppsForWatchSet(watchSet, dir, {
                     eventType,
-                    filename: path.relative(dir, fullPath),
-                    fullPath,
+                    changedFile: path.relative(dir, fullPath),
+                    changedFullPath: fullPath,
                     watchDir: dir,
                     timestamp: new Date().toISOString()
                 })
@@ -184,7 +185,7 @@ class Watch {
     }
 
     async executeAppsForWatchSet(watchSet, changedDir, changeInfo) {
-        this.logWatch(`File changed in watch set "${watchSet.name}": ${changeInfo.path}`)
+        this.logWatch(`File changed in watch set "${watchSet.name}": ${changeInfo.changedFile}`)
         
         // Execute apps for each directory in the watch set
         for (const watchDir of watchSet.dirs) {
@@ -192,26 +193,42 @@ class Watch {
                 try {
                     await this.executeTransApp(app, watchDir, changeInfo)
                 } catch (error) {
-                    this.logWatch(`Failed to execute ${app} on ${watchDir}: ${error.message}`, 'error')
+                    const appName = app.trim().split(/\s+/)[0]
+                    this.logWatch(`Failed to execute ${appName} on ${watchDir}: ${error.message}`, 'error')
                 }
             }
         }
     }
 
-    async executeTransApp(appName, targetDir, changeInfo = null) {
+    async executeTransApp(appEntry, targetDir, changeInfo = null) {
         return new Promise((resolve, reject) => {
+            // Parse app entry to extract app name and any arguments
+            const appParts = appEntry.trim().split(/\s+/)
+            const appName = appParts[0]
+            const configArgs = appParts.slice(1) // Arguments from config
+            
             // Prepare command arguments
             const args = [appName]
             
-            // Add change info as JSON message if available
-            if (changeInfo) {
-                args.push('-m', JSON.stringify(changeInfo))
+            if (configArgs.length > 0) {
+                // If config provides arguments, use those and skip change info and default target
+                // Expand tilde paths in arguments
+                const expandedArgs = configArgs.map(arg => {
+                    if (arg.startsWith('~/')) {
+                        return path.join(os.homedir(), arg.slice(2))
+                    }
+                    return arg
+                })
+                args.push(...expandedArgs)
+                this.logWatch(`Executing with config args: ${this.transPath} ${args.join(' ')}`)
+            } else {
+                // Use default behavior: add change info and target directory
+                if (changeInfo) {
+                    args.push('-m', JSON.stringify(changeInfo))
+                }
+                args.push(targetDir)
+                this.logWatch(`Executing: ${this.transPath} ${args.join(' ')}`)
             }
-            
-            // Add target directory
-            args.push(targetDir)
-            
-            this.logWatch(`Executing: ${this.transPath} ${args.join(' ')}`)
             
             const child = spawn(this.transPath, args, {
                 stdio: 'pipe',
@@ -231,7 +248,8 @@ class Watch {
             
             child.on('close', (code) => {
                 if (code === 0) {
-                    this.logWatch(`✓ ${appName} completed successfully for ${targetDir}`)
+                    const targetInfo = configArgs.length > 0 ? `with args [${configArgs.join(' ')}]` : `for ${targetDir}`
+                    this.logWatch(`✓ ${appName} completed successfully ${targetInfo}`)
                     if (stdout.trim()) {
                         this.logWatch(`${appName} output: ${stdout.trim()}`, 'debug')
                     }

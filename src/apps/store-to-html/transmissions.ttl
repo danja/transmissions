@@ -1,0 +1,63 @@
+# src/apps/example-application/transmissions.ttl
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+##################################################################
+# Utility Processors : insert into pipe for debugging            #
+#                                                                #
+:SM a :ShowMessage . #  verbose report, continues pipe           #
+:SM1 a :ShowMessage .                                            #
+:SM2 a :ShowMessage .                                            #
+:SC a :ShowConfig . # verbose report, continues pipe             #
+:DE a :DeadEnd . # ends the current pipe quietly                 #
+:H  a :Halt . # kills everything                                 #
+:N  a :NOP . # no operation (except for showing stage in pipe)   #
+:UF a :Unfork . # collapses all pipes but one                    #
+##################################################################
+
+:store-to-html a :Transmission ;
+   :pipe (:p10 :p20 :p30  :p40 :p50 :p54  :p58 :p60  :p70
+          :p80  :p90 :p100) . # :p100
+ 
+:p10 a :SPARQLSelect ;
+     :settings :selectLatest .
+
+:p20 a :ForEach ;
+    :settings :resultIterator .
+
+:p30 a :Restructure ;
+    :settings :prepArticle .
+
+:p40 a :MarkdownToHTML ;
+    :settings :markdown .
+
+:p50 a :Templater ;
+    :settings :articleContentTemplate .
+
+
+:p54 a :Restructure ;
+    :settings :shiftHTML .
+
+#############
+# store the HTML snippet
+:p58 a :SPARQLUpdate ;
+     :settings :updateArticleHTML .
+
+# make the page
+:p60 a :Templater ;
+    :settings :articlePageTemplate .
+
+:p70 a :PathOps ;
+  :settings :filenameConstructor .
+
+:p80 a :PathOps ;
+  :settings :filenameExtension .
+
+:p90 a :FileWriter ;
+  :settings :htmlField .
+
+:p100 a :SPARQLUpdate ;
+    :settings :recordRendering .

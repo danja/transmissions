@@ -2,10 +2,12 @@
     {
         "name": "postcraft-render",
         "dirs": [
-            "~/hyperdata/transmissions/docs/postcraft"
+            "~/sites/danny.ayers.name/postcraft/content/raw"
         ],
         "apps": [
-            "md-to-store"
+            "md-to-store",
+            "store-to-html",
+            "sparqlstore-to-site-indexes  ~/sites/danny.ayers.name/postcraft"
         ]
     }
 ]

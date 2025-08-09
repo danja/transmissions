@@ -4,6 +4,7 @@ The Transmissions file watching system provides automatic processing of content 
 
 ## Overview
 
+
 The watch system monitors multiple directory sets and executes sequences of Transmissions apps when files change. This enables automated content processing workflows, particularly useful for blog generation and content management systems.
 
 ## Configuration
@@ -25,7 +26,7 @@ The watch system uses a JSON configuration file (`src/api/watch/watch-config.jso
         "apps": [
             "md-to-sparqlstore",
             "sparqlstore-to-html",
-            "sparqlstore-to-site-indexes"
+            "sparqlstore-to-site-indexes ~/sites/danny.ayers.name/postcraft"
         ]
     }
 ]
@@ -38,6 +39,28 @@ Each watch set contains:
 - **`name`** - Unique identifier for the watch set
 - **`dirs`** - Array of directories to monitor (supports `~/` expansion)
 - **`apps`** - Array of Transmissions apps to execute in sequence
+
+### App Configuration Options
+
+App entries in the `apps` array support two formats:
+
+#### Simple Format
+```json
+"apps": ["md-to-sparqlstore"]
+```
+Uses default behavior: passes change information via `-m` flag plus the watch directory as target.
+
+#### With Arguments Format
+```json  
+"apps": ["sparqlstore-to-site-indexes ~/sites/danny.ayers.name/postcraft"]
+```
+When arguments follow the app name, they **override** the default behavior:
+- No change information (`-m` flag) is passed
+- No watch directory is passed as target
+- Only the specified arguments are used
+- Tilde paths (`~/`) are automatically expanded to absolute paths
+
+This allows precise control over how each app is invoked.
 
 ## Command Line Interface
 
@@ -84,9 +107,12 @@ When a file change is detected:
 For a change to `content/raw/manual/api/watch.md`, the system executes:
 
 ```bash
-./trans md-to-sparqlstore -m '{"eventType":"change","filename":"content/raw/manual/api/watch.md","fullPath":"/home/danny/sites/danny.ayers.name/postcraft/content/raw/manual/api/watch.md","watchDir":"/home/danny/sites/danny.ayers.name/postcraft","timestamp":"2025-08-09T12:00:00.000Z"}' ~/sites/danny.ayers.name/postcraft
-./trans sparqlstore-to-html -m '{"eventType":"change","filename":"content/raw/manual/api/watch.md","fullPath":"/home/danny/sites/danny.ayers.name/postcraft/content/raw/manual/api/watch.md","watchDir":"/home/danny/sites/danny.ayers.name/postcraft","timestamp":"2025-08-09T12:00:00.000Z"}' ~/sites/danny.ayers.name/postcraft  
-./trans sparqlstore-to-site-indexes -m '{"eventType":"change","filename":"content/raw/manual/api/watch.md","fullPath":"/home/danny/sites/danny.ayers.name/postcraft/content/raw/manual/api/watch.md","watchDir":"/home/danny/sites/danny.ayers.name/postcraft","timestamp":"2025-08-09T12:00:00.000Z"}' ~/sites/danny.ayers.name/postcraft
+# Apps without arguments receive change info and watch directory
+./trans md-to-sparqlstore -m '{"eventType":"change","changedFile":"content/raw/manual/api/watch.md","changedFullPath":"/home/danny/sites/danny.ayers.name/postcraft/content/raw/manual/api/watch.md","watchDir":"/home/danny/sites/danny.ayers.name/postcraft","timestamp":"2025-08-09T12:00:00.000Z"}' ~/sites/danny.ayers.name/postcraft
+./trans sparqlstore-to-html -m '{"eventType":"change","changedFile":"content/raw/manual/api/watch.md","changedFullPath":"/home/danny/sites/danny.ayers.name/postcraft/content/raw/manual/api/watch.md","watchDir":"/home/danny/sites/danny.ayers.name/postcraft","timestamp":"2025-08-09T12:00:00.000Z"}' ~/sites/danny.ayers.name/postcraft  
+
+# Apps with arguments use only those arguments (no change info, no default target)  
+./trans sparqlstore-to-site-indexes ~/sites/danny.ayers.name/postcraft
 # ... continues for all directories in the watch set
 ```
 
@@ -95,8 +121,8 @@ For a change to `content/raw/manual/api/watch.md`, the system executes:
 The JSON message passed via `-m` flag contains:
 
 - **`eventType`** - Type of file system event (`change`, `rename`, etc.)
-- **`filename`** - Relative path from the watch directory to the changed file
-- **`fullPath`** - Complete absolute path to the changed file
+- **`changedFile`** - Relative path from the watch directory to the changed file
+- **`changedFullPath`** - Complete absolute path to the changed file
 - **`watchDir`** - The watch directory that detected the change
 - **`timestamp`** - ISO timestamp of when the change was detected
 

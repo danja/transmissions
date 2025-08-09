@@ -158,7 +158,7 @@ describe('Watch System Integration', () => {
                 watchTestHelper.getWatchedDirPath('dir1'),
                 expect.objectContaining({
                     eventType: 'rename',
-                    filename: 'newfile.txt'
+                    changedFile: 'newfile.txt'
                 })
             );
         });

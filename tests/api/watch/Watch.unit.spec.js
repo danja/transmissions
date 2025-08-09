@@ -326,8 +326,8 @@ describe('Watch', () => {
         it('should execute app with change info when provided', async () => {
             const changeInfo = {
                 eventType: 'change',
-                filename: 'test.md',
-                fullPath: '/tmp/test.md',
+                changedFile: 'test.md',
+                changedFullPath: '/tmp/test.md',
                 watchDir: '/tmp',
                 timestamp: '2025-01-01T00:00:00.000Z'
             };
@@ -342,6 +342,56 @@ describe('Watch', () => {
                 expect.any(Object)
             );
             expect(result).toBe('Success with change info');
+        });
+
+        it('should execute app with config arguments when provided', async () => {
+            mockAppHelper.setAppToSucceed('test-app', 'Success with config args');
+
+            const result = await watch.executeTransApp('test-app --verbose /custom/path', '/tmp/target');
+
+            expect(mockSpawn).toHaveBeenCalledWith(
+                expect.stringContaining('trans'), 
+                ['test-app', '--verbose', '/custom/path'], 
+                expect.any(Object)
+            );
+            expect(result).toBe('Success with config args');
+        });
+
+        it('should use config arguments over change info when both available', async () => {
+            const changeInfo = {
+                eventType: 'change',
+                changedFile: 'test.md',
+                changedFullPath: '/tmp/test.md',
+                watchDir: '/tmp',
+                timestamp: '2025-01-01T00:00:00.000Z'
+            };
+            
+            mockAppHelper.setAppToSucceed('test-app', 'Success with config args override');
+
+            const result = await watch.executeTransApp('test-app /override/path', '/tmp/target', changeInfo);
+
+            // Should use config args and ignore change info and default target
+            expect(mockSpawn).toHaveBeenCalledWith(
+                expect.stringContaining('trans'), 
+                ['test-app', '/override/path'], 
+                expect.any(Object)
+            );
+            expect(result).toBe('Success with config args override');
+        });
+
+        it('should expand tilde paths in config arguments', async () => {
+            mockAppHelper.setAppToSucceed('test-app', 'Success with expanded path');
+
+            const result = await watch.executeTransApp('test-app ~/custom/path', '/tmp/target');
+
+            // Should expand ~/custom/path to /home/user/custom/path
+            const expectedPath = require('path').join(require('os').homedir(), 'custom/path');
+            expect(mockSpawn).toHaveBeenCalledWith(
+                expect.stringContaining('trans'), 
+                ['test-app', expectedPath], 
+                expect.any(Object)
+            );
+            expect(result).toBe('Success with expanded path');
         });
 
         it('should handle app execution failure', async () => {
@@ -381,7 +431,7 @@ describe('Watch', () => {
                 dirs: ['/tmp/dir1', '/tmp/dir2'],
                 apps: ['app1', 'app2']
             };
-            const changeInfo = { filename: 'test.txt', fullPath: '/tmp/dir1/test.txt' };
+            const changeInfo = { changedFile: 'test.txt', changedFullPath: '/tmp/dir1/test.txt' };
 
             await watch.executeAppsForWatchSet(watchSet, '/tmp/dir1', changeInfo);
 
@@ -399,7 +449,7 @@ describe('Watch', () => {
                 dirs: ['/tmp/dir1'],
                 apps: ['app1', 'app2', 'app3']
             };
-            const changeInfo = { filename: 'test.txt', fullPath: '/tmp/dir1/test.txt' };
+            const changeInfo = { changedFile: 'test.txt', changedFullPath: '/tmp/dir1/test.txt' };
 
             // Make second app fail
             watch.executeTransApp

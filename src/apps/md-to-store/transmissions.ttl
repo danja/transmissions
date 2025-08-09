@@ -15,11 +15,11 @@
 ##################################################################
 
 :md-to-store a :Transmission ;
-    :pipe (:SM) .
- #  :pipe (:p10 :p20 :p30 :p40 :p50) .
+ #   :pipe (:SM) .
+   :pipe (:p20 :p30 :p40 :p50) .
 
-:p10 a :DirWalker ;
-   :settings :dirWalker .
+#p10 a :DirWalker ;
+#   :settings :dirWalker .
 
 :p20 a :FileReader ;
      :settings :readerSet .
