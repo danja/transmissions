@@ -172,7 +172,7 @@ class Watch {
 
                 await this.executeAppsForWatchSet(watchSet, dir, {
                     eventType,
-                    path: path.relative(dir, fullPath),
+                    filename: path.relative(dir, fullPath),
                     fullPath,
                     watchDir: dir,
                     timestamp: new Date().toISOString()
@@ -190,7 +190,7 @@ class Watch {
         for (const watchDir of watchSet.dirs) {
             for (const app of watchSet.apps) {
                 try {
-                    await this.executeTransApp(app, watchDir)
+                    await this.executeTransApp(app, watchDir, changeInfo)
                 } catch (error) {
                     this.logWatch(`Failed to execute ${app} on ${watchDir}: ${error.message}`, 'error')
                 }
@@ -198,11 +198,22 @@ class Watch {
         }
     }
 
-    async executeTransApp(appName, targetDir) {
+    async executeTransApp(appName, targetDir, changeInfo = null) {
         return new Promise((resolve, reject) => {
-            this.logWatch(`Executing: ${this.transPath} ${appName} ${targetDir}`)
+            // Prepare command arguments
+            const args = [appName]
             
-            const child = spawn(this.transPath, [appName, targetDir], {
+            // Add change info as JSON message if available
+            if (changeInfo) {
+                args.push('-m', JSON.stringify(changeInfo))
+            }
+            
+            // Add target directory
+            args.push(targetDir)
+            
+            this.logWatch(`Executing: ${this.transPath} ${args.join(' ')}`)
+            
+            const child = spawn(this.transPath, args, {
                 stdio: 'pipe',
                 cwd: path.dirname(this.transPath)
             })

@@ -101,11 +101,23 @@ class MockAppHelper {
 
     /**
      * Get a vi.fn() mock for child_process.spawn
+     * Handles both old format: [appName, targetDir] 
+     * and new format: [appName, '-m', changeInfo, targetDir]
      */
     getSpawnMock() {
         return (command, args, options) => {
             const appName = args[0];
-            const targetDir = args[1];
+            
+            // Determine target directory based on argument pattern
+            let targetDir;
+            if (args[1] === '-m') {
+                // New format: [appName, '-m', changeInfo, targetDir]
+                targetDir = args[3];
+            } else {
+                // Old format: [appName, targetDir]
+                targetDir = args[1];
+            }
+            
             return this.createMockChildProcess(appName, targetDir);
         };
     }

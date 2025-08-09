@@ -73,24 +73,32 @@ Each watch set contains:
 When a file change is detected:
 
 1. **Debounce Timer** - Waits for the configured delay to group related changes
-2. **Sequential Execution** - Runs each app in the specified order for all directories
-3. **Process Monitoring** - Captures stdout/stderr and reports success/failure
-4. **Error Handling** - Logs failures but continues processing other apps
+2. **Change Info Collection** - Gathers details about the changed file (path, timestamp, event type)
+3. **Sequential Execution** - Runs each app in the specified order for all directories
+4. **File Context Passing** - Sends change information to apps via `-m` flag as JSON
+5. **Process Monitoring** - Captures stdout/stderr and reports success/failure
+6. **Error Handling** - Logs failures but continues processing other apps
 
 ### Example Execution Flow
 
-For a change in any watched directory, the system executes:
+For a change to `content/raw/manual/api/watch.md`, the system executes:
 
-this is wrong
 ```bash
-./trans md-to-sparqlstore ~/sites/danny.ayers.name/postcraft
-./trans sparqlstore-to-html ~/sites/danny.ayers.name/postcraft
-./trans sparqlstore-to-site-indexes ~/sites/danny.ayers.name/postcraft
-./trans md-to-sparqlstore ~/hyperdata/hyperdata/docs/postcraft
-./trans sparqlstore-to-html ~/hyperdata/hyperdata/docs/postcraft
-./trans sparqlstore-to-site-indexes ~/hyperdata/hyperdata/docs/postcraft
+./trans md-to-sparqlstore -m '{"eventType":"change","filename":"content/raw/manual/api/watch.md","fullPath":"/home/danny/sites/danny.ayers.name/postcraft/content/raw/manual/api/watch.md","watchDir":"/home/danny/sites/danny.ayers.name/postcraft","timestamp":"2025-08-09T12:00:00.000Z"}' ~/sites/danny.ayers.name/postcraft
+./trans sparqlstore-to-html -m '{"eventType":"change","filename":"content/raw/manual/api/watch.md","fullPath":"/home/danny/sites/danny.ayers.name/postcraft/content/raw/manual/api/watch.md","watchDir":"/home/danny/sites/danny.ayers.name/postcraft","timestamp":"2025-08-09T12:00:00.000Z"}' ~/sites/danny.ayers.name/postcraft  
+./trans sparqlstore-to-site-indexes -m '{"eventType":"change","filename":"content/raw/manual/api/watch.md","fullPath":"/home/danny/sites/danny.ayers.name/postcraft/content/raw/manual/api/watch.md","watchDir":"/home/danny/sites/danny.ayers.name/postcraft","timestamp":"2025-08-09T12:00:00.000Z"}' ~/sites/danny.ayers.name/postcraft
 # ... continues for all directories in the watch set
 ```
+
+### Change Information Format
+
+The JSON message passed via `-m` flag contains:
+
+- **`eventType`** - Type of file system event (`change`, `rename`, etc.)
+- **`filename`** - Relative path from the watch directory to the changed file
+- **`fullPath`** - Complete absolute path to the changed file
+- **`watchDir`** - The watch directory that detected the change
+- **`timestamp`** - ISO timestamp of when the change was detected
 
 ## Programming Interface
 

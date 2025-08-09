@@ -314,13 +314,34 @@ describe('Watch', () => {
             mockSpawn.mockImplementation(mockAppHelper.getSpawnMock());
         });
 
-        it('should execute app successfully', async () => {
+        it('should execute app successfully without change info', async () => {
             mockAppHelper.setAppToSucceed('test-app', 'Success output');
 
             const result = await watch.executeTransApp('test-app', '/tmp/target');
 
             expect(mockSpawn).toHaveBeenCalledWith(expect.stringContaining('trans'), ['test-app', '/tmp/target'], expect.any(Object));
             expect(result).toBe('Success output');
+        });
+
+        it('should execute app with change info when provided', async () => {
+            const changeInfo = {
+                eventType: 'change',
+                filename: 'test.md',
+                fullPath: '/tmp/test.md',
+                watchDir: '/tmp',
+                timestamp: '2025-01-01T00:00:00.000Z'
+            };
+            
+            mockAppHelper.setAppToSucceed('test-app', 'Success with change info');
+
+            const result = await watch.executeTransApp('test-app', '/tmp/target', changeInfo);
+
+            expect(mockSpawn).toHaveBeenCalledWith(
+                expect.stringContaining('trans'), 
+                ['test-app', '-m', JSON.stringify(changeInfo), '/tmp/target'], 
+                expect.any(Object)
+            );
+            expect(result).toBe('Success with change info');
         });
 
         it('should handle app execution failure', async () => {
@@ -360,15 +381,16 @@ describe('Watch', () => {
                 dirs: ['/tmp/dir1', '/tmp/dir2'],
                 apps: ['app1', 'app2']
             };
-            const changeInfo = { path: 'test.txt', fullPath: '/tmp/dir1/test.txt' };
+            const changeInfo = { filename: 'test.txt', fullPath: '/tmp/dir1/test.txt' };
 
             await watch.executeAppsForWatchSet(watchSet, '/tmp/dir1', changeInfo);
 
             expect(watch.executeTransApp).toHaveBeenCalledTimes(4); // 2 dirs × 2 apps
-            expect(watch.executeTransApp).toHaveBeenCalledWith('app1', '/tmp/dir1');
-            expect(watch.executeTransApp).toHaveBeenCalledWith('app1', '/tmp/dir2');
-            expect(watch.executeTransApp).toHaveBeenCalledWith('app2', '/tmp/dir1');
-            expect(watch.executeTransApp).toHaveBeenCalledWith('app2', '/tmp/dir2');
+            // Verify apps were called with change info
+            expect(watch.executeTransApp).toHaveBeenCalledWith('app1', '/tmp/dir1', changeInfo);
+            expect(watch.executeTransApp).toHaveBeenCalledWith('app1', '/tmp/dir2', changeInfo);
+            expect(watch.executeTransApp).toHaveBeenCalledWith('app2', '/tmp/dir1', changeInfo);
+            expect(watch.executeTransApp).toHaveBeenCalledWith('app2', '/tmp/dir2', changeInfo);
         });
 
         it('should continue execution even if one app fails', async () => {
@@ -377,7 +399,7 @@ describe('Watch', () => {
                 dirs: ['/tmp/dir1'],
                 apps: ['app1', 'app2', 'app3']
             };
-            const changeInfo = { path: 'test.txt', fullPath: '/tmp/dir1/test.txt' };
+            const changeInfo = { filename: 'test.txt', fullPath: '/tmp/dir1/test.txt' };
 
             // Make second app fail
             watch.executeTransApp
