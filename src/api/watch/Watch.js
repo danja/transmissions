@@ -147,6 +147,12 @@ class Watch {
             return
         }
 
+        // Check if this event type should be watched for this watch set
+        if (watchSet.watchEvents && !watchSet.watchEvents.includes(eventType)) {
+            this.logWatch(`Skipping event type "${eventType}" for watch set "${watchSet.name}" (not in watchEvents: ${watchSet.watchEvents.join(', ')})`)
+            return
+        }
+
         // Create a debounce key for this watch set
         const debounceKey = `${watchSet.name}:${fullPath}`
         clearTimeout(this.debounceTimers.get(debounceKey))
@@ -173,8 +179,8 @@ class Watch {
 
                 await this.executeAppsForWatchSet(watchSet, dir, {
                     eventType,
-                    changedFile: path.relative(dir, fullPath),
-                    changedFullPath: fullPath,
+                    filename: path.relative(dir, fullPath),
+                    fullPath,
                     watchDir: dir,
                     timestamp: new Date().toISOString()
                 })
@@ -185,7 +191,7 @@ class Watch {
     }
 
     async executeAppsForWatchSet(watchSet, changedDir, changeInfo) {
-        this.logWatch(`File changed in watch set "${watchSet.name}": ${changeInfo.changedFile}`)
+        this.logWatch(`File changed in watch set "${watchSet.name}": ${changeInfo.path}`)
         
         // Execute apps for each directory in the watch set
         for (const watchDir of watchSet.dirs) {

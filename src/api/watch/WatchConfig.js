@@ -41,7 +41,8 @@ class WatchConfig {
             const processedSet = {
                 name: watchSet.name,
                 dirs: await this.expandPaths(watchSet.dirs),
-                apps: watchSet.apps
+                apps: watchSet.apps,
+                watchEvents: watchSet.watchEvents || ['change', 'rename'] // Default to both if not specified
             }
             
             processedConfig.push(processedSet)
@@ -64,6 +65,28 @@ class WatchConfig {
         if (!Array.isArray(watchSet.apps) || watchSet.apps.length === 0) {
             logger.warn(`Watch set "${watchSet.name}" has no apps, skipping`)
             return false
+        }
+        
+        // Validate watchEvents if provided
+        if (watchSet.watchEvents && !Array.isArray(watchSet.watchEvents)) {
+            logger.warn(`Watch set "${watchSet.name}" has invalid watchEvents (must be array), skipping`)
+            return false
+        }
+        
+        if (watchSet.watchEvents && watchSet.watchEvents.length === 0) {
+            logger.warn(`Watch set "${watchSet.name}" has empty watchEvents array, skipping`)
+            return false
+        }
+        
+        // Validate that watchEvents contains only supported events
+        const supportedEvents = ['change', 'rename']
+        if (watchSet.watchEvents) {
+            for (const event of watchSet.watchEvents) {
+                if (!supportedEvents.includes(event)) {
+                    logger.warn(`Watch set "${watchSet.name}" contains unsupported event "${event}", supported: ${supportedEvents.join(', ')}`)
+                    return false
+                }
+            }
         }
         
         return true

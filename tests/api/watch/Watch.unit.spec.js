@@ -326,8 +326,8 @@ describe('Watch', () => {
         it('should execute app with change info when provided', async () => {
             const changeInfo = {
                 eventType: 'change',
-                changedFile: 'test.md',
-                changedFullPath: '/tmp/test.md',
+                path: 'test.md',
+                fullPath: '/tmp/test.md',
                 watchDir: '/tmp',
                 timestamp: '2025-01-01T00:00:00.000Z'
             };
@@ -360,8 +360,8 @@ describe('Watch', () => {
         it('should use config arguments over change info when both available', async () => {
             const changeInfo = {
                 eventType: 'change',
-                changedFile: 'test.md',
-                changedFullPath: '/tmp/test.md',
+                path: 'test.md',
+                fullPath: '/tmp/test.md',
                 watchDir: '/tmp',
                 timestamp: '2025-01-01T00:00:00.000Z'
             };
@@ -431,7 +431,7 @@ describe('Watch', () => {
                 dirs: ['/tmp/dir1', '/tmp/dir2'],
                 apps: ['app1', 'app2']
             };
-            const changeInfo = { changedFile: 'test.txt', changedFullPath: '/tmp/dir1/test.txt' };
+            const changeInfo = { path: 'test.txt', fullPath: '/tmp/dir1/test.txt' };
 
             await watch.executeAppsForWatchSet(watchSet, '/tmp/dir1', changeInfo);
 
@@ -449,7 +449,7 @@ describe('Watch', () => {
                 dirs: ['/tmp/dir1'],
                 apps: ['app1', 'app2', 'app3']
             };
-            const changeInfo = { changedFile: 'test.txt', changedFullPath: '/tmp/dir1/test.txt' };
+            const changeInfo = { path: 'test.txt', fullPath: '/tmp/dir1/test.txt' };
 
             // Make second app fail
             watch.executeTransApp

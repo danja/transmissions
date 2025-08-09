@@ -8,6 +8,7 @@
             "md-to-store",
             "store-to-html",
             "sparqlstore-to-site-indexes  ~/sites/danny.ayers.name/postcraft"
-        ]
+        ],
+        "watchEvents": ["change"]
     }
 ]

@@ -39,6 +39,7 @@ Each watch set contains:
 - **`name`** - Unique identifier for the watch set
 - **`dirs`** - Array of directories to monitor (supports `~/` expansion)
 - **`apps`** - Array of Transmissions apps to execute in sequence
+- **`watchEvents`** - Array of file system events to watch for (optional, defaults to `["change", "rename"]`)
 
 ### App Configuration Options
 
@@ -61,6 +62,46 @@ When arguments follow the app name, they **override** the default behavior:
 - Tilde paths (`~/`) are automatically expanded to absolute paths
 
 This allows precise control over how each app is invoked.
+
+### Event Filtering Options
+
+The `watchEvents` array allows you to control which file system events trigger app execution:
+
+#### Supported Events
+
+- **`change`** - File content modification (save operations)
+- **`rename`** - File creation, deletion, or rename operations
+
+#### Examples
+
+```json
+{
+    "name": "content-only",
+    "dirs": ["~/content"],
+    "apps": ["process-content"],
+    "watchEvents": ["change"]
+}
+```
+Only triggers on file saves/modifications, ignoring file creation or deletion.
+
+```json
+{
+    "name": "creation-only", 
+    "dirs": ["~/uploads"],
+    "apps": ["process-new-files"],
+    "watchEvents": ["rename"]
+}
+```
+Only triggers on file creation, deletion, or rename operations.
+
+```json
+{
+    "name": "all-events",
+    "dirs": ["~/docs"],
+    "apps": ["sync-docs"]
+}
+```
+Triggers on both change and rename events (default behavior when `watchEvents` is omitted).
 
 ## Command Line Interface
 
@@ -108,8 +149,8 @@ For a change to `content/raw/manual/api/watch.md`, the system executes:
 
 ```bash
 # Apps without arguments receive change info and watch directory
-./trans md-to-sparqlstore -m '{"eventType":"change","changedFile":"content/raw/manual/api/watch.md","changedFullPath":"/home/danny/sites/danny.ayers.name/postcraft/content/raw/manual/api/watch.md","watchDir":"/home/danny/sites/danny.ayers.name/postcraft","timestamp":"2025-08-09T12:00:00.000Z"}' ~/sites/danny.ayers.name/postcraft
-./trans sparqlstore-to-html -m '{"eventType":"change","changedFile":"content/raw/manual/api/watch.md","changedFullPath":"/home/danny/sites/danny.ayers.name/postcraft/content/raw/manual/api/watch.md","watchDir":"/home/danny/sites/danny.ayers.name/postcraft","timestamp":"2025-08-09T12:00:00.000Z"}' ~/sites/danny.ayers.name/postcraft  
+./trans md-to-sparqlstore -m '{"eventType":"change","path":"content/raw/manual/api/watch.md","fullPath":"/home/danny/sites/danny.ayers.name/postcraft/content/raw/manual/api/watch.md","watchDir":"/home/danny/sites/danny.ayers.name/postcraft","timestamp":"2025-08-09T12:00:00.000Z"}' ~/sites/danny.ayers.name/postcraft
+./trans sparqlstore-to-html -m '{"eventType":"change","path":"content/raw/manual/api/watch.md","fullPath":"/home/danny/sites/danny.ayers.name/postcraft/content/raw/manual/api/watch.md","watchDir":"/home/danny/sites/danny.ayers.name/postcraft","timestamp":"2025-08-09T12:00:00.000Z"}' ~/sites/danny.ayers.name/postcraft  
 
 # Apps with arguments use only those arguments (no change info, no default target)  
 ./trans sparqlstore-to-site-indexes ~/sites/danny.ayers.name/postcraft
@@ -121,8 +162,8 @@ For a change to `content/raw/manual/api/watch.md`, the system executes:
 The JSON message passed via `-m` flag contains:
 
 - **`eventType`** - Type of file system event (`change`, `rename`, etc.)
-- **`changedFile`** - Relative path from the watch directory to the changed file
-- **`changedFullPath`** - Complete absolute path to the changed file
+- **`path`** - Relative path from the watch directory to the changed file
+- **`fullPath`** - Complete absolute path to the changed file
 - **`watchDir`** - The watch directory that detected the change
 - **`timestamp`** - ISO timestamp of when the change was detected
 
