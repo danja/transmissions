@@ -5,10 +5,12 @@
             "~/sites/danny.ayers.name/postcraft/content/raw"
         ],
         "apps": [
-            "md-to-store",
-            "store-to-html",
+            "md-to-store ~/sites/danny.ayers.name/postcraft",
+            "store-to-html  ~/sites/danny.ayers.name/postcraft",
             "sparqlstore-to-site-indexes  ~/sites/danny.ayers.name/postcraft"
         ],
-        "watchEvents": ["change"]
+        "watchEvents": [
+            "change"
+        ]
     }
 ]

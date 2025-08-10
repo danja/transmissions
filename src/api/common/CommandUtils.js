@@ -174,13 +174,18 @@ class CommandUtils {
         logger.debug(`CommandUtils.parseOrLoadMessage(), messageString = ${messageString}`)
         let message = {}
         try {
-            message = JSON.parse(JSON.stringify(messageString)) // TODO wot?
+            message = JSON.parse(messageString)
         } catch (err) {
+            // If JSON parsing failed, try to load from file
             logger.debug(`*** Loading JSON from file : ${JSON.stringify(messageString)}`)
-            //  process.exit()
-            const filePath = path.resolve(messageString)
-            const fileContent = await fs.readFile(filePath, 'utf8')
-            message.payload = JSON.parse(fileContent)
+            try {
+                const filePath = path.resolve(messageString)
+                const fileContent = await fs.readFile(filePath, 'utf8')
+                message.payload = JSON.parse(fileContent)
+            } catch (fileErr) {
+                logger.warn(`Failed to parse message as JSON or load from file: ${err.message}`)
+                message = { originalString: messageString }
+            }
         }
         return message
     }

@@ -6,7 +6,7 @@
 
 ```sh
 cd ~/hyperdata/transmissions # my local path
-./trans md-to-sparqlstore
+./trans md-to-store -m '{"eventType":"change","filename":"2025-08-09_watch.md","sourcePath":"/home/danny/sites/danny.ayers.name/postcraft/content/raw/entries/2025-08-09_watch.md","watchDir":"/home/danny/sites/danny.ayers.name/postcraft/content/raw/entries","timestamp":"2025-08-10T07:13:46.470Z"}' /home/danny/sites/danny.ayers.name/postcraft
 ```
 
 ## Description

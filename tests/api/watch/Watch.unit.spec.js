@@ -370,10 +370,10 @@ describe('Watch', () => {
 
             const result = await watch.executeTransApp('test-app /override/path', '/tmp/target', changeInfo);
 
-            // Should use config args and ignore change info and default target
+            // Should use config args AND include change info (new behavior)
             expect(mockSpawn).toHaveBeenCalledWith(
                 expect.stringContaining('trans'), 
-                ['test-app', '/override/path'], 
+                ['test-app', '-m', expect.stringContaining('"eventType":"change"'), '/override/path'], 
                 expect.any(Object)
             );
             expect(result).toBe('Success with config args override');
@@ -431,7 +431,7 @@ describe('Watch', () => {
                 dirs: ['/tmp/dir1', '/tmp/dir2'],
                 apps: ['app1', 'app2']
             };
-            const changeInfo = { path: 'test.txt', fullPath: '/tmp/dir1/test.txt' };
+            const changeInfo = { filename: 'test.txt', sourcePath: '/tmp/dir1/test.txt' };
 
             await watch.executeAppsForWatchSet(watchSet, '/tmp/dir1', changeInfo);
 
@@ -449,7 +449,7 @@ describe('Watch', () => {
                 dirs: ['/tmp/dir1'],
                 apps: ['app1', 'app2', 'app3']
             };
-            const changeInfo = { path: 'test.txt', fullPath: '/tmp/dir1/test.txt' };
+            const changeInfo = { filename: 'test.txt', sourcePath: '/tmp/dir1/test.txt' };
 
             // Make second app fail
             watch.executeTransApp

@@ -158,7 +158,7 @@ describe('Watch System Integration', () => {
                 watchTestHelper.getWatchedDirPath('dir1'),
                 expect.objectContaining({
                     eventType: 'rename',
-                    path: 'newfile.txt'
+                    filename: 'newfile.txt'
                 })
             );
         });
@@ -225,7 +225,7 @@ describe('Watch System Integration', () => {
                 apps: ['test-app-1', 'test-app-2'] 
             };
             
-            await watch.executeAppsForWatchSet(watchSet, watchDir, { path: 'test.txt' });
+            await watch.executeAppsForWatchSet(watchSet, watchDir, { filename: 'test.txt' });
             
             // Verify both apps were executed
             expect(mockAppHelper.wasAppExecuted('test-app-1')).toBe(true);
@@ -248,7 +248,7 @@ describe('Watch System Integration', () => {
             // Execute apps for the first watch set which has 2 directories and 2 apps
             const watchSet = config[0]; // test-watch-set-1 with 2 dirs, 2 apps
             
-            await watch.executeAppsForWatchSet(watchSet, watchSet.dirs[0], { path: 'test.txt' });
+            await watch.executeAppsForWatchSet(watchSet, watchSet.dirs[0], { filename: 'test.txt' });
             
             // Should execute: 2 dirs × 2 apps = 4 executions
             expect(mockAppHelper.getTotalExecutionCount()).toBe(4);
@@ -276,7 +276,7 @@ describe('Watch System Integration', () => {
             const Watch = (await import('../../../src/api/watch/Watch.js')).default;
             const watch = new Watch(configPath, { debounceMs: 50 });
             
-            await watch.executeAppsForWatchSet(watchSet, watchDir, { path: 'test.txt' });
+            await watch.executeAppsForWatchSet(watchSet, watchDir, { filename: 'test.txt' });
             
             // All apps should have been attempted
             expect(mockAppHelper.getTotalExecutionCount()).toBe(3);

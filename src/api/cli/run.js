@@ -51,8 +51,7 @@ async function main() {
         .option('message', {
             alias: 'm',
             describe: chalk.yellow('Input message as JSON'),
-            type: 'string',
-            coerce: JSON.parse
+            type: 'string'
         })
         .option('classpath', {
             alias: 'cp',

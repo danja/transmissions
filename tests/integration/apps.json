@@ -19,7 +19,7 @@
         "isValid": "probably not"
     },
     {
-        "command": "./trans config-setting  --message '{\"theSettingProperty\": \"the setting value from message TEST_PASSED\"}'",
+        "command": "./trans config-setting -m '{\"theSettingProperty\": \"the setting value from message TEST_PASSED\"}'",
         "label": "config-setting_message",
         "description": "setting in message",
         "requiredMatchCount": 1

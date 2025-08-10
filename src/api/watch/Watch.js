@@ -180,7 +180,7 @@ class Watch {
                 await this.executeAppsForWatchSet(watchSet, dir, {
                     eventType,
                     filename: path.relative(dir, fullPath),
-                    fullPath,
+                    sourcePath: fullPath,  // Renamed from fullPath to avoid PathResolver conflict
                     watchDir: dir,
                     timestamp: new Date().toISOString()
                 })
@@ -217,7 +217,10 @@ class Watch {
             const args = [appName]
             
             if (configArgs.length > 0) {
-                // If config provides arguments, use those and skip change info and default target
+                // Config provides arguments - for these, add change info first, then config args
+                if (changeInfo) {
+                    args.push('-m', JSON.stringify(changeInfo))
+                }
                 // Expand tilde paths in arguments
                 const expandedArgs = configArgs.map(arg => {
                     if (arg.startsWith('~/')) {
@@ -226,7 +229,7 @@ class Watch {
                     return arg
                 })
                 args.push(...expandedArgs)
-                this.logWatch(`Executing with config args: ${this.transPath} ${args.join(' ')}`)
+                this.logWatch(`Executing with message and config args: ${this.transPath} ${args.join(' ')}`)
             } else {
                 // Use default behavior: add change info and target directory
                 if (changeInfo) {
