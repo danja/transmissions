@@ -92,12 +92,11 @@ class SPARQLUpdate extends SlowableProcessor {
             message.contentBlocks.content =
                 this.escaper.escape(message.contentBlocks.content, replacements)
         }
-
+        logger.log(`URI = ${message.contentBlocks.uri}`)
         nunjucks.configure({ autoescape: true })
         var update = nunjucks.renderString(template, updateData)
 
-        // logger.v(updateData)
-        // process.exit()
+        if (update.includes('grepword')) logger.log(update)
 
         logger.trace(`dataField = ${dataField}`)
         //logger.debug(`updateData = `)
@@ -105,16 +104,17 @@ class SPARQLUpdate extends SlowableProcessor {
         //  logger.log(`update = ${update}`)
         logger.debug(`endpoint.url = ${endpoint.url}`)
 
-        update = RDFUtils.escapeAngleBracketURIs(update) // TODO unhackify
+        const updateEscaped = RDFUtils.escapeAngleBracketURIs(update) // TODO unhackify
 
         let response
         try {
-            response = await axios.post(endpoint.url, update, {
+            response = await axios.post(endpoint.url, updateEscaped, {
                 headers: await this.makeHeaders(endpoint)
             })
         } catch (e) {
             logger.error(`Update ${this.id} \n${e.message}\nvvvvvvvv`)
-            logger.log(update)
+            logger.log(e)
+            logger.log(`Update was :\n${update}`)
             logger.error(`^^^^^^^^`)
             return
         }
@@ -124,9 +124,9 @@ class SPARQLUpdate extends SlowableProcessor {
             logger.debug(`SPARQLUpdate success: ${response.status} ${response.statusText}`)
             message.updateStatus = 'success'
             return this.emit('message', message)
+        } else {
+            logger.error(`SPARQLUpdate error: ${response.status} ${response.statusText}`)
         }
-        logger.trace(`SPARQLUpdate error, response : ${response.status} ${response.statusText}
-            ${response.headers}`)
         //    logger.reveal(response)
     }
 
