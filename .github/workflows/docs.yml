@@ -26,7 +26,7 @@ jobs:
 
       - name: Install markdown processor
         run: |
-          npm install -g marked
+          npm install marked
 
       - name: Build documentation
         run: |
@@ -78,7 +78,7 @@ jobs:
           HTML_HEADER
 
             # Convert markdown to HTML and append
-            marked "$file" >> "_site/manual/${filename}.html"
+            npx marked "$file" >> "_site/manual/${filename}.html"
 
             echo "</body></html>" >> "_site/manual/${filename}.html"
           done
