@@ -1,9 +1,13 @@
+import { config } from '@dotenvx/dotenvx'
 import axios from 'axios'
 import nunjucks from 'nunjucks'
 import fs from 'fs/promises'
 import path from 'path'
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
+
+// Load environment variables
+config()
 
 class SessionEnvironment {
     constructor(processor) {
@@ -32,7 +36,8 @@ ${logger.shorter(this.processor.config)}`)
     }
 
     getQueryEndpoint() {
-        return this.endpoints.find(e => e.type === 'query')
+        const endpoint = this.endpoints.find(e => e.type === 'query')
+        return this.applyEnvOverrides(endpoint)
     }
 
     getUpdateEndpoint() {
@@ -40,7 +45,20 @@ ${logger.shorter(this.processor.config)}`)
         const ep = this.endpoints.find(e => e.type === 'update')
         // logger.log(`update endpoint = ${ep}`)
         // logger.reveal(ep)
-        return ep
+        return this.applyEnvOverrides(ep)
+    }
+
+    applyEnvOverrides(endpoint) {
+        if (!endpoint) return endpoint
+
+        return {
+            ...endpoint,
+            url: `http://${process.env.SPARQL_HOST}:${process.env.SPARQL_PORT}/test`,
+            credentials: {
+                user: process.env.SPARQL_USER,
+                password: process.env.SPARQL_PASSWORD
+            }
+        }
     }
 
     async getTemplate(dir, templateFilename) {
