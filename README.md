@@ -6,7 +6,9 @@
 
 **Transmissions** is a workflow compositor designed to carry out data processing operations as a series of relatively simple steps. It's a micro-framework intended to simplify construction of small pipeliney data processing applications in JavaScript.
 
-**Status 2025-06-08 :** mostly functional, in active dev, potentially useful release planned for Summer Solstice 2025. Docs to follow (below is largely AI slop).
+[Manual](https://danja.github.io/transmissions/)
+
+**Status 2025-09-18 :** mostly functional, in active dev, potentially useful
 
 Typical use :
 
