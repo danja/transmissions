@@ -32,6 +32,9 @@ Transmissions processes data by executing *transmissions* - configured pipelines
 ### Reference
 *Additional reference documentation coming soon*
 
+---
+*Last updated: 2025-01-19*
+
 ## Example
 
 ```turtle
