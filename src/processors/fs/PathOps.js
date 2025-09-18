@@ -110,34 +110,43 @@ class PathOps extends Processor {
     async process(message) {
         logger.debug(`[PathOps.process]`)
 
-        /*
-        if (!message) {
-            logger.error("PathOps.process: No message provided")
-            return
-        }*/
+        try {
+            if (message.done) {
+                logger.debug(`PathOps: Message marked as done, skipping`)
+                return this.emit('message', message)
+            }
 
-        if (message.done) return
+            const targetField = super.getProperty(ns.trn.targetField, 'concat')
+            logger.debug(`     targetField = ${targetField}`)
 
-        const targetField = super.getProperty(ns.trn.targetField, 'concat')
-        logger.debug(`     targetField = ${targetField}`)
+            logger.debug(`     Getting segments from dataset...`)
+            const segments = GrapoiHelpers.listToArray(this.app.loadedDataset, this.settingsNode, ns.trn.values)
+            if (!segments || !segments.length) {
+                logger.error("    no segments found in configuration")
+                return this.emit('message', message)
+            }
+            logger.debug(`     Found ${segments.length} segments`)
 
-        const segments = GrapoiHelpers.listToArray(this.app.loadedDataset, this.settingsNode, ns.trn.values)
-        if (!segments || !segments.length) {
-            logger.error("    no segments found in configuration")
+            // Check if segments should be joined as a path
+            const asPath = super.getProperty(ns.trn.asPath) === 'true'
+            logger.debug(`     asPath = ${asPath}`)
+
+            // Combine segments and set in message
+            logger.debug(`     Combining segments...`)
+            var combined = this.combineSegments(this.app.loadedDataset, message, segments, asPath)
+            logger.debug(`     combined = ${combined}`)
+
+            logger.debug(`     Setting ${targetField} to "${combined}"`)
+            JSONUtils.set(message, targetField, combined)
+
+            logger.debug(`     PathOps processing complete, emitting message`)
+            return this.emit('message', message)
+        } catch (error) {
+            logger.error(`PathOps.process error: ${error.message}`)
+            logger.error(error.stack)
+            // Continue with original message on error
             return this.emit('message', message)
         }
-
-        // Check if segments should be joined as a path
-        const asPath = super.getProperty(ns.trn.asPath) === 'true'
-
-        logger.trace(`this.app = ${this.app}`)
-
-        // Combine segments and set in message
-        var combined = this.combineSegments(this.app.loadedDataset, message, segments, asPath)
-        logger.debug(`combined = ${combined}`)
-
-        JSONUtils.set(message, targetField, combined)
-        return this.emit('message', message)
     }
 
 
@@ -153,79 +162,97 @@ class PathOps extends Processor {
     combineSegments(dataset, message, segments, asPath) {
         logger.debug(`    combineSegments, asPath = ${asPath}`)
 
-        if (!dataset) {
-            logger.error("combineSegments: No dataset provided")
-            return ''
-        }
-
-        if (!segments) {
-            logger.error("combineSegments: No segments provided")
-            return ''
-        }
-
-        var combined = ''
-        var segment
-
-        for (var i = 0; i < segments.length; i++) {
-            segment = segments[i]
-            if (!segment) {
-                logger.warn(`Segment at index ${i} is undefined, skipping`)
-                continue
+        try {
+            if (!dataset) {
+                logger.error("combineSegments: No dataset provided")
+                return ''
             }
 
-            // Try to extract a static string value
-            let stringSegment = rdf.grapoi({ dataset: dataset, term: segment })
-            let stringProperty = stringSegment.out(ns.trn.string)
-            if (stringProperty && stringProperty.value) {
+            if (!segments) {
+                logger.error("combineSegments: No segments provided")
+                return ''
+            }
+
+            var combined = ''
+            var segment
+
+            logger.debug(`    Processing ${segments.length} segments`)
+
+            for (var i = 0; i < segments.length; i++) {
+                segment = segments[i]
+                logger.debug(`    Processing segment ${i}: ${segment?.value}`)
+
+                if (!segment) {
+                    logger.warn(`Segment at index ${i} is undefined, skipping`)
+                    continue
+                }
+
+                // Try to extract a static string value
+                let stringSegment = rdf.grapoi({ dataset: dataset, term: segment })
+                let stringProperty = stringSegment.out(ns.trn.string)
+                logger.debug(`    String property: ${stringProperty?.value}`)
+
+                if (stringProperty && stringProperty.value) {
+                    logger.debug(`    Using string value: "${stringProperty.value}"`)
+                    if (asPath) {
+                        combined = path.join(combined, stringProperty.value)
+                        logger.debug(`    Path combined: "${combined}"`)
+                        continue
+                    }
+                    combined = combined + stringProperty.value
+                    logger.debug(`    String combined: "${combined}"`)
+                    continue
+                }
+
+                // Try to extract a field value from the message
+                let fieldSegment = rdf.grapoi({ dataset: dataset, term: segment })
+                let fieldProperty = fieldSegment.out(ns.trn.field)
+                logger.debug(`    Field property: ${fieldProperty?.value}`)
+
+                if (!fieldProperty || !fieldProperty.value) {
+                    logger.warn(`Segment ${segment.value} has neither string nor field property`)
+                    continue
+                }
+
+                logger.debug(`    fieldProperty = ${fieldProperty.value}`)
+                let fieldValue = JSONUtils.get(message, fieldProperty.value)
+                logger.debug(`    fieldValue = ${fieldValue}`)
+
+                if (fieldValue === undefined || fieldValue === null) {
+                    logger.warn(`Warn: missing field value for '${fieldProperty.value}' in message`)
+                    continue
+                }
+
                 if (asPath) {
-                    combined = path.join(combined, stringProperty.value)
+                    try {
+                        combined = path.join(combined, fieldValue)
+                        logger.debug(`    Path joined: "${combined}"`)
+                    } catch (e) {
+                        logger.error(`Path join error with field '${fieldProperty.value}'`)
+                        logger.error(`fieldValue = ${fieldValue}`)
+                        logger.error(`combined = ${combined}`)
+                        logger.error(`Error: ${e.message}`)
+                        continue
+                    }
                     continue
                 }
-                combined = combined + stringProperty.value
-                continue
-            }
 
-            // Try to extract a field value from the message
-            let fieldSegment = rdf.grapoi({ dataset: dataset, term: segment })
-            let fieldProperty = fieldSegment.out(ns.trn.field)
-
-            if (!fieldProperty || !fieldProperty.value) {
-                logger.warn(`Segment ${segment.value} has neither string nor field property`)
-                continue
-            }
-
-            logger.debug(`    fieldProperty = ${fieldProperty.value}`)
-            let fieldValue = JSONUtils.get(message, fieldProperty.value)
-            logger.debug(`    fieldValue = ${fieldValue}`)
-
-            if (fieldValue === undefined || fieldValue === null) {
-                logger.warn(`Warn: missing field value for '${fieldProperty.value}' in message`)
-
-                continue
-            }
-
-            if (asPath) {
-                try {
-                    combined = path.join(combined, fieldValue)
-                } catch (e) {
-                    logger.error(`Path join error with field '${fieldProperty.value}'`)
-                    logger.error(`fieldValue = ${fieldValue}`)
-                    logger.error(`combined = ${combined}`)
-                    logger.error(`Error: ${e.message}`)
-                    continue
+                if (typeof fieldValue !== 'string') {
+                    fieldValue = JSON.stringify(fieldValue)
                 }
+
+                combined = combined + fieldValue
+                logger.debug(`    String concatenated: "${combined}"`)
                 continue
             }
 
-            if (typeof fieldValue !== 'string') {
-                fieldValue = JSON.stringify(fieldValue)
-            }
-
-            combined = combined + fieldValue
-            continue
+            logger.debug(`    Final combined result: "${combined}"`)
+            return combined
+        } catch (error) {
+            logger.error(`combineSegments error: ${error.message}`)
+            logger.error(error.stack)
+            return ''
         }
-
-        return combined
     }
 }
 export default PathOps

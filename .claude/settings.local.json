@@ -22,7 +22,11 @@
       "Bash(git add:*)",
       "Bash(git ls-tree:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(LOG_LEVEL=debug ./trans pathops -m '{\"\"fields\"\": {\"\"fieldB\"\" : \"\"TEST\"\",\"\"fieldC\"\":\"\"_PASSED\"\"}}')",
+      "Bash(LOG_LEVEL=trace ./trans pathops -m '{\"\"\"\"fields\"\"\"\": {\"\"\"\"fieldB\"\"\"\" : \"\"\"\"TEST\"\"\"\",\"\"\"\"fieldC\"\"\"\":\"\"\"\"_PASSED\"\"\"\"}}')",
+      "Bash(LOG_LEVEL=trace TRACE=1 ./trans pathops -m '{\"\"\"\"fields\"\"\"\": {\"\"\"\"fieldB\"\"\"\" : \"\"\"\"TEST\"\"\"\",\"\"\"\"fieldC\"\"\"\":\"\"\"\"_PASSED\"\"\"\"}}')",
+      "Bash(env LOG_LEVEL=trace ./trans:*)"
     ],
     "deny": []
   },
