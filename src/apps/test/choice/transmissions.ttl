@@ -1,0 +1,32 @@
+# src/apps/test/choice/transmissions.ttl
+
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+:choice-test a :EntryTransmission ;
+    :pipe (
+        :setup-message
+        :choice-processor
+        :echo-result
+    ) .
+
+:setup-message a :SetField ;
+    :settings :setupSettings .
+
+:choice-processor a :Choice ;
+    :settings :choiceSettings .
+
+:echo-result a :ShowMessage .
+
+# Configuration sets
+:setupSettings a :ConfigSet ;
+    :field "userType" ;
+    :value "premium" .
+
+:choiceSettings a :ConfigSet ;
+    :testProperty "userType" ;
+    :testOperator "equals" ;
+    :testValue "premium" ;
+    :trueProperty "result" ;
+    :trueValue "TEST_PASSED" ;
+    :falseProperty "result" ;
+    :falseValue "TEST_FAILED" .

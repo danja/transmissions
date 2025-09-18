@@ -125,5 +125,23 @@
         "label": "file-to-sparqlstore",
         "description": "file-to-sparqlstore - fuseki.hyperdata.it/test",
         "requiredMatchCount": 3
+    },
+    {
+        "command": "./trans choice",
+        "label": "choice",
+        "description": "test choice processor with conditional logic",
+        "requiredMatchCount": 1
+    },
+    {
+        "command": "./trans goto-config",
+        "label": "goto-config",
+        "description": "test GOTO with config.ttl target",
+        "requiredMatchCount": 1
+    },
+    {
+        "command": "./trans goto-message -m '{\"gotoTarget\": \"target-transmission\"}'",
+        "label": "goto-message",
+        "description": "test GOTO with message target",
+        "requiredMatchCount": 1
     }
 ]

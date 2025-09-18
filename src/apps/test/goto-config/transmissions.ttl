@@ -1,0 +1,29 @@
+# src/apps/test/goto-config/transmissions.ttl
+
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+:goto-config-test a :EntryTransmission ;
+    :pipe (
+        :goto-processor
+    ) .
+
+:goto-processor a :GOTO ;
+    :settings :gotoSettings .
+
+:target-transmission a :Transmission ;
+    :pipe (
+        :set-output
+        :show-output
+    ) .
+
+:set-output a :SetText ;
+    :settings :setSettings .
+
+:show-output a :ShowMessage .
+
+# Configuration sets
+:gotoSettings a :ConfigSet ;
+    :gotoTarget "target-transmission" .
+
+:setSettings a :ConfigSet ;
+    :text "TEST_PASSED" .

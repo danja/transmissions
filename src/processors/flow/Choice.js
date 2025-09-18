@@ -77,13 +77,13 @@ class Choice extends Processor {
         }
 
         // Get configuration properties
-        const testProperty = this.getProperty(ns.trn.testProperty)
+        const testProperty = this.getProperty(ns.trn.testProperty, undefined)
         const testOperator = this.getProperty(ns.trn.testOperator, 'equals')
-        const testValue = this.getProperty(ns.trn.testValue)
-        const trueProperty = this.getProperty(ns.trn.trueProperty)
-        const trueValue = this.getProperty(ns.trn.trueValue)
-        const falseProperty = this.getProperty(ns.trn.falseProperty)
-        const falseValue = this.getProperty(ns.trn.falseValue)
+        const testValue = this.getProperty(ns.trn.testValue, undefined)
+        const trueProperty = this.getProperty(ns.trn.trueProperty, undefined)
+        const trueValue = this.getProperty(ns.trn.trueValue, undefined)
+        const falseProperty = this.getProperty(ns.trn.falseProperty, undefined)
+        const falseValue = this.getProperty(ns.trn.falseValue, undefined)
 
         if (!testProperty) {
             logger.warn(`Choice: No testProperty specified, skipping condition evaluation`)
@@ -94,7 +94,7 @@ class Choice extends Processor {
         const messageValue = message[testProperty]
 
         // Evaluate the condition
-        const conditionResult = this.evaluateCondition(messageValue, testOperator, testValue)
+        const conditionResult = this.evaluateCondition(messageValue, testOperator || 'equals', testValue)
 
         logger.debug(`Choice: ${testProperty}="${messageValue}" ${testOperator} "${testValue}" = ${conditionResult}`)
 
