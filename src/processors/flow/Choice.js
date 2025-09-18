@@ -1,5 +1,4 @@
 // src/processors/flow/Choice.js
-// TODO implement
 
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
@@ -9,38 +8,54 @@ import Processor from '../../model/Processor.js'
  * @class Choice
  * @extends Processor
  * @classdesc
- * **a Transmissions Processor**
+ * **a Transmissions Processor for Conditional Logic**
  *
- * Processes messages by applying conditional logic and property transformations.
+ * Evaluates a condition and sets message properties based on the result, enabling
+ * conditional branching within transmission pipelines.
  *
  * ### Processor Signature
  *
  * #### __*Settings*__
- * * **`ns.trn.me`** - Identifier for the processor instance
- * * **`ns.trn.common`** - Common value to be added to the message
- * * **`ns.trn.something1`** - First value to be processed
- * * **`ns.trn.something2`** - Second value to be processed
- * * **`ns.trn.added`** - Optional string to append to something1
- * * **`ns.trn.notavalue`** - Fallback value if not provided in config
+ * * **`ns.trn.testProperty`** - Property name to test (e.g., "userType", "status")
+ * * **`ns.trn.testOperator`** - Comparison operator: "equals", "contains", "greater", "less", "exists"
+ * * **`ns.trn.testValue`** - Value to compare against (for equals, contains, greater, less)
+ * * **`ns.trn.trueProperty`** - Property to set if condition is true
+ * * **`ns.trn.trueValue`** - Value to set for true condition
+ * * **`ns.trn.falseProperty`** - Property to set if condition is false
+ * * **`ns.trn.falseValue`** - Value to set for false condition
  *
  * #### __*Input*__
- * * **`message`** - The message object to be processed
+ * * **`message`** - The message object containing properties to test
  *
  * #### __*Output*__
- * * **`message`** - The modified message object with added/updated fields
+ * * **`message`** - Message with additional properties set based on the choice made
  *
  * #### __*Behavior*__
- * * Forwards message immediately if `message.done` is true
- * * Retrieves and processes configuration properties
- * * Appends optional values to message fields
- * * Handles fallback values for missing properties
+ * * Skips processing if `message.done` is true
+ * * Evaluates the specified condition using testProperty, testOperator, and testValue
+ * * Sets trueProperty=trueValue if condition is true
+ * * Sets falseProperty=falseValue if condition is false
+ * * Supports operators: equals, contains, greater, less, exists
+ * * Enables downstream processors to react to the choice via message properties
  *
  * #### __*Side Effects*__
- * * Modifies the input message object
- * * Logs processing information
+ * * Adds choice result properties to the message object
+ * * Logs the condition evaluation and choice made
  *
- * #### __*Tests*__
- * * TODO: Add test coverage
+ * #### __*Example Configuration*__
+ * ```turtle
+ * :userRouter a :Choice ;
+ *     :settings :userChoiceConfig .
+ *
+ * :userChoiceConfig a :ConfigSet ;
+ *     :testProperty "userType" ;
+ *     :testOperator "equals" ;
+ *     :testValue "premium" ;
+ *     :trueProperty "processingPath" ;
+ *     :trueValue "premium-flow" ;
+ *     :falseProperty "processingPath" ;
+ *     :falseValue "standard-flow" .
+ * ```
  */
 class Choice extends Processor {
     constructor(config) {
@@ -48,38 +63,85 @@ class Choice extends Processor {
     }
 
     /**
-     * Processes the message by applying property transformations and conditional logic.
+     * Evaluates a condition and sets message properties based on the result.
      * @param {Object} message - The message object to process
      * @returns {Promise} Resolves when processing is complete
      */
     async process(message) {
-        logger.debug(`\n\nChoice.process`)
+        logger.debug(`Choice.process starting`)
 
-        // TODO figure this out better
-        // may be needed if preceded by a spawning processor, eg. fs/DirWalker
+        // Skip processing if message is marked as done
         if (message.done) {
+            logger.debug(`Choice: Message marked as done, skipping`)
             return this.emit('message', message)
-            // or simply return
         }
 
-        // message is processed here :
+        // Get configuration properties
+        const testProperty = this.getProperty(ns.trn.testProperty)
+        const testOperator = this.getProperty(ns.trn.testOperator, 'equals')
+        const testValue = this.getProperty(ns.trn.testValue)
+        const trueProperty = this.getProperty(ns.trn.trueProperty)
+        const trueValue = this.getProperty(ns.trn.trueValue)
+        const falseProperty = this.getProperty(ns.trn.falseProperty)
+        const falseValue = this.getProperty(ns.trn.falseValue)
 
-        // property values pulled from message | config settings | fallback
-        const me = await this.getProperty(ns.trn.me)
-        logger.log(`\nI am ${me}`)
+        if (!testProperty) {
+            logger.warn(`Choice: No testProperty specified, skipping condition evaluation`)
+            return this.emit('message', message)
+        }
 
-        message.common = await this.getProperty(ns.trn.common)
-        message.something1 = await this.getProperty(ns.trn.something1)
+        // Get the value to test from the message
+        const messageValue = message[testProperty]
 
-        message.something2 = await this.getProperty(ns.trn.something2)
+        // Evaluate the condition
+        const conditionResult = this.evaluateCondition(messageValue, testOperator, testValue)
 
-        var added = await this.getProperty(ns.trn.added, '')
-        message.something1 = message.something1 + added
+        logger.debug(`Choice: ${testProperty}="${messageValue}" ${testOperator} "${testValue}" = ${conditionResult}`)
 
-        message.notavalue = await this.getProperty(ns.trn.notavalue, 'fallback value')
+        // Apply the choice result
+        if (conditionResult) {
+            if (trueProperty && trueValue !== undefined) {
+                message[trueProperty] = trueValue
+                logger.debug(`Choice: TRUE - Set ${trueProperty}="${trueValue}"`)
+            }
+        } else {
+            if (falseProperty && falseValue !== undefined) {
+                message[falseProperty] = falseValue
+                logger.debug(`Choice: FALSE - Set ${falseProperty}="${falseValue}"`)
+            }
+        }
 
-        // message forwarded
         return this.emit('message', message)
+    }
+
+    /**
+     * Evaluates a condition using the specified operator
+     * @param {any} messageValue - Value from the message to test
+     * @param {string} operator - Comparison operator
+     * @param {any} testValue - Value to compare against
+     * @returns {boolean} Result of the condition evaluation
+     */
+    evaluateCondition(messageValue, operator, testValue) {
+        switch (operator.toLowerCase()) {
+            case 'equals':
+                return messageValue == testValue
+
+            case 'contains':
+                return String(messageValue || '').includes(String(testValue || ''))
+
+            case 'greater':
+                return Number(messageValue) > Number(testValue)
+
+            case 'less':
+                return Number(messageValue) < Number(testValue)
+
+            case 'exists':
+                return messageValue !== undefined && messageValue !== null && messageValue !== ''
+
+            default:
+                logger.warn(`Choice: Unknown operator "${operator}", defaulting to equals`)
+                return messageValue == testValue
+        }
     }
 }
 export default Choice
