@@ -18,7 +18,11 @@
       "Bash(examples/http/stop-curl.sh 4400)",
       "mcp__ide__getDiagnostics",
       "Bash(pgrep:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(git add:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ],
     "deny": []
   },

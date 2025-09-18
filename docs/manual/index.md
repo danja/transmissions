@@ -17,8 +17,13 @@ Transmissions processes data by executing *transmissions* - configured pipelines
 ## Manual Contents
 
 ### Core Concepts
+- [Architecture & Concepts](concepts.md) - Framework architecture, messages, processors, and transmissions
 - [Basic Pipeline Processing](pipeline-basic.md) - Understanding simple transmission execution
 - [Nested Pipeline Processing](pipeline-nested.md) - Working with nested transmissions and complex workflows
+
+### Development Guides
+- [Creating Applications](apps.md) - How to build complete Transmissions applications
+- [Creating Processors](processors/processors.md) - How to develop custom processors
 
 ### Flow Control
 - [Flow Control Overview](flow.md) - High-level guide to flow control processors and patterns
