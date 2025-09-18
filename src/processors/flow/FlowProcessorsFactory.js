@@ -9,6 +9,7 @@ import Unfork from '../flow/Unfork.js'
 import Fork from '../flow/Fork.js'
 import Accumulate from '../flow/Accumulate.js'
 import Choice from './Choice.js'
+import GOTO from './GOTO.js'
 
 class FlowProcessorsFactory {
     static createProcessor(type, config) {
@@ -40,6 +41,9 @@ class FlowProcessorsFactory {
         }
         if (type.equals(ns.trn.Choice)) {
             return new Choice(config)
+        }
+        if (type.equals(ns.trn.GOTO)) {
+            return new GOTO(config)
         }
         return false
     }

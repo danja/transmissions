@@ -20,16 +20,31 @@ class GOTO extends Processor {
      * @returns {Promise<boolean>} Resolves when processing is complete
      */
     async process(message) {
+        const targetTransmissionId = super.getProperty(ns.trn.gotoTarget)
 
-const targetTransmission = super.getProperty(ns.trn.gotoTarget)
+        if (!targetTransmissionId) {
+            logger.debug(`GOTO: No target transmission specified, continuing with current message`)
+            return this.emit('message', message)
+        }
 
-/* 
-something is called here, probably in the ProcessorImpl superclass
-it will cause the transmission ns.trn.gotoTarget to be run
-with message passed in
-*/
+        // Find the target transmission
+        const targetTransmission = this.findTransmission(targetTransmissionId)
+        if (!targetTransmission) {
+            logger.warn(`GOTO: Target transmission '${targetTransmissionId}' not found, continuing with current message`)
+            return this.emit('message', message)
+        }
 
-        return this.emit('message', message)
+        logger.debug(`GOTO: Executing target transmission '${targetTransmissionId}'`)
+
+        try {
+            // Execute the target transmission with the current message
+            const result = await targetTransmission.process(message)
+            return this.emit('message', result)
+        } catch (error) {
+            logger.error(`GOTO: Error executing target transmission '${targetTransmissionId}': ${error.message}`)
+            // Continue with original message on error
+            return this.emit('message', message)
+        }
     }
 }
 export default GOTO

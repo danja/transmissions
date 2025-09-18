@@ -16,7 +16,7 @@
 :UF a :Unfork . # collapses all pipes but one                    #
 ##################################################################
 
-:goto-test a :Transmission ;
+:goto-test a :EntryTransmission ;
     :pipe (:p10 :p20) .
 
 :p10 a :GOTO ;
@@ -26,12 +26,12 @@
 
 #---------------------
 :goto-target1 a :Transmission ;
-    :pipe (:p10) .
+    :pipe (:p100) .
 
-:p10 a :ShowMessage .
+:p100 a :ShowMessage .
 
 #---------------------
 :goto-target2 a :Transmission ;
-    :pipe (:p10) .
+    :pipe (:p200) .
 
-:p10 a :ShowMessage .
+:p200 a :ShowMessage .

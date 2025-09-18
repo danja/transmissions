@@ -97,6 +97,35 @@ class ProcessorImpl extends EventEmitter {
         return this.propertyInObject(this.message, property)
     }
 
+    /**
+     * Find a transmission by ID or short name
+     * @param {string} targetId - The transmission ID (short name or full URI)
+     * @returns {Transmission|null} The transmission instance or null if not found
+     */
+    findTransmission(targetId) {
+        if (!this.app || !this.app.transmissions) {
+            logger.debug(`ProcessorImpl.findTransmission: No transmissions available`)
+            return null
+        }
+
+        // Convert short name to full URI if needed
+        let fullUri = targetId
+        if (!targetId.startsWith('http://')) {
+            fullUri = `http://purl.org/stuff/transmissions/${targetId}`
+        }
+
+        // Search through all transmissions
+        for (const transmission of this.app.transmissions) {
+            if (transmission.id === fullUri) {
+                logger.debug(`ProcessorImpl.findTransmission: Found transmission ${fullUri}`)
+                return transmission
+            }
+        }
+
+        logger.debug(`ProcessorImpl.findTransmission: Transmission ${targetId} not found`)
+        return null
+    }
+
     async preProcess(message) {
         logger.debug('ProcessorImpl.preProcess')
 

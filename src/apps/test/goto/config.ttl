@@ -6,5 +6,5 @@
 @prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances
 
 :gotoTarget a :ConfigSet ;
-    :gotoTarget :goto-target1 .
+    :gotoTarget "goto-target1" .
 

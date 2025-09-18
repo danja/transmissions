@@ -30,7 +30,7 @@ class TransmissionBuilder {
     const transmissions = []
 
     for (const q of poi.out(ns.rdf.type).quads()) {
-      if (q.object.equals(ns.trn.Transmission)) {
+      if (q.object.equals(ns.trn.Transmission) || q.object.equals(ns.trn.EntryTransmission)) {
         const transmissionID = q.subject
         logger.debug(`\ntransmissionID = ${transmissionID.value}`)
 
@@ -80,6 +80,13 @@ class TransmissionBuilder {
     for (const quad of transPoi.out(ns.rdfs.label).quads()) {
       transmission.label = quad.object.value
     }
+
+    // Check if this is an entry transmission (main entry point)
+    const isEntryTransmission = transPoi.out(ns.rdf.type).terms.some(term =>
+      term.equals(ns.trn.EntryTransmission)
+    )
+    transmission.isMainTransmission = isEntryTransmission
+
     logger.log('\n+ ***** Construct Transmission : ' + transmission.label + ' <' + transmission.id + '>')
 
     await this.createNodes(transmission, pipenodes, transmissionsDataset, configDataset)

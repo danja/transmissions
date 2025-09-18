@@ -168,6 +168,9 @@ class AppManager {
         const builder = new TransmissionBuilder(this.app, this.moduleLoader)
         const transmissions = await builder.buildTransmissions()
 
+        // Store transmissions on app for processor access
+        this.app.transmissions = transmissions
+
         //   logger.rv(transmissions)
         // process.exit()
         // Get application context
@@ -181,6 +184,9 @@ class AppManager {
         //}
         message.appRunStart = (new Date()).toISOString()
 
+        // Check if any entry transmissions exist (backward compatibility)
+        const hasEntryTransmissions = transmissions.some(t => t.isMainTransmission)
+
         // logger.debug(`BEFORE = ${message}`)
         var result = null
         //    for (const transmission of transmissions) {
@@ -188,8 +194,21 @@ class AppManager {
             const transmission = transmissions[i]
             transmission.app = this.app
             //   logger.debug(`transmission = \n${transmission} `)
-            if (!this.app.subtask || this.app.subtask === transmission.label) {
 
+            // Determine if transmission should run
+            let shouldRun
+            if (this.app.subtask) {
+                // If specific subtask requested, only run that one
+                shouldRun = this.app.subtask === transmission.label
+            } else if (hasEntryTransmissions) {
+                // If entry transmissions exist, only run those
+                shouldRun = transmission.isMainTransmission
+            } else {
+                // Backward compatibility: no entry transmissions, run all (original behavior)
+                shouldRun = true
+            }
+
+            if (shouldRun) {
                 result = await transmission.process(message)
                 // Update message for next transmission with the processed result
                 if (result) {
