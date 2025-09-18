@@ -15,7 +15,14 @@ class Connector extends EventEmitter {
         logger.trace(`Connector.connect this.fromName = ${this.fromName} this.toName =  ${this.toName}`)
         const fromProcessor = processors[this.fromName]
         const toProcessor = processors[this.toName]
-        if (fromProcessor instanceof Transmission) {
+        if (fromProcessor instanceof Transmission && toProcessor instanceof Transmission) {
+            // Connect last node of from-transmission to first node of to-transmission
+            const lastNode = fromProcessor.getLastNode()
+            const firstNode = toProcessor.getFirstNode()
+            lastNode.on('message', async (message) => {
+                await firstNode.receive(message)
+            })
+        } else if (fromProcessor instanceof Transmission) {
             // Connect last node of nested transmission
             const lastNode = fromProcessor.getLastNode()
             lastNode.on('message', async (message) => {

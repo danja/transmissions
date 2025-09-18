@@ -93,54 +93,41 @@ class TransmissionBuilder {
     // logger.log(`pipenodes = ${JSON.stringify(pipenodes)}`)
     for (const node of pipenodes) {
   
-         const np = rdf.grapoi({ dataset: transmissionsDataset, term: node })
+        const np = rdf.grapoi({ dataset: transmissionsDataset, term: node })
         const processorType = np.out(ns.rdf.type).term
-         logger.log(`processorType = ${JSON.stringify(processorType)}`)
-      
-        logger.log('is a Trans')
-  const  isTransmissionReference = processorType.equals(ns.trn.Transmission) // doesn't cover multi, see  isTransmissionReference() below
-      
-     
-      if (!isTransmissionReference && !transmission.get(node.value)) {
-      //  const np = rdf.grapoi({ dataset: transmissionsDataset, term: node })
-        // const processorType = np.out(ns.rdf.type).term
+        const isTransmissionReference = processorType.equals(ns.trn.Transmission) // doesn't cover multi, see  isTransmissionReference() below
 
+      if (isTransmissionReference) {
+        const nestedTransmission = await this.constructTransmission(
+          transmissionsDataset,
+          node,
+          configDataset
+        )
+        transmission.register(node.value, nestedTransmission)
+      } else if (!transmission.get(node.value)) {
+        // Regular processor handling
         const settingsNode = np.out(ns.trn.settings).term
-        //   const settingsNodeName = settingsNode ? settingsNode.value : undefined
 
         logger.debug(`Creating processor:
           Node: :${ns.shortName(node?.value)}
           Type: :${ns.shortName(processorType?.value)}
           SettingsNode: :${ns.shortName(settingsNode?.value)}
         `)
-        //    Config: \n${processorsConfig}
-        // Check if node is a nested transmission transmissionsDataset
-        // if (processorType && this.isTransmissionReference(processorType)) {
-      //  if (processorType && this.isTransmissionReference(transmissionsDataset, node)) { //// processorType
-        if (processorType && isTransmissionReference) {
-          const nestedTransmission = await this.constructTransmission(
-            transmissionsDataset,
-            processorType, // is used?
-            configDataset
-          )
-          transmission.register(node.value, nestedTransmission)
-        } else {
-          // Regular processor handling
-          const processorBase = await this.createProcessor(processorType, configDataset)
-          processorBase.id = node.value
-          processorBase.type = processorType
-          if (settingsNode) {
-            processorBase.settingsNode = settingsNode
-          }
 
-          // Set the app reference on the processor
-          processorBase.app = transmission.app
-
-          // Connect to the transmission's whiteboard
-          processorBase.whiteboard = transmission.whiteboard // feels redundant...
-          processorBase.x = `X`
-          const processorInstance = transmission.register(node.value, processorBase)
+        const processorBase = await this.createProcessor(processorType, configDataset)
+        processorBase.id = node.value
+        processorBase.type = processorType
+        if (settingsNode) {
+          processorBase.settingsNode = settingsNode
         }
+
+        // Set the app reference on the processor
+        processorBase.app = transmission.app
+
+        // Connect to the transmission's whiteboard
+        processorBase.whiteboard = transmission.whiteboard // feels redundant...
+        processorBase.x = `X`
+        const processorInstance = transmission.register(node.value, processorBase)
       }
     }
   }

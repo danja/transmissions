@@ -44,17 +44,29 @@ class Transmission {
               lastProcessor = currentProcessor
             }
           }
-          
+
+          // If lastProcessor is a Transmission, get its last node
+          let actualLastProcessor = lastProcessor
+          if (lastProcessor instanceof Transmission) {
+            actualLastProcessor = lastProcessor.getLastNode()
+          }
+
           // Listen for the final result from the last processor
           const handleFinalMessage = (finalMessage) => {
-            lastProcessor.off('message', handleFinalMessage)
+            actualLastProcessor.off('message', handleFinalMessage)
             resolve(finalMessage)
           }
-          
-          lastProcessor.on('message', handleFinalMessage)
-          
+
+          actualLastProcessor.on('message', handleFinalMessage)
+
+          // If the first processor is a Transmission, send message to its first node
+          let actualFirstProcessor = processor
+          if (processor instanceof Transmission) {
+            actualFirstProcessor = processor.getFirstNode()
+          }
+
           // Start the chain by sending message to first processor
-          processor.receive(message).catch(reject)
+          actualFirstProcessor.receive(message).catch(reject)
         })
       } else {
         throw new Error(`No valid processor found to execute, looked for ${processorName}`)
@@ -89,9 +101,22 @@ class Transmission {
   }
 
   getFirstNode() { // used for nested transmissions
-    // logger.log(this)
-    //logger.log(this.processors[0])
-    return this.processors[0]
+    const processorName = this.connectors[0]?.fromName || Object.keys(this.processors)[0]
+    return this.get(processorName)
+  }
+
+  getLastNode() { // used for nested transmissions
+    // Find the last processor in the chain by looking for one that's not a source in any connector
+    const processorNames = Object.keys(this.processors)
+    for (const name of processorNames) {
+      const isSource = this.connectors.some(c => c.fromName === name)
+      if (!isSource) {
+        return this.get(name)
+      }
+    }
+    // Fallback to the last processor in the object
+    const lastProcessorName = processorNames[processorNames.length - 1]
+    return this.get(lastProcessorName)
   }
 
   // is used?
