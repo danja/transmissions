@@ -1,12 +1,12 @@
 # Transmissions
 
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/danja/transmissions)
-
 ## Overview
 
 **Transmissions** is a workflow compositor designed to carry out data processing operations as a series of relatively simple steps. It's a micro-framework intended to simplify construction of small pipeliney data processing applications in JavaScript.
 
-[Manual](https://danja.github.io/transmissions/)
+[Manual](https://danja.github.io/transmissions/manual/)
+
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/danja/transmissions)
 
 **Status 2025-09-18 :** mostly functional, in active dev, potentially useful
 
