@@ -52,61 +52,95 @@ jobs:
             echo "Converting $file to HTML..."
 
             # Create HTML with basic styling and navigation
-            cat > "_site/manual/$rel_path" << 'HTML_HEADER'
-          <!DOCTYPE html>
-          <html>
-          <head>
-            <meta charset="utf-8">
-            <title>Transmissions Framework - Manual</title>
-            <style>
-              body {
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                max-width: 800px;
-                margin: 0 auto;
-                padding: 20px;
-                line-height: 1.6;
-              }
-              h1, h2, h3 { color: #333; }
-              pre {
-                background: #f5f5f5;
-                padding: 15px;
-                border-radius: 5px;
-                overflow-x: auto;
-              }
-              code {
-                background: #f5f5f5;
-                padding: 2px 4px;
-                border-radius: 3px;
-              }
-              a { color: #0066cc; text-decoration: none; }
-              a:hover { text-decoration: underline; }
-              blockquote {
-                border-left: 4px solid #ddd;
-                margin: 0;
-                padding-left: 20px;
-                color: #666;
-              }
-              .nav {
-                margin-bottom: 20px;
-                padding: 10px;
-                background: #f8f9fa;
-                border-radius: 5px;
-              }
-              .nav a {
-                margin-right: 15px;
-                font-weight: 500;
-              }
-            </style>
-          </head>
-          <body>
-            <div class="nav">
-              <a href="index.html">Home</a>
-              <a href="concepts.html">Concepts</a>
-              <a href="apps.html">Apps</a>
-              <a href="processors/processors.html">Processors</a>
-              <a href="flow.html">Flow Control</a>
-            </div>
-          HTML_HEADER
+            cat > "_site/manual/${rel_path%.md}.html" << 'HTML_HEADER'
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Transmissions Framework - Manual</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+      color: #333;
+    }
+    h1, h2, h3 { color: #2c3e50; }
+    pre {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+      border: 1px solid #e9ecef;
+    }
+    code {
+      background: #f8f9fa;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+    }
+    a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    blockquote {
+      border-left: 4px solid #ddd;
+      margin: 0;
+      padding-left: 20px;
+      color: #666;
+      font-style: italic;
+    }
+    .nav {
+      margin-bottom: 30px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+    }
+    .nav a {
+      margin-right: 20px;
+      font-weight: 500;
+      padding: 5px 10px;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+    }
+    .nav a:hover {
+      background-color: #e9ecef;
+      text-decoration: none;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 20px 0;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f8f9fa;
+    }
+  </style>
+</head>
+<body>
+  <div class="nav">
+    <a href="index.html">Home</a>
+    <a href="concepts.html">Concepts</a>
+    <a href="apps.html">Apps</a>
+    <a href="processors/processors.html">Processors</a>
+    <a href="flow.html">Flow Control</a>
+  </div>
+HTML_HEADER
 
             # Convert markdown to HTML with link conversion and append
             convert_links < "$file" | npx marked >> "_site/manual/${rel_path%.md}.html"
