@@ -32,14 +32,27 @@ jobs:
         run: |
           # Create docs build directory
           mkdir -p _site/manual
+          mkdir -p _site/manual/processors
 
-          # Convert markdown files to HTML
-          for file in docs/manual/*.md; do
-            filename=$(basename "$file" .md)
+          # Function to convert markdown links to HTML links
+          convert_links() {
+            sed 's/\(\[.*\]\)(\([^)]*\)\.md)/\1(\2.html)/g'
+          }
+
+          # Convert all markdown files to HTML
+          find docs/manual -name "*.md" | while read file; do
+            # Get relative path from docs/manual/
+            rel_path=${file#docs/manual/}
+            filename=$(basename "$rel_path" .md)
+            dir_path=$(dirname "$rel_path")
+
+            # Create target directory
+            mkdir -p "_site/manual/$dir_path"
+
             echo "Converting $file to HTML..."
 
-            # Create HTML with basic styling
-            cat > "_site/manual/${filename}.html" << 'HTML_HEADER'
+            # Create HTML with basic styling and navigation
+            cat > "_site/manual/$rel_path" << 'HTML_HEADER'
           <!DOCTYPE html>
           <html>
           <head>
@@ -65,22 +78,40 @@ jobs:
                 padding: 2px 4px;
                 border-radius: 3px;
               }
-              a { color: #0066cc; }
+              a { color: #0066cc; text-decoration: none; }
+              a:hover { text-decoration: underline; }
               blockquote {
                 border-left: 4px solid #ddd;
                 margin: 0;
                 padding-left: 20px;
                 color: #666;
               }
+              .nav {
+                margin-bottom: 20px;
+                padding: 10px;
+                background: #f8f9fa;
+                border-radius: 5px;
+              }
+              .nav a {
+                margin-right: 15px;
+                font-weight: 500;
+              }
             </style>
           </head>
           <body>
+            <div class="nav">
+              <a href="index.html">Home</a>
+              <a href="concepts.html">Concepts</a>
+              <a href="apps.html">Apps</a>
+              <a href="processors/processors.html">Processors</a>
+              <a href="flow.html">Flow Control</a>
+            </div>
           HTML_HEADER
 
-            # Convert markdown to HTML and append
-            npx marked "$file" >> "_site/manual/${filename}.html"
+            # Convert markdown to HTML with link conversion and append
+            convert_links < "$file" | npx marked >> "_site/manual/${rel_path%.md}.html"
 
-            echo "</body></html>" >> "_site/manual/${filename}.html"
+            echo "</body></html>" >> "_site/manual/${rel_path%.md}.html"
           done
 
           # Create main index redirect
@@ -99,11 +130,8 @@ jobs:
           </html>
           EOF
 
-          # Copy original markdown files as well
-          cp docs/manual/*.md _site/manual/
-
           echo "Built documentation files:"
-          find _site -type f -name "*.html" -o -name "*.md"
+          find _site -type f -name "*.html"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
