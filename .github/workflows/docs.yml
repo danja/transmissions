@@ -6,10 +6,7 @@ on:
     paths:
       - 'docs/**'
       - '.github/workflows/docs.yml'
-  pull_request:
-    branches: [ main ]
-    paths:
-      - 'docs/**'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -30,34 +27,86 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
+      - name: Install markdown processor
+        run: |
+          npm install -g marked
 
       - name: Build documentation
         run: |
           # Create docs build directory
-          mkdir -p _site
+          mkdir -p _site/manual
 
-          # Copy manual files
-          cp -r docs/manual _site/
+          # Convert markdown files to HTML
+          for file in docs/manual/*.md; do
+            filename=$(basename "$file" .md)
+            echo "Converting $file to HTML..."
 
-          # Create a simple index.html that redirects to manual
+            # Create HTML with basic styling
+            cat > "_site/manual/${filename}.html" << 'HTML_HEADER'
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="utf-8">
+            <title>Transmissions Framework - Manual</title>
+            <style>
+              body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+                line-height: 1.6;
+              }
+              h1, h2, h3 { color: #333; }
+              pre {
+                background: #f5f5f5;
+                padding: 15px;
+                border-radius: 5px;
+                overflow-x: auto;
+              }
+              code {
+                background: #f5f5f5;
+                padding: 2px 4px;
+                border-radius: 3px;
+              }
+              a { color: #0066cc; }
+              blockquote {
+                border-left: 4px solid #ddd;
+                margin: 0;
+                padding-left: 20px;
+                color: #666;
+              }
+            </style>
+          </head>
+          <body>
+          HTML_HEADER
+
+            # Convert markdown to HTML and append
+            marked "$file" >> "_site/manual/${filename}.html"
+
+            echo "</body></html>" >> "_site/manual/${filename}.html"
+          done
+
+          # Create main index redirect
           cat > _site/index.html << 'EOF'
           <!DOCTYPE html>
           <html>
           <head>
             <meta charset="utf-8">
             <title>Transmissions Framework Documentation</title>
-            <meta http-equiv="refresh" content="0; url=./manual/">
-            <link rel="canonical" href="./manual/">
+            <meta http-equiv="refresh" content="0; url=./manual/index.html">
+            <link rel="canonical" href="./manual/index.html">
           </head>
           <body>
-            <p>Redirecting to <a href="./manual/">documentation</a>...</p>
+            <p>Redirecting to <a href="./manual/index.html">documentation</a>...</p>
           </body>
           </html>
           EOF
+
+          # Copy original markdown files as well
+          cp docs/manual/*.md _site/manual/
+
+          echo "Built documentation files:"
+          find _site -type f -name "*.html" -o -name "*.md"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
