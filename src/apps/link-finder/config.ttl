@@ -1,0 +1,19 @@
+# src/apps/example-application/config.ttl
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+@prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances
+
+# ns.trn.sourceFile
+
+:origin a :ConfigSet ;
+    :sourceFile "exampleSettings1" ;
+    :common "common from 1"  ;
+    :something1 "something1 from config" .
+
+:exampleSettings2 a :ConfigSet ;
+    :me "exampleSettings2" ;
+    :common "common from 2" ;
+    :something2 "something2 from config" ;
+    :added " added from exampleSettings2" .

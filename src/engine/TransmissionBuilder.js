@@ -68,8 +68,15 @@ class TransmissionBuilder {
     transmission.label = ''
 
     const transPoi = grapoi({ dataset: transmissionsDataset, term: transmissionID })
-    const pipenodes = GrapoiHelpers.listToArray(transmissionsDataset, transmissionID, ns.trn.pipe)
-
+   // logger.log(JSON.stringify(transPoi))
+   // logger.log(JSON.stringify(transmissionsDataset))
+    var pipenodes = GrapoiHelpers.listToArray(transmissionsDataset, transmissionID, ns.trn.pipe)
+     //   logger.log(`Apipenodes = ${JSON.stringify(pipenodes)}`)
+// if(!pipenodes[0]){
+   // logger.log('try again')
+// pipenodes = GrapoiHelpers.listToArray(transmissionsDataset, transmissionID, ns.trn.contains)
+// }
+   // logger.log(`Bpipenodes = ${JSON.stringify(pipenodes)}`)
     for (const quad of transPoi.out(ns.rdfs.label).quads()) {
       transmission.label = quad.object.value
     }
@@ -83,12 +90,20 @@ class TransmissionBuilder {
   }
 
   async createNodes(transmission, pipenodes, transmissionsDataset, configDataset) {
+    // logger.log(`pipenodes = ${JSON.stringify(pipenodes)}`)
     for (const node of pipenodes) {
-      //  node.value is either the name of a processor or a nested transmission
-
-      if (!transmission.get(node.value)) {
-        const np = rdf.grapoi({ dataset: transmissionsDataset, term: node })
+  
+         const np = rdf.grapoi({ dataset: transmissionsDataset, term: node })
         const processorType = np.out(ns.rdf.type).term
+         logger.log(`processorType = ${JSON.stringify(processorType)}`)
+      
+        logger.log('is a Trans')
+  const  isTransmissionReference = processorType.equals(ns.trn.Transmission) // doesn't cover multi, see  isTransmissionReference() below
+      
+     
+      if (!isTransmissionReference && !transmission.get(node.value)) {
+      //  const np = rdf.grapoi({ dataset: transmissionsDataset, term: node })
+        // const processorType = np.out(ns.rdf.type).term
 
         const settingsNode = np.out(ns.trn.settings).term
         //   const settingsNodeName = settingsNode ? settingsNode.value : undefined
@@ -101,7 +116,8 @@ class TransmissionBuilder {
         //    Config: \n${processorsConfig}
         // Check if node is a nested transmission transmissionsDataset
         // if (processorType && this.isTransmissionReference(processorType)) {
-        if (processorType && this.isTransmissionReference(transmissionsDataset, processorType)) {
+      //  if (processorType && this.isTransmissionReference(transmissionsDataset, node)) { //// processorType
+        if (processorType && isTransmissionReference) {
           const nestedTransmission = await this.constructTransmission(
             transmissionsDataset,
             processorType, // is used?

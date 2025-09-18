@@ -31,11 +31,12 @@ cd ~/hyperdata/transmissions # my local path
 ./trans sparqlstore-to-site-indexes ~/hyperdata/hyperdata/docs/postcraft
 
 ---
+# MANUAL
 cd ~/hyperdata/transmissions # my local path
 ./scripts/del-hyperdata.sh
-./trans md-to-sparqlstore ~/hyperdata/semem/docs/postcraft
-./trans sparqlstore-to-html ~/hyperdata/hyperdata/docs/postcraft
-./trans sparqlstore-to-site-indexes ~/hyperdata/hyperdata/docs/postcraft
+./trans md-to-sparqlstore ~/hyperdata/semem/docs
+
+
 ```
 
 #:todo combine the separate transmissions here

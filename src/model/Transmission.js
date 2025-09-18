@@ -57,7 +57,7 @@ class Transmission {
           processor.receive(message).catch(reject)
         })
       } else {
-        throw new Error("No valid processor found to execute")
+        throw new Error(`No valid processor found to execute, looked for ${processorName}`)
       }
     } catch (error) {
       error.transmissionStack = error.transmissionStack || []

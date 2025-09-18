@@ -3,8 +3,9 @@
 @prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances - TODO make one @services s:
 
 :test_multi-pipes a :Transmission ;
-   trn:contains :pipeA, :pipeB, :pipeC .
-
+  # trn:contains :pipeA, :pipeB, :pipeC .
+ trn:pipe (:pipeA :pipeB :pipeC) .
+ 
 :pipeA a trn:Transmission ;
 trn:pipe (:s1 :s2 :s3 ) .
 
