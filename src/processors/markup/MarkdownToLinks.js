@@ -1,16 +1,17 @@
-// src/processors/example-group/Example.js
+// @ts-nocheck
+// src/processors/markup/MarkdownToLinks.js
 
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
 import Processor from '../../model/Processor.js'
 
 /**
- * @class Example
+ * @class MarkdownToLinks
  * @extends Processor
  * @classdesc
  * **a Transmissions Processor**
  *
- * Example processor demonstrating basic processor structure and property handling.
+ * MarkdownToLinks processor demonstrating basic processor structure and property handling.
  *
  * ### Processor Signature
  *
@@ -39,7 +40,7 @@ import Processor from '../../model/Processor.js'
  * * Logs processing information
  *
  * #### __*Notes*__
- * This is an example implementation demonstrating:
+ * This is an MarkdownToLinks implementation demonstrating:
  *   - Basic processor structure
  *   - Property retrieval with fallbacks
  *   - Message modification
@@ -47,9 +48,9 @@ import Processor from '../../model/Processor.js'
  *
  * Use this as a template when creating new processors.
  */
-class Example extends Processor {
+class MarkdownToLinks extends Processor {
     /**
-     * Creates a new Example processor instance.
+     * Creates a new MarkdownToLinks processor instance.
      * @param {Object} config - Processor configuration object
      */
     constructor(config) {
@@ -62,7 +63,7 @@ class Example extends Processor {
      * @returns {Promise<boolean>} Resolves when processing is complete
      */
     async process(message) {
-        logger.debug(`\n\nExample.process`)
+        logger.debug(`\n\nMarkdownToLinks.process`)
 
         // TODO figure this out better
         // may be needed if preceded by a spawning processor, eg. fs/DirWalker
@@ -71,24 +72,27 @@ class Example extends Processor {
             // or simply return
         }
 
-        // message is processed here :
+        message.links = markdownToLinks(message.content)
 
-        // property values pulled from message | config settings | fallback
-        const me = super.getProperty(ns.trn.me)
-        logger.log(`\nI am ${me}`)
-
-        message.common = super.getProperty(ns.trn.common)
-        message.something1 = super.getProperty(ns.trn.something1)
-
-        message.something2 = super.getProperty(ns.trn.something2)
-
-        var added = super.getProperty(ns.trn.added, '')
-        message.something1 = message.something1 + added
-
-        message.notavalue = super.getProperty(ns.trn.notavalue, 'fallback value')
-
-        // message forwarded
         return this.emit('message', message)
     }
+
+
+
+    markdownToLinks(markdown) {
+        // Regex to find markdown links: [text](url)
+        const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
+        const result = [];
+        let match;
+        while ((match = regex.exec(markdown)) !== null) {
+            result.push({ url: match[2], text: match[1] });
+        }
+        return result;
+    }
+
+    // Example usage
+    const markdownText = "This is a [link to Google](https://google.com) and here is [another link](https://example.com).";
+console.log(markdownToLinks(markdownText));
+
 }
-export default Example
+export default MarkdownToLinks

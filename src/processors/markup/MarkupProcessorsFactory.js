@@ -4,6 +4,7 @@ import ns from '../../utils/ns.js'
 import MetadataExtractor from './MetadataExtractor.js'
 import LinkFinder from './LinkFinder.js'
 import MarkdownToHTML from './MarkdownToHTML.js'
+import MarkdownToLinks from './MarkdownToLinks.js'
 
 class MarkupProcessorsFactory {
     static createProcessor(type, config) {
@@ -15,6 +16,9 @@ class MarkupProcessorsFactory {
         }
         if (type.equals(ns.trn.LinkFinder)) {
             return new LinkFinder(config)
+        }
+                if (type.equals(ns.trn.MarkdownToLinks)) {
+            return new MarkdownToLinks(config)
         }
         return false
     }
