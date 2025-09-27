@@ -71,7 +71,7 @@ class MarkdownToLinks extends Processor {
             return this.emit('message', message)
             // or simply return
         }
-        logger.log('A')
+
         message.links = await this.markdownToLinks(message.content)
 
         return this.emit('message', message)
