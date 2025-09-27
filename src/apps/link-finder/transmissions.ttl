@@ -17,12 +17,12 @@
 ##################################################################
 
 :linkFinder a :Transmission ;
-    :pipe (:p10 :N :p20 :p30) .
+    :pipe (:p10 :p20 :p30) .
 
 :p10 a :FileReader ;
      :settings :origin .
 
-:p20 a :Example ;
+:p20 a :MarkdownToLinks ;
      :settings :exampleSettings2 .
 
 :p30 a :ShowMessage .

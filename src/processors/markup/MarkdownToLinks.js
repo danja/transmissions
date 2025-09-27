@@ -71,15 +71,13 @@ class MarkdownToLinks extends Processor {
             return this.emit('message', message)
             // or simply return
         }
-
-        message.links = markdownToLinks(message.content)
+        logger.log('A')
+        message.links = await this.markdownToLinks(message.content)
 
         return this.emit('message', message)
     }
 
-
-
-    markdownToLinks(markdown) {
+    async markdownToLinks(markdown) {
         // Regex to find markdown links: [text](url)
         const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
         const result = [];
@@ -89,10 +87,5 @@ class MarkdownToLinks extends Processor {
         }
         return result;
     }
-
-    // Example usage
-    const markdownText = "This is a [link to Google](https://google.com) and here is [another link](https://example.com).";
-console.log(markdownToLinks(markdownText));
-
 }
 export default MarkdownToLinks

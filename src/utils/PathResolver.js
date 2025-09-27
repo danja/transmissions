@@ -51,6 +51,7 @@ class PathResolver {
                     })
                     filePath = possiblePath
                 } catch (err) {
+                    logger.error(`Failed to access possiblePath: ${possiblePath}. Error: ${err.message}`)
 
                     const dataPath = path.join(workingDir, 'data', filePath)
                     try {
@@ -62,6 +63,7 @@ class PathResolver {
                         })
                         filePath = dataPath
                     } catch (err2) {
+                        logger.error(`Failed to access dataPath: ${dataPath}. Error: ${err2.message}`)
 
                         throw new Error(`File not found in expected locations: ${possiblePath}, ${dataPath}`)
                     }

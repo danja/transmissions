@@ -1,4 +1,4 @@
-`src/apps/example-application/about.md`
+`src/apps/link-finder/about.md`
 
 # Example Application `about.md`
 
@@ -6,7 +6,7 @@
 
 ```sh
 cd ~/hyperdata/transmissions # my local path
-./trans example-application
+./trans link-finder
 ```
 
 ## Description

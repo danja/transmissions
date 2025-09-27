@@ -8,9 +8,7 @@
 # ns.trn.sourceFile
 
 :origin a :ConfigSet ;
-    :sourceFile "exampleSettings1" ;
-    :common "common from 1"  ;
-    :something1 "something1 from config" .
+    :sourceFile "workflowy_2025-09-21.md" .
 
 :exampleSettings2 a :ConfigSet ;
     :me "exampleSettings2" ;
