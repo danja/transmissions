@@ -17,7 +17,7 @@
 ##################################################################
 
 :linkFinder a :Transmission ;
-    :pipe (:p10  :p20   :p30 :SM ) .
+    :pipe (:p10  :p20   :p30 :p40 :p50 :SM ) .
 
 :p10 a :FileReader ;
      :settings :origin .
@@ -27,3 +27,11 @@
 
 :p30 a :ForEach ;
      :settings :listField .
+
+:p40 a :Restructure ;
+     :settings :retree .
+
+:p50 a :HttpClient ;
+     :settings :httpSettings .
+   
+# fix error, pass to sparqlstpore

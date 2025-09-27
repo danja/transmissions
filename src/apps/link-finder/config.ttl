@@ -12,4 +12,10 @@
    # :targetField "links" .
 
 :listField a :ConfigSet ;
+    :remove "true" ;
     :forEach "links" .
+
+:retree a :ConfigSet ;
+    :rename (:pp1 :pp2 :pp3 :pp4 :pp5) . # consider using blank nodes
+    :pp1   :pre     "currentItem.url" ;
+            :post    "url"  .
