@@ -2,6 +2,7 @@
 
 import logger from '../../utils/Logger.js' // path will likely change
 import Processor from '../../model/Processor.js' // maybe more specific
+import fetch from 'node-fetch'
 
 /**
  * @class HttpClient
@@ -14,10 +15,10 @@ import Processor from '../../model/Processor.js' // maybe more specific
  * ### Service Signature
  *
  * #### __*Settings*__
- * * **`ns.trm.url`** - The URL to send the HTTP request to
- * * **`ns.trm.method`** - HTTP method (GET, POST, etc.)
- * * **`ns.trm.headers`** (optional) - HTTP headers as an object
- * * **`ns.trm.body`** (optional) - Request body for POST/PUT
+ * * **`ns.trn.url`** - The URL to send the HTTP request to
+ * * **`ns.trn.method`** - HTTP method (GET, POST, etc.)
+ * * **`ns.trn.headers`** (optional) - HTTP headers as an object
+ * * **`ns.trn.body`** (optional) - Request body for POST/PUT
  *
  * #### __*Input*__
  * * **`message.url`** (if no `configKey`) - The URL to request
@@ -55,14 +56,79 @@ class HttpClient extends Processor {
     }
 
     /**
-     * Does something with the message and emits a 'message' event with the processed message.
+     * Sends an HTTP request and emits a 'message' event with the processed message.
      * @param {Object} message - The message object.
      */
     async process(message) {
-        //   logger.setLogLevel('debug')
+        try {
+            const requestOptions = this._buildRequestOptions(message)
+            logger.debug(`HttpClient: Sending request to ${requestOptions.url} with options: ${JSON.stringify(requestOptions)}`)
 
-        // processing goes here
-        return this.emit('message', message)
+            const response = await this._sendRequest(requestOptions)
+            const processedResponse = await this._processResponse(response)
+
+            message.http = processedResponse
+            logger.debug(`HttpClient: Received response with status ${response.status}`)
+
+            this.emit('message', message)
+        } catch (err) {
+            logger.error(`HttpClient: Error during HTTP request - ${err.message}`)
+            message.httpError = err.message
+            this.emit('message', message)
+        }
+    }
+
+    /**
+     * Builds the HTTP request options from config and message.
+     * @param {Object} message
+     * @returns {Object} requestOptions
+     */
+    _buildRequestOptions(message) {
+        const url = super.getProperty('ns.trn.url', "https://example.org/")
+        const method = super.getProperty('ns.trn.method', 'GET').toUpperCase()
+        const headers = super.getProperty('ns.trn.headers', {})
+        const body =  super.getProperty('ns.trn.body', null)
+
+        const options = { method, headers }
+        if (body && (method === 'POST' || method === 'PUT' || method === 'PATCH')) {
+            options.body = typeof body === 'string' ? body : JSON.stringify(body)
+            if (!headers['Content-Type']) {
+                options.headers['Content-Type'] = 'application/json'
+            }
+        }
+
+        return { url, ...options }
+    }
+
+    /**
+     * Sends the HTTP request using fetch.
+     * @param {Object} requestOptions
+     * @returns {Promise<Response>}
+     */
+    async _sendRequest(requestOptions) {
+        const { url, ...options } = requestOptions
+        return fetch(url, options)
+    }
+
+    /**
+     * Processes the HTTP response.
+     * @param {Response} response
+     * @returns {Promise<Object>} Processed response data
+     */
+    async _processResponse(response) {
+        const contentType = response.headers.get('content-type') || ''
+        let data
+        if (contentType.includes('application/json')) {
+            data = await response.json()
+        } else {
+            data = await response.text()
+        }
+        return {
+            status: response.status,
+            statusText: response.statusText,
+            headers: Object.fromEntries(response.headers.entries()),
+            data
+        }
     }
 }
 

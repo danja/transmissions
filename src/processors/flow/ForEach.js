@@ -99,7 +99,7 @@ class ForEach extends SlowableProcessor {
 
         let limit = 0
         const limitString = super.getProperty(ns.trn.limit, null)
-        logger.log(`   ForEach limitString = ${limitString}`)
+     //   logger.log(`   ForEach limitString = ${limitString}`)
         if (limitString) {
             limit = parseInt(limitString)
             logger.debug(`   ForEach limit = ${limit}`)
@@ -121,9 +121,9 @@ class ForEach extends SlowableProcessor {
             }
             clonedMessage.currentItem = item
             //    delete clonedMessage.foreach // Remove the original array to prevent infinite loops TODO needed?
-            clonedMessage.foreach = null
+            clonedMessage.foreach = undefined
 
-            logger.log(`ForEach: Emitting message for item: ${item}`)
+            logger.log(`ForEach: Emitting message for item: ${JSON.stringify(item)}`)
             clonedMessage.eachCounter = this.eachCounter++
             this.emit('message', clonedMessage)
         }

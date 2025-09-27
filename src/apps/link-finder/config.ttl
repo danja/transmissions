@@ -8,10 +8,8 @@
 # ns.trn.sourceFile
 
 :origin a :ConfigSet ;
-    :sourceFile "workflowy_2025-09-21.md" .
+    :sourceFile "test.md" .
+   # :targetField "links" .
 
-:exampleSettings2 a :ConfigSet ;
-    :me "exampleSettings2" ;
-    :common "common from 2" ;
-    :something2 "something2 from config" ;
-    :added " added from exampleSettings2" .
+:listField a :ConfigSet ;
+    :forEach "links" .

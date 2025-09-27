@@ -16,14 +16,8 @@
 :UF a :Unfork . # collapses all pipes but one                    #
 ##################################################################
 
-:linkFinder a :Transmission ;
-    :pipe (:p10  :p20   :p30 :SM ) .
+:example a :Transmission ;
+    :pipe (:p10 :SM) .
 
-:p10 a :FileReader ;
-     :settings :origin .
-
-:p20 a :MarkdownToLinks ;
-     :settings :linksField .
-
-:p30 a :ForEach ;
-     :settings :listField .
+:p10 a :HttpClient ;
+     :url "https://example.org/" .

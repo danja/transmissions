@@ -72,6 +72,8 @@ class MarkdownToLinks extends Processor {
             // or simply return
         }
 
+        const linksField = this.getProperty(ns.trn.linksField, 'links')
+
         message.links = await this.markdownToLinks(message.content)
 
         return this.emit('message', message)
