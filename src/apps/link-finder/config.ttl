@@ -25,7 +25,7 @@
 
 :retreeResponse a :ConfigSet ;
     :rename (:rr1 :rr2 :rr3 :rr4 :rr5 :rr6) . # consider using blank nodes
-    :rr1   :pre     "currentItem.url" ;
+    :rr1   :pre     "currentItem.uri" ;
             :post    "resource.target"  .
     :rr2   :pre     "currentItem.text" ;
             :post    "resource.title"  .
