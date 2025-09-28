@@ -37,17 +37,12 @@ ${logger.shorter(this.processor.config)}`)
     }
 
     getQueryEndpoint() {
-
         const endpoint = this.endpoints.find(e => e.type === 'query')
         return this.applyEnvOverrides(endpoint)
     }
 
     getUpdateEndpoint() {
-        logger.debug(`AAAAAAAAAAAAAthis.endpoints = ${JSON.stringify(this.endpoints)}`)
-        // logger.debug(`this.endpoints = ${this.endpoints}`)
         const endpoint = this.endpoints.find(e => e.type === 'update')
-        logger.log(`BBBBBBBBBBBBBBBBBBBBupdate endpoint = ${JSON.stringify(endpoint)}`)
-
         return this.applyEnvOverrides(endpoint)
     }
 
