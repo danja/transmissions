@@ -3,6 +3,7 @@
 import logger from '../../utils/Logger.js' // path will likely change
 import Processor from '../../model/Processor.js' // maybe more specific
 import fetch from 'node-fetch'
+import ns from '../../utils/ns.js'
 
 /**
  * @class HttpClient
@@ -84,10 +85,10 @@ class HttpClient extends Processor {
      * @returns {Object} requestOptions
      */
     _buildRequestOptions(message) {
-        const url = super.getProperty('ns.trn.url', "https://example.org/")
-        const method = super.getProperty('ns.trn.method', 'GET').toUpperCase()
-        const headers = super.getProperty('ns.trn.headers', {})
-        const body =  super.getProperty('ns.trn.body', null)
+        const url = super.getProperty(ns.trn.url, "https://example.org/")
+        const method = super.getProperty(ns.trn.method, 'GET').toUpperCase()
+        const headers = super.getProperty(ns.trn.headers, {})
+        const body = super.getProperty(ns.trn.body, null)
 
         const options = { method, headers }
         if (body && (method === 'POST' || method === 'PUT' || method === 'PATCH')) {
