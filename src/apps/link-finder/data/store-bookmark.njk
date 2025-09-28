@@ -1,15 +1,33 @@
 PREFIX schema: <http://schema.org/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX : <http://purl.org/stuff/transmissions/>
-PREFIX bm: <http://purl.org/stuff/bm>
+PREFIX bm: <http://purl.org/stuff/bm/>
 
-INSERT DATA {
-      GRAPH <{{graph}}> {
-  <{{uri}}> a bm:Bookmark ;
+
+WITH <{{graph}}>
+DELETE {
+  ?bookmark a bm:Bookmark ;
+            bm:target <{{target}}> ;
+            bm:agent ?agent ;
+            bm:created ?created ;
+            bm:title ?title ;
+            bm:status ?status .
+}
+INSERT {
+  <http://purl.org/stuff/instance/eprxly1u> a bm:Bookmark ;
         bm:target <{{target}}> ;
         bm:agent <{{agent}}> ;
         bm:created "{{created}}"^^xsd:dateTime ;
         bm:title "{{title | safe}}" ;
         bm:status "{{status}}"^^xsd:integer .
 }
+WHERE {
+  OPTIONAL {
+    ?bookmark a bm:Bookmark ;
+              bm:target <{{target}}> ;
+              bm:agent ?agent ;
+              bm:created ?created ;
+              bm:title ?title ;
+              bm:status ?status .
+  }
 }
