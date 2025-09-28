@@ -1,0 +1,20 @@
+[
+    {
+        "name": "hyperdata.it query",
+        "type": "query",
+        "url": "https://fuseki.hyperdata.it/hyperdata.it/query",
+        "credentials": {
+            "user": "admin",
+            "password": "admin123"
+        }
+    },
+    {
+        "name": "hyperdata.it update",
+        "type": "update",
+        "url": "https://fuseki.hyperdata.it/hyperdata.it/update",
+        "credentials": {
+            "user": "admin",
+            "password": "admin123"
+        }
+    }
+]

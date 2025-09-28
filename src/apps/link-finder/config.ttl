@@ -16,6 +16,33 @@
     :forEach "links" .
 
 :retree a :ConfigSet ;
-    :rename (:pp1 :pp2 :pp3 :pp4 :pp5) . # consider using blank nodes
+    :rename (:pp1) . # consider using blank nodes
     :pp1   :pre     "currentItem.url" ;
             :post    "url"  .
+
+:resourceMinterSettings a :ConfigSet ;
+    :targetField "resource" .
+
+:retreeResponse a :ConfigSet ;
+    :rename (:rr1 :rr2 :rr3 :rr4 :rr5 :rr6) . # consider using blank nodes
+    :rr1   :pre     "currentItem.url" ;
+            :post    "resource.target"  .
+    :rr2   :pre     "currentItem.text" ;
+            :post    "resource.title"  .
+    :rr3   :pre     "http.status" ;
+            :post    "resource.status"  .
+    :rr4   :pre     "http.last-modified" ;
+            :post    "resource.last-modified"  .
+    :rr5   :pre     "http.contentType" ;
+            :post    "resource.contentType"  .
+    :rr6   :pre     "http.etag" ;
+            :post    "resource.etag"  .
+
+:storeBookmark a :ConfigSet ;
+# :loglevel "debug" ;
+    :delay "100" ;
+    :dataBlock "resource" ;
+    :templateFilename "data/store-bookmark.njk" ;
+    :noCache "true" ; # always reload endpoints
+    :endpointSettings "data/endpoints.json" ;
+    :graph <http://hyperdata.it/content> .

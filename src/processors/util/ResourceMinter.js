@@ -75,7 +75,7 @@ class ResourceMinter extends Processor {
         const baseURI = super.getProperty(ns.trn.baseURI, 'http://purl.org/stuff/instance/')
         const agentURI = super.getProperty(ns.trn.agentURI, 'http://purl.org/stuff/agent/transmissions')
 
-        const randomId = Math.random().toString(36).substring(2, 6)
+        const randomId = Math.random().toString(36).substring(2, 10)
 
         message[targetField] = {}
         message[targetField].uri = `${baseURI}${randomId}`
@@ -85,8 +85,6 @@ class ResourceMinter extends Processor {
         // message forwarded
         return this.emit('message', message)
     }
-
-
 }
-}
+
 export default ResourceMinter

@@ -16,7 +16,8 @@ class SessionEnvironment {
         this.templateCache = new Map()
     }
 
-    async loadEndpoints(dir) {
+    async loadEndpoints(dir, override = false) {
+        this.override = override
         logger.debug(`    loadEndpoints dir = ${dir}`)
         const settingsPath = this.processor.getProperty(ns.trn.endpointSettings)
         logger.debug(`    dir = ${dir}`)
@@ -36,29 +37,36 @@ ${logger.shorter(this.processor.config)}`)
     }
 
     getQueryEndpoint() {
+
         const endpoint = this.endpoints.find(e => e.type === 'query')
         return this.applyEnvOverrides(endpoint)
     }
 
     getUpdateEndpoint() {
+        logger.debug(`AAAAAAAAAAAAAthis.endpoints = ${JSON.stringify(this.endpoints)}`)
         // logger.debug(`this.endpoints = ${this.endpoints}`)
-        const ep = this.endpoints.find(e => e.type === 'update')
-        // logger.log(`update endpoint = ${ep}`)
-        // logger.reveal(ep)
-        return this.applyEnvOverrides(ep)
+        const endpoint = this.endpoints.find(e => e.type === 'update')
+        logger.log(`BBBBBBBBBBBBBBBBBBBBupdate endpoint = ${JSON.stringify(endpoint)}`)
+
+        return this.applyEnvOverrides(endpoint)
     }
 
     applyEnvOverrides(endpoint) {
-        if (!endpoint) return endpoint
+        // if (!endpoint) return endpoint
 
-        return {
-            ...endpoint,
-            url: `http://${process.env.SPARQL_HOST}:${process.env.SPARQL_PORT}/test`,
-            credentials: {
-                user: process.env.SPARQL_USER,
-                password: process.env.SPARQL_PASSWORD
+        if (!this.override) {
+            return {
+                ...endpoint,
+                url: `http://${process.env.SPARQL_HOST}:${process.env.SPARQL_PORT}/test`,
+                credentials: {
+                    user: process.env.SPARQL_USER,
+                    password: process.env.SPARQL_PASSWORD
+                }
             }
+        } else {
+            return endpoint
         }
+
     }
 
     async getTemplate(dir, templateFilename) {

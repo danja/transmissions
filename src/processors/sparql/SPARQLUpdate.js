@@ -71,6 +71,7 @@ class SPARQLUpdate extends SlowableProcessor {
 
         try {
             logger.debug(`SPARQLUpdate: Getting update endpoint...`)
+
             const endpoint = await this.getUpdateEndpoint(message)
             logger.debug(`SPARQLUpdate: Got endpoint: ${JSON.stringify(endpoint)}`)
 
@@ -113,11 +114,13 @@ class SPARQLUpdate extends SlowableProcessor {
                 logger.debug(`SPARQLUpdate: Content escaped`)
             }
 
+            /* ???
             if (message.contentBlocks?.uri) {
                 logger.log(`URI = ${message.contentBlocks.uri}`)
             } else {
                 logger.debug(`SPARQLUpdate: No URI found in message.contentBlocks`)
             }
+                */
 
             logger.debug(`SPARQLUpdate: Rendering template with nunjucks...`)
             nunjucks.configure({ autoescape: true })
@@ -172,15 +175,15 @@ class SPARQLUpdate extends SlowableProcessor {
 
     async getUpdateEndpoint(message) {
         logger.debug(`SPARQLUpdate.getUpdateEndpoint: Starting endpoint resolution`)
-
-        if (!this.env.endpoints) {
+        const override = this.getProperty(ns.trn.noCache, null)
+        if (!this.env.endpoints || override) { // 
             logger.debug(`SPARQLUpdate.getUpdateEndpoint: No endpoints cached, loading from config`)
             // Ensure dir is always a string
             const dir = this.getProperty(ns.trn.targetPath, message.rootDir) || message.targetDir || message.appPath || process.cwd()
             logger.debug(`SPARQLUpdate.getUpdateEndpoint: Using directory = ${dir}`)
 
             try {
-                await this.env.loadEndpoints(dir)
+                await this.env.loadEndpoints(dir, override)
                 logger.debug(`SPARQLUpdate.getUpdateEndpoint: Endpoints loaded successfully`)
             } catch (error) {
                 logger.error(`SPARQLUpdate.getUpdateEndpoint: Failed to load endpoints: ${error.message}`)

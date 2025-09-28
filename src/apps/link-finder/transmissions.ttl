@@ -17,7 +17,7 @@
 ##################################################################
 
 :linkFinder a :Transmission ;
-    :pipe (:p10  :p20   :p30 :p40 :p50 :SM ) .
+    :pipe (:p10  :p20   :p30 :p40 :p50 :p60 :p70 :p80) .
 
 :p10 a :FileReader ;
      :settings :origin .
@@ -34,4 +34,11 @@
 :p50 a :HttpClient ;
      :settings :httpSettings .
    
-# fix error, pass to sparqlstpore
+:p60 a :ResourceMinter ;
+     :settings :resourceMinterSettings .
+
+:p70 a :Restructure ;
+     :settings :retreeResponse .
+
+:p80 a :SPARQLUpdate ;
+     :settings :storeBookmark .
