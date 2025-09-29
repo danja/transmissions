@@ -1,6 +1,6 @@
 `src/apps/link-finder/about.md`
 
-# Example Application `about.md`
+# link-finder Application `about.md`
 
 ## Runner
 
@@ -8,6 +8,9 @@
 cd ~/hyperdata/transmissions # my local path
 ./trans link-finder
 ```
+
+
+scripts/del-fuseki-test-store-local.sh
 
 ## Description
 

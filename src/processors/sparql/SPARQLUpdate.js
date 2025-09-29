@@ -47,6 +47,16 @@ import Escaper from '../text/Escaper.js'
  * #### __*Tests*__
  * * (Add test references here if available)
  *
+ * #### __*Example Configuration*__
+ * :updateBookmark a :ConfigSet ;
+ * :loglevel "debug" ;
+ *  :delay "100" ;
+ *  :dataBlock "resource" ;
+ *  :templateFilename "data/update-bookmark.njk" ;
+ *  :noCache "true" ; # always reload endpoints
+ *  :endpointSettings "data/endpoints.json" ;
+ *  :graph <http://hyperdata.it/content> .
+ *
  * #### __*ToDo*__
  * * Add error handling for endpoint/network failures
  * * Improve batching and slow-mode logic

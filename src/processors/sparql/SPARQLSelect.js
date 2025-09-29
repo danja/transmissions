@@ -56,7 +56,7 @@ class SPARQLSelect extends Processor {
         if (!this.env.endpoints) {
             // Ensure dir is always a string
             const dir = this.getProperty(ns.trn.targetPath, message.rootDir) || message.targetDir || message.appPath || process.cwd()
-            logger.debug(`SPARQLUpdate.getQueryEndpoint, dir = ${dir}`)
+            logger.debug(`SPARQLQuery.getQueryEndpoint, dir = ${dir}`)
             await this.env.loadEndpoints(dir)
         }
         return this.env.getQueryEndpoint()

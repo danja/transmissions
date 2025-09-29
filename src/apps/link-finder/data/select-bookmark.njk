@@ -1,0 +1,7 @@
+PREFIX bm: <http://purl.org/stuff/bm/>
+SELECT ?bookmark
+FROM <{{graph}}>
+WHERE {
+  ?bookmark a bm:Bookmark ;
+            bm:target <{{target}}> .
+}

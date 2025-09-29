@@ -17,7 +17,7 @@
 ##################################################################
 
 :linkFinder a :Transmission ;
-    :pipe (:p10  :p20   :p30 :p40 :p50 :p60 :p70 :p80 :SM) .
+    :pipe (:p10  :p20   :p30 :p40 :p50 :p60 :p70 :p80 :p90 :SM) .
 
 :p10 a :FileReader ;
      :settings :origin .
@@ -40,5 +40,11 @@
 :p70 a :Restructure ;
      :settings :retreeResponse .
 
-:p80 a :SPARQLUpdate ;
-     :settings :storeBookmark .
+:p80 a :SPARQLSelect ;
+     :settings :selectBookmark .
+
+:p90 a :Choice ;
+     :settings :replaceURI .
+
+:p100 a :SPARQLUpdate ;
+     :settings :updateBookmark .

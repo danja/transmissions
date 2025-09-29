@@ -1,17 +1,17 @@
 [
     {
-        "name": "hyperdata.it query",
+        "name": "local Fuseki",
         "type": "query",
-        "url": "https://fuseki.hyperdata.it/hyperdata.it/query",
+        "url": "http://localhost:3030/test/query",
         "credentials": {
             "user": "admin",
             "password": "admin123"
         }
     },
     {
-        "name": "hyperdata.it update",
+        "name": "local Fuseki",
         "type": "update",
-        "url": "https://fuseki.hyperdata.it/hyperdata.it/update",
+        "url": "http://localhost:3030/test/update",
         "credentials": {
             "user": "admin",
             "password": "admin123"

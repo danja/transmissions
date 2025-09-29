@@ -24,16 +24,22 @@ class SessionEnvironment {
         logger.debug(`    settingsPath = ${settingsPath}`)
 
         if (!settingsPath) {
-            throw new Error(`
+            logger.error(`
     Endpoint settings path is undefined
     Config :
 ${logger.shorter(this.processor.config)}`)
+            process.exit(1)
         }
 
         const filePath = path.join(dir, settingsPath)
         logger.debug(`SessionEnvironment.loadEndpoints filePath = ${filePath}`)
-        const data = await fs.readFile(filePath, 'utf8')
-        this.endpoints = JSON.parse(data)
+        try {
+            const data = await fs.readFile(filePath, 'utf8')
+            this.endpoints = JSON.parse(data)
+        } catch (err) {
+            logger.error(`Failed to load endpoints from ${filePath}: ${err.message}`)
+            process.exit(1)
+        }
     }
 
     getQueryEndpoint() {
@@ -75,11 +81,16 @@ ${logger.shorter(this.processor.config)}`)
             return this.templateCache.get(cacheKey)
         }
 
-        const template = await fs.readFile(cacheKey, 'utf8')
-        this.templateCache.set(cacheKey, template)
-        logger.debug(`SessionEnvironment.getTemplate cacheKey = ${cacheKey}`)
-        logger.debug(`SessionEnvironment.getTemplate template = ${template}`)
-        return template
+        try {
+            const template = await fs.readFile(cacheKey, 'utf8')
+            this.templateCache.set(cacheKey, template)
+            logger.debug(`SessionEnvironment.getTemplate cacheKey = ${cacheKey}`)
+            logger.debug(`SessionEnvironment.getTemplate template = ${template}`)
+            return template
+        } catch (err) {
+            logger.error(`Failed to load template from ${cacheKey}: ${err.message}`)
+            process.exit(1)
+        }
     }
 
     clearTemplateCache() {

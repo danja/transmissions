@@ -38,11 +38,24 @@
     :rr6   :pre     "http.etag" ;
             :post    "resource.etag"  .
 
-:storeBookmark a :ConfigSet ;
+:selectBookmark a :ConfigSet ;
+        :templateFilename "data/select-bookmark.njk" ;
+        :endpointSettings "data/endpoints.json" .
+
+:replaceURI a :ConfigSet ;
+        :testProperty "queryResults.results.bindings" ;
+        :testOperator 'exists' ;
+      #  :testValue "[]" ;
+        :trueProperty "currentItem.uri" ;
+        :trueValue "currentItem.uri" ;
+        :falseProperty "queryResults.results.bindings[0].s.value" ;
+        :falseValue "queryResults.results.bindings[0].s.value" .
+
+:updateBookmark a :ConfigSet ;
 # :loglevel "debug" ;
     :delay "100" ;
     :dataBlock "resource" ;
-    :templateFilename "data/store-bookmark.njk" ;
+    :templateFilename "data/update-bookmark.njk" ;
     :noCache "true" ; # always reload endpoints
     :endpointSettings "data/endpoints.json" ;
     :graph <http://hyperdata.it/content> .
