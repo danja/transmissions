@@ -41,7 +41,8 @@ The following libraries should be preferred to alternatives when their functiona
 - RDF handling : rdf-ext, grapoi, @rdfjs/data-model @rdfjs/namespace @rdfjs/parser-n3
 - code editing : codemirror
 - templating : nunjucks
-- markdown : marked
+- markdown : marked (markdown→HTML conversion)
+- HTML parsing : cheerio (DOM manipulation and HTML→markdown conversion)
 
 ## Transmissions Framework
 
@@ -80,6 +81,7 @@ Transmissions is a message-driven pipeline framework where:
 - **SPARQL:** SPARQLSelect, SPARQLUpdate - interact with RDF stores
 - **Transform:** Restructure, PathOps - modify message structure
 - **I/O:** FileReader, FileWriter, HttpClient - external interactions
+- **Markup:** MarkdownToHTML, HTMLToMarkdown, MarkdownToLinks - content format conversion
 - **Note:** Many more processors exist in `src/processors/`. Always search for existing processors before creating new ones. Use `Glob` to find processors: `src/processors/**/*.js`
 
 **Creating New Processors:**
@@ -93,7 +95,21 @@ Transmissions is a message-driven pipeline framework where:
 - Use `super.getProperty(ns.trn.propertyName, defaultValue)` for configuration
 - Emit processed message: `this.emit('message', message)`
 
+**Common Application Patterns:**
+- **SPARQL Query → ForEach → Process → SPARQL Update** - Process multiple items from store
+  - Example: `bookmark-get` fetches HTML for bookmarks, converts to markdown, stores back
+  - SPARQLSelect with FILTER NOT EXISTS to skip already-processed items
+  - ForEach iterates over query results
+  - Restructure extracts fields from SPARQL result bindings
+  - Processing steps (HttpClient, conversion, etc.)
+  - SPARQLUpdate stores processed data
+- **File → Process → SPARQL Store** - Ingest content from files
+  - Example: `md-to-store` reads markdown, creates entries, stores in SPARQL
+- **SPARQL Query → ForEach → Template → File** - Export from store to files
+  - Example: `sparqlstore-to-html` generates HTML pages from stored content
+
 **Debugging:**
 - Run with `-v` flag for verbose output: `./trans -v app-name`
 - Use `LOG_LEVEL=debug` for detailed logging
 - Add `:SM` (ShowMessage) processor in pipeline to inspect messages
+- Check message fields with Restructure to ensure correct paths between processors

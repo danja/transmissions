@@ -1,0 +1,43 @@
+# src/apps/bookmark-get/transmissions.ttl
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+##################################################################
+# Utility Processors : insert into pipe for debugging            #
+#                                                                #
+:SM a :ShowMessage . # verbose report, continues pipe            #
+:SC a :ShowConfig . # verbose report, continues pipe             #
+:DE a :DeadEnd . # ends the current pipe quietly                 #
+:H  a :Halt . # kills everything                                 #
+:N  a :NOP . # no operation (except for showing stage in pipe)   #
+:UF a :Unfork . # collapses all pipes but one                    #
+##################################################################
+
+:bookmark-get a :Transmission ;
+    :pipe (:p10 :p20 :p30 :p40 :p50 :p60 :p70 :p80) .
+
+:p10 a :SPARQLSelect ;
+     :settings :selectBookmarks .
+
+:p20 a :ForEach ;
+     :settings :iterateBookmarks .
+
+:p30 a :Restructure ;
+     :settings :prepFetch .
+
+:p40 a :HttpClient ;
+     :settings :httpSettings .
+
+:p50 a :HTMLToMarkdown ;
+     :settings :htmlToMd .
+
+:p60 a :Restructure ;
+     :settings :prepUpdate .
+
+:p70 a :SPARQLUpdate ;
+     :settings :updateContent .
+
+:p80 a :ShowMessage .

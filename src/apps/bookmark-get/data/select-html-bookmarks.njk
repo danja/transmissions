@@ -1,0 +1,10 @@
+PREFIX bm: <http://purl.org/stuff/bm/>
+SELECT ?bookmark ?target ?title
+FROM <{{graph}}>
+WHERE {
+  ?bookmark a bm:Bookmark ;
+            bm:target ?target ;
+            bm:status 200 .
+  OPTIONAL { ?bookmark bm:title ?title }
+  FILTER NOT EXISTS { ?bookmark bm:content ?content }
+}

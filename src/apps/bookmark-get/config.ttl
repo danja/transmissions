@@ -1,0 +1,44 @@
+# src/apps/bookmark-get/config.ttl
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+:selectBookmarks a :ConfigSet ;
+    :templateFilename "data/select-html-bookmarks.njk" ;
+    :endpointSettings "data/endpoints.json" ;
+    :graph <http://hyperdata.it/content> .
+
+:iterateBookmarks a :ConfigSet ;
+    :remove "true" ;
+    :forEach "queryResults.results.bindings" .
+
+:prepFetch a :ConfigSet ;
+    :rename (:pf1 :pf2) .
+    :pf1   :pre     "currentItem.target.value" ;
+            :post    "url" .
+    :pf2   :pre     "currentItem.bookmark.value" ;
+            :post    "bookmarkURI" .
+
+:httpSettings a :ConfigSet ;
+    :url "message.url" ;
+    :method "GET" .
+
+:htmlToMd a :ConfigSet ;
+    :inputField "http.data" ;
+    :outputField "content" ;
+    :cleanSelectors "script,style,nav,footer,aside,noscript,header" .
+
+:prepUpdate a :ConfigSet ;
+    :rename (:pu1 :pu2) .
+    :pu1   :pre     "bookmarkURI" ;
+            :post    "bookmark" .
+    :pu2   :pre     "content" ;
+            :post    "content" .
+
+:updateContent a :ConfigSet ;
+    :dataBlock "message" ;
+    :templateFilename "data/update-bookmark-content.njk" ;
+    :endpointSettings "data/endpoints.json" ;
+    :graph <http://hyperdata.it/content> .

@@ -1,0 +1,20 @@
+[
+    {
+        "name": "local Fuseki",
+        "type": "query",
+        "url": "http://localhost:3030/test/query",
+        "credentials": {
+            "user": "admin",
+            "password": "admin123"
+        }
+    },
+    {
+        "name": "local Fuseki",
+        "type": "update",
+        "url": "http://localhost:3030/test/update",
+        "credentials": {
+            "user": "admin",
+            "password": "admin123"
+        }
+    }
+]

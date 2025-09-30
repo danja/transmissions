@@ -1,0 +1,10 @@
+PREFIX bm: <http://purl.org/stuff/bm/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+INSERT DATA {
+  GRAPH <{{graph}}> {
+    <{{bookmark}}> bm:content """{{content | safe}}""" ;
+               bm:contentType "text/markdown" ;
+               bm:fetched "{{fetched}}"^^xsd:dateTime .
+  }
+}
