@@ -82,6 +82,17 @@ Transmissions is a message-driven pipeline framework where:
 - **I/O:** FileReader, FileWriter, HttpClient - external interactions
 - **Note:** Many more processors exist in `src/processors/`. Always search for existing processors before creating new ones. Use `Glob` to find processors: `src/processors/**/*.js`
 
+**Creating New Processors:**
+- Create processor class in appropriate subdirectory under `src/processors/` (e.g., `src/processors/util/MyProcessor.js`)
+- Extend `Processor` base class and implement `async process(message)` method
+- Import and register in corresponding Factory file (e.g., `src/processors/util/UtilProcessorsFactory.js`):
+  - Add import: `import MyProcessor from './MyProcessor.js'`
+  - Add factory condition: `if (type.equals(ns.trn.MyProcessor)) { return new MyProcessor(config) }`
+- Use `JSONUtils.get/set` for nested path support in message fields
+- Check for `message.done` and skip processing spawning completion messages
+- Use `super.getProperty(ns.trn.propertyName, defaultValue)` for configuration
+- Emit processed message: `this.emit('message', message)`
+
 **Debugging:**
 - Run with `-v` flag for verbose output: `./trans -v app-name`
 - Use `LOG_LEVEL=debug` for detailed logging

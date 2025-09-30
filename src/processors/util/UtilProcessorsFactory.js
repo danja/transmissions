@@ -10,6 +10,7 @@ import SetMessage from './SetMessage.js'
 import ShowSettings from './ShowSettings.js'
 import SetField from './SetField.js'
 import ResourceMinter from './ResourceMinter.js'
+import URLNormalizer from './URLNormalizer.js'
 
 class UtilProcessorsFactory {
     static createProcessor(type, config) {
@@ -40,6 +41,9 @@ class UtilProcessorsFactory {
         }
         if (type.equals(ns.trn.ResourceMinter)) {
             return new ResourceMinter(config)
+        }
+        if (type.equals(ns.trn.URLNormalizer)) {
+            return new URLNormalizer(config)
         }
         return false
     }

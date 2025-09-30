@@ -79,6 +79,12 @@ class SPARQLUpdate extends SlowableProcessor {
         logger.debug(`\n[[SPARQLUpdate.process]]`)
         logger.debug(`SPARQLUpdate: Processing message with keys: ${Object.keys(message)}`)
 
+        // Skip processing if message is marked as done (from ForEach, Fork, etc.)
+        if (message.done) {
+            logger.debug(`SPARQLUpdate: Message marked as done, skipping`)
+            return this.emit('message', message)
+        }
+
         try {
             logger.debug(`SPARQLUpdate: Getting update endpoint...`)
 

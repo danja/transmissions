@@ -158,6 +158,9 @@ class RDFUtils {
         // Captures the entire URI including the angle brackets
         return inputText.replace(/<(https?:\/\/[^>]+)>/g, (match, uri) => {
             try {
+                // Check if original URI had a trailing slash
+                const hadTrailingSlash = uri.endsWith('/');
+
                 // Create URL object to handle the URI
                 const url = new URL(uri);
 
@@ -173,8 +176,17 @@ class RDFUtils {
                     url.search = '?' + encodeURIComponent(searchParams).replace(/%3D/g, '=').replace(/%26/g, '&');
                 }
 
+                // Get the string representation
+                let result = url.toString();
+
+                // Remove trailing slash if it wasn't in the original
+                // (URL constructor adds it for bare domains like "https://example.com")
+                if (!hadTrailingSlash && result.endsWith('/') && result.split('/').length === 4) {
+                    result = result.slice(0, -1);
+                }
+
                 // Return the escaped URI within angle brackets
-                return `<${url.toString()}>`;
+                return `<${result}>`;
             } catch (e) {
                 // If URL parsing fails, use a more basic approach
                 const escapedUri = encodeURI(uri);

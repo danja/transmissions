@@ -17,7 +17,7 @@
 ##################################################################
 
 :linkFinder a :Transmission ;
-    :pipe (:p10  :p20   :p30 :p40 :p50 :p60 :p70 :p80 :p90 :p100 :SM) .
+    :pipe (:p10  :p20   :p30 :p40 :p50 :p60 :p70 :p72 :p75 :p80 :p90 :p100 :SM) .
 
 :p10 a :FileReader ;
      :settings :origin .
@@ -33,12 +33,18 @@
 
 :p50 a :HttpClient ;
      :settings :httpSettings .
-   
+
 :p60 a :ResourceMinter ;
      :settings :resourceMinterSettings .
 
 :p70 a :Restructure ;
      :settings :retreeResponse .
+
+:p72 a :URLNormalizer ;
+     :settings :normalizeURL .
+
+:p75 a :Restructure ;
+     :settings :prepareSelect .
 
 :p80 a :SPARQLSelect ;
      :settings :selectBookmark .
