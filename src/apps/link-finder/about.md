@@ -40,6 +40,24 @@ If no entry exists for the bm:target, then this new one is created. Otherwise th
         bm:status "200"^^xsd:integer .
 ```
 
+## Performance & Configuration
+
+### Timeouts
+HttpClient has a 10-second timeout for fetching URLs to prevent hanging on slow/unresponsive sites. URLs that timeout will have an error recorded in the message but the workflow continues processing remaining URLs.
+
+### Progress Logging
+ForEach processor reports progress every 5% when processing large lists of URLs:
+- Shows total item count at start
+- Progress updates (e.g., "Progress 206/4127 (5%)")
+- Final count when complete
+
+### SPARQL Update Delay
+A 500ms delay between SPARQL updates prevents overloading the endpoint. For large URL lists (4000+), expect processing time of ~30-60 minutes depending on network conditions.
+
+### Configuration
+- `httpSettings :timeout "10000"` - 10 second HTTP timeout
+- `updateBookmark :delay "500"` - 500ms delay between SPARQL updates
+
 ## Verification Query
 
 Count bookmarks in the store:

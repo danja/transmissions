@@ -20,6 +20,7 @@ import ns from '../../utils/ns.js'
  * * **`ns.trn.method`** - HTTP method (GET, POST, etc.)
  * * **`ns.trn.headers`** (optional) - HTTP headers as an object
  * * **`ns.trn.body`** (optional) - Request body for POST/PUT
+ * * **`ns.trn.timeout`** (optional) - Request timeout in milliseconds (default: 30000)
  *
  * #### __*Input*__
  * * **`message.url`** (if no `configKey`) - The URL to request
@@ -28,16 +29,20 @@ import ns from '../../utils/ns.js'
  * * **`message.body`** (optional) - Body data
  *
  * #### __*Output*__
- * * **`message`** - The message object, augmented with the HTTP response
+ * * **`message.http`** - The HTTP response object with status, headers, and data
+ * * **`message.httpError`** - Error message if request fails (timeout, network error, etc.)
  *
  * #### __*Behavior*__
  * * Sends an HTTP request as specified in settings or message
- * * Attaches the HTTP response to the message object
+ * * Implements timeout using AbortController to prevent hanging on slow/unresponsive URLs
+ * * On timeout or error, sets `message.httpError` and continues processing
+ * * Attaches the HTTP response to `message.http`
  * * Emits a 'message' event with the processed message
  * * Logs request/response details for debugging
  *
  * #### __*Side Effects*__
  * * External HTTP requests
+ * * Requests may timeout and be aborted after configured duration
  *
  * #### __*Tests*__
  * * **`./run http-client-test`**
