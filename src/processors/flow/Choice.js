@@ -3,6 +3,7 @@
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
 import Processor from '../../model/Processor.js'
+import JSONUtils from '../../utils/JSONUtils.js'
 
 /**
  * @class Choice
@@ -70,12 +71,6 @@ class Choice extends Processor {
     async process(message) {
         logger.debug(`Choice.process starting`)
 
-        // Skip processing if message is marked as done
-        if (message.done) {
-            logger.debug(`Choice: Message marked as done, skipping`)
-            return this.emit('message', message)
-        }
-
         // Get configuration properties
         const testProperty = this.getProperty(ns.trn.testProperty, undefined)
         const testOperator = this.getProperty(ns.trn.testOperator, 'equals')
@@ -85,29 +80,44 @@ class Choice extends Processor {
         const falseProperty = this.getProperty(ns.trn.falseProperty, undefined)
         const falseValue = this.getProperty(ns.trn.falseValue, undefined)
 
+        logger.debug(`Choice config: testProperty="${testProperty}", testOperator="${testOperator}", testValue="${testValue}"`)
+        logger.debug(`Choice config: trueProperty="${trueProperty}", trueValue="${trueValue}"`)
+        logger.debug(`Choice config: falseProperty="${falseProperty}", falseValue="${falseValue}"`)
+
+
         if (!testProperty) {
             logger.warn(`Choice: No testProperty specified, skipping condition evaluation`)
             return this.emit('message', message)
         }
 
-        // Get the value to test from the message
-        const messageValue = message[testProperty]
+        // Get the value to test from the message (supports nested paths)
+        const messageValue = JSONUtils.get(message, testProperty)
 
         // Evaluate the condition
         const conditionResult = this.evaluateCondition(messageValue, testOperator || 'equals', testValue)
 
-        logger.debug(`Choice: ${testProperty}="${messageValue}" ${testOperator} "${testValue}" = ${conditionResult}`)
+        logger.debug(`Choice: ${testProperty}="${JSON.stringify(messageValue)}" ${testOperator} "${testValue}" = ${conditionResult}`)
 
         // Apply the choice result
         if (conditionResult) {
             if (trueProperty && trueValue !== undefined) {
-                message[trueProperty] = trueValue
-                logger.debug(`Choice: TRUE - Set ${trueProperty}="${trueValue}"`)
+                // Try to get value from message path, fallback to literal value
+                let actualTrueValue = JSONUtils.get(message, trueValue)
+                if (actualTrueValue === undefined) {
+                    actualTrueValue = trueValue
+                }
+                JSONUtils.set(message, trueProperty, actualTrueValue)
+                logger.debug(`Choice: TRUE - Set ${trueProperty}="${actualTrueValue}"`)
             }
         } else {
             if (falseProperty && falseValue !== undefined) {
-                message[falseProperty] = falseValue
-                logger.debug(`Choice: FALSE - Set ${falseProperty}="${falseValue}"`)
+                // Try to get value from message path, fallback to literal value
+                let actualFalseValue = JSONUtils.get(message, falseValue)
+                if (actualFalseValue === undefined) {
+                    actualFalseValue = falseValue
+                }
+                JSONUtils.set(message, falseProperty, actualFalseValue)
+                logger.debug(`Choice: FALSE - Set ${falseProperty}="${actualFalseValue}"`)
             }
         }
 
@@ -136,6 +146,9 @@ class Choice extends Processor {
                 return Number(messageValue) < Number(testValue)
 
             case 'exists':
+                if (Array.isArray(messageValue)) {
+                    return messageValue.length > 0
+                }
                 return messageValue !== undefined && messageValue !== null && messageValue !== ''
 
             default:

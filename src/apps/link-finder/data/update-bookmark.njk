@@ -3,19 +3,12 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX : <http://purl.org/stuff/transmissions/>
 PREFIX bm: <http://purl.org/stuff/bm/>
 
-# Remove any existing bookmark for this target
-WITH <{{graph}}>
-DELETE WHERE {
-  ?bookmark a bm:Bookmark ;
-            bm:target <{{target}}> ;
-            bm:agent ?agent ;
-            bm:created ?created ;
-            bm:title ?title ;
-            bm:status ?status .
-};
-
-# Insert the new bookmark
-INSERT DATA {
+DELETE {
+  GRAPH <{{graph}}> {
+    ?bookmark ?p ?o .
+  }
+}
+INSERT {
   GRAPH <{{graph}}> {
     <{{uri}}> a bm:Bookmark ;
           bm:target <{{target}}> ;
@@ -23,5 +16,14 @@ INSERT DATA {
           bm:created "{{created}}"^^xsd:dateTime ;
           bm:title "{{title | safe}}" ;
           bm:status "{{status}}"^^xsd:integer .
+  }
+}
+WHERE {
+  OPTIONAL {
+    GRAPH <{{graph}}> {
+      ?bookmark a bm:Bookmark ;
+                bm:target <{{target}}> .
+      ?bookmark ?p ?o .
+    }
   }
 }

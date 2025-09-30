@@ -25,7 +25,7 @@
 
 :retreeResponse a :ConfigSet ;
     :rename (:rr1 :rr2 :rr3 :rr4 :rr5 :rr6) . # consider using blank nodes
-    :rr1   :pre     "currentItem.uri" ;
+    :rr1   :pre     "currentItem.url" ;
             :post    "resource.target"  .
     :rr2   :pre     "currentItem.text" ;
             :post    "resource.title"  .
@@ -40,16 +40,16 @@
 
 :selectBookmark a :ConfigSet ;
         :templateFilename "data/select-bookmark.njk" ;
-        :endpointSettings "data/endpoints.json" .
+        :endpointSettings "data/endpoints.json" ;
+        :graph <http://hyperdata.it/content> .
 
 :replaceURI a :ConfigSet ;
         :testProperty "queryResults.results.bindings" ;
         :testOperator 'exists' ;
-      #  :testValue "[]" ;
-        :trueProperty "currentItem.uri" ;
-        :trueValue "currentItem.uri" ;
-        :falseProperty "queryResults.results.bindings[0].s.value" ;
-        :falseValue "queryResults.results.bindings[0].s.value" .
+        :trueProperty "resource.uri" ;
+        :trueValue "queryResults.results.bindings[0].bookmark.value" ;
+        :falseProperty "resource.uri" ;
+        :falseValue "resource.uri" .
 
 :updateBookmark a :ConfigSet ;
 # :loglevel "debug" ;

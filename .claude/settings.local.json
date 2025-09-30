@@ -27,7 +27,8 @@
       "Bash(LOG_LEVEL=trace ./trans pathops -m '{\"\"\"\"fields\"\"\"\": {\"\"\"\"fieldB\"\"\"\" : \"\"\"\"TEST\"\"\"\",\"\"\"\"fieldC\"\"\"\":\"\"\"\"_PASSED\"\"\"\"}}')",
       "Bash(LOG_LEVEL=trace TRACE=1 ./trans pathops -m '{\"\"\"\"fields\"\"\"\": {\"\"\"\"fieldB\"\"\"\" : \"\"\"\"TEST\"\"\"\",\"\"\"\"fieldC\"\"\"\":\"\"\"\"_PASSED\"\"\"\"}}')",
       "Bash(env LOG_LEVEL=trace ./trans:*)",
-      "Bash(unset:*)"
+      "Bash(unset:*)",
+      "Bash(LOG_LEVEL=debug ./trans link-finder)"
     ],
     "deny": []
   },
