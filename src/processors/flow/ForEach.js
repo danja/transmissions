@@ -62,6 +62,9 @@ class ForEach extends SlowableProcessor {
     async process(message) {
         logger.debug('\nForEach.process')
 
+        // Reset counter for each process call
+        this.eachCounter = 0
+
         // TODO default?
         const forEach = super.getProperty(ns.trn.forEach, 'forEach')
 
@@ -127,12 +130,12 @@ class ForEach extends SlowableProcessor {
             //    delete clonedMessage.foreach // Remove the original array to prevent infinite loops TODO needed?
             clonedMessage.foreach = undefined
 
-            logger.log(`ForEach: Emitting message for item: ${JSON.stringify(item)}`)
+            logger.debug(`ForEach: Emitting message for item: ${JSON.stringify(item)}`)
             clonedMessage.eachCounter = this.eachCounter
 
-            // Progress logging
-            if (this.eachCounter % progressInterval === 0 || this.eachCounter === totalItems - 1) {
-                const percent = Math.round((this.eachCounter / totalItems) * 100)
+            // Progress logging - show first, every interval, and last
+            if (this.eachCounter === 0 || this.eachCounter % progressInterval === 0 || this.eachCounter === totalItems - 1) {
+                const percent = Math.round(((this.eachCounter + 1) / totalItems) * 100)
                 logger.log(`ForEach: Progress ${this.eachCounter + 1}/${totalItems} (${percent}%)`)
             }
 

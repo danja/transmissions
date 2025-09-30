@@ -31,7 +31,11 @@
       "Bash(LOG_LEVEL=debug ./trans link-finder)",
       "Bash(cat:*)",
       "Bash(LOG_LEVEL=trace ./trans:*)",
-      "Bash(\"http://localhost:3030/test/query?query=PREFIX%20bm%3A%20%3Chttp%3A%2F%2Fpurl.org%2Fstuff%2Fbm%2F%3E%0ASELECT%20%28COUNT%28%3Fbookmark%29%20AS%20%3Fcount%29%20FROM%20%3Chttp%3A%2F%2Fhyperdata.it%2Fcontent%3E%20WHERE%20%7B%20%3Fbookmark%20a%20bm%3ABookmark%20%7D\")"
+      "Bash(\"http://localhost:3030/test/query?query=PREFIX%20bm%3A%20%3Chttp%3A%2F%2Fpurl.org%2Fstuff%2Fbm%2F%3E%0ASELECT%20%28COUNT%28%3Fbookmark%29%20AS%20%3Fcount%29%20FROM%20%3Chttp%3A%2F%2Fhyperdata.it%2Fcontent%3E%20WHERE%20%7B%20%3Fbookmark%20a%20bm%3ABookmark%20%7D\")",
+      "Bash(LOG_LEVEL=debug timeout 10 ./trans sparqlstore-to-html ~/hyperdata/hyperdata/docs/postcraft)",
+      "Read(//home/danny/hyperdata/hyperdata/docs/postcraft/**)",
+      "Bash(tee:*)",
+      "Read(//tmp/**)"
     ],
     "deny": []
   },
