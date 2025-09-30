@@ -101,23 +101,35 @@ class Choice extends Processor {
         // Apply the choice result
         if (conditionResult) {
             if (trueProperty && trueValue !== undefined) {
-                // Try to get value from message path, fallback to literal value
+                // Try to get value from message path
                 let actualTrueValue = JSONUtils.get(message, trueValue)
-                if (actualTrueValue === undefined) {
-                    actualTrueValue = trueValue
+                // Only set if value exists, or if it's a simple literal (no dots/brackets)
+                if (actualTrueValue !== undefined) {
+                    JSONUtils.set(message, trueProperty, actualTrueValue)
+                    logger.debug(`Choice: TRUE - Set ${trueProperty}="${actualTrueValue}"`)
+                } else if (!trueValue.includes('.') && !trueValue.includes('[')) {
+                    // Simple literal value (not a path)
+                    JSONUtils.set(message, trueProperty, trueValue)
+                    logger.debug(`Choice: TRUE - Set ${trueProperty}="${trueValue}"`)
+                } else {
+                    logger.debug(`Choice: TRUE - Skipping set, ${trueValue} not found in message`)
                 }
-                JSONUtils.set(message, trueProperty, actualTrueValue)
-                logger.debug(`Choice: TRUE - Set ${trueProperty}="${actualTrueValue}"`)
             }
         } else {
             if (falseProperty && falseValue !== undefined) {
-                // Try to get value from message path, fallback to literal value
+                // Try to get value from message path
                 let actualFalseValue = JSONUtils.get(message, falseValue)
-                if (actualFalseValue === undefined) {
-                    actualFalseValue = falseValue
+                // Only set if value exists, or if it's a simple literal (no dots/brackets)
+                if (actualFalseValue !== undefined) {
+                    JSONUtils.set(message, falseProperty, actualFalseValue)
+                    logger.debug(`Choice: FALSE - Set ${falseProperty}="${actualFalseValue}"`)
+                } else if (!falseValue.includes('.') && !falseValue.includes('[')) {
+                    // Simple literal value (not a path)
+                    JSONUtils.set(message, falseProperty, falseValue)
+                    logger.debug(`Choice: FALSE - Set ${falseProperty}="${falseValue}"`)
+                } else {
+                    logger.debug(`Choice: FALSE - Skipping set, ${falseValue} not found in message`)
                 }
-                JSONUtils.set(message, falseProperty, actualFalseValue)
-                logger.debug(`Choice: FALSE - Set ${falseProperty}="${actualFalseValue}"`)
             }
         }
 
