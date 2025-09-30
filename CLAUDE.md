@@ -43,4 +43,46 @@ The following libraries should be preferred to alternatives when their functiona
 - templating : nunjucks
 - markdown : marked
 
-Read `docs/overview.md` for a description of core features of the Transmissions framework.
+## Transmissions Framework
+
+### Architecture Overview
+
+Transmissions is a message-driven pipeline framework where:
+- **Messages** flow through pipelines of processors
+- **Processors** transform messages and emit them to the next processor
+- **Pipelines** are defined in RDF/Turtle configuration files
+
+### Key Concepts
+
+**Message Flow:**
+- Messages are JavaScript objects that flow through processors
+- Each processor receives a message, processes it, and emits it via `this.emit('message', message)`
+- Processors can add/modify fields on the message object
+- The `done` flag is used by spawning processors (ForEach, Fork, DirWalker) to indicate completion
+
+**Configuration:**
+- `transmissions.ttl` - Defines the pipeline structure and processor connections
+- `config.ttl` - Contains processor settings and configuration values
+- Configuration uses RDF/Turtle syntax with `:pipe` defining processor sequence
+
+**Path Access:**
+- Use `JSONUtils.get(object, "path.to.field")` for reading nested properties
+- Use `JSONUtils.set(object, "path.to.field", value)` for setting nested properties
+- Supports array indices: `"field[0].property"` or `"field.array[2]"`
+
+**Common Patterns:**
+- `getProperty(ns.trn.propertyName, defaultValue)` - Gets config values, checks message first then config
+- Templates use Nunjucks with `{{variable}}` syntax
+- SPARQL queries use `PREFIX` declarations and support graph operations
+
+**Processor Types:**
+- **Flow:** ForEach, Fork, Choice, Accumulate - control message flow
+- **SPARQL:** SPARQLSelect, SPARQLUpdate - interact with RDF stores
+- **Transform:** Restructure, PathOps - modify message structure
+- **I/O:** FileReader, FileWriter, HttpClient - external interactions
+- **Note:** Many more processors exist in `src/processors/`. Always search for existing processors before creating new ones. Use `Glob` to find processors: `src/processors/**/*.js`
+
+**Debugging:**
+- Run with `-v` flag for verbose output: `./trans -v app-name`
+- Use `LOG_LEVEL=debug` for detailed logging
+- Add `:SM` (ShowMessage) processor in pipeline to inspect messages
