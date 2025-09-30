@@ -8,8 +8,8 @@
 # ns.trn.sourceFile
 
 :origin a :ConfigSet ;
-    :sourceFile "test.md" .
-   # :targetField "links" .
+    :sourceFile "workflowy_2025-09-21.md" .
+   # :sourceFile "test.md" . 
 
 :listField a :ConfigSet ;
     :remove "true" ;
@@ -19,6 +19,9 @@
     :rename (:pp1) . # consider using blank nodes
     :pp1   :pre     "currentItem.url" ;
             :post    "url"  .
+
+:httpSettings a :ConfigSet ;
+    :timeout "10000" .
 
 :normalizeURL a :ConfigSet ;
     :inputField "resource.target" ;
@@ -63,7 +66,7 @@
 
 :updateBookmark a :ConfigSet ;
 # :loglevel "debug" ;
-    :delay "100" ;
+    :delay "500" ;
     :dataBlock "resource" ;
     :templateFilename "data/update-bookmark.njk" ;
     :noCache "true" ; # always reload endpoints

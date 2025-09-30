@@ -89,8 +89,18 @@ class HttpClient extends Processor {
         const method = super.getProperty(ns.trn.method, 'GET').toUpperCase()
         const headers = super.getProperty(ns.trn.headers, {})
         const body = super.getProperty(ns.trn.body, null)
+        const timeout = super.getProperty(ns.trn.timeout, 30000) // Default 30s timeout
 
         const options = { method, headers }
+
+        // Add timeout using AbortController
+        if (timeout) {
+            const controller = new AbortController()
+            options.signal = controller.signal
+            options.controller = controller
+            options.timeout = parseInt(timeout)
+        }
+
         if (body && (method === 'POST' || method === 'PUT' || method === 'PATCH')) {
             options.body = typeof body === 'string' ? body : JSON.stringify(body)
             if (!headers['Content-Type']) {
@@ -107,7 +117,24 @@ class HttpClient extends Processor {
      * @returns {Promise<Response>}
      */
     async _sendRequest(requestOptions) {
-        const { url, ...options } = requestOptions
+        const { url, timeout, controller, ...options } = requestOptions
+
+        // Handle timeout
+        if (timeout && controller) {
+            const timeoutId = setTimeout(() => {
+                controller.abort()
+            }, timeout)
+
+            try {
+                const response = await fetch(url, options)
+                clearTimeout(timeoutId)
+                return response
+            } catch (error) {
+                clearTimeout(timeoutId)
+                throw error
+            }
+        }
+
         return fetch(url, options)
     }
 

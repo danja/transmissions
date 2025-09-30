@@ -92,6 +92,7 @@ class ForEach extends SlowableProcessor {
         const reduced = current
 
         logger.debug(`    reduced.length = ${reduced.length}`)
+        logger.log(`ForEach: Processing ${reduced.length} items`)
 
         //    logger.v(reduced)
 
@@ -110,6 +111,9 @@ class ForEach extends SlowableProcessor {
             message = JSONUtils.remove(message, forEach)
         }
         message.done = false
+        const totalItems = reduced.length
+        const progressInterval = Math.max(1, Math.floor(totalItems / 20)) // Report every 5%
+
         for (const item of reduced) {
 
             if (limitString && ++counter > limit) continue
@@ -124,11 +128,19 @@ class ForEach extends SlowableProcessor {
             clonedMessage.foreach = undefined
 
             logger.log(`ForEach: Emitting message for item: ${JSON.stringify(item)}`)
-            clonedMessage.eachCounter = this.eachCounter++
+            clonedMessage.eachCounter = this.eachCounter
+
+            // Progress logging
+            if (this.eachCounter % progressInterval === 0 || this.eachCounter === totalItems - 1) {
+                const percent = Math.round((this.eachCounter / totalItems) * 100)
+                logger.log(`ForEach: Progress ${this.eachCounter + 1}/${totalItems} (${percent}%)`)
+            }
+
+            this.eachCounter++
             this.emit('message', clonedMessage)
         }
         message.done = true
-        logger.log('ForEach: all messages dispatched')
+        logger.log(`ForEach: All ${totalItems} messages dispatched`)
 
         this.emit('message', message)
     }

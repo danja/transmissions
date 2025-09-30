@@ -40,17 +40,23 @@ If no entry exists for the bm:target, then this new one is created. Otherwise th
         bm:status "200"^^xsd:integer .
 ```
 
---
-PREFIX : <http://purl.org/stuff/transmissions/>
+## Verification Query
+
+Count bookmarks in the store:
+
+```sparql
 PREFIX bm: <http://purl.org/stuff/bm/>
 
-INSERT DATA {
-      GRAPH <{{graph}}> {
-  <http://purl.org/stuff/instance/eprxly1u> a bm:Bookmark ;
-        bm:target <https://tensegrity.it/> ;
-        bm:agent <http://purl.org/stuff/agent/transmissions> ;
-        bm:created "2025-09-28" ;
-        bm:title "Tensegrity" ;
-        bm:status "404"^^xsd:integer .
+SELECT (COUNT(?bookmark) AS ?count)
+FROM <http://hyperdata.it/content>
+WHERE {
+  ?bookmark a bm:Bookmark .
 }
-}
+```
+
+Or via curl:
+
+```sh
+curl -s -H "Accept: text/plain" --user admin:admin123 \
+  "http://localhost:3030/test/query?query=PREFIX%20bm%3A%20%3Chttp%3A%2F%2Fpurl.org%2Fstuff%2Fbm%2F%3E%0ASELECT%20%28COUNT%28%3Fbookmark%29%20AS%20%3Fcount%29%20FROM%20%3Chttp%3A%2F%2Fhyperdata.it%2Fcontent%3E%20WHERE%20%7B%20%3Fbookmark%20a%20bm%3ABookmark%20%7D"
+```
