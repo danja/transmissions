@@ -1,7 +1,7 @@
 ## General
 
 - Follow best practices, agile methodologies
-- Prioritize modularity
+- Prioritize modularity, favor small files
 - keep extensibility and maintainability in mind
 - warn of potentially breaking changes
 - suggest tests as appropriate
