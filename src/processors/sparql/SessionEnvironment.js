@@ -55,7 +55,9 @@ ${logger.shorter(this.processor.config)}`)
     applyEnvOverrides(endpoint) {
         // if (!endpoint) return endpoint
 
-        if (!this.override) {
+        // Use endpoints.json by default, only override if this.override is true
+        if (this.override) {
+            // Override with environment variables
             return {
                 ...endpoint,
                 url: `http://${process.env.SPARQL_HOST}:${process.env.SPARQL_PORT}/test`,
@@ -65,6 +67,7 @@ ${logger.shorter(this.processor.config)}`)
                 }
             }
         } else {
+            // Use endpoint from endpoints.json file
             return endpoint
         }
 
