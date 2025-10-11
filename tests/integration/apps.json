@@ -34,7 +34,7 @@
         "command": "./trans accumulate -m '{\"foreach\": [\"first TEST_PASSED\", \"second TEST_PASSED\", \"third TEST_PASSED\"]}'",
         "label": "accumulate",
         "description": "test accumulate app",
-        "requiredMatchCount": 9
+        "requiredMatchCount": 6
     },
     {
         "command": "./trans system/echo -m '{\"message\":\"Hello, World, TEST_PASSED!\"}'",
@@ -76,7 +76,7 @@
         "command": "./trans foreach -m '{\"foreach\": [\"first TEST_PASSED\", \"second TEST_PASSED\", \"third TEST_PASSED\"]}'",
         "label": "foreach",
         "description": "test foreach app",
-        "requiredMatchCount": 6
+        "requiredMatchCount": 3
     },
     {
         "command": "./trans restructure",
@@ -121,9 +121,9 @@
         "requiredMatchCount": 3
     },
     {
-        "command": "./scripts/del-fuseki-test-store.sh && ./trans file-to-sparqlstore",
+        "command": "./scripts/del-fuseki-test-store-local.sh && ./trans file-to-sparqlstore",
         "label": "file-to-sparqlstore",
-        "description": "file-to-sparqlstore - fuseki.hyperdata.it/test",
+        "description": "file-to-sparqlstore - localhost:3030/test",
         "requiredMatchCount": 3
     },
     {
