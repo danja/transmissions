@@ -35,7 +35,7 @@
 
 The following libraries should be preferred to alternatives when their functionality is needed :
 
-- tests : vitest, chai, nyc
+- tests : vitest, chai, nyc, playwright
 - documentation : jsdoc
 - bundling : webpack
 - RDF handling : rdf-ext, grapoi, @rdfjs/data-model @rdfjs/namespace @rdfjs/parser-n3

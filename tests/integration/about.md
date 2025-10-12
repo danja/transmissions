@@ -17,10 +17,10 @@ TODO : re-set up simples
 Also integration tests are provided using full application runners with :
 
 ```sh
-npm test -- tests/applications/ApplicationRunner.spec.js
+npm test -- tests/integration/AppTester.spec.js
 ```
 
-These tests are defined via `tests/applications/applications.json`.
+These tests are defined via `tests/integration/apps.json`.
 
 ```sh
 cd ~/hyperdata/transmissions # my local dir

@@ -10,7 +10,7 @@ Attempts to load from `transmissions/src/apps/test_module-load/transmissions.ttl
 
 ---
 
-Transmissions apps should be able to load modules from remote locations.
+Transmissions apps can load modules from remote locations.
 
 The source used here is under two independent file trees locally : `~/hyperdata/transmissions` is the transmissions system, `~/hyperdata/trans-apps` are apps which use it.
 
@@ -18,40 +18,43 @@ The transmission defined in `trans-apps/apps/module-load-test/transmissions.ttl`
 The transmission first should read :
 `trans-apps/apps/module-load-test/manifest.ttl`
 
-With this transmission it should apply the values passed in the message to an instance of `Concat', loaded from `apps/test_module-load/processors/Concat.js`.
+With this transmission it should apply the values passed in the message to an instance of `Concat', loaded from `apps/test_module-load/processors/ConCat.js`.
 
 Here the values are passed from the command line :
 
 Running from `~/hyperdata/transmissions` :
 
 ```sh
-./trans ../trans-apps/apps/test_module-load -m '{"first":"one","second":"two"}'
+./trans ../trans-apps/apps/test_module-load -m '{"first":"TEST","second":"_PASSED"}'
 ```
 
 Current trace from `./trans -v ~/hyperdata/trans-apps/apps/test_module-load -m '{"first":"one","second":"two"}'
 ` :
 
-CommandUtils.begin, application = /home/danny/github-danny/trans-apps/apps/test_module-load
-CommandUtils.begin, target = undefined
-CommandUtils.begin, message = [object Object]
+ *** CommandUtils ***
+            this =  
+     {"options":{"_":[],
+      "v":true,
+      "verbose":true,
+      "m":"{\"first\":\"one\",
+      \"second\":\"two\"}",
+      "message":"{\"first\":\"one\",
+      \"second\":\"two\"}",
+      "test":false,
+      "t":false,
+      "port":4500,
+      "p":4500,
+      "repl":false,
+      "r":false,
+      "$0":"src/api/cli/run.js",
+      "app":"/home/danny/hyperdata/trans-apps/apps/test_module-load"}}
+CommandUtils.handleOptions, pre-split, options.app = /home/danny/hyperdata/trans-apps/apps/test_module-load
+CommandUtils.parseAppArg, appArg = /home/danny/hyperdata/trans-apps/apps/test_module-load
+CommandUtils.parseAppArg appArg = /home/danny/hyperdata/trans-apps/apps/test_module-load
+Path parts: ,home,danny,hyperdata,trans-apps,apps,test_module-load
+Full path: appName:test_module-load, appPath:/home/danny/hyperdata/trans-apps/apps/test_module-load, subtask:false
+CommandUtils.handleOptions, post-split, appName = test_module-load, appPath = /home/danny/hyperdata/trans-apps/apps/test_module-load, subtask = false
 
-CommandUtils.splitName, fullPath = /home/danny/github-danny/trans-apps/apps/test_module-load
-
-CommandUtils.splitName, parts = ,home,danny,github-danny,trans-apps,apps,test_module-load
-CommandUtils.splitName, appName:test_module-load, appPath:/home/danny/github-danny/trans-apps/apps/test_module-load, task:false,
-
-    after split :
-    appName = test_module-load
-    appPath = /home/danny/github-danny/trans-apps/apps/test_module-load
-    subtask = undefined
-    target = undefined
-
-ApplicationManager.initialize, appName=test_module-load, appPath=/home/danny/github-danny/trans-apps/apps/test_module-load, subtask=undefined, target=undefined
-
-ModuleLoaderFactory.createApplicationLoader called with /home/danny/github-danny/transmissions/src/apps/test_module-load/processors
-ModuleLoaderFactory creating loader with paths:
-App: /home/danny/github-danny/transmissions/src/apps/test_module-load/processors
-Core: /home/danny/github-danny/transmissions/src/processors
-ModuleLoader initialized with paths :
-/home/danny/github-danny/transmissions/src/apps/test_module-load/processors,/home/danny/github-danny/transmissions/src/processors
-ApplicationManager.start, transmissionsFile=/home/danny/github-danny/transmissions/src/apps/test_module-load/transmissions.ttl, configFile=/home/danny/github-danny/transmissions/src/apps/test_module-load/config.ttl, subtask=undefined
+AppManager.initApp
+/home/danny/hyperdata/transmissions/src/apps
+APP PATH = test_module-load

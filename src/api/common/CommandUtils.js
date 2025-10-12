@@ -120,7 +120,12 @@ class CommandUtils {
         }
         
         if (!path.isAbsolute(appArg)) { // is relative 
-            appArg = path.join(process.cwd(), Defaults.appsDir, appArg)
+            const hasPathSegments = appArg.includes('/') || appArg.includes(path.sep)
+            if (hasPathSegments) {
+                appArg = path.resolve(process.cwd(), appArg)
+            } else {
+                appArg = path.join(process.cwd(), Defaults.appsDir, appArg)
+            }
         }
         logger.debug(`CommandUtils.parseAppArg appArg = ${appArg}`)
 

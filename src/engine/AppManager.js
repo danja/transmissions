@@ -1,6 +1,7 @@
-// AppManager.js
+// src/engine/AppManager.js
 import path from 'path'
 import * as fs from 'node:fs/promises'
+import { statSync } from 'node:fs'
 import logger from '../utils/Logger.js'
 import FSUtils from '../utils/FSUtils.js'
 import Config from './Config.js'
@@ -68,8 +69,12 @@ class AppManager {
         // Copy options to app
         Object.assign(this.app, options) // TODO better just calculated options
 
-        // starting point
-        this.app.path = await this.resolveAppPath(options.appName)
+        const resolvedAppPath = await this.resolveAppPath(options.appName, options.appPath)
+        this.app.path = resolvedAppPath
+        this.app.appPath = resolvedAppPath
+        if (!this.app.rootDir) {
+            this.app.rootDir = resolvedAppPath
+        }
 
         // load the transmissions dataset
         const transmissionsFilename = path.join(this.app.path, Defaults.transmissionsFilename)
@@ -240,12 +245,36 @@ class AppManager {
         return message
     }
 
-    async resolveAppPath(appName) {
+    async resolveAppPath(appName, explicitPath) {
+        if (explicitPath) {
+            const candidatePath = path.resolve(explicitPath)
+            const defaultAppPath = path.join(process.cwd(), Defaults.appsDir, appName || '')
+
+            try {
+                const stats = await fs.stat(candidatePath)
+                if (stats.isDirectory()) {
+                    logger.log(`APP PATH = ${candidatePath}`)
+                    return candidatePath
+                }
+                throw new Error(`Application path must be a directory: ${candidatePath}`)
+            } catch (error) {
+                const isDefaultPath = path.normalize(candidatePath) === path.normalize(defaultAppPath)
+                if (!error || error.code !== 'ENOENT' || !isDefaultPath) {
+                    throw error
+                }
+                logger.debug(`AppManager.resolveAppPath fallback search for ${appName} (explicit path not found: ${candidatePath})`)
+            }
+        }
+
+        if (!appName) {
+            throw new Error('Application name is required when no app path is provided')
+        }
+
         const baseDir = this.targetDir || path.join(process.cwd(), Defaults.appsDir)
         logger.debug(baseDir)
 
         const appPath = await FSUtils.findSubdir(baseDir, appName)
-        logger.log(`APP PATH = ${appName}`)
+        logger.log(`APP PATH = ${appPath}`)
 
 
         if (!appPath) {
@@ -298,12 +327,14 @@ class AppManager {
         }
         //   logger.vr(this.app)
         const appProcessorsPath = path.join(this.app.path, this.app.moduleSubDir)
-        
+        logger.debug(`AppManager.getModulePath candidate: ${appProcessorsPath}`)
         // Check if app-specific processors directory exists, if not just return app path
         try {
-            require('fs').statSync(appProcessorsPath)
+            statSync(appProcessorsPath)
+            logger.debug(`AppManager.getModulePath using app processors dir`)
             return appProcessorsPath
         } catch (e) {
+            logger.debug(`AppManager.getModulePath fallback to app root: ${this.app.path} (${e?.message})`)
             // No app-specific processors, return app path for factory to handle
             return this.app.path
         }
