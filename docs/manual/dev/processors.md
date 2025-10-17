@@ -123,21 +123,16 @@ const filename = this.getProperty(ns.trn.filename)
 
 // Optional with default
 const encoding = this.getProperty(ns.trn.encoding, 'utf8')
-
-// Check if setting exists
-if (this.hasProperty(ns.trn.optionalSetting)) {
-    const value = this.getProperty(ns.trn.optionalSetting)
-}
 ```
 
 ### Message vs Config Priority
 
-Settings can come from message properties or configuration. Message properties take priority:
+**Settings** are property values taken from the following sources, in descending order of priority :
 
-```javascript
-// This will use message.filename if it exists, otherwise config setting
-const filename = this.getProperty(ns.trn.filename, 'default.txt')
-```
+1. current **message** - a JSON object
+2. `tt.ttl` - **target** definition, a **dataset**
+3. `transmissions.ttl` - transmissions definition, a **dataset**
+4. `config.ttl` - default configuration, a **dataset**
 
 ### Complex Configuration
 
