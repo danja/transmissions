@@ -41,7 +41,9 @@
       "Bash(\"http://localhost:3030/semem/query\" --data-urlencode \"query=PREFIX bm: <http://purl.org/stuff/bm/>\nSELECT ?bookmark ?target ?title\nFROM <http://hyperdata.it/content>\nWHERE {\n  ?bookmark a bm:Bookmark ;\n            bm:target ?target ;\n            bm:status 200 .\n  OPTIONAL { ?bookmark bm:title ?title }\n  FILTER NOT EXISTS { ?bookmark bm:content ?content }\n}\nLIMIT 5\")",
       "Bash(env LOG_LEVEL=debug ./trans bookmark-get:*)",
       "WebFetch(domain:www.anthropic.com)",
-      "Read(//home/danny/.config/**)"
+      "Read(//home/danny/.config/**)",
+      "WebSearch",
+      "WebFetch(domain:www.researchgate.net)"
     ],
     "deny": []
   },
