@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NewsMonitor - Semantic Feed Aggregator</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        h1 { color: #667eea; font-size: 2.5em; margin-bottom: 10px; }
+        .subtitle { color: #666; font-size: 1.1em; }
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .stat-box {
+            background: #f8f9fa;
+            padding: 15px 25px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .stat-number { font-size: 2em; font-weight: bold; color: #667eea; }
+        .stat-label { color: #666; font-size: 0.9em; }
+        .entries-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h2 { color: #667eea; margin-bottom: 20px; font-size: 1.8em; }
+        .entry {
+            border-bottom: 1px solid #e9ecef;
+            padding: 20px 0;
+        }
+        .entry:last-child { border-bottom: none; }
+        .entry-title { font-size: 1.4em; margin-bottom: 10px; }
+        .entry-title a {
+            color: #333;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .entry-title a:hover { color: #667eea; }
+        .entry-meta {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        .entry-author { color: #764ba2; font-weight: 500; }
+        .entry-date { color: #999; }
+        .entry-content { color: #555; line-height: 1.7; }
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 30px;
+            padding: 20px;
+        }
+        .powered-by { font-size: 0.9em; opacity: 0.9; }
+        .tech-stack {
+            margin-top: 10px;
+            font-size: 0.85em;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📰 NewsMonitor</h1>
+            <p class="subtitle">Semantic Feed Aggregator powered by SPARQL & Transmissions</p>
+
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Entries</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">✅</div>
+                    <div class="stat-label">Live from SPARQL</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="entries-section">
+            <h2>📝 Latest Entries</h2>
+
+            
+            <div class="entry">
+                <h3 class="entry-title">
+                    <a href="https://emeryblogger.wordpress.com/2016/06/08/a-guide-for-session-chairs/" target="_blank">
+                        A Guide for Session Chairs
+                    </a>
+                </h3>
+                <div class="entry-meta">
+                    
+                    <span class="entry-author">by emeryberger</span>
+                    
+                    
+                     • 
+                    <span class="entry-date">Wed, 08 Jun 2016 04:12:26 +0000</span>
+                    
+                </div>
+                
+                <div class="entry-content">
+                    I just sent this message as a guide to the program committee members who will be chairing sessions for PLDI 2016 (I figure it’s the first time for some of them). A few people suggested I post it, so here it is (lightly edited). Additions or other suggestions welcome. Find your speakers before the...
+                </div>
+                
+            </div>
+            
+            <div class="entry">
+                <h3 class="entry-title">
+                    <a href="https://emeryblogger.wordpress.com/2018/03/22/reviewing-guidelines-for-program-committee-members/" target="_blank">
+                        Reviewing Guidelines for Program Committee Members
+                    </a>
+                </h3>
+                <div class="entry-meta">
+                    
+                    <span class="entry-author">by emeryberger</span>
+                    
+                    
+                     • 
+                    <span class="entry-date">Thu, 22 Mar 2018 14:35:04 +0000</span>
+                    
+                </div>
+                
+                <div class="entry-content">
+                    I prepared these guidelines for the PLDI Program Committee when I was program chair in 2016. I am posting this lightly-edited version in the hopes that it will be useful to other program chairs. Feel free to adapt some or all of it for your own use; if you do so, I just ask that … Continue reading...
+                </div>
+                
+            </div>
+            
+            <div class="entry">
+                <h3 class="entry-title">
+                    <a href="https://emeryblogger.wordpress.com/2015/10/14/coz-finding-code-that-counts-with-causal-profiling/" target="_blank">
+                        Coz: Finding code that counts with causal profiling
+                    </a>
+                </h3>
+                <div class="entry-meta">
+                    
+                    <span class="entry-author">by emeryberger</span>
+                    
+                    
+                     • 
+                    <span class="entry-date">Thu, 15 Oct 2015 00:20:57 +0000</span>
+                    
+                </div>
+                
+                <div class="entry-content">
+                    Originally posted on the morning paper: 
+Coz: Finding code that counts with causal profiling – Curtsinger & Berger 2015 update: fixed typo in paper title Sticking to the theme of ‘understanding what our systems are doing,’ but focusing on a single process, Coz is a causal profiler. In essence, it...
+                </div>
+                
+            </div>
+            
+            <div class="entry">
+                <h3 class="entry-title">
+                    <a href="https://emeryblogger.wordpress.com/2014/08/31/washington-post-take-down-this-article/" target="_blank">
+                        Washington Post, Take Down This Article!
+                    </a>
+                </h3>
+                <div class="entry-meta">
+                    
+                    <span class="entry-author">by emeryberger</span>
+                    
+                    
+                     • 
+                    <span class="entry-date">Sun, 31 Aug 2014 15:44:42 +0000</span>
+                    
+                </div>
+                
+                <div class="entry-content">
+                    The Washington Post just published an article from a kid claiming he graduated at the top of his class at Penn State in Computer Science but couldn’t find a job. But his description of Computer Science classes is completely disconnected from reality. Turns out, he graduated with a degree in...
+                </div>
+                
+            </div>
+            
+            <div class="entry">
+                <h3 class="entry-title">
+                    <a href="https://www.theguardian.com/technology/2025/oct/18/are-we-living-in-a-golden-age-of-stupidity-technology" target="_blank">
+                        Are we living in a golden age of stupidity?
+                    </a>
+                </h3>
+                <div class="entry-meta">
+                    
+                    <span class="entry-author">by fallinditch</span>
+                    
+                    
+                     • 
+                    <span class="entry-date">Sat, 18 Oct 2025 12:08:20 +0000</span>
+                    
+                </div>
+                
+                <div class="entry-content">
+                    Article URL: https://www.theguardian.com/technology/2025/oct/18/are-we-living-in-a-golden-age-of-stupidity-technology
+Comments URL: https://news.ycombinator.com/item?id=45626691
+Points: 16
+# Comments: 7
+                </div>
+                
+            </div>
+            
+            <div class="entry">
+                <h3 class="entry-title">
+                    <a href="https://dotslashwatch.com/" target="_blank">
+                        ./watch
+                    </a>
+                </h3>
+                <div class="entry-meta">
+                    
+                    <span class="entry-author">by shrx</span>
+                    
+                    
+                     • 
+                    <span class="entry-date">Sat, 18 Oct 2025 09:55:06 +0000</span>
+                    
+                </div>
+                
+                <div class="entry-content">
+                    Article URL: https://dotslashwatch.com/
+Comments URL: https://news.ycombinator.com/item?id=45626130
+Points: 118
+# Comments: 31
+                </div>
+                
+            </div>
+            
+            <div class="entry">
+                <h3 class="entry-title">
+                    <a href="https://blog.pkh.me/p/46-fast-calculation-of-the-distance-to-cubic-bezier-curves-on-the-gpu.html" target="_blank">
+                        Fast calculation of the distance to cubic Bezier curves on the GPU
+                    </a>
+                </h3>
+                <div class="entry-meta">
+                    
+                    <span class="entry-author">by ux</span>
+                    
+                    
+                     • 
+                    <span class="entry-date">Sat, 18 Oct 2025 09:25:30 +0000</span>
+                    
+                </div>
+                
+                <div class="entry-content">
+                    Article URL: https://blog.pkh.me/p/46-fast-calculation-of-the-distance-to-cubic-bezier-curves-on-the-gpu.html
+Comments URL: https://news.ycombinator.com/item?id=45626037
+Points: 34
+# Comments: 1
+                </div>
+                
+            </div>
+            
+            <div class="entry">
+                <h3 class="entry-title">
+                    <a href="https://github.com/OpenMixerProject/StageConnect" target="_blank">
+                        StageConnect: Behringer protocol is open source
+                    </a>
+                </h3>
+                <div class="entry-meta">
+                    
+                    <span class="entry-author">by jdboyd</span>
+                    
+                    
+                     • 
+                    <span class="entry-date">Sat, 18 Oct 2025 05:52:47 +0000</span>
+                    
+                </div>
+                
+                <div class="entry-content">
+                    Article URL: https://github.com/OpenMixerProject/StageConnect
+Comments URL: https://news.ycombinator.com/item?id=45625251
+Points: 134
+# Comments: 64
+                </div>
+                
+            </div>
+            
+            <div class="entry">
+                <h3 class="entry-title">
+                    <a href="https://discuss.techlore.tech/t/how-i-ditched-smartphones/15315" target="_blank">
+                        How I ditched smartphones
+                    </a>
+                </h3>
+                <div class="entry-meta">
+                    
+                    <span class="entry-author">by sipofwater</span>
+                    
+                    
+                     • 
+                    <span class="entry-date">Sat, 18 Oct 2025 04:55:16 +0000</span>
+                    
+                </div>
+                
+                <div class="entry-content">
+                    Article URL: https://discuss.techlore.tech/t/how-i-ditched-smartphones/15315
+Comments URL: https://news.ycombinator.com/item?id=45625018
+Points: 19
+# Comments: 14
+                </div>
+                
+            </div>
+            
+            <div class="entry">
+                <h3 class="entry-title">
+                    <a href="https://emeryblogger.wordpress.com/2014/11/15/doppio-selected-as-sigplan-research-highlight/" target="_blank">
+                        Doppio Selected as SIGPLAN Research Highlight
+                    </a>
+                </h3>
+                <div class="entry-meta">
+                    
+                    <span class="entry-author">by emeryberger</span>
+                    
+                    
+                     • 
+                    <span class="entry-date">Sat, 15 Nov 2014 22:04:52 +0000</span>
+                    
+                </div>
+                
+                <div class="entry-content">
+                    Doppio, our work on making it possible to run general-purpose applications inside the browser, recently won two awards. At PLDI, it received the Distinguished Artifact Award. SIGPLAN, the Special Interest Group of ACM that focuses on Programming Languages, just selected Doppio as a Research...
+                </div>
+                
+            </div>
+            
+            <div class="entry">
+                <h3 class="entry-title">
+                    <a href="https://simonwillison.net/2025/Oct/18/the-ai-water-issue-is-fake/#atom-everything" target="_blank">
+                        The AI water issue is fake
+                    </a>
+                </h3>
+                <div class="entry-meta">
+                    
+                    
+                    
+                    <span class="entry-date">2025-10-18T04:05:57Z</span>
+                    
+                </div>
+                
+            </div>
+            
+            <div class="entry">
+                <h3 class="entry-title">
+                    <a href="https://simonwillison.net/2025/Oct/18/agi-is-still-a-decade-away/#atom-everything" target="_blank">
+                        Andrej Karpathy — AGI is still a decade away
+                    </a>
+                </h3>
+                <div class="entry-meta">
+                    
+                    
+                    
+                    <span class="entry-date">2025-10-18T03:25:59Z</span>
+                    
+                </div>
+                
+            </div>
+            
+            <div class="entry">
+                <h3 class="entry-title">
+                    <a href="https://simonwillison.net/2025/Oct/17/uuid-v7/#atom-everything" target="_blank">
+                        Quoting Alexander Fridriksson and Jay Miller
+                    </a>
+                </h3>
+                <div class="entry-meta">
+                    
+                    
+                    
+                    <span class="entry-date">2025-10-17T20:59:08Z</span>
+                    
+                </div>
+                
+            </div>
+            
+            <div class="entry">
+                <h3 class="entry-title">
+                    <a href="https://simonwillison.net/2025/Oct/17/form-labels/#atom-everything" target="_blank">
+                        Should form labels be wrapped or separate?
+                    </a>
+                </h3>
+                <div class="entry-meta">
+                    
+                    
+                    
+                    <span class="entry-date">2025-10-17T18:25:45Z</span>
+                    
+                </div>
+                
+            </div>
+            
+            <div class="entry">
+                <h3 class="entry-title">
+                    <a href="https://simonwillison.net/2025/Oct/16/barry-zhang/#atom-everything" target="_blank">
+                        Quoting Barry Zhang
+                    </a>
+                </h3>
+                <div class="entry-meta">
+                    
+                    
+                    
+                    <span class="entry-date">2025-10-16T22:38:12Z</span>
+                    
+                </div>
+                
+            </div>
+            
+            <div class="entry">
+                <h3 class="entry-title">
+                    <a href="https://www.bobdc.com/blog/stopsemanticweb/" target="_blank">
+                        Let's stop saying 'semantic web'
+                    </a>
+                </h3>
+                <div class="entry-meta">
+                    
+                    
+                    
+                    <span class="entry-date">2025-09-28T10:15:00Z</span>
+                    
+                </div>
+                
+            </div>
+            
+            <div class="entry">
+                <h3 class="entry-title">
+                    <a href="https://www.bobdc.com/blog/updating-2nd-ed-examples/" target="_blank">
+                        Correcting some outdated "Learning SPARQL" examples
+                    </a>
+                </h3>
+                <div class="entry-meta">
+                    
+                    
+                    
+                    <span class="entry-date">2025-07-27T12:15:00Z</span>
+                    
+                </div>
+                
+            </div>
+            
+            <div class="entry">
+                <h3 class="entry-title">
+                    <a href="https://www.bobdc.com/blog/chatgpt-copilot-owl/" target="_blank">
+                        ChatGPT and Copilot as OWL processors
+                    </a>
+                </h3>
+                <div class="entry-meta">
+                    
+                    
+                    
+                    <span class="entry-date">2025-05-25T11:20:00Z</span>
+                    
+                </div>
+                
+            </div>
+            
+            <div class="entry">
+                <h3 class="entry-title">
+                    <a href="https://www.bobdc.com/blog/rdfs2shacl/" target="_blank">
+                        Converting RDFS schemas to SHACL constraints
+                    </a>
+                </h3>
+                <div class="entry-meta">
+                    
+                    
+                    
+                    <span class="entry-date">2025-03-09T11:10:00Z</span>
+                    
+                </div>
+                
+            </div>
+            
+            <div class="entry">
+                <h3 class="entry-title">
+                    <a href="https://www.bobdc.com/blog/filterforeignliterals/" target="_blank">
+                        Filtering foreign literals out of SPARQL query results
+                    </a>
+                </h3>
+                <div class="entry-meta">
+                    
+                    
+                    
+                    <span class="entry-date">2025-01-26T10:20:00Z</span>
+                    
+                </div>
+                
+            </div>
+            
+        </div>
+
+        <footer>
+            <div class="powered-by">
+                <strong>Powered by NewsMonitor</strong> - Transmissions Framework
+            </div>
+            <div class="tech-stack">
+                🔧 Apache Jena Fuseki • SPARQL • RDF • SIOC & Dublin Core
+            </div>
+            <div class="tech-stack" style="margin-top: 15px;">
+                Generated:  • Entries: 20
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

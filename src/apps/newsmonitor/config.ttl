@@ -1,0 +1,38 @@
+# src/apps/newsmonitor/config.ttl
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+# Test settings for initial app verification
+:testSettings a :ConfigSet ;
+    :message "NewsMonitor app initialized successfully" ;
+    :status "ready" .
+
+# SPARQL endpoint configuration
+# TODO: Create endpoints.json in app directory
+:sparqlConfig a :ConfigSet ;
+    :endpointSettings "endpoints.json" ;
+    :feedsGraph <http://hyperdata.it/feeds> ;
+    :contentGraph <http://hyperdata.it/content> ;
+    :targetPath "." .
+
+# Feed fetching configuration
+:fetchConfig a :ConfigSet ;
+    :fetchInterval "1800000" ;  # 30 minutes in ms
+    :userAgent "NewsMonitor/1.0" ;
+    :timeout "30000" ;
+    :delay "100" .
+
+# Parser configuration
+:parserConfig a :ConfigSet ;
+    :maxContentLength "1000000" ;  # 1MB limit
+    :fetchFullContent "false" ;
+    :convertToMarkdown "true" .
+
+# Deduplication configuration
+:deduplicationConfig a :ConfigSet ;
+    :guidField "guid" ;
+    :linkField "link" ;
+    :useContentHash "true" .

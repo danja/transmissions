@@ -1,0 +1,16 @@
+{
+  "query": {
+    "url": "http://localhost:3030/newsmonitor/query",
+    "credentials": {
+      "username": "",
+      "password": ""
+    }
+  },
+  "update": {
+    "url": "http://localhost:3030/newsmonitor/update",
+    "credentials": {
+      "username": "",
+      "password": ""
+    }
+  }
+}

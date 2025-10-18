@@ -11,6 +11,7 @@ import ShowSettings from './ShowSettings.js'
 import SetField from './SetField.js'
 import ResourceMinter from './ResourceMinter.js'
 import URLNormalizer from './URLNormalizer.js'
+import EntryDeduplicator from './EntryDeduplicator.js'
 
 class UtilProcessorsFactory {
     static createProcessor(type, config) {
@@ -44,6 +45,9 @@ class UtilProcessorsFactory {
         }
         if (type.equals(ns.trn.URLNormalizer)) {
             return new URLNormalizer(config)
+        }
+        if (type.equals(ns.trn.EntryDeduplicator)) {
+            return new EntryDeduplicator(config)
         }
         return false
     }

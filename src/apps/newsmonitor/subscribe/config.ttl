@@ -1,0 +1,36 @@
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+# URL Normalization Settings
+:urlSettings a :ConfigSet ;
+    :sourceField "url" ;
+    :targetField "normalizedURL" .
+
+# Fetch Settings
+:fetchSettings a :ConfigSet ;
+    :url "{{normalizedURL}}" ;  # Will be templated from message
+    :method "GET" ;
+    :timeout "10000" .
+
+# Parser Settings
+:parserSettings a :ConfigSet ;
+    :inputField "http.data" ;
+    :outputField "feed" .
+
+# Resource Minting Settings
+:mintSettings a :ConfigSet ;
+    :baseURI "http://hyperdata.it/feeds/" ;
+    :sourceField "feed.meta.title" ;
+    :targetField "feedURI" .
+
+# RDF Builder Settings
+:rdfSettings a :ConfigSet ;
+    :templateFilename "../data/templates/feed-to-rdf.njk" ;
+    :baseURI "http://hyperdata.it/" ;
+    :outputField "rdf" .
+
+# SPARQL Update Settings
+:updateSettings a :ConfigSet ;
+    :endpointSettings "data/endpoints.json" ;
+    :templateFilename "data/sparql-templates/insert-entry.rq" ;
+    :graph <http://hyperdata.it/feeds> ;
+    :delay "100" .

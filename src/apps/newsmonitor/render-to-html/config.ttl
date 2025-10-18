@@ -1,0 +1,30 @@
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+# Query all entries and feeds in one query
+:entriesQuery a :ConfigSet ;
+    :endpointSettings "data/endpoints.json" ;
+    :templateFilename "data/sparql-templates/get-all-for-page.rq" .
+
+# Restructure query results for template
+:templatePrep a :ConfigSet ;
+    :rename (:r1) .
+        :r1 :pre "queryResults" ;
+           :post "contentBlocks" .
+
+# HTML template
+:htmlTemplate a :ConfigSet ;
+    :templateFilename "templates/newsmonitor-simple.njk" ;
+    :dataField "queryResults" ;
+    :targetField "content" .
+
+# Output file path
+:htmlFilepath a :ConfigSet ;
+    :asPath true ;
+    :targetField "destinationFile" ;
+    :values (:p1 :p2) .
+    :p1 :field "workingDir" .
+    :p2 :string "newsmonitor.html" .
+
+# FileWriter content location
+:contentLocation a :ConfigSet ;
+    :contentField "content" .

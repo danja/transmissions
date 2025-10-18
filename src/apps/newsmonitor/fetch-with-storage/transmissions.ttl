@@ -1,0 +1,50 @@
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+# Fetch pipeline with SPARQL storage and deduplication
+:fetch-with-storage a :Transmission ;
+    :pipe (
+        :getExistingEntries
+        :fetchFeed
+        :parseFeed
+        :processEntries
+        :checkDuplicate
+        :addFeedURI
+        :buildRDF
+        :storeEntry
+        :showResult
+    ) .
+
+# Step 1: Get existing entries from SPARQL store
+:getExistingEntries a :SPARQLSelect ;
+    :settings :querySettings .
+
+# Step 2: Fetch feed from URL
+:fetchFeed a :HttpClient ;
+    :settings :fetchSettings .
+
+# Step 3: Parse feed
+:parseFeed a :FeedParser ;
+    :settings :parserSettings .
+
+# Step 4: Iterate over entries
+:processEntries a :ForEach ;
+    :settings :forEachSettings .
+
+# Step 5: Check if entry is duplicate
+:checkDuplicate a :EntryDeduplicator ;
+    :settings :dedupeSettings .
+
+# Step 6: Add feed URI to entry
+:addFeedURI a :SetField ;
+    :settings :feedURISettings .
+
+# Step 8: Build RDF
+:buildRDF a :RDFBuilder ;
+    :settings :rdfSettings .
+
+# Step 9: Store in SPARQL
+:storeEntry a :SPARQLUpdate ;
+    :settings :updateSettings .
+
+# Step 10: Show result
+:showResult a :ShowMessage .

@@ -1,0 +1,41 @@
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+# NewsMonitor HTML Rendering Pipeline
+# Queries SPARQL store and generates HTML page
+
+:render-to-html a :Transmission ;
+    :pipe (
+        :queryEntries
+        :renderHTML
+        :buildFilepath
+        :writeHTML
+    ) .
+
+# Step 1: Query entries from SPARQL (includes feed info)
+:queryEntries a :SPARQLSelect ;
+    :settings :entriesQuery .
+
+# Debug after query
+:showAfterQuery a :ShowMessage .
+
+# Step 2: Restructure data for template
+:prepareTemplate a :Restructure ;
+    :settings :templatePrep .
+
+# Debug after restructure
+:showAfterRestructure a :ShowMessage .
+
+# Step 3: Render HTML using template
+:renderHTML a :Templater ;
+    :settings :htmlTemplate .
+
+# Step 4: Build output file path
+:buildFilepath a :PathOps ;
+    :settings :htmlFilepath .
+
+# Debug
+:showDebug a :ShowMessage .
+
+# Step 5: Write HTML file
+:writeHTML a :FileWriter ;
+    :settings :contentLocation .

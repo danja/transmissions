@@ -1,0 +1,11 @@
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+:fetchSettings a :ConfigSet ;
+    :url "https://hnrss.org/frontpage" ;
+    :method "GET" ;
+    :timeout "10000" .
+
+:parserSettings a :ConfigSet ;
+    :inputField "http.data" ;
+    :outputField "feed" ;
+    :includeRawContent "false" .

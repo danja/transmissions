@@ -6,6 +6,7 @@ import LinkFinder from './LinkFinder.js'
 import MarkdownToHTML from './MarkdownToHTML.js'
 import MarkdownToLinks from './MarkdownToLinks.js'
 import HTMLToMarkdown from './HTMLToMarkdown.js'
+import FeedParser from './FeedParser.js'
 
 class MarkupProcessorsFactory {
     static createProcessor(type, config) {
@@ -23,6 +24,9 @@ class MarkupProcessorsFactory {
         }
         if (type.equals(ns.trn.HTMLToMarkdown)) {
             return new HTMLToMarkdown(config)
+        }
+        if (type.equals(ns.trn.FeedParser)) {
+            return new FeedParser(config)
         }
         return false
     }

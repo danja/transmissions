@@ -1,0 +1,16 @@
+PREFIX sioc: <http://rdfs.org/sioc/ns#>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+
+SELECT ?post ?title ?link ?date ?creator ?content
+WHERE {
+  GRAPH <http://hyperdata.it/content> {
+    ?post a sioc:Post ;
+          dc:title ?title ;
+          sioc:link ?link .
+    OPTIONAL { ?post dc:date ?date }
+    OPTIONAL { ?post dc:creator ?creator }
+    OPTIONAL { ?post sioc:content ?content }
+  }
+}
+ORDER BY DESC(?date)
+LIMIT 30

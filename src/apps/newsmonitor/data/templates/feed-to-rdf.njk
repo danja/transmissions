@@ -1,0 +1,9 @@
+<{{ feedURI.uri | safe }}> a <http://rdfs.org/sioc/ns#Forum> ;
+    <http://purl.org/dc/elements/1.1/title> "{{ escape(feed.meta.title) }}" ;
+    {% if feed.meta.description %}<http://purl.org/dc/elements/1.1/description> "{{ escape(feed.meta.description) }}" ;{% endif %}
+    <http://rdfs.org/sioc/ns#link> <{{ feed.meta.link }}> ;
+    <http://rdfs.org/sioc/ns#feed_url> <{{ url }}> ;
+    {% if feed.meta.lastBuildDate %}<http://purl.org/dc/elements/1.1/date> "{{ feed.meta.lastBuildDate }}"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;{% endif %}
+    <http://rdfs.org/sioc/ns#num_items> {{ feed.entries.length }} ;
+    <http://rdfs.org/sioc/ns#format> "{{ feed.format }}" ;
+    <http://purl.org/dc/elements/1.1/created> "{{ now() }}"^^<http://www.w3.org/2001/XMLSchema#dateTime> .

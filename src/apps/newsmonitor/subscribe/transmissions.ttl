@@ -1,0 +1,40 @@
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+# Subscribe to a new feed
+:subscribe a :Transmission ;
+    :pipe (
+        :validateURL
+        :fetchFeed
+        :parseFeed
+        :generateFeedURI
+        :buildFeedRDF
+        :storeFeed
+        :showSuccess
+    ) .
+
+# Step 1: Validate and normalize URL
+:validateURL a :URLNormalizer ;
+    :settings :urlSettings .
+
+# Step 2: Fetch feed to verify it works
+:fetchFeed a :HttpClient ;
+    :settings :fetchSettings .
+
+# Step 3: Parse feed to get metadata
+:parseFeed a :FeedParser ;
+    :settings :parserSettings .
+
+# Step 4: Generate feed URI
+:generateFeedURI a :ResourceMinter ;
+    :settings :mintSettings .
+
+# Step 5: Build RDF for feed metadata
+:buildFeedRDF a :RDFBuilder ;
+    :settings :rdfSettings .
+
+# Step 6: Store feed in SPARQL
+:storeFeed a :SPARQLUpdate ;
+    :settings :updateSettings .
+
+# Step 7: Show success
+:showSuccess a :ShowMessage .

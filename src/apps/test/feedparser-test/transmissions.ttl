@@ -1,0 +1,12 @@
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+:test a :Transmission ;
+    :pipe (:fetch :parse :show) .
+
+:fetch a :HttpClient ;
+    :settings :fetchSettings .
+
+:parse a :FeedParser ;
+    :settings :parserSettings .
+
+:show a :ShowMessage .

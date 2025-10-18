@@ -1,0 +1,59 @@
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+# SPARQL Query Settings
+:querySettings a :ConfigSet ;
+    :endpointSettings "data/endpoints.json" ;
+    :templateFilename "data/sparql-templates/get-existing-entries.rq" ;
+    :dataField "queryData" ;
+    :graph <http://hyperdata.it/content> .
+
+# Fetch Settings
+:fetchSettings a :ConfigSet ;
+    :url "https://hnrss.org/frontpage" ;
+    :method "GET" ;
+    :timeout "10000" .
+
+# Parser Settings
+:parserSettings a :ConfigSet ;
+    :inputField "http.data" ;
+    :outputField "feed" .
+
+# ForEach Settings
+:forEachSettings a :ConfigSet ;
+    :forEach "feed.entries" ;
+    :delay "50" ;
+    :limit "5" .
+
+# Deduplication Settings
+:dedupeSettings a :ConfigSet ;
+    :guidField "currentItem.guid" ;
+    :linkField "currentItem.link" ;
+    :contentField "currentItem.content" ;
+    :useContentHash "true" ;
+    :checkMethod "all" .
+
+# Choice Settings (skip if duplicate)
+:choiceSettings a :ConfigSet ;
+    :condition "isDuplicate" ;
+    :operator "equals" ;
+    :value "true" .
+
+# Feed URI Settings
+:feedURISettings a :ConfigSet ;
+    :field "feedURI" ;
+    :value "http://hyperdata.it/feeds/hnrss-frontpage" .
+
+# RDF Builder Settings
+:rdfSettings a :ConfigSet ;
+    :dataField "currentItem" ;
+    :templateFilename "data/templates/feed-entry-to-rdf.njk" ;
+    :baseURI "http://hyperdata.it/" ;
+    :outputField "rdf" .
+
+# SPARQL Update Settings
+:updateSettings a :ConfigSet ;
+    :endpointSettings "data/endpoints.json" ;
+    :templateFilename "data/sparql-templates/insert-entry.rq" ;
+    :dataBlock "updateData" ;
+    :graph <http://hyperdata.it/content> ;
+    :delay "100" .

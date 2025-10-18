@@ -1,0 +1,13 @@
+PREFIX sioc: <http://rdfs.org/sioc/ns#>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+
+SELECT ?post ?id ?link ?hash
+FROM <{{ graph }}>
+WHERE {
+  ?post a sioc:Post ;
+        sioc:has_container <{{ feedURI }}> .
+
+  OPTIONAL { ?post sioc:id ?id }
+  OPTIONAL { ?post sioc:link ?link }
+  OPTIONAL { ?post sioc:contentHash ?hash }
+}

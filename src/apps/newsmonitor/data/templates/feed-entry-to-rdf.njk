@@ -1,0 +1,9 @@
+<{{ baseURI }}posts/{{ hash(guid) }}> a <http://rdfs.org/sioc/ns#Post> ;
+    <http://purl.org/dc/elements/1.1/title> "{{ escape(title) }}" ;
+    <http://rdfs.org/sioc/ns#link> <{{ link }}> ;
+    <http://rdfs.org/sioc/ns#id> "{{ escape(guid) }}" ;
+    {% if published %}<http://purl.org/dc/elements/1.1/date> "{{ published }}"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;{% endif %}
+    {% if author %}<http://purl.org/dc/elements/1.1/creator> "{{ escape(author) }}" ;{% endif %}
+    {% if contentSnippet %}<http://rdfs.org/sioc/ns#content> "{{ escape(contentSnippet) }}" ;{% endif %}
+    {% if content %}<http://purl.org/rss/1.0/modules/content/encoded> "{{ escape(content) }}" ;{% endif %}
+    <http://rdfs.org/sioc/ns#has_container> <{{ feedURI }}> .

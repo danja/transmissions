@@ -1,0 +1,37 @@
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+:fetchSettings a :ConfigSet ;
+    :url "https://hnrss.org/frontpage" ;
+    :method "GET" ;
+    :timeout "10000" .
+
+:parserSettings a :ConfigSet ;
+    :inputField "http.data" ;
+    :outputField "feed" .
+
+:extractSettings a :ConfigSet ;
+    :map """
+    {
+        "forEach": "feed.entries"
+    }
+    """ .
+
+:forEachSettings a :ConfigSet ;
+    :forEach "feed.entries" ;
+    :delay "10" ;
+    :limit "3" .
+
+:feedURISettings a :ConfigSet ;
+    :field "feedURI" ;
+    :value "http://hyperdata.it/feeds/hnrss-frontpage" .
+
+:rdfSettings a :ConfigSet ;
+    :dataField "currentItem" ;
+    :templateFilename "../data/templates/feed-entry-to-rdf.njk" ;
+    :baseURI "http://hyperdata.it/" ;
+    :outputField "rdf" .
+
+:writeSettings a :ConfigSet ;
+    :sourceField "rdf" ;
+    :targetPath "../data/output" ;
+    :extension ".ttl" .

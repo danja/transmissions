@@ -1,0 +1,25 @@
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+# Simple fetch pipeline - fetches a single feed and converts entries to RDF
+:fetch a :Transmission ;
+    :pipe (:fetchFeed :parseFeed :processEntries :addFeedURI :buildRDF :writeRDF) .
+
+:fetchFeed a :HttpClient ;
+    :settings :fetchSettings .
+
+:parseFeed a :FeedParser ;
+    :settings :parserSettings .
+
+:processEntries a :ForEach ;
+    :settings :forEachSettings .
+
+:addFeedURI a :SetField ;
+    :settings :feedURISettings .
+
+:buildRDF a :RDFBuilder ;
+    :settings :rdfSettings .
+
+:writeRDF a :FileWriter ;
+    :settings :writeSettings .
+
+:showRDF a :ShowMessage .

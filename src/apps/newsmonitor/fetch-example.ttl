@@ -1,0 +1,6 @@
+# Add writeSettings to config.ttl
+:writeSettings a :ConfigSet ;
+    :sourceField "rdf" ;
+    :targetPath "data/output" ;
+    :filenameField "guid" ;
+    :extension ".ttl" .

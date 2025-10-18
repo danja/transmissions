@@ -3,6 +3,7 @@ import ns from '../../utils/ns.js'
 
 import SPARQLSelect from './SPARQLSelect.js'
 import SPARQLUpdate from './SPARQLUpdate.js'
+import RDFBuilder from './RDFBuilder.js'
 
 /**
  * @class SPARQLProcessorsFactory
@@ -21,6 +22,9 @@ class SPARQLProcessorsFactory {
         }
         if (type.equals(ns.trn.SPARQLUpdate)) {
             return new SPARQLUpdate(config)
+        }
+        if (type.equals(ns.trn.RDFBuilder)) {
+            return new RDFBuilder(config)
         }
 
         return false

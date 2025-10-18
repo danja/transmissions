@@ -1,0 +1,14 @@
+PREFIX sioc: <http://rdfs.org/sioc/ns#>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+
+SELECT ?feed ?title ?link ?feedUrl ?numItems
+WHERE {
+  GRAPH <http://hyperdata.it/feeds> {
+    ?feed a sioc:Forum ;
+          dc:title ?title ;
+          sioc:link ?link ;
+          sioc:feed_url ?feedUrl .
+    OPTIONAL { ?feed sioc:num_items ?numItems }
+  }
+}
+ORDER BY ?title
