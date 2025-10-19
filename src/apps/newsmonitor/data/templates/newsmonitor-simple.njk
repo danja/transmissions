@@ -83,22 +83,9 @@
     <div class="container">
         <header>
             <h1>📰 NewsMonitor</h1>
-            <p class="subtitle">Semantic Feed Aggregator powered by SPARQL & Transmissions</p>
-
-            <div class="stats">
-                <div class="stat-box">
-                    <div class="stat-number">{{ results.bindings | length }}</div>
-                    <div class="stat-label">Entries</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number">✅</div>
-                    <div class="stat-label">Live from SPARQL</div>
-                </div>
-            </div>
         </header>
 
         <div class="entries-section">
-            <h2>📝 Latest Entries</h2>
 
             {% for entry in results.bindings %}
             <div class="entry">

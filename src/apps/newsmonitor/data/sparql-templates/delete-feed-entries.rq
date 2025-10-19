@@ -1,0 +1,16 @@
+PREFIX sioc: <http://rdfs.org/sioc/ns#>
+
+DELETE {
+  GRAPH <{{ graph }}> {
+    ?post ?p ?o .
+  }
+}
+WHERE {
+  GRAPH <http://hyperdata.it/feeds> {
+    ?feed sioc:feed_url <{{ url }}> .
+  }
+  GRAPH <{{ graph }}> {
+    ?post sioc:has_container ?feed ;
+          ?p ?o .
+  }
+}

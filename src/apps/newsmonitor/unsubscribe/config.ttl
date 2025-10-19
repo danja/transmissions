@@ -1,0 +1,35 @@
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+# URL Normalization Settings
+:urlSettings a :ConfigSet ;
+    :sourceField "url" ;
+    :targetField "normalizedURL" .
+
+# Find Feed URI by URL
+:findFeedSettings a :ConfigSet ;
+    :endpointSettings "data/endpoints.json" ;
+    :templateFilename "data/sparql-templates/find-feed-by-url.rq" ;
+    :graph <http://hyperdata.it/feeds> .
+
+# Extract feedURI using ForEach
+:extractSettings a :ConfigSet ;
+    :forEach "queryResults.results.bindings" ;
+    :limit "1" .
+
+# Extract from currentItem
+:extractItemSettings a :ConfigSet ;
+    :rename (:r1) .
+        :r1 :pre "currentItem.feedURI.value" ;
+            :post "feedURI" .
+
+# Delete Feed Settings
+:deleteFeedSettings a :ConfigSet ;
+    :endpointSettings "data/endpoints.json" ;
+    :templateFilename "data/sparql-templates/delete-feed.rq" ;
+    :graph <http://hyperdata.it/feeds> .
+
+# Delete Entries Settings
+:deleteEntriesSettings a :ConfigSet ;
+    :endpointSettings "data/endpoints.json" ;
+    :templateFilename "data/sparql-templates/delete-feed-entries.rq" ;
+    :graph <http://hyperdata.it/content> .

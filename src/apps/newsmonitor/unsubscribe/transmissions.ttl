@@ -1,0 +1,20 @@
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+# Unsubscribe from a feed
+:unsubscribe a :Transmission ;
+    :pipe (
+        :deleteFeed
+        :deleteEntries
+        :showSuccess
+    ) .
+
+# Step 3: Delete feed metadata from feeds graph
+:deleteFeed a :SPARQLUpdate ;
+    :settings :deleteFeedSettings .
+
+# Step 4: Delete all entries from this feed
+:deleteEntries a :SPARQLUpdate ;
+    :settings :deleteEntriesSettings .
+
+# Step 5: Show success
+:showSuccess a :ShowMessage .

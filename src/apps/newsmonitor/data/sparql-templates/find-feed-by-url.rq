@@ -1,0 +1,10 @@
+PREFIX sioc: <http://rdfs.org/sioc/ns#>
+
+SELECT ?feedURI
+WHERE {
+  GRAPH <{{ graph }}> {
+    ?feedURI a sioc:Forum ;
+             sioc:feed_url <{{ url }}> .
+  }
+}
+LIMIT 1

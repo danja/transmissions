@@ -2,15 +2,15 @@
 
 NewsMonitor is a semantic web-based feed aggregator built on the Transmissions framework. It fetches RSS, Atom, and JSON feeds, converts them to RDF using established Semantic Web vocabularies, and stores them in a SPARQL endpoint for rich semantic queries.
 
-**td;dr**
+**tl;dr**
 ```sh
 nano src/apps/newsmonitor/data/feeds.md
- 
+
 ./trans src/apps/newsmonitor/subscribe-from-file
 ./trans src/apps/newsmonitor/update-all
 ./trans src/apps/newsmonitor/render-to-html
 
-xdg-open src/apps/newsmonitor/render-to-html/data/index.html
+xdg-open src/apps/newsmonitor/data/index.html
 ```
 
 ## Features
@@ -74,7 +74,7 @@ nano src/apps/newsmonitor/data/feeds.md
 
 ```bash
 ./trans src/apps/newsmonitor/render-to-html
-xdg-open src/apps/newsmonitor/render-to-html/data/newsmonitor.html
+xdg-open src/apps/newsmonitor/data/index.html
 ```
 
 ## Available Pipelines
@@ -95,7 +95,21 @@ Subscribe to a new feed by validating, fetching, and storing its metadata.
 - Generates feed URI
 - Stores as sioc:Forum in feeds graph
 
-### 2. Fetch (`fetch/`)
+### 2. Unsubscribe (`unsubscribe/`)
+
+Remove a feed and all its entries from the system.
+
+**Usage**:
+```bash
+./trans src/apps/newsmonitor/unsubscribe -m '{"url":"FEED_URL"}'
+```
+
+**What it does**:
+- Deletes feed metadata from feeds graph
+- Deletes all entries belonging to that feed from content graph
+- Cleans up all associated RDF triples
+
+### 3. Fetch (`fetch/`)
 
 Simple fetch pipeline for testing - fetches and parses a feed, generates RDF.
 
@@ -111,7 +125,7 @@ Simple fetch pipeline for testing - fetches and parses a feed, generates RDF.
 - Generates RDF for each
 - Displays results (no storage)
 
-### 3. Fetch-with-Storage (`fetch-with-storage/`)
+### 4. Fetch-with-Storage (`fetch-with-storage/`)
 
 Production pipeline with SPARQL storage and deduplication for a single feed.
 
@@ -128,7 +142,7 @@ Production pipeline with SPARQL storage and deduplication for a single feed.
 - Skips duplicates
 - Stores new entries in content graph
 
-### 4. Update All (`update-all/`)
+### 5. Update All (`update-all/`)
 
 Batch update all subscribed feeds automatically.
 
@@ -151,23 +165,28 @@ Batch update all subscribed feeds automatically.
 - `:delay "50"` - Delay between entries (ms)
 - `:timeout "10000"` - HTTP timeout (ms)
 
-### 5. Render to HTML (`render-to-html/`)
+### 6. Render to HTML (`render-to-html/`)
 
 Generate HTML page from all stored entries.
 
 **Usage**:
 ```bash
 ./trans src/apps/newsmonitor/render-to-html
-xdg-open src/apps/newsmonitor/render-to-html/data/index.html
+xdg-open src/apps/newsmonitor/data/index.html
 ```
 
 **What it does**:
-- Queries all entries from SPARQL store
+- Queries the 10 most recent entries from SPARQL store (sorted by date descending)
 - Renders modern HTML page using Nunjucks template
 - Displays entries with titles, authors, dates, excerpts
 - Creates responsive web interface
+- Output: `src/apps/newsmonitor/data/index.html`
 
-### 6. Subscribe from File (`subscribe-from-file/`)
+**Configuration** (edit `render-to-html/data/sparql-templates/get-all-for-page.rq`):
+- `LIMIT 10` - Number of entries to display
+- `ORDER BY DESC(?date)` - Reverse chronological order
+
+### 7. Subscribe from File (`subscribe-from-file/`)
 
 Batch subscribe to multiple feeds from a text file.
 
@@ -376,6 +395,14 @@ echo "https://example.com/feed.xml" >> src/apps/newsmonitor/data/feeds.md
 
 **Note**: New feeds are automatically included in the next `update-all` run.
 
+### Removing a Feed
+
+```bash
+./trans src/apps/newsmonitor/unsubscribe -m '{"url":"https://example.com/feed.xml"}'
+```
+
+This will remove the feed metadata and all entries from that feed.
+
 ### Scheduled Updates
 
 Set up a cron job to run `update-all` periodically:
@@ -399,6 +426,7 @@ Use Nunjucks syntax with helper functions:
 - `{{ hash(str) }}` - MD5 hash
 - `{{ escape(str) }}` - Escape RDF literals
 - `{{ now() }}` - Current timestamp
+- `{{ isoDate(str) }}` - Convert date to ISO 8601 format
 
 ### Testing
 

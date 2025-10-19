@@ -23,7 +23,8 @@ NewsMonitor is a feed aggregator built on Transmissions that uses a remote SPARQ
 ### Pipelines
 
 - `subscribe` - Add new feed subscriptions
-- `fetch` - Periodically fetch all subscribed feeds
-- `enhance` - Fetch full content for excerpt-only entries
-- `search` - Query stored feeds by various criteria
-- `export` - Generate RSS/Atom feeds from stored data
+- `unsubscribe` - Remove feeds and their entries
+- `subscribe-from-file` - Batch subscribe from feed list
+- `fetch-with-storage` - Fetch single feed with deduplication
+- `update-all` - Fetch all subscribed feeds
+- `render-to-html` - Generate HTML page from stored entries
