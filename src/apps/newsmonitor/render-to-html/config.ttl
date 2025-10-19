@@ -23,7 +23,7 @@
     :targetField "destinationFile" ;
     :values (:p1 :p2) .
     :p1 :field "workingDir" .
-    :p2 :string "newsmonitor.html" .
+    :p2 :string "index.html" .
 
 # FileWriter content location
 :contentLocation a :ConfigSet ;

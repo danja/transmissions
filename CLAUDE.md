@@ -85,6 +85,7 @@ Transmissions is a message-driven pipeline framework where:
 - **Note:** Many more processors exist in `src/processors/`. Always search for existing processors before creating new ones. Use `Glob` to find processors: `src/processors/**/*.js`
 
 **Creating New Processors:**
+- **Recommended:** Use the `transmissions-processor` skill for guided processor creation
 - Create processor class in appropriate subdirectory under `src/processors/` (e.g., `src/processors/util/MyProcessor.js`)
 - Extend `Processor` base class and implement `async process(message)` method
 - Import and register in corresponding Factory file (e.g., `src/processors/util/UtilProcessorsFactory.js`):
@@ -94,6 +95,13 @@ Transmissions is a message-driven pipeline framework where:
 - Check for `message.done` and skip processing spawning completion messages
 - Use `super.getProperty(ns.trn.propertyName, defaultValue)` for configuration
 - Emit processed message: `this.emit('message', message)`
+
+**Creating New Applications:**
+- **Recommended:** Use the `transmissions-app` skill for guided app creation
+- Create app directory under `src/apps/` with appropriate structure
+- Define pipelines in `transmissions.ttl` and configuration in `config.ttl`
+- Use subdirectories for complex apps with multiple pipelines
+- Follow established patterns from existing apps
 
 **Common Application Patterns:**
 - **SPARQL Query → ForEach → Process → SPARQL Update** - Process multiple items from store
@@ -113,3 +121,8 @@ Transmissions is a message-driven pipeline framework where:
 - Use `LOG_LEVEL=debug` for detailed logging
 - Add `:SM` (ShowMessage) processor in pipeline to inspect messages
 - Check message fields with Restructure to ensure correct paths between processors
+
+**Available Skills:**
+- **transmissions-app** - Guide for creating new Transmissions applications with decision support for core vs remote development
+- **transmissions-processor** - Guide for creating custom Transmissions processors with factory registration for core and remote development
+- Use these skills when creating new applications or processors for best practices and guided workflows
