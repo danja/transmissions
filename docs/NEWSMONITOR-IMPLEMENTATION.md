@@ -1,7 +1,7 @@
 # NewsMonitor Implementation Status
 
 **Date**: 2025-10-18
-**Status**: ✅ Phase 2 Complete - SPARQL Integration Tested & Working
+**Status**: ✅ Phase 3 Complete - HTML Rendering Pipeline Working
 
 ## Summary
 
@@ -248,6 +248,68 @@ URLNormalizer → HttpClient → FeedParser → ResourceMinter
 
 **Status**: ✅ Fully tested and operational with live SPARQL endpoint
 
+#### 9. HTML Rendering Pipeline ✅
+
+**Location**: `src/apps/newsmonitor/render-to-html/`
+
+**Pipeline Flow**:
+```
+SPARQLSelect → Templater → PathOps → FileWriter
+```
+
+**Process**:
+1. **SPARQLSelect**: Query all entries from SPARQL store
+2. **Templater**: Render HTML using Nunjucks template with query results
+3. **PathOps**: Build output file path
+4. **FileWriter**: Write HTML file to disk
+
+**Configuration**:
+- Template: `templates/newsmonitor-simple.njk`
+- Data field: `queryResults` (direct access to SPARQL results)
+- Output: `data/newsmonitor.html`
+
+**Template Features**:
+- Modern gradient design (purple to blue)
+- Statistics display (entry count, live SPARQL indicator)
+- Entry cards with title, author, date, content excerpt
+- Responsive layout
+- Links to original articles
+- Footer with tech stack information
+
+**SPARQL Query**:
+```sparql
+PREFIX sioc: <http://rdfs.org/sioc/ns#>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+
+SELECT ?post ?title ?link ?date ?creator ?content
+WHERE {
+  GRAPH <http://hyperdata.it/content> {
+    ?post a sioc:Post ;
+          dc:title ?title ;
+          sioc:link ?link .
+    OPTIONAL { ?post dc:date ?date }
+    OPTIONAL { ?post dc:creator ?creator }
+    OPTIONAL { ?post sioc:content ?content }
+  }
+}
+ORDER BY DESC(?date)
+LIMIT 30
+```
+
+**Generated Output**:
+- HTML file: 20KB, 515 lines
+- Displays all 20 stored entries
+- Clean, modern interface
+- Browser-ready presentation
+
+**Status**: ✅ Fully operational - generates HTML page from SPARQL data
+
+**Usage**:
+```bash
+./trans src/apps/newsmonitor/render-to-html
+xdg-open src/apps/newsmonitor/render-to-html/data/newsmonitor.html
+```
+
 ## Testing Results
 
 ### Phase 1 Tests
@@ -399,9 +461,73 @@ EntryDeduplicator: Duplicate found by GUID: https://news.ycombinator.com/item?id
 
 **Verification**: Entry count remained at 5 (duplicates successfully prevented)
 
+### Phase 3 Tests (HTML Rendering) ✅
+
+**SPARQL Server**: Apache Jena Fuseki at http://localhost:3030/newsmonitor/
+
+#### Test 1: Multiple Feed Subscriptions ✅
+
+**Feeds Added**:
+1. Emery Berger's Blog: https://emeryblogger.wordpress.com/feed/
+2. Simon Willison's Blog: https://simonwillison.net/atom/everything/
+3. Bob DuCharme's Blog: http://bobdc.com/blog/atom.xml
+
+**Commands**:
+```bash
+./trans src/apps/newsmonitor/subscribe -m '{"url":"https://emeryblogger.wordpress.com/feed/"}'
+./trans src/apps/newsmonitor/subscribe -m '{"url":"https://simonwillison.net/atom/everything/"}'
+./trans src/apps/newsmonitor/subscribe -m '{"url":"http://bobdc.com/blog/atom.xml"}'
+```
+
+**Results**: ✅ All 3 feeds subscribed successfully
+
+#### Test 2: Batch Entry Fetching ✅
+
+**Commands**:
+```bash
+./trans src/apps/newsmonitor/fetch-with-storage -m '{"url":"https://emeryblogger.wordpress.com/feed/"}'
+./trans src/apps/newsmonitor/fetch-with-storage -m '{"url":"https://simonwillison.net/atom/everything/"}'
+./trans src/apps/newsmonitor/fetch-with-storage -m '{"url":"http://bobdc.com/blog/atom.xml"}'
+```
+
+**Results**: ✅ 20 total entries fetched and stored
+- Automatic deduplication working
+- All entries stored in `<http://hyperdata.it/content>` graph
+- Mixed formats handled correctly (RSS + Atom)
+
+#### Test 3: HTML Page Generation ✅
+
+**Command**:
+```bash
+./trans src/apps/newsmonitor/render-to-html
+xdg-open src/apps/newsmonitor/render-to-html/data/newsmonitor.html
+```
+
+**Results**: ✅ SUCCESS
+- Generated 20KB HTML file (515 lines)
+- All 20 entries rendered correctly
+- Modern, responsive design
+- Entry metadata displayed:
+  - Titles with clickable links
+  - Authors (when available)
+  - Publication dates
+  - Content excerpts (truncated to 300 chars)
+- Statistics showing live entry count
+- Professional appearance with gradient header
+
+**Key Fix**: Template file path configuration
+- **Issue**: Templater was silently failing due to incorrect path resolution
+- **Root Cause**: Config had `data/templates/newsmonitor-simple.njk` but working directory was already `data/`, causing lookup at `data/data/templates/...`
+- **Solution**: Changed path to `templates/newsmonitor-simple.njk` (relative to working directory)
+
+**Template Data Access**:
+- Templater configured with `:dataField "queryResults"`
+- Template accesses SPARQL results via `results.results.bindings`
+- Nunjucks filters used: `length`, `truncate`
+
 ## Next Steps
 
-### Phase 3: Content Enhancement
+### Phase 4: Content Enhancement
 
 **Priority**: Medium
 **Estimated Effort**: 2-3 days
@@ -422,7 +548,7 @@ EntryDeduplicator: Duplicate found by GUID: https://news.ycombinator.com/item?id
    - Fetch and extract for each
    - Update SPARQL store
 
-### Phase 4: Query & Export
+### Phase 5: Query & Export
 
 **Priority**: Medium
 **Estimated Effort**: 2-3 days
@@ -443,7 +569,7 @@ EntryDeduplicator: Duplicate found by GUID: https://news.ycombinator.com/item?id
    - Support user-defined filters
    - Test with feed readers
 
-### Phase 5: Advanced Features
+### Phase 6: Advanced Features
 
 **Priority**: Low
 **Estimated Effort**: 3-4 days
@@ -489,6 +615,12 @@ EntryDeduplicator: Duplicate found by GUID: https://news.ycombinator.com/item?id
 6. **EntryDeduplicator Message Flow** ✅
    - Issue: Duplicate messages were flagged but still processed
    - Solution: Modified EntryDeduplicator to not emit duplicate messages (return early)
+
+7. **Templater File Path Resolution** ✅
+   - Issue: Templater process() wasn't being called, pipeline stopped silently
+   - Root Cause: Template path `data/templates/newsmonitor-simple.njk` resolved to `data/data/templates/...` (working dir already `data/`)
+   - Solution: Changed to `templates/newsmonitor-simple.njk` (relative to working directory)
+   - Impact: HTML rendering pipeline now fully functional
 
 ### Minor Issues (Non-blocking)
 
@@ -560,9 +692,9 @@ EntryDeduplicator: Duplicate found by GUID: https://news.ycombinator.com/item?id
 
 ## Conclusion
 
-**Phase 1 & 2 are COMPLETE and TESTED!** ✅
+**Phase 1, 2 & 3 are COMPLETE and TESTED!** ✅
 
-NewsMonitor is now a **fully operational feed aggregator** with live SPARQL integration.
+NewsMonitor is now a **fully operational feed aggregator** with live SPARQL integration and HTML rendering.
 
 **Phase 1 Achievements**:
 - ✅ Robust feed fetching and parsing (RSS/Atom/JSON)
@@ -579,24 +711,33 @@ NewsMonitor is now a **fully operational feed aggregator** with live SPARQL inte
 - ✅ Two-graph architecture (feeds + content)
 - ✅ **TESTED**: Stored 1 feed + 5 entries, deduplication prevented re-inserts
 
+**Phase 3 Achievements**:
+- ✅ HTML rendering pipeline with Templater
+- ✅ SPARQL query integration for content retrieval
+- ✅ Modern, responsive web interface
+- ✅ Professional page design with statistics
+- ✅ **TESTED**: Generated 20KB HTML from 20 stored entries across 3 feeds
+
 **Live Testing Results**:
-- ✅ Subscribe pipeline: 1 feed stored successfully
-- ✅ Fetch-with-storage: 5 entries stored successfully
-- ✅ Deduplication: 5/5 duplicates caught and skipped
+- ✅ Subscribe pipeline: 3 feeds stored successfully (Emery Berger, Simon Willison, Bob DuCharme)
+- ✅ Fetch-with-storage: 20 total entries stored successfully
+- ✅ Deduplication: Working across multiple feeds
 - ✅ SPARQL queries: All data retrievable
-- ✅ End-to-end flow: Working perfectly
+- ✅ HTML rendering: 20KB page with 20 entries, modern design
+- ✅ End-to-end flow: Working perfectly from subscription to display
 
 **Production Ready**: The system is operational and ready for:
-1. Multiple feed subscriptions
-2. Continuous feed monitoring
-3. Content aggregation and search
-4. Export to custom feeds
+1. Multiple feed subscriptions ✅ (Tested with 3 feeds)
+2. Continuous feed monitoring (Deduplication working)
+3. Content aggregation ✅ (20 entries from mixed sources)
+4. HTML presentation ✅ (Professional web interface)
 
 **Next Recommended Steps**:
 1. Add scheduled feed updates (cron or similar)
 2. Implement content enhancement (full article extraction)
-3. Build search/query interface
-4. Add more feed sources
+3. Build search/query interface with filtering
+4. Add RSS/Atom export from stored data
+5. Create automated update workflow
 
 ## Running the Implementation
 
@@ -618,10 +759,38 @@ NewsMonitor is now a **fully operational feed aggregator** with live SPARQL inte
 ./trans src/apps/newsmonitor/fetch 2>&1 | grep '"rdf":'
 ```
 
-### Run NewsMonitor (Main App)
+### Subscribe to Feeds
 
 ```bash
-./trans newsmonitor
+./trans src/apps/newsmonitor/subscribe -m '{"url":"https://emeryblogger.wordpress.com/feed/"}'
+./trans src/apps/newsmonitor/subscribe -m '{"url":"https://simonwillison.net/atom/everything/"}'
 ```
 
-Currently just a test harness. Will become the main entry point once HTTP server is added.
+### Fetch and Store Entries
+
+```bash
+./trans src/apps/newsmonitor/fetch-with-storage -m '{"url":"https://emeryblogger.wordpress.com/feed/"}'
+```
+
+### Generate HTML Page
+
+```bash
+./trans src/apps/newsmonitor/render-to-html
+xdg-open src/apps/newsmonitor/render-to-html/data/newsmonitor.html
+```
+
+### Complete Workflow Example
+
+```bash
+# Subscribe to a feed
+./trans src/apps/newsmonitor/subscribe -m '{"url":"https://hnrss.org/frontpage"}'
+
+# Fetch entries from the feed
+./trans src/apps/newsmonitor/fetch-with-storage -m '{"url":"https://hnrss.org/frontpage"}'
+
+# Generate HTML page from all stored entries
+./trans src/apps/newsmonitor/render-to-html
+
+# View the page
+xdg-open src/apps/newsmonitor/render-to-html/data/newsmonitor.html
+```
