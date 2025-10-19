@@ -1,0 +1,60 @@
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+# Update All Feeds Pipeline
+# Queries all subscribed feeds and fetches/stores their entries
+:update-all a :Transmission ;
+    :pipe (
+        :getAllFeeds
+        :processEachFeed
+        :prepareFeedData
+        :getExistingEntries
+        :fetchFeed
+        :parseFeed
+        :processEntries
+        :checkDuplicate
+        :buildRDF
+        :storeEntry
+    ) .
+
+# Step 1: Query all feeds from SPARQL store
+:getAllFeeds a :SPARQLSelect ;
+    :settings :feedQuerySettings .
+
+# Step 2: Iterate over each feed
+:processEachFeed a :ForEach ;
+    :settings :feedIteratorSettings .
+
+# Step 3: Prepare feed data for processing
+:prepareFeedData a :Restructure ;
+    :settings :prepareSettings .
+
+# Step 4: Get existing entries for this feed
+:getExistingEntries a :SPARQLSelect ;
+    :settings :querySettings .
+
+# Step 5: Fetch feed from URL
+:fetchFeed a :HttpClient ;
+    :settings :fetchSettings .
+
+# Step 5: Parse feed
+:parseFeed a :FeedParser ;
+    :settings :parserSettings .
+
+# Step 6: Iterate over entries
+:processEntries a :ForEach ;
+    :settings :forEachSettings .
+
+# Step 7: Check if entry is duplicate
+:checkDuplicate a :EntryDeduplicator ;
+    :settings :dedupeSettings .
+
+# Step 8: Build RDF
+:buildRDF a :RDFBuilder ;
+    :settings :rdfSettings .
+
+# Step 10: Store in SPARQL
+:storeEntry a :SPARQLUpdate ;
+    :settings :updateSettings .
+
+# Step 11: Show result
+:showResult a :ShowMessage .

@@ -13,31 +13,32 @@ import Processor from '../../model/Processor.js'
  * @classdesc
  * **a Transmissions Processor**
  *
- * Reads a text file or string, splits it into lines, and emits each non-empty, non-comment line as a separate message for downstream processing.
+ * Splits text content into an array of lines, filtering empty lines and comments.
  *
  * ### Processor Signature
  *
  * #### __*Settings*__
- * * None specific; inherits from base Processor
+ * * **`ns.trn.inputField`** - Field containing text to split (default: 'content')
+ * * **`ns.trn.outputField`** - Field to store array of lines (default: 'lines')
+ * * **`ns.trn.filterEmpty`** - Filter empty lines (default: 'true')
+ * * **`ns.trn.filterComments`** - Filter lines starting with comment char (default: 'true')
+ * * **`ns.trn.commentChar`** - Comment character (default: '#')
  *
  * #### __*Input*__
- * * **`message.content`** - The text content to be split into lines
- * * **`message.filepath`** (optional) - Path to the file to be read (if not using `message.content`)
+ * * **`message[inputField]`** - The text content to be split into lines
  *
  * #### __*Output*__
- * * Emits each line (string) as a separate message, together with the original message context
+ * * **`message[outputField]`** - Array of filtered lines
  *
  * #### __*Behavior*__
- * * Splits input text into lines
- * * Ignores empty lines and lines starting with '#'
- * * Emits each valid line as a new message
+ * * Splits input text by newline character
+ * * Trims whitespace from each line
+ * * Optionally filters empty lines (default: yes)
+ * * Optionally filters comment lines (default: yes)
+ * * Stores result as array in output field
  *
  * #### __*Side Effects*__
- * * None (all changes are in-memory or in emitted messages)
- *
- * #### __*ToDo*__
- * Add support for reading from file if filepath is provided
- * Add configurable comment character and line filtering
+ * * Adds array field to message object
  */
 class LineReader extends Processor {
 
@@ -46,19 +47,40 @@ class LineReader extends Processor {
     }
 
     async process(message) {
+        logger.debug('\nLineReader.process')
 
-        const text = data.toString()
+        // Get configuration
+        const inputField = super.getProperty(ns.trn.inputField, 'content')
+        const outputField = super.getProperty(ns.trn.outputField, 'lines')
+        const filterEmpty = super.getProperty(ns.trn.filterEmpty, 'true') === 'true'
+        const filterComments = super.getProperty(ns.trn.filterComments, 'true') === 'true'
+        const commentChar = super.getProperty(ns.trn.commentChar, '#')
 
-
-        const lines = text.split('\n')
-        for await (let line of lines) {
-            if (line.trim() && !line.startsWith('#')) {
-                logger.debug('Line = [[[' + line + ']]]')
-                return this.emit('message', line, message)
-            }
+        // Get text content
+        const text = message[inputField]
+        if (!text) {
+            logger.warn(`LineReader: No content found in message.${inputField}`)
+            return this.emit('message', message)
         }
 
-        return this.emit('message', '~~done~~', message)
+        // Split into lines
+        const allLines = text.toString().split('\n')
+
+        // Filter lines
+        const lines = allLines
+            .map(line => line.trim())
+            .filter(line => {
+                if (filterEmpty && !line) return false
+                if (filterComments && line.startsWith(commentChar)) return false
+                return true
+            })
+
+        logger.debug(`LineReader: Split ${allLines.length} lines, filtered to ${lines.length}`)
+
+        // Store in output field
+        message[outputField] = lines
+
+        return this.emit('message', message)
     }
 }
 

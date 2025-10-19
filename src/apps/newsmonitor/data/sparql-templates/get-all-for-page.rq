@@ -6,11 +6,11 @@ WHERE {
   GRAPH <http://hyperdata.it/content> {
     ?post a sioc:Post ;
           dc:title ?title ;
-          sioc:link ?link .
-    OPTIONAL { ?post dc:date ?date }
+          sioc:link ?link ;
+          dc:date ?date .
     OPTIONAL { ?post dc:creator ?creator }
     OPTIONAL { ?post sioc:content ?content }
   }
 }
 ORDER BY DESC(?date)
-LIMIT 30
+LIMIT 10

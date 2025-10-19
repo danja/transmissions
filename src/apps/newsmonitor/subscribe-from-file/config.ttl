@@ -1,0 +1,54 @@
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+# Read feeds.md file
+:fileSettings a :ConfigSet ;
+    :sourceFile "feeds.md" ;
+    :mediaType "text/plain" ;
+    :targetField "content" .
+
+# Split content into lines (URLs)
+:lineSettings a :ConfigSet ;
+    :inputField "content" ;
+    :outputField "lines" ;
+    :filterEmpty "true" ;
+    :filterComments "true" ;
+    :commentChar "#" .
+
+# Iterate over each URL
+:forEachSettings a :ConfigSet ;
+    :forEach "lines" ;
+    :delay "2000" .
+
+# URL Normalization Settings
+:urlSettings a :ConfigSet ;
+    :sourceField "currentItem" ;
+    :targetField "normalizedURL" .
+
+# Fetch Settings
+:fetchSettings a :ConfigSet ;
+    :method "GET" ;
+    :timeout "10000" .
+
+# Parser Settings
+:parserSettings a :ConfigSet ;
+    :inputField "http.data" ;
+    :outputField "feed" .
+
+# Resource Minting Settings
+:mintSettings a :ConfigSet ;
+    :baseURI "http://hyperdata.it/feeds/" ;
+    :sourceField "feed.meta.title" ;
+    :targetField "feedURI" .
+
+# RDF Builder Settings
+:rdfSettings a :ConfigSet ;
+    :templateFilename "data/templates/feed-to-rdf.njk" ;
+    :baseURI "http://hyperdata.it/" ;
+    :outputField "rdf" .
+
+# SPARQL Update Settings
+:updateSettings a :ConfigSet ;
+    :endpointSettings "data/endpoints.json" ;
+    :templateFilename "data/sparql-templates/insert-entry.rq" ;
+    :graph <http://hyperdata.it/feeds> ;
+    :delay "100" .

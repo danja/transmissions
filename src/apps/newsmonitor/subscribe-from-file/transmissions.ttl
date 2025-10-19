@@ -1,0 +1,51 @@
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+# Subscribe to multiple feeds from a file
+:subscribe-from-file a :Transmission ;
+    :pipe (
+        :readFile
+        :splitLines
+        :processEachURL
+        :validateURL
+        :fetchFeed
+        :parseFeed
+        :generateFeedURI
+        :buildFeedRDF
+        :storeFeed
+    ) .
+
+# Step 1: Read feeds.md file
+:readFile a :FileReader ;
+    :settings :fileSettings .
+
+# Step 2: Split content into array of URLs
+:splitLines a :LineReader ;
+    :settings :lineSettings .
+
+# Step 3: Iterate over each URL
+:processEachURL a :ForEach ;
+    :settings :forEachSettings .
+
+# Step 4: Validate and normalize URL
+:validateURL a :URLNormalizer ;
+    :settings :urlSettings .
+
+# Step 5: Fetch feed to verify it works
+:fetchFeed a :HttpClient ;
+    :settings :fetchSettings .
+
+# Step 6: Parse feed to get metadata
+:parseFeed a :FeedParser ;
+    :settings :parserSettings .
+
+# Step 7: Generate feed URI
+:generateFeedURI a :ResourceMinter ;
+    :settings :mintSettings .
+
+# Step 8: Build RDF for feed metadata
+:buildFeedRDF a :RDFBuilder ;
+    :settings :rdfSettings .
+
+# Step 9: Store feed in SPARQL
+:storeFeed a :SPARQLUpdate ;
+    :settings :updateSettings .

@@ -2,6 +2,17 @@
 
 NewsMonitor is a semantic web-based feed aggregator built on the Transmissions framework. It fetches RSS, Atom, and JSON feeds, converts them to RDF using established Semantic Web vocabularies, and stores them in a SPARQL endpoint for rich semantic queries.
 
+**td;dr**
+```sh
+nano src/apps/newsmonitor/data/feeds.md
+ 
+./trans src/apps/newsmonitor/subscribe-from-file
+./trans src/apps/newsmonitor/update-all
+./trans src/apps/newsmonitor/render-to-html
+
+xdg-open src/apps/newsmonitor/render-to-html/data/index.html
+```
+
 ## Features
 
 - **Multi-Format Support**: RSS 1.0, RSS 2.0, Atom, JSON Feed
@@ -35,16 +46,35 @@ cp endpoints.json.example endpoints.json
 # Edit endpoints.json with your SPARQL server details
 ```
 
-2. **Subscribe to a Feed**
+2. **Subscribe to Feeds**
 
+Option A - Subscribe one at a time:
 ```bash
 ./trans src/apps/newsmonitor/subscribe -m '{"url":"https://hnrss.org/frontpage"}'
+./trans src/apps/newsmonitor/subscribe -m '{"url":"https://simonwillison.net/atom/everything/"}'
+./trans src/apps/newsmonitor/subscribe -m '{"url":"http://bobdc.com/blog/atom.xml"}'
 ```
 
-3. **Fetch and Store Entries**
+Option B - Batch subscribe from file:
+```bash
+# Edit data/feeds.md to list your feeds
+nano src/apps/newsmonitor/data/feeds.md
+
+# Run batch subscription
+./trans src/apps/newsmonitor/subscribe-from-file
+```
+
+3. **Fetch and Store Entries from All Feeds**
 
 ```bash
-./trans src/apps/newsmonitor/fetch-with-storage
+./trans src/apps/newsmonitor/update-all
+```
+
+4. **Generate HTML Page**
+
+```bash
+./trans src/apps/newsmonitor/render-to-html
+xdg-open src/apps/newsmonitor/render-to-html/data/newsmonitor.html
 ```
 
 ## Available Pipelines
@@ -83,20 +113,95 @@ Simple fetch pipeline for testing - fetches and parses a feed, generates RDF.
 
 ### 3. Fetch-with-Storage (`fetch-with-storage/`)
 
-Production pipeline with SPARQL storage and deduplication.
+Production pipeline with SPARQL storage and deduplication for a single feed.
 
 **Usage**:
 ```bash
-./trans src/apps/newsmonitor/fetch-with-storage
+./trans src/apps/newsmonitor/fetch-with-storage -m '{"url":"FEED_URL"}'
 ```
 
 **What it does**:
 - Queries existing entries from SPARQL
-- Fetches feed
+- Fetches specified feed
 - Parses entries
 - Checks each for duplicates
 - Skips duplicates
 - Stores new entries in content graph
+
+### 4. Update All (`update-all/`)
+
+Batch update all subscribed feeds automatically.
+
+**Usage**:
+```bash
+./trans src/apps/newsmonitor/update-all
+```
+
+**What it does**:
+- Queries SPARQL for all subscribed feeds
+- For each feed:
+  - Fetches feed content
+  - Parses entries (up to 20 per feed)
+  - Checks for duplicates
+  - Stores new entries in content graph
+- Processes all feeds in one command
+
+**Configuration** (edit `update-all/config.ttl`):
+- `:limit "20"` - Max entries per feed
+- `:delay "50"` - Delay between entries (ms)
+- `:timeout "10000"` - HTTP timeout (ms)
+
+### 5. Render to HTML (`render-to-html/`)
+
+Generate HTML page from all stored entries.
+
+**Usage**:
+```bash
+./trans src/apps/newsmonitor/render-to-html
+xdg-open src/apps/newsmonitor/render-to-html/data/index.html
+```
+
+**What it does**:
+- Queries all entries from SPARQL store
+- Renders modern HTML page using Nunjucks template
+- Displays entries with titles, authors, dates, excerpts
+- Creates responsive web interface
+
+### 6. Subscribe from File (`subscribe-from-file/`)
+
+Batch subscribe to multiple feeds from a text file.
+
+**Usage**:
+```bash
+# 1. Edit the feed list
+nano src/apps/newsmonitor/data/feeds.md
+
+# 2. Run the batch subscription
+./trans src/apps/newsmonitor/subscribe-from-file
+```
+
+**What it does**:
+- Reads feed URLs from `data/feeds.md` (one per line)
+- Filters empty lines and comments (lines starting with `#`)
+- For each URL:
+  - Validates and normalizes
+  - Fetches feed content
+  - Parses metadata
+  - Generates feed URI
+  - Stores in feeds graph
+- Processes with 2-second delay between feeds
+
+**Feed list format** (`data/feeds.md`):
+```
+# Feed Subscriptions
+# Lines starting with # are comments
+
+https://emeryblogger.wordpress.com/feed/
+https://simonwillison.net/atom/everything/
+http://bobdc.com/blog/atom.xml
+```
+
+**Note**: Currently no duplicate detection - already-subscribed feeds will cause SPARQL errors but won't corrupt data. See `subscribe-from-file/TODO.md` for planned enhancements.
 
 ## Data Model
 
@@ -236,18 +341,51 @@ Checks for duplicate entries using GUID, link, or content hash.
 
 ## Development
 
-### Adding a New Feed
+### Typical Workflow
 
-1. Subscribe:
+1. **Subscribe to feeds**:
 ```bash
 ./trans src/apps/newsmonitor/subscribe -m '{"url":"https://example.com/feed.xml"}'
 ```
 
-2. Update fetch-with-storage config with new feed URI
-
-3. Run fetcher:
+2. **Update all feeds** (run periodically):
 ```bash
-./trans src/apps/newsmonitor/fetch-with-storage
+./trans src/apps/newsmonitor/update-all
+```
+
+3. **Generate HTML** (view results):
+```bash
+./trans src/apps/newsmonitor/render-to-html
+```
+
+### Adding a New Feed
+
+Option A - Single feed:
+```bash
+./trans src/apps/newsmonitor/subscribe -m '{"url":"https://example.com/feed.xml"}'
+```
+
+Option B - Multiple feeds via file:
+```bash
+# Add URL to data/feeds.md
+echo "https://example.com/feed.xml" >> src/apps/newsmonitor/data/feeds.md
+
+# Run batch subscribe
+./trans src/apps/newsmonitor/subscribe-from-file
+```
+
+**Note**: New feeds are automatically included in the next `update-all` run.
+
+### Scheduled Updates
+
+Set up a cron job to run `update-all` periodically:
+
+```bash
+# Update all feeds every hour
+0 * * * * cd /path/to/transmissions && ./trans src/apps/newsmonitor/update-all >> /var/log/newsmonitor.log 2>&1
+
+# Generate HTML page every 6 hours
+0 */6 * * * cd /path/to/transmissions && ./trans src/apps/newsmonitor/render-to-html >> /var/log/newsmonitor.log 2>&1
 ```
 
 ### Customizing RDF Templates

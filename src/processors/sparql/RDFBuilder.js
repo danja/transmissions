@@ -43,6 +43,7 @@ import crypto from 'crypto'
  * * **`hash(str)` - Generate short hash from string
  * * `escape(str)` - Escape RDF literals
  * * `now()` - Current ISO timestamp
+ * * `isoDate(str)` - Convert date to ISO 8601 format
  *
  * #### __*Example Template*__
  * ```turtle
@@ -107,7 +108,8 @@ class RDFBuilder extends Processor {
                 uri: this.uriHelper,
                 hash: this.hashHelper,
                 escape: this.escapeHelper,
-                now: () => new Date().toISOString()
+                now: () => new Date().toISOString(),
+                isoDate: this.isoDateHelper
             }
 
             // Render template
@@ -157,6 +159,21 @@ class RDFBuilder extends Processor {
             .replace(/\n/g, '\\n')
             .replace(/\r/g, '\\r')
             .replace(/\t/g, '\\t')
+    }
+
+    /**
+     * Convert date string to ISO 8601 format
+     * Handles RFC 2822, ISO 8601, and other common formats
+     */
+    isoDateHelper(str) {
+        if (!str) return ''
+        try {
+            const date = new Date(str)
+            if (isNaN(date.getTime())) return str // Return original if invalid
+            return date.toISOString()
+        } catch (error) {
+            return str // Return original on error
+        }
     }
 }
 

@@ -1,0 +1,65 @@
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+# Query all feeds from SPARQL store
+:feedQuerySettings a :ConfigSet ;
+    :endpointSettings "data/endpoints.json" ;
+    :templateFilename "data/sparql-templates/get-all-feeds.rq" ;
+    :dataField "feedList" .
+
+# Iterate over each feed
+:feedIteratorSettings a :ConfigSet ;
+    :forEach "queryResults.results.bindings" .
+
+# Prepare feed data - extract values from SPARQL result
+:prepareSettings a :ConfigSet ;
+    :rename (:r1 :r2) .
+        :r1 :pre "currentItem.feedUrl.value" ;
+            :post "url" .
+        :r2 :pre "currentItem.feed.value" ;
+            :post "feedURI" .
+
+# SPARQL Query Settings - get existing entries for current feed
+:querySettings a :ConfigSet ;
+    :endpointSettings "data/endpoints.json" ;
+    :templateFilename "data/sparql-templates/get-existing-entries.rq" ;
+    :dataField "queryData" ;
+    :graph <http://hyperdata.it/content> .
+
+# Fetch Settings - URL will be in message.url from Restructure
+:fetchSettings a :ConfigSet ;
+    :method "GET" ;
+    :timeout "10000" .
+
+# Parser Settings
+:parserSettings a :ConfigSet ;
+    :inputField "http.data" ;
+    :outputField "feed" .
+
+# ForEach Settings - iterate over entries
+:forEachSettings a :ConfigSet ;
+    :forEach "feed.entries" ;
+    :delay "50" ;
+    :limit "20" .
+
+# Deduplication Settings
+:dedupeSettings a :ConfigSet ;
+    :guidField "currentItem.guid" ;
+    :linkField "currentItem.link" ;
+    :contentField "currentItem.content" ;
+    :useContentHash "true" ;
+    :checkMethod "all" .
+
+# RDF Builder Settings - feedURI already in message from Restructure
+:rdfSettings a :ConfigSet ;
+    :dataField "currentItem" ;
+    :templateFilename "data/templates/feed-entry-to-rdf.njk" ;
+    :baseURI "http://hyperdata.it/" ;
+    :outputField "rdf" .
+
+# SPARQL Update Settings
+:updateSettings a :ConfigSet ;
+    :endpointSettings "data/endpoints.json" ;
+    :templateFilename "data/sparql-templates/insert-entry.rq" ;
+    :dataBlock "updateData" ;
+    :graph <http://hyperdata.it/content> ;
+    :delay "100" .

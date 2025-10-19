@@ -17,7 +17,16 @@
       "Bash(env LOG_LEVEL=trace TRACE=1 ./trans src/apps/newsmonitor/render-to-html)",
       "Bash(LOG_LEVEL=debug ./trans src/apps/test/templater)",
       "Bash(xargs ls -l)",
-      "Bash(xdg-open /home/danny/hyperdata/transmissions/src/apps/newsmonitor/render-to-html/data/newsmonitor.html)"
+      "Bash(xdg-open /home/danny/hyperdata/transmissions/src/apps/newsmonitor/render-to-html/data/newsmonitor.html)",
+      "Bash(LOG_LEVEL=debug ./trans src/apps/newsmonitor/update-all)",
+      "Bash(env LOG_LEVEL=debug ./trans src/apps/newsmonitor/update-all)",
+      "Bash(curl -s \"http://localhost:3030/newsmonitor/query\" --data-urlencode \"query=PREFIX sioc: <http://rdfs.org/sioc/ns#>\nPREFIX dc: <http://purl.org/dc/elements/1.1/>\nSELECT ?feed ?feedUrl ?title\nWHERE {\n  GRAPH <http://hyperdata.it/feeds> {\n    ?feed a sioc:Forum ;\n          sioc:feed_url ?feedUrl ;\n          dc:title ?title .\n  }\n}\nLIMIT 1\" -u admin:admin123)",
+      "Bash(python3 -m json.tool)",
+      "Bash(./trans src/apps/newsmonitor/update-all)",
+      "Bash(./trans src/apps/newsmonitor/subscribe-from-file)",
+      "Bash(cat /home/danny/hyperdata/transmissions/src/apps/newsmonitor/data/feeds.md)",
+      "Bash(./trans src/apps/newsmonitor/render-to-html)",
+      "Bash(curl -s \"http://localhost:3030/newsmonitor/query\" --data-urlencode \"query=PREFIX sioc: <http://rdfs.org/sioc/ns#>\nPREFIX dc: <http://purl.org/dc/elements/1.1/>\nSELECT ?date (DATATYPE(?date) as ?dateType)\nWHERE {\n  GRAPH <http://hyperdata.it/content> {\n    ?post a sioc:Post ;\n          dc:date ?date .\n  }\n}\nLIMIT 5\" -u admin:admin123)"
     ],
     "deny": [],
     "ask": []
