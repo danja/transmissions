@@ -8,6 +8,7 @@ import MarkdownToLinks from './MarkdownToLinks.js'
 import HTMLToMarkdown from './HTMLToMarkdown.js'
 import FeedParser from './FeedParser.js'
 import HTMLFeedExtractor from './HTMLFeedExtractor.js'
+import AtomBuilder from './AtomBuilder.js'
 
 class MarkupProcessorsFactory {
     static createProcessor(type, config) {
@@ -31,6 +32,9 @@ class MarkupProcessorsFactory {
         }
         if (type.equals(ns.trn.HTMLFeedExtractor)) {
             return new HTMLFeedExtractor(config)
+        }
+        if (type.equals(ns.trn.AtomBuilder)) {
+            return new AtomBuilder(config)
         }
         return false
     }

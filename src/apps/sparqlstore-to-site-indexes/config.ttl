@@ -49,8 +49,15 @@
         :ph1   :pre    "accumulator" ;
               :post "contentBlocks.content"  .
 
-:atomIndex a :ConfigSet ;
-    :templateFilename "templates/index-atom.njk" .
+:atomBuilder a :ConfigSet ;
+    :inputField "contentBlocks.content" ;
+    :outputField "content" ;
+    :feedTitle "Hyperdata Recent Articles" ;
+    :feedSubtitle "Latest articles from the knowledge base" ;
+    :feedAuthorName "Danny Ayers" ;
+    :feedAuthorEmail "danny.ayers@gmail.com" ;
+    :baseUrl "https://hyperdata.it" ;
+    :feedUrl "https://hyperdata.it/atom.xml" .
 
 :atomFilepath a :ConfigSet ;
   :asPath true ;

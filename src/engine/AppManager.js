@@ -73,7 +73,9 @@ class AppManager {
         this.app.path = resolvedAppPath
         this.app.appPath = resolvedAppPath
         if (!this.app.rootDir) {
-            this.app.rootDir = resolvedAppPath
+            // If targetDir is provided, use it as rootDir for resolving paths
+            // Otherwise fall back to the app path
+            this.app.rootDir = this.app.targetDir || resolvedAppPath
         }
 
         // load the transmissions dataset

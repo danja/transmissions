@@ -71,7 +71,7 @@ class HttpClient extends Processor {
             logger.debug(`HttpClient: Sending request to ${requestOptions.url} with options: ${JSON.stringify(requestOptions)}`)
 
             const response = await this._sendRequest(requestOptions)
-            const processedResponse = await this._processResponse(response)
+            const processedResponse = await this._processResponse(response, requestOptions.method)
 
             message.http = processedResponse
             logger.debug(`HttpClient: Received response with status ${response.status}`)
@@ -146,19 +146,26 @@ class HttpClient extends Processor {
     /**
      * Processes the HTTP response.
      * @param {Response} response
+     * @param {string} method - HTTP method used
      * @returns {Promise<Object>} Processed response data
      */
-    async _processResponse(response) {
+    async _processResponse(response, method) {
         const contentType = response.headers.get('content-type') || ''
-        let data
-        if (contentType.includes('application/json')) {
-            data = await response.json()
-        } else {
-            data = await response.text()
+        let data = ''
+
+        // HEAD requests don't have a body, skip reading it
+        if (method !== 'HEAD') {
+            if (contentType.includes('application/json')) {
+                data = await response.json()
+            } else {
+                data = await response.text()
+            }
         }
+
         return {
             status: response.status,
             statusText: response.statusText,
+            contentType: response.headers.get('content-type') || '',
             headers: Object.fromEntries(response.headers.entries()),
             data
         }

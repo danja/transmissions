@@ -15,7 +15,10 @@ INSERT {
           bm:agent <{{agent}}> ;
           bm:created "{{created}}"^^xsd:dateTime ;
           bm:title "{{title | safe}}" ;
-          bm:status "{{status}}"^^xsd:integer .
+          bm:status "{{status}}"^^xsd:integer {% if contentType %};
+          bm:contentType "{{contentType}}"{% endif %}{% if etag %} ;
+          bm:etag "{{etag}}"{% endif %}{% if ['last-modified'] %} ;
+          bm:last-modified "{{['last-modified']}}"{% endif %} .
   }
 }
 WHERE {

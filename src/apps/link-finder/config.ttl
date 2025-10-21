@@ -21,6 +21,7 @@
             :post    "url"  .
 
 :httpSettings a :ConfigSet ;
+    :method "HEAD" ;
     :timeout "10000" .
 
 :normalizeURL a :ConfigSet ;

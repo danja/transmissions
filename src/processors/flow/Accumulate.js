@@ -65,7 +65,22 @@ class Accumulate extends Processor {
         if (message.done) {
             const targetField = super.getProperty(ns.trn.targetField, "accumulate")
             logger.trace(`targetField = ${targetField}`)
-            message[targetField] = acc
+
+            // Support nested paths (e.g., "contentBlocks.entries")
+            if (targetField.includes('.')) {
+                const parts = targetField.split('.')
+                let current = message
+                for (let i = 0; i < parts.length - 1; i++) {
+                    if (!current[parts[i]]) {
+                        current[parts[i]] = {}
+                    }
+                    current = current[parts[i]]
+                }
+                current[parts[parts.length - 1]] = acc
+            } else {
+                message[targetField] = acc
+            }
+
             logger.trace(`full acc = ${acc}`)
             return this.emit('message', message)
         }

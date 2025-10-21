@@ -10,6 +10,8 @@ cd ~/hyperdata/transmissions # my local path
 ```
 
 
+TODO - change to a HTTP HEAD
+
 scripts/del-fuseki-test-store-local.sh
 
 ## Description
