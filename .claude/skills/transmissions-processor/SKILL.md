@@ -9,6 +9,8 @@ This skill guides you through creating custom processors to extend Transmissions
 
 ## Quick Start Decision Tree
 
+First check for an existing processor that can be used in `src/processors`. If the name is a reasonable match for the required functionality, check the processor's signature in comments in the code.
+
 **Choose your development path:**
 
 ### Core Development (Recommended for reusable processors)

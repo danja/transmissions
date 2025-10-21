@@ -1,0 +1,65 @@
+# src/apps/feed-finder/config.ttl
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+# SPARQL Select - Query for HTML bookmarks
+:selectLinks a :ConfigSet ;
+    :templateFilename "data/select-links.njk" ;
+    :endpointSettings "data/endpoints.json" ;
+    :graph <http://hyperdata.it/content> .
+
+# ForEach - Iterate over query results
+:forEach a :ConfigSet ;
+    :remove "true" ;
+    :forEach "queryResults.results.bindings" .
+
+# Restructure - Extract URL from SPARQL bindings
+:extractUrl a :ConfigSet ;
+    :rename (:r1) .
+    :r1 :pre "currentItem.target.value" ;
+        :post "url" .
+
+# HttpClient - Fetch HTML with timeout
+:httpSettings a :ConfigSet ;
+    :timeout "10000" .
+
+# HTMLFeedExtractor - Extract feed URL from HTML
+:feedExtractor a :ConfigSet ;
+    :inputField "http.data" ;
+    :outputField "feedUrl" ;
+    :baseUrlField "url" .
+
+# Choice - Only continue if feed found
+:checkFeedExists a :ConfigSet ;
+    :testProperty "feedUrl" ;
+    :testOperator "exists" ;
+    :trueProperty "feedUrl" ;
+    :trueValue "feedUrl" ;
+    :falseProperty "skip" ;
+    :falseValue "true" .
+
+# Accumulate - Collect feed URLs
+:accumulator a :ConfigSet ;
+    :label "feedList" ;
+    :accumulatorType "array" ;
+    :sourceField "feedUrl" ;
+    :targetField "feedUrls" .
+
+# Restructure - Prepare for template
+:prepareTemplate a :ConfigSet ;
+    :rename (:o1) .
+    :o1 :pre "feedUrls" ;
+        :post "feeds" .
+
+# Templater - Convert array to newline-separated string
+:formatOutput a :ConfigSet ;
+    :templateFilename "data/feeds-template.njk" ;
+    :dataField "feeds" .
+
+# FileWriter - Save to feeds.md
+:fileOutput a :ConfigSet ;
+    :destinationFile "src/apps/feed-finder/data/feeds.md" ;
+    :contentField "content" .

@@ -8,7 +8,10 @@
       "Bash(python3 -c \"import sys, json; data=json.load(sys.stdin); [print(f''''{b[\"\"feedTitle\"\"][\"\"value\"\"]}: {b[\"\"title\"\"][\"\"value\"\"][:50]}...'''') for b in data[''''results''''][''''bindings'''']]\")",
       "Bash(curl -s \"http://localhost:3030/newsmonitor/query\" --data-urlencode \"query=PREFIX sioc: <http://rdfs.org/sioc/ns#>\nPREFIX dc: <http://purl.org/dc/elements/1.1/>\nSELECT ?feedTitle (COUNT(?post) as ?count)\nWHERE {\n  GRAPH <http://hyperdata.it/content> {\n    ?post a sioc:Post ;\n          sioc:has_container ?feed .\n  }\n  GRAPH <http://hyperdata.it/feeds> {\n    ?feed dc:title ?feedTitle .\n  }\n}\nGROUP BY ?feedTitle\" -u admin:admin123)",
       "Bash(python3 -c \"import sys, json; data=json.load(sys.stdin); [print(f''''{b[\"\"feedTitle\"\"][\"\"value\"\"]}: {b[\"\"count\"\"][\"\"value\"\"]} entries'''') for b in data[''''results''''][''''bindings'''']]\")",
-      "Bash(curl -s \"http://localhost:3030/newsmonitor/query\" --data-urlencode \"query=PREFIX sioc: <http://rdfs.org/sioc/ns#>\nPREFIX dc: <http://purl.org/dc/elements/1.1/>\nSELECT ?post ?container\nWHERE {\n  GRAPH <http://hyperdata.it/content> {\n    ?post a sioc:Post .\n    OPTIONAL { ?post sioc:has_container ?container }\n  }\n}\nLIMIT 5\" -u admin:admin123)"
+      "Bash(curl -s \"http://localhost:3030/newsmonitor/query\" --data-urlencode \"query=PREFIX sioc: <http://rdfs.org/sioc/ns#>\nPREFIX dc: <http://purl.org/dc/elements/1.1/>\nSELECT ?post ?container\nWHERE {\n  GRAPH <http://hyperdata.it/content> {\n    ?post a sioc:Post .\n    OPTIONAL { ?post sioc:has_container ?container }\n  }\n}\nLIMIT 5\" -u admin:admin123)",
+      "Skill(transmissions-processor)",
+      "Skill(transmissions-app)",
+      "Bash(tree src/apps/feed-finder/)"
     ],
     "deny": [],
     "ask": []

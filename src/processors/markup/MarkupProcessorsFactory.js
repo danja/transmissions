@@ -7,6 +7,7 @@ import MarkdownToHTML from './MarkdownToHTML.js'
 import MarkdownToLinks from './MarkdownToLinks.js'
 import HTMLToMarkdown from './HTMLToMarkdown.js'
 import FeedParser from './FeedParser.js'
+import HTMLFeedExtractor from './HTMLFeedExtractor.js'
 
 class MarkupProcessorsFactory {
     static createProcessor(type, config) {
@@ -27,6 +28,9 @@ class MarkupProcessorsFactory {
         }
         if (type.equals(ns.trn.FeedParser)) {
             return new FeedParser(config)
+        }
+        if (type.equals(ns.trn.HTMLFeedExtractor)) {
+            return new HTMLFeedExtractor(config)
         }
         return false
     }

@@ -1,0 +1,60 @@
+# src/apps/feed-finder/transmissions.ttl
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+##################################################################
+# Utility Processors : insert into pipe for debugging            #
+#                                                                #
+:SM a :ShowMessage . # verbose report, continues pipe            #
+:SC a :ShowConfig . # verbose report, continues pipe             #
+:DE a :DeadEnd . # ends the current pipe quietly                 #
+:H  a :Halt . # kills everything                                 #
+:N  a :NOP . # no operation (except for showing stage in pipe)   #
+:UF a :Unfork . # collapses all pipes but one                    #
+##################################################################
+
+:feedFinder a :Transmission ;
+    :pipe (:p10 :p20 :p30 :p40 :p50 :p60 :p70 :p80 :p85 :p90) .
+
+# Query SPARQL for HTML bookmarks with status 200
+:p10 a :SPARQLSelect ;
+     :settings :selectLinks .
+
+# Iterate over each result
+:p20 a :ForEach ;
+     :settings :forEach .
+
+# Extract URL from SPARQL bindings
+:p30 a :Restructure ;
+     :settings :extractUrl .
+
+# Fetch HTML content
+:p40 a :HttpClient ;
+     :settings :httpSettings .
+
+# Extract feed URL from HTML
+:p50 a :HTMLFeedExtractor ;
+     :settings :feedExtractor .
+
+# Only process if feed found
+:p60 a :Choice ;
+     :settings :checkFeedExists .
+
+# Accumulate feed URLs
+:p70 a :Accumulate ;
+     :settings :accumulator .
+
+# Restructure for template
+:p80 a :Restructure ;
+     :settings :prepareTemplate .
+
+# Convert array to newline-separated string
+:p85 a :Templater ;
+     :settings :formatOutput .
+
+# Write to feeds.md
+:p90 a :FileWriter ;
+     :settings :fileOutput .

@@ -1,0 +1,19 @@
+PREFIX bm: <http://purl.org/stuff/bm/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?target ?contentType
+FROM <{{graph}}>
+WHERE {
+  ?bookmark a bm:Bookmark ;
+            bm:target ?target ;
+            bm:status ?status .
+
+  OPTIONAL { ?bookmark bm:contentType ?contentType }
+
+  # Only fetch pages that returned 200 OK
+  FILTER (?status = "200"^^xsd:integer)
+
+  # Only fetch HTML pages (text/html content type)
+  FILTER (CONTAINS(LCASE(STR(?contentType)), "text/html"))
+}
+ORDER BY ?target
