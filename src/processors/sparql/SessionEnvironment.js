@@ -14,11 +14,12 @@ class SessionEnvironment {
         this.processor = processor
         this.endpoints = null
         this.templateCache = new Map()
+        this.useEnvOverride = false // Controls whether to use environment variables
     }
 
-    async loadEndpoints(dir, override = false) {
-        this.override = override
-        logger.debug(`    loadEndpoints dir = ${dir}`)
+    async loadEndpoints(dir, forceReload = false) {
+        // forceReload (noCache) just clears the cache, doesn't enable env override
+        logger.debug(`    loadEndpoints dir = ${dir}, forceReload = ${forceReload}`)
         const settingsPath = this.processor.getProperty(ns.trn.endpointSettings)
         logger.debug(`    dir = ${dir}`)
         logger.debug(`    settingsPath = ${settingsPath}`)
@@ -42,35 +43,60 @@ ${logger.shorter(this.processor.config)}`)
         }
     }
 
+    enableEnvOverride() {
+        this.useEnvOverride = true
+    }
+
     getQueryEndpoint() {
+        if (!this.endpoints) {
+            logger.error('SessionEnvironment.getQueryEndpoint: No endpoints loaded')
+            throw new Error('No endpoints loaded. Call loadEndpoints() first.')
+        }
         const endpoint = this.endpoints.find(e => e.type === 'query')
+        if (!endpoint) {
+            logger.error('SessionEnvironment.getQueryEndpoint: No query endpoint found in endpoints.json')
+            throw new Error('No query endpoint found in endpoints configuration')
+        }
         return this.applyEnvOverrides(endpoint)
     }
 
     getUpdateEndpoint() {
+        if (!this.endpoints) {
+            logger.error('SessionEnvironment.getUpdateEndpoint: No endpoints loaded')
+            throw new Error('No endpoints loaded. Call loadEndpoints() first.')
+        }
         const endpoint = this.endpoints.find(e => e.type === 'update')
+        if (!endpoint) {
+            logger.error('SessionEnvironment.getUpdateEndpoint: No update endpoint found in endpoints.json')
+            throw new Error('No update endpoint found in endpoints configuration')
+        }
         return this.applyEnvOverrides(endpoint)
     }
 
     applyEnvOverrides(endpoint) {
-        // if (!endpoint) return endpoint
-
-        // Use endpoints.json by default, only override if this.override is true
-        if (this.override) {
-            // Override with environment variables
+        // Use endpoints.json by default, only override if explicitly enabled
+        if (this.useEnvOverride) {
+            // Override with environment variables - all must be set
+            if (!process.env.SPARQL_HOST || !process.env.SPARQL_PORT || !process.env.SPARQL_DATASET ||
+                !process.env.SPARQL_USER || !process.env.SPARQL_PASSWORD) {
+                logger.error('SessionEnvironment.applyEnvOverrides: Missing required environment variables')
+                logger.error('Required: SPARQL_HOST, SPARQL_PORT, SPARQL_DATASET, SPARQL_USER, SPARQL_PASSWORD')
+                throw new Error('Environment variable override requested but required variables are not set')
+            }
+            const dataset = process.env.SPARQL_DATASET
+            const endpointType = endpoint.type === 'query' ? 'query' : 'update'
             return {
                 ...endpoint,
-                url: `http://${process.env.SPARQL_HOST}:${process.env.SPARQL_PORT}/test`,
+                url: `http://${process.env.SPARQL_HOST}:${process.env.SPARQL_PORT}/${dataset}/${endpointType}`,
                 credentials: {
                     user: process.env.SPARQL_USER,
                     password: process.env.SPARQL_PASSWORD
                 }
             }
         } else {
-            // Use endpoint from endpoints.json file
+            // Use endpoint from endpoints.json file as-is
             return endpoint
         }
-
     }
 
     async getTemplate(dir, templateFilename) {

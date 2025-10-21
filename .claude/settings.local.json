@@ -31,7 +31,10 @@
       "Bash(curl -s -H \"Accept: application/sparql-results+json\" --user admin:admin123 \"http://localhost:3030/semem/query\" --data-urlencode \"query=PREFIX bm: <http://purl.org/stuff/bm/>\nSELECT DISTINCT ?status (COUNT(?bookmark) AS ?count)\nFROM <http://hyperdata.it/content>\nWHERE {\n  ?bookmark a bm:Bookmark ;\n            bm:status ?status .\n}\nGROUP BY ?status\nORDER BY DESC(?count)\nLIMIT 10\")",
       "Bash(curl -s -H \"Accept: application/sparql-results+json\" --user admin:admin123 \"http://localhost:3030/semem/query\" --data-urlencode \"query=PREFIX bm: <http://purl.org/stuff/bm/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT DISTINCT ?contentType (COUNT(?bookmark) AS ?count)\nFROM <http://hyperdata.it/content>\nWHERE {\n  ?bookmark a bm:Bookmark ;\n            bm:status ?status ;\n            bm:contentType ?contentType .\n  FILTER (?status = 200)\n}\nGROUP BY ?contentType\nORDER BY DESC(?count)\nLIMIT 10\")",
       "Bash(curl -s -H \"Accept: application/sparql-results+json\" --user admin:admin123 \"http://localhost:3030/semem/query\" --data-urlencode \"query=PREFIX bm: <http://purl.org/stuff/bm/>\nSELECT DISTINCT ?contentType (COUNT(?bookmark) AS ?count)\nFROM <http://hyperdata.it/content>\nWHERE {\n  ?bookmark a bm:Bookmark ;\n            bm:contentType ?contentType .\n}\nGROUP BY ?contentType\nORDER BY DESC(?count)\nLIMIT 10\")",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(./trans link-finder:*)",
+      "Bash(./trans feed-finder:*)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []
