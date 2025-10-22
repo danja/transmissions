@@ -1,0 +1,14 @@
+PREFIX bm: <http://purl.org/stuff/bm/>
+PREFIX sioc: <http://rdfs.org/sioc/ns#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+{% if feedUrl %}
+INSERT DATA {
+  GRAPH <{{graph}}> {
+    <{{feedUrl}}> a sioc:Feed .
+    <{{bookmark}}> bm:hasFeed <{{feedUrl}}> .
+  }
+}
+{% else %}
+# No feed URL found - skipping insert
+{% endif %}

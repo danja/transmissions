@@ -16,11 +16,13 @@
     :remove "true" ;
     :forEach "queryResults.results.bindings" .
 
-# Restructure - Extract URL from SPARQL bindings
+# Restructure - Extract URL and bookmark from SPARQL bindings
 :extractUrl a :ConfigSet ;
-    :rename (:r1) .
+    :rename (:r1 :r2) .
     :r1 :pre "currentItem.target.value" ;
         :post "url" .
+    :r2 :pre "currentItem.bookmark.value" ;
+        :post "bookmark" .
 
 # HttpClient - Fetch HTML with timeout
 :httpSettings a :ConfigSet ;
@@ -33,13 +35,10 @@
     :baseUrlField "url" .
 
 # Choice - Only continue if feed found
+# Note: Template now handles undefined feedUrl with {% if feedUrl %} check
 :checkFeedExists a :ConfigSet ;
     :testProperty "feedUrl" ;
-    :testOperator "exists" ;
-    :trueProperty "feedUrl" ;
-    :trueValue "feedUrl" ;
-    :falseProperty "skip" ;
-    :falseValue "true" .
+    :testOperator "exists" .
 
 # Accumulate - Collect feed URLs
 :accumulator a :ConfigSet ;
@@ -47,6 +46,13 @@
     :accumulatorType "array" ;
     :sourceField "feedUrl" ;
     :targetField "feedUrls" .
+
+# Choice - Only pass done messages to file output
+:checkDone a :ConfigSet ;
+    :testProperty "done" ;
+    :testOperator "exists" ;
+    :trueProperty "done" ;
+    :trueValue "true" .
 
 # Restructure - Prepare for template
 :prepareTemplate a :ConfigSet ;
@@ -63,3 +69,9 @@
 :fileOutput a :ConfigSet ;
     :destinationFile "src/apps/feed-finder/data/feeds.md" ;
     :contentField "content" .
+
+# SPARQLUpdate - Store feed and relationship
+:updateFeed a :ConfigSet ;
+    :templateFilename "data/update-feed.njk" ;
+    :endpointSettings "data/endpoints.json" ;
+    :graph <http://hyperdata.it/content> .

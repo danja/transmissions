@@ -1,7 +1,7 @@
 PREFIX bm: <http://purl.org/stuff/bm/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
-SELECT ?target ?contentType
+SELECT ?bookmark ?target ?contentType
 FROM <{{graph}}>
 WHERE {
   ?bookmark a bm:Bookmark ;
@@ -15,5 +15,11 @@ WHERE {
 
   # Only fetch HTML pages (text/html content type)
   FILTER (CONTAINS(LCASE(STR(?contentType)), "text/html"))
+
+  # Skip bookmarks that already have a feed
+  FILTER NOT EXISTS {
+    ?bookmark bm:hasFeed ?existingFeed .
+  }
 }
 ORDER BY ?target
+LIMIT 50

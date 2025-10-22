@@ -9,6 +9,8 @@ cd ~/hyperdata/transmissions # my local path
 ./trans sparqlstore-to-site-indexes ~/sites/danny.ayers.name/postcraft
 ```
 
+can you modify feed-finder so it adds the feed URLs it finds back to the SPARQL store with type "feed" and somehow associated with the bookmark which provided the site URL ( hasFeed property?) . If a site already has a feed associated with it, it should be skipped by that part of feed-finder. You will probably need some of the skills 
+
 hyperdata projects :
 
 graph : http://hyperdata.it/content

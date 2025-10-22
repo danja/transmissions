@@ -34,7 +34,15 @@
       "Bash(curl:*)",
       "Bash(./trans link-finder:*)",
       "Bash(./trans feed-finder:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(tree:*)",
+      "Bash(rapper:*)",
+      "Bash(./trans trial:*)",
+      "Bash(npm install:*)",
+      "Bash(timeout 30 ./trans feed-finder:*)",
+      "Bash(python3:*)",
+      "Bash(timeout 60 ./trans feed-finder:*)",
+      "Bash(timeout 45 ./trans feed-finder:*)"
     ],
     "deny": [],
     "ask": []
