@@ -1,0 +1,16 @@
+PREFIX sioc: <http://rdfs.org/sioc/ns#>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+{% if feedUrl %}
+INSERT DATA {
+  GRAPH <http://hyperdata.it/feeds> {
+    <{{feedUrl}}> a sioc:Forum ;
+      dc:title "Feed from {{url}}" ;
+      sioc:link <{{url}}> ;
+      sioc:feed_url <{{feedUrl}}> .
+  }
+}
+{% else %}
+# No feed URL found - skipping insert
+{% endif %}

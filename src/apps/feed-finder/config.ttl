@@ -70,8 +70,14 @@
     :destinationFile "src/apps/feed-finder/data/feeds.md" ;
     :contentField "content" .
 
-# SPARQLUpdate - Store feed and relationship
+# SPARQLUpdate - Store feed and relationship (bookmark format)
 :updateFeed a :ConfigSet ;
     :templateFilename "data/update-feed.njk" ;
     :endpointSettings "data/endpoints.json" ;
     :graph <http://hyperdata.it/content> .
+
+# SPARQLUpdate - Store feed in newsmonitor format
+:updateFeedNewsmonitor a :ConfigSet ;
+    :templateFilename "data/update-feed-newsmonitor.njk" ;
+    :endpointSettings "data/endpoints.json" ;
+    :graph <http://hyperdata.it/feeds> .

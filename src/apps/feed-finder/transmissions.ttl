@@ -17,7 +17,7 @@
 ##################################################################
 
 :feedFinder a :Transmission ;
-    :pipe (:p10 :p20 :p30 :p40 :p50 :p60 :p95 :p70 :p75 :p80 :p85 :p90) .
+    :pipe (:p10 :p20 :p30 :p40 :p50 :p60 :p95 :p96 :p70 :p75 :p80 :p85 :p90) .
 
 # Query SPARQL for HTML bookmarks with status 200
 :p10 a :SPARQLSelect ;
@@ -43,9 +43,13 @@
 :p60 a :Choice ;
      :settings :checkFeedExists .
 
-# Store feed and relationship to SPARQL
+# Store feed and relationship to SPARQL (bookmark format)
 :p95 a :SPARQLUpdate ;
      :settings :updateFeed .
+
+# Store feed in newsmonitor format
+:p96 a :SPARQLUpdate ;
+     :settings :updateFeedNewsmonitor .
 
 # Accumulate feed URLs for file output
 :p70 a :Accumulate ;

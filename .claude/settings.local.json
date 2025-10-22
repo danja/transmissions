@@ -42,7 +42,14 @@
       "Bash(timeout 30 ./trans feed-finder:*)",
       "Bash(python3:*)",
       "Bash(timeout 60 ./trans feed-finder:*)",
-      "Bash(timeout 45 ./trans feed-finder:*)"
+      "Bash(timeout 45 ./trans feed-finder:*)",
+      "Bash(find:*)",
+      "Bash(timeout 120 ./trans:*)",
+      "Bash(timeout 120:*)",
+      "Bash(./trans src/apps/newsmonitor/update-all:*)",
+      "Bash(./trans:*)",
+      "Bash(timeout 180 ./trans:*)",
+      "Bash(LOG_LEVEL=debug timeout 60 ./trans feed-finder)"
     ],
     "deny": [],
     "ask": []
