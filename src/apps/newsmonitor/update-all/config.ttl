@@ -6,6 +6,10 @@
     :templateFilename "data/sparql-templates/get-all-feeds.rq" ;
     :dataField "feedList" .
 
+# Clean up graph field
+:cleanGraphSettings a :ConfigSet ;
+    :remove "graph" .
+
 # Iterate over each feed
 :feedIteratorSettings a :ConfigSet ;
     :forEach "queryResults.results.bindings" .
@@ -60,6 +64,5 @@
 :updateSettings a :ConfigSet ;
     :endpointSettings "data/endpoints.json" ;
     :templateFilename "data/sparql-templates/insert-entry.rq" ;
-    :dataBlock "updateData" ;
     :graph <http://hyperdata.it/content> ;
     :delay "100" .

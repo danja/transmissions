@@ -79,5 +79,5 @@
 # SPARQLUpdate - Store feed in newsmonitor format
 :updateFeedNewsmonitor a :ConfigSet ;
     :templateFilename "data/update-feed-newsmonitor.njk" ;
-    :endpointSettings "data/endpoints.json" ;
+    :endpointSettings "data/endpoints-newsmonitor.json" ;
     :graph <http://hyperdata.it/feeds> .

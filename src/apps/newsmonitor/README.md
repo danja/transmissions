@@ -28,6 +28,124 @@ NewsMonitor uses a two-graph RDF architecture:
 - `<http://hyperdata.it/feeds>` - Feed metadata (sioc:Forum)
 - `<http://hyperdata.it/content>` - Feed entries (sioc:Post)
 
+### Feed Discovery Integration
+
+NewsMonitor integrates with two companion applications for feed discovery:
+
+#### link-finder
+
+**Purpose**: Discovers links from web pages and stores them as bookmarks.
+
+**Integration**: Creates `bm:Bookmark` entries in the `<http://hyperdata.it/content>` graph with metadata including:
+- `bm:target` - The discovered URL
+- `bm:status` - HTTP status code from fetching
+- `bm:contentType` - Content type of the resource
+
+**Usage**:
+```bash
+./trans link-finder -m '{"url":"https://example.com/blogroll"}'
+```
+
+#### feed-finder
+
+**Purpose**: Scans HTML bookmarks to discover RSS/Atom feeds and registers them with NewsMonitor.
+
+**Integration**:
+- Queries bookmarks from `semem` dataset (`<http://hyperdata.it/content>` graph)
+- Extracts feed URLs from HTML `<link>` tags
+- Stores feeds in TWO locations:
+  1. `semem` dataset - Associates feeds with bookmarks via `bm:hasFeed`
+  2. `newsmonitor` dataset - Registers feeds as `sioc:Forum` for NewsMonitor
+
+**Usage**:
+```bash
+./trans feed-finder
+```
+
+**What it does**:
+- Queries for HTML bookmarks with `status=200` and `contentType=text/html`
+- Skips bookmarks that already have feeds
+- For each bookmark:
+  - Fetches HTML content
+  - Extracts feed URL from `<link rel="alternate">` tags
+  - Stores `bm:hasFeed` relationship in semem
+  - Registers feed in newsmonitor dataset
+- Processes 100 bookmarks per run (configurable via `LIMIT` in query)
+
+**Typical Workflow**:
+```bash
+# 1. Discover links from a page
+./trans link-finder -m '{"url":"https://example.com/blogroll"}'
+
+# 2. Find feeds in discovered pages
+./trans feed-finder
+
+# 3. Fetch entries from discovered feeds
+./trans src/apps/newsmonitor/update-all
+
+# 4. Generate HTML
+./trans src/apps/newsmonitor/render-to-html
+```
+
+**Feed Statistics**:
+
+Check discovered feeds and their status:
+
+```sparql
+PREFIX sioc: <http://rdfs.org/sioc/ns#>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX bm: <http://purl.org/stuff/bm/>
+
+# Feed statistics
+SELECT
+  (COUNT(DISTINCT ?feed) as ?totalFeeds)
+  (COUNT(DISTINCT ?post) as ?totalEntries)
+  (MAX(?date) as ?mostRecentEntry)
+FROM <http://hyperdata.it/feeds>
+FROM <http://hyperdata.it/content>
+WHERE {
+  GRAPH <http://hyperdata.it/feeds> {
+    ?feed a sioc:Forum ;
+          dc:title ?title ;
+          sioc:feed_url ?feedUrl .
+  }
+  OPTIONAL {
+    GRAPH <http://hyperdata.it/content> {
+      ?post a sioc:Post ;
+            sioc:has_container ?feed ;
+            dc:date ?date .
+    }
+  }
+}
+```
+
+**Per-Feed Statistics**:
+
+```sparql
+PREFIX sioc: <http://rdfs.org/sioc/ns#>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+
+SELECT ?feedTitle ?feedUrl (COUNT(?post) as ?entries) (MAX(?date) as ?latestEntry)
+FROM <http://hyperdata.it/feeds>
+FROM <http://hyperdata.it/content>
+WHERE {
+  GRAPH <http://hyperdata.it/feeds> {
+    ?feed a sioc:Forum ;
+          dc:title ?feedTitle ;
+          sioc:feed_url ?feedUrl .
+  }
+  OPTIONAL {
+    GRAPH <http://hyperdata.it/content> {
+      ?post a sioc:Post ;
+            sioc:has_container ?feed ;
+            dc:date ?date .
+    }
+  }
+}
+GROUP BY ?feedTitle ?feedUrl
+ORDER BY DESC(?entries)
+```
+
 ## Quick Start
 
 ### Prerequisites

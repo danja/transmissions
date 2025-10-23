@@ -49,7 +49,10 @@
       "Bash(./trans src/apps/newsmonitor/update-all:*)",
       "Bash(./trans:*)",
       "Bash(timeout 180 ./trans:*)",
-      "Bash(LOG_LEVEL=debug timeout 60 ./trans feed-finder)"
+      "Bash(LOG_LEVEL=debug timeout 60 ./trans feed-finder)",
+      "Bash(tee:*)",
+      "Read(//tmp/**)",
+      "Bash(LOG_LEVEL=debug ./trans:*)"
     ],
     "deny": [],
     "ask": []

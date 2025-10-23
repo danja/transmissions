@@ -5,6 +5,7 @@
 :update-all a :Transmission ;
     :pipe (
         :getAllFeeds
+        :cleanGraph
         :processEachFeed
         :prepareFeedData
         :getExistingEntries
@@ -19,6 +20,10 @@
 # Step 1: Query all feeds from SPARQL store
 :getAllFeeds a :SPARQLSelect ;
     :settings :feedQuerySettings .
+
+# Step 1b: Remove graph field to prevent pollution
+:cleanGraph a :Restructure ;
+    :settings :cleanGraphSettings .
 
 # Step 2: Iterate over each feed
 :processEachFeed a :ForEach ;

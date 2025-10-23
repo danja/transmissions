@@ -1,7 +1,7 @@
 [
   {
     "type": "query",
-    "url": "http://localhost:3030/newsmonitor",
+    "url": "http://localhost:3030/newsmonitor/query",
     "credentials": {
       "user": "admin",
       "password": "admin123"
@@ -9,7 +9,7 @@
   },
   {
     "type": "update",
-    "url": "http://localhost:3030/newsmonitor",
+    "url": "http://localhost:3030/newsmonitor/update",
     "credentials": {
       "user": "admin",
       "password": "admin123"

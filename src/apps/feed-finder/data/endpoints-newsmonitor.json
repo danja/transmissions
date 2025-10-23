@@ -1,0 +1,11 @@
+[
+    {
+        "name": "newsmonitor dataset",
+        "type": "update",
+        "url": "http://localhost:3030/newsmonitor/update",
+        "credentials": {
+            "user": "admin",
+            "password": "admin123"
+        }
+    }
+]
