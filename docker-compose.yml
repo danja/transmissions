@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  newsmonitor:
+    build: .
+    container_name: transmissions-newsmonitor
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - FUSEKI_USERNAME=${FUSEKI_USERNAME}
+      - FUSEKI_PASSWORD=${FUSEKI_PASSWORD}
+      - FUSEKI_BASEURL=${FUSEKI_BASEURL}
+      - UPDATE_INTERVAL=${UPDATE_INTERVAL:-3600000}
+      - RENDER_INTERVAL=${RENDER_INTERVAL:-300000}
+    ports:
+      - "${NEWSMONITOR_PORT:-8080}:8080"
+    volumes:
+      # Persist generated HTML and data
+      - ./src/apps/newsmonitor/data:/app/src/apps/newsmonitor/data
+      # Mount .env file
+      - ./.env:/app/.env:ro
+      # Mount config directory
+      - ./config:/app/config:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - newsmonitor-net
+
+networks:
+  newsmonitor-net:
+    driver: bridge

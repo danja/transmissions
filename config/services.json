@@ -1,0 +1,44 @@
+{
+  "fuseki": {
+    "description": "Apache Jena Fuseki SPARQL server",
+    "environments": {
+      "development": {
+        "baseUrl": "http://localhost:3030"
+      },
+      "production": {
+        "baseUrl": "https://fuseki.hyperdata.it"
+      },
+      "test": {
+        "baseUrl": "http://localhost:3030"
+      }
+    },
+    "datasets": {
+      "newsmonitor": {
+        "description": "NewsMonitor feed aggregator data",
+        "graphs": {
+          "feeds": "http://hyperdata.it/feeds",
+          "content": "http://hyperdata.it/content"
+        }
+      },
+      "semem": {
+        "description": "Semantic memory bookmarks and links",
+        "graphs": {
+          "content": "http://hyperdata.it/content",
+          "bookmarks": "http://hyperdata.it/bookmarks"
+        }
+      }
+    }
+  },
+  "newsmonitor": {
+    "description": "NewsMonitor feed aggregator service",
+    "environments": {
+      "development": {
+        "port": 8080
+      },
+      "production": {
+        "port": 8080
+      }
+    },
+    "htmlOutputPath": "/app/src/apps/newsmonitor/data"
+  }
+}

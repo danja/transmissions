@@ -521,7 +521,63 @@ echo "https://example.com/feed.xml" >> src/apps/newsmonitor/data/feeds.md
 
 This will remove the feed metadata and all entries from that feed.
 
-### Scheduled Updates
+### Docker Deployment
+
+Run NewsMonitor as a containerized service with automatic updates and HTTP server.
+
+**Quick Start:**
+
+```bash
+# 1. Configure environment
+cp .env.example .env
+nano .env  # Add Fuseki credentials
+
+# 2. Build and run
+docker-compose build
+docker-compose up -d
+
+# 3. View logs
+docker-compose logs -f newsmonitor
+
+# 4. Configure HTTPS proxy to forward to http://localhost:8080
+```
+
+**Features:**
+- Automatic periodic feed updates (default: every hour)
+- Automatic HTML rendering (default: every 5 minutes)
+- HTTP server for generated HTML on port 8080
+- Configurable update intervals via environment variables
+- Persistent data storage
+
+**Configuration:**
+
+Edit `.env`:
+```bash
+NODE_ENV=production
+FUSEKI_USERNAME=admin
+FUSEKI_PASSWORD=your-password
+FUSEKI_BASEURL=https://fuseki.hyperdata.it
+UPDATE_INTERVAL=3600000    # 1 hour in ms
+RENDER_INTERVAL=300000     # 5 minutes in ms
+NEWSMONITOR_PORT=8080
+```
+
+**Manual Operations:**
+
+```bash
+# Subscribe to new feed
+docker-compose exec newsmonitor ./trans src/apps/newsmonitor/subscribe -m '{"url":"https://example.com/feed.xml"}'
+
+# Force update now
+docker-compose exec newsmonitor ./trans src/apps/newsmonitor/update-all
+
+# Force render now
+docker-compose exec newsmonitor ./trans src/apps/newsmonitor/render-to-html
+```
+
+See [DOCKER.md](../../../DOCKER.md) for complete deployment guide.
+
+### Scheduled Updates (Non-Docker)
 
 Set up a cron job to run `update-all` periodically:
 
