@@ -6,9 +6,28 @@ Transmissions can be deployed as a Docker service, running NewsMonitor as a cont
 
 ## Architecture
 
-- **Transmissions Container**: Runs periodic feed updates and serves HTML via HTTP
+- **Transmissions Container**: Runs periodic feed updates and serves dynamic web frontend via HTTP
+- **Web Frontend**: Modern, responsive UI with real-time post summaries and search
+- **REST API**: JSON endpoints for posts, feeds, and statistics
 - **Fuseki Server**: External SPARQL endpoint (fuseki.hyperdata.it or localhost:3030)
 - **HTTPS Proxy**: Your existing proxy forwards HTTPS traffic to the HTTP port
+
+## Features
+
+### Dynamic Web Interface
+
+The NewsMonitor frontend provides:
+- **Real-time Updates**: Auto-refreshes every 5 minutes
+- **Search**: Filter posts by title, content, author, or feed
+- **Pagination**: Browse through posts with customizable page size
+- **Responsive Design**: Works on desktop, tablet, and mobile
+- **Feed Statistics**: View total posts and subscribed feeds
+
+### REST API Endpoints
+
+- `GET /api/posts?limit=50&offset=0` - Get recent posts with summaries
+- `GET /api/count` - Get total post count
+- `GET /api/feeds` - Get list of subscribed feeds with statistics
 
 ## Quick Start
 

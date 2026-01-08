@@ -543,11 +543,13 @@ docker-compose logs -f newsmonitor
 ```
 
 **Features:**
-- Automatic periodic feed updates (default: every hour)
-- Automatic HTML rendering (default: every 5 minutes)
-- HTTP server for generated HTML on port 8080
-- Configurable update intervals via environment variables
-- Persistent data storage
+- **Dynamic Web Frontend**: Modern, responsive UI with search and pagination
+- **REST API**: JSON endpoints for posts, feeds, and statistics
+- **Automatic Updates**: Periodic feed updates (default: every hour)
+- **Auto-refresh**: Frontend updates every 5 minutes
+- **HTTP Server**: Serves frontend and API on port 8080
+- **Configurable**: Update intervals via environment variables
+- **Persistent Storage**: Data survives container restarts
 
 **Configuration:**
 

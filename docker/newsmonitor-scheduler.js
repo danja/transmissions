@@ -6,6 +6,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import Config from '../src/Config.js'
 import generateEndpoints from '../src/apps/newsmonitor/generate-endpoints.js'
+import { APIHandler } from './api-handler.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -22,16 +23,36 @@ try {
   process.exit(1)
 }
 
-// Simple HTTP server to serve generated HTML
+// Initialize API handler
+const apiHandler = new APIHandler()
+
+// HTTP server to serve API and static files
 const newsmonitorConfig = Config.getService('newsmonitor')
 const PORT = newsmonitorConfig?.port || 8080
+const PUBLIC_DIR = path.join(__dirname, 'public')
 const DATA_DIR = path.join(__dirname, '..', 'src', 'apps', 'newsmonitor', 'data')
 
-const server = http.createServer((req, res) => {
-  let filePath = path.join(DATA_DIR, req.url === '/' ? 'index.html' : req.url)
+const server = http.createServer(async (req, res) => {
+  // Handle API routes
+  if (req.url.startsWith('/api/')) {
+    const handled = await apiHandler.handleRequest(req, res)
+    if (handled) return
+  }
+
+  // Serve static files from public directory
+  let filePath
+  if (req.url === '/') {
+    filePath = path.join(PUBLIC_DIR, 'index.html')
+  } else if (req.url.startsWith('/data/')) {
+    // Legacy: serve generated HTML from data directory
+    filePath = path.join(DATA_DIR, req.url.substring(6))
+  } else {
+    filePath = path.join(PUBLIC_DIR, req.url)
+  }
 
   // Security: prevent directory traversal
-  if (!filePath.startsWith(DATA_DIR)) {
+  const resolvedPath = path.resolve(filePath)
+  if (!resolvedPath.startsWith(PUBLIC_DIR) && !resolvedPath.startsWith(DATA_DIR)) {
     res.writeHead(403, { 'Content-Type': 'text/plain' })
     res.end('Forbidden')
     return
@@ -54,7 +75,10 @@ const server = http.createServer((req, res) => {
       '.html': 'text/html',
       '.css': 'text/css',
       '.js': 'application/javascript',
-      '.json': 'application/json'
+      '.json': 'application/json',
+      '.png': 'image/png',
+      '.jpg': 'image/jpeg',
+      '.svg': 'image/svg+xml'
     }
 
     res.writeHead(200, { 'Content-Type': contentTypes[ext] || 'text/plain' })
@@ -65,6 +89,8 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, () => {
   console.log(`NewsMonitor HTTP server running on port ${PORT}`)
   console.log(`Environment: ${Config.getEnvironment()}`)
+  console.log(`Frontend: http://localhost:${PORT}/`)
+  console.log(`API: http://localhost:${PORT}/api/posts`)
 })
 
 /**

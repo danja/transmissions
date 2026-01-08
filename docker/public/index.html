@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NewsMonitor - Feed Aggregator</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📰 NewsMonitor</h1>
+            <p class="subtitle">Semantic Feed Aggregator</p>
+            <div class="stats">
+                <span id="post-count">Loading...</span>
+                <span id="feed-count">Loading...</span>
+            </div>
+        </header>
+
+        <nav class="controls">
+            <button id="refresh-btn" class="btn-primary">↻ Refresh</button>
+            <select id="limit-select">
+                <option value="10">10 posts</option>
+                <option value="25">25 posts</option>
+                <option value="50" selected>50 posts</option>
+                <option value="100">100 posts</option>
+            </select>
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search posts...">
+            </div>
+        </nav>
+
+        <main>
+            <div id="loading" class="loading">
+                <div class="spinner"></div>
+                <p>Loading posts...</p>
+            </div>
+
+            <div id="error" class="error" style="display: none;">
+                <p>⚠️ Error loading posts. Please try again.</p>
+                <button onclick="loadPosts()">Retry</button>
+            </div>
+
+            <div id="posts-container" class="posts-container"></div>
+
+            <div id="pagination" class="pagination" style="display: none;">
+                <button id="prev-btn" class="btn-secondary">← Previous</button>
+                <span id="page-info"></span>
+                <button id="next-btn" class="btn-secondary">Next →</button>
+            </div>
+        </main>
+
+        <aside id="feeds-sidebar" class="sidebar" style="display: none;">
+            <h3>Subscribed Feeds</h3>
+            <div id="feeds-list"></div>
+        </aside>
+
+        <footer>
+            <p>Powered by <a href="https://github.com/hyperdata/transmissions" target="_blank">Transmissions</a></p>
+            <p class="last-updated">Last updated: <span id="last-update">—</span></p>
+        </footer>
+    </div>
+
+    <script src="/app.js"></script>
+</body>
+</html>
