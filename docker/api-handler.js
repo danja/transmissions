@@ -1,6 +1,12 @@
 // docker/api-handler.js
 import axios from 'axios'
 import Config from '../src/Config.js'
+import { spawn } from 'child_process'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 /**
  * API handler for NewsMonitor frontend
@@ -33,6 +39,12 @@ export class APIHandler {
       return response.data
     } catch (error) {
       console.error('SPARQL query error:', error.message)
+      console.error('Endpoint:', this.endpoint.queryEndpoint)
+      console.error('Query:', query.substring(0, 200))
+      if (error.response) {
+        console.error('Response status:', error.response.status)
+        console.error('Response data:', error.response.data)
+      }
       throw error
     }
   }
@@ -47,8 +59,6 @@ export class APIHandler {
       PREFIX content: <http://purl.org/rss/1.0/modules/content/>
 
       SELECT ?post ?title ?link ?date ?creator ?summary ?feedTitle
-      FROM <http://hyperdata.it/content>
-      FROM <http://hyperdata.it/feeds>
       WHERE {
         GRAPH <http://hyperdata.it/content> {
           ?post a sioc:Post ;
@@ -80,9 +90,10 @@ export class APIHandler {
       PREFIX sioc: <http://rdfs.org/sioc/ns#>
 
       SELECT (COUNT(?post) as ?count)
-      FROM <http://hyperdata.it/content>
       WHERE {
-        ?post a sioc:Post .
+        GRAPH <http://hyperdata.it/content> {
+          ?post a sioc:Post .
+        }
       }
     `
 
@@ -102,8 +113,6 @@ export class APIHandler {
       PREFIX dc: <http://purl.org/dc/elements/1.1/>
 
       SELECT ?feed ?title ?feedUrl (COUNT(?post) as ?postCount)
-      FROM <http://hyperdata.it/feeds>
-      FROM <http://hyperdata.it/content>
       WHERE {
         GRAPH <http://hyperdata.it/feeds> {
           ?feed a sioc:Forum ;
@@ -156,6 +165,115 @@ export class APIHandler {
   }
 
   /**
+   * Run a transmissions command
+   */
+  runTransCommand(command, args = []) {
+    return new Promise((resolve, reject) => {
+      const trans = spawn('./trans', [command, ...args], {
+        cwd: path.join(__dirname, '..'),
+        stdio: ['pipe', 'pipe', 'pipe']
+      })
+
+      let stdout = ''
+      let stderr = ''
+
+      trans.stdout.on('data', (data) => {
+        stdout += data.toString()
+      })
+
+      trans.stderr.on('data', (data) => {
+        stderr += data.toString()
+      })
+
+      trans.on('close', (code) => {
+        if (code === 0) {
+          resolve({ stdout, stderr, code })
+        } else {
+          reject(new Error(`Command failed with code ${code}: ${stderr || stdout}`))
+        }
+      })
+
+      trans.on('error', (err) => {
+        reject(err)
+      })
+    })
+  }
+
+  /**
+   * Subscribe to a feed
+   */
+  async subscribeToFeed(url) {
+    try {
+      const result = await this.runTransCommand(
+        'src/apps/newsmonitor/subscribe',
+        ['-m', `{"url":"${url}"}`]
+      )
+      return { success: true, url }
+    } catch (error) {
+      console.error(`Failed to subscribe to ${url}:`, error.message)
+      return { success: false, url, error: error.message }
+    }
+  }
+
+  /**
+   * Unsubscribe from a feed
+   */
+  async unsubscribeFromFeed(feedUri) {
+    try {
+      // Delete feed from SPARQL store
+      const deleteQuery = `
+        PREFIX sioc: <http://rdfs.org/sioc/ns#>
+
+        DELETE WHERE {
+          GRAPH <http://hyperdata.it/feeds> {
+            <${feedUri}> ?p ?o .
+          }
+        }
+      `
+
+      const auth = Buffer.from(
+        `${this.endpoint.username}:${this.endpoint.password}`
+      ).toString('base64')
+
+      const response = await axios.post(
+        this.endpoint.updateEndpoint,
+        `update=${encodeURIComponent(deleteQuery)}`,
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: `Basic ${auth}`
+          }
+        }
+      )
+
+      return { success: true, feedUri }
+    } catch (error) {
+      console.error(`Failed to unsubscribe from ${feedUri}:`, error.message)
+      throw error
+    }
+  }
+
+  /**
+   * Parse request body (for POST requests)
+   */
+  parseBody(req) {
+    return new Promise((resolve, reject) => {
+      let body = ''
+      req.on('data', chunk => {
+        body += chunk.toString()
+      })
+      req.on('end', () => {
+        try {
+          resolve(JSON.parse(body))
+        } catch (err) {
+          reject(new Error('Invalid JSON'))
+        }
+      })
+      req.on('error', reject)
+    })
+  }
+
+  /**
    * Handle API request
    */
   async handleRequest(req, res) {
@@ -163,6 +281,80 @@ export class APIHandler {
     const path = url.pathname
 
     try {
+      // Subscribe to feeds (POST)
+      if (path === '/api/subscribe' && req.method === 'POST') {
+        const body = await this.parseBody(req)
+        const urls = body.urls || []
+
+        if (!Array.isArray(urls) || urls.length === 0) {
+          res.writeHead(400, { 'Content-Type': 'application/json' })
+          res.end(JSON.stringify({ error: 'URLs array required' }))
+          return true
+        }
+
+        // Subscribe to each feed
+        const results = await Promise.all(
+          urls.map(url => this.subscribeToFeed(url))
+        )
+
+        res.writeHead(200, {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        })
+        res.end(JSON.stringify({ results }))
+        return true
+      }
+
+      // Unsubscribe from feed (POST)
+      if (path === '/api/unsubscribe' && req.method === 'POST') {
+        const body = await this.parseBody(req)
+        const feedUri = body.feedUri
+
+        if (!feedUri) {
+          res.writeHead(400, { 'Content-Type': 'application/json' })
+          res.end(JSON.stringify({ error: 'feedUri required' }))
+          return true
+        }
+
+        await this.unsubscribeFromFeed(feedUri)
+
+        res.writeHead(200, {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        })
+        res.end(JSON.stringify({ success: true }))
+        return true
+      }
+
+      // Update all feeds (POST)
+      if (path === '/api/update-feeds' && req.method === 'POST') {
+        try {
+          console.log('Manual feed update triggered via API')
+          const result = await this.runTransCommand('src/apps/newsmonitor/update-all')
+
+          res.writeHead(200, {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          })
+          res.end(JSON.stringify({
+            success: true,
+            message: 'Feed update completed',
+            output: result.stdout
+          }))
+          return true
+        } catch (error) {
+          res.writeHead(500, {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          })
+          res.end(JSON.stringify({
+            success: false,
+            error: error.message
+          }))
+          return true
+        }
+      }
+
       if (path === '/api/posts') {
         const limit = parseInt(url.searchParams.get('limit') || '50')
         const offset = parseInt(url.searchParams.get('offset') || '0')
@@ -194,13 +386,38 @@ export class APIHandler {
         })
         res.end(JSON.stringify({ feeds }))
         return true
+
+      } else if (path === '/api/health') {
+        // Health check endpoint with config info
+        const health = {
+          status: 'ok',
+          endpoint: {
+            query: this.endpoint.queryEndpoint,
+            update: this.endpoint.updateEndpoint,
+            dataset: this.endpoint.dataset
+          },
+          timestamp: new Date().toISOString()
+        }
+
+        res.writeHead(200, {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        })
+        res.end(JSON.stringify(health))
+        return true
       }
 
       return false // Not an API route
     } catch (error) {
       console.error('API error:', error)
-      res.writeHead(500, { 'Content-Type': 'application/json' })
-      res.end(JSON.stringify({ error: error.message }))
+      res.writeHead(500, {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      })
+      res.end(JSON.stringify({
+        error: error.message,
+        endpoint: this.endpoint?.queryEndpoint
+      }))
       return true
     }
   }

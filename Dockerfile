@@ -1,5 +1,5 @@
 # Dockerfile
-FROM node:18-alpine
+FROM node:20-alpine
 
 # Install required system packages
 RUN apk add --no-cache \
@@ -27,12 +27,12 @@ RUN mkdir -p /app/src/apps/newsmonitor/data
 # Set environment
 ENV NODE_ENV=production
 
-# Expose HTTP port for serving generated HTML
-EXPOSE 8080
+# Expose HTTP port for serving generated HTML (configured in config/services.json)
+EXPOSE 6010
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8080/ || exit 1
+    CMD curl -f http://localhost:6010/ || exit 1
 
 # Default command runs the scheduler
 CMD ["node", "/app/docker/newsmonitor-scheduler.js"]

@@ -182,6 +182,20 @@ nano src/apps/newsmonitor/data/feeds.md
 ./trans src/apps/newsmonitor/subscribe-from-file
 ```
 
+Option C - Import from RDF file (76 semantic web blogs):
+```bash
+# Import all feeds from bloggers.rdf
+./src/apps/newsmonitor/import-bloggers-rdf.sh
+
+# Or with custom file and delay
+./src/apps/newsmonitor/import-bloggers-rdf.sh path/to/feeds.rdf 3
+
+# Docker:
+docker compose exec newsmonitor ./src/apps/newsmonitor/import-bloggers-rdf.sh
+```
+
+The `bloggers.rdf` file contains 76 semantic web and RDF-related blog feeds in FOAF format.
+
 3. **Fetch and Store Entries from All Feeds**
 
 ```bash
@@ -539,7 +553,7 @@ docker-compose up -d
 # 3. View logs
 docker-compose logs -f newsmonitor
 
-# 4. Configure HTTPS proxy to forward to http://localhost:8080
+# 4. Configure HTTPS proxy to forward to http://localhost:6010
 ```
 
 **Features:**
@@ -547,7 +561,7 @@ docker-compose logs -f newsmonitor
 - **REST API**: JSON endpoints for posts, feeds, and statistics
 - **Automatic Updates**: Periodic feed updates (default: every hour)
 - **Auto-refresh**: Frontend updates every 5 minutes
-- **HTTP Server**: Serves frontend and API on port 8080
+- **HTTP Server**: Serves frontend and API on port 6010
 - **Configurable**: Update intervals via environment variables
 - **Persistent Storage**: Data survives container restarts
 
@@ -561,7 +575,7 @@ FUSEKI_PASSWORD=your-password
 FUSEKI_BASEURL=https://fuseki.hyperdata.it
 UPDATE_INTERVAL=3600000    # 1 hour in ms
 RENDER_INTERVAL=300000     # 5 minutes in ms
-NEWSMONITOR_PORT=8080
+# Port configured in config/services.json (default: 6010)
 ```
 
 **Manual Operations:**

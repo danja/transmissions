@@ -91,7 +91,7 @@ class Config {
       throw new Error('Fuseki service not configured')
     }
 
-    const baseUrl = fuseki.baseUrl || 'http://localhost:3030'
+    const baseUrl = fuseki.baseurl || fuseki.baseUrl || 'http://localhost:3030'
     const username = fuseki.username
     const password = fuseki.password
 

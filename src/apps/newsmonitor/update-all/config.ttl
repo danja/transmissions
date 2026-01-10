@@ -4,7 +4,7 @@
 :feedQuerySettings a :ConfigSet ;
     :endpointSettings "data/endpoints.json" ;
     :templateFilename "data/sparql-templates/get-all-feeds.rq" ;
-    :dataField "feedList" .
+    :dataField "queryResults" .
 
 # Clean up graph field
 :cleanGraphSettings a :ConfigSet ;
@@ -15,6 +15,7 @@
     :forEach "queryResults.results.bindings" .
 
 # Prepare feed data - extract values from SPARQL result
+# Extract from SPARQL binding format (binding.field.value) to simple fields
 :prepareSettings a :ConfigSet ;
     :rename (:r1 :r2) .
         :r1 :pre "currentItem.feedUrl.value" ;
@@ -53,9 +54,9 @@
     :useContentHash "true" ;
     :checkMethod "all" .
 
-# RDF Builder Settings - feedURI already in message from Restructure
+# RDF Builder Settings
+# Note: dataField removed so whole message is available to template
 :rdfSettings a :ConfigSet ;
-    :dataField "currentItem" ;
     :templateFilename "data/templates/feed-entry-to-rdf.njk" ;
     :baseURI "http://hyperdata.it/" ;
     :outputField "rdf" .

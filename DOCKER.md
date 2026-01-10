@@ -47,7 +47,7 @@ NODE_ENV=production
 FUSEKI_USERNAME=admin
 FUSEKI_PASSWORD=your-secure-password
 FUSEKI_BASEURL=https://fuseki.hyperdata.it
-NEWSMONITOR_PORT=8080
+NEWSMONITOR_PORT=6010
 UPDATE_INTERVAL=3600000
 RENDER_INTERVAL=300000
 ```
@@ -56,19 +56,19 @@ RENDER_INTERVAL=300000
 
 ```bash
 # Build the image
-docker-compose build
+docker compose build --no-cache
 
 # Start the service
-docker-compose up -d
+docker compose up -d
 
 # View logs
-docker-compose logs -f newsmonitor
+docker compose logs -f newsmonitor
 ```
 
 ### 3. Configure HTTPS Proxy
 
 Point your existing HTTPS proxy to:
-- **Target**: `http://localhost:8080` (or your configured NEWSMONITOR_PORT)
+- **Target**: `http://localhost:6010` (or your configured NEWSMONITOR_PORT)
 - **Path**: Forward all requests to the container
 
 Example nginx configuration:
@@ -81,7 +81,7 @@ server {
     ssl_certificate_key /path/to/key.pem;
 
     location / {
-        proxy_pass http://localhost:8080;
+        proxy_pass http://localhost:6010;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -100,7 +100,7 @@ server {
 | `FUSEKI_USERNAME` | - | Fuseki admin username |
 | `FUSEKI_PASSWORD` | - | Fuseki admin password |
 | `FUSEKI_BASEURL` | From config | Override Fuseki base URL |
-| `NEWSMONITOR_PORT` | `8080` | HTTP server port |
+| `NEWSMONITOR_PORT` | `6010` | HTTP server port |
 | `UPDATE_INTERVAL` | `3600000` | Feed update interval (ms) |
 | `RENDER_INTERVAL` | `300000` | HTML render interval (ms) |
 
@@ -115,26 +115,26 @@ Edit `config/services.json` for:
 
 ### Start Service
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 ### Stop Service
 ```bash
-docker-compose stop
+docker compose stop
 ```
 
 ### Restart Service
 ```bash
-docker-compose restart
+docker compose restart
 ```
 
 ### View Logs
 ```bash
 # Follow logs
-docker-compose logs -f newsmonitor
+docker compose logs -f newsmonitor
 
 # Last 100 lines
-docker-compose logs --tail=100 newsmonitor
+docker compose logs --tail=100 newsmonitor
 ```
 
 ### Update Service
@@ -143,9 +143,9 @@ docker-compose logs --tail=100 newsmonitor
 git pull
 
 # Rebuild and restart
-docker-compose down
-docker-compose build
-docker-compose up -d
+docker compose down
+docker compose build
+docker compose up -d
 ```
 
 ### Manual Commands
@@ -154,16 +154,16 @@ Run transmissions commands inside the container:
 
 ```bash
 # Subscribe to a new feed
-docker-compose exec newsmonitor ./trans src/apps/newsmonitor/subscribe -m '{"url":"https://example.com/feed.xml"}'
+docker compose exec newsmonitor ./trans src/apps/newsmonitor/subscribe -m '{"url":"https://example.com/feed.xml"}'
 
 # Update all feeds now
-docker-compose exec newsmonitor ./trans src/apps/newsmonitor/update-all
+docker compose exec newsmonitor ./trans src/apps/newsmonitor/update-all
 
 # Render HTML now
-docker-compose exec newsmonitor ./trans src/apps/newsmonitor/render-to-html
+docker compose exec newsmonitor ./trans src/apps/newsmonitor/render-to-html
 
 # Shell access
-docker-compose exec newsmonitor sh
+docker compose exec newsmonitor sh
 ```
 
 ## Data Persistence
@@ -192,17 +192,17 @@ The scheduler (`docker/newsmonitor-scheduler.js`):
 Docker health check runs every 30 seconds:
 ```bash
 # Check health status
-docker-compose ps
+docker compose ps
 ```
 
 ### Log Monitoring
 
 ```bash
 # Watch for errors
-docker-compose logs -f newsmonitor | grep -i error
+docker compose logs -f newsmonitor | grep -i error
 
 # Watch for updates
-docker-compose logs -f newsmonitor | grep -i "updating all feeds"
+docker compose logs -f newsmonitor | grep -i "updating all feeds"
 ```
 
 ## Troubleshooting
@@ -211,36 +211,36 @@ docker-compose logs -f newsmonitor | grep -i "updating all feeds"
 
 Check logs:
 ```bash
-docker-compose logs newsmonitor
+docker compose logs newsmonitor
 ```
 
 Common issues:
 - Missing `.env` file
 - Invalid Fuseki credentials
-- Port conflict on 8080
+- Port conflict on 6010
 
 ### No Feed Updates
 
 1. Check Fuseki connectivity:
 ```bash
-docker-compose exec newsmonitor curl -u admin:password http://fuseki-host:3030/newsmonitor/query
+docker compose exec newsmonitor curl -u admin:password http://fuseki-host:3030/newsmonitor/query
 ```
 
 2. Check feed subscriptions:
 ```bash
-docker-compose exec newsmonitor ./trans src/apps/newsmonitor/subscribe -m '{"url":"https://hnrss.org/frontpage"}'
+docker compose exec newsmonitor ./trans src/apps/newsmonitor/subscribe -m '{"url":"https://hnrss.org/frontpage"}'
 ```
 
 3. Force update:
 ```bash
-docker-compose exec newsmonitor ./trans src/apps/newsmonitor/update-all
+docker compose exec newsmonitor ./trans src/apps/newsmonitor/update-all
 ```
 
 ### HTML Not Generated
 
 1. Force render:
 ```bash
-docker-compose exec newsmonitor ./trans src/apps/newsmonitor/render-to-html
+docker compose exec newsmonitor ./trans src/apps/newsmonitor/render-to-html
 ```
 
 2. Check output file:
@@ -252,17 +252,17 @@ ls -lah src/apps/newsmonitor/data/index.html
 
 1. Verify container is running:
 ```bash
-docker-compose ps
+docker compose ps
 ```
 
 2. Test HTTP endpoint:
 ```bash
-curl http://localhost:8080/
+curl http://localhost:6010/
 ```
 
 3. Check port mapping:
 ```bash
-docker-compose port newsmonitor 8080
+docker compose port newsmonitor 6010
 ```
 
 ## Development Mode
@@ -274,7 +274,7 @@ For local development with localhost Fuseki:
 NODE_ENV=development
 FUSEKI_USERNAME=admin
 FUSEKI_PASSWORD=admin123
-NEWSMONITOR_PORT=8080
+NEWSMONITOR_PORT=6010
 ```
 
 Run without Docker:
@@ -303,10 +303,10 @@ cp src/apps/newsmonitor/data/feeds.md feeds.md.backup
 cp feeds.md.backup src/apps/newsmonitor/data/feeds.md
 
 # Re-subscribe
-docker-compose exec newsmonitor ./trans src/apps/newsmonitor/subscribe-from-file
+docker compose exec newsmonitor ./trans src/apps/newsmonitor/subscribe-from-file
 
 # Update all
-docker-compose exec newsmonitor ./trans src/apps/newsmonitor/update-all
+docker compose exec newsmonitor ./trans src/apps/newsmonitor/update-all
 ```
 
 ## Security Considerations
@@ -327,7 +327,7 @@ Balance freshness vs. server load:
 
 ### Memory Limits
 
-Add to docker-compose.yml:
+Add to docker compose.yml:
 ```yaml
 services:
   newsmonitor:
@@ -342,7 +342,7 @@ services:
 ## Support
 
 For issues:
-1. Check logs: `docker-compose logs newsmonitor`
+1. Check logs: `docker compose logs newsmonitor`
 2. Verify configuration in `config/services.json`
 3. Test Fuseki connectivity
 4. Review [NewsMonitor README](src/apps/newsmonitor/README.md)

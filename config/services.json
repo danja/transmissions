@@ -33,10 +33,10 @@
     "description": "NewsMonitor feed aggregator service",
     "environments": {
       "development": {
-        "port": 8080
+        "port": 6010
       },
       "production": {
-        "port": 8080
+        "port": 6010
       }
     },
     "htmlOutputPath": "/app/src/apps/newsmonitor/data"

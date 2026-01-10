@@ -1,0 +1,323 @@
+/* admin.css - Admin page specific styles */
+
+.admin-nav {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.admin-section {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-section h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #2c3e50;
+    font-size: 1.5rem;
+}
+
+.section-description {
+    color: #7f8c8d;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+}
+
+/* Add Feeds Form */
+.add-feeds-form textarea {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-family: 'Monaco', 'Courier New', monospace;
+    font-size: 0.9rem;
+    resize: vertical;
+    min-height: 150px;
+    transition: border-color 0.3s;
+}
+
+.add-feeds-form textarea:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.form-actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.status-message {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+}
+
+.status-message.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.status-message.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.status-message.info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+.status-message ul {
+    margin: 10px 0;
+    padding-left: 20px;
+}
+
+/* Feeds Controls */
+.feeds-controls {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.filter-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 10px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: border-color 0.3s;
+}
+
+.filter-input:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+#sort-select {
+    padding: 10px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    background: white;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+/* Feeds Container */
+.feeds-container {
+    display: grid;
+    gap: 15px;
+}
+
+.feed-card {
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 20px;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.feed-card:hover {
+    border-color: #3498db;
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.1);
+}
+
+.feed-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.feed-info {
+    flex: 1;
+}
+
+.feed-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    word-wrap: break-word;
+}
+
+.feed-url {
+    color: #7f8c8d;
+    font-size: 0.85rem;
+    word-break: break-all;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.feed-url a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.feed-url a:hover {
+    text-decoration: underline;
+}
+
+.feed-metadata {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.feed-stat {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.feed-stat-icon {
+    font-size: 1rem;
+}
+
+.feed-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.btn-danger {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.3s;
+    white-space: nowrap;
+}
+
+.btn-danger:hover {
+    background: #c0392b;
+}
+
+.btn-danger:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+}
+
+.btn-refresh {
+    background: #95a5a6;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.3s;
+    white-space: nowrap;
+}
+
+.btn-refresh:hover {
+    background: #7f8c8d;
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+.modal-actions {
+    margin-top: 25px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #95a5a6;
+}
+
+.empty-state-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+.empty-state h3 {
+    color: #7f8c8d;
+    margin-bottom: 10px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .admin-section {
+        padding: 20px 15px;
+    }
+
+    .feed-card-header {
+        flex-direction: column;
+    }
+
+    .feed-actions {
+        width: 100%;
+        flex-direction: row;
+    }
+
+    .btn-danger,
+    .btn-refresh {
+        flex: 1;
+        padding: 10px;
+    }
+
+    .feeds-controls {
+        flex-direction: column;
+    }
+
+    .filter-input {
+        width: 100%;
+    }
+
+    #sort-select {
+        width: 100%;
+    }
+}

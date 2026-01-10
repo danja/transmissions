@@ -13,7 +13,7 @@ services:
       - UPDATE_INTERVAL=${UPDATE_INTERVAL:-3600000}
       - RENDER_INTERVAL=${RENDER_INTERVAL:-300000}
     ports:
-      - "${NEWSMONITOR_PORT:-8080}:8080"
+      - "6010:6010"
     volumes:
       # Persist generated HTML and data
       - ./src/apps/newsmonitor/data:/app/src/apps/newsmonitor/data
@@ -22,7 +22,7 @@ services:
       # Mount config directory
       - ./config:/app/config:ro
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+      test: ["CMD", "curl", "-f", "http://localhost:6010/"]
       interval: 30s
       timeout: 10s
       retries: 3

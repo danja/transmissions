@@ -83,6 +83,21 @@ async function loadPosts(silent = false) {
     } catch (err) {
         console.error('Error loading posts:', err)
         loading.style.display = 'none'
+
+        // Show helpful error message
+        error.innerHTML = `
+            <p>⚠️ Unable to load posts</p>
+            <p style="font-size: 0.9rem; margin-top: 10px;">
+                This could mean:
+                <ul style="text-align: left; margin: 10px auto; max-width: 400px;">
+                    <li>SPARQL endpoint is not reachable</li>
+                    <li>No feeds subscribed yet</li>
+                    <li>Dataset hasn't been created</li>
+                </ul>
+            </p>
+            <p style="font-size: 0.9rem;">Check <a href="/api/health" target="_blank">/api/health</a> for endpoint status</p>
+            <button onclick="loadPosts()" class="btn-primary" style="margin-top: 10px;">Retry</button>
+        `
         error.style.display = 'block'
     }
 }

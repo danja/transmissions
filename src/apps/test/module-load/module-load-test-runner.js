@@ -1,8 +1,8 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
-import TransmissionBuilder from '../../../transmissions/src/engine/TransmissionBuilder.js'
+import TransmissionBuilder from '../../../engine/TransmissionBuilder.js'
 import ModuleLoaderFactory from './processors/_ModuleLoaderFactory.js'
-import logger from '../../../transmissions/src/utils/Logger.js'
+import logger from '../../../utils/Logger.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)

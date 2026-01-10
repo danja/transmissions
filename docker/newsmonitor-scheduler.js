@@ -15,11 +15,23 @@ const UPDATE_INTERVAL = process.env.UPDATE_INTERVAL || 3600000 // 1 hour default
 const RENDER_INTERVAL = process.env.RENDER_INTERVAL || 300000 // 5 minutes default
 
 // Generate endpoints.json on startup
-console.log('Generating endpoints.json from Config...')
+console.log('='.repeat(60))
+console.log('NewsMonitor Scheduler Starting...')
+console.log('='.repeat(60))
+console.log(`Environment: ${Config.getEnvironment()}`)
+console.log('\nGenerating endpoints.json from Config...')
+
 try {
   generateEndpoints()
+  const endpoint = Config.getSparqlEndpoint('newsmonitor')
+  console.log('SPARQL Configuration:')
+  console.log(`  Query endpoint: ${endpoint.queryEndpoint}`)
+  console.log(`  Update endpoint: ${endpoint.updateEndpoint}`)
+  console.log(`  Username: ${endpoint.username}`)
+  console.log(`  Password: ${endpoint.password ? '***set***' : '***NOT SET***'}`)
 } catch (error) {
   console.error('Failed to generate endpoints:', error.message)
+  console.error('Check your .env file and config/services.json')
   process.exit(1)
 }
 
@@ -151,13 +163,20 @@ async function renderHTML() {
  */
 async function initialRun() {
   console.log('\n=== Initial startup ===')
+  console.log('Note: Frontend is available even if initial data load fails')
+  console.log(`Frontend available at: http://localhost:${PORT}/`)
+  console.log(`Health check: http://localhost:${PORT}/api/health`)
+
   await updateFeeds()
   await renderHTML()
   console.log('=== Startup complete ===\n')
 }
 
-// Run initial update and render
-initialRun().catch(console.error)
+// Run initial update and render (non-blocking - frontend stays up)
+initialRun().catch(err => {
+  console.error('Initial run failed:', err.message)
+  console.log('Frontend still accessible for debugging')
+})
 
 // Schedule periodic updates
 setInterval(() => {

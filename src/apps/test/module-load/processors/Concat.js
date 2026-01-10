@@ -1,5 +1,5 @@
-import Processor from '../../../../transmissions/src/processors/base/Processor.js'
-import logger from '../../../../transmissions/src/utils/Logger.js'
+import Processor from '../../../../processors/base/Processor.js'
+import logger from '../../../../utils/Logger.js'
 
 class Concat extends Processor {
     constructor(config) {

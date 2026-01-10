@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NewsMonitor Admin</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚙️ NewsMonitor Admin</h1>
+            <p class="subtitle">Manage Feed Subscriptions</p>
+            <nav class="admin-nav">
+                <a href="/" class="btn-secondary">← Back to Feed</a>
+                <button id="update-all-btn" class="btn-primary">🔄 Update All Feeds</button>
+            </nav>
+            <div id="update-status" class="status-message" style="display: none;"></div>
+        </header>
+
+        <main>
+            <!-- Add Feeds Section -->
+            <section class="admin-section">
+                <h2>Subscribe to Feeds</h2>
+                <p class="section-description">
+                    Enter feed URLs, one per line. Supports RSS, Atom, and RDF feeds.
+                </p>
+
+                <div class="add-feeds-form">
+                    <textarea
+                        id="feed-urls"
+                        placeholder="https://example.com/feed.xml&#10;https://another-blog.com/rss&#10;https://news-site.org/atom.xml"
+                        rows="8"
+                    ></textarea>
+
+                    <div class="form-actions">
+                        <button id="subscribe-btn" class="btn-primary">
+                            ➕ Subscribe to Feeds
+                        </button>
+                        <button id="clear-btn" class="btn-secondary">
+                            Clear
+                        </button>
+                    </div>
+
+                    <div id="subscribe-status" class="status-message" style="display: none;"></div>
+                </div>
+            </section>
+
+            <!-- Subscribed Feeds Section -->
+            <section class="admin-section">
+                <h2>Subscribed Feeds (<span id="feed-count">0</span>)</h2>
+
+                <div class="feeds-controls">
+                    <input
+                        type="text"
+                        id="filter-feeds"
+                        placeholder="Filter feeds..."
+                        class="filter-input"
+                    >
+                    <select id="sort-select">
+                        <option value="posts">Sort by Post Count</option>
+                        <option value="title">Sort by Title</option>
+                        <option value="recent">Sort by Recent Activity</option>
+                    </select>
+                </div>
+
+                <div id="loading" class="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Loading feeds...</p>
+                </div>
+
+                <div id="error" class="error" style="display: none;"></div>
+
+                <div id="feeds-container" class="feeds-container">
+                    <!-- Feeds will be loaded here -->
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Powered by <a href="https://github.com/hyperdata/transmissions" target="_blank">Transmissions</a></p>
+        </footer>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirm-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h3>Confirm Unsubscribe</h3>
+            <p id="confirm-message"></p>
+            <div class="modal-actions">
+                <button id="confirm-yes" class="btn-danger">Unsubscribe</button>
+                <button id="confirm-no" class="btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/admin.js"></script>
+</body>
+</html>
