@@ -1,0 +1,76 @@
+# Nginx configuration for NewsMonitor reverse proxy
+# Place this in /etc/nginx/sites-available/ and symlink to sites-enabled
+
+upstream newsmonitor {
+    server localhost:6010;
+}
+
+server {
+    listen 80;
+    server_name strandz.it;  # Change to your domain
+
+    # Increase timeouts for long-running API requests
+    proxy_connect_timeout 60s;
+    proxy_send_timeout 60s;
+    proxy_read_timeout 60s;  # Increase if feed updates take longer
+    send_timeout 60s;
+
+    # Increase buffer sizes for large responses
+    proxy_buffer_size 128k;
+    proxy_buffers 4 256k;
+    proxy_busy_buffers_size 256k;
+
+    location / {
+        proxy_pass http://newsmonitor;
+        proxy_http_version 1.1;
+
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    # Special handling for API endpoints that might take longer
+    location /api/update-feeds {
+        proxy_pass http://newsmonitor;
+        proxy_http_version 1.1;
+
+        # Very long timeout for feed updates (can take several minutes)
+        proxy_read_timeout 300s;
+        proxy_connect_timeout 60s;
+        proxy_send_timeout 300s;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    # Gzip compression
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_types text/plain text/css text/xml text/javascript application/json application/javascript application/xml+rss;
+
+    # Logging
+    access_log /var/log/nginx/newsmonitor_access.log;
+    error_log /var/log/nginx/newsmonitor_error.log;
+}
+
+# SSL configuration (uncomment and configure after obtaining certificates)
+# server {
+#     listen 443 ssl http2;
+#     server_name strandz.it;
+#
+#     ssl_certificate /etc/letsencrypt/live/strandz.it/fullchain.pem;
+#     ssl_certificate_key /etc/letsencrypt/live/strandz.it/privkey.pem;
+#
+#     # Copy all the proxy settings from above
+#     location / {
+#         proxy_pass http://newsmonitor;
+#         # ... (same proxy settings)
+#     }
+# }

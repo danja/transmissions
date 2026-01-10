@@ -19,7 +19,7 @@ export class APIHandler {
   /**
    * Query SPARQL endpoint
    */
-  async querySparql(query) {
+  async querySparql(query, timeout = 30000) {
     const auth = Buffer.from(
       `${this.endpoint.username}:${this.endpoint.password}`
     ).toString('base64')
@@ -33,7 +33,8 @@ export class APIHandler {
             'Content-Type': 'application/x-www-form-urlencoded',
             Authorization: `Basic ${auth}`,
             Accept: 'application/sparql-results+json'
-          }
+          },
+          timeout: timeout
         }
       )
       return response.data
@@ -41,6 +42,9 @@ export class APIHandler {
       console.error('SPARQL query error:', error.message)
       console.error('Endpoint:', this.endpoint.queryEndpoint)
       console.error('Query:', query.substring(0, 200))
+      if (error.code === 'ECONNABORTED') {
+        console.error('Query timed out after', timeout, 'ms')
+      }
       if (error.response) {
         console.error('Response status:', error.response.status)
         console.error('Response data:', error.response.data)
@@ -108,34 +112,58 @@ export class APIHandler {
    * Get feeds list
    */
   async getFeeds() {
-    const query = `
+    // First get all feeds (fast query without aggregation)
+    const feedsQuery = `
       PREFIX sioc: <http://rdfs.org/sioc/ns#>
       PREFIX dc: <http://purl.org/dc/elements/1.1/>
 
-      SELECT ?feed ?title ?feedUrl (COUNT(?post) as ?postCount)
+      SELECT ?feed ?title ?feedUrl
       WHERE {
         GRAPH <http://hyperdata.it/feeds> {
           ?feed a sioc:Forum ;
                 dc:title ?title ;
                 sioc:feed_url ?feedUrl .
         }
-        OPTIONAL {
-          GRAPH <http://hyperdata.it/content> {
-            ?post sioc:has_container ?feed .
-          }
-        }
       }
-      GROUP BY ?feed ?title ?feedUrl
-      ORDER BY DESC(?postCount)
+      ORDER BY ?title
     `
 
-    const data = await this.querySparql(query)
-    return data.results.bindings.map(b => ({
-      uri: b.feed.value,
-      title: b.title.value,
-      feedUrl: b.feedUrl.value,
-      postCount: parseInt(b.postCount.value)
-    }))
+    // Then get post counts (can be slow but separate)
+    const countsQuery = `
+      PREFIX sioc: <http://rdfs.org/sioc/ns#>
+
+      SELECT ?feed (COUNT(?post) as ?postCount)
+      WHERE {
+        GRAPH <http://hyperdata.it/content> {
+          ?post sioc:has_container ?feed .
+        }
+      }
+      GROUP BY ?feed
+    `
+
+    try {
+      const [feedsData, countsData] = await Promise.all([
+        this.querySparql(feedsQuery, 10000),  // 10s timeout for feeds
+        this.querySparql(countsQuery, 20000).catch(() => ({ results: { bindings: [] } }))  // 20s for counts, optional
+      ])
+
+      // Build counts map
+      const counts = {}
+      countsData.results.bindings.forEach(b => {
+        counts[b.feed.value] = parseInt(b.postCount.value)
+      })
+
+      // Combine feeds with their counts
+      return feedsData.results.bindings.map(b => ({
+        uri: b.feed.value,
+        title: b.title.value,
+        feedUrl: b.feedUrl.value,
+        postCount: counts[b.feed.value] || 0
+      })).sort((a, b) => b.postCount - a.postCount)  // Sort by post count desc
+    } catch (error) {
+      console.error('Error fetching feeds:', error.message)
+      throw error
+    }
   }
 
   /**
@@ -404,6 +432,48 @@ export class APIHandler {
           'Access-Control-Allow-Origin': '*'
         })
         res.end(JSON.stringify(health))
+        return true
+
+      } else if (path === '/api/diagnostics') {
+        // Diagnostic endpoint to test SPARQL connectivity
+        try {
+          const startTime = Date.now()
+
+          // Test simple query
+          const testQuery = `SELECT (COUNT(*) as ?count) WHERE { ?s ?p ?o } LIMIT 1`
+          await this.querySparql(testQuery, 5000)
+
+          const duration = Date.now() - startTime
+
+          res.writeHead(200, {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          })
+          res.end(JSON.stringify({
+            status: 'ok',
+            sparql: {
+              endpoint: this.endpoint.queryEndpoint,
+              reachable: true,
+              responseTime: duration + 'ms'
+            },
+            timestamp: new Date().toISOString()
+          }))
+        } catch (error) {
+          res.writeHead(200, {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          })
+          res.end(JSON.stringify({
+            status: 'error',
+            sparql: {
+              endpoint: this.endpoint.queryEndpoint,
+              reachable: false,
+              error: error.message,
+              code: error.code
+            },
+            timestamp: new Date().toISOString()
+          }))
+        }
         return true
       }
 
