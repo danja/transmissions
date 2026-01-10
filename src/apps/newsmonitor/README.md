@@ -13,6 +13,11 @@ nano src/apps/newsmonitor/data/feeds.md
 xdg-open src/apps/newsmonitor/data/index.html
 ```
 
+or
+```sh
+ docker compose up -d --build newsmonitor
+```
+
 ## Features
 
 - **Multi-Format Support**: RSS 1.0, RSS 2.0, Atom, JSON Feed
