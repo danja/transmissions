@@ -62,7 +62,7 @@ export class APIHandler {
       PREFIX dc: <http://purl.org/dc/elements/1.1/>
       PREFIX content: <http://purl.org/rss/1.0/modules/content/>
 
-      SELECT ?post ?title ?link ?date ?creator ?summary ?feedTitle
+      SELECT ?post ?title ?link ?date ?creator ?summary ?fullContent ?feedTitle
       WHERE {
         GRAPH <http://hyperdata.it/content> {
           ?post a sioc:Post ;
@@ -72,6 +72,7 @@ export class APIHandler {
                 sioc:has_container ?feed .
           OPTIONAL { ?post dc:creator ?creator }
           OPTIONAL { ?post sioc:content ?summary }
+          OPTIONAL { ?post content:encoded ?fullContent }
         }
         GRAPH <http://hyperdata.it/feeds> {
           ?feed dc:title ?feedTitle .
@@ -170,19 +171,71 @@ export class APIHandler {
    * Format SPARQL results to JSON
    */
   formatResults(data) {
-    return data.results.bindings.map(binding => ({
-      uri: binding.post.value,
-      title: binding.title.value,
-      link: binding.link.value,
-      date: binding.date.value,
-      creator: binding.creator?.value || null,
-      summary: this.truncateSummary(binding.summary?.value || ''),
-      feedTitle: binding.feedTitle.value
-    }))
+    return data.results.bindings.map(binding => {
+      // Prefer full content for paragraph extraction, fall back to summary
+      const fullContent = binding.fullContent?.value || ''
+      const summary = binding.summary?.value || ''
+      const contentText = fullContent || summary
+
+      // Extract first couple paragraphs if we have content
+      const formattedContent = contentText
+        ? this.extractParagraphs(contentText, 2)
+        : this.truncateSummary(summary)
+
+      return {
+        uri: binding.post.value,
+        title: binding.title.value,
+        link: binding.link.value,
+        date: binding.date.value,
+        creator: binding.creator?.value || null,
+        summary: formattedContent,
+        feedTitle: binding.feedTitle.value
+      }
+    })
   }
 
   /**
-   * Truncate summary to reasonable length
+   * Extract first few paragraphs from content
+   */
+  extractParagraphs(text, maxParagraphs = 2) {
+    if (!text) return ''
+
+    // Split into paragraphs (look for double newlines or <p> tags)
+    let paragraphs = []
+
+    // Try HTML paragraphs first
+    const pTagMatch = text.match(/<p[^>]*>(.*?)<\/p>/gi)
+    if (pTagMatch && pTagMatch.length > 0) {
+      paragraphs = pTagMatch
+        .slice(0, maxParagraphs)
+        .map(p => p.replace(/<p[^>]*>|<\/p>/gi, '').trim())
+        .filter(p => p.length > 0)
+    } else {
+      // Fall back to text-based paragraphs
+      const textParagraphs = text
+        .split(/\n\s*\n/)
+        .map(p => p.replace(/<[^>]*>/g, '').trim())
+        .filter(p => p.length > 50) // Skip very short paragraphs
+
+      paragraphs = textParagraphs.slice(0, maxParagraphs)
+    }
+
+    // Join paragraphs
+    let result = paragraphs.join('\n\n')
+
+    // Clean up any remaining HTML tags
+    result = result.replace(/<[^>]*>/g, '')
+
+    // Truncate if still too long (max ~600 chars for 2 paragraphs)
+    if (result.length > 800) {
+      result = result.substring(0, 800) + '...'
+    }
+
+    return result
+  }
+
+  /**
+   * Truncate summary to reasonable length (fallback)
    */
   truncateSummary(text, maxLength = 300) {
     if (!text) return ''

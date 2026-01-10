@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - NewsMonitor</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .about-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .about-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .about-header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .about-section {
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+        .about-section h2 {
+            color: #34495e;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .about-section p {
+            margin-bottom: 15px;
+        }
+        .about-section ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        .about-section li {
+            margin-bottom: 8px;
+        }
+        .attribution {
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        .attribution a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .attribution a:hover {
+            text-decoration: underline;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #3498db;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="about-container">
+        <a href="/" class="back-link">← Back to NewsMonitor</a>
+
+        <div class="about-header">
+            <h1>About NewsMonitor</h1>
+            <p>A Semantic Feed Aggregator</p>
+        </div>
+
+        <div class="attribution">
+            <p><strong>Created by <a href="https://danny.ayers.name" target="_blank" rel="noopener">Danny Ayers</a></strong></p>
+            <p>Source code: <a href="https://github.com/danja/transmissions" target="_blank" rel="noopener">github.com/danja/transmissions</a></p>
+        </div>
+
+        <div class="about-section">
+            <h2>Overview</h2>
+            <p>NewsMonitor is a feed aggregator application built on the Transmissions message processing framework. It subscribes to RSS, Atom, and RDF feeds, stores their content in a SPARQL triple store, and provides a web interface for browsing aggregated posts.</p>
+        </div>
+
+        <div class="about-section">
+            <h2>Core Functionality</h2>
+            <p>The application performs three primary functions:</p>
+            <ul>
+                <li><strong>Feed Subscription</strong>: Accepts feed URLs and stores feed metadata in RDF format</li>
+                <li><strong>Content Retrieval</strong>: Fetches feed entries on a scheduled basis and stores them as RDF triples</li>
+                <li><strong>Content Presentation</strong>: Provides a web interface for browsing and searching aggregated content</li>
+            </ul>
+        </div>
+
+        <div class="about-section">
+            <h2>Architecture</h2>
+            <p>NewsMonitor consists of several components:</p>
+            <ul>
+                <li><strong>Backend</strong>: Node.js application using the Transmissions framework for message processing</li>
+                <li><strong>Storage</strong>: Apache Jena Fuseki SPARQL server for RDF data persistence</li>
+                <li><strong>Frontend</strong>: Static HTML/CSS/JavaScript interface served via HTTP</li>
+                <li><strong>Scheduler</strong>: Automated feed update process running at configurable intervals</li>
+            </ul>
+            <p>Data is stored in two named graphs:</p>
+            <ul>
+                <li><code>http://hyperdata.it/feeds</code> - Feed metadata (titles, URLs, format information)</li>
+                <li><code>http://hyperdata.it/content</code> - Individual post entries with titles, links, dates, and content summaries</li>
+            </ul>
+        </div>
+
+        <div class="about-section">
+            <h2>Feed Processing Pipeline</h2>
+            <p>When subscribing to a feed, NewsMonitor executes a pipeline of processors:</p>
+            <ol>
+                <li>HTTP client fetches the feed XML</li>
+                <li>Feed parser extracts individual entries</li>
+                <li>Deduplicator checks for existing entries using GUIDs and content hashes</li>
+                <li>RDF builder converts entries to RDF triples using Nunjucks templates</li>
+                <li>SPARQL updater inserts new entries into the triple store</li>
+            </ol>
+            <p>Updates run automatically every hour by default, with the interval configurable via environment variables.</p>
+        </div>
+
+        <div class="about-section">
+            <h2>Data Model</h2>
+            <p>NewsMonitor uses the SIOC (Semantically-Interlinked Online Communities) vocabulary for representing feeds and posts:</p>
+            <ul>
+                <li>Feeds are typed as <code>sioc:Forum</code></li>
+                <li>Posts are typed as <code>sioc:Post</code></li>
+                <li>Dublin Core terms (<code>dc:title</code>, <code>dc:date</code>, <code>dc:creator</code>) provide metadata</li>
+                <li>Posts link to their source feeds via <code>sioc:has_container</code></li>
+            </ul>
+            <p>This RDF-based storage enables SPARQL queries for flexible content retrieval and integration with other semantic web applications.</p>
+        </div>
+
+        <div class="about-section">
+            <h2>Features</h2>
+            <ul>
+                <li>Mobile-responsive interface</li>
+                <li>Search and filtering across all posts</li>
+                <li>Pagination for browsing large result sets</li>
+                <li>Admin interface for feed management</li>
+                <li>Automatic feed updates on configurable schedules</li>
+                <li>Manual feed update triggers</li>
+                <li>SPARQL-based storage for semantic queries</li>
+                <li>Support for RSS, Atom, and RDF feed formats</li>
+            </ul>
+        </div>
+
+        <div class="about-section">
+            <h2>Technical Stack</h2>
+            <ul>
+                <li>Built using ES modules and modern JavaScript</li>
+                <li>Apache Jena Fuseki for RDF triple storage</li>
+                <li>Nunjucks templates for RDF generation</li>
+                <li>Docker containerization</li>
+                <li>RESTful API endpoints</li>
+            </ul>
+        </div>
+
+        <div class="attribution" style="margin-top: 50px;">
+            <p><strong>Part of the Transmissions Framework</strong></p>
+            <p>Learn more at <a href="https://github.com/danja/transmissions" target="_blank" rel="noopener">github.com/danja/transmissions</a></p>
+        </div>
+    </div>
+</body>
+</html>

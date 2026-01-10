@@ -1,7 +1,7 @@
 [
   {
     "type": "query",
-    "url": "http://172.17.0.1:3030/newsmonitor/query",
+    "url": "https://fuseki.hyperdata.it/newsmonitor/query",
     "credentials": {
       "user": "admin",
       "password": "admin123"
@@ -9,7 +9,7 @@
   },
   {
     "type": "update",
-    "url": "http://172.17.0.1:3030/newsmonitor/update",
+    "url": "https://fuseki.hyperdata.it/newsmonitor/update",
     "credentials": {
       "user": "admin",
       "password": "admin123"

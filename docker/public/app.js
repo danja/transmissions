@@ -193,6 +193,11 @@ function renderPost(post) {
     const creator = post.creator ?
         `<span>👤 ${escapeHtml(post.creator)}</span>` : ''
 
+    // Format summary with paragraph breaks preserved
+    const formattedSummary = post.summary
+        ? escapeHtml(post.summary).replace(/\n\n/g, '</p><p>')
+        : ''
+
     return `
         <article class="post-card">
             <div class="post-header">
@@ -207,8 +212,8 @@ function renderPost(post) {
                 <span class="feed-badge">${escapeHtml(post.feedTitle)}</span>
                 ${creator}
             </div>
-            ${post.summary ? `
-                <div class="post-summary">${escapeHtml(post.summary)}</div>
+            ${formattedSummary ? `
+                <div class="post-summary"><p>${formattedSummary}</p></div>
             ` : ''}
             <a href="${escapeHtml(post.link)}" class="post-link" target="_blank" rel="noopener">
                 Read more →
