@@ -10,7 +10,7 @@
 
 :copyCSS a :ConfigSet ;
     :source "layout/base/css" ;
-    :destination "public" .
+    :destination "public/css" .
 
 :copyMedia a :ConfigSet ;
     :source "media" ;
