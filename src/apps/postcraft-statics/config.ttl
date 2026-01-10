@@ -5,9 +5,17 @@
 
 @prefix : <http://purl.org/stuff/transmissions/> . # for custom terms & instances
 
-:removePublic a :ConfigSet ;
-    :target "public" .
+#:removePublic a :ConfigSet ;
+ #   :target "public" .
+
+:copyCSS a :ConfigSet ;
+    :source "layout/base/css" ;
+    :destination "public" .
+
+:copyMedia a :ConfigSet ;
+    :source "media" ;
+    :destination "public" .
 
 :copyLayout a :ConfigSet ;
-    :source "media" ;
+    :source "layout" ;
     :destination "public" .
