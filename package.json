@@ -8,6 +8,7 @@
   "license": "MIT",
   "scripts": {
     "test": "NODE_ENV=test PAGER=cat LESS=F vitest --run --exclude=tests/browser/**/*",
+    "test:external": "RUN_EXTERNAL_APPS=1 NODE_ENV=test PAGER=cat LESS=F vitest --run --exclude=tests/browser/**/*",
     "test:gui": "PAGER=cat LESS=F vitest --run tests/browser/**/*",
     "test:all": "PAGER=cat LESS=F vitest --run",
     "cov": "nyc -a --include=src --reporter=lcov npm run test",
