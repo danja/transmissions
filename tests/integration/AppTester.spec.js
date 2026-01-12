@@ -1,5 +1,5 @@
-// RENAMED: legacy, out-of-sync with codebase after Jasmine->Vitest migration
 
+// tests/integration/AppTester.spec.js
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { expect, describe, it } from 'vitest'
@@ -16,14 +16,17 @@ describe('AppTester', () => {
     const commandsFile = path.join(__dirname, 'apps.json') // JSON file for commands
 
     const testRegex = /TEST_PASSED/g
+    const runExternalApps = process.env.RUN_EXTERNAL_APPS === '1'
 
     // Read commands from the JSON file
     const commands = JSON.parse(fs.readFileSync(commandsFile, 'utf8'))
 
     commands.forEach((test) => {
-        const { command, label, description, requiredMatchCount } = test
+        const { command, label, description, requiredMatchCount, requiresSparql } = test
+        const shouldRun = !requiresSparql || runExternalApps
+        const runTest = shouldRun ? it : it.skip
 
-        it(`run ${label}`, async () => {
+        runTest(`run ${label}`, async () => {
             console.log(`${chalk.bold(description)}, command :\n   ${chalk.yellow(command)}`)
             await new Promise((resolve, reject) => {
                 exec(command, (error, stdout, stderr) => {

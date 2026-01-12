@@ -124,7 +124,8 @@
         "command": "./scripts/del-fuseki-test-store-local.sh && ./trans file-to-sparqlstore",
         "label": "file-to-sparqlstore",
         "description": "file-to-sparqlstore - localhost:3030/test",
-        "requiredMatchCount": 3
+        "requiredMatchCount": 3,
+        "requiresSparql": true
     },
     {
         "command": "./trans choice",

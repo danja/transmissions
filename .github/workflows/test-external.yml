@@ -1,0 +1,25 @@
+name: External SPARQL Tests
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-external:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22.x
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run tests (external)
+      env:
+        RUN_EXTERNAL_APPS: '1'
+      run: npm test
