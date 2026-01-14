@@ -1,14 +1,23 @@
-// admin.js
+// docker/public/admin.js
+const ADMIN_AUTH_KEY = 'newsmonitorAdminAuth'
+const ADMIN_USER_KEY = 'newsmonitorAdminUser'
+
 let allFeeds = []
 let filteredFeeds = []
 let pendingUnsubscribe = null
+let adminAuth = null
+let adminUser = null
+let isAdminLoggedIn = false
 
 document.addEventListener('DOMContentLoaded', () => {
-    initializeAdmin()
+    initializeAdmin().catch(err => {
+        console.error('Admin init error:', err)
+    })
 })
 
-function initializeAdmin() {
+async function initializeAdmin() {
     setupEventListeners()
+    await restoreAdminAuth()
     loadFeeds()
 }
 
@@ -43,6 +52,23 @@ function setupEventListeners() {
     document.getElementById('confirm-modal').addEventListener('click', (e) => {
         if (e.target.id === 'confirm-modal') {
             closeModal()
+        }
+    })
+
+    // Login modal buttons
+    document.getElementById('admin-login-btn').addEventListener('click', toggleLoginModal)
+    document.getElementById('login-confirm').addEventListener('click', attemptLogin)
+    document.getElementById('login-cancel').addEventListener('click', closeLoginModal)
+
+    document.getElementById('login-modal').addEventListener('click', (e) => {
+        if (e.target.id === 'login-modal') {
+            closeLoginModal()
+        }
+    })
+
+    document.getElementById('login-password').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            attemptLogin()
         }
     })
 }
@@ -140,6 +166,12 @@ async function updateAllFeeds() {
 }
 
 async function subscribeToFeeds() {
+    if (!isAdminLoggedIn) {
+        showStatus('Admin login required to subscribe to feeds.', 'error')
+        openLoginModal('Log in to add feeds.')
+        return
+    }
+
     const textarea = document.getElementById('feed-urls')
     const urls = textarea.value
         .split('\n')
@@ -160,11 +192,14 @@ async function subscribeToFeeds() {
     try {
         const response = await fetch('/api/subscribe', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: buildAdminHeaders(),
             body: JSON.stringify({ urls })
         })
+
+        if (response.status === 401) {
+            handleUnauthorized()
+            return
+        }
 
         const data = await response.json()
 
@@ -208,6 +243,12 @@ async function subscribeToFeeds() {
 }
 
 async function unsubscribeFeed(feedUri, feedTitle) {
+    if (!isAdminLoggedIn) {
+        showStatus('Admin login required to remove feeds.', 'error')
+        openLoginModal('Log in to remove feeds.')
+        return
+    }
+
     pendingUnsubscribe = { uri: feedUri, title: feedTitle }
 
     const message = document.getElementById('confirm-message')
@@ -230,11 +271,14 @@ async function confirmUnsubscribe() {
     try {
         const response = await fetch('/api/unsubscribe', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: buildAdminHeaders(),
             body: JSON.stringify({ feedUri: uri })
         })
+
+        if (response.status === 401) {
+            handleUnauthorized()
+            return
+        }
 
         const data = await response.json()
 
@@ -309,6 +353,7 @@ function renderFeeds() {
 }
 
 function renderFeedCard(feed) {
+    const actionLabel = isAdminLoggedIn ? '🗑️ Unsubscribe' : '🔒 Login to Unsubscribe'
     return `
         <div class="feed-card">
             <div class="feed-card-header">
@@ -331,7 +376,7 @@ function renderFeedCard(feed) {
                         class="btn-danger"
                         onclick='unsubscribeFeed("${escapeHtml(feed.uri)}", "${escapeHtml(feed.title).replace(/'/g, "\\'")}")'
                     >
-                        🗑️ Unsubscribe
+                        ${actionLabel}
                     </button>
                 </div>
             </div>
@@ -359,4 +404,166 @@ function escapeHtml(text) {
     const div = document.createElement('div')
     div.textContent = text
     return div.innerHTML
+}
+
+async function restoreAdminAuth() {
+    adminAuth = sessionStorage.getItem(ADMIN_AUTH_KEY)
+    adminUser = sessionStorage.getItem(ADMIN_USER_KEY)
+
+    if (!adminAuth) {
+        setAdminState(false)
+        return
+    }
+
+    const valid = await verifyAdminAuth(adminAuth)
+    if (!valid) {
+        clearAdminAuth()
+    }
+}
+
+function buildAdminHeaders() {
+    const headers = {
+        'Content-Type': 'application/json'
+    }
+    if (adminAuth) {
+        headers.Authorization = `Basic ${adminAuth}`
+    }
+    return headers
+}
+
+async function verifyAdminAuth(encodedAuth) {
+    try {
+        const response = await fetch('/api/admin-check', {
+            headers: {
+                Authorization: `Basic ${encodedAuth}`
+            }
+        })
+        if (response.ok) {
+            setAdminState(true)
+            return true
+        }
+        setAdminState(false)
+        return false
+    } catch (err) {
+        console.error('Admin auth check failed:', err)
+        setAdminState(false)
+        return false
+    }
+}
+
+function setAdminState(loggedIn) {
+    isAdminLoggedIn = loggedIn
+    updateAdminStatus()
+    renderFeeds()
+}
+
+function updateAdminStatus() {
+    const status = document.getElementById('admin-status')
+    const button = document.getElementById('admin-login-btn')
+
+    if (isAdminLoggedIn) {
+        status.textContent = `Admin: ${adminUser || 'authenticated'}`
+        button.textContent = 'Log out'
+    } else {
+        status.textContent = 'Admin: logged out'
+        button.textContent = 'Admin Login'
+    }
+}
+
+function toggleLoginModal() {
+    if (isAdminLoggedIn) {
+        clearAdminAuth()
+        showStatus('Admin session ended.', 'info')
+        return
+    }
+    openLoginModal()
+}
+
+function openLoginModal(message) {
+    const modal = document.getElementById('login-modal')
+    const error = document.getElementById('login-error')
+    const messageEl = document.getElementById('login-message')
+    const usernameInput = document.getElementById('login-username')
+    const passwordInput = document.getElementById('login-password')
+
+    error.style.display = 'none'
+    if (message) {
+        messageEl.textContent = message
+    } else {
+        messageEl.textContent = 'Log in to add or remove feeds.'
+    }
+
+    if (adminUser) {
+        usernameInput.value = adminUser
+    }
+
+    passwordInput.value = ''
+    modal.style.display = 'flex'
+    usernameInput.focus()
+}
+
+function closeLoginModal() {
+    document.getElementById('login-modal').style.display = 'none'
+}
+
+async function attemptLogin() {
+    const usernameInput = document.getElementById('login-username')
+    const passwordInput = document.getElementById('login-password')
+    const error = document.getElementById('login-error')
+
+    const username = usernameInput.value.trim()
+    const password = passwordInput.value
+
+    if (!username || !password) {
+        error.textContent = 'Username and password are required.'
+        error.style.display = 'block'
+        return
+    }
+
+    const encoded = btoa(`${username}:${password}`)
+    try {
+        const response = await fetch('/api/admin-check', {
+            headers: {
+                Authorization: `Basic ${encoded}`
+            }
+        })
+
+        if (response.ok) {
+            adminAuth = encoded
+            adminUser = username
+            sessionStorage.setItem(ADMIN_AUTH_KEY, adminAuth)
+            sessionStorage.setItem(ADMIN_USER_KEY, adminUser)
+            setAdminState(true)
+            closeLoginModal()
+            showStatus('Admin login successful.', 'success')
+            return
+        }
+
+        if (response.status === 401) {
+            error.textContent = 'Invalid username or password.'
+        } else if (response.status === 503) {
+            error.textContent = 'Admin password not configured on the server.'
+        } else {
+            error.textContent = 'Unable to verify credentials.'
+        }
+        error.style.display = 'block'
+    } catch (err) {
+        console.error('Admin login error:', err)
+        error.textContent = 'Unable to reach the server.'
+        error.style.display = 'block'
+    }
+}
+
+function handleUnauthorized() {
+    clearAdminAuth()
+    showStatus('Admin login required. Please log in to continue.', 'error')
+    openLoginModal('Admin login required.')
+}
+
+function clearAdminAuth() {
+    adminAuth = null
+    adminUser = null
+    sessionStorage.removeItem(ADMIN_AUTH_KEY)
+    sessionStorage.removeItem(ADMIN_USER_KEY)
+    setAdminState(false)
 }

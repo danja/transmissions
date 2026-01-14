@@ -1,4 +1,6 @@
-/* admin.css - Admin page specific styles */
+/* docker/public/admin.css */
+
+/* Admin page specific styles */
 
 .admin-nav {
     margin-top: 20px;
@@ -7,6 +9,17 @@
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+}
+
+.admin-auth {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-status {
+    font-size: 0.9rem;
+    color: #6c757d;
 }
 
 .admin-section {
@@ -262,6 +275,34 @@
 .modal-content h3 {
     margin-top: 0;
     color: #2c3e50;
+}
+
+.modal-message {
+    margin-bottom: 15px;
+    color: #6c757d;
+}
+
+.login-form {
+    display: grid;
+    gap: 10px;
+}
+
+.login-form label {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 0.9rem;
+}
+
+.login-form input {
+    padding: 10px 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+}
+
+.login-form input:focus {
+    outline: none;
+    border-color: #3498db;
 }
 
 .modal-actions {

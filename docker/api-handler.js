@@ -14,6 +14,8 @@ const __dirname = path.dirname(__filename)
 export class APIHandler {
   constructor() {
     this.endpoint = Config.getSparqlEndpoint('newsmonitor')
+    this.adminUsername = Config.getEnv('NEWSMONITOR_ADMIN_USERNAME', 'admin')
+    this.adminPassword = Config.getEnv('NEWSMONITOR_ADMIN_PASSWORD')
   }
 
   /**
@@ -362,8 +364,25 @@ export class APIHandler {
     const path = url.pathname
 
     try {
+      if (path === '/api/admin-check') {
+        if (!this.requireAdminAuth(req, res)) {
+          return true
+        }
+
+        res.writeHead(200, {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        })
+        res.end(JSON.stringify({ status: 'ok', user: this.adminUsername }))
+        return true
+      }
+
       // Subscribe to feeds (POST)
       if (path === '/api/subscribe' && req.method === 'POST') {
+        if (!this.requireAdminAuth(req, res)) {
+          return true
+        }
+
         const body = await this.parseBody(req)
         const urls = body.urls || []
 
@@ -388,6 +407,10 @@ export class APIHandler {
 
       // Unsubscribe from feed (POST)
       if (path === '/api/unsubscribe' && req.method === 'POST') {
+        if (!this.requireAdminAuth(req, res)) {
+          return true
+        }
+
         const body = await this.parseBody(req)
         const feedUri = body.feedUri
 
@@ -409,6 +432,10 @@ export class APIHandler {
 
       // Update all feeds (POST)
       if (path === '/api/update-feeds' && req.method === 'POST') {
+        if (!this.requireAdminAuth(req, res)) {
+          return true
+        }
+
         try {
           console.log('Manual feed update triggered via API')
           const result = await this.runTransCommand('src/apps/newsmonitor/update-all')
@@ -543,5 +570,54 @@ export class APIHandler {
       }))
       return true
     }
+  }
+
+  requireAdminAuth(req, res) {
+    if (!this.adminPassword) {
+      console.error('Admin password missing: set NEWSMONITOR_ADMIN_PASSWORD in .env')
+      res.writeHead(503, {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      })
+      res.end(JSON.stringify({ error: 'Admin password not configured' }))
+      return false
+    }
+
+    if (!this.isAdminAuthorized(req)) {
+      res.writeHead(401, {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'WWW-Authenticate': 'Basic realm="NewsMonitor Admin"'
+      })
+      res.end(JSON.stringify({ error: 'Admin authentication required' }))
+      return false
+    }
+
+    return true
+  }
+
+  isAdminAuthorized(req) {
+    const authHeader = req.headers.authorization || ''
+    if (!authHeader.startsWith('Basic ')) {
+      return false
+    }
+
+    const encoded = authHeader.slice('Basic '.length)
+    let decoded
+    try {
+      decoded = Buffer.from(encoded, 'base64').toString('utf8')
+    } catch (error) {
+      return false
+    }
+
+    const separatorIndex = decoded.indexOf(':')
+    if (separatorIndex === -1) {
+      return false
+    }
+
+    const username = decoded.slice(0, separatorIndex)
+    const password = decoded.slice(separatorIndex + 1)
+
+    return username === this.adminUsername && password === this.adminPassword
   }
 }

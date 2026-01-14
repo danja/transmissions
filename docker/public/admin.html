@@ -1,3 +1,4 @@
+<!-- docker/public/admin.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,6 +17,10 @@
                 <a href="/" class="btn-secondary">← Back to Feed</a>
                 <a href="/about.html" class="btn-secondary">ℹ️ About</a>
                 <button id="update-all-btn" class="btn-primary">🔄 Update All Feeds</button>
+                <div class="admin-auth">
+                    <span id="admin-status" class="admin-status">Admin: logged out</span>
+                    <button id="admin-login-btn" class="btn-secondary">Admin Login</button>
+                </div>
             </nav>
             <div id="update-status" class="status-message" style="display: none;"></div>
         </header>
@@ -92,6 +97,37 @@
             <div class="modal-actions">
                 <button id="confirm-yes" class="btn-danger">Unsubscribe</button>
                 <button id="confirm-no" class="btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h3>Admin Login</h3>
+            <p id="login-message" class="modal-message">
+                Log in to add or remove feeds.
+            </p>
+            <div class="login-form">
+                <label for="login-username">Username</label>
+                <input
+                    id="login-username"
+                    type="text"
+                    autocomplete="username"
+                    placeholder="admin"
+                >
+                <label for="login-password">Password</label>
+                <input
+                    id="login-password"
+                    type="password"
+                    autocomplete="current-password"
+                    placeholder="••••••••"
+                >
+                <div id="login-error" class="status-message error" style="display: none;"></div>
+            </div>
+            <div class="modal-actions">
+                <button id="login-confirm" class="btn-primary">Login</button>
+                <button id="login-cancel" class="btn-secondary">Cancel</button>
             </div>
         </div>
     </div>
