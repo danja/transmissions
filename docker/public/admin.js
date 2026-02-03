@@ -471,9 +471,10 @@ async function importOpml() {
             return
         }
 
-        const data = await response.json()
+        const data = await parseJsonSafe(response)
         if (!response.ok) {
-            throw new Error(data.error || 'Failed to import OPML')
+            const message = data?.error || `Failed to import OPML (HTTP ${response.status})`
+            throw new Error(message)
         }
 
         showOpmlStatus('✓ OPML import completed. Existing feeds were skipped.', 'success')
@@ -523,8 +524,9 @@ async function exportOpml() {
         }
 
         if (!response.ok) {
-            const data = await response.json()
-            throw new Error(data.error || 'Failed to export OPML')
+            const data = await parseJsonSafe(response)
+            const message = data?.error || `Failed to export OPML (HTTP ${response.status})`
+            throw new Error(message)
         }
 
         const blob = await response.blob()
@@ -562,6 +564,20 @@ function downloadBlob(blob, filename) {
     link.click()
     link.remove()
     URL.revokeObjectURL(url)
+}
+
+async function parseJsonSafe(response) {
+    const contentType = response.headers.get('content-type') || ''
+    if (!contentType.includes('application/json')) {
+        const text = await response.text()
+        console.warn('Non-JSON response:', text.slice(0, 200))
+        return null
+    }
+    try {
+        return await response.json()
+    } catch (error) {
+        return null
+    }
 }
 
 async function restoreAdminAuth() {
