@@ -364,10 +364,10 @@ export class APIHandler {
    */
   async handleRequest(req, res) {
     const url = new URL(req.url, `http://${req.headers.host}`)
-    const path = url.pathname
+    const routePath = url.pathname
 
     try {
-      if (path === '/api/admin-check') {
+      if (routePath === '/api/admin-check') {
         if (!this.requireAdminAuth(req, res)) {
           return true
         }
@@ -381,7 +381,7 @@ export class APIHandler {
       }
 
       // Subscribe to feeds (POST)
-      if (path === '/api/subscribe' && req.method === 'POST') {
+      if (routePath === '/api/subscribe' && req.method === 'POST') {
         if (!this.requireAdminAuth(req, res)) {
           return true
         }
@@ -409,7 +409,7 @@ export class APIHandler {
       }
 
       // Unsubscribe from feed (POST)
-      if (path === '/api/unsubscribe' && req.method === 'POST') {
+      if (routePath === '/api/unsubscribe' && req.method === 'POST') {
         if (!this.requireAdminAuth(req, res)) {
           return true
         }
@@ -434,7 +434,7 @@ export class APIHandler {
       }
 
       // Update all feeds (POST)
-      if (path === '/api/update-feeds' && req.method === 'POST') {
+      if (routePath === '/api/update-feeds' && req.method === 'POST') {
         if (!this.requireAdminAuth(req, res)) {
           return true
         }
@@ -467,7 +467,7 @@ export class APIHandler {
       }
 
       // Subscribe feeds from OPML (POST)
-      if (path === '/api/subscribe-opml' && req.method === 'POST') {
+      if (routePath === '/api/subscribe-opml' && req.method === 'POST') {
         if (!this.requireAdminAuth(req, res)) {
           return true
         }
@@ -517,7 +517,7 @@ export class APIHandler {
       }
 
       // Export OPML (POST)
-      if (path === '/api/export-opml' && req.method === 'POST') {
+      if (routePath === '/api/export-opml' && req.method === 'POST') {
         if (!this.requireAdminAuth(req, res)) {
           return true
         }
@@ -547,7 +547,7 @@ export class APIHandler {
         }
       }
 
-      if (path === '/api/posts') {
+      if (routePath === '/api/posts') {
         const limit = parseInt(url.searchParams.get('limit') || '50')
         const offset = parseInt(url.searchParams.get('offset') || '0')
         const posts = await this.getRecentPosts(limit, offset)
@@ -559,7 +559,7 @@ export class APIHandler {
         res.end(JSON.stringify({ posts, count: posts.length }))
         return true
 
-      } else if (path === '/api/count') {
+      } else if (routePath === '/api/count') {
         const count = await this.getPostsCount()
 
         res.writeHead(200, {
@@ -569,7 +569,7 @@ export class APIHandler {
         res.end(JSON.stringify({ count }))
         return true
 
-      } else if (path === '/api/feeds') {
+      } else if (routePath === '/api/feeds') {
         const feeds = await this.getFeeds()
 
         res.writeHead(200, {
@@ -579,7 +579,7 @@ export class APIHandler {
         res.end(JSON.stringify({ feeds }))
         return true
 
-      } else if (path === '/api/health') {
+      } else if (routePath === '/api/health') {
         // Health check endpoint with config info
         const health = {
           status: 'ok',
@@ -598,7 +598,7 @@ export class APIHandler {
         res.end(JSON.stringify(health))
         return true
 
-      } else if (path === '/api/diagnostics') {
+      } else if (routePath === '/api/diagnostics') {
         // Diagnostic endpoint to test SPARQL connectivity
         try {
           const startTime = Date.now()
