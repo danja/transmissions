@@ -477,8 +477,12 @@ async function importOpml() {
             throw new Error(message)
         }
 
-        showOpmlStatus('✓ OPML import completed. Existing feeds were skipped.', 'success')
-        await loadFeeds()
+        if (data?.jobId) {
+            await pollOpmlJob(data.jobId)
+        } else {
+            showOpmlStatus('✓ OPML import completed. Existing feeds were skipped.', 'success')
+            await loadFeeds()
+        }
     } catch (err) {
         console.error('Error importing OPML:', err)
         showOpmlStatus(`✗ OPML import failed: ${escapeHtml(err.message)}`, 'error')
@@ -498,6 +502,56 @@ function showOpmlStatus(message, type) {
 function hideOpmlStatus() {
     const status = document.getElementById('opml-status')
     status.style.display = 'none'
+}
+
+async function pollOpmlJob(jobId) {
+    showOpmlStatus('Import queued. Working...', 'info')
+
+    let attempts = 0
+    const maxAttempts = 120
+
+    while (attempts < maxAttempts) {
+        attempts += 1
+        await sleep(2000)
+
+        const response = await fetch(`/api/subscribe-opml/status?jobId=${encodeURIComponent(jobId)}`, {
+            headers: buildAdminHeaders()
+        })
+
+        if (response.status === 401) {
+            handleUnauthorized()
+            return
+        }
+
+        const data = await parseJsonSafe(response)
+        if (!response.ok || !data) {
+            showOpmlStatus('Import status unavailable.', 'error')
+            return
+        }
+
+        if (data.status === 'running') {
+            showOpmlStatus('Import running...', 'info')
+            continue
+        }
+
+        if (data.status === 'completed') {
+            showOpmlStatus('✓ OPML import completed. Existing feeds were skipped.', 'success')
+            await loadFeeds()
+            return
+        }
+
+        if (data.status === 'failed') {
+            const message = data.stderr || 'Import failed.'
+            showOpmlStatus(`✗ OPML import failed: ${escapeHtml(message)}`, 'error')
+            return
+        }
+    }
+
+    showOpmlStatus('Import still running. Check back later.', 'info')
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
 }
 
 async function exportOpml() {

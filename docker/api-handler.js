@@ -19,6 +19,7 @@ export class APIHandler {
     this.adminUsername = Config.getEnv('NEWSMONITOR_ADMIN_USERNAME', 'admin')
     this.adminPassword = Config.getEnv('NEWSMONITOR_ADMIN_PASSWORD')
     this.dataDir = path.join(__dirname, '..', 'src', 'apps', 'newsmonitor', 'data')
+    this.jobs = new Map()
   }
 
   /**
@@ -285,6 +286,50 @@ export class APIHandler {
     })
   }
 
+  runTransCommandAsync(command, args = []) {
+    const jobId = `job-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+    const job = {
+      id: jobId,
+      command,
+      args,
+      status: 'running',
+      startedAt: new Date().toISOString(),
+      finishedAt: null,
+      exitCode: null,
+      stdout: '',
+      stderr: ''
+    }
+
+    this.jobs.set(jobId, job)
+
+    const trans = spawn('./trans', [command, ...args], {
+      cwd: path.join(__dirname, '..'),
+      stdio: ['pipe', 'pipe', 'pipe']
+    })
+
+    trans.stdout.on('data', (data) => {
+      job.stdout += data.toString()
+    })
+
+    trans.stderr.on('data', (data) => {
+      job.stderr += data.toString()
+    })
+
+    trans.on('close', (code) => {
+      job.exitCode = code
+      job.status = code === 0 ? 'completed' : 'failed'
+      job.finishedAt = new Date().toISOString()
+    })
+
+    trans.on('error', (err) => {
+      job.stderr += `\n${err.message}`
+      job.status = 'failed'
+      job.finishedAt = new Date().toISOString()
+    })
+
+    return job
+  }
+
   /**
    * Subscribe to a feed
    */
@@ -484,36 +529,62 @@ export class APIHandler {
         const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'newsmonitor-opml-'))
         const tempFile = path.join(tempDir, `feeds-${Date.now()}.opml`)
 
-        try {
-          await fs.writeFile(tempFile, opmlText, 'utf8')
-          const result = await this.runTransCommand(
-            'src/apps/newsmonitor/subscribe-from-opml',
-            ['-m', JSON.stringify({ sourceFile: tempFile })]
-          )
+        await fs.writeFile(tempFile, opmlText, 'utf8')
+        const job = this.runTransCommandAsync(
+          'src/apps/newsmonitor/subscribe-from-opml',
+          ['-m', JSON.stringify({ sourceFile: tempFile })]
+        )
+        job.tempDir = tempDir
+        job.tempFile = tempFile
 
-          res.writeHead(200, {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-          })
-          res.end(JSON.stringify({
-            success: true,
-            output: result.stdout
-          }))
+        res.writeHead(202, {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        })
+        res.end(JSON.stringify({
+          success: true,
+          jobId: job.id
+        }))
+        return true
+      }
+
+      if (routePath === '/api/subscribe-opml/status' && req.method === 'GET') {
+        if (!this.requireAdminAuth(req, res)) {
           return true
-        } catch (error) {
-          res.writeHead(500, {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-          })
-          res.end(JSON.stringify({
-            success: false,
-            error: error.message
-          }))
-          return true
-        } finally {
-          await fs.unlink(tempFile).catch(() => {})
-          await fs.rmdir(tempDir).catch(() => {})
         }
+
+        const jobId = url.searchParams.get('jobId')
+        if (!jobId || !this.jobs.has(jobId)) {
+          res.writeHead(404, { 'Content-Type': 'application/json' })
+          res.end(JSON.stringify({ error: 'Job not found' }))
+          return true
+        }
+
+        const job = this.jobs.get(jobId)
+        if (job.status !== 'running' && !job.cleanedUp) {
+          job.cleanedUp = true
+          if (job.tempFile) {
+            await fs.unlink(job.tempFile).catch(() => {})
+          }
+          if (job.tempDir) {
+            await fs.rmdir(job.tempDir).catch(() => {})
+          }
+        }
+
+        res.writeHead(200, {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        })
+        res.end(JSON.stringify({
+          id: job.id,
+          status: job.status,
+          startedAt: job.startedAt,
+          finishedAt: job.finishedAt,
+          exitCode: job.exitCode,
+          stdout: job.stdout,
+          stderr: job.stderr
+        }))
+        return true
       }
 
       // Export OPML (POST)

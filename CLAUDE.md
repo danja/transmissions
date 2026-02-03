@@ -126,3 +126,6 @@ Transmissions is a message-driven pipeline framework where:
 - **transmissions-app** - Guide for creating new Transmissions applications with decision support for core vs remote development
 - **transmissions-processor** - Guide for creating custom Transmissions processors with factory registration for core and remote development
 - Use these skills when creating new applications or processors for best practices and guided workflows
+
+## Notes
+- `docker/api-handler.js` now includes a simple in-memory job queue (`this.jobs`) used for async OPML import. Consider reusing it for any long-running admin actions (avoid 504s) and exposing a status endpoint for progress.
