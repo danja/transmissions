@@ -2,6 +2,8 @@
 import axios from 'axios'
 import Config from '../src/Config.js'
 import { spawn } from 'child_process'
+import fs from 'fs/promises'
+import os from 'os'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -16,6 +18,7 @@ export class APIHandler {
     this.endpoint = Config.getSparqlEndpoint('newsmonitor')
     this.adminUsername = Config.getEnv('NEWSMONITOR_ADMIN_USERNAME', 'admin')
     this.adminPassword = Config.getEnv('NEWSMONITOR_ADMIN_PASSWORD')
+    this.dataDir = path.join(__dirname, '..', 'src', 'apps', 'newsmonitor', 'data')
   }
 
   /**
@@ -449,6 +452,87 @@ export class APIHandler {
             message: 'Feed update completed',
             output: result.stdout
           }))
+          return true
+        } catch (error) {
+          res.writeHead(500, {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          })
+          res.end(JSON.stringify({
+            success: false,
+            error: error.message
+          }))
+          return true
+        }
+      }
+
+      // Subscribe feeds from OPML (POST)
+      if (path === '/api/subscribe-opml' && req.method === 'POST') {
+        if (!this.requireAdminAuth(req, res)) {
+          return true
+        }
+
+        const body = await this.parseBody(req)
+        const opmlText = body.opmlText
+
+        if (!opmlText || typeof opmlText !== 'string') {
+          res.writeHead(400, { 'Content-Type': 'application/json' })
+          res.end(JSON.stringify({ error: 'opmlText is required' }))
+          return true
+        }
+
+        const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'newsmonitor-opml-'))
+        const tempFile = path.join(tempDir, `feeds-${Date.now()}.opml`)
+
+        try {
+          await fs.writeFile(tempFile, opmlText, 'utf8')
+          const result = await this.runTransCommand(
+            'src/apps/newsmonitor/subscribe-from-opml',
+            ['-m', JSON.stringify({ sourceFile: tempFile })]
+          )
+
+          res.writeHead(200, {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          })
+          res.end(JSON.stringify({
+            success: true,
+            output: result.stdout
+          }))
+          return true
+        } catch (error) {
+          res.writeHead(500, {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          })
+          res.end(JSON.stringify({
+            success: false,
+            error: error.message
+          }))
+          return true
+        } finally {
+          await fs.unlink(tempFile).catch(() => {})
+          await fs.rmdir(tempDir).catch(() => {})
+        }
+      }
+
+      // Export OPML (POST)
+      if (path === '/api/export-opml' && req.method === 'POST') {
+        if (!this.requireAdminAuth(req, res)) {
+          return true
+        }
+
+        try {
+          await this.runTransCommand('src/apps/newsmonitor/export-opml')
+          const outputPath = path.join(this.dataDir, 'feeds.opml')
+          const opml = await fs.readFile(outputPath, 'utf8')
+
+          res.writeHead(200, {
+            'Content-Type': 'application/xml',
+            'Content-Disposition': 'attachment; filename="newsmonitor-feeds.opml"',
+            'Access-Control-Allow-Origin': '*'
+          })
+          res.end(opml)
           return true
         } catch (error) {
           res.writeHead(500, {

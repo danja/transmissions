@@ -1,0 +1,18 @@
+# src/apps/newsmonitor/export-opml/config.ttl
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+:endpointGeneratorSettings a :ConfigSet ;
+    :dataset "newsmonitor" ;
+    :destinationFile "endpoints.json" .
+
+:selectFeedsSettings a :ConfigSet ;
+    :endpointSettings "data/endpoints.json" ;
+    :templateFilename "data/sparql-templates/get-all-feeds.rq" .
+
+:templaterSettings a :ConfigSet ;
+    :templateFilename "data/templates/feeds-to-opml.njk" ;
+    :dataField "queryResults" .
+
+:writerSettings a :ConfigSet ;
+    :destinationFile "data/feeds.opml" ;
+    :contentField "content" .

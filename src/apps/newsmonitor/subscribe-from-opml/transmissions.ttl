@@ -1,0 +1,50 @@
+# src/apps/newsmonitor/subscribe-from-opml/transmissions.ttl
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+:subscribe-from-opml a :Transmission ;
+    :pipe (
+        :loadExistingFeeds
+        :readFile
+        :extractFeeds
+        :processEachURL
+        :normalizeUrl
+        :dedupeFeedUrl
+        :fetchFeed
+        :parseFeed
+        :generateFeedURI
+        :buildFeedRDF
+        :storeFeed
+    ) .
+
+:loadExistingFeeds a :SPARQLSelect ;
+    :settings :selectExistingFeeds .
+
+:readFile a :FileReader ;
+    :settings :fileSettings .
+
+:extractFeeds a :OpmlFeedExtractor ;
+    :settings :opmlSettings .
+
+:processEachURL a :ForEach ;
+    :settings :forEachSettings .
+
+:normalizeUrl a :URLNormalizer ;
+    :settings :urlSettings .
+
+:dedupeFeedUrl a :FeedUrlDeduplicator ;
+    :settings :dedupeSettings .
+
+:fetchFeed a :HttpClient ;
+    :settings :fetchSettings .
+
+:parseFeed a :FeedParser ;
+    :settings :parserSettings .
+
+:generateFeedURI a :ResourceMinter ;
+    :settings :mintSettings .
+
+:buildFeedRDF a :RDFBuilder ;
+    :settings :rdfSettings .
+
+:storeFeed a :SPARQLUpdate ;
+    :settings :updateSettings .

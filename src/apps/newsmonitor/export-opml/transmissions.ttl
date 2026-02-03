@@ -1,0 +1,22 @@
+# src/apps/newsmonitor/export-opml/transmissions.ttl
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+:export-opml a :Transmission ;
+    :pipe (
+        :generateEndpoints
+        :selectFeeds
+        :renderOpml
+        :writeOpml
+    ) .
+
+:generateEndpoints a :EndpointsGenerator ;
+    :settings :endpointGeneratorSettings .
+
+:selectFeeds a :SPARQLSelect ;
+    :settings :selectFeedsSettings .
+
+:renderOpml a :Templater ;
+    :settings :templaterSettings .
+
+:writeOpml a :FileWriter ;
+    :settings :writerSettings .

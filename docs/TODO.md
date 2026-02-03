@@ -1,3 +1,9 @@
+# NewsMonitor
+
+* Export feedlist as OPML
+* Autodiscovery
+* topic extraction
+
 # Consumer for Semem
 
 ## Phase 1 : link-consumer for markdown

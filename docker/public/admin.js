@@ -55,6 +55,14 @@ function setupEventListeners() {
         }
     })
 
+    // OPML import
+    document.getElementById('opml-import-btn').addEventListener('click', importOpml)
+    document.getElementById('opml-clear-btn').addEventListener('click', clearOpmlForm)
+    document.getElementById('opml-file').addEventListener('change', handleOpmlFileChange)
+
+    // OPML export
+    document.getElementById('opml-export-btn').addEventListener('click', exportOpml)
+
     // Login modal buttons
     document.getElementById('admin-login-btn').addEventListener('click', toggleLoginModal)
     document.getElementById('login-confirm').addEventListener('click', attemptLogin)
@@ -109,26 +117,30 @@ async function loadFeeds() {
 }
 
 async function updateAllFeeds() {
+    if (!isAdminLoggedIn) {
+        showUpdateStatus('Admin login required to update feeds.', 'error')
+        openLoginModal('Log in to update feeds.')
+        return
+    }
+
     const button = document.getElementById('update-all-btn')
     const statusDiv = document.getElementById('update-status')
 
     button.disabled = true
     button.textContent = '⏳ Updating...'
 
-    statusDiv.innerHTML = `
-        <strong>🔄 Updating all feeds...</strong><br>
-        This may take a few minutes depending on the number of feeds.
-    `
-    statusDiv.className = 'status-message info'
-    statusDiv.style.display = 'block'
+    showUpdateStatus('🔄 Updating all feeds... This may take a few minutes.', 'info')
 
     try {
         const response = await fetch('/api/update-feeds', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            headers: buildAdminHeaders()
         })
+
+        if (response.status === 401) {
+            handleUnauthorized()
+            return
+        }
 
         const data = await response.json()
 
@@ -136,11 +148,7 @@ async function updateAllFeeds() {
             throw new Error(data.error || 'Failed to update feeds')
         }
 
-        statusDiv.innerHTML = `
-            <strong>✓ Feed update completed!</strong><br>
-            All subscribed feeds have been updated with new content.
-        `
-        statusDiv.className = 'status-message success'
+        showUpdateStatus('✓ Feed update completed! All feeds have been updated.', 'success')
 
         // Reload feeds to show updated post counts
         setTimeout(() => {
@@ -149,18 +157,14 @@ async function updateAllFeeds() {
 
     } catch (err) {
         console.error('Error updating feeds:', err)
-        statusDiv.innerHTML = `
-            <strong>✗ Update failed</strong><br>
-            ${escapeHtml(err.message)}
-        `
-        statusDiv.className = 'status-message error'
+        showUpdateStatus(`✗ Update failed: ${escapeHtml(err.message)}`, 'error')
     } finally {
         button.disabled = false
         button.textContent = '🔄 Update All Feeds'
 
         // Hide status after 10 seconds
         setTimeout(() => {
-            statusDiv.style.display = 'none'
+            hideUpdateStatus()
         }, 10000)
     }
 }
@@ -400,10 +404,164 @@ function hideStatus() {
     status.style.display = 'none'
 }
 
+function showUpdateStatus(message, type) {
+    const status = document.getElementById('update-status')
+    status.innerHTML = message
+    status.className = `status-message ${type}`
+    status.style.display = 'block'
+}
+
+function hideUpdateStatus() {
+    const status = document.getElementById('update-status')
+    status.style.display = 'none'
+}
+
 function escapeHtml(text) {
     const div = document.createElement('div')
     div.textContent = text
     return div.innerHTML
+}
+
+async function handleOpmlFileChange(event) {
+    const file = event.target.files?.[0]
+    if (!file) {
+        return
+    }
+
+    const reader = new FileReader()
+    reader.onload = () => {
+        document.getElementById('opml-text').value = reader.result || ''
+    }
+    reader.readAsText(file)
+}
+
+function clearOpmlForm() {
+    document.getElementById('opml-file').value = ''
+    document.getElementById('opml-text').value = ''
+    hideOpmlStatus()
+}
+
+async function importOpml() {
+    if (!isAdminLoggedIn) {
+        showOpmlStatus('Admin login required to import OPML.', 'error')
+        openLoginModal('Log in to import OPML.')
+        return
+    }
+
+    const opmlText = document.getElementById('opml-text').value.trim()
+    if (!opmlText) {
+        showOpmlStatus('Please select an OPML file or paste OPML content.', 'error')
+        return
+    }
+
+    const button = document.getElementById('opml-import-btn')
+    button.disabled = true
+    button.textContent = 'Importing...'
+    showOpmlStatus('Importing OPML feeds...', 'info')
+
+    try {
+        const response = await fetch('/api/subscribe-opml', {
+            method: 'POST',
+            headers: buildAdminHeaders(),
+            body: JSON.stringify({ opmlText })
+        })
+
+        if (response.status === 401) {
+            handleUnauthorized()
+            return
+        }
+
+        const data = await response.json()
+        if (!response.ok) {
+            throw new Error(data.error || 'Failed to import OPML')
+        }
+
+        showOpmlStatus('✓ OPML import completed. Existing feeds were skipped.', 'success')
+        await loadFeeds()
+    } catch (err) {
+        console.error('Error importing OPML:', err)
+        showOpmlStatus(`✗ OPML import failed: ${escapeHtml(err.message)}`, 'error')
+    } finally {
+        button.disabled = false
+        button.textContent = '📥 Import OPML'
+    }
+}
+
+function showOpmlStatus(message, type) {
+    const status = document.getElementById('opml-status')
+    status.innerHTML = message
+    status.className = `status-message ${type}`
+    status.style.display = 'block'
+}
+
+function hideOpmlStatus() {
+    const status = document.getElementById('opml-status')
+    status.style.display = 'none'
+}
+
+async function exportOpml() {
+    if (!isAdminLoggedIn) {
+        showExportStatus('Admin login required to export OPML.', 'error')
+        openLoginModal('Log in to export OPML.')
+        return
+    }
+
+    const button = document.getElementById('opml-export-btn')
+    button.disabled = true
+    button.textContent = 'Preparing...'
+    showExportStatus('Preparing OPML export...', 'info')
+
+    try {
+        const response = await fetch('/api/export-opml', {
+            method: 'POST',
+            headers: buildAdminHeaders()
+        })
+
+        if (response.status === 401) {
+            handleUnauthorized()
+            return
+        }
+
+        if (!response.ok) {
+            const data = await response.json()
+            throw new Error(data.error || 'Failed to export OPML')
+        }
+
+        const blob = await response.blob()
+        const filename = getDownloadFilename(response) || 'newsmonitor-feeds.opml'
+        downloadBlob(blob, filename)
+        showExportStatus('✓ OPML export ready for download.', 'success')
+    } catch (err) {
+        console.error('Error exporting OPML:', err)
+        showExportStatus(`✗ OPML export failed: ${escapeHtml(err.message)}`, 'error')
+    } finally {
+        button.disabled = false
+        button.textContent = '⬇️ Download OPML'
+    }
+}
+
+function showExportStatus(message, type) {
+    const status = document.getElementById('opml-export-status')
+    status.innerHTML = message
+    status.className = `status-message ${type}`
+    status.style.display = 'block'
+}
+
+function getDownloadFilename(response) {
+    const disposition = response.headers.get('content-disposition') || ''
+    const match = disposition.match(/filename=\"?([^\";]+)\"?/i)
+    return match ? match[1] : null
+}
+
+function downloadBlob(blob, filename) {
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = filename
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+    URL.revokeObjectURL(url)
 }
 
 async function restoreAdminAuth() {

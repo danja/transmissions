@@ -1,3 +1,5 @@
+// src/processors/markup/MarkupProcessorsFactory.js
+
 import logger from '../../utils/Logger.js'
 import ns from '../../utils/ns.js'
 
@@ -9,6 +11,7 @@ import HTMLToMarkdown from './HTMLToMarkdown.js'
 import FeedParser from './FeedParser.js'
 import HTMLFeedExtractor from './HTMLFeedExtractor.js'
 import AtomBuilder from './AtomBuilder.js'
+import OpmlFeedExtractor from './OpmlFeedExtractor.js'
 
 class MarkupProcessorsFactory {
     static createProcessor(type, config) {
@@ -35,6 +38,9 @@ class MarkupProcessorsFactory {
         }
         if (type.equals(ns.trn.AtomBuilder)) {
             return new AtomBuilder(config)
+        }
+        if (type.equals(ns.trn.OpmlFeedExtractor)) {
+            return new OpmlFeedExtractor(config)
         }
         return false
     }

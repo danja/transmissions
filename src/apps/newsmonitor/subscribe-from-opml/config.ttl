@@ -1,0 +1,52 @@
+# src/apps/newsmonitor/subscribe-from-opml/config.ttl
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+:selectExistingFeeds a :ConfigSet ;
+    :endpointSettings "data/endpoints.json" ;
+    :templateFilename "data/sparql-templates/get-all-feeds.rq" .
+
+:fileSettings a :ConfigSet ;
+    :sourceFile "feeds.opml" ;
+    :mediaType "text/plain" ;
+    :targetField "content" .
+
+:opmlSettings a :ConfigSet ;
+    :inputField "content" ;
+    :outputField "feedUrls" ;
+    :unique "true" .
+
+:forEachSettings a :ConfigSet ;
+    :forEach "feedUrls" ;
+    :delay "500" .
+
+:urlSettings a :ConfigSet ;
+    :inputField "currentItem" ;
+    :outputField "url" .
+
+:dedupeSettings a :ConfigSet ;
+    :inputField "url" ;
+    :skipDuplicates "true" .
+
+:fetchSettings a :ConfigSet ;
+    :method "GET" ;
+    :timeout "10000" .
+
+:parserSettings a :ConfigSet ;
+    :inputField "http.data" ;
+    :outputField "feed" .
+
+:mintSettings a :ConfigSet ;
+    :baseURI "http://hyperdata.it/feeds/" ;
+    :sourceField "feed.meta.title" ;
+    :targetField "feedURI" .
+
+:rdfSettings a :ConfigSet ;
+    :templateFilename "data/templates/feed-to-rdf.njk" ;
+    :baseURI "http://hyperdata.it/" ;
+    :outputField "rdf" .
+
+:updateSettings a :ConfigSet ;
+    :endpointSettings "data/endpoints.json" ;
+    :templateFilename "data/sparql-templates/insert-entry.rq" ;
+    :graph <http://hyperdata.it/feeds> ;
+    :delay "100" .

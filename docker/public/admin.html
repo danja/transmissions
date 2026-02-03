@@ -1,4 +1,5 @@
 <!-- docker/public/admin.html -->
+<!-- docker/public/admin.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,6 +51,50 @@
                     </div>
 
                     <div id="subscribe-status" class="status-message" style="display: none;"></div>
+                </div>
+            </section>
+
+            <!-- Import OPML Section -->
+            <section class="admin-section">
+                <h2>Import OPML</h2>
+                <p class="section-description">
+                    Upload an OPML file to subscribe to all included feeds. Existing subscriptions are skipped.
+                </p>
+
+                <div class="opml-import">
+                    <input
+                        id="opml-file"
+                        type="file"
+                        accept=".opml,.xml,text/xml,application/xml"
+                    >
+                    <textarea
+                        id="opml-text"
+                        placeholder="Paste OPML contents here..."
+                        rows="6"
+                    ></textarea>
+                    <div class="form-actions">
+                        <button id="opml-import-btn" class="btn-primary">
+                            📥 Import OPML
+                        </button>
+                        <button id="opml-clear-btn" class="btn-secondary">
+                            Clear
+                        </button>
+                    </div>
+                    <div id="opml-status" class="status-message" style="display: none;"></div>
+                </div>
+            </section>
+
+            <!-- Export OPML Section -->
+            <section class="admin-section">
+                <h2>Export OPML</h2>
+                <p class="section-description">
+                    Download an OPML backup of all subscribed feeds.
+                </p>
+                <div class="export-opml">
+                    <button id="opml-export-btn" class="btn-primary">
+                        ⬇️ Download OPML
+                    </button>
+                    <div id="opml-export-status" class="status-message" style="display: none;"></div>
                 </div>
             </section>
 

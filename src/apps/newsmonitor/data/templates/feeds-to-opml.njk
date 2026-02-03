@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>NewsMonitor Subscriptions</title>
+    <dateCreated>{{ now() }}</dateCreated>
+  </head>
+  <body>
+  {% for row in results.bindings %}
+    <outline text="{{ row.title.value | escape }}" title="{{ row.title.value | escape }}" xmlUrl="{{ row.feedUrl.value | escape }}"{% if row.link %} htmlUrl="{{ row.link.value | escape }}"{% endif %} />
+  {% endfor %}
+  </body>
+</opml>
