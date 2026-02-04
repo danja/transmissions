@@ -3,7 +3,8 @@
 
 :selectExistingFeeds a :ConfigSet ;
     :endpointSettings "data/endpoints.json" ;
-    :templateFilename "data/sparql-templates/get-all-feeds.rq" .
+    :templateFilename "data/sparql-templates/get-all-feeds.rq" ;
+    :graph <http://hyperdata.it/feeds> .
 
 :fileSettings a :ConfigSet ;
     :sourceFile "feeds.opml" ;
