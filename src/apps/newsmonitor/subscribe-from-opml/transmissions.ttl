@@ -11,6 +11,7 @@
         :dedupeFeedUrl
         :fetchFeed
         :parseFeed
+        :guardFeed
         :generateFeedURI
         :buildFeedRDF
         :storeFeed
@@ -39,6 +40,9 @@
 
 :parseFeed a :FeedParser ;
     :settings :parserSettings .
+
+:guardFeed a :RequiredFields ;
+    :settings :guardSettings .
 
 :generateFeedURI a :ResourceMinter ;
     :settings :mintSettings .

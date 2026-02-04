@@ -36,6 +36,10 @@
     :inputField "http.data" ;
     :outputField "feed" .
 
+:guardSettings a :ConfigSet ;
+    :requiredFields "feed.meta" ;
+    :skipOnHttpError "true" .
+
 :mintSettings a :ConfigSet ;
     :baseURI "http://hyperdata.it/feeds/" ;
     :sourceField "feed.meta.title" ;

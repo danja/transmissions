@@ -15,6 +15,7 @@ import ResourceMinter from './ResourceMinter.js'
 import URLNormalizer from './URLNormalizer.js'
 import EntryDeduplicator from './EntryDeduplicator.js'
 import FeedUrlDeduplicator from './FeedUrlDeduplicator.js'
+import RequiredFields from './RequiredFields.js'
 
 class UtilProcessorsFactory {
     static createProcessor(type, config) {
@@ -54,6 +55,9 @@ class UtilProcessorsFactory {
         }
         if (type.equals(ns.trn.FeedUrlDeduplicator)) {
             return new FeedUrlDeduplicator(config)
+        }
+        if (type.equals(ns.trn.RequiredFields)) {
+            return new RequiredFields(config)
         }
         return false
     }

@@ -12,7 +12,9 @@
 
 # Iterate over each feed
 :feedIteratorSettings a :ConfigSet ;
-    :forEach "queryResults.results.bindings" .
+    :forEach "queryResults.results.bindings" ;
+    :delay "2000" ;
+    :limit "25" .
 
 # Prepare feed data - extract values from SPARQL result
 # Extract from SPARQL binding format (binding.field.value) to simple fields
