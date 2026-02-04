@@ -1,4 +1,5 @@
 src/apps/newsmonitor/data/index.html
+src/apps/newsmonitor/data/newsmonitor-jobs.json
 
 **/src-old
 **/*\ copy.js
