@@ -20,6 +20,10 @@ export class APIHandler {
     this.adminPassword = Config.getEnv('NEWSMONITOR_ADMIN_PASSWORD')
     this.dataDir = path.join(__dirname, '..', 'src', 'apps', 'newsmonitor', 'data')
     this.jobs = new Map()
+    this.jobsFile = path.join(this.dataDir, 'newsmonitor-jobs.json')
+    this.loadJobs().catch(err => {
+      console.error('Failed to load jobs:', err.message)
+    })
   }
 
   /**
@@ -301,6 +305,9 @@ export class APIHandler {
     }
 
     this.jobs.set(jobId, job)
+    this.saveJobs().catch(err => {
+      console.error('Failed to persist jobs:', err.message)
+    })
 
     const trans = spawn('./trans', [command, ...args], {
       cwd: path.join(__dirname, '..'),
@@ -319,12 +326,18 @@ export class APIHandler {
       job.exitCode = code
       job.status = code === 0 ? 'completed' : 'failed'
       job.finishedAt = new Date().toISOString()
+      this.saveJobs().catch(err => {
+        console.error('Failed to persist jobs:', err.message)
+      })
     })
 
     trans.on('error', (err) => {
       job.stderr += `\n${err.message}`
       job.status = 'failed'
       job.finishedAt = new Date().toISOString()
+      this.saveJobs().catch(err => {
+        console.error('Failed to persist jobs:', err.message)
+      })
     })
 
     return job
@@ -569,6 +582,7 @@ export class APIHandler {
           if (job.tempDir) {
             await fs.rmdir(job.tempDir).catch(() => {})
           }
+          await this.saveJobs().catch(() => {})
         }
 
         res.writeHead(200, {
@@ -774,5 +788,33 @@ export class APIHandler {
     const password = decoded.slice(separatorIndex + 1)
 
     return username === this.adminUsername && password === this.adminPassword
+  }
+
+  async loadJobs() {
+    try {
+      const data = await fs.readFile(this.jobsFile, 'utf8')
+      const items = JSON.parse(data)
+      const now = Date.now()
+      items.forEach(job => {
+        if (job.status === 'running') {
+          const startedAt = Date.parse(job.startedAt || '')
+          if (!Number.isNaN(startedAt) && now - startedAt > 60 * 60 * 1000) {
+            job.status = 'stale'
+            job.finishedAt = new Date().toISOString()
+          }
+        }
+        this.jobs.set(job.id, job)
+      })
+    } catch (error) {
+      if (error.code !== 'ENOENT') {
+        throw error
+      }
+    }
+  }
+
+  async saveJobs() {
+    const jobsArray = Array.from(this.jobs.values())
+    await fs.mkdir(this.dataDir, { recursive: true })
+    await fs.writeFile(this.jobsFile, JSON.stringify(jobsArray, null, 2), 'utf8')
   }
 }
