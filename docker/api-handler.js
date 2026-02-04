@@ -601,6 +601,23 @@ export class APIHandler {
         return true
       }
 
+      if (routePath === '/api/subscribe-opml/jobs' && req.method === 'GET') {
+        if (!this.requireAdminAuth(req, res)) {
+          return true
+        }
+
+        const jobs = Array.from(this.jobs.values())
+          .sort((a, b) => (b.startedAt || '').localeCompare(a.startedAt || ''))
+          .slice(0, 50)
+
+        res.writeHead(200, {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        })
+        res.end(JSON.stringify({ jobs }))
+        return true
+      }
+
       // Export OPML (POST)
       if (routePath === '/api/export-opml' && req.method === 'POST') {
         if (!this.requireAdminAuth(req, res)) {

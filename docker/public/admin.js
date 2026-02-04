@@ -478,6 +478,7 @@ async function importOpml() {
         }
 
         if (data?.jobId) {
+            showOpmlStatus(`Import queued. Job ID: ${escapeHtml(data.jobId)}`, 'info')
             await pollOpmlJob(data.jobId)
         } else {
             showOpmlStatus('✓ OPML import completed. Existing feeds were skipped.', 'success')
