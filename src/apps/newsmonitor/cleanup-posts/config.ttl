@@ -1,0 +1,14 @@
+# src/apps/newsmonitor/cleanup-posts/config.ttl
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+:deleteOldSettings a :ConfigSet ;
+    :endpointSettings "data/endpoints.json" ;
+    :templateFilename "data/sparql-templates/delete-old-posts.rq" ;
+    :dataBlock "cleanup" ;
+    :graph <http://hyperdata.it/content> .
+
+:trimSettings a :ConfigSet ;
+    :endpointSettings "data/endpoints.json" ;
+    :templateFilename "data/sparql-templates/delete-excess-posts.rq" ;
+    :dataBlock "cleanup" ;
+    :graph <http://hyperdata.it/content> .

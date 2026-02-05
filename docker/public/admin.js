@@ -63,6 +63,9 @@ function setupEventListeners() {
     // OPML export
     document.getElementById('opml-export-btn').addEventListener('click', exportOpml)
 
+    // Cleanup posts
+    document.getElementById('cleanup-btn').addEventListener('click', cleanupPosts)
+
     // Login modal buttons
     document.getElementById('admin-login-btn').addEventListener('click', toggleLoginModal)
     document.getElementById('login-confirm').addEventListener('click', attemptLogin)
@@ -633,6 +636,108 @@ async function parseJsonSafe(response) {
     } catch (error) {
         return null
     }
+}
+
+async function cleanupPosts() {
+    if (!isAdminLoggedIn) {
+        showCleanupStatus('Admin login required to run cleanup.', 'error')
+        openLoginModal('Log in to run cleanup.')
+        return
+    }
+
+    const daysValue = Number(document.getElementById('cleanup-days').value)
+    const keepValue = Number(document.getElementById('cleanup-keep').value)
+
+    const days = Number.isFinite(daysValue) && daysValue > 0 ? Math.floor(daysValue) : 7
+    const keepCount = Number.isFinite(keepValue) && keepValue > 0 ? Math.floor(keepValue) : 10
+
+    const button = document.getElementById('cleanup-btn')
+    button.disabled = true
+    button.textContent = 'Running...'
+    showCleanupStatus('Cleanup queued. Working...', 'info')
+
+    try {
+        const response = await fetch('/api/cleanup-posts', {
+            method: 'POST',
+            headers: buildAdminHeaders(),
+            body: JSON.stringify({ days, keepCount })
+        })
+
+        if (response.status === 401) {
+            handleUnauthorized()
+            return
+        }
+
+        const data = await parseJsonSafe(response)
+        if (!response.ok) {
+            const message = data?.error || `Cleanup failed (HTTP ${response.status})`
+            throw new Error(message)
+        }
+
+        if (data?.jobId) {
+            showCleanupStatus(`Cleanup queued. Job ID: ${escapeHtml(data.jobId)}`, 'info')
+            await pollCleanupJob(data.jobId)
+        } else {
+            showCleanupStatus('Cleanup completed.', 'success')
+        }
+    } catch (err) {
+        console.error('Cleanup error:', err)
+        showCleanupStatus(`✗ Cleanup failed: ${escapeHtml(err.message)}`, 'error')
+    } finally {
+        button.disabled = false
+        button.textContent = '🧹 Run Cleanup'
+    }
+}
+
+async function pollCleanupJob(jobId) {
+    let attempts = 0
+    const maxAttempts = 120
+
+    while (attempts < maxAttempts) {
+        attempts += 1
+        await sleep(2000)
+
+        const response = await fetch(`/api/subscribe-opml/status?jobId=${encodeURIComponent(jobId)}`, {
+            headers: buildAdminHeaders()
+        })
+
+        if (response.status === 401) {
+            handleUnauthorized()
+            return
+        }
+
+        const data = await parseJsonSafe(response)
+        if (!response.ok || !data) {
+            showCleanupStatus('Cleanup status unavailable.', 'error')
+            return
+        }
+
+        if (data.status === 'running') {
+            showCleanupStatus('Cleanup running...', 'info')
+            continue
+        }
+
+        if (data.status === 'completed') {
+            showCleanupStatus('✓ Cleanup completed.', 'success')
+            await loadFeeds()
+            return
+        }
+
+        if (data.status === 'failed') {
+            const message = data.stderr || 'Cleanup failed.'
+            showCleanupStatus(`✗ Cleanup failed: ${escapeHtml(message)}`, 'error')
+            return
+        }
+    }
+
+    showCleanupStatus('Cleanup still running. Check back later.', 'info')
+}
+
+function showCleanupStatus(message, type) {
+    const status = document.getElementById('cleanup-status')
+    status.innerHTML = message
+    status.className = `status-message ${type}`
+    status.style.display = 'block'
 }
 
 async function restoreAdminAuth() {

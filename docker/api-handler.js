@@ -649,6 +649,34 @@ export class APIHandler {
         }
       }
 
+      // Cleanup posts (POST)
+      if (routePath === '/api/cleanup-posts' && req.method === 'POST') {
+        if (!this.requireAdminAuth(req, res)) {
+          return true
+        }
+
+        const body = await this.parseBody(req)
+        const days = Number(body.days)
+        const keepCount = Number(body.keepCount)
+
+        const cleanup = {
+          days: Number.isFinite(days) && days > 0 ? Math.floor(days) : 7,
+          keepCount: Number.isFinite(keepCount) && keepCount > 0 ? Math.floor(keepCount) : 10
+        }
+
+        const job = this.runTransCommandAsync(
+          'src/apps/newsmonitor/cleanup-posts',
+          ['-m', JSON.stringify({ cleanup })]
+        )
+
+        res.writeHead(202, {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        })
+        res.end(JSON.stringify({ success: true, jobId: job.id }))
+        return true
+      }
+
       if (routePath === '/api/posts') {
         const limit = parseInt(url.searchParams.get('limit') || '50')
         const offset = parseInt(url.searchParams.get('offset') || '0')

@@ -1,0 +1,14 @@
+# src/apps/newsmonitor/cleanup-posts/transmissions.ttl
+@prefix : <http://purl.org/stuff/transmissions/> .
+
+:cleanup-posts a :Transmission ;
+    :pipe (
+        :deleteOldPosts
+        :trimPostsPerFeed
+    ) .
+
+:deleteOldPosts a :SPARQLUpdate ;
+    :settings :deleteOldSettings .
+
+:trimPostsPerFeed a :SPARQLUpdate ;
+    :settings :trimSettings .

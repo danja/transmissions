@@ -1,0 +1,16 @@
+PREFIX sioc: <http://rdfs.org/sioc/ns#>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+DELETE {
+  GRAPH <{{ graph }}> {
+    ?post ?p ?o .
+  }
+}
+WHERE {
+  GRAPH <{{ graph }}> {
+    ?post ?p ?o ;
+          dc:date ?date .
+  }
+  FILTER(?date < (NOW() - "P{{ days | default(7) }}D"^^xsd:dayTimeDuration))
+}

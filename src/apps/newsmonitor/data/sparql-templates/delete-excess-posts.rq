@@ -1,0 +1,29 @@
+PREFIX sioc: <http://rdfs.org/sioc/ns#>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+
+DELETE {
+  GRAPH <{{ graph }}> {
+    ?post ?p ?o .
+  }
+}
+WHERE {
+  GRAPH <{{ graph }}> {
+    ?post ?p ?o ;
+          sioc:has_container ?feed ;
+          dc:date ?date .
+  }
+  {
+    SELECT ?post
+    WHERE {
+      GRAPH <{{ graph }}> {
+        ?post sioc:has_container ?feed ;
+              dc:date ?date .
+        ?newer sioc:has_container ?feed ;
+               dc:date ?newerDate .
+        FILTER(?newerDate > ?date)
+      }
+    }
+    GROUP BY ?post
+    HAVING(COUNT(?newer) >= {{ keepCount | default(10) }})
+  }
+}

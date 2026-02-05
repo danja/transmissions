@@ -98,6 +98,24 @@
                 </div>
             </section>
 
+            <!-- Cleanup Posts Section -->
+            <section class="admin-section">
+                <h2>Delete Old Posts</h2>
+                <p class="section-description">
+                    Remove posts older than a set number of days and keep only a maximum number per feed.
+                </p>
+                <div class="cleanup-posts">
+                    <label for="cleanup-days">Delete posts older than (days)</label>
+                    <input id="cleanup-days" type="number" min="1" value="7">
+                    <label for="cleanup-keep">Keep max posts per feed</label>
+                    <input id="cleanup-keep" type="number" min="1" value="10">
+                    <div class="form-actions">
+                        <button id="cleanup-btn" class="btn-danger">🧹 Run Cleanup</button>
+                    </div>
+                    <div id="cleanup-status" class="status-message" style="display: none;"></div>
+                </div>
+            </section>
+
             <!-- Subscribed Feeds Section -->
             <section class="admin-section">
                 <h2>Subscribed Feeds (<span id="feed-count">0</span>)</h2>
