@@ -12,6 +12,7 @@ import FeedParser from './FeedParser.js'
 import HTMLFeedExtractor from './HTMLFeedExtractor.js'
 import AtomBuilder from './AtomBuilder.js'
 import OpmlFeedExtractor from './OpmlFeedExtractor.js'
+import MarkdownBindingsToHTML from './MarkdownBindingsToHTML.js'
 
 class MarkupProcessorsFactory {
     static createProcessor(type, config) {
@@ -41,6 +42,9 @@ class MarkupProcessorsFactory {
         }
         if (type.equals(ns.trn.OpmlFeedExtractor)) {
             return new OpmlFeedExtractor(config)
+        }
+        if (type.equals(ns.trn.MarkdownBindingsToHTML)) {
+            return new MarkdownBindingsToHTML(config)
         }
         return false
     }

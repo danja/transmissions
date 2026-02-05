@@ -48,6 +48,16 @@
     :delay "50" ;
     :limit "20" .
 
+# Convert HTML content to Markdown for storage
+:contentMarkdownSettings a :ConfigSet ;
+    :inputField "currentItem.content" ;
+    :outputField "currentItem.contentMarkdown" .
+
+# Convert HTML snippet to Markdown for storage
+:snippetMarkdownSettings a :ConfigSet ;
+    :inputField "currentItem.contentSnippet" ;
+    :outputField "currentItem.contentSnippetMarkdown" .
+
 # Deduplication Settings
 :dedupeSettings a :ConfigSet ;
     :guidField "currentItem.guid" ;

@@ -5,6 +5,11 @@
     :endpointSettings "data/endpoints.json" ;
     :templateFilename "data/sparql-templates/get-all-for-page.rq" .
 
+:markdownToHtmlSettings a :ConfigSet ;
+    :listField "queryResults.results.bindings" ;
+    :sourceField "content.value" ;
+    :outputField "contentHtml" .
+
 # Restructure query results for template
 :templatePrep a :ConfigSet ;
     :rename (:r1) .

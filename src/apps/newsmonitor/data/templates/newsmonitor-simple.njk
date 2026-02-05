@@ -103,9 +103,13 @@
                     <span class="entry-date">{{ entry.date.value }}</span>
                     {% endif %}
                 </div>
-                {% if entry.content %}
+                {% if entry.contentHtml %}
                 <div class="entry-content">
-                    {{ entry.content.value | truncate(300) }}
+                    {{ entry.contentHtml.value | safe }}
+                </div>
+                {% elif entry.content %}
+                <div class="entry-content">
+                    {{ entry.content.value | safe }}
                 </div>
                 {% endif %}
             </div>

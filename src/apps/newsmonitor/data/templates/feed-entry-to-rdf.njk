@@ -4,6 +4,6 @@
     <http://rdfs.org/sioc/ns#id> "{{ escape(currentItem.guid) }}" ;
     {% if currentItem.published %}<http://purl.org/dc/elements/1.1/date> "{{ isoDate(currentItem.published) }}"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;{% endif %}
     {% if currentItem.author %}<http://purl.org/dc/elements/1.1/creator> "{{ escape(currentItem.author) }}" ;{% endif %}
-    {% if currentItem.contentSnippet %}<http://rdfs.org/sioc/ns#content> "{{ escape(currentItem.contentSnippet) }}" ;{% endif %}
-    {% if currentItem.content %}<http://purl.org/rss/1.0/modules/content/encoded> "{{ escape(currentItem.content) }}" ;{% endif %}
+    {% if currentItem.contentSnippetMarkdown or currentItem.contentSnippet %}<http://rdfs.org/sioc/ns#content> "{{ escape(currentItem.contentSnippetMarkdown or currentItem.contentSnippet) }}" ;{% endif %}
+    {% if currentItem.contentMarkdown or currentItem.content %}<http://purl.org/rss/1.0/modules/content/encoded> "{{ escape(currentItem.contentMarkdown or currentItem.content) }}" ;{% endif %}
     <http://rdfs.org/sioc/ns#has_container> <{{ feedURI }}> .

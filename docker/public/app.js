@@ -193,9 +193,8 @@ function renderPost(post) {
     const creator = post.creator ?
         `<span>👤 ${escapeHtml(post.creator)}</span>` : ''
 
-    // Format summary with paragraph breaks preserved
     const formattedSummary = post.summary
-        ? escapeHtml(post.summary).replace(/\n\n/g, '</p><p>')
+        ? formatSummary(post.summary)
         : ''
 
     return `
@@ -258,4 +257,46 @@ function escapeHtml(text) {
     const div = document.createElement('div')
     div.textContent = text
     return div.innerHTML
+}
+
+function formatSummary(summary) {
+    const unescaped = summary
+        .replace(/\\r\\n/g, '\n')
+        .replace(/\\n/g, '\n')
+        .replace(/\\r/g, '\n')
+        .replace(/\\"/g, '"')
+        .replace(/\\\\/g, '\\')
+    const decoded = decodeHtmlEntities(unescaped)
+    if (/<[^>]+>/.test(decoded)) {
+        return sanitizeHtml(decoded)
+    }
+    return escapeHtml(decoded).replace(/\n\n/g, '</p><p>')
+}
+
+function decodeHtmlEntities(text) {
+    const textarea = document.createElement('textarea')
+    textarea.innerHTML = text
+    return textarea.value
+}
+
+function sanitizeHtml(html) {
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(html, 'text/html')
+
+    doc.querySelectorAll('script, style').forEach(node => node.remove())
+
+    doc.querySelectorAll('*').forEach(node => {
+        [...node.attributes].forEach(attr => {
+            const name = attr.name.toLowerCase()
+            const value = attr.value || ''
+            if (name.startsWith('on')) {
+                node.removeAttribute(attr.name)
+            }
+            if ((name === 'href' || name === 'src') && value.trim().toLowerCase().startsWith('javascript:')) {
+                node.removeAttribute(attr.name)
+            }
+        })
+    })
+
+    return doc.body.innerHTML
 }

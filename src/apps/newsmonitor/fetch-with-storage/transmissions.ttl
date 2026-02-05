@@ -7,6 +7,8 @@
         :fetchFeed
         :parseFeed
         :processEntries
+        :contentToMarkdown
+        :snippetToMarkdown
         :checkDuplicate
         :addFeedURI
         :buildRDF
@@ -29,6 +31,14 @@
 # Step 4: Iterate over entries
 :processEntries a :ForEach ;
     :settings :forEachSettings .
+
+# Convert HTML content to Markdown
+:contentToMarkdown a :HTMLToMarkdown ;
+    :settings :contentMarkdownSettings .
+
+# Convert HTML snippet to Markdown
+:snippetToMarkdown a :HTMLToMarkdown ;
+    :settings :snippetMarkdownSettings .
 
 # Step 5: Check if entry is duplicate
 :checkDuplicate a :EntryDeduplicator ;

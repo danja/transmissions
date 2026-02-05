@@ -1,0 +1,1 @@
+SPARQL_USER=admin SPARQL_PASSWORD=admin123 src/apps/newsmonitor/clear-graph.sh

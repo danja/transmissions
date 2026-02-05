@@ -145,18 +145,21 @@ async function updateAllFeeds() {
             return
         }
 
-        const data = await response.json()
+        const data = await parseJsonSafe(response)
 
         if (!response.ok) {
             throw new Error(data.error || 'Failed to update feeds')
         }
 
-        showUpdateStatus('✓ Feed update completed! All feeds have been updated.', 'success')
-
-        // Reload feeds to show updated post counts
-        setTimeout(() => {
-            loadFeeds()
-        }, 2000)
+        if (data?.jobId) {
+            showUpdateStatus(`Update queued. Job ID: ${escapeHtml(data.jobId)}`, 'info')
+            await pollUpdateJob(data.jobId)
+        } else {
+            showUpdateStatus('✓ Feed update completed! All feeds have been updated.', 'success')
+            setTimeout(() => {
+                loadFeeds()
+            }, 2000)
+        }
 
     } catch (err) {
         console.error('Error updating feeds:', err)
@@ -170,6 +173,53 @@ async function updateAllFeeds() {
             hideUpdateStatus()
         }, 10000)
     }
+}
+
+async function pollUpdateJob(jobId) {
+    showUpdateStatus('Update queued. Working...', 'info')
+
+    let attempts = 0
+    const maxAttempts = 180
+
+    while (attempts < maxAttempts) {
+        attempts += 1
+        await sleep(2000)
+
+        const response = await fetch(`/api/update-feeds/status?jobId=${encodeURIComponent(jobId)}`, {
+            headers: buildAdminHeaders()
+        })
+
+        if (response.status === 401) {
+            handleUnauthorized()
+            return
+        }
+
+        const data = await parseJsonSafe(response)
+        if (!response.ok || !data) {
+            showUpdateStatus('Update status unavailable.', 'error')
+            return
+        }
+
+        if (data.status === 'running') {
+            const step = data.currentStep ? ` (${escapeHtml(data.currentStep)})` : ''
+            showUpdateStatus(`Update running${step}...`, 'info')
+            continue
+        }
+
+        if (data.status === 'completed') {
+            showUpdateStatus('✓ Feed update completed! All feeds have been updated.', 'success')
+            await loadFeeds()
+            return
+        }
+
+        if (data.status === 'failed') {
+            const message = data.stderr || 'Update failed.'
+            showUpdateStatus(`✗ Update failed: ${escapeHtml(message)}`, 'error')
+            return
+        }
+    }
+
+    showUpdateStatus('Update still running. Check back later.', 'info')
 }
 
 async function subscribeToFeeds() {

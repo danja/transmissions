@@ -21,6 +21,14 @@
     :delay "10" ;
     :limit "3" .
 
+:contentMarkdownSettings a :ConfigSet ;
+    :inputField "currentItem.content" ;
+    :outputField "currentItem.contentMarkdown" .
+
+:snippetMarkdownSettings a :ConfigSet ;
+    :inputField "currentItem.contentSnippet" ;
+    :outputField "currentItem.contentSnippetMarkdown" .
+
 :feedURISettings a :ConfigSet ;
     :field "feedURI" ;
     :value "http://hyperdata.it/feeds/hnrss-frontpage" .

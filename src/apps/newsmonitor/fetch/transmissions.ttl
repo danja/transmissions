@@ -2,7 +2,16 @@
 
 # Simple fetch pipeline - fetches a single feed and converts entries to RDF
 :fetch a :Transmission ;
-    :pipe (:fetchFeed :parseFeed :processEntries :addFeedURI :buildRDF :writeRDF) .
+    :pipe (
+        :fetchFeed
+        :parseFeed
+        :processEntries
+        :contentToMarkdown
+        :snippetToMarkdown
+        :addFeedURI
+        :buildRDF
+        :writeRDF
+    ) .
 
 :fetchFeed a :HttpClient ;
     :settings :fetchSettings .
@@ -12,6 +21,14 @@
 
 :processEntries a :ForEach ;
     :settings :forEachSettings .
+
+# Convert HTML content to Markdown
+:contentToMarkdown a :HTMLToMarkdown ;
+    :settings :contentMarkdownSettings .
+
+# Convert HTML snippet to Markdown
+:snippetToMarkdown a :HTMLToMarkdown ;
+    :settings :snippetMarkdownSettings .
 
 :addFeedURI a :SetField ;
     :settings :feedURISettings .

@@ -6,6 +6,9 @@ import fs from 'fs/promises'
 import os from 'os'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { marked } from 'marked'
+import markedFootnote from 'marked-footnote'
+import markedCodeFormat from 'marked-code-format'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -94,7 +97,7 @@ export class APIHandler {
     `
 
     const data = await this.querySparql(query)
-    return this.formatResults(data)
+    return await this.formatResults(data)
   }
 
   /**
@@ -180,19 +183,21 @@ export class APIHandler {
   /**
    * Format SPARQL results to JSON
    */
-  formatResults(data) {
-    return data.results.bindings.map(binding => {
+  async formatResults(data) {
+    const results = []
+    for (const binding of data.results.bindings) {
       // Prefer full content for paragraph extraction, fall back to summary
       const fullContent = binding.fullContent?.value || ''
       const summary = binding.summary?.value || ''
       const contentText = fullContent || summary
+      const normalizedContent = await this.renderMarkdownIfNeeded(contentText)
 
       // Extract first couple paragraphs if we have content
-      const formattedContent = contentText
-        ? this.extractParagraphs(contentText, 2)
+      const formattedContent = normalizedContent
+        ? this.extractParagraphs(normalizedContent, 2)
         : this.truncateSummary(summary)
 
-      return {
+      results.push({
         uri: binding.post.value,
         title: binding.title.value,
         link: binding.link.value,
@@ -200,8 +205,9 @@ export class APIHandler {
         creator: binding.creator?.value || null,
         summary: formattedContent,
         feedTitle: binding.feedTitle.value
-      }
-    })
+      })
+    }
+    return results
   }
 
   /**
@@ -253,6 +259,48 @@ export class APIHandler {
     const stripped = text.replace(/<[^>]*>/g, '')
     if (stripped.length <= maxLength) return stripped
     return stripped.substring(0, maxLength) + '...'
+  }
+
+  async renderMarkdownIfNeeded(text) {
+    if (!text) return ''
+    const normalized = this.normalizeEscapedText(text)
+    if (/<[^>]+>/.test(text)) {
+      return normalized
+    }
+    try {
+      const rendered = marked
+        .use(markedFootnote())
+        .use(markedCodeFormat({}))
+        .setOptions({
+          gfm: true,
+          breaks: false,
+          sanitize: false,
+          smartypants: false,
+          headerIds: true,
+          mangle: false
+        })
+        .parse(normalized.toString())
+      if (rendered && typeof rendered.then === 'function') {
+        return await rendered
+      }
+      return rendered
+    } catch (error) {
+      console.warn('Markdown render failed:', error.message)
+      return normalized
+    }
+  }
+
+  normalizeEscapedText(text) {
+    if (!text || typeof text !== 'string') {
+      return text
+    }
+    return text
+      .replace(/\\r\\n/g, '\n')
+      .replace(/\\n/g, '\n')
+      .replace(/\\r/g, '\n')
+      .replace(/\\t/g, '\t')
+      .replace(/\\"/g, '"')
+      .replace(/\\\\/g, '\\')
   }
 
   /**
@@ -338,6 +386,63 @@ export class APIHandler {
       this.saveJobs().catch(err => {
         console.error('Failed to persist jobs:', err.message)
       })
+    })
+
+    return job
+  }
+
+  runTransSequenceAsync(steps = []) {
+    const jobId = `job-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+    const job = {
+      id: jobId,
+      command: 'sequence',
+      steps: steps.map(step => ({ ...step })),
+      status: 'running',
+      startedAt: new Date().toISOString(),
+      finishedAt: null,
+      exitCode: null,
+      stdout: '',
+      stderr: '',
+      currentStep: null
+    }
+
+    this.jobs.set(jobId, job)
+    this.saveJobs().catch(err => {
+      console.error('Failed to persist jobs:', err.message)
+    })
+
+    const run = async () => {
+      for (const step of steps) {
+        job.currentStep = step.label || step.command
+        this.saveJobs().catch(() => {})
+        try {
+          const result = await this.runTransCommand(step.command, step.args || [])
+          job.stdout += result.stdout || ''
+          job.stderr += result.stderr || ''
+        } catch (error) {
+          job.stderr += `\n${error.message}`
+          job.status = 'failed'
+          job.finishedAt = new Date().toISOString()
+          job.exitCode = 1
+          this.saveJobs().catch(() => {})
+          return
+        }
+      }
+
+      job.status = 'completed'
+      job.finishedAt = new Date().toISOString()
+      job.exitCode = 0
+      job.currentStep = null
+      this.saveJobs().catch(() => {})
+    }
+
+    run().catch(error => {
+      job.stderr += `\n${error.message}`
+      job.status = 'failed'
+      job.finishedAt = new Date().toISOString()
+      job.exitCode = 1
+      job.currentStep = null
+      this.saveJobs().catch(() => {})
     })
 
     return job
@@ -499,16 +604,18 @@ export class APIHandler {
 
         try {
           console.log('Manual feed update triggered via API')
-          const result = await this.runTransCommand('src/apps/newsmonitor/update-all')
+          const job = this.runTransSequenceAsync([
+            { command: 'src/apps/newsmonitor/update-all', label: 'update-all' },
+            { command: 'src/apps/newsmonitor/render-to-html', label: 'render-to-html' }
+          ])
 
-          res.writeHead(200, {
+          res.writeHead(202, {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
           })
           res.end(JSON.stringify({
             success: true,
-            message: 'Feed update completed',
-            output: result.stdout
+            jobId: job.id
           }))
           return true
         } catch (error) {
@@ -522,6 +629,35 @@ export class APIHandler {
           }))
           return true
         }
+      }
+
+      if (routePath === '/api/update-feeds/status' && req.method === 'GET') {
+        if (!this.requireAdminAuth(req, res)) {
+          return true
+        }
+
+        const jobId = url.searchParams.get('jobId')
+        if (!jobId || !this.jobs.has(jobId)) {
+          res.writeHead(404, { 'Content-Type': 'application/json' })
+          res.end(JSON.stringify({ error: 'Job not found' }))
+          return true
+        }
+
+        const job = this.jobs.get(jobId)
+        res.writeHead(200, {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        })
+        res.end(JSON.stringify({
+          id: job.id,
+          status: job.status,
+          currentStep: job.currentStep,
+          startedAt: job.startedAt,
+          finishedAt: job.finishedAt,
+          exitCode: job.exitCode,
+          stderr: job.stderr
+        }))
+        return true
       }
 
       // Subscribe feeds from OPML (POST)
