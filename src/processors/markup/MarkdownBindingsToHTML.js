@@ -42,6 +42,7 @@ class MarkdownBindingsToHTML extends Processor {
             if (!markdown) {
                 continue
             }
+            const normalized = this.normalizeEscapedText(markdown)
 
             let html = ''
             try {
@@ -56,7 +57,7 @@ class MarkdownBindingsToHTML extends Processor {
                         headerIds: true,
                         mangle: false,
                     })
-                    .parse(markdown.toString())
+                    .parse(normalized.toString())
             } catch (error) {
                 logger.warn(`MarkdownBindingsToHTML: Failed conversion - ${error.message}`)
                 continue
@@ -71,6 +72,25 @@ class MarkdownBindingsToHTML extends Processor {
         }
 
         return this.emit('message', message)
+    }
+
+    normalizeEscapedText(text) {
+        if (!text || typeof text !== 'string') {
+            return text
+        }
+        return text
+            .replace(/\\\\r\\\\n/g, '\n')
+            .replace(/\\\\n/g, '\n')
+            .replace(/\\\\r/g, '\n')
+            .replace(/\\\\t/g, '\t')
+            .replace(/\\\\"/g, '"')
+            .replace(/\\\\\\\\/g, '\\')
+            .replace(/\\r\\n/g, '\n')
+            .replace(/\\n/g, '\n')
+            .replace(/\\r/g, '\n')
+            .replace(/\\t/g, '\t')
+            .replace(/\\"/g, '"')
+            .replace(/\\\\/g, '\\')
     }
 }
 

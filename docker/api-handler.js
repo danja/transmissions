@@ -196,6 +196,7 @@ export class APIHandler {
       const formattedContent = normalizedContent
         ? this.extractParagraphs(normalizedContent, 2)
         : this.truncateSummary(summary)
+      const cleanedSummary = this.normalizeEscapedText(formattedContent)
 
       results.push({
         uri: binding.post.value,
@@ -203,7 +204,7 @@ export class APIHandler {
         link: binding.link.value,
         date: binding.date.value,
         creator: binding.creator?.value || null,
-        summary: formattedContent,
+        summary: cleanedSummary,
         feedTitle: binding.feedTitle.value
       })
     }
@@ -295,6 +296,12 @@ export class APIHandler {
       return text
     }
     return text
+      .replace(/\\\\r\\\\n/g, '\n')
+      .replace(/\\\\n/g, '\n')
+      .replace(/\\\\r/g, '\n')
+      .replace(/\\\\t/g, '\t')
+      .replace(/\\\\"/g, '"')
+      .replace(/\\\\\\\\/g, '\\')
       .replace(/\\r\\n/g, '\n')
       .replace(/\\n/g, '\n')
       .replace(/\\r/g, '\n')

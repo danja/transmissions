@@ -13,6 +13,7 @@ const __dirname = path.dirname(__filename)
 
 const UPDATE_INTERVAL = process.env.UPDATE_INTERVAL || 3600000 // 1 hour default
 const RENDER_INTERVAL = process.env.RENDER_INTERVAL || 300000 // 5 minutes default
+const AUTO_RUN = process.env.NEWSMONITOR_AUTO_RUN !== 'false'
 
 // Generate endpoints.json on startup
 console.log('='.repeat(60))
@@ -40,9 +41,11 @@ const apiHandler = new APIHandler()
 
 // HTTP server to serve API and static files
 const newsmonitorConfig = Config.getService('newsmonitor')
-const PORT = newsmonitorConfig?.port || 8080
+const PORT = Number.parseInt(process.env.NEWSMONITOR_PORT || newsmonitorConfig?.port || 8080, 10)
 const PUBLIC_DIR = path.join(__dirname, 'public')
 const DATA_DIR = path.join(__dirname, '..', 'src', 'apps', 'newsmonitor', 'data')
+
+const HOST = process.env.NEWSMONITOR_HOST || '127.0.0.1'
 
 const server = http.createServer(async (req, res) => {
   // Handle API routes
@@ -98,8 +101,8 @@ const server = http.createServer(async (req, res) => {
   })
 })
 
-server.listen(PORT, () => {
-  console.log(`NewsMonitor HTTP server running on port ${PORT}`)
+server.listen(PORT, HOST, () => {
+  console.log(`NewsMonitor HTTP server running on ${HOST}:${PORT}`)
   console.log(`Environment: ${Config.getEnvironment()}`)
   console.log(`Frontend: http://localhost:${PORT}/`)
   console.log(`API: http://localhost:${PORT}/api/posts`)
@@ -172,21 +175,25 @@ async function initialRun() {
   console.log('=== Startup complete ===\n')
 }
 
-// Run initial update and render (non-blocking - frontend stays up)
-initialRun().catch(err => {
-  console.error('Initial run failed:', err.message)
-  console.log('Frontend still accessible for debugging')
-})
+if (AUTO_RUN) {
+  // Run initial update and render (non-blocking - frontend stays up)
+  initialRun().catch(err => {
+    console.error('Initial run failed:', err.message)
+    console.log('Frontend still accessible for debugging')
+  })
 
-// Schedule periodic updates
-setInterval(() => {
-  updateFeeds().catch(console.error)
-}, UPDATE_INTERVAL)
+  // Schedule periodic updates
+  setInterval(() => {
+    updateFeeds().catch(console.error)
+  }, UPDATE_INTERVAL)
 
-// Schedule periodic HTML rendering
-setInterval(() => {
-  renderHTML().catch(console.error)
-}, RENDER_INTERVAL)
+  // Schedule periodic HTML rendering
+  setInterval(() => {
+    renderHTML().catch(console.error)
+  }, RENDER_INTERVAL)
+} else {
+  console.log('Auto-run disabled (NEWSMONITOR_AUTO_RUN=false)')
+}
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
