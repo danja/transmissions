@@ -45,7 +45,7 @@ const PORT = Number.parseInt(process.env.NEWSMONITOR_PORT || newsmonitorConfig?.
 const PUBLIC_DIR = path.join(__dirname, 'public')
 const DATA_DIR = path.join(__dirname, '..', 'src', 'apps', 'newsmonitor', 'data')
 
-const HOST = process.env.NEWSMONITOR_HOST || '127.0.0.1'
+const HOST = process.env.NEWSMONITOR_HOST || '0.0.0.0'
 
 const server = http.createServer(async (req, res) => {
   // Handle API routes
