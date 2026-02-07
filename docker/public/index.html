@@ -10,15 +10,10 @@
     <div class="container">
         <header>
             <h1>📰 NewsMonitor</h1>
-            <p class="subtitle">Semantic Feed Aggregator</p>
             <div class="stats">
                 <span id="post-count">Loading...</span>
                 <span id="feed-count">Loading...</span>
             </div>
-            <nav class="header-nav">
-                <a href="/admin.html" class="btn-secondary">⚙️ Admin</a>
-                <a href="/about.html" class="btn-secondary">ℹ️ About</a>
-            </nav>
         </header>
 
         <nav class="controls">
@@ -34,6 +29,7 @@
             </div>
         </nav>
 
+        <div class="content-area">
         <main>
             <div id="loading" class="loading">
                 <div class="spinner"></div>
@@ -58,8 +54,13 @@
             <h3>Subscribed Feeds</h3>
             <div id="feeds-list"></div>
         </aside>
+        </div>
 
         <footer>
+            <nav class="footer-nav">
+                <a href="/admin.html">⚙️ Admin</a>
+                <a href="/about.html">ℹ️ About</a>
+            </nav>
             <p>Powered by <a href="https://github.com/hyperdata/transmissions" target="_blank">Transmissions</a></p>
             <p class="last-updated">Last updated: <span id="last-update">—</span></p>
         </footer>

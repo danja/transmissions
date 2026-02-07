@@ -80,6 +80,11 @@ async function loadPosts(silent = false) {
         renderPosts()
         updateLastUpdate()
 
+        const searchInput = document.getElementById('search-input')
+        if (searchInput && searchInput.value.trim()) {
+            filterPosts(searchInput.value)
+        }
+
     } catch (err) {
         console.error('Error loading posts:', err)
         loading.style.display = 'none'
@@ -133,7 +138,7 @@ async function loadFeeds() {
         if (data.feeds.length > 0) {
             feedsList.innerHTML = data.feeds.map(feed => `
                 <div class="feed-item">
-                    <div class="feed-title">${escapeHtml(feed.title)}</div>
+                    <div class="feed-title">${escapeHtml(decodeHtmlEntities(feed.title))}</div>
                     <div class="feed-count">${feed.postCount} posts</div>
                 </div>
             `).join('')
@@ -151,12 +156,16 @@ function filterPosts(query) {
         filteredPosts = currentPosts
     } else {
         const searchTerm = query.toLowerCase()
-        filteredPosts = currentPosts.filter(post =>
-            post.title.toLowerCase().includes(searchTerm) ||
-            post.summary.toLowerCase().includes(searchTerm) ||
-            post.feedTitle.toLowerCase().includes(searchTerm) ||
-            (post.creator && post.creator.toLowerCase().includes(searchTerm))
-        )
+        filteredPosts = currentPosts.filter(post => {
+            const title = post.title || ''
+            const summary = post.summary || ''
+            const feedTitle = post.feedTitle || ''
+            const creator = post.creator || ''
+            return title.toLowerCase().includes(searchTerm) ||
+                summary.toLowerCase().includes(searchTerm) ||
+                feedTitle.toLowerCase().includes(searchTerm) ||
+                creator.toLowerCase().includes(searchTerm)
+        })
     }
 
     currentPage = 0
