@@ -98,6 +98,26 @@
                 </div>
             </section>
 
+            <!-- Posts Cache Section -->
+            <section class="admin-section">
+                <h2>Posts Cache</h2>
+                <p class="section-description">
+                    Monitor and refresh the cached posts payload used by the API.
+                </p>
+                <div class="posts-cache">
+                    <div class="posts-cache-summary">
+                        <span id="posts-cache-status" class="posts-cache-status">Cache: loading...</span>
+                        <span id="posts-cache-meta" class="posts-cache-meta"></span>
+                    </div>
+                    <div class="form-actions">
+                        <button id="posts-cache-refresh-btn" class="btn-secondary">
+                            ♻️ Refresh Cache
+                        </button>
+                    </div>
+                    <div id="posts-cache-status-message" class="status-message" style="display: none;"></div>
+                </div>
+            </section>
+
             <!-- Cleanup Posts Section -->
             <section class="admin-section">
                 <h2>Delete Old Posts</h2>

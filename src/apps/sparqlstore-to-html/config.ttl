@@ -7,3 +7,9 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
 @prefix : <http://purl.org/stuff/transmissions/> .
+
+#:htmlChangeFilter a :ConfigSet ;
+#    :cacheFile ".sparqlstore-to-html-cache.json" ;
+#    :keyField "contentBlocks.uri" ;
+#    :valueField "contentBlocks.created" ;
+#    :forceRebuild "false" .

@@ -19,6 +19,7 @@ async function initializeAdmin() {
     setupEventListeners()
     await restoreAdminAuth()
     loadFeeds()
+    loadPostsCacheStatus()
 }
 
 function setupEventListeners() {
@@ -65,6 +66,9 @@ function setupEventListeners() {
 
     // Cleanup posts
     document.getElementById('cleanup-btn').addEventListener('click', cleanupPosts)
+
+    // Posts cache
+    document.getElementById('posts-cache-refresh-btn').addEventListener('click', refreshPostsCache)
 
     // Login modal buttons
     document.getElementById('admin-login-btn').addEventListener('click', toggleLoginModal)
@@ -790,6 +794,126 @@ function showCleanupStatus(message, type) {
     status.style.display = 'block'
 }
 
+async function loadPostsCacheStatus() {
+    const statusEl = document.getElementById('posts-cache-status')
+    const metaEl = document.getElementById('posts-cache-meta')
+    const messageEl = document.getElementById('posts-cache-status-message')
+
+    if (!statusEl || !metaEl || !messageEl) {
+        return
+    }
+
+    statusEl.textContent = 'Cache: loading...'
+    metaEl.textContent = ''
+    messageEl.style.display = 'none'
+
+    try {
+        const response = await fetch('/api/posts/cache', {
+            headers: buildAdminHeaders()
+        })
+
+        if (response.status === 401) {
+            statusEl.textContent = 'Cache: login required'
+            metaEl.textContent = ''
+            return
+        }
+
+        const data = await parseJsonSafe(response)
+        if (!response.ok || !data) {
+            throw new Error('Cache status unavailable')
+        }
+
+        renderPostsCacheStatus(data)
+    } catch (err) {
+        statusEl.textContent = 'Cache: unavailable'
+        metaEl.textContent = ''
+        messageEl.textContent = `⚠️ ${escapeHtml(err.message)}`
+        messageEl.className = 'status-message error'
+        messageEl.style.display = 'block'
+    }
+}
+
+function renderPostsCacheStatus(data) {
+    const statusEl = document.getElementById('posts-cache-status')
+    const metaEl = document.getElementById('posts-cache-meta')
+
+    if (!data?.cached) {
+        statusEl.textContent = 'Cache: empty'
+        metaEl.textContent = 'No cached payload yet.'
+        return
+    }
+
+    const count = Number.isFinite(data.count) ? data.count : 0
+    const age = Number.isFinite(data.ageSeconds) ? formatAge(data.ageSeconds) : 'unknown'
+    const cachedAt = data.cachedAt ? new Date(data.cachedAt).toLocaleString() : 'unknown time'
+
+    statusEl.textContent = 'Cache: ready'
+    metaEl.textContent = `${count} posts · ${age} old · cached at ${cachedAt}`
+}
+
+function formatAge(seconds) {
+    if (!Number.isFinite(seconds)) {
+        return 'unknown age'
+    }
+    if (seconds < 60) return `${seconds}s`
+    const minutes = Math.floor(seconds / 60)
+    if (minutes < 60) return `${minutes}m`
+    const hours = Math.floor(minutes / 60)
+    if (hours < 48) return `${hours}h`
+    const days = Math.floor(hours / 24)
+    return `${days}d`
+}
+
+async function refreshPostsCache() {
+    if (!isAdminLoggedIn) {
+        const messageEl = document.getElementById('posts-cache-status-message')
+        messageEl.textContent = 'Admin login required to refresh the cache.'
+        messageEl.className = 'status-message error'
+        messageEl.style.display = 'block'
+        openLoginModal('Log in to refresh the cache.')
+        return
+    }
+
+    const button = document.getElementById('posts-cache-refresh-btn')
+    const messageEl = document.getElementById('posts-cache-status-message')
+
+    button.disabled = true
+    button.textContent = 'Refreshing...'
+    messageEl.textContent = 'Refreshing posts cache...'
+    messageEl.className = 'status-message info'
+    messageEl.style.display = 'block'
+
+    try {
+        const response = await fetch('/api/posts/cache/refresh', {
+            method: 'POST',
+            headers: buildAdminHeaders()
+        })
+
+        if (response.status === 401) {
+            handleUnauthorized()
+            return
+        }
+
+        const data = await parseJsonSafe(response)
+        if (!response.ok || !data) {
+            const message = data?.error || `Refresh failed (HTTP ${response.status})`
+            throw new Error(message)
+        }
+
+        renderPostsCacheStatus(data)
+        messageEl.textContent = '✓ Posts cache refreshed.'
+        messageEl.className = 'status-message success'
+        messageEl.style.display = 'block'
+    } catch (err) {
+        messageEl.textContent = `✗ Cache refresh failed: ${escapeHtml(err.message)}`
+        messageEl.className = 'status-message error'
+        messageEl.style.display = 'block'
+    } finally {
+        button.disabled = false
+        button.textContent = '♻️ Refresh Cache'
+    }
+}
+
 async function restoreAdminAuth() {
     adminAuth = sessionStorage.getItem(ADMIN_AUTH_KEY)
     adminUser = sessionStorage.getItem(ADMIN_USER_KEY)
@@ -839,6 +963,7 @@ function setAdminState(loggedIn) {
     isAdminLoggedIn = loggedIn
     updateAdminStatus()
     renderFeeds()
+    loadPostsCacheStatus()
 }
 
 function updateAdminStatus() {

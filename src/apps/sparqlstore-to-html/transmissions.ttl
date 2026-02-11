@@ -19,7 +19,7 @@
 ##################################################################
 
 :sparqlstore-to-html a :Transmission ;
-   :pipe (:p10 :p20 :p30  :p40 :p50 :p54  :p58 :p60  :p70
+   :pipe (:p10 :p20 :p30 :p40 :p50 :p54  :p58 :p35 :p60  :p70
           :p80  :p90 :p100) . # :p100
  
 :p10 a :SPARQLSelect ;
@@ -46,6 +46,10 @@
 # store the HTML snippet
 :p58 a :SPARQLUpdate ;
      :settings :updateArticleHTML .
+
+# Skip page rendering when unchanged
+:p35 a :MessageChangeDetector ;
+    :settings :htmlChangeFilter .
 
 # make the page
 :p60 a :Templater ;

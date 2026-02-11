@@ -57,7 +57,13 @@ const server = http.createServer(async (req, res) => {
   // Serve static files from public directory
   let filePath
   if (req.url === '/') {
-    filePath = path.join(PUBLIC_DIR, 'index.html')
+    const staticIndex = path.join(DATA_DIR, 'index.html')
+    try {
+      await fs.promises.access(staticIndex)
+      filePath = staticIndex
+    } catch {
+      filePath = path.join(PUBLIC_DIR, 'index.html')
+    }
   } else if (req.url.startsWith('/data/')) {
     // Legacy: serve generated HTML from data directory
     filePath = path.join(DATA_DIR, req.url.substring(6))

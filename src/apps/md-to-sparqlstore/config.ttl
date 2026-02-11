@@ -9,6 +9,11 @@
 #:mts10-dirWalker a :ConfigSet .
  # :sourceDir "." .
 
+#:mdChangeFilter a :ConfigSet ;
+#    :cacheFile ".md-to-sparqlstore-cache.json" ;
+#    :pathField "fullPath" ;
+#    :forceRebuild "false" .
+
 #:readerSet a :ConfigSet ;
  #   :metaField "meta" .
 
@@ -23,5 +28,3 @@
  #   :dataBlock "contentBlocks" ;
  #   :templateFilename "layouts/base/templates/store-article.njk" ;
   #  :endpointSettings "endpoint.json" .
-
-

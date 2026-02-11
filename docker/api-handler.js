@@ -24,6 +24,7 @@ export class APIHandler {
     this.dataDir = path.join(__dirname, '..', 'src', 'apps', 'newsmonitor', 'data')
     this.jobs = new Map()
     this.jobsFile = path.join(this.dataDir, 'newsmonitor-jobs.json')
+    this.postsCacheFile = path.join(this.dataDir, 'newsmonitor-posts.json')
     this.loadJobs().catch(err => {
       console.error('Failed to load jobs:', err.message)
     })
@@ -98,6 +99,49 @@ export class APIHandler {
 
     const data = await this.querySparql(query)
     return await this.formatResults(data)
+  }
+
+  async readPostsCache() {
+    try {
+      const raw = await fs.readFile(this.postsCacheFile, 'utf8')
+      return JSON.parse(raw)
+    } catch (error) {
+      return null
+    }
+  }
+
+  async writePostsCache(posts) {
+    try {
+      const payload = JSON.stringify({ posts, cachedAt: new Date().toISOString() }, null, 2)
+      await fs.writeFile(this.postsCacheFile, payload, 'utf8')
+    } catch (error) {
+      console.warn('Failed to write posts cache:', error.message)
+    }
+  }
+
+  async getPostsCacheStatus() {
+    const cached = await this.readPostsCache()
+    if (!cached?.posts) {
+      return {
+        cached: false,
+        cachedAt: null,
+        count: 0,
+        ageSeconds: null
+      }
+    }
+
+    const cachedAt = cached.cachedAt || null
+    const ageSeconds = cachedAt
+      ? Math.max(0, Math.floor((Date.now() - Date.parse(cachedAt)) / 1000))
+      : null
+    const count = Array.isArray(cached.posts) ? cached.posts.length : 0
+
+    return {
+      cached: true,
+      cachedAt,
+      count,
+      ageSeconds
+    }
   }
 
   /**
@@ -820,17 +864,79 @@ export class APIHandler {
         return true
       }
 
-      if (routePath === '/api/posts') {
-        const limit = parseInt(url.searchParams.get('limit') || '50')
-        const offset = parseInt(url.searchParams.get('offset') || '0')
-        const posts = await this.getRecentPosts(limit, offset)
-
+      if (routePath === '/api/posts/cache' && req.method === 'GET') {
+        const status = await this.getPostsCacheStatus()
         res.writeHead(200, {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
         })
-        res.end(JSON.stringify({ posts, count: posts.length }))
+        res.end(JSON.stringify(status))
         return true
+      }
+
+      if (routePath === '/api/posts/cache/refresh' && req.method === 'POST') {
+        if (!this.requireAdminAuth(req, res)) {
+          return true
+        }
+
+        const body = await this.parseBody(req)
+        const limit = Number.isFinite(Number(body.limit)) ? Math.max(1, Number(body.limit)) : 50
+        const offset = Number.isFinite(Number(body.offset)) ? Math.max(0, Number(body.offset)) : 0
+
+        try {
+          const posts = await this.getRecentPosts(limit, offset)
+          await this.writePostsCache(posts)
+          const status = await this.getPostsCacheStatus()
+
+          res.writeHead(200, {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          })
+          res.end(JSON.stringify(status))
+          return true
+        } catch (error) {
+          res.writeHead(500, {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          })
+          res.end(JSON.stringify({
+            success: false,
+            error: error.message
+          }))
+          return true
+        }
+      }
+
+      if (routePath === '/api/posts') {
+        const limit = parseInt(url.searchParams.get('limit') || '50')
+        const offset = parseInt(url.searchParams.get('offset') || '0')
+        try {
+          const posts = await this.getRecentPosts(limit, offset)
+          await this.writePostsCache(posts)
+
+          res.writeHead(200, {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          })
+          res.end(JSON.stringify({ posts, count: posts.length }))
+          return true
+        } catch (error) {
+          const cached = await this.readPostsCache()
+          if (cached?.posts) {
+            res.writeHead(200, {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
+            })
+            res.end(JSON.stringify({
+              posts: cached.posts,
+              count: cached.posts.length,
+              stale: true,
+              cachedAt: cached.cachedAt
+            }))
+            return true
+          }
+          throw error
+        }
 
       } else if (routePath === '/api/count') {
         const count = await this.getPostsCount()

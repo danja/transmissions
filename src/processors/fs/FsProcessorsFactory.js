@@ -3,6 +3,7 @@ import ns from '../../utils/ns.js'
 
 import DirWalker from './DirWalker.js'
 import FileReader from './FileReader.js'
+import FileChangeDetector from './FileChangeDetector.js'
 import FileWriter from './FileWriter.js'
 import FileCopy from './FileCopy.js'
 import FileRemove from './FileRemove.js'
@@ -14,6 +15,9 @@ class FsProcessorsFactory {
     static createProcessor(type, config) {
         if (type.equals(ns.trn.DirWalker)) {
             return new DirWalker(config)
+        }
+        if (type.equals(ns.trn.FileChangeDetector)) {
+            return new FileChangeDetector(config)
         }
         if (type.equals(ns.trn.FileReader)) {
             return new FileReader(config)

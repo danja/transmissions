@@ -15,10 +15,13 @@
 ##################################################################
 
 :md-to-sparqlstore a :Transmission ;
-   :pipe (:p10 :p20 :p30 :p40 :p50) .
+   :pipe (:p10 :p15 :p20 :p30 :p40 :p50) .
 
 :p10 a :DirWalker ;
    :settings :dirWalker .
+
+:p15 a :FileChangeDetector ;
+     :settings :mdChangeFilter .
 
 :p20 a :FileReader ;
      :settings :readerSet .

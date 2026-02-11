@@ -80,6 +80,29 @@
     align-items: flex-start;
 }
 
+/* Posts Cache */
+.posts-cache {
+    display: grid;
+    gap: 12px;
+}
+
+.posts-cache-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    align-items: center;
+    font-size: 0.95rem;
+    color: #2c3e50;
+}
+
+.posts-cache-status {
+    font-weight: 600;
+}
+
+.posts-cache-meta {
+    color: #6c757d;
+}
+
 /* Cleanup Posts */
 .cleanup-posts {
     display: grid;
