@@ -57,13 +57,9 @@ const server = http.createServer(async (req, res) => {
   // Serve static files from public directory
   let filePath
   if (req.url === '/') {
-    const staticIndex = path.join(DATA_DIR, 'index.html')
-    try {
-      await fs.promises.access(staticIndex)
-      filePath = staticIndex
-    } catch {
-      filePath = path.join(PUBLIC_DIR, 'index.html')
-    }
+    const primaryIndex = path.join(DATA_DIR, 'index.html')
+    const legacyIndex = path.join(__dirname, '..', 'src', 'apps', 'newsmonitor', 'render-to-html', 'data', 'index.html')
+    filePath = await resolveIndexPath(primaryIndex, legacyIndex, PUBLIC_DIR)
   } else if (req.url.startsWith('/data/')) {
     // Legacy: serve generated HTML from data directory
     filePath = path.join(DATA_DIR, req.url.substring(6))
@@ -102,7 +98,11 @@ const server = http.createServer(async (req, res) => {
       '.svg': 'image/svg+xml'
     }
 
-    res.writeHead(200, { 'Content-Type': contentTypes[ext] || 'text/plain' })
+    const headers = { 'Content-Type': contentTypes[ext] || 'text/plain' }
+    if (req.url === '/') {
+      headers['X-NewsMonitor-Index-Source'] = filePath
+    }
+    res.writeHead(200, headers)
     res.end(data)
   })
 })
@@ -212,3 +212,25 @@ process.on('SIGTERM', () => {
 
 console.log(`Update interval: ${UPDATE_INTERVAL}ms (${UPDATE_INTERVAL / 60000} minutes)`)
 console.log(`Render interval: ${RENDER_INTERVAL}ms (${RENDER_INTERVAL / 60000} minutes)`)
+
+async function resolveIndexPath(primaryIndex, legacyIndex, publicDir) {
+  try {
+    const [primaryStat, legacyStat] = await Promise.all([
+      fs.promises.stat(primaryIndex).catch(() => null),
+      fs.promises.stat(legacyIndex).catch(() => null)
+    ])
+
+    if (primaryStat && legacyStat) {
+      return primaryStat.mtimeMs >= legacyStat.mtimeMs ? primaryIndex : legacyIndex
+    }
+    if (primaryStat) {
+      return primaryIndex
+    }
+    if (legacyStat) {
+      return legacyIndex
+    }
+  } catch (error) {
+    console.warn('Index resolution error:', error.message)
+  }
+  return path.join(publicDir, 'index.html')
+}

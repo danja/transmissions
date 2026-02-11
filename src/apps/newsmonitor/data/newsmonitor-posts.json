@@ -1,0 +1,455 @@
+{
+  "posts": [
+    {
+      "uri": "http://hyperdata.it/posts/544db621",
+      "title": "Package Management Consulting",
+      "link": "https://nesbitt.io/2026/02/11/package-management-consulting.html",
+      "date": "2026-02-11T10:00:00Z",
+      "creator": "Andrew Nesbitt",
+      "summary": "I’m now taking on consulting work. If you’re building or running a package manager, registry, or dependency tooling, I can probably help.\n\nOver fifteen years I’ve built Libraries.io, Ecosyste.ms, git-pkgs, the Manifest podcast, co-organised the Package Management devroom at FOSDEM, and contributed to Homebrew. I’ve written integrations for dozens of package managers, tracked billions of dependency relationships, and watched the same design mistakes repeat across ecosystems for a decade. That pattern recognition is what I bring to consulting engagements.",
+      "feedTitle": "Andrew Nesbitt"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/6a25bfcd",
+      "title": "Lockfiles Killed Vendoring",
+      "link": "https://nesbitt.io/2026/02/10/lockfiles-killed-vendoring.html",
+      "date": "2026-02-10T10:00:00Z",
+      "creator": "Andrew Nesbitt",
+      "summary": "Whilst I was implementing a vendor command in git-pkgs, I noticed that not many package manager clients have native vendoring commands. Go has go mod vendor, Cargo has cargo vendor, and Bundler has bundle cache. That’s most of the first-class support I could find, which surprised me for something that used to be the dominant way to manage dependencies. So I went looking for what happened.\n\nBefore lockfiles and registries, if you wanted reproducible builds you checked your dependencies into source control. The alternative was hoping the internet served you the same bytes tomorrow.",
+      "feedTitle": "Andrew Nesbitt"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/ed13fb93",
+      "title": "[Sponsor] WorkOS Pipes: Ship Third-Party Integrations Without Rebuilding OAuth",
+      "link": "https://workos.com/docs/pipes?utm_source=daringfireball&utm_medium=newsletter&utm_campaign=q12026&utm_content=no_rebuild",
+      "date": "2026-02-10T01:43:40Z",
+      "creator": "Daring Fireball Department of Commerce",
+      "summary": "Connecting user accounts to third-party APIs always comes with the same plumbing: OAuth flows, token storage, refresh logic, and provider-specific quirks.\n\nWorkOS Pipes removes that overhead. Users connect services like GitHub, Slack, Google, Salesforce, and other supported providers through a drop-in widget. Your backend requests a valid access token from the Pipes API when needed, while Pipes handles credential storage and token refresh.",
+      "feedTitle": "Daring Fireball"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/a9019296",
+      "title": "Package Manager Podcast Episodes",
+      "link": "https://nesbitt.io/2026/02/09/package-manager-podcast-episodes.html",
+      "date": "2026-02-09T10:00:00Z",
+      "creator": "Andrew Nesbitt",
+      "summary": "Like the blog posts and papers collections, this is a running list of podcast episodes where people who build and maintain package managers talk about their work. Grouped by ecosystem, with a few cross-cutting episodes at the end.\n\nThe Manifest (manifest.fm) is a podcast dedicated entirely to package management, hosted by Alex Pounds and me. I’ve listed its episodes under the relevant ecosystems below rather than in a separate section.",
+      "feedTitle": "Andrew Nesbitt"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/77a0e78a",
+      "title": "A Language For Agents",
+      "link": "https://lucumr.pocoo.org/2026/2/9/a-language-for-agents/",
+      "date": "2026-02-09T00:00:00Z",
+      "creator": "Armin Ronacher",
+      "summary": "There are some things I’ve found that I think will be true for a while.\n\nFor instance:",
+      "feedTitle": "Armin Ronacher&#39;s Thoughts and Writings"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/a7528789",
+      "title": "Tas Game Makers 2026",
+      "link": "https://hey.paris/posts/tasgm2026/",
+      "date": "2026-02-08T00:00:00Z",
+      "creator": null,
+      "summary": "We just had the AGM for Tasmanian Game Makers, Inc. (TasGM) in Launceston on Friday, and I was thrilled to (once again, somehow) be elected as President! For the fourth year in a row, I’m really grateful for the trust of our members, and I’m excited to work with the new board to keep pushing the video game industry in Tasmania forward.\n\nWith Oliver Potter continuing as our Screen Tasmania Observer.",
+      "feedTitle": "Dr Paris Buttfield-Addison"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/e32b8302",
+      "title": "Sandwich Bill of Materials",
+      "link": "https://nesbitt.io/2026/02/08/sandwich-bill-of-materials.html",
+      "date": "2026-02-08T00:00:00Z",
+      "creator": "Andrew Nesbitt",
+      "summary": "Specification: SBOM 1.0 (Sandwich Bill of Materials)\n\nStatus: Draft",
+      "feedTitle": "Andrew Nesbitt"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/7f6502d2",
+      "title": "Updates 7 februari: Tweede Kamer, TV Bureau Buitenland",
+      "link": "https://berthub.eu/articles/posts/update-7-februari/",
+      "date": "2026-02-07T21:00:09Z",
+      "creator": null,
+      "summary": "Hallo allemaal,\nEr is weer genoeg te vertellen! Zoveel dat ik vermoedelijk nog dingen vergeet in deze update.\nDit is een kopie van een bericht op mijn nieuwsbrief. Schrijf u vooral ook in als u geen updates wil missen!\nOm te beginnen het meest actuele: Zondag 21:30 op TV NPO2, Bureau Buitenland (VPRO) met Barbara Kathmann en mij over de geopolitiek van onze absurde digitale afhankelijkheden. Kijk vooral, we gaan ons best doen er een leerzame uitzending van te maken!",
+      "feedTitle": "Bert Hubert&#39;s writings"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/9d8cb5d8",
+      "title": "Premium: The Hater's Guide To Microsoft",
+      "link": "https://www.wheresyoured.at/premium-the-haters-guide-to-microsoft/",
+      "date": "2026-02-06T17:34:14Z",
+      "creator": "Edward Zitron",
+      "summary": "Have you ever looked at something too long and felt like you were sort of seeing through it? Has anybody actually looked at a company this much in a way that wasn’t some sort of obsequious profile of a person who worked there? I don’t mean this as a way to fish for compliments — this experience is just so peculiar, because when you look at them hard enough, you begin to wonder why everybody isn’t just screaming all the time.\n\nYet I really do enjoy it. When you push aside all the marketing and the interviews and all that and stare at what a company actually does and what its users and employees say, you really get a feel of the guts of a company. I’m enjoying it. The Hater’s Guides are a lot of fun, and I’m learning all sorts of things about the ways in which companies try to hide their nas...",
+      "feedTitle": "Ed Zitron&#39;s Where&#39;s Your Ed At"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/caadc40e",
+      "title": "Reading List 02/06/2026",
+      "link": "https://www.construction-physics.com/p/reading-list-02062026",
+      "date": "2026-02-06T13:03:43Z",
+      "creator": "Brian Potter",
+      "summary": "Books to be destructively scanned by Anthropic, via the Washington Post.Welcome to the reading list, a look at what happened this week in infrastructure, buildings, and building things. Roughly 2/3rds of the reading list is paywalled, so for full access become a paid subscriber.\n\nHousekeeping items:",
+      "feedTitle": "Construction Physics"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/ec671cde",
+      "title": "Dependency Resolution Methods",
+      "link": "https://nesbitt.io/2026/02/06/dependency-resolution-methods.html",
+      "date": "2026-02-06T12:00:00Z",
+      "creator": "Andrew Nesbitt",
+      "summary": "Every package manager faces the same core problem: given a set of packages with version constraints, find a compatible set of versions to install. The classic example is the diamond dependency: A depends on B and C, both of which depend on D but at incompatible versions. The resolver has to find a version of D that satisfies both, prove that none exists, or find some other way out. Di Cosmo et al. proved in 2005 that this problem is NP-complete, encoding it as 3SAT for Debian and RPM constraint languages. In practice, real-world dependency graphs are far more tractable than the worst case, and different ecosystems have landed on different resolution strategies that make different tradeoffs between completeness, speed, error quality, and simplicity.\n\nThese approaches fall roughly into compl...",
+      "feedTitle": "Andrew Nesbitt"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/7ab805ef",
+      "title": "There's no such thing as \"tech\" (Ten years later)",
+      "link": "https://anildash.com/2026/02/06/no-such-thing-as-tech/",
+      "date": "2026-02-06T00:00:00Z",
+      "creator": null,
+      "summary": "Ten years ago I wrote that there is no “technology industry”. It’s more true than ever.\n\nThere is no “tech”. There’s no such thing as “a FAANG company”. There is almost nothing in common between the very largest tech companies and the next several hundred biggest companies that happen to create tech platforms. Whatever shorthand we use for the biggest tech companies, they almost never have much in common—whether it&#39;s how they make money, what products they make, how they make decisions, who leads them, or what drives their cultures.",
+      "feedTitle": "Anil Dash"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/2428c786",
+      "title": "Crates.io’s Freaky Friday",
+      "link": "https://nesbitt.io/2026/02/06/cratesio-freaky-friday.html",
+      "date": "2026-02-06T00:00:00Z",
+      "creator": "Andrew Nesbitt",
+      "summary": "The maintainers of crates.io wake up Friday morning to find their registry has swapped design philosophies with Debian. They still serve the Rust ecosystem, Debian still serves Linux distributions, but the tradeoffs they’ve chosen have reversed.\n\nLike Tess and Anna in Freaky Friday, they’re stuck in each other’s bodies, forced to navigate constraints they’ve spent years criticizing from the outside.",
+      "feedTitle": "Andrew Nesbitt"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/5ddef53a",
+      "title": "Notes on Space GPUs",
+      "link": "https://www.dwarkesh.com/p/notes-on-space-gpus",
+      "date": "2026-02-05T18:26:47Z",
+      "creator": "Dwarkesh Patel",
+      "summary": "John Collison and I just interviewed Elon. The interview was recorded before we knew that SpaceX was acquiring xAI, so the fact that our first topic was space GPUs now feels all the more relevant.\n\nAs I was preparing to interview Elon, I put together some notes and a spreadsheet to help me think through orbital datacenters. I turned those notes into this blog post.",
+      "feedTitle": "Dwarkesh Podcast"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/eaee49b2",
+      "title": "Elon Musk - &#92;&quot;In 36 months, the cheapest place to put AI will be space”",
+      "link": "https://www.dwarkesh.com/p/elon-musk",
+      "date": "2026-02-05T16:45:08Z",
+      "creator": "Dwarkesh Patel",
+      "summary": "In this episode, John and I got to do a real deep-dive with Elon. We discuss the economics of orbital data centers, the difficulties of scaling power on Earth, what it would take to manufacture humanoids at high-volume in America, xAI’s business and alignment plans, DOGE, and much more.&#92;n&#92;nWatch on YouTube; listen on Apple Podcasts or Spotify.&#92;n&#92;n&#92;n### Sponsors&#92;n&#92;n&#92;n- Mercury just started offering personal banking! I’m already banking with Mercury for business purposes, so getting to bank with them for my personal life makes everything so much simpler. Apply now at mercury.com/personal-banking&#92;n- Jane Street sent me a new puzzle last week: they trained a neural net, shuffled all 96 layers, and asked me to put them back in order. I tried but… I didn’t qui...",
+      "feedTitle": "Dwarkesh Podcast"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/524a4eb9",
+      "title": "Git’s Magic Files",
+      "link": "https://nesbitt.io/2026/02/05/git-magic-files.html",
+      "date": "2026-02-05T10:00:00Z",
+      "creator": "Andrew Nesbitt",
+      "summary": "A follow-up to my post on [extending git functionality](/2025/11/26/extending-git-functionality.html). Git looks for several special files in your repository that control its behavior. These aren’t configuration files in `.git/`, they’re committed files that travel with your code and affect how git treats your files.\n\nIf you’re building a tool that works with git repositories, like [git-pkgs](https://github.com/git-pkgs/git-pkgs), you’ll want to ensure you respect these configs.",
+      "feedTitle": "Andrew Nesbitt"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/99b2678e",
+      "title": "Rewriting pycparser with the help of an LLM",
+      "link": "https://eli.thegreenplace.net/2026/rewriting-pycparser-with-the-help-of-an-llm/",
+      "date": "2026-02-05T03:35:00Z",
+      "creator": "Eli Bendersky",
+      "summary": "pycparser is my most widely used open&#92;nsource project (with ~20M daily downloads from PyPI [1]). It&#39;s a pure-Python&#92;nparser for the C programming language, producing ASTs inspired by Python&#39;s&#92;nown. Until very recently, it&#39;s&#92;nbeen using PLY: Python Lex-Yacc for&#92;nthe core parsing.&#92;n&#92;n&#92;nIn this post, I&#39;ll describe how I collaborated with an LLM coding agent (Codex)&#92;nto help me rewrite pycparser to use a hand-written recursive-descent parser and&#92;nremove the dependency on PLY. This has been an interesting experience and the&#92;npost contains lots of information and is therefore quite long; if you&#39;re just&#92;ninterested in the final result, check out the latest code of pycparser - the&#92;nmain branch already has the new implementatio...",
+      "feedTitle": "Eli Bendersky&#39;s website"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/e5567a48",
+      "title": "Heritability of intrinsic human life span is about 50% when heritability is redefined to be something completely different",
+      "link": "https://dynomight.net/lifespan/",
+      "date": "2026-02-05T00:00:00Z",
+      "creator": "dynomight",
+      "summary": "How heritable is hair color? Well, if you’re a redhead and you have an identical twin, they will definitely also be a redhead. But the age at which twins go gray seems to vary a bit based on lifestyle. And there’s some randomness in where melanocytes end up on your skull when you’re an embryo. And your twin might dye their hair! So the correct answer is, some large number, but less than 100%.\n\nOK, but check this out: Say I redefine “hair color” to mean “hair color except ignoring epigenetic and embryonic stuff and pretending that no one ever goes gray or dyes their hair et cetera”. Now, hair color is 100% heritable. Amazing, right?",
+      "feedTitle": "DYNOMIGHT"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/98e11c28",
+      "title": "Logic for Programmers New Release and Next Steps",
+      "link": "https://buttondown.com/hillelwayne/archive/logic-for-programmers-new-release-and-next-steps/",
+      "date": "2026-02-04T14:00:00Z",
+      "creator": null,
+      "summary": "&#92;n&#92;n&#92;nIt&#39;s taken four months, but the next release of Logic for Programmers is now available! v0.13 is over 50,000 words, making it both 20% larger than v0.12 and officially the longest thing I have ever written.1 Full release notes are here, but I&#39;ll talk a bit about the biggest changes. &#92;n&#92;n&#92;nFor one, every chapter has been rewritten. Every single one. They span from relatively minor changes to complete chapter rewrites. After some rough git diffing, I think I deleted about 11,000 words?2 The biggest change is probably to the Alloy chapter. After many sleepless nights, I realized the right approach wasn&#39;t to teach Alloy as a data modeling tool but to teach it as a domain modeling tool. Which technically means the book no longer covers data modeling.&#9...",
+      "feedTitle": "Computer Things"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/0d8194ac",
+      "title": "OpenAI’s Codex",
+      "link": "https://simonwillison.net/2026/Feb/2/introducing-the-codex-app/",
+      "date": "2026-02-04T01:40:24Z",
+      "creator": "John Gruber",
+      "summary": "Simon Willison:&#92;n&#92;n&#92;n&#92;n&#92;n&gt; OpenAI just released a new macOS app for their Codex coding agent. I’ve had a few days of preview access — it’s a solid app that provides a nice UI over the capabilities of the Codex CLI agent and adds some interesting new features, most notably first-class support for Skills, and Automations for running scheduled tasks.&#92;n&#92;n&#92;n&#92;nInteresting, for sure. But super-duper interesting? I don’t know.&#92;n&#92;n&#92;n&#92;n&#92;n★",
+      "feedTitle": "Daring Fireball"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/c48df67e",
+      "title": "Xcode 26.3 ‘Unlocks the Power of Agentic Coding’",
+      "link": "https://www.apple.com/newsroom/2026/02/xcode-26-point-3-unlocks-the-power-of-agentic-coding/",
+      "date": "2026-02-04T01:34:54Z",
+      "creator": "John Gruber",
+      "summary": "Apple Newsroom:&#92;n&#92;n&#92;n&#92;n&#92;n&gt; Xcode 26.3 introduces support for agentic coding, a new way in Xcode for developers to build apps using coding agents such as Anthropic’s Claude Agent and OpenAI’s Codex. With agentic coding, Xcode can work with greater autonomy toward a developer’s goals — from breaking down tasks to making decisions based on the project architecture and using built-in tools.&#92;n&#92;n&#92;n&#92;nI don’t know if this is super-duper interesting news, but I think it’s super-duper interesting that Apple saw the need to release this now, not at WWDC in June.&#92;n&#92;n&#92;n&#92;n&#92;n★",
+      "feedTitle": "Daring Fireball"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/0f3ed29a",
+      "title": "New York Tech at 30: the Crossroads",
+      "link": "https://anildash.com/2026/02/03/nye-tech-30/",
+      "date": "2026-02-04T00:00:00Z",
+      "creator": null,
+      "summary": "This past week, over a series of events, the New York tech community celebrated the 30th anniversary of a nebulous idea described as “Silicon Alley”, the catch-all term for our greater collective of creators and collaborators, founders and funders, inventors and investors, educators and entrepreneurs and electeds, activists and architects and artists. Some of the parties or mixers have been typical industry affairs, the usual glad-handing about deal-making and pleasantries. But a lot have been deeper, reflecting on what’s special and meaningful about the community we’ve built in New York. Steven Rosenbaum’s reflection on the anniversary captures this well from someone who’s been there, and Leo Schwartz’s piece for Fortune covers the more conventional business angle.&#92;n&#92;n&#92;nBeyond...",
+      "feedTitle": "Anil Dash"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/c1e88fab",
+      "title": "Package Management at FOSDEM 2026",
+      "link": "https://nesbitt.io/2026/02/04/package-management-at-fosdem-2026.html",
+      "date": "2026-02-04T00:00:00Z",
+      "creator": "Andrew Nesbitt",
+      "summary": "FOSDEM 2026 ran last weekend in Brussels with its usual dense schedule of talks across open source projects and communities. Package management had a strong presence again this year, with a dedicated devroom plus related content scattered across the Distributions, Nix and NixOS, and SBOMs and Supply Chains tracks.&#92;n&#92;n&#92;n&#92;n&#92;n## Main Track Talks&#92;n&#92;n&#92;n&#92;nKenneth Hoste presented How to Make Package Managers Scream, a follow-up to his FOSDEM 2018 talk about making package managers cry. Hoste showcased creative and effective ways open source software projects take things to the next level to make package managers scream, along with tools that try to counter these practices.&#92;n&#92;n&#92;n&#92;nMike McQuaid gave What happened to RubyGems and what can we learn?...",
+      "feedTitle": "Andrew Nesbitt"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/2741622e",
+      "title": "Incident Report: CVE-2024-YIKES",
+      "link": "https://nesbitt.io/2026/02/03/incident-report-cve-2024-yikes.html",
+      "date": "2026-02-03T03:47:00Z",
+      "creator": "Andrew Nesbitt",
+      "summary": "Report filed: 03:47 UTC  &#92;n&#92;nStatus: Resolved (accidentally)  &#92;n&#92;nSeverity: Critical → Catastrophic → Somehow Fine  &#92;n&#92;nDuration: 73 hours  &#92;n&#92;nAffected systems: Yes&#92;n&#92;n&#92;n&#92;nExecutive Summary: A security incident occurred. It has been resolved. We take security seriously. Please see previous 14 incident reports for details on how seriously.&#92;n&#92;n&#92;n&#92;n&#92;n### Summary&#92;n&#92;n&#92;n&#92;nA compromised dependency in the JavaScript ecosystem led to credential theft, which enabled a supply chain attack on a Rust compression library, which was vendored into a Python build tool, which shipped malware to approximately 4 million developers before being inadvertently patched by an unrelated cryptocurrency mining worm.&#92;n&#92;n&#92;n...",
+      "feedTitle": "Andrew Nesbitt"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/c58befdc",
+      "title": "Digitaal zoet en zuur in het coalitieakkoord",
+      "link": "https://berthub.eu/articles/posts/digitaal-zoet-zuur-coalitie-akkoord/",
+      "date": "2026-02-02T11:00:00Z",
+      "creator": null,
+      "summary": "Het coalitieakkoord heeft een boel woorden die raken aan digitalisering, digitale autonomie en cybersecurity.&#92;nVeel van de plannen komen niet uit de lucht vallen, en zijn gebaseerd op bijeenkomsten, gesprekken en documenten van de afgelopen jaren. Het is goed te zien dat men gebruik heeft gemaakt van dit eerdere werk (zoals het stuk Wolken aan de horizon, en Ons Digitaal Fundament).&#92;nSpecifiek moet het initiatief van de digitale club van D66 om samen te werken met de digitale zuster-afdelingen van CDA, GroenLinks-PvdA en VVD genoemd worden, waar een gezamenlijk document met input uit is gekomen.",
+      "feedTitle": "Bert Hubert&#39;s writings"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/441c090f",
+      "title": "Space News, February 2026",
+      "link": "https://hey.paris/posts/spacenews-february-2026/",
+      "date": "2026-02-01T00:00:00Z",
+      "creator": null,
+      "summary": "These are my notes and expanded thoughts from this month’s Space News segment on ABC Radio Hobart and ABC Northern Tasmania. Every month I join Lucie Cutting on Sunday mornings to chat about what’s happening above and beyond.&#92;n&#92;n&#92;nHere’s what we discussed, plus some of my notes, and expanded thoughts from this edition of the programme:&#92;n&#92;n&#92;n&#92;n## Katherine Bennell-Pegg: 2026 Australian of the Year&#92;n&#92;n&#92;nKatherine Bennell-Pegg was named 2026 Australian of the Year on Sunday 26 January at the National Arboretum in Canberra. She’s 41, born in South Australia, holds dual British-Australian citizenship, and is the first person to qualify as an astronaut under the Australian flag. She hasn’t flown to space yet.",
+      "feedTitle": "Dr Paris Buttfield-Addison"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/f1411dae",
+      "title": "Reading List for 01/31/2026",
+      "link": "https://www.construction-physics.com/p/reading-list-for-01312026",
+      "date": "2026-01-31T13:02:52Z",
+      "creator": "Brian Potter",
+      "summary": "Vertical boring machine, via Industrial History.Welcome to the Reading List, a weekly roundup of news and links related to buildings, infrastructure, and industrial technology.&#92;n&#92;nSome housekeeping items:&#92;n&#92;n&#92;n- Continuing with the new reading list format this week, this time with a paywall ~1/3rd of the way down. I got some feedback that folks liked a little more analysis, so I’ve expanded that a bit more. As a reminder, this is intended to be a little bit more comprehensive than the older format, a more general survey of what went on in the world of infrastructure, buildings, and building things last week.&#92;n- Last week I included a link to a claim on Twitter that Washington state lawmakers introduced a law that would inadvertently ban manufacturing. Several folks ...",
+      "feedTitle": "Construction Physics"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/0eb410a7",
+      "title": "Pi: The Minimal Agent Within OpenClaw",
+      "link": "https://lucumr.pocoo.org/2026/1/31/pi/",
+      "date": "2026-01-31T00:00:00Z",
+      "creator": "Armin Ronacher",
+      "summary": "If you haven’t been living under a rock, you will have noticed this week that a&#92;nproject of my friend Peter went viral on the&#92;ninternet.  It went by many names. The&#92;nmost recent one is OpenClaw but in the news you might&#92;nhave encountered it as ClawdBot or MoltBot depending on when you read about it.&#92;nIt is an agent connected to a communication channel of your choice that just&#92;nruns code.&#92;n&#92;n&#92;nWhat you might be less familiar with is that what’s under the hood of OpenClaw&#92;nis a little coding agent called Pi. And&#92;nPi happens to be, at this point, the coding agent that I use almost exclusively.&#92;nOver the last few weeks I became more and more of a shill for the little agent.&#92;nAfter I gave a talk on this recently, I realized that I did not actu...",
+      "feedTitle": "Armin Ronacher&#39;s Thoughts and Writings"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/a43112b9",
+      "title": "Apple Reports Record-Breaking Revenue and Profit for Q1 FY26",
+      "link": "https://www.apple.com/newsroom/2026/01/apple-reports-first-quarter-results/",
+      "date": "2026-01-30T19:57:01Z",
+      "creator": "John Gruber",
+      "summary": "Apple Newsroom, yesterday:&#92;n&#92;n&#92;n&#92;n&#92;n&gt; “Today, Apple is proud to report a remarkable, record-breaking&#92;n&gt; quarter, with revenue of $143.8 billion, up 16 percent from a year&#92;n&gt; ago and well above our expectations,” said Tim Cook, Apple’s CEO.&#92;n&gt; “iPhone had its best-ever quarter driven by unprecedented demand,&#92;n&gt; with all-time records across every geographic segment, and&#92;n&gt; Services also achieved an all-time revenue record, up 14 percent&#92;n&gt; from a year ago. We are also excited to announce that our&#92;n&gt; installed base now has more than 2.5 billion active devices, which&#92;n&gt; is a testament to incredible customer satisfaction for the very&#92;n&gt; best products and services in the world.”&#92;n&gt; &#92;n&gt; &#92;n&gt; ...",
+      "feedTitle": "Daring Fireball"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/7b0d8ac8",
+      "title": "Premium: The Hater&#39;s Guide to Oracle",
+      "link": "https://www.wheresyoured.at/haters-guide-oracle/",
+      "date": "2026-01-30T17:23:06Z",
+      "creator": "Edward Zitron",
+      "summary": "You can’t avoid Oracle.&#92;n&#92;nNo, really, you can’t. Oracle is everywhere. It sells ERP software – enterprise resource planning, which is a rat king of different services for giant companies for financial services, procurement (IE: sourcing and organizing the goods your company needs to run), compliance, project management, and human resources. It sells database software, and even owns the programming language Java as part of its acquisition of Sun Microsystems back in 2010. &#92;n&#92;nIts customers are fucking everyone:hospitals (such as England’s National Health Service), large corporations (like Microsoft), health insurance companies, Walmart, and multiple different governments. Even if you have never even heard of Oracle before, it’s almost entirely certain that your personal dat...",
+      "feedTitle": "Ed Zitron&#39;s Where&#39;s Your Ed At"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/f6ce4274",
+      "title": "Lego Group and Crocs Enter Multi-Year Global Partnership",
+      "link": "https://www.lego.com/en-us/aboutus/news/2026/january/the-lego-group-and-crocs-enter-multi-year-global-partnership?locale=en-us",
+      "date": "2026-01-30T13:28:54Z",
+      "creator": "John Gruber",
+      "summary": "Maybe Trump is right and we should go to war against Denmark.&#92;n&#92;n&#92;n&#92;n&#92;n★",
+      "feedTitle": "Daring Fireball"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/83c88d85",
+      "title": "Will AI Make Package Managers Redundant?",
+      "link": "https://nesbitt.io/2026/01/30/will-ai-make-package-managers-redundant.html",
+      "date": "2026-01-30T10:00:00Z",
+      "creator": "Andrew Nesbitt",
+      "summary": "A recent post by Marcelo Emmerich proposes replacing package managers with a “prompt registry.” Instead of publishing code, library authors would publish AI prompts. Developers paste the prompt into their AI tool, which generates a self-contained implementation on the spot. No transitive dependencies, no supply chain attacks, no version conflicts. The code is generated fresh each time, tailored to your language and project.&#92;n&#92;n&#92;n&#92;nIt’s a naive vision, but it points at real problems. Supply chain attacks are serious. Transitive dependency trees are genuinely hard to reason about. The appeal of generating exactly what you need, with nothing extra, is obvious.&#92;n&#92;n&#92;n&#92;nThe generated code still has to implement TLS, parse JSON, handle Unicode. The complexity doesn...",
+      "feedTitle": "Andrew Nesbitt"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/d8b8800c",
+      "title": "‘Backseat Software’",
+      "link": "https://blog.mikeswanson.com/backseat-software/",
+      "date": "2026-01-29T21:50:32Z",
+      "creator": "John Gruber",
+      "summary": "Mike Swanson:&#92;n&#92;n&#92;n&#92;n&#92;n&gt; What if your car worked like so many apps? You’re driving&#92;n&gt; somewhere important…maybe running a little bit late. A few&#92;n&gt; minutes into the drive, your car pulls over to the side of the&#92;n&gt; road and asks:&#92;n&gt; &#92;n&gt; &#92;n&gt; &#92;n&gt; “How are you enjoying your drive so far?”&#92;n&gt; &#92;n&gt; &#92;n&gt; &#92;n&gt; Annoyed by the interruption, and even more behind schedule, you&#92;n&gt; dismiss the prompt and merge back into traffic.&#92;n&gt; &#92;n&gt; &#92;n&gt; &#92;n&gt; A minute later it does it again.&#92;n&gt; &#92;n&gt; &#92;n&gt; &#92;n&gt; “Did you know I have a new feature? Tap here to learn more.”&#92;n&gt; &#92;n&gt; &#92;n&gt; &#92;n&gt; It blocks your speedometer with an overlay tutorial ab...",
+      "feedTitle": "Daring Fireball"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/16046b22",
+      "title": "Let’s Keep an Eye on Apple’s Own iOS Adoption Numbers",
+      "link": "https://developer.apple.com/support/app-store/",
+      "date": "2026-01-29T20:18:48Z",
+      "creator": "John Gruber",
+      "summary": "When I wrote last week about the false narrative that iOS 26 is seeing bizarrely low adoption rates compared to previous years, I neglected one source: Apple itself. Apple’s Developer site publishes a page with iOS and iPadOS usage for devices that “transacted on the App Store”.&#92;n&#92;n&#92;n&#92;nThe hitch is that they only seem to update those numbers twice a year — once right around now, and once again right before WWDC. As of today, those numbers are still from 4 June 2025. Last year, going from the Internet Archive, the numbers were still from iOS 17 (June 2024) on 23 January last year, but were updated for iOS 18 on 24 January. Here are those iOS 18 numbers from one year ago this week.&#92;n&#92;n&#92;n&#92;niPhones released in the previous four years:&#92;n&#92;n&#92;n&#92;n&#92...",
+      "feedTitle": "Daring Fireball"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/4537a31d",
+      "title": "Box Office Expectations for ‘Melania’",
+      "link": "https://www.thewrap.com/industry-news/box-office/melania-box-office-prediction/",
+      "date": "2026-01-29T15:22:23Z",
+      "creator": "John Gruber",
+      "summary": "Jeremy Fuster, reporting for TheWrap:&#92;n&#92;n&#92;n&#92;n&#92;n&gt; But save for some theaters in Republican-heavy states, the film is&#92;n&gt; unlikely to leave much of an impact at a slumping box office, with&#92;n&gt; theatrical sources telling TheWrap that “Melania” is projected for&#92;n&gt; an opening of around $3 million this weekend.&#92;n&gt; &#92;n&gt; &#92;n&gt; &#92;n&gt; That would put it below the last right-wing documentary, the Daily&#92;n&gt; Wire-produced Matt Walsh film “Am I Racist?,” which opened to $4.5&#92;n&gt; million from 1,517 locations in September 2024, finishing with a&#92;n&gt; $12.3 million total that made it the highest-grossing doc that&#92;n&gt; year. The highest projections are coming from NRG with an estimate&#92;n&gt; of around $5 million, though ...",
+      "feedTitle": "Daring Fireball"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/66e1e180",
+      "title": "Amazon’s Spending on ‘Melania’ Is a Barely Concealed Bribe",
+      "link": "https://www.nytimes.com/2026/01/28/business/media/amazon-melania-trump-film-critics.html?unlocked_article_code=1.IFA.R85v.5ZtNe8FttfaD",
+      "date": "2026-01-29T15:19:17Z",
+      "creator": "John Gruber",
+      "summary": "Nicole Sperling and Brooks Barnes, reporting for The New York Times:&#92;n&#92;n&#92;n&#92;n&#92;n&gt; Amazon paid Ms. Trump’s production company $40 million for the&#92;n&gt; rights to “Melania,” about $26 million more than the next closest&#92;n&gt; bidder, Disney. The fee includes a related docuseries that is&#92;n&gt; scheduled to air later this year. The budget for “Melania” is&#92;n&gt; unknown, but documentaries that follow a subject for a limited&#92;n&gt; amount of time usually cost less than $5 million to produce. The&#92;n&gt; $35 million for marketing is 10 times what some other high-profile&#92;n&gt; documentaries have received.&#92;n&gt; &#92;n&gt; &#92;n&gt; &#92;n&gt; All of which has a lot of Hollywood questioning whether Amazon’s&#92;n&gt; push is anything more than the c...",
+      "feedTitle": "Daring Fireball"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/f13ca71f",
+      "title": "Kickstarter for Ollie’s Arcade Expansion",
+      "link": "https://blog.iconfactory.com/2026/01/bringing-more-fun-free-retro-gaming-to-ios/",
+      "date": "2026-01-29T15:01:43Z",
+      "creator": "John Gruber",
+      "summary": "Ged Maheux, The Iconfactory:&#92;n&#92;n&#92;n&#92;n&#92;n&gt; This week we announced a new Kickstarter that’s aimed at&#92;n&gt; expanding the game offerings of Ollie’s Arcade, the fun, ad-free&#92;n&gt; retro gaming app we introduced back in 2023. Ollie’s&#92;n&gt; Arcade has always been a great way to escape doomscrolling,&#92;n&gt; even if just for a little while, and now we have an opportunity to&#92;n&gt; bring these retro games to even more people on iOS.&#92;n&gt; &#92;n&gt; &#92;n&gt; &#92;n&gt; The Kickstarter aims to raise enough money to make all of the&#92;n&gt; in-app purchase games in the app completely free for everyone to&#92;n&gt; enjoy. We also want to bring our beloved puzzle game,&#92;n&gt; Frenzic, to life once again. Frenzic was one of the very&#92;n&gt; first games ...",
+      "feedTitle": "Daring Fireball"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/b63b53da",
+      "title": "On Technologies vs. Commodities",
+      "link": "https://www.construction-physics.com/p/on-technologies-vs-commodities",
+      "date": "2026-01-29T13:00:33Z",
+      "creator": "Brian Potter",
+      "summary": "A theory that has gained traction in the renewable energy space is that renewable energy sources like wind and solar are based on manufactured “technologies”, while fossil fuel energy sources like oil, coal, and natural gas are based on extracted “commodities”. Per this theory, technologies can take advantage of learning curves, and thus will continue to get cheaper as they’re deployed in larger and larger volumes; commodities, on the other hand, don’t have learning curves, and thus can’t be expected to get cheaper over time.&#92;n&#92;nHere, for instance, is a report from the Rocky Mountain Institute advancing this theory:&#92;n&#92;n&#92;n&gt; There are two main perspectives on the energy transition: the old incumbent view of business-as-usual; and the new insurgent view of exponential c...",
+      "feedTitle": "Construction Physics"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/28f32110",
+      "title": "Zig and the M×N Supply Chain Problem",
+      "link": "https://nesbitt.io/2026/01/29/zig-and-the-mxn-supply-chain-problem.html",
+      "date": "2026-01-29T10:00:00Z",
+      "creator": "Andrew Nesbitt",
+      "summary": "Zig shipped a built-in package manager in version 0.11 in August 2023. It uses build.zig.zon files for manifests and fetches dependencies directly from URLs, usually tarballs on GitHub. There’s no central registry yet, though the community runs unofficial indexes like zpm and aquila.1&#92;n&#92;n&#92;n&#92;nThe package manager works well enough for declaring dependencies, fetching them, and building against them. The hard part is everything else: the ecosystem of tools, services, and infrastructure that makes a package manager usable in production.&#92;n&#92;n&#92;n&#92;nThe package management landscape spans dozens of categories and hundreds of tools. For Zig to have the same tooling support as npm or Cargo, each of those tools either needs to add Zig support, or the Zig community needs t...",
+      "feedTitle": "Andrew Nesbitt"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/31b98381",
+      "title": "Comparing the Classic and Unified Views in iOS 26’s Phone App",
+      "link": "https://tidbits.com/2025/11/10/comparing-the-classic-and-unified-views-in-ios-26s-phone-app/",
+      "date": "2026-01-29T00:10:30Z",
+      "creator": "John Gruber",
+      "summary": "Adam Engst, back in November, at TidBITS:&#92;n&#92;n&#92;n&#92;n&#92;n&gt; Did you know that, regardless of view, you can now swipe left on&#92;n&gt; any call to reveal a blue clock icon that lets you create a&#92;n&gt; reminder to call back in 1 hour, tonight, tomorrow, or at any&#92;n&gt; custom time (below left, slightly doctored)? Reminders appear at&#92;n&gt; the top of the Calls list and in your default Reminders list. You&#92;n&gt; can also touch and hold a call associated with a contact to&#92;n&gt; connect with them in other ways (below right), or touch and hold a&#92;n&gt; call from an unknown caller to add them to Contacts.&#92;n&#92;n&#92;n&#92;nI did not know this, until I read Engst’s article.&#92;n&#92;n&#92;n&#92;nOne criticism I’ve seen a few times (but to be clear, not f...",
+      "feedTitle": "Daring Fireball"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/9173583d",
+      "title": "Aeronaut 1.0",
+      "link": "https://aeronautapp.com/",
+      "date": "2026-01-28T22:58:24Z",
+      "creator": "John Gruber",
+      "summary": "New Mac app by Mikey Clarke, and it’s just what it says on the tin: a “lovingly crafted Bluesky app designed and built just for the Mac”. I’ve been beta testing Aeronaut for months, and it’s the only interface to Bluesky I actually like. It’s a real Mac app — written mostly in AppKit, supporting all the right UI idioms and platform integrations. It’s not just the best Bluesky client I’ve seen, for any platform, but maybe the best new Mac app I’ve seen in years, period. Certainly the one whose very existence has made me happiest. Next time someone tells me no one makes good new native apps for the Mac anymore, I’m going to tell them Mikey Fucking Clarke does.&#92;n&#92;n&#92;n&#92;n$2/month or $15/year. A veritable bargain for an app so nice.&#92;n&#92;n&#92;n&#92;n&#92;n★",
+      "feedTitle": "Daring Fireball"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/8987cbba",
+      "title": "Bruce Springsteen: ‘Streets of Minneapolis’",
+      "link": "https://brucespringsteen.net/news/2026/streets-of-minneapolis/",
+      "date": "2026-01-28T22:53:27Z",
+      "creator": "John Gruber",
+      "summary": "Bruce Springsteen:&#92;n&#92;n&#92;n&#92;n&#92;n&gt; I wrote this song on Saturday, recorded it yesterday and released&#92;n&gt; it to you today in response to the state terror being visited on&#92;n&gt; the city of Minneapolis. It’s dedicated to the people of&#92;n&gt; Minneapolis, our innocent immigrant neighbors and in memory of&#92;n&gt; Alex Pretti and Renee Good.&#92;n&#92;n&#92;n&#92;nBest line from the lyrics:&#92;n&#92;n&#92;n&#92;n&#92;n&gt; Their claim was self-defense,   &#92;n&gt; &#92;n&gt; Just don’t believe your eyes.   &#92;n&gt; &#92;n&gt; It’s our blood and bones and these whistles and phones   &#92;n&gt; &#92;n&gt; Against Miller and Noem’s dirty lies.&#92;n&#92;n&#92;n&#92;nWhistles, phones, and birds.&#92;n&#92;n&#92;n&#92;n&#92;n★",
+      "feedTitle": "Daring Fireball"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/81324708",
+      "title": "★ Politics and the English Language, January 2026 Edition",
+      "link": "https://daringfireball.net/2026/01/politics_and_the_english_language_january_2026_edition",
+      "date": "2026-01-28T22:00:24Z",
+      "creator": "John Gruber",
+      "summary": "Patrick McGee (author of last year’s bestseller, Apple in China, and guest on The Talk Show in May), commenting on Twitter/X re: Tim Cook’s company-wide memo regarding the “events in Minneapolis”:&#92;n&#92;n&#92;n&#92;n&#92;n&gt; This literally says nothing, via intention and cowardice.&#92;n&gt; &#92;n&gt; &#92;n&gt; &#92;n&gt; It’s the kind of language Orwell attributed to politicians, when&#92;n&gt; ready-made phrases assemble themselves and prevent any real&#92;n&gt; thought from breaking through.&#92;n&#92;n&#92;n&#92;nI have previously linked to George Orwell’s seminal 1946 essay, “Politics and the English Language”. This time I’ll quote a different passage:&#92;n&#92;n&#92;n&#92;n&#92;n&gt; In our time it is broadly true that political writing is bad&#92;n&gt; writing. Where it is ...",
+      "feedTitle": "Daring Fireball"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/0069f351",
+      "title": "Tim Cook Wrote a Memo on the ‘Events in Minneapolis’",
+      "link": "https://www.macrumors.com/2026/01/27/tim-cook-responds-after-minneapolis-shootings/",
+      "date": "2026-01-28T19:13:41Z",
+      "creator": "John Gruber",
+      "summary": "Tim Cook, in a company-wide memo (first published by Mark Gurman):&#92;n&#92;n&#92;n&#92;n&#92;n&gt; Team,   &#92;n&gt; &#92;n&gt; I’m heartbroken by the events in Minneapolis, and my prayers and&#92;n&gt; deepest sympathies are with the families, with the communities,&#92;n&gt; and with everyone that’s been affected.&#92;n&gt; &#92;n&gt; &#92;n&gt; &#92;n&gt; This is a time for deescalation. I believe America is strongest&#92;n&gt; when we live up to our highest ideals, when we treat everyone with&#92;n&gt; dignity and respect no matter who they are or where they’re from,&#92;n&gt; and when we embrace our shared humanity. This is something Apple&#92;n&gt; has always advocated for. I had a good conversation with the&#92;n&gt; president this week where I shared my views, and I appreciate hi...",
+      "feedTitle": "Daring Fireball"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/a2bad824",
+      "title": "Meta’s Response to Reuters Report on ‘Romance AI Chatbots’ for Teenagers",
+      "link": "https://x.com/andymstone/status/2016242174447223049",
+      "date": "2026-01-28T16:02:25Z",
+      "creator": "John Gruber",
+      "summary": "Andy Stone, VP of communications at Meta, responding, in a series of tweets on Twitter/X, to Jeff Horwitz’s report at Reuters yesterday, linked here last night, which claimed that “Zuckerberg blocked curbs on sex-talking chatbots for minors”:&#92;n&#92;n&#92;n&#92;n&#92;n&gt; Never let the facts get in the way of a good story, eh,&#92;n&gt; @Reuters, @JeffHorwitz!&#92;n&gt; &#92;n&gt; &#92;n&gt; &#92;n&gt; The documents you cite in the story itself contradict this&#92;n&gt; headline.&#92;n&gt; &#92;n&gt; &#92;n&gt; &#92;n&gt; The headline says “Zuckerberg blocked curbs on sex-talking&#92;n&gt; chatbots for minors”&#92;n&gt; &#92;n&gt; &#92;n&gt; &#92;n&gt; But the story cites a document that says “Zuckerberg believed that&#92;n&gt; AI companions should be blocked from engaging in sexually&...",
+      "feedTitle": "Daring Fireball"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/6e63beb1",
+      "title": "The Dependency Layer in Digital Sovereignty",
+      "link": "https://nesbitt.io/2026/01/28/the-dependency-layer-in-digital-sovereignty.html",
+      "date": "2026-01-28T10:00:00Z",
+      "creator": "Andrew Nesbitt",
+      "summary": "David Eaves recently argued that the path to tech sovereignty runs through commodification, not duplication. Europe shouldn’t try to build its own AWS. Instead, governments should use procurement power to enforce interoperability standards. The S3 API became a de facto standard that lets you move between providers, reducing switching costs. If governments required that kind of compatibility as a condition for contracts, smaller providers could compete. Sovereignty through standards rather than state-owned infrastructure.&#92;n&#92;n&#92;n&#92;nThe same logic applies to the software supply chain, though that layer gets less attention in sovereignty discussions than cloud and storage.&#92;n&#92;n&#92;n&#92;nMost git forges are US-based:&#92;n&#92;n&#92;n&#92;n&#92;n| Forge | Owner | Country ...",
+      "feedTitle": "Andrew Nesbitt"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/9fafd635",
+      "title": "Court Filing Claims Zuckerberg Blocked Curbs at Meta on Sex-Talking Chatbots for Minors",
+      "link": "https://www.reuters.com/legal/government/meta-ceo-zuckerberg-blocked-curbs-sex-talking-chatbots-minors-court-filing-2026-01-27/",
+      "date": "2026-01-28T00:17:02Z",
+      "creator": "John Gruber",
+      "summary": "Jeff Horwitz, reporting for Reuters:&#92;n&#92;n&#92;n&#92;n&#92;n&gt; Meta Chief Executive Mark Zuckerberg approved allowing minors&#92;n&gt; to access AI chatbot companions that safety staffers warned&#92;n&gt; were capable of sexual interactions, according to internal Meta&#92;n&gt; documents filed in a New Mexico state court case and made&#92;n&gt; public Monday.&#92;n&gt; &#92;n&gt; &#92;n&gt; &#92;n&gt; The lawsuit — brought by the state’s attorney general, Raul&#92;n&gt; Torrez, and scheduled for trial next month — alleges that&#92;n&gt; Meta “failed to stem the tide of damaging sexual material and&#92;n&gt; sexual propositions delivered to children” on Facebook and&#92;n&gt; Instagram. [...]&#92;n&gt; &#92;n&gt; &#92;n&gt; &#92;n&gt; Messages between two employees from March of 202...",
+      "feedTitle": "Daring Fireball"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/dde68cf5",
+      "title": "‘The Secret Fear of the Morally Depraved’",
+      "link": "https://www.theatlantic.com/ideas/2026/01/the-neighbors-defending-minnesota-from-ice/685769/?gift=Je3D9AQS-C17lUTOnl2W8L893jn-xkg4gA0ahaD_Ltw",
+      "date": "2026-01-27T23:36:54Z",
+      "creator": "John Gruber",
+      "summary": "Adam Serwer, reporting from the streets of Minneapolis for The Atlantic, “Minnesota Proved MAGA Wrong” (gift link):&#92;n&#92;n&#92;n&#92;n&#92;n&gt; The secret fear of the morally depraved is that virtue is actually&#92;n&gt; common, and that they’re the ones who are alone. In Minnesota, all&#92;n&gt; of the ideological cornerstones of MAGA have been proved false at&#92;n&gt; once. Minnesotans, not the armed thugs of ICE and the Border&#92;n&gt; Patrol, are brave. Minnesotans have shown that their community is&#92;n&gt; socially cohesive — because of its diversity and not in spite of&#92;n&gt; it. Minnesotans have found and loved one another in a world&#92;n&gt; atomized by social media, where empty men have tried to fill their&#92;n&gt; lonely soul with lies about their own inherent supe...",
+      "feedTitle": "Daring Fireball"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/4c965e2d",
+      "title": "‘A CEO, Captured’",
+      "link": "https://om.co/2026/01/27/a-ceo-captured/",
+      "date": "2026-01-27T23:06:55Z",
+      "creator": "John Gruber",
+      "summary": "Om Malik:&#92;n&#92;n&#92;n&#92;n&#92;n&gt; Cook is not stupid. He is not evil. He is trapped. The iron clasp&#92;n&gt; of market expectations has turned him into what he never meant to&#92;n&gt; be: a man who goes to parties at the White House while nurses die.&#92;n&gt; &#92;n&gt; &#92;n&gt; &#92;n&gt; In Tinker Tailor Soldier Spy, Roy Bland captures a cynical,&#92;n&gt; post-ideological, corrupt English society: “You scratch my&#92;n&gt; conscience; I’ll drive your Jag.” You could say the same of&#92;n&gt; today’s Silicon Valley. It used to believe it could change the&#92;n&gt; world. Now it just hopes the world won’t change its stock price.&#92;n&#92;n&#92;n&#92;nAmy Jane Gruber:&#92;n&#92;n&#92;n&#92;n&#92;n&gt; If I ever meet Tim Cook I’m going to ask him if Mike Tyson enjoyed&#92;n&...",
+      "feedTitle": "Daring Fireball"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/97338903",
+      "title": "‘Aside From That, Mr. Cook, What Did You Think of the Movie?’",
+      "link": "https://spyglass.org/tim-cook-captured/",
+      "date": "2026-01-27T23:02:49Z",
+      "creator": "John Gruber",
+      "summary": "MG Siegler:&#92;n&#92;n&#92;n&#92;n&#92;n&gt; Tim Cook is captured. There is simply no other explanation for his&#92;n&gt; actions over the past year or so. But it perhaps culminated this&#92;n&gt; weekend when Cook went to a special private showing of the&#92;n&gt; documentary Melania at the White House. Yes, that&#92;n&gt; Melania. That in and of itself would have probably been&#92;n&gt; fine. I mean, it’s potentially problematic for a host of reasons&#92;n&gt; that I’ll get to, but such is our world right now. Then one shot — a gunshot — turned attending that movie screening into a&#92;n&gt; statement...&#92;n&gt; &#92;n&gt; &#92;n&gt; &#92;n&gt; While Cook was enjoying his popcorn and champagne with the likes&#92;n&gt; of Mike Tyson, Tony Robbins, and other “VIPs”, it was complete and&...",
+      "feedTitle": "Daring Fireball"
+    }
+  ],
+  "cachedAt": "2026-02-11T15:01:27.879Z"
+}

@@ -563,8 +563,13 @@ export class APIHandler {
         body += chunk.toString()
       })
       req.on('end', () => {
+        const trimmed = body.trim()
+        if (!trimmed) {
+          resolve({})
+          return
+        }
         try {
-          resolve(JSON.parse(body))
+          resolve(JSON.parse(trimmed))
         } catch (err) {
           reject(new Error('Invalid JSON'))
         }
