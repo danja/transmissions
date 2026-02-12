@@ -83,9 +83,13 @@ class SPARQLSelect extends Processor {
         logger.debug(`query = ${query}`)
         logger.debug(`endpoint.url = ${endpoint.url}`)
         try {
-            const response = await axios.post(endpoint.url, query, {
+            const useForm = super.getProperty(ns.trn.sparqlUseForm, 'false') === 'true'
+            const contentType = useForm ? 'application/x-www-form-urlencoded' : 'application/sparql-query'
+            const body = useForm ? `query=${encodeURIComponent(query)}` : query
+
+            const response = await axios.post(endpoint.url, body, {
                 headers: {
-                    'Content-Type': 'application/sparql-query',
+                    'Content-Type': contentType,
                     'Accept': 'application/json',
                     'Authorization': this.env.getBasicAuthHeader(endpoint)
                 }

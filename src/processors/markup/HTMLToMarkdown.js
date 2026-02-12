@@ -102,7 +102,10 @@ class HTMLToMarkdown extends Processor {
 
         element.contents().each((i, node) => {
             if (node.type === 'text') {
-                markdown += $(node).text()
+                const normalized = this.normalizeText($(node).text())
+                if (normalized) {
+                    markdown += normalized
+                }
             } else if (node.type === 'tag') {
                 const $node = $(node)
                 const tagName = node.tagName.toLowerCase()
@@ -204,6 +207,14 @@ class HTMLToMarkdown extends Processor {
         })
 
         return markdown
+    }
+
+    normalizeText(text) {
+        if (!text || typeof text !== 'string') {
+            return ''
+        }
+        const collapsed = text.replace(/\s+/g, ' ')
+        return collapsed.trim().length === 0 ? '' : collapsed
     }
 
     convertList($, listElement, ordered = false) {

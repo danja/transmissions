@@ -1,6 +1,42 @@
 {
   "posts": [
     {
+      "uri": "http://hyperdata.it/posts/d0d41616",
+      "title": "The Many Flavors of Ignore Files",
+      "link": "https://nesbitt.io/2026/02/12/the-many-flavors-of-ignore-files.html",
+      "date": "2026-02-12T10:00:00Z",
+      "creator": "Andrew Nesbitt",
+      "summary": "A [bug report](https://github.com/git-pkgs/git-pkgs/issues/53#issuecomment-3857707729) in git-pkgs led me down a rabbit hole: files that git ignored were showing up as phantom diffs, and the cause turned out to be [go-git’s gitignore implementation](https://github.com/go-git/go-git/issues/108), which doesn’t match git’s actual behavior for unanchored patterns in nested directories. I went looking for a Go library that fully matched git’s pattern semantics and couldn’t find one, so I wrote [git-pkgs/gitignore](https://github.com/git-pkgs/gitignore) with a wildmatch engine modeled on git’s own `wildmatch.c`.\n\nBuilding that made me appreciate how much complexity hides behind `.gitignore`, and got me thinking about all the other tools with their own ignore files. Most claim to use “gitignore s...",
+      "feedTitle": "Andrew Nesbitt"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/264dd627",
+      "title": "Coding agents as the new compilers",
+      "link": "https://anildash.com/2026/02/11/coding-agents-as-the-new-compilers/",
+      "date": "2026-02-12T00:00:00Z",
+      "creator": null,
+      "summary": "In each successive generation of code creation thus far, we’ve abstracted away the prior generation over time. Usually, only a small percentage of coders still work on the lower layers of the stack that used to be the space where everyone was working. I’ve been coding long enough that people were still creating code in assembly when I started (though I was never any good at it!), though I started with BASIC. Since BASIC was an interpreted language, its interpreter would write the assembly language for me, and I never had to see exactly what assembly language code was being created.\n\nI definitely did know old-school coders who used to, at first, check that assembly code to see if they liked the output. But eventually, over time, they just learned to trust the system and stopped looking at w...",
+      "feedTitle": "Anil Dash"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/82ede1bc",
+      "title": "Apple Creator Studio Usage Restrictions",
+      "link": "https://arstechnica.com/gadgets/2026/01/seven-things-to-know-about-how-apples-creator-studio-subscriptions-work/",
+      "date": "2026-02-11T21:04:07Z",
+      "creator": "John Gruber",
+      "summary": "Andrew Cunningham, writing for Ars Technica at the end of January:\n\nSteven Troughton-Smith, last week, after creating an entire app with OpenAI’s Codex:",
+      "feedTitle": "Daring Fireball"
+    },
+    {
+      "uri": "http://hyperdata.it/posts/6704b84d",
+      "title": "Proving What's Possible",
+      "link": "https://buttondown.com/hillelwayne/archive/proving-whats-possible/",
+      "date": "2026-02-11T18:36:53Z",
+      "creator": null,
+      "summary": "As a formal methods consultant I have to mathematically express properties of systems. I generally do this with two &quot;temporal operators&quot;:\n\nThese come from linear temporal logic, which is the mainstream notation for expressing system properties. 1 We like these operators because they elegantly cover safety and liveness properties, and because we can combine them. A(E(x)) means x is true an infinite number of times, while A(x =&gt; E(y) means that x being true guarantees y true in the future.",
+      "feedTitle": "Computer Things"
+    },
+    {
       "uri": "http://hyperdata.it/posts/544db621",
       "title": "Package Management Consulting",
       "link": "https://nesbitt.io/2026/02/11/package-management-consulting.html",
@@ -413,43 +449,7 @@
       "creator": "Andrew Nesbitt",
       "summary": "David Eaves recently argued that the path to tech sovereignty runs through commodification, not duplication. Europe shouldn’t try to build its own AWS. Instead, governments should use procurement power to enforce interoperability standards. The S3 API became a de facto standard that lets you move between providers, reducing switching costs. If governments required that kind of compatibility as a condition for contracts, smaller providers could compete. Sovereignty through standards rather than state-owned infrastructure.&#92;n&#92;n&#92;n&#92;nThe same logic applies to the software supply chain, though that layer gets less attention in sovereignty discussions than cloud and storage.&#92;n&#92;n&#92;n&#92;nMost git forges are US-based:&#92;n&#92;n&#92;n&#92;n&#92;n| Forge | Owner | Country ...",
       "feedTitle": "Andrew Nesbitt"
-    },
-    {
-      "uri": "http://hyperdata.it/posts/9fafd635",
-      "title": "Court Filing Claims Zuckerberg Blocked Curbs at Meta on Sex-Talking Chatbots for Minors",
-      "link": "https://www.reuters.com/legal/government/meta-ceo-zuckerberg-blocked-curbs-sex-talking-chatbots-minors-court-filing-2026-01-27/",
-      "date": "2026-01-28T00:17:02Z",
-      "creator": "John Gruber",
-      "summary": "Jeff Horwitz, reporting for Reuters:&#92;n&#92;n&#92;n&#92;n&#92;n&gt; Meta Chief Executive Mark Zuckerberg approved allowing minors&#92;n&gt; to access AI chatbot companions that safety staffers warned&#92;n&gt; were capable of sexual interactions, according to internal Meta&#92;n&gt; documents filed in a New Mexico state court case and made&#92;n&gt; public Monday.&#92;n&gt; &#92;n&gt; &#92;n&gt; &#92;n&gt; The lawsuit — brought by the state’s attorney general, Raul&#92;n&gt; Torrez, and scheduled for trial next month — alleges that&#92;n&gt; Meta “failed to stem the tide of damaging sexual material and&#92;n&gt; sexual propositions delivered to children” on Facebook and&#92;n&gt; Instagram. [...]&#92;n&gt; &#92;n&gt; &#92;n&gt; &#92;n&gt; Messages between two employees from March of 202...",
-      "feedTitle": "Daring Fireball"
-    },
-    {
-      "uri": "http://hyperdata.it/posts/dde68cf5",
-      "title": "‘The Secret Fear of the Morally Depraved’",
-      "link": "https://www.theatlantic.com/ideas/2026/01/the-neighbors-defending-minnesota-from-ice/685769/?gift=Je3D9AQS-C17lUTOnl2W8L893jn-xkg4gA0ahaD_Ltw",
-      "date": "2026-01-27T23:36:54Z",
-      "creator": "John Gruber",
-      "summary": "Adam Serwer, reporting from the streets of Minneapolis for The Atlantic, “Minnesota Proved MAGA Wrong” (gift link):&#92;n&#92;n&#92;n&#92;n&#92;n&gt; The secret fear of the morally depraved is that virtue is actually&#92;n&gt; common, and that they’re the ones who are alone. In Minnesota, all&#92;n&gt; of the ideological cornerstones of MAGA have been proved false at&#92;n&gt; once. Minnesotans, not the armed thugs of ICE and the Border&#92;n&gt; Patrol, are brave. Minnesotans have shown that their community is&#92;n&gt; socially cohesive — because of its diversity and not in spite of&#92;n&gt; it. Minnesotans have found and loved one another in a world&#92;n&gt; atomized by social media, where empty men have tried to fill their&#92;n&gt; lonely soul with lies about their own inherent supe...",
-      "feedTitle": "Daring Fireball"
-    },
-    {
-      "uri": "http://hyperdata.it/posts/4c965e2d",
-      "title": "‘A CEO, Captured’",
-      "link": "https://om.co/2026/01/27/a-ceo-captured/",
-      "date": "2026-01-27T23:06:55Z",
-      "creator": "John Gruber",
-      "summary": "Om Malik:&#92;n&#92;n&#92;n&#92;n&#92;n&gt; Cook is not stupid. He is not evil. He is trapped. The iron clasp&#92;n&gt; of market expectations has turned him into what he never meant to&#92;n&gt; be: a man who goes to parties at the White House while nurses die.&#92;n&gt; &#92;n&gt; &#92;n&gt; &#92;n&gt; In Tinker Tailor Soldier Spy, Roy Bland captures a cynical,&#92;n&gt; post-ideological, corrupt English society: “You scratch my&#92;n&gt; conscience; I’ll drive your Jag.” You could say the same of&#92;n&gt; today’s Silicon Valley. It used to believe it could change the&#92;n&gt; world. Now it just hopes the world won’t change its stock price.&#92;n&#92;n&#92;n&#92;nAmy Jane Gruber:&#92;n&#92;n&#92;n&#92;n&#92;n&gt; If I ever meet Tim Cook I’m going to ask him if Mike Tyson enjoyed&#92;n&...",
-      "feedTitle": "Daring Fireball"
-    },
-    {
-      "uri": "http://hyperdata.it/posts/97338903",
-      "title": "‘Aside From That, Mr. Cook, What Did You Think of the Movie?’",
-      "link": "https://spyglass.org/tim-cook-captured/",
-      "date": "2026-01-27T23:02:49Z",
-      "creator": "John Gruber",
-      "summary": "MG Siegler:&#92;n&#92;n&#92;n&#92;n&#92;n&gt; Tim Cook is captured. There is simply no other explanation for his&#92;n&gt; actions over the past year or so. But it perhaps culminated this&#92;n&gt; weekend when Cook went to a special private showing of the&#92;n&gt; documentary Melania at the White House. Yes, that&#92;n&gt; Melania. That in and of itself would have probably been&#92;n&gt; fine. I mean, it’s potentially problematic for a host of reasons&#92;n&gt; that I’ll get to, but such is our world right now. Then one shot — a gunshot — turned attending that movie screening into a&#92;n&gt; statement...&#92;n&gt; &#92;n&gt; &#92;n&gt; &#92;n&gt; While Cook was enjoying his popcorn and champagne with the likes&#92;n&gt; of Mike Tyson, Tony Robbins, and other “VIPs”, it was complete and&...",
-      "feedTitle": "Daring Fireball"
     }
   ],
-  "cachedAt": "2026-02-11T15:01:27.879Z"
+  "cachedAt": "2026-02-12T11:36:37.530Z"
 }

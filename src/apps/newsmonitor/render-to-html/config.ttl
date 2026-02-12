@@ -2,8 +2,9 @@
 
 # Query all entries and feeds in one query
 :entriesQuery a :ConfigSet ;
-    :endpointSettings "data/endpoints.json" ;
-    :templateFilename "data/sparql-templates/get-all-for-page.rq" .
+    :endpointSettings "../data/endpoints.json" ;
+    :templateFilename "data/sparql-templates/get-all-for-page.rq" ;
+    :sparqlUseForm "true" .
 
 :markdownToHtmlSettings a :ConfigSet ;
     :listField "queryResults.results.bindings" ;
@@ -28,7 +29,7 @@
     :targetField "destinationFile" ;
     :values (:p1 :p2) .
     :p1 :field "workingDir" .
-    :p2 :string "../data/index.html" .
+    :p2 :string "../../data/index.html" .
 
 # FileWriter content location
 :contentLocation a :ConfigSet ;

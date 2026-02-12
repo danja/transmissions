@@ -115,7 +115,7 @@ class FileWriter extends Processor {
             isWriter: true
         })
 
-        logger.trace(`Filewriter, filepath = ${filePath}`)
+        logger.log(`FileWriter resolved path: ${filePath}`)
         const dirName = dirname(filePath)
         logger.trace("Filewriter, dirName = " + dirName)
 
@@ -125,6 +125,7 @@ class FileWriter extends Processor {
         logger.trace(`Filewriter, content = ${content}`)
 
         this.mkdirs(dirName)
+        await this.ensureDirWritable(dirName)
         await this.doWrite(filePath, content, message)
         // return true
         return this.emit('message', message)
@@ -169,6 +170,20 @@ class FileWriter extends Processor {
         }
         catch (e) {
             logger.warn(`Warn: FileWriter.mkdirs, maybe dir exists : ${dir} ?`)
+        }
+    }
+
+    async ensureDirWritable(dir) {
+        try {
+            await new Promise((resolve, reject) => {
+                access(dir, constants.W_OK, (err) => {
+                    if (err) reject(err)
+                    else resolve()
+                })
+            })
+        } catch (error) {
+            logger.error(`FileWriter error: ${dir} is not writable.`)
+            throw error
         }
     }
 }
