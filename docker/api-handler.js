@@ -888,28 +888,50 @@ export class APIHandler {
         const limit = Number.isFinite(Number(body.limit)) ? Math.max(1, Number(body.limit)) : 50
         const offset = Number.isFinite(Number(body.offset)) ? Math.max(0, Number(body.offset)) : 0
 
-        try {
-          const posts = await this.getRecentPosts(limit, offset)
-          await this.writePostsCache(posts)
-          const status = await this.getPostsCacheStatus()
+        const jobId = `job-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+        const job = {
+          id: jobId,
+          command: 'posts-cache-refresh',
+          status: 'running',
+          startedAt: new Date().toISOString(),
+          finishedAt: null,
+          error: null,
+          result: null
+        }
+        this.jobs.set(jobId, job)
+        this.saveJobs().catch(err => {
+          console.error('Failed to persist jobs:', err.message)
+        })
 
-          res.writeHead(200, {
+        this.refreshPostsCacheJob(jobId, { limit, offset }).catch(err => {
+          console.error('Posts cache refresh failed:', err.message)
+        })
+
+        res.writeHead(202, {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        })
+        res.end(JSON.stringify({ success: true, jobId }))
+        return true
+      }
+
+      if (routePath === '/api/posts/cache/status' && req.method === 'GET') {
+        const jobId = url.searchParams.get('jobId')
+        if (!jobId || !this.jobs.has(jobId)) {
+          res.writeHead(404, {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
           })
-          res.end(JSON.stringify(status))
-          return true
-        } catch (error) {
-          res.writeHead(500, {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-          })
-          res.end(JSON.stringify({
-            success: false,
-            error: error.message
-          }))
+          res.end(JSON.stringify({ error: 'Job not found' }))
           return true
         }
+
+        res.writeHead(200, {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        })
+        res.end(JSON.stringify(this.jobs.get(jobId)))
+        return true
       }
 
       if (routePath === '/api/posts') {
@@ -1115,5 +1137,28 @@ export class APIHandler {
     const jobsArray = Array.from(this.jobs.values())
     await fs.mkdir(this.dataDir, { recursive: true })
     await fs.writeFile(this.jobsFile, JSON.stringify(jobsArray, null, 2), 'utf8')
+  }
+
+  async refreshPostsCacheJob(jobId, options) {
+    const job = this.jobs.get(jobId)
+    if (!job) {
+      return
+    }
+
+    try {
+      const posts = await this.getRecentPosts(options.limit, options.offset)
+      await this.writePostsCache(posts)
+      const status = await this.getPostsCacheStatus()
+
+      job.status = 'completed'
+      job.finishedAt = new Date().toISOString()
+      job.result = status
+      await this.saveJobs()
+    } catch (error) {
+      job.status = 'failed'
+      job.finishedAt = new Date().toISOString()
+      job.error = error.message
+      await this.saveJobs()
+    }
   }
 }

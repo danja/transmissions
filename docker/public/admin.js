@@ -900,6 +900,14 @@ async function refreshPostsCache() {
             throw new Error(message)
         }
 
+        if (response.status === 202 && data.jobId) {
+            messageEl.textContent = `Cache refresh queued. Job ID: ${escapeHtml(data.jobId)}`
+            messageEl.className = 'status-message info'
+            messageEl.style.display = 'block'
+            await pollPostsCacheJob(data.jobId)
+            return
+        }
+
         renderPostsCacheStatus(data)
         messageEl.textContent = '✓ Posts cache refreshed.'
         messageEl.className = 'status-message success'
@@ -912,6 +920,59 @@ async function refreshPostsCache() {
         button.disabled = false
         button.textContent = '♻️ Refresh Cache'
     }
+}
+
+async function pollPostsCacheJob(jobId) {
+    const messageEl = document.getElementById('posts-cache-status-message')
+    const maxAttempts = 120
+
+    for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+        await sleep(2000)
+        const response = await fetch(`/api/posts/cache/status?jobId=${encodeURIComponent(jobId)}`, {
+            headers: buildAdminHeaders()
+        })
+
+        if (response.status === 401) {
+            handleUnauthorized()
+            return
+        }
+
+        const data = await parseJsonSafe(response)
+        if (!response.ok || !data) {
+            messageEl.textContent = 'Cache status unavailable.'
+            messageEl.className = 'status-message error'
+            messageEl.style.display = 'block'
+            return
+        }
+
+        if (data.status === 'running') {
+            messageEl.textContent = 'Cache refresh running...'
+            messageEl.className = 'status-message info'
+            messageEl.style.display = 'block'
+            continue
+        }
+
+        if (data.status === 'completed') {
+            if (data.result) {
+                renderPostsCacheStatus(data.result)
+            }
+            messageEl.textContent = '✓ Posts cache refreshed.'
+            messageEl.className = 'status-message success'
+            messageEl.style.display = 'block'
+            return
+        }
+
+        if (data.status === 'failed') {
+            messageEl.textContent = `✗ Cache refresh failed: ${escapeHtml(data.error || 'Unknown error')}`
+            messageEl.className = 'status-message error'
+            messageEl.style.display = 'block'
+            return
+        }
+    }
+
+    messageEl.textContent = 'Cache refresh still running. Check back later.'
+    messageEl.className = 'status-message info'
+    messageEl.style.display = 'block'
 }
 
 async function restoreAdminAuth() {

@@ -8,7 +8,7 @@
 
 :markdownToHtmlSettings a :ConfigSet ;
     :listField "queryResults.results.bindings" ;
-    :sourceField "content.value" ;
+    :sourceField "body.value" ;
     :outputField "contentHtml" .
 
 # Restructure query results for template

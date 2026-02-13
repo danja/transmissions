@@ -213,8 +213,14 @@ class HTMLToMarkdown extends Processor {
         if (!text || typeof text !== 'string') {
             return ''
         }
-        const collapsed = text.replace(/\s+/g, ' ')
-        return collapsed.trim().length === 0 ? '' : collapsed
+        const normalized = text
+            .replace(/\r\n/g, '\n')
+            .replace(/[ \t]+/g, ' ')
+            .replace(/ *\n */g, '\n')
+        if (normalized.replace(/\s+/g, '').length === 0) {
+            return ''
+        }
+        return normalized
     }
 
     convertList($, listElement, ordered = false) {

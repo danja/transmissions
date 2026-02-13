@@ -1,7 +1,8 @@
 PREFIX sioc: <http://rdfs.org/sioc/ns#>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX content: <http://purl.org/rss/1.0/modules/content/>
 
-SELECT ?post ?title ?link ?date ?creator ?content
+SELECT ?post ?title ?link ?date ?creator ?content ?fullContent ?body
 WHERE {
   GRAPH <http://hyperdata.it/content> {
     ?post a sioc:Post ;
@@ -10,6 +11,8 @@ WHERE {
           dc:date ?date .
     OPTIONAL { ?post dc:creator ?creator }
     OPTIONAL { ?post sioc:content ?content }
+    OPTIONAL { ?post content:encoded ?fullContent }
+    BIND(COALESCE(?fullContent, ?content) AS ?body)
   }
 }
 ORDER BY DESC(?date)

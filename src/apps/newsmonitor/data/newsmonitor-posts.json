@@ -1,6 +1,15 @@
 {
   "posts": [
     {
+      "uri": "http://hyperdata.it/posts/3f49b26e",
+      "title": "Trends in US Construction Productivity",
+      "link": "https://www.construction-physics.com/p/trends-in-us-construction-productivity",
+      "date": "2026-02-12T13:03:20Z",
+      "creator": "Brian Potter",
+      "summary": "(This is a chapter of a longer report I’m working on that summarizes and expands the last several years of my work on construction productivity. I plan on publishing one chapter a month on the newsletter, and aim to have the full report done by the end of the year.)\n\nFor decades, American construction has fallen behind almost every other major sector in productivity growth. As far back as 1970 researchers noted that construction productivity improvement significantly lagged productivity improvement in the economy overall, and by 1985 economists were investigating what appeared to be declining construction productivity. Stanford civil engineering professor Paul Teicholz noted in a2004 article in AECbytes that between 1964 and 2004, construction productivity declined by 0.59% per year on ave...",
+      "feedTitle": "Construction Physics"
+    },
+    {
       "uri": "http://hyperdata.it/posts/d0d41616",
       "title": "The Many Flavors of Ignore Files",
       "link": "https://nesbitt.io/2026/02/12/the-many-flavors-of-ignore-files.html",
@@ -440,16 +449,7 @@
       "creator": "John Gruber",
       "summary": "Andy Stone, VP of communications at Meta, responding, in a series of tweets on Twitter/X, to Jeff Horwitz’s report at Reuters yesterday, linked here last night, which claimed that “Zuckerberg blocked curbs on sex-talking chatbots for minors”:&#92;n&#92;n&#92;n&#92;n&#92;n&gt; Never let the facts get in the way of a good story, eh,&#92;n&gt; @Reuters, @JeffHorwitz!&#92;n&gt; &#92;n&gt; &#92;n&gt; &#92;n&gt; The documents you cite in the story itself contradict this&#92;n&gt; headline.&#92;n&gt; &#92;n&gt; &#92;n&gt; &#92;n&gt; The headline says “Zuckerberg blocked curbs on sex-talking&#92;n&gt; chatbots for minors”&#92;n&gt; &#92;n&gt; &#92;n&gt; &#92;n&gt; But the story cites a document that says “Zuckerberg believed that&#92;n&gt; AI companions should be blocked from engaging in sexually&...",
       "feedTitle": "Daring Fireball"
-    },
-    {
-      "uri": "http://hyperdata.it/posts/6e63beb1",
-      "title": "The Dependency Layer in Digital Sovereignty",
-      "link": "https://nesbitt.io/2026/01/28/the-dependency-layer-in-digital-sovereignty.html",
-      "date": "2026-01-28T10:00:00Z",
-      "creator": "Andrew Nesbitt",
-      "summary": "David Eaves recently argued that the path to tech sovereignty runs through commodification, not duplication. Europe shouldn’t try to build its own AWS. Instead, governments should use procurement power to enforce interoperability standards. The S3 API became a de facto standard that lets you move between providers, reducing switching costs. If governments required that kind of compatibility as a condition for contracts, smaller providers could compete. Sovereignty through standards rather than state-owned infrastructure.&#92;n&#92;n&#92;n&#92;nThe same logic applies to the software supply chain, though that layer gets less attention in sovereignty discussions than cloud and storage.&#92;n&#92;n&#92;n&#92;nMost git forges are US-based:&#92;n&#92;n&#92;n&#92;n&#92;n| Forge | Owner | Country ...",
-      "feedTitle": "Andrew Nesbitt"
     }
   ],
-  "cachedAt": "2026-02-12T11:36:37.530Z"
+  "cachedAt": "2026-02-12T15:02:50.218Z"
 }
