@@ -26,6 +26,7 @@ import JSONUtils from '../../utils/JSONUtils.js'
  * * **`ns.trn.feedUrl`** - Feed's own URL (default: baseUrl + '/atom.xml')
  * * **`ns.trn.baseUrl`** - Base URL for the site (default: 'https://example.com')
  * * **`ns.trn.feedId`** - Unique feed ID (default: feedUrl)
+ * * **`ns.trn.maxEntries`** - Maximum number of entries to include (optional)
  *
  * #### __*Input*__
  * * **`message.entries`** - Array of entry objects with fields:
@@ -83,13 +84,18 @@ class AtomBuilder extends Processor {
             const baseUrl = super.getProperty(ns.trn.baseUrl, 'https://example.com')
             const feedUrl = super.getProperty(ns.trn.feedUrl, `${baseUrl}/atom.xml`)
             const feedId = super.getProperty(ns.trn.feedId, feedUrl)
+            const maxEntries = Number.parseInt(super.getProperty(ns.trn.maxEntries, '0'), 10)
 
             // Get entries
-            const entries = JSONUtils.get(message, inputField) || []
+            let entries = JSONUtils.get(message, inputField) || []
 
             if (!Array.isArray(entries)) {
                 logger.error('AtomBuilder: Input field is not an array')
                 return this.emit('message', message)
+            }
+
+            if (maxEntries > 0) {
+                entries = entries.slice(0, maxEntries)
             }
 
             logger.log(`AtomBuilder: Building Atom feed with ${entries.length} entries`)

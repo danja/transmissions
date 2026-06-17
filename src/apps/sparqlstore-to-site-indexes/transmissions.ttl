@@ -19,8 +19,9 @@
 ##################################################################
 
 :sparqlstore-to-indexes a :Transmission ;
-  :pipe ( :p10 :p20   :p30 :p40  :p50 :p80 # Query call + debug
+  :pipe ( :p10 :p20   :p30 :p40  :p50 # Query call
           :p100 :p110    :p120 # HTML rendering
+          :p130 :p140 :p150 # Archive rendering
           :p200  :p210 :p220 # Atom rendering
           ) .
 
@@ -62,8 +63,13 @@
 
 
 # Atom
-:p130 a :Restructure ;
-    :settings :prepAtom .
+:p130 a :Templater ;
+     :settings :archiveIndex .
+
+:p140 a :PathOps ;
+  :settings :archiveFilepath .
+
+:p150 a :FileWriter .
 
 :p200 a :AtomBuilder ;
      :settings :atomBuilder .

@@ -1,40 +1,32 @@
-<!-- src/apps/sparqlstore-to-site-indexes/templates/index-html.njk -->
+<!-- src/apps/sparqlstore-to-site-indexes/templates/archive-html.njk -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Rawer - Recent Articles</title>
+    <title>Rawer - Archive</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="description" content="Recent articles from the knowledge base">
+    <meta name="description" content="Article archive from the knowledge base">
 
     <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/atom.xml" />
-
-    <!-- TODO: remove cache-control headers once the generated indexes are stable. -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-
     <link rel="stylesheet" href="/css/fonts.css" type="text/css" />
-    <link rel="stylesheet" href="/css/grid-columns.css" type="text/css" />
     <link rel="stylesheet" href="/css/style.css" type="text/css" />
 
     <style>
         :root {
-            --index-bg: #f7f7f4;
-            --index-panel: #fff;
-            --index-text: #042f2f;
-            --index-muted: #66736f;
-            --index-line: #d9ddd7;
-            --index-accent: #b94f24;
-            --index-shadow: 0 8px 24px rgba(4, 47, 47, 0.08);
+            --archive-bg: #f7f7f4;
+            --archive-panel: #fff;
+            --archive-text: #042f2f;
+            --archive-muted: #66736f;
+            --archive-line: #d9ddd7;
+            --archive-accent: #b94f24;
         }
 
         body {
-            background: var(--index-bg);
-            color: var(--index-text);
+            background: var(--archive-bg);
+            color: var(--archive-text);
         }
 
         body.menu-open {
@@ -43,8 +35,8 @@
 
         .site-header,
         .site-menu,
-        .index-shell,
-        .article-list-item {
+        .archive-shell,
+        .archive-list a {
             box-sizing: border-box;
         }
 
@@ -61,7 +53,7 @@
             padding: 1rem clamp(1rem, 4vw, 2rem);
             background: rgba(247, 247, 244, 0.94);
             backdrop-filter: blur(8px);
-            border-bottom: 1px solid var(--index-line);
+            border-bottom: 1px solid var(--archive-line);
         }
 
         .h-title {
@@ -76,12 +68,11 @@
             width: 2.75rem;
             height: 2.75rem;
             flex: 0 0 auto;
-            border: 1px solid var(--index-line);
+            border: 1px solid var(--archive-line);
             border-radius: 8px;
-            background: var(--index-panel);
-            color: var(--index-text);
+            background: var(--archive-panel);
+            color: var(--archive-text);
             cursor: pointer;
-            box-shadow: 0 2px 10px rgba(4, 47, 47, 0.08);
         }
 
         .menu-bars {
@@ -142,7 +133,7 @@
             width: min(22rem, calc(100vw - 1.5rem));
             padding: 5rem 1rem 1.5rem;
             overflow-y: auto;
-            background: var(--index-panel);
+            background: var(--archive-panel);
             box-shadow: -12px 0 32px rgba(4, 47, 47, 0.14);
             transform: translateX(100%);
             visibility: hidden;
@@ -163,104 +154,80 @@
             display: block;
             min-height: 2.75rem;
             padding: 0.7rem 0.25rem;
-            color: var(--index-text);
+            color: var(--archive-text);
             text-decoration: none;
-            border-bottom: 1px solid var(--index-line);
-        }
-
-        .site-menu a:hover,
-        .site-menu a:focus-visible {
-            color: var(--index-accent);
+            border-bottom: 1px solid var(--archive-line);
         }
 
         .site-menu-title {
             margin: 0 0 0.8rem;
             font-family: 'cinzel', sans-serif;
             font-size: 1rem;
-            letter-spacing: 0;
         }
 
-        .index-shell {
+        .archive-shell {
             width: min(100%, 58rem);
             margin: 0 auto;
             padding: 1.25rem clamp(1rem, 4vw, 2rem) 3rem;
         }
 
-        .index-intro {
-            margin: 0 0 1rem;
-            color: var(--index-muted);
+        .archive-heading {
+            margin: 0 0 0.35rem;
+            font-size: clamp(1.5rem, 5vw, 2rem);
         }
 
-        .articles {
+        .archive-intro {
+            margin: 0 0 1.25rem;
+            color: var(--archive-muted);
+        }
+
+        .archive-list {
             display: grid;
+            gap: 0.5rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .archive-list a {
+            display: grid;
+            grid-template-columns: minmax(8.5rem, 12rem) 1fr;
             gap: 1rem;
-            max-width: none;
-            margin: 0;
-        }
-
-        .article-list-item {
-            margin: 0;
-            padding: clamp(1rem, 3vw, 1.5rem);
-            background: var(--index-panel);
-            border: 1px solid var(--index-line);
+            min-width: 0;
+            min-height: 3rem;
+            align-items: baseline;
+            padding: 0.8rem 1rem;
+            background: var(--archive-panel);
+            border: 1px solid var(--archive-line);
             border-radius: 8px;
-            box-shadow: var(--index-shadow);
+            color: var(--archive-text);
+            text-decoration: none;
         }
 
-        .article-list-item h2 {
-            margin: 0 0 0.45rem;
-            font-size: clamp(1.25rem, 4vw, 1.6rem);
-            line-height: 1.25;
+        .archive-list a:hover,
+        .archive-list a:focus-visible {
+            border-color: var(--archive-accent);
         }
 
-        .article-list-item h2 a {
-            color: inherit;
-            text-decoration-thickness: 0.08em;
-            text-underline-offset: 0.14em;
-        }
-
-        .article-meta {
-            color: var(--index-muted);
+        .archive-date {
+            min-width: 0;
+            color: var(--archive-muted);
             font-size: 0.92rem;
-            margin-bottom: 1rem;
-        }
-
-        .article-content {
+            font-variant-numeric: tabular-nums;
             overflow-wrap: anywhere;
         }
 
-        .article-content .post-content > h1:first-child,
-        .article-content .post-title {
-            display: none;
-        }
-
-        .article-content img,
-        .article-content video,
-        .article-content iframe {
-            max-width: 100%;
-            height: auto;
-        }
-
-        .article-content pre,
-        .article-content table {
-            max-width: 100%;
-            overflow-x: auto;
-        }
-
-        .empty-index {
-            padding: 1.5rem;
-            background: var(--index-panel);
-            border: 1px solid var(--index-line);
-            border-radius: 8px;
-        }
-
-        .archive-link {
-            display: inline-flex;
-            min-height: 2.75rem;
-            align-items: center;
-            margin-top: 1rem;
-            color: var(--index-accent);
+        .archive-title {
+            min-width: 0;
             font-weight: 700;
+            overflow-wrap: anywhere;
+        }
+
+        .empty-archive {
+            padding: 1.5rem;
+            background: var(--archive-panel);
+            border: 1px solid var(--archive-line);
+            border-radius: 8px;
         }
 
         @media (max-width: 640px) {
@@ -268,7 +235,7 @@
                 padding: 0.75rem 0.9rem;
             }
 
-            .index-shell {
+            .archive-shell {
                 padding: 1rem 0.75rem 2rem;
             }
 
@@ -276,14 +243,17 @@
                 width: min(100vw, 24rem);
             }
 
-            .article-list-item {
-                border-radius: 6px;
+            .archive-list a {
+                grid-template-columns: 1fr;
+                gap: 0.15rem;
+                padding: 0.85rem;
             }
         }
     </style>
 </head>
 
 <body>
+    {% set articles = entries or content %}
     <header id="main-header" class="site-header">
         <h1 class="h-title">Raw<em>er</em></h1>
         <button class="site-menu-toggle" type="button" aria-label="Open navigation menu" aria-controls="site-menu" aria-expanded="false">
@@ -298,41 +268,28 @@
     <div class="site-menu-overlay" data-menu-close></div>
     <nav id="site-menu" class="site-menu" aria-label="Site links">
         <p class="site-menu-title">Links</p>
-        <a href="#recent">Recent articles</a>
+        <a href="/">Recent articles</a>
         <a href="/archive.html">Archive</a>
         <a href="/atom.xml">Atom feed</a>
     </nav>
 
-    <main class="index-shell">
-        <p class="index-intro">Recent articles from the knowledge base.</p>
-        <section id="recent" class="articles" aria-label="Recent articles">
-            {% if contentBlocks.content %}
-                {% for article in contentBlocks.content %}
-                {% if loop.index <= 5 %}
-                <article class="article-list-item">
-                    <h2>
-                        {% if article.uri %}
-                        <a href="{{ article.uri }}">{{ article.title }}</a>
-                        {% else %}
-                        {{ article.title }}
-                        {% endif %}
-                    </h2>
-                    {% if article.published %}
-                    <div class="article-meta">
-                        Published: {{ article.published }}
-                    </div>
-                    {% endif %}
-                    <div class="article-content">
-                        {{ article.content | safe }}
-                    </div>
-                </article>
-                {% endif %}
-                {% endfor %}
-            {% else %}
-                <p class="empty-index">No recent articles available.</p>
-            {% endif %}
-        </section>
-        <a class="archive-link" href="/archive.html">Browse earlier articles</a>
+    <main class="archive-shell">
+        <h2 class="archive-heading">Archive</h2>
+        <p class="archive-intro">{{ articles | length }} articles, newest first.</p>
+        {% if articles and (articles | length) %}
+        <ol class="archive-list">
+            {% for article in articles %}
+            <li>
+                <a href="{{ article.uri }}">
+                    <span class="archive-date">{{ article.published }}</span>
+                    <span class="archive-title">{{ article.title }}</span>
+                </a>
+            </li>
+            {% endfor %}
+        </ol>
+        {% else %}
+        <p class="empty-archive">No articles available.</p>
+        {% endif %}
     </main>
 
     <script>

@@ -36,9 +36,20 @@
   :asPath true ;
   :targetField "destinationFile" ;
   :values (:ip1 :ip2 :ip3) .
-  :ip1 :field "targetPath" .
+  :ip1 :field "targetDir" .
   :ip2 :string "public" .
   :ip3 :string "index.html" .
+
+:archiveIndex a :ConfigSet ;
+   :templateFilename "templates/archive-html.njk" .
+
+:archiveFilepath a :ConfigSet ;
+  :asPath true ;
+  :targetField "destinationFile" ;
+  :values (:aip1 :aip2 :aip3) .
+  :aip1 :field "targetDir" .
+  :aip2 :string "public" .
+  :aip3 :string "archive.html" .
 
 :contentLocation a :ConfigSet ;
     :contentField "accumulator" .
@@ -52,6 +63,7 @@
 :atomBuilder a :ConfigSet ;
     :inputField "contentBlocks.content" ;
     :outputField "content" ;
+    :maxEntries "20" ;
     :feedTitle "Hyperdata Recent Articles" ;
     :feedSubtitle "Latest articles from the knowledge base" ;
     :feedAuthorName "Danny Ayers" ;
@@ -63,7 +75,7 @@
   :asPath true ;
   :targetField "destinationFile" ;
   :values (:ap1 :ap2 :ap3) .
-  :ap1 :field "targetPath" .
+  :ap1 :field "targetDir" .
   :ap2 :string "public" .
   :ap3 :string "atom.xml" .
 
