@@ -1,4 +1,4 @@
-danny.ayers.name goes to its own place
+# Update Site
 
 ```sh
 cd ~/hyperdata/transmissions # my local path
@@ -8,6 +8,8 @@ cd ~/hyperdata/transmissions # my local path
 ./trans sparqlstore-to-html ~/sites/danny.ayers.name/postcraft
 ./trans sparqlstore-to-site-indexes ~/sites/danny.ayers.name/postcraft
 ```
+
+---
 
 ![Claudio Grouse Hunting](media/images/2024-08/claudio-grouse-hunting.jpeg)
 
